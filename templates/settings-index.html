@@ -49,13 +49,6 @@
     margin: 0 0 12px 0;
   }
 
-  /* #2375: a plain link under a group's cards (a card is itself a link, so a second
-     link can't sit inside one). */
-  .settings-group-links {
-    margin: 12px 0 0 0;
-    font-size: 14px;
-  }
-
   .settings-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -199,6 +192,17 @@
         </div>
       </a>
 
+      {# #2375 (xian 2026-11-15; CXO's ruling the same evening): the GitHub repository
+         page, where the install step is, as a card like its neighbours. It was first a
+         text link under the cards, which xian looked for and did not find. #}
+      <a href="/settings/integrations/github#repositories" class="settings-card" id="index-github-repositories">
+        <div class="card-icon">🐙</div>
+        <h3 class="card-title">GitHub repositories</h3>
+        <p class="card-description">
+          Choose which repositories Piper can read.
+        </p>
+      </a>
+
       <a href="/settings/projects" class="settings-card">
         <div class="card-icon">📁</div>
         <h3 class="card-title">Projects</h3>
@@ -232,11 +236,6 @@
         </div>
       </a>
     </div>
-    {# #2375 (xian 2026-11-15, CXO's words): the GitHub repository page, where the
-       install step is, reachable from Settings without opening Integrations first. #}
-    <p class="settings-group-links">
-      <a href="/settings/integrations/github#repositories" id="index-github-repositories">GitHub repositories</a>
-    </p>
   </section>
 
   <section class="settings-group" aria-labelledby="group-about">

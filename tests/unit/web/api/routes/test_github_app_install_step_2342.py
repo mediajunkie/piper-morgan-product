@@ -732,10 +732,13 @@ class TestSettingsRepositoryList:
         with patch(_ADAPTER, cls), patch(_PREFS, new=AsyncMock(return_value=saved)):
             result = await routes.get_github_repositories(current_user=_user())
         assert result.state is None and result.message is None
+        # CXO 11-15 (#2375): with something installed the page still offers the way to
+        # GitHub's install page, and the sentence names that button.
         assert result.note == (
             "These are the repositories the Piper GitHub app is installed on. To add "
-            "another, install the app on it."
-        )  # CXO 07:30: only under a non-empty list in App mode
+            "another, press Add another repository, then refresh this list."
+        )
+        assert result.install_url == "https://github.com/apps/piper-example/installations/new"
         assert [(r.full_name, r.selected) for r in result.repositories] == [
             ("octo/r1", False),
             ("octo/r2", True),
@@ -755,6 +758,24 @@ class TestSettingsRepositoryList:
         assert exc.value.status_code == 502
         assert "installed" not in str(exc.value.detail)
 
+    async def test_installed_somewhere_with_no_slug_says_only_what_the_list_is(
+        self, app_on, monkeypatch
+    ):
+        # Arch 11-15: absent, never "", when no slug is set. CXO 11-15: with no link to
+        # give, no add-another sentence at all.
+        monkeypatch.delenv(grant_mod.ENV_APP_SLUG)
+        installed = gh_mod.GitHubReposResult(
+            repositories=[{"id": 1, "name": "r1", "full_name": "octo/r1", "description": ""}],
+            from_installation=True,
+        )
+        cls, _ = _adapter_class(installed)
+        with patch(_ADAPTER, cls), patch(_PREFS, new=AsyncMock(return_value={})):
+            result = await routes.get_github_repositories(current_user=_user())
+        assert result.install_url is None
+        assert result.note == "These are the repositories the Piper GitHub app is installed on."
+        assert "add another" not in result.note.lower()
+        assert "install the app" not in result.note
+
     async def test_a_search_list_carries_no_app_note(self, app_on):
         searched = gh_mod.GitHubReposResult(
             repositories=[{"id": 9, "name": "p", "full_name": "me/p", "description": ""}]
@@ -764,6 +785,7 @@ class TestSettingsRepositoryList:
             result = await routes.get_github_repositories(current_user=_user())
         assert [r.full_name for r in result.repositories] == ["me/p"]
         assert result.state is None and result.note is None
+        assert result.install_url is None  # #2375: the link rides an App list only
 
 
 # ── the repository search is the one source (Arch 08:02) ────────────────────────────
@@ -1010,6 +1032,18 @@ class TestCardSource:
         source = self._source()
         assert "if (data.note && loadedRepositories.length > 0) {" in source
         assert "note.textContent = data.note;" in source
+
+    def test_the_add_another_link_is_an_href_with_cxos_label_under_the_note(self):
+        # #2375 (CXO 11-15; Arch: used only as an href, the ruled label as text).
+        source = self._source()
+        note = source.index("note.textContent = data.note;")
+        block = source[note : source.index("if (wasNotInstalled && !prefsLoadFailed) {", note)]
+        assert "if (data.install_url) {" in block
+        assert "add.href = data.install_url;" in block
+        assert "add.textContent = 'Add another repository';" in block
+        assert "add.id = 'github-app-add-repository-link';" in block
+        assert "add.target = '_blank';" in block and "add.rel = 'noopener';" in block
+        assert "innerHTML" not in block
 
     def test_refresh_really_re_reads(self):
         assert "refresh.addEventListener('click', () => loadRepositoryList());" in self._source()
