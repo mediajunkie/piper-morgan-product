@@ -122,7 +122,7 @@ Migration `3c85fd899ece_fix_projects_unique_constraint_736.py`:
 
 ## Known Issues
 
-See [ALPHA_KNOWN_ISSUES.md](../ALPHA_KNOWN_ISSUES.md) for current known issues.
+See [ALPHA_KNOWN_ISSUES.md](../BETA_KNOWN_ISSUES.md) for current known issues.
 
 ---
 
