@@ -52,9 +52,19 @@ What the ADR requires (D3): one exact-command allow per seeded account name, add
 
 **Owner: CIO. To write.** Unblocks #2364's OpenAI half with no count read. Variable name: `PIPER_SEAT_OPENAI_KEY`. The project's own spend limit is the bound.
 
+## Step F0 (before Step F's connect): create the second seat account on beta
+
+**Owner: Lead. To write.** Named by Arch on 11-15 in answer to HOST's question in Step F. Lead knows how `web-seed-1386` was created; I could not find that path in source on main, so it is unverified by me and Lead writes it from what was actually done.
+
+What the row must hold, whatever the path:
+- The account is created on beta by xian's hand (a sign-up with an invite code he mints, or a seed command he runs). An invite code is spent at account creation, so it is one mint for this one account.
+- Its password is generated, used nowhere else, and written straight into the account's file under `~/.piper-shared` (a name the existing Read denies match, mode 0600) by the same step that creates the account. xian types it at beta's login page in Step F; no seat reads it. `seat_session.py` (Step C) reads it later.
+- No admin flag, no `ops_reader`, no provider key of a real person.
+- HOST reads what the account holds from its account page before first use (HOST's bound B4).
+
 ## Step F (ADR row 4): the test GitHub identity
 
-**Owner: HOST.** **Status: PARTLY NOT READY.** The "connects it on the second seat account" part needs that beta account to exist. The ADR does not say who creates it (Lead's seed script, or Web). Arch or Lead: name the owner and tell Exec. Until then, steps 1 to 3 can be done; steps 4 to 7 wait.
+**Owner: HOST.** **Status: PARTLY NOT READY.** The "connects it on the second seat account" part needs that beta account to exist. The ADR does not say who creates it (Lead's seed script, or Web). Arch named the owner on 11-15: Lead writes it as Step F0, above. Until that account exists, steps 1 to 3 can be done; steps 4 to 7 wait.
 
 **Why a machine account:** GitHub's terms (Section B.3, read 11-15) allow one free machine account beside a personal account, and forbid a second personal one. A human must create it.
 
@@ -163,6 +173,14 @@ rm .env
 - **Also:** the older `lead-scoring-2026-10` key is revoked in the Anthropic console if Step A's question was answered "nothing uses it".
 
 ---
+
+## Arch's read of the rows so far (2026-11-15, after Steps F, G and H came in)
+
+- **Steps F, G and H match ADR-084** (D3's two bounds on the identity, the connect-then-install order with PA's read between, the `main`-only environment for the token). No change asked.
+- **Step G part 1 and Step H use `fly` commands in xian's own Terminal.** That is by design: production writes and Fly tokens stay his, and no seat runs `fly`.
+- **Step F step 4 has xian type the second seat account's password at beta's login page.** So that password has to exist somewhere he can read it once and the helper can read it later. Step F0 says where.
+- **Still to write:** CIO's Steps A, C, D, E and I; Lead's Step F0. Steps C, D and H stay NOT READY until `seat_session.py`, Pard's plist and #2384 exist.
+- **Not yet read by me:** anything written after this note. I read the whole file again when CIO's and Lead's rows are in.
 
 ## Not on this list, by design
 
