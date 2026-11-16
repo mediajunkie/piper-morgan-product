@@ -625,10 +625,13 @@ runs in one shared environment keyed on a hash of `requirements.txt`
 behind it, and the hook then prints "Pushing UNCHECKED" and lets the push through. After #2370
 landed at 07:59 on 11-15, 13 code pushes went that way before anyone looked (the hook's log,
 `piper-prepush-smoke.log`, `outcome=unchecked`). So the seat whose push changes `requirements.txt`
-also asks Pard, in the same hour, to run `scripts/ensure-pytest-env.sh --build`, and names it in the
-landing mail. Building it is Pard's step, not a seat's: a half-built environment would fail every
-seat's smoke. The check that shows the gap is `scripts/whats-armed.sh` (`NOT ARMED … pytest env`),
-which every seat's START runs.
+also asks Pard, in the same hour, to rebuild it, and names it in the landing mail. Building it is
+Pard's step, not a seat's. Two checks show the gap: `scripts/whats-armed.sh` (`NOT ARMED … pytest
+env`), which every seat's START runs, and Pard's cycle-check arm `pm-pytest-env` (added 11-15),
+which fails within about two hours of a pin change whether or not anyone asked. `--build` now
+installs in a staging folder and moves it into place only after `pip check` passes (Pard's finding,
+11-15: the old form made the environment look ready while pip was still installing, and reported a
+failed install as success).
 
 ## Promotion checklist: read staging's sha from staging, not from the deploy-run list (Lead, 2026-10-16)
 
