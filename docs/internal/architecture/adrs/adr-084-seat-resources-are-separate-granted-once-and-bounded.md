@@ -67,7 +67,7 @@ A **seat resource** is something that exists so agents can run and test Piper. I
     5. The grant is one exact-command allow per account name.
     6. Revocation is a password rotation plus deleting the session file, the same day anything is seen in clear.
   - **The browser profile is a bearer credential too** (HOST): a folder outside the repo and the shared memory directory, mode 0700, one per seat that does served reads. It signs in to seeded accounts only; none of xian's own sessions is ever signed in inside it. A seat never types or pastes a cookie or a password in a tool call. Deleting the folder is the revocation.
-  - **The browser half** (Web's question; mechanism to be proven on the dummy). The session is two httpOnly cookies (`services/auth/session_cookies.py`: access 24 hours, refresh 7 days, `samesite=lax`, bound to no address or browser). Page script can't set them. Today `.mcp.json` starts the browser tool with `--isolated`, so every browser restart signs every seat out. The intended shape: each seat that does served reads gets a persistent browser profile outside the repo (`--userDataDir`, or `--browserUrl` onto a browser that stays up), and the helper places the two cookies into that profile through the DevTools protocol. The password and the cookies never pass through a tool call. CIO and Pard own the launch configuration; Web runs the dummy check.
+  - **The browser half** (Web's question; mechanism to be proven on the dummy). The session is two httpOnly cookies (`services/auth/session_cookies.py`: access 24 hours, refresh 7 days, `samesite=lax`, bound to no address or browser). Page script can't set them. Today `.mcp.json` starts the browser tool with `--isolated`, so every browser restart signs every seat out. The intended shape: each seat that does served reads gets a persistent browser profile outside the repo (`--userDataDir`, or `--browserUrl` onto a browser that stays up), and the helper places the two cookies into that profile through the DevTools protocol. The password and the cookies never pass through a tool call. CIO and Pard own the launch configuration; Web runs the dummy check. Web read its tool surface on 11-15: the browser tool has no set-cookie, storage-state or raw protocol call, so the helper must place the cookies through the browser's debug port; Web's part is to open the page and confirm the signed-in name, after a restart and after a promotion.
 - **The connector.** PA reads through a second connector consented as the GitHub-connected seat account, not through xian's. Whether one claude.ai account can hold two connectors at one URL can't be tested from a seat: it is one try in xian's own claude.ai settings, with the fallback "if it refuses a second one, stop and tell Exec". The seat account also has to be on the #2242 allowlist, which is one production write by xian. Rows about xian's own data still use his connector, and the quote says so.
 - **Served reads and the atlas** (#2381): Web captures each page in each state after a promotion; CXO judges from the atlas; the tracked part is a text index. Lead's script-run card harness covers words; the atlas covers layout.
 
@@ -113,7 +113,7 @@ Nothing here lets a seat run `fly`, read the keychain, or pass a classifier refu
 1. Says yes or no to D1 to D6 and sets the budget figures.
 2. Puts the Anthropic seat key in the screen-running seats' settings (with Pard).
 3. Makes one capped OpenAI project key and adds it the same way.
-4. Creates the test GitHub identity, bounds it in the org, and connects it on the second seat account.
+4. Creates the test GitHub identity by hand, as a machine account (GitHub Terms B.3, read by HOST 11-15: one free machine account beside a personal account; a second personal account is not allowed; an account must be created by a human), bounds it in the org, and connects it on the second seat account.
 5. Installs the helper's exact-command allow (Pard can).
 6. Ticks "Operations reader" on the plain test account.
 7. Creates the MCP-app-scoped deploy token and stores it as a repository secret.
@@ -129,7 +129,7 @@ Rows 4 and 9 include clicks on GitHub's and claude.ai's own pages. No seat drive
 - **The browser half of the helper** (D3): untested; needs a persistent profile and a cookie set through the DevTools protocol.
 - **Whether a promotion ends a session:** Web measures it in the first signed-in sitting. The helper makes it a re-mint, not a sitting.
 - **Two connectors at one URL** (D3): xian's one try.
-- **The test identity's account type** under GitHub's terms (HOST reads it as a machine account; unverified).
+- **The test identity:** its type is settled (a machine account). Unread: whether it counts as a paid seat in the org, and GitHub's wording on a second factor for machine accounts.
 - **A running session and a new settings `env` entry:** whether a restart is needed (CIO's kit answers it).
 
 ## Consequences
