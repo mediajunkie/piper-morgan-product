@@ -2,14 +2,14 @@
 type: adr
 number: 84
 title: "Seat resources: what agents use to run and test Piper is separate from xian's, granted once, and bounded where a seat can't pass"
-status: "PROPOSED"
+status: "ACCEPTED"
 valid_from: "2026-11-15"
-last_updated: "2026-11-15"
+last_updated: "2026-11-16"
 ---
 
 # ADR-084: Seat resources are separate, granted once, and bounded
 
-**Status**: **PROPOSED, 2026-11-15** (Arch-authored, from Exec's `docs/internal/operations/seat-test-harness-proposal-2026-11-15.md`, draft 2 at 7c571b8fec, with CIO's, HOST's and PA's replies of 19:26 to 19:28). It becomes ACCEPTED on xian's word, relayed by Exec. Until then nothing here changes code or access, and paid runs stay stopped (Exec, 19:11).
+**Status**: **ACCEPTED, 2026-11-16.** xian's word at 06:20 PT, relayed by Exec (mail 01M7JBP51M), verbatim: "1. Yes to ADR-084 and budget 2. Nothing I run personally uses that key, no". The figures: a seat may spend **$10 a run** without asking, and the `lead-scoring` workspace's **$150 monthly limit** is the hard cap. Paid runs stay stopped until Step A has put the seat key where a seat can use it and Lead's check passes. Drafted 2026-11-15 (Arch-authored, from Exec's `docs/internal/operations/seat-test-harness-proposal-2026-11-15.md`, draft 2 at 7c571b8fec, with CIO's, HOST's and PA's replies of 19:26 to 19:28).
 
 **Related**: #2340 (the developer-key binder), #2364 (the provider gate that stopped), #2327 (`ops_reader`), #2373 (the floored counter), #2374 (reads limited to the installed set), #2381 (the screen atlas), #2382 (stateless MCP server), ADR-080 (code decides permission).
 
@@ -47,7 +47,7 @@ A **seat resource** is something that exists so agents can run and test Piper. I
 - **How a run uses it.** The binder's existing command-line source, unchanged: `ANTHROPIC_API_KEY="$PIPER_SEAT_ANTHROPIC_KEY"` after the `env -u` flags, with `PIPER_CREDENTIAL_STORE=db`. The shell expands the name; the command text never holds the value. No file is read, no keychain, no `.env`.
 - **Who holds it.** Only seats that run screens or gates. Lead first; CIO and PA when each names a run. Docs' fresh-clone guide run may use it in its scratch database.
 - **One cap enforcer.** `developer_keys_bound(providers=..., max_usd=...)` refuses to start without a cap. The spend chokepoint (#1809, `services/llm/clients.py`) adds each response's usage and raises before the cap is passed. Batch submits check the worst-case cost of the rendered requests first (`router_batch.py submit --cap-usd`, on main at 1e07f0ba74, is that half). Until the binder half is built, a run with no in-code stop still asks first.
-- **The budget rule.** A seat may spend up to the per-run figure without asking. It writes the planned calls in its log before the run and the actual cost, from the provider's own counts, after. Above the per-run figure it asks through Exec. The figures are xian's to set; the proposal offers $10 a run.
+- **The budget rule.** A seat may spend up to the per-run figure without asking. It writes the planned calls in its log before the run and the actual cost, from the provider's own counts, after. Above the per-run figure it asks through Exec. xian set the figure on 11-16: $10 a run.
 - **A local server is a different path from a script** (Lead). Chat rows on a local server read a per-person key from the database store, not the environment. A test driver may write the seat key into its own scratch database under an encryption key it generates for that run. No `.env` is read, and the database is dropped with the run. This is the seat key in a seat's scratch store, not a new route.
 - **Batches.** A batch can't be stopped part-way, so its bound is the check before submit. The log gets the planned figure at submit and the provider's cost line when the batch ends.
 - **Backups and scans** (HOST, CIO). xian's own Time Machine copy of the settings file is inside the bound: the key is capped and separate, and a provider-side revoke ends every copy. A staged-file scan for key shapes runs at commit and in the push gates (CIO builds it from `scripts/mailbox_bearer_lint.py`; its baseline holds paths and lines, never a value). GitHub's push protection is on, and untested on this key's shape.
@@ -126,6 +126,8 @@ Nothing here lets a seat run `fly`, read the keychain, or pass a classifier refu
 Rows 4 and 9 include clicks on GitHub's and claude.ai's own pages. No seat drives those.
 
 ## Open at proposal time
+
+Settled since (11-16): the workspace is `lead-scoring`. Nothing of xian's own uses the older `lead-scoring-2026-10` key, and he disabled it on the console at about 06:23, so the workspace holds one live key, `seat-screens-2026-11`. Arch accepts disabled in place of deleted: a disabled key can't make a call, and only xian can re-enable it. "Operations reader" is ticked on `web-seed-1386` (list row 6).
 
 - **The Anthropic workspace.** `lead-scoring` can serve only if the older `lead-scoring-2026-10` key is revoked and nothing of xian's own still spends there. If anything does, the seat key needs its own workspace. A lowered limit also has to allow for what the workspace already spent this month.
 - **The two grant routes at a real install** (CIO, 20:10): the key route ran with a stand-in, and exact allows already work here (Lead's promotion command since 11-03). How the classifier judges the first real run of each is the test; at the key's first run, check by length and hash that the child process saw the value and that no value reached any output.
