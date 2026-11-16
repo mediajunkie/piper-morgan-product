@@ -3,6 +3,8 @@
 For `docs/internal/operations/seat-test-harness-proposal-2026-11-15.md`. It tests, with values that are
 not credentials, whether the harness honours the two grant routes before any real secret moves.
 
+> **Status, 2026-11-15 20:10 PT: the install steps below (1 to 5) are WITHDRAWN and were never run.** Pard's run of step 1 was refused by auto mode, and Pard can't edit another seat's settings under it. Asking xian for two manual steps would teach little: settings `env` already reaches seat commands (three existing variables), exact allows already work here (11-03), and the browser half below passed with no install. The first real install of each route is its test. The files stay as a record.
+
 **What it tests**
 1. A value set in a seat's Claude Code settings (`env`) reaches a script the seat runs.
 2. A reviewed helper that reads a file in `~/.piper-shared/` matching the fleet's Read-deny pattern
