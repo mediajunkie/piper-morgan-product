@@ -135,6 +135,27 @@ def approved_text_ok(sha, path):
         return all(ln.strip() in old_lines for ln in f if ln.strip())
 
 
+def no_history_reason():
+    """Why approval shas can't be read from this checkout, or None when history is present.
+    Lead and Arch, 11-15: a checkout with no history is one cause, not one DROP per row.
+    A shallow clone or a tree with no .git (an image build excludes it) would otherwise drop
+    every approved row and print a clean deploy with an empty corpus."""
+    try:
+        inside = subprocess.run(
+            ["git", "rev-parse", "--is-inside-work-tree"], capture_output=True, text=True
+        )
+        if inside.returncode != 0 or inside.stdout.strip() != "true":
+            return "no git repository here (no .git), so no approval sha can be read"
+        shallow = subprocess.run(
+            ["git", "rev-parse", "--is-shallow-repository"], capture_output=True, text=True
+        )
+    except OSError:
+        return "git is not available, so no approval sha can be read"
+    if shallow.stdout.strip() == "true":
+        return "this is a shallow clone, so approval shas are not all readable (fetch full history)"
+    return None
+
+
 def not_ratified(path):
     try:
         with open(path, encoding="utf-8") as f:
@@ -152,6 +173,14 @@ def main(argv):
         rows = list(csv.reader(f))
     if rows[0] != HEADER:
         sys.exit(f"ERROR: header is {rows[0]}, expected {HEADER}")
+    any_approved = any(
+        len(r) == len(HEADER) and r[HEADER.index("approved")].strip() for r in rows[1:]
+    )
+    no_hist = no_history_reason() if any_approved else None
+    if no_hist:
+        # One cause, one line. In --deploy this refuses the deploy. Otherwise the approval
+        # text checks are skipped (they need history) and the note says so.
+        (errors if deploy else notes).append(f"no approval history: {no_hist}")
     seen = set()
     for n, r in enumerate(rows[1:], start=2):
         if len(r) != len(HEADER):
@@ -212,7 +241,7 @@ def main(argv):
                 drops.append(f"{rid}: verified but voice_pass is {d['voice_pass']}")
             if deploy and not d["approved"]:
                 drops.append(f"{rid}: verified but not approved (no sha in approved)")
-            elif d["approved"] and d["item"]:
+            elif d["approved"] and d["item"] and not no_hist:
                 item_path = d["item"].split("#")[0]
                 ok = (
                     approved_text_ok(d["approved"], item_path)
