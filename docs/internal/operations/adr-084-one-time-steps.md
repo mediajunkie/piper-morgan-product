@@ -28,12 +28,15 @@ What the ADR requires of this row (D2): the seat's own `.claude/settings.local.j
 Depends on xian's answer to one question: does anything he runs still use the older `lead-scoring-2026-10` key? If not, he revokes it and `lead-scoring` is the seat workspace. If so, the seat key needs its own workspace and a new key.
 
 - **Before you start:** you need the key's value. A provider shows a key once, when it is made. If you no longer have the value of `seat-screens-2026-11`, make a new key in the seat workspace on the Anthropic console and revoke the old one there.
-- **Where:** Terminal on this Mac.
+- **When:** while Lead's session is idle (not mid-fire). Claude Code writes this same file itself when a permission is saved from a prompt, and whether a running session can write it back without the new entry is untested (Arch, 11-15).
+- **Where:** Terminal on this Mac, in any checkout that is at main. Your own is fine after its usual sync. The script finds the seat's settings by absolute path, so it doesn't need to run from a seat's folder, and nothing here changes a seat's folder.
 - **Paste**, one line at a time:
 
 ```
-cd ~/Development/piper-morgan-worktrees/cio && git fetch origin main && git merge --ff-only origin/main
+cd ~/Development/piper-morgan-product && ls scripts/seat_settings_grant.py
 ```
+
+  This should print `scripts/seat_settings_grant.py`. If it says "No such file or directory", that checkout is behind main: stop and tell Exec. A seat brings it up to date with `scripts/sync-pm-local.sh`, which never touches your uncommitted edits.
 
 ```
 scripts/seat_settings_grant.py add-key --seat lead --name PIPER_SEAT_ANTHROPIC_KEY
@@ -65,6 +68,7 @@ scripts/seat_settings_grant.py check-env --name PIPER_SEAT_ANTHROPIC_KEY
 - **If it fails:**
   - The script prints one line and changes nothing if the settings file isn't valid JSON, the value is empty or has a space in it, or the name isn't a `PIPER_SEAT_` name. Fix that and run the line again.
   - **If Lead's check says `UNSET in this session`:** the session started before the key was there. Restart the Lead session once. Whether a running session picks up a new settings variable is the one thing nobody has tested.
+  - **After any restart of the Lead session, check the entry survived:** `scripts/seat_settings_grant.py show --seat lead` should still list `env: PIPER_SEAT_ANTHROPIC_KEY` with the same fingerprint, mode `0o600` and `self-deny present: True`. If the entry is gone, run the `add-key` line again and tell Exec, because that means the session rewrote the file.
   - If Lead's fingerprint differs from yours, the wrong value was pasted. Run the same line again; it replaces the value.
   - To take the key back out: `scripts/seat_settings_grant.py remove-key --seat lead --name PIPER_SEAT_ANTHROPIC_KEY`. Revoking it on the console ends every copy, including any in a backup.
 
@@ -90,7 +94,7 @@ What the ADR requires (D3): one exact-command allow per seeded account name, add
 
 The step's shape, so only the command text is missing (CIO, 2026-11-15):
 
-- **Where:** Terminal, in `~/Development/piper-morgan-worktrees/cio`.
+- **Where:** Terminal, in a checkout at main, as in Step A.
 - **Paste:** one line per account name, per seat (Web first):
 
 ```
@@ -129,7 +133,7 @@ The order of what it waits on (CIO, 2026-11-15):
   - **You should see:** the project's Limits page showing the monthly figure and the hard-limit setting on; the API keys list showing one key in that project.
   - **Custody row records** (no value): provider, project name, monthly limit and whether enforced, date created, seats holding it, review date a month out.
   - **If you cannot find the hard-limit switch, or the project cannot be capped:** do not create the key. Tell Exec; the OpenAI half of #2364 waits.
-- **Where (settings half):** Terminal, in `~/Development/piper-morgan-worktrees/cio`.
+- **Where (settings half):** Terminal, in a checkout at main, as in Step A, and while Lead's session is idle.
 - **Paste:**
 
 ```
