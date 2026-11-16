@@ -49,6 +49,6 @@ I like to think that it's a sign of maturity that our latest round of proposed i
 
 ---
 
-*Next on Building Piper Morgan: "The Wall," in which [TEASE: Tue 11-17, beat 4, Sep 15–18. Comms will suggest a line once its scaffold is written.]*
+*Next on Building Piper Morgan: "The Wall," in which the team runs so hot we run out of usage credits before the week is over.*
 
-*[Reader question, yours to write. A start: "When did your team last decide not to build something, and write down why?"]*
+*When did you last decide not to build something when you realized you didn't really need it? How did you decide?*
