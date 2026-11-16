@@ -146,6 +146,11 @@ def main() -> int:
         default=None,
         help="the most this run may spend, in dollars; required for a run that makes calls (#2383)",
     )
+    ap.add_argument(
+        "--approved-by",
+        default=None,
+        help="for a cap above $10: the mail id of Exec's relay of xian's approval (ADR-084 D2)",
+    )
     args = ap.parse_args()
     sys.path.insert(0, str(ROOT / "scripts"))
     from dev_key_binding import developer_keys_bound, providers_from_flag
@@ -154,6 +159,7 @@ def main() -> int:
     with developer_keys_bound(
         providers=_providers,
         max_usd=args.max_usd,
+        approved_by=args.approved_by,
         planned_calls=len(args.phrase) * args.samples,
         require=True,
     ):
