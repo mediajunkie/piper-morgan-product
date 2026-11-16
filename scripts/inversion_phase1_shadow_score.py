@@ -33,7 +33,7 @@ env -u flags, and --provider, #2340):
       -u ANTHROPIC_CUSTOM_HEADERS POSTGRES_PORT=5433 \
       PIPER_CREDENTIAL_STORE=db ANTHROPIC_API_KEY=… \
       venv/bin/python scripts/inversion_phase1_shadow_score.py \
-      --provider anthropic [--dry-run] [--out PATH]
+      --provider anthropic --max-usd N [--dry-run] [--out PATH]
 
 Cost: one Haiku-class call per corpus row (93), plus at most one repair retry
 per row. --dry-run validates corpus + grammar + row selections, no LLM calls.
@@ -1126,6 +1126,12 @@ if __name__ == "__main__":
         default=None,
         help="score a finished Message Batch (scripts/router_batch.py render/submit) instead of live calls",
     )
+    ap.add_argument(
+        "--max-usd",
+        type=float,
+        default=None,
+        help="the most this run may spend, in dollars; required for a run that makes calls (#2383)",
+    )
     args = ap.parse_args()
     # #1812 aftermath: scripts must bind the developer's own keys — the
     # server-key fallback this instrument silently relied on is gone.
@@ -1134,6 +1140,7 @@ if __name__ == "__main__":
 
     with developer_keys_bound(
         providers=providers_from_flag(args.provider),
+        max_usd=args.max_usd,
         require=not (args.dry_run or args.replay),
     ):
         sys.exit(

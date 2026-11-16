@@ -7,7 +7,7 @@ the #2197 brief plus two more "next" asks, against a fixture of the six mileston
 ``gh api repos/mediajunkie/piper-morgan-product/milestones`` returned on 2026-11-01
 (state=open, the API default). Run with the inherited Anthropic env vars stripped.
 
-Usage: PIPER_CREDENTIAL_STORE=db ANTHROPIC_API_KEY=… python scripts/probe_milestone_resolver.py --provider anthropic
+Usage: PIPER_CREDENTIAL_STORE=db ANTHROPIC_API_KEY=… python scripts/probe_milestone_resolver.py --provider anthropic --max-usd N
 """
 
 from __future__ import annotations
@@ -104,9 +104,16 @@ async def run() -> int:
 
 
 if __name__ == "__main__":
-    from dev_key_binding import developer_keys_bound, pop_provider_flag, providers_from_flag
+    from dev_key_binding import (
+        developer_keys_bound,
+        pop_max_usd_flag,
+        pop_provider_flag,
+        providers_from_flag,
+    )
 
     # #2340: `--provider anthropic|openai` names the one account this run spends on.
     _provider = pop_provider_flag(sys.argv)
-    with developer_keys_bound(providers=providers_from_flag(_provider)):
+    # #2383: `--max-usd N` is the most this run may spend.
+    _max_usd = pop_max_usd_flag(sys.argv)
+    with developer_keys_bound(providers=providers_from_flag(_provider), max_usd=_max_usd):
         sys.exit(asyncio.run(run()))

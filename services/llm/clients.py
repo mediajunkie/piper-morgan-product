@@ -20,6 +20,7 @@ from services.llm.provider_bounds import (
     run_provider_call,
 )
 from services.llm.request_key import LLMKeyRequiredError
+from services.llm.spend_cap import reserve_call, settle_call
 
 from .config import (
     MODEL_CONFIGS,
@@ -72,6 +73,28 @@ def _record_serving(provider_value: str, model: str) -> None:
         Exception
     ):  # silent-ok: observability-only record; must never break the serving call path (#1676)
         pass
+
+
+def _anthropic_usage_counts(response: Any) -> Optional[Dict[str, int]]:
+    """The provider's own token counts for the spend cap (#2383), cache tokens included.
+
+    ``input_tokens`` excludes cached tokens, so a cap that read only that field would
+    undercount a cached prompt. None when the response carries no usage.
+    """
+    usage = getattr(response, "usage", None)
+    if usage is None:
+        return None
+    counts: Dict[str, int] = {}
+    for field in (
+        "input_tokens",
+        "output_tokens",
+        "cache_creation_input_tokens",
+        "cache_read_input_tokens",
+    ):
+        value = getattr(usage, field, None)
+        if isinstance(value, int) and not isinstance(value, bool):
+            counts[field] = value
+    return counts or None
 
 
 def _first_text_block(response: Any) -> str:
@@ -659,13 +682,26 @@ class LLMClient:
         # (max_retries=1 hides one). Either way the provider method goes to the
         # executor BY REFERENCE (#2101's condition 3).
         raw_api = getattr(client.messages, "with_raw_response", None)
+        # #2383: under a script run's dollar cap, ask before sending. No cap is bound
+        # on a served request, and this returns None at once.
+        _reservation = reserve_call(
+            request_params["model"],
+            len(prompt) + len(system or ""),
+            request_params["max_tokens"],
+        )
         _call_started = time.monotonic()
         raw_response = None
-        if raw_api is not None:
-            raw_response = await run_provider_call(raw_api.create, **request_params)
-            response = raw_response.parse()
-        else:
-            response = await run_provider_call(client.messages.create, **request_params)
+        try:
+            if raw_api is not None:
+                raw_response = await run_provider_call(raw_api.create, **request_params)
+                response = raw_response.parse()
+            else:
+                response = await run_provider_call(client.messages.create, **request_params)
+        except BaseException:
+            # A failed call may still have been billed: its upper estimate stays counted.
+            settle_call(_reservation, None)
+            raise
+        settle_call(_reservation, _anthropic_usage_counts(response))
         self._last_phases = {
             "client_ms": _client_ms,
             "call_ms": int((time.monotonic() - _call_started) * 1000),
@@ -761,8 +797,30 @@ class LLMClient:
         if response_format:
             request_params["response_format"] = response_format
 
+        # #2383: same cap hook as the Anthropic leg. No OpenAI price is recorded yet, so a
+        # capped run that lands here is refused before anything is sent.
+        _reservation = reserve_call(
+            request_params["model"],
+            len(prompt) + len(system or ""),
+            request_params["max_tokens"],
+        )
         # #2101: same as the Anthropic leg — the sync SDK call runs off the loop.
-        response = await run_provider_call(client.chat.completions.create, **request_params)
+        try:
+            response = await run_provider_call(client.chat.completions.create, **request_params)
+        except BaseException:
+            settle_call(_reservation, None)
+            raise
+        settle_call(
+            _reservation,
+            (
+                {
+                    "input_tokens": int(response.usage.prompt_tokens),
+                    "output_tokens": int(response.usage.completion_tokens),
+                }
+                if getattr(response, "usage", None) is not None
+                else None
+            ),
+        )
 
         # Extract actual token counts from response
         prompt_tokens = (
