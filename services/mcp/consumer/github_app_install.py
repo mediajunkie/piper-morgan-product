@@ -28,6 +28,10 @@ _TIMEOUT_SECONDS = 10
 DETAIL_APP_NOT_INSTALLED = "app_not_installed"
 #: The same state when no install link can be given (``GITHUB_APP_SLUG`` unset).
 DETAIL_APP_INSTALL_LINK_MISSING = "app_install_link_missing"
+#: #2374: a repository named in the request that the App is not installed on.
+DETAIL_APP_NOT_ON_REPOSITORY = "app_not_on_repository"
+#: #2374: more installed repositories than one read's searches can cover.
+DETAIL_APP_TOO_MANY_REPOSITORIES = "app_too_many_repositories"
 
 
 class InstallationReadFailed(Exception):
