@@ -200,6 +200,7 @@ def main(argv: Optional[List[str]] = None) -> int:
 if __name__ == "__main__":
     from dev_key_binding import (
         developer_keys_bound,
+        pop_approved_by_flag,
         pop_max_usd_flag,
         pop_provider_flag,
         providers_from_flag,
@@ -210,7 +211,12 @@ if __name__ == "__main__":
     # #2383: `--max-usd N` is the most this run may spend; the binder refuses without it
     # and prints the PLANNED and COST lines.
     _max_usd = pop_max_usd_flag(sys.argv)
+    _approved_by = pop_approved_by_flag(sys.argv)
     with developer_keys_bound(
-        providers=_providers, max_usd=_max_usd, planned_calls=PLANNED_CALLS, require=True
+        providers=_providers,
+        max_usd=_max_usd,
+        approved_by=_approved_by,
+        planned_calls=PLANNED_CALLS,
+        require=True,
     ):
         sys.exit(main())
