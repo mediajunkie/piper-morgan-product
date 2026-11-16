@@ -1,6 +1,6 @@
 ---
-image: ''
-alt: ''
+image: 'no-new-skills-this-time-simple-hook-big-blueprint.jpg'
+alt: 'A translucent AI contractor holds an enormous blueprint for a walk-in cloakroom while a smiling woman stands beside her completed solution: one coat hanging on a wall hook.'
 caption: ''
 ---
 
