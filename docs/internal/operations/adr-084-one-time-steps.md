@@ -180,34 +180,53 @@ scripts/seat_settings_grant.py add-key --seat lead --name PIPER_SEAT_OPENAI_KEY
 
 ## Step F0 (before Step F's connect): create the second seat account on beta
 
-**Owner: Lead.** **Status: NOT READY.** It waits on one small script, `scripts/seat_account_create.py` (not built; Lead builds it after xian's yes, HOST reads it against the list below). Written by Lead on 11-15 from the record, not from memory.
+**Owner: Lead.** **Status: BUILT, NOT READY.** `scripts/seat_account_create.py` is on main (issue 2389, 2026-11-16). It is not ready for xian until three things are done: HOST has read the script against the five conditions below, CIO's diff has added `seat-github-1` to the account list in `scripts/seat_session.py`, and the exact-command allow is in CIO's batch with Step C's. Until the name is on the list the script refuses it.
 
-**How `web-seed-1386` was actually made (the record, 2026-10-20 omnibus, 18:44 to 18:49):** xian minted beta invite codes himself and stored them in files; Web then signed the account up through beta's own setup page in its browser, with one of those codes, and wrote the account's file under `~/.piper-shared`. No seed command and no database insert. Lead did not create it. Not verified by Lead: which command xian used to mint (the repo's `scripts/mint_prod_invite.sh` is the one written for it), and what Web's session read to do it. That path can't be repeated as it was: a seat now reads neither an invite file nor a password file, which is the rule ADR-084 keeps.
+**How `web-seed-1386` was actually made (the record, 2026-10-20 omnibus, 18:44 to 18:49):** xian minted beta invite codes himself and stored them in files; Web then signed the account up through beta's own setup page in its browser, with one of those codes, and wrote the account's file under `~/.piper-shared`. No seed command and no database insert. That path can't be repeated as it was: a seat now reads neither an invite file nor a password file, which is the rule ADR-084 keeps.
 
-**The path for the second account, once the script exists** (the sign-up route is the same one a tester uses, `POST /api/v1/setup/create-user`: username, email, password twice, invite code):
+**The route (ruled 2026-11-16: HOST, CIO, Arch, PPM and Exec each said yes to it; the earlier one-command version, where the script minted the code itself, is dropped):** xian mints one invite code and leaves it, with the account's email, in a file a seat cannot read. A seat then runs the script. The sign-up call is the one a tester's browser makes, `POST /api/v1/setup/create-user`.
 
+**xian's part, once, in a sitting he already has:**
+
+- Mint one invite code on beta, as he does for a tester.
 - **Where:** Terminal, in `~/Development/piper-morgan-product`, on main.
-- **Paste, one line** (Exec, 11-15 late evening: one command per row where it can be; this one can):
+- **Paste, one line:**
 
   ```
-  scripts/seat_account_create.py --account <second-seat-account-name>
+  scripts/seat_account_create.py --account seat-github-1 --write-invite
   ```
 
-  It runs `scripts/mint_prod_invite.sh --apply` itself (your own Fly sign-in, as when you mint by hand), takes the one invite code from that script's output without printing it, makes a password, signs the account up on beta, and writes the account's file. Nothing is typed or pasted besides the line. It stops at the first failure and says which step failed.
-- **You should see:** `created <second-seat-account-name> on beta`, the path of the account's file, `mode 0600`, and `password copied to the clipboard for Step F; it clears in 60 seconds`. No password, no invite code and no cookie on screen.
-- **Seat check (HOST, from xian's screen or the atlas, until `seat_session.py` exists):** the account's own Account page shows no admin marking, no provider key and no connected service. Lead's check from source: the script's fixed list holds this account name and no other new one.
-- **If it fails:**
-  - `the mint step failed`: nothing was minted or created; the line it prints is the mint script's own. Tell Exec.
-  - `invite code not accepted`: beta refused the code the script had just minted. Nothing was created; run the line again (it mints a fresh one) and tell Exec that one code was left unused, so it can be burned.
-  - `that username or email is taken`: nothing was created; tell Exec, and Lead picks another name in the script's list.
-  - anything else: stop and tell Exec. An account that was created but whose file wasn't written is unusable by design; it gets a password reset, never a guess.
+  It asks for the invite code at a hidden prompt, then for the email address the account should have. Nothing typed is echoed, printed, or put on the command line. It writes `~/.piper-shared/seat-github-1-invite-token.txt` at mode 0600 and refuses to run without a terminal, so a seat cannot use it.
+- **You should see:** `seat-github-1 invite file written`.
+- The email must be one xian controls, since a password reset goes there. It is his to name, and it appears nowhere in this repo or in mail.
 
-**What the script will hold (for HOST's read when it is built):** a fixed list of allowed account names and one fixed host in code; the invite code only from the mint script's output, held in memory, never printed, never an argument or the environment; the password from the operating system's random source, written only to the file and the clipboard; output limited to the lines above; a test that searches its output for the password and the code on a forced failure; it refuses to run without a terminal.
+**The seat's part (Lead, under the one exact-command allow):** `scripts/seat_account_create.py --account seat-github-1`. It prints `seat-github-1 created` or a fixed refusal reason, and nothing else.
 
-**Unverified until the script is built and run once:** that `mint_prod_invite.sh --apply` still mints and prints one code on beta as it stands today (its header says so; Lead has not run it, since it runs inside the production app), and the email address the account takes (it must be one xian controls, since password reset goes there; xian's to name).
+**What the script does, and HOST's five conditions (mail of 2026-11-16 10:41):**
+
+1. **One code, one account, one file.** It refuses an invite file that is missing, readable by others, or without both lines, naming which line is missing and nothing from the file. It deletes the invite file only after the host has answered that the account exists.
+2. **A fixed account list and one fixed host, in code.** The list is `ACCOUNTS` in `scripts/seat_session.py`; there is no host option. It also refuses an account whose credential file already exists.
+3. **No value is printed:** not the code, the email, the password, a response body or an error's own text. The password is generated in the process and goes only to `seat-github-1-credentials.txt` (mode 0600, lines `username:` and `password:`), which is written only after the account exists.
+4. **The email never touches mail or this repo.**
+5. **Custody row** (HOST's): account name, date, who minted, no values.
+
+It sets no flag, stores no provider key and keeps no cookie from the reply.
+
+**If it fails:**
+
+- `the host refused the sign-up (400)`: the name or email is taken, or the code is wrong or used. Nothing was created and the invite file is kept. Tell Exec.
+- `the host refused the sign-up (422)`: a field is not in a form the host accepts, most likely the email. Nothing was created; the invite file is kept.
+- `the sign-up did not complete and the account does not sign in`: the host gave no readable answer. The script then tried to sign in with the password it had just made, and that failed too. The invite file is kept; the code may or may not be spent. Tell Exec before running it again.
+- `the account was created but its credential file could not be written`: the code is spent and the account needs a password reset, never a guess.
+
+**Standing access that removes the hand step (ADR-084 D6):** the exact-command allow. xian's remaining part is minting one code and the one line above.
+
+**For Step F:** xian signs in as this account on beta to make the GitHub connect clicks. The password is in the account's file, which is his own file to open; no seat reads it.
+
+**Unverified until the first real run:** that beta accepts the sign-up as written (the route and its fields are read from source; the 22 unit tests use a stand-in host), and that an account whose setup wizard was never finished reads cleanly through `seat_session.py`.
 
 What the row must hold, whatever the path:
-- The account is created on beta by xian's hand (a sign-up with an invite code he mints, or a seed command he runs). An invite code is spent at account creation, so it is one mint for this one account.
+- The account is created on beta with an invite code xian mints. An invite code is spent at account creation, so it is one mint for this one account.
 - Its password is generated, used nowhere else, and written straight into the account's file under `~/.piper-shared` (a name the existing Read denies match, mode 0600) by the same step that creates the account. xian types it at beta's login page in Step F; no seat reads it. `seat_session.py` (Step C) reads it later.
 - No admin flag, no `ops_reader`, no provider key of a real person.
 - HOST reads what the account holds from its account page before first use (HOST's bound B4).
