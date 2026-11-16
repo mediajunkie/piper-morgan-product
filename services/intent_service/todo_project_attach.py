@@ -32,6 +32,9 @@ from typing import Any, Dict, List, Optional
 
 import structlog
 
+# One rendering of a project's stored creation date for both picks (Arch 11-14).
+from services.intent_service.project_archive_pick import created_label
+
 logger = structlog.get_logger(__name__)
 
 ROUTER_PROJECT_ARG = "project"
@@ -169,16 +172,6 @@ def router_project_name(intent: Any) -> Optional[str]:
     return name
 
 
-def _created_label(project: Any) -> str:
-    # The same rendering as project_archive_pick.created_label on main (Arch
-    # 11-14: at the merge, import that one so the two picks can't drift).
-    created = getattr(project, "created_at", None)
-    try:
-        return f"{created.day} {created.strftime('%b')}" if created is not None else ""
-    except (AttributeError, ValueError):
-        return ""
-
-
 def exact_matches(projects: List[Any], name: str) -> List[ProjectRef]:
     """The projects whose whole stored name equals ``name``, case-insensitively, in
     the order given."""
@@ -186,7 +179,7 @@ def exact_matches(projects: List[Any], name: str) -> List[ProjectRef]:
     if not key:
         return []
     return [
-        ProjectRef(id=str(p.id), name=str(p.name), created=_created_label(p))
+        ProjectRef(id=str(p.id), name=str(p.name), created=created_label(p))
         for p in projects or []
         if _key(getattr(p, "name", None)) == key
     ]
@@ -207,7 +200,7 @@ async def _owned_active_project(project_id: str, user_id: str) -> Optional[Proje
     for project in await _active_projects(user_id):
         if str(project.id) == str(project_id):
             return ProjectRef(
-                id=str(project.id), name=str(project.name), created=_created_label(project)
+                id=str(project.id), name=str(project.name), created=created_label(project)
             )
     return None
 
