@@ -18,7 +18,8 @@ A seat checks that the key reached its session with no file read at all:
 
     scripts/seat_settings_grant.py check-env --name PIPER_SEAT_ANTHROPIC_KEY
 
-Nothing here removes or loosens a deny. ``add-allow`` adds one exact rule and refuses a wildcard.
+Nothing here removes or loosens a deny. ``add-allow`` adds one exact ``Bash(...)`` rule and refuses a
+wildcard or any other tool. ``check-env`` reads ``PIPER_SEAT_`` names only.
 
 Owner:   CIO
 Review:  2026-12-29 (with the methodology audit), or when ADR-084 is accepted or dropped
@@ -111,9 +112,9 @@ def remove_key(data: dict, name: str) -> bool:
 
 
 def add_allow(data: dict, rule: str) -> bool:
-    if not re.match(r"^[A-Za-z]+\(.+\)$", rule):
+    if not re.match(r"^Bash\(.+\)$", rule):
         raise SystemExit(
-            "a rule looks like Tool(exact text), for example Bash(scripts/foo.py --account bar)"
+            "this script adds exact Bash(command) allows only, for example Bash(scripts/foo.py --account bar); any other grant is a hand edit by xian"
         )
     if "*" in rule:
         raise SystemExit("this script adds exact rules only; a rule with * in it is refused")
@@ -158,6 +159,12 @@ def main(argv: list[str] | None = None) -> int:
     args = parser.parse_args(argv)
 
     if args.cmd == "check-env":
+        if not NAME_RE.match(args.name):
+            # Arch, 2026-11-15: a fingerprint of anything else is not this tool's business, and for
+            # a short or guessable value it would let someone test guesses.
+            raise SystemExit(
+                f"{args.name!r} is not a PIPER_SEAT_ name; check-env reads seat keys only"
+            )
         value = os.environ.get(args.name, "")
         print(f"{args.name}: {'set, ' + fingerprint(value) if value else 'UNSET in this session'}")
         return 0 if value else 1

@@ -28,12 +28,15 @@ What the ADR requires of this row (D2): the seat's own `.claude/settings.local.j
 Depends on xian's answer to one question: does anything he runs still use the older `lead-scoring-2026-10` key? If not, he revokes it and `lead-scoring` is the seat workspace. If so, the seat key needs its own workspace and a new key.
 
 - **Before you start:** you need the key's value. A provider shows a key once, when it is made. If you no longer have the value of `seat-screens-2026-11`, make a new key in the seat workspace on the Anthropic console and revoke the old one there.
-- **Where:** Terminal on this Mac.
+- **When:** while Lead's session is idle (not mid-fire). Claude Code writes this same file itself when a permission is saved from a prompt, and whether a running session can write it back without the new entry is untested (Arch, 11-15).
+- **Where:** Terminal on this Mac, in any checkout that is at main. Your own is fine after its usual sync. The script finds the seat's settings by absolute path, so it doesn't need to run from a seat's folder, and nothing here changes a seat's folder.
 - **Paste**, one line at a time:
 
 ```
-cd ~/Development/piper-morgan-worktrees/cio && git fetch origin main && git merge --ff-only origin/main
+cd ~/Development/piper-morgan-product && ls scripts/seat_settings_grant.py
 ```
+
+  This should print `scripts/seat_settings_grant.py`. If it says "No such file or directory", that checkout is behind main: stop and tell Exec. A seat brings it up to date with `scripts/sync-pm-local.sh`, which never touches your uncommitted edits.
 
 ```
 scripts/seat_settings_grant.py add-key --seat lead --name PIPER_SEAT_ANTHROPIC_KEY
@@ -65,6 +68,7 @@ scripts/seat_settings_grant.py check-env --name PIPER_SEAT_ANTHROPIC_KEY
 - **If it fails:**
   - The script prints one line and changes nothing if the settings file isn't valid JSON, the value is empty or has a space in it, or the name isn't a `PIPER_SEAT_` name. Fix that and run the line again.
   - **If Lead's check says `UNSET in this session`:** the session started before the key was there. Restart the Lead session once. Whether a running session picks up a new settings variable is the one thing nobody has tested.
+  - **After any restart of the Lead session, check the entry survived:** `scripts/seat_settings_grant.py show --seat lead` should still list `env: PIPER_SEAT_ANTHROPIC_KEY` with the same fingerprint, mode `0o600` and `self-deny present: True`. If the entry is gone, run the `add-key` line again and tell Exec, because that means the session rewrote the file.
   - If Lead's fingerprint differs from yours, the wrong value was pasted. Run the same line again; it replaces the value.
   - To take the key back out: `scripts/seat_settings_grant.py remove-key --seat lead --name PIPER_SEAT_ANTHROPIC_KEY`. Revoking it on the console ends every copy, including any in a backup.
 
@@ -90,7 +94,7 @@ What the ADR requires (D3): one exact-command allow per seeded account name, add
 
 The step's shape, so only the command text is missing (CIO, 2026-11-15):
 
-- **Where:** Terminal, in `~/Development/piper-morgan-worktrees/cio`.
+- **Where:** Terminal, in a checkout at main, as in Step A.
 - **Paste:** one line per account name, per seat (Web first):
 
 ```
@@ -121,8 +125,15 @@ The order of what it waits on (CIO, 2026-11-15):
 
 **Owner: CIO (settings half written 2026-11-15); the provider half is HOST's to write.** Unblocks #2364's OpenAI half with no count read. Variable name: `PIPER_SEAT_OPENAI_KEY`. The project's own spend limit is the bound.
 
-- **Provider half (HOST to write):** where on OpenAI's site to make one project key whose monthly budget is the seat budget, and what the custody row records. I have not read those pages.
-- **Where (settings half):** Terminal, in `~/Development/piper-morgan-worktrees/cio`.
+- **Provider half (HOST, written 2026-11-15 from OpenAI's spend-limits guide at developers.openai.com/api/docs/guides/spend-limits and a search result; I could not open OpenAI's help pages, so every menu name below is unverified until xian sees it):**
+  1. On platform.openai.com make a **new project** just for seats, named for the seat budget (for example `seat-screens`). Do not reuse a project anything of yours runs on: the limit must be the seat budget and nothing else may spend in it.
+  2. In that project's **Limits** (spend) settings set the **monthly spend limit to the seat budget** and **turn on "Enforce a hard limit"**. The guide says a spend *alert* only notifies and traffic continues, while a *hard limit* makes requests return `429`. **Look at the page and confirm the hard-limit switch exists and is on.** Community posts say project limits were once notification-only. If you cannot find the hard-limit switch, stop and tell Exec: then the cap is not a bound. The fallback bound is the account's **prepaid credit balance with auto-recharge off**, funded only to the seat budget (check your billing page shows prepaid credits).
+  3. In the project's **API keys**, create one key. If the dialog offers **Restricted** permissions, restrict it to what the screens call (chat/responses and batch endpoints); if you cannot tell which, leave the default, since the project limit is the bound, not the key's scope.
+  4. The key is shown **once**. Copy it only into the hidden prompt in the next step (never into a chat, mail, note or file).
+  - **You should see:** the project's Limits page showing the monthly figure and the hard-limit setting on; the API keys list showing one key in that project.
+  - **Custody row records** (no value): provider, project name, monthly limit and whether enforced, date created, seats holding it, review date a month out.
+  - **If you cannot find the hard-limit switch, or the project cannot be capped:** do not create the key. Tell Exec; the OpenAI half of #2364 waits.
+- **Where (settings half):** Terminal, in a checkout at main, as in Step A, and while Lead's session is idle.
 - **Paste:**
 
 ```
@@ -137,7 +148,37 @@ scripts/seat_settings_grant.py add-key --seat lead --name PIPER_SEAT_OPENAI_KEY
 
 ## Step F0 (before Step F's connect): create the second seat account on beta
 
-**Owner: Lead. To write.** Named by Arch on 11-15 in answer to HOST's question in Step F. Lead knows how `web-seed-1386` was created; I could not find that path in source on main, so it is unverified by me and Lead writes it from what was actually done.
+**Owner: Lead.** **Status: NOT READY.** It waits on one small script, `scripts/seat_account_create.py` (not built; Lead builds it after xian's yes, HOST reads it against the list below). Written by Lead on 11-15 from the record, not from memory.
+
+**How `web-seed-1386` was actually made (the record, 2026-10-20 omnibus, 18:44 to 18:49):** xian minted beta invite codes himself and stored them in files; Web then signed the account up through beta's own setup page in its browser, with one of those codes, and wrote the account's file under `~/.piper-shared`. No seed command and no database insert. Lead did not create it. Not verified by Lead: which command xian used to mint (the repo's `scripts/mint_prod_invite.sh` is the one written for it), and what Web's session read to do it. That path can't be repeated as it was: a seat now reads neither an invite file nor a password file, which is the rule ADR-084 keeps.
+
+**The path for the second account, once the script exists** (the sign-up route is the same one a tester uses, `POST /api/v1/setup/create-user`: username, email, password twice, invite code):
+
+- **Where:** Terminal, in `~/Development/piper-morgan-product`, on main.
+- **Paste, two lines, one at a time.** The first mints one invite code on beta and prints it in your Terminal only:
+
+  ```
+  scripts/mint_prod_invite.sh --apply
+  ```
+
+  (Without `--apply` it is a dry run that mints nothing. With it, it mints exactly one.)
+
+  The second creates the account. It asks for the invite code at a hidden prompt (paste the code from the line above), makes a password itself, signs the account up on beta, and writes the account's file:
+
+  ```
+  scripts/seat_account_create.py --account <second-seat-account-name>
+  ```
+
+- **You should see:** `created <second-seat-account-name> on beta`, the path of the account's file, `mode 0600`, and `password copied to the clipboard for Step F; it clears in 60 seconds`. No password, no invite code and no cookie on screen.
+- **Seat check (HOST, from xian's screen or the atlas, until `seat_session.py` exists):** the account's own Account page shows no admin marking, no provider key and no connected service. Lead's check from source: the script's fixed list holds this account name and no other new one.
+- **If it fails:**
+  - `invite code not accepted`: the code was already spent or mistyped. Mint one more and run the second line again. Nothing was created.
+  - `that username or email is taken`: nothing was created; tell Exec, and Lead picks another name in the script's list.
+  - anything else: stop and tell Exec. An account that was created but whose file wasn't written is unusable by design; it gets a password reset, never a guess.
+
+**What the script will hold (for HOST's read when it is built):** a fixed list of allowed account names and one fixed host in code; the invite code only from a hidden prompt, never an argument or the environment; the password from the operating system's random source, written only to the file and the clipboard; output limited to the lines above; a test that searches its output for the password and the code on a forced failure; it refuses to run without a terminal.
+
+**Unverified until the script is built and run once:** that `mint_prod_invite.sh --apply` still mints and prints one code on beta as it stands today (its header says so; Lead has not run it, since it runs inside the production app), and the email address the account takes (it must be one xian controls, since password reset goes there; xian's to name).
 
 What the row must hold, whatever the path:
 - The account is created on beta by xian's hand (a sign-up with an invite code he mints, or a seed command he runs). An invite code is spent at account creation, so it is one mint for this one account.
@@ -214,8 +255,8 @@ What the row must hold, whatever the path:
 1. **Create the environment.** github.com/mediajunkie/piper-morgan-product, Settings, Environments, **New environment**, name `<environment-name from #2384>`. Under **Deployment branches and tags** choose **Selected branches and tags**, add **main**. (This is what stops a branch pushed with an edited workflow from reading the secret.)
    - **You should see:** the environment page showing the branch rule "main".
 2. **Create the token and copy it without showing it.** In Terminal, any folder:
-   `fly tokens create deploy -a piper-morgan-mcp -x <lifetime> | pbcopy`
-   *(exact command and expiry flag: Lead confirms before this goes on the card; HOST has not run it.)* It must name the app `piper-morgan-mcp` and **no other app, never an organization-wide token.** The token goes to your clipboard and nothing prints.
+   `fly tokens create deploy -a piper-morgan-mcp -x 2160h -n seat-mcp-deploy | pbcopy`
+   *(Line read against Fly's docs by Lead 11-15 22:24: `-a` app, `-x` expiry as a duration, `-n` name; the default expiry is 20 years, so keep `-x`. 2160h is 90 days and the name is a suggestion, yours to set. Not run by any seat. Fly's pages do not say whether a deploy token can run commands inside the app or set its secrets, so treat it as full control of `piper-morgan-mcp`: the workflow text on main and the `main`-only environment are the bound, not the token. If the command prints anything besides the token into the pipe, the stored value would be wrong, so after storing it look at the Actions run, not at the value.)* It must name the app `piper-morgan-mcp` and **no other app, never an organization-wide token.** The token goes to your clipboard and nothing prints.
 3. **Store it.** On the environment page, **Add environment secret**, name `<secret-name from #2384>`, paste, save. Then clear the clipboard: `pbcopy < /dev/null`.
    - **You should see:** the secret's name listed, "Updated now". The value is never shown again.
 4. **Tell Exec the date and the expiry** you chose (HOST's custody row takes both; no value).
@@ -267,13 +308,27 @@ rm .env
 
 ---
 
-## Arch's read of the rows so far (2026-11-15, after Steps F, G and H came in)
+## Arch's read of the whole file (2026-11-15 22:22)
 
-- **Steps F, G and H match ADR-084** (D3's two bounds on the identity, the connect-then-install order with PA's read between, the `main`-only environment for the token). No change asked.
-- **Step G part 1 and Step H use `fly` commands in xian's own Terminal.** That is by design: production writes and Fly tokens stay his, and no seat runs `fly`.
-- **Step F step 4 has xian type the second seat account's password at beta's login page.** So that password has to exist somewhere he can read it once and the helper can read it later. Step F0 says where.
-- **Still to write:** CIO's Steps A, C, D, E and I; Lead's Step F0. Steps C, D and H stay NOT READY until `seat_session.py`, Pard's plist and #2384 exist.
-- **Not yet read by me:** anything written after this note. I read the whole file again when CIO's and Lead's rows are in.
+Read in full: Steps A to J and `scripts/seat_settings_grant.py` (193 lines). Steps F, G, H and I match ADR-084 with no change asked. The findings below are on Step A and the tool; CIO owns both.
+
+**Two changes to the tool before it goes on xian's card (asked of CIO):**
+
+1. **`check-env` must accept only `PIPER_SEAT_` names.** Today it takes any name, so `check-env --name ANTHROPIC_API_KEY` (or any other variable in a seat's session) prints that value's length and the first 8 characters of its hash. For a long random key that tells nobody anything. For a short or guessable value it is a way to test guesses, and it is a fingerprint of something that isn't a seat resource. `add-key` already refuses other names with `NAME_RE`; `check-env` should refuse them the same way, with a test.
+2. **`add-allow` should accept only `Bash(...)` rules.** The ADR's grants are exact-command allows. Today the tool would also add an exact `Read(...)` or `Write(...)` rule. A deny would still beat an allowed Read, but a tool whose job is one kind of grant should refuse the others. Anything else stays a hand edit by xian.
+
+**Two changes to Step A's text:**
+
+3. **Where xian runs it.** The paste starts with `cd` into CIO's worktree and a `--ff-only` merge there. That touches a seat's working folder while its session may be running, and `--ff-only` fails if that branch has anything main doesn't. The script finds the seat's settings by absolute path, so it runs from any up-to-date checkout. Use his own checkout after its usual sync, or say what to do when the merge line refuses.
+4. **Check that the entry survived.** Claude Code itself writes to `settings.local.json` (when a permission is saved from a prompt). Whether a running session can write the file back without the new entry is untested. So: add the key while the Lead session is idle, and after the session restart run `scripts/seat_settings_grant.py show --seat lead` once more. The `env` line and `self-deny present: True` should still be there.
+
+**Read and found sound in the tool:** the value comes only from a hidden prompt and is never an argument; the write is a temp file at 0600 renamed into place, so a failure leaves the old file; nothing removes a deny; a wildcard rule is refused; a broken settings file is left alone.
+
+**Other notes:**
+- Step G part 1 and Step H use `fly` commands in xian's own Terminal. That is by design: production writes and Fly tokens stay his.
+- Step F step 4 has xian type the second seat account's password at beta's login page, so Step F0 says where that password lives.
+- **Still to write:** Lead's Step F0; HOST's provider half of Step E. Steps C, D and H stay NOT READY until `seat_session.py`, Pard's plist and #2384 exist.
+- **Unproven until the first real install** (CIO lists them too): a real key, a live session picking up the variable, and whether Claude Code honours the Read deny as written.
 
 ## Not on this list, by design
 
