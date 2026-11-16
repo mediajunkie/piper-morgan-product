@@ -21,7 +21,7 @@ Usage (26 small model calls on the default tier; say which account pays):
 
     env -u ANTHROPIC_API_KEY -u ANTHROPIC_BASE_URL -u ANTHROPIC_AUTH_TOKEN \\
         -u ANTHROPIC_CUSTOM_HEADERS PIPER_CREDENTIAL_STORE=db \\
-        venv/bin/python scripts/ethics_gate_run_2364.py --provider anthropic
+        venv/bin/python scripts/ethics_gate_run_2364.py --provider anthropic --max-usd 1.00
 
 The key comes from the shared binder (`scripts/dev_key_binding.py`): the environment
 variable named on the command line, else the encrypted database store. It never reads
@@ -200,13 +200,17 @@ def main(argv: Optional[List[str]] = None) -> int:
 if __name__ == "__main__":
     from dev_key_binding import (
         developer_keys_bound,
-        planned_calls_line,
+        pop_max_usd_flag,
         pop_provider_flag,
         providers_from_flag,
     )
 
     _provider = pop_provider_flag(sys.argv)
     _providers = providers_from_flag(_provider)
-    with developer_keys_bound(providers=_providers, require=True):
-        print(planned_calls_line(PLANNED_CALLS, _providers))
+    # #2383: `--max-usd N` is the most this run may spend; the binder refuses without it
+    # and prints the PLANNED and COST lines.
+    _max_usd = pop_max_usd_flag(sys.argv)
+    with developer_keys_bound(
+        providers=_providers, max_usd=_max_usd, planned_calls=PLANNED_CALLS, require=True
+    ):
         sys.exit(main())
