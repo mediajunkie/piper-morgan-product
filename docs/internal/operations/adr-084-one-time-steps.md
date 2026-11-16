@@ -108,7 +108,7 @@ scripts/seat_settings_grant.py check-env --name PIPER_SEAT_ANTHROPIC_KEY
 **Owner: Arch (written). HOST records it.**
 
 - **Where:** beta, signed in as yourself (an admin): `https://beta.pipermorgan.ai/settings/account-flags`. It is also the "Account flags" card on the Settings page.
-- **Paste:** nothing. Type the test account's username, `web-seed-1386`, in the username box and load it. Tick **Operations reader**. Save.
+- **Paste:** nothing; this row is clicks on beta's own page, which no script of ours should make (the flag is set only by an admin's hand, by design). Type the test account's username, `web-seed-1386`, in the username box and load it. Tick **Operations reader**. Save.
 - **You should see:** the page shows the account with "Operations reader" ticked after the save. If it says "No account has exactly that username. Nothing was changed.", the username was mistyped.
 - **Seat check:** NOT READY. A seat can read the counter (`GET /api/v1/admin/floored-actions`, which returns names, sites, days and counts only) once it holds a session as that account, and that needs `seat_session.py` (Step C; its issue is placed on xian's yes). Until then the evidence is the page as you see it. HOST records account, date and set-by from the flag change's evidence line.
 - **If it fails:** nothing else is changed by a failed save. Tell Exec what the page said.
@@ -309,22 +309,14 @@ The form each batch takes, so a sitting is short (CIO, 2026-11-15):
 
 **Owner: Arch (written). Do this only after Step A has served one real run.**
 
-- **Where:** Terminal, in `~/Development/piper-morgan-worktrees/lead`.
-- **Paste**, one line at a time:
+- **Where:** Terminal. The line changes into the lead folder itself, because the stored key and its `.env` live there. Run it while Lead's session is idle.
+- **Paste, one line.** It stops at the first step that fails, so `.env` is deleted only after the key is removed and the list reads back:
 
 ```
-venv/bin/python scripts/local_key_setup.py --remove anthropic
+cd ~/Development/piper-morgan-worktrees/lead && venv/bin/python scripts/local_key_setup.py --remove anthropic && venv/bin/python scripts/local_key_setup.py --list && rm .env
 ```
 
-```
-venv/bin/python scripts/local_key_setup.py --list
-```
-
-```
-rm .env
-```
-
-- **You should see:** after the second line, `stored: none`. The exact wording of the first line's output is unverified here; it should say the Anthropic key was removed. Neither line asks for or prints a key.
+- **You should see:** `anthropic: removed` (or `anthropic: no stored key to remove` if it was already gone), then `stored: none`. Both wordings are read from the script's source. Nothing asks for or prints a key.
 - **Why `.env` can go:** the setup script created it on 11-15 at 18:42 with three values (an encryption key, a sign-in secret and the store flag). Nothing else has used it. If you have put anything else in that file since, tell Exec before deleting it.
 - **Seat check:** Lead re-runs the whole test tree once with tracebacks on and reports whether the six `test_slack_config.py` failures of 11-15 appear.
 - **If it fails:** if `--remove` reports an error, leave `.env` in place (it is the only thing that can read the stored key) and tell Exec what it printed.
