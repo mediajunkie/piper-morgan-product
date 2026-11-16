@@ -128,3 +128,66 @@ def test_unreadable_approval_drops_an_item_but_fails_a_stand_in_build(v, capsys)
 
     v.PATH = _temp_manifest(v, edit_stand_in)
     assert v.main(["--deploy"]) == 1
+
+
+def _scratch_repo(tmp_path):
+    """A small real repository: one approved item, committed, then one more commit on top."""
+    import datetime
+
+    repo = tmp_path / "scratch"
+    repo.mkdir()
+    _git(repo, "init", "-q")
+    (repo / "item.md").write_text("# Title\n\nline one\n")
+    (repo / "derived.md").write_text("# Source\n")
+    _git(repo, "add", "item.md", "derived.md")
+    _git(repo, "commit", "-qm", "approved text")
+    sha = _git(repo, "rev-parse", "HEAD")
+    today = datetime.date.today().isoformat()
+    header = (
+        "id,part,topic,item,derived_from,source_kind,tier,status,last_verified,"
+        "reverify_window_days,owner,voice_pass,approved,notes"
+    )
+    row = f"d-scratch,d,Scratch,item.md,derived.md,doc,1,verified,{today},90,docs,passed,{sha},"
+    (repo / "manifest.csv").write_text(header + "\n" + row + "\n")
+    (repo / "other.md").write_text("later commit\n")
+    _git(repo, "add", "manifest.csv", "other.md")
+    _git(repo, "commit", "-qm", "a later commit")
+    return repo
+
+
+def test_no_history_is_one_loud_error_not_a_drop_per_row(v, tmp_path, capsys, monkeypatch):
+    """Lead and Arch, 11-15: a --depth 1 clone must refuse a deploy with one cause, never index
+    nothing quietly. Built from a real scratch repository, because a stubbed `git show` would
+    not have caught the CI failure of 11-15."""
+    repo = _scratch_repo(tmp_path)
+    full = tmp_path / "full"
+    shallow = tmp_path / "shallow"
+    _git(tmp_path, "clone", "-q", f"file://{repo}", str(full))
+    _git(tmp_path, "clone", "-q", "--depth", "1", f"file://{repo}", str(shallow))
+
+    monkeypatch.chdir(full)
+    assert v.no_history_reason() is None
+    v.PATH = "manifest.csv"
+    assert v.main(["--deploy"]) == 0  # history present: the row is checked and indexed
+    assert "DROP" not in capsys.readouterr().out
+
+    monkeypatch.chdir(shallow)
+    assert "shallow" in v.no_history_reason()
+    assert v.main(["--deploy"]) == 1
+    out = capsys.readouterr().out
+    assert out.count("ERROR") == 1 and "no approval history" in out and "shallow" in out
+    assert "DROP" not in out  # one cause, not one line per row
+
+
+def test_a_tree_with_no_git_directory_is_also_one_error(v, tmp_path, capsys, monkeypatch):
+    repo = _scratch_repo(tmp_path)
+    bare_tree = tmp_path / "image"
+    bare_tree.mkdir()
+    for name in ("item.md", "derived.md", "manifest.csv"):
+        (bare_tree / name).write_text((repo / name).read_text())
+    monkeypatch.chdir(bare_tree)
+    monkeypatch.setenv("GIT_CEILING_DIRECTORIES", str(tmp_path))
+    assert "no git repository" in v.no_history_reason()
+    v.PATH = "manifest.csv"
+    assert v.main(["--deploy"]) == 1
+    assert capsys.readouterr().out.count("ERROR") == 1
