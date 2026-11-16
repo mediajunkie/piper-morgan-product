@@ -24,6 +24,14 @@
 #                                              # pip install at push time); if it isn't
 #                                              # there, mypy is reported UNCHECKED and the
 #                                              # run goes on
+#         scripts/run-push-gates.sh --logs-and-mail
+#                                              # only the three lints that read dated
+#                                              # session logs and mail (the mailbox bearer
+#                                              # lint, which reads file contents, and the
+#                                              # mailbox and Windows filename lints). The
+#                                              # pre-push hook runs this on a remembered
+#                                              # pass (Lead's condition, 2026-11-16): those
+#                                              # paths are outside the pass's key.
 # Exit 0 only when every gate that ran passed. It changes nothing.
 #
 # Layer: the same commands CI runs, on your working tree. It does not run the tests,
@@ -38,10 +46,15 @@ PY="$ROOT/venv/bin/python"
 [ -x "$PY" ] || PY="python3"
 RUN_MYPY=1
 BUILD_MYPY=1
+RUN_RUFF=1
+# Which workflow gate commands to run. --logs-and-mail narrows it to the three lints by name.
+GATE_FILTER='.'
+LOGS_AND_MAIL_RE='scripts/(mailbox_bearer_lint|mailbox_filename_lint|windows_filename_lint)\.py'
 for arg in "$@"; do
   case "$arg" in
     --no-mypy) RUN_MYPY=0 ;;
     --hook) BUILD_MYPY=0 ;;
+    --logs-and-mail) RUN_MYPY=0; RUN_RUFF=0; GATE_FILTER="$LOGS_AND_MAIL_RE" ;;
   esac
 done
 
@@ -51,7 +64,9 @@ unchecked=0
 
 # --- ruff, pinned to CI's version ---
 RUFF="$(scripts/ensure-ruff.sh 2>/dev/null || true)"
-if [ -n "$RUFF" ] && [ -x "$RUFF" ]; then
+if [ "$RUN_RUFF" -eq 0 ]; then
+  :
+elif [ -n "$RUFF" ] && [ -x "$RUFF" ]; then
   for ruff_cmd in "format --check ." "check ."; do
     ran=$((ran + 1))
     # shellcheck disable=SC2086
@@ -79,11 +94,16 @@ while IFS= read -r line; do
     tail -12 /tmp/run-push-gates.$$.out | sed 's/^/      /'
     failed=$((failed + 1))
   fi
-done < <(grep -E '^[[:space:]]+python scripts/[A-Za-z0-9_./-]+\.py' .github/workflows/lint.yml)
+done < <(grep -E '^[[:space:]]+python scripts/[A-Za-z0-9_./-]+\.py' .github/workflows/lint.yml | grep -E "$GATE_FILTER")
 rm -f /tmp/run-push-gates.$$.out
 
 if [ "$ran" -eq 0 ]; then
   echo "FAIL  no gate commands found in .github/workflows/lint.yml (this script needs updating)"
+  failed=$((failed + 1))
+fi
+# The narrowed run must find all three by name. A renamed lint would otherwise pass as "0 failed".
+if [ "$GATE_FILTER" != "." ] && [ "$ran" -ne 3 ]; then
+  echo "FAIL  --logs-and-mail expected 3 lints in .github/workflows/lint.yml and found $ran"
   failed=$((failed + 1))
 fi
 
