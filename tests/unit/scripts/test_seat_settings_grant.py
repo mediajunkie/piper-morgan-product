@@ -222,3 +222,20 @@ def test_fleet_deny_keeps_an_existing_deny_and_refuses_a_missing_or_broken_file(
     with pytest.raises(SystemExit):
         mod.main(["fleet-deny", "--shared-settings", str(shared)])
     assert shared.read_text() == "{ not json"
+
+
+def test_fleet_deny_keeps_the_file_as_it_was_beside_it(tmp_path, capsys):
+    mod = _load()
+    shared = tmp_path / "settings.json"
+    original = json.dumps({"env": {"FLY_NO_UPDATE_CHECK": "1"}}, indent=4) + "\n"
+    shared.write_text(original)
+    assert mod.main(["fleet-deny", "--shared-settings", str(shared)]) == 0
+    backup = tmp_path / "settings.json.before-fleet-deny"
+    assert backup.read_text() == original  # byte for byte, so the undo is one mv
+    out = capsys.readouterr().out
+    assert str(backup) in out and "to undo: mv" in out
+    # a second run changes nothing and does not replace the first copy
+    backup_before = backup.read_text()
+    assert mod.main(["fleet-deny", "--shared-settings", str(shared)]) == 0
+    assert backup.read_text() == backup_before
+    assert "to undo" not in capsys.readouterr().out

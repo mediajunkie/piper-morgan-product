@@ -42,7 +42,7 @@ cd ~/Development/piper-morgan-product && ls scripts/seat_settings_grant.py
 scripts/seat_settings_grant.py fleet-deny
 ```
 
-  This adds two Read denies to the one settings file every PM seat shares (`~/.claude-pm/settings.json`): one for any seat's `settings.local.json`, one for any `.env` in the worktrees folder. It prints `added 2 deny rule(s)` and changes nothing else in that file. Why: a seat's own deny doesn't stop another seat's Read tool (CIO's probe, 11-15), and Arch ruled the gap closed by a rule.
+  This adds two Read denies to the one settings file every PM seat shares (`~/.claude-pm/settings.json`): one for any seat's `settings.local.json`, one for any `.env` in the worktrees folder. It prints `added 2 deny rule(s)` and changes nothing else in that file. Before it writes, it keeps the file as it was at `~/.claude-pm/settings.json.before-fleet-deny` and prints that path with the one line that undoes the change. Why: a seat's own deny doesn't stop another seat's Read tool (CIO's probe, 11-15), and Arch ruled the gap closed by a rule.
 
 ```
 scripts/seat_settings_grant.py prepare --seat lead
@@ -85,6 +85,7 @@ scripts/seat_settings_grant.py check-env --name PIPER_SEAT_ANTHROPIC_KEY
   It should print the same length and the same 8 characters. Lead's first run is then the real test (arm B, or the #2364 gate on the condition above), with `ANTHROPIC_API_KEY="$PIPER_SEAT_ANTHROPIC_KEY"` after the `env -u` flags and `PIPER_CREDENTIAL_STORE=db`. At that run Lead confirms the child process saw the value (length and hash) and that no value reached any output.
 
 - **If it fails:**
+  - **If any seat's session misbehaves after `fleet-deny`** (this is the first command of ours that rewrites the file every seat depends on): put the file back with the line the command printed, `mv ~/.claude-pm/settings.json.before-fleet-deny ~/.claude-pm/settings.json`, and tell Exec (Arch, 11-15).
   - The script prints one line and changes nothing if the settings file isn't valid JSON, the value is empty or has a space in it, or the name isn't a `PIPER_SEAT_` name. Fix that and run the line again.
   - **If Lead's check says `UNSET in this session`:** the session started before the key was there. Restart the Lead session once. Whether a running session picks up a new settings variable is the one thing nobody has tested.
   - **After any restart of the Lead session, check the entry survived:** `scripts/seat_settings_grant.py show --seat lead` should still list `env: PIPER_SEAT_ANTHROPIC_KEY` with the same fingerprint, mode `0o600` and `self-deny present: True`. If the entry is gone, run the `add-key` line again and tell Exec, because that means the session rewrote the file.
@@ -92,7 +93,7 @@ scripts/seat_settings_grant.py check-env --name PIPER_SEAT_ANTHROPIC_KEY
   - To take the key back out: `scripts/seat_settings_grant.py remove-key --seat lead --name PIPER_SEAT_ANTHROPIC_KEY`. Revoking it on the console ends every copy, including any in a backup.
 
 - **Another seat later** (CIO, PA, Docs): the same line with that seat's name. A seat gets the key only when it names a run.
-- **Tested how:** `tests/unit/scripts/test_seat_settings_grant.py`, 18 cases on a dummy value: the value never appears in any output, the file ends at mode 0600, existing rules are kept, a deny is never removed, a broken file is left alone, `check-env` and `add-allow` refuse anything but seat keys and exact `Bash(...)` rules. **Not tested:** a real key and a live session.
+- **Tested how:** `tests/unit/scripts/test_seat_settings_grant.py`, 19 cases on a dummy value: the value never appears in any output, the file ends at mode 0600, existing rules are kept, a deny is never removed, a broken file is left alone, `check-env` and `add-allow` refuse anything but seat keys and exact `Bash(...)` rules. **Not tested:** a real key and a live session.
 - **What the Read deny does and doesn't cover** (CIO's probe, 11-15 22:38, dummy files only):
   - A deny of the form `Read(**/name)` **is honoured inside the seat's own worktree.** With the fleet's existing `Read(**/.env)`, my Read of a dummy `.env` in my worktree was refused ("File is in a directory that is denied by your permission settings").
   - The same deny **did not stop a Read of a dummy `.env` outside the worktree.** So the deny this step adds keeps Lead's Read tool out of Lead's own settings file. It does not stop another seat's Read tool from opening that file by its full path. For that case the limits are the classifier and the key's cap, which is why this step now adds a second deny that names the path from the home folder, in the settings file all seats share (`fleet-deny`, Arch's ruling 01M7HHQGFK). **That home-path form is untested** until the two Reads above.
