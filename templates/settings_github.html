@@ -488,8 +488,11 @@
       </div>
 
       <!-- Repository Selection Card (Issue #573) -->
+      {# #2375: #repositories is where the Integrations card and the Settings index
+         send a person. The card is hidden until the status loads, so the browser's
+         own jump finds nothing; updateStatusUI scrolls to it once it is shown. #}
       <div class="repository-selection-card" id="repository-selection-card" style="display: none;">
-        <h3>📦 Repository Selection</h3>
+        <h3 id="repositories">📦 Repository Selection</h3>
         <p class="description">
           Choose which GitHub repositories Piper can access. Selected repositories will be used for issue tracking and code reference.
         </p>
@@ -622,6 +625,8 @@
         await checkGitHubOAuthStatus();
       }
 
+      let scrolledToRepositories = false;  // #2375
+
       function updateStatusUI(data) {
         const iconEl = document.getElementById('status-icon');
         const titleEl = document.getElementById('status-title');
@@ -659,6 +664,11 @@
           // Show repository selection card and load repositories (Issue #573)
           repoCardEl.style.display = 'block';
           loadRepositoryList();
+          if (window.location.hash === '#repositories' && !scrolledToRepositories) {
+            // #2375: once, so a later status refresh doesn't pull the page back.
+            scrolledToRepositories = true;
+            repoCardEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          }
         } else if (data.configured && !data.valid) {
           // Configured but invalid (stuck state - Issue #541)
           iconEl.className = 'status-icon disconnected';
