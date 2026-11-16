@@ -1033,6 +1033,18 @@
             note.id = 'github-app-list-note';
             note.textContent = data.note;
             listEl.appendChild(note);
+            if (data.install_url) {
+              // #2375 (CXO 2026-11-15): with something installed, a visible way to
+              // GitHub's install page. The link is used only as an href.
+              const add = document.createElement('a');
+              add.className = 'btn btn-secondary';
+              add.id = 'github-app-add-repository-link';
+              add.href = data.install_url;
+              add.target = '_blank';
+              add.rel = 'noopener';
+              add.textContent = 'Add another repository';
+              listEl.appendChild(add);
+            }
           }
           if (wasNotInstalled && !prefsLoadFailed) {
             // Only undo what the not-installed state itself disabled.
