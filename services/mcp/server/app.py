@@ -361,6 +361,14 @@ def build_mcp_server() -> FastMCP:
         auth=_auth_settings(),
         token_verifier=MCPTokenVerifier(),
         transport_security=_transport_security(),
+        # #2382 (Arch's ruling, 2026-11-15): stateless streamable HTTP. The SDK's
+        # default keeps each client's Mcp-Session-Id in process memory, so the first
+        # request after a new process (a deploy, a machine restart) carried a session
+        # the server no longer knew and the connector showed "Connection closed".
+        # This server keeps no per-session state: every read authenticates by bearer
+        # per request. A feature that needs session state (subscriptions, server
+        # notifications, sampling) reopens that ruling; it does not flip this flag.
+        stateless_http=True,
     )
     register_resources(mcp)
     register_tools(mcp)
