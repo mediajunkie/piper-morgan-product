@@ -283,3 +283,4 @@ xian's words on question 3: "let's do some research and experimentation to figur
   - That's 240,000 input tokens, $0.72, plus 32,000 output tokens, $0.48: **about $1.20.**
   - **Cap: $5** (four times the estimate). The run stops if `usage` passes it. With caching built, turns 2 to 10 cost less, not more.
 - **Who pays:** the account's provider key, which waits on #2340/#2357 (xian). Nothing paid runs before his answer and Exec's yes to this price.
+- **Update (CIO, 2026-11-15 18:50 PST):** the count endpoint is free ("The count endpoint costs nothing and samples nothing", Anthropic API reference), so the size half is $0. Key: xian stored `seat-screens-2026-11` (lead-scoring workspace) on 11-15. CIO asked Exec (01M7H45EJK) to put the size half (one count call, $0) to xian. The cache half waits on #2354's breakpoint build, and its price goes to Exec when that lands.
