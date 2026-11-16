@@ -145,3 +145,40 @@ def test_an_unknown_seat_is_refused(tmp_path):
     mod = _load()
     with pytest.raises(SystemExit):
         mod.main(["--root", str(tmp_path), "show", "--seat", "nobody"])
+
+
+def test_check_env_refuses_a_name_that_is_not_a_seat_key(monkeypatch, capsys):
+    mod = _load()
+    monkeypatch.setenv("ANTHROPIC_API_KEY", DUMMY)
+    with pytest.raises(SystemExit):
+        mod.main(["check-env", "--name", "ANTHROPIC_API_KEY"])
+    out = capsys.readouterr()
+    assert "sha256" not in out.out and "sha256" not in out.err
+
+
+@pytest.mark.parametrize(
+    "rule",
+    ["Read(~/.piper-shared/anything.txt)", "Edit(scripts/foo.py)", "WebFetch(domain:example.com)"],
+)
+def test_add_allow_takes_bash_rules_only(seat, rule):
+    mod = _load()
+    root, path = seat
+    before = path.read_text()
+    with pytest.raises(SystemExit):
+        mod.main(["--root", str(root), "add-allow", "--seat", "lead", "--rule", rule])
+    assert path.read_text() == before
+
+
+def test_prepare_adds_the_deny_and_the_mode_with_no_key(seat, capsys):
+    mod = _load()
+    root, path = seat
+    assert mod.main(["--root", str(root), "prepare", "--seat", "lead"]) == 0
+    data = json.loads(path.read_text())
+    assert "env" not in data
+    assert data["permissions"]["deny"] == ["Read(**/.env)", mod.SELF_DENY]
+    assert data["permissions"]["allow"] == ["Bash(git status:*)"]
+    assert stat.S_IMODE(path.stat().st_mode) == 0o600
+    assert "no key was added" in capsys.readouterr().out
+    # running it twice changes nothing
+    assert mod.main(["--root", str(root), "prepare", "--seat", "lead"]) == 0
+    assert json.loads(path.read_text())["permissions"]["deny"].count(mod.SELF_DENY) == 1

@@ -4,6 +4,7 @@
 Run by xian in Terminal, never by a seat (auto mode refuses a seat a settings edit, and that is
 right). It edits one file, the seat's git-ignored ``.claude/settings.local.json``:
 
+    scripts/seat_settings_grant.py prepare   --seat lead
     scripts/seat_settings_grant.py add-key   --seat lead --name PIPER_SEAT_ANTHROPIC_KEY
     scripts/seat_settings_grant.py add-allow --seat web  --rule 'Bash(venv/bin/python scripts/seat_session.py --account seat-plain)'
     scripts/seat_settings_grant.py show      --seat lead
@@ -14,11 +15,18 @@ and never logged; the script prints its length and the first 8 characters of its
 people can agree it is the same key without either seeing it. It then sets the file to mode 0600
 and adds a Read deny for the file to itself, so the seat's Read tool can't open it (ADR-084 D2).
 
+``prepare`` does the mode and the deny with no key, so the seat can try to Read the file and be
+refused before anything real is in it. The deny is honoured for a file inside the seat's own
+worktree (tested 2026-11-15 with a dummy ``.env`` against the fleet's ``Read(**/.env)``); the same
+form did NOT stop a Read of a file outside the worktree, so it does not protect one seat's file
+from another seat.
+
 A seat checks that the key reached its session with no file read at all:
 
     scripts/seat_settings_grant.py check-env --name PIPER_SEAT_ANTHROPIC_KEY
 
-Nothing here removes or loosens a deny. ``add-allow`` adds one exact rule and refuses a wildcard.
+Nothing here removes or loosens a deny. ``add-allow`` adds one exact ``Bash(...)`` rule and refuses a
+wildcard or any other tool. ``check-env`` reads ``PIPER_SEAT_`` names only.
 
 Owner:   CIO
 Review:  2026-12-29 (with the methodology audit), or when ADR-084 is accepted or dropped
@@ -111,9 +119,9 @@ def remove_key(data: dict, name: str) -> bool:
 
 
 def add_allow(data: dict, rule: str) -> bool:
-    if not re.match(r"^[A-Za-z]+\(.+\)$", rule):
+    if not re.match(r"^Bash\(.+\)$", rule):
         raise SystemExit(
-            "a rule looks like Tool(exact text), for example Bash(scripts/foo.py --account bar)"
+            "this script adds exact Bash(command) allows only, for example Bash(scripts/foo.py --account bar); any other grant is a hand edit by xian"
         )
     if "*" in rule:
         raise SystemExit("this script adds exact rules only; a rule with * in it is refused")
@@ -151,20 +159,40 @@ def main(argv: list[str] | None = None) -> int:
     p = sub.add_parser("add-allow")
     p.add_argument("--seat", required=True)
     p.add_argument("--rule", required=True)
-    p = sub.add_parser("show")
-    p.add_argument("--seat", required=True)
+    for cmd in ("show", "prepare"):
+        p = sub.add_parser(cmd)
+        p.add_argument("--seat", required=True)
     p = sub.add_parser("check-env")
     p.add_argument("--name", required=True)
     args = parser.parse_args(argv)
 
     if args.cmd == "check-env":
+        if not NAME_RE.match(args.name):
+            # Arch, 2026-11-15: a fingerprint of anything else is not this tool's business, and for
+            # a short or guessable value it would let someone test guesses.
+            raise SystemExit(
+                f"{args.name!r} is not a PIPER_SEAT_ name; check-env reads seat keys only"
+            )
         value = os.environ.get(args.name, "")
         print(f"{args.name}: {'set, ' + fingerprint(value) if value else 'UNSET in this session'}")
         return 0 if value else 1
 
     path = settings_path(args.seat, args.root)
     data = load(path)
-    if args.cmd == "add-key":
+    if args.cmd == "prepare":
+        # Lead, 2026-11-15: put the deny in place and test it BEFORE any key is in the file, so a
+        # deny that doesn't hold shows nothing real.
+        deny = data.setdefault("permissions", {}).setdefault("deny", [])
+        if SELF_DENY not in deny:
+            deny.append(SELF_DENY)
+        save(path, data)
+        print(
+            f"seat {args.seat}: file set to mode 0600; Read deny for the file is in place; no key was added."
+        )
+        print(
+            "Next: the seat tries to Read this file with its Read tool. It should be refused. Only then run add-key."
+        )
+    elif args.cmd == "add-key":
         value = getpass.getpass(f"{args.name} for seat {args.seat} (input hidden): ")
         save(path, add_key(data, args.name, value))
         print(f"stored {args.name}: {fingerprint(value)}")
