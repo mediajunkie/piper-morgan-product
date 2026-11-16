@@ -50,17 +50,18 @@ scripts/seat_settings_grant.py prepare --seat lead
 
   This puts Lead's own Read deny and the file mode in place with **no key in the file**. It prints `no key was added`.
 
-  **Then wait for two words, both before any key exists** (Lead's order, ruled by Arch and HOST, 11-15):
+  **Then wait for three results, all before any key exists** (Lead's order, ruled by Arch and HOST, 11-15):
   1. Lead tries to open its own settings file with its Read tool. It should be refused.
-  2. One other seat (CIO) tries to open Lead's settings file by its full path with its Read tool. It should be refused.
+  2. One other seat tries to open Lead's settings file by its full path with its Read tool. It should be refused. HOST runs this one (HOST 01M7HJ736R).
+  3. HOST also tries a made-up `.env` by its full path: CIO puts a dummy `.env` holding one made-up line at the top of the CIO worktree for the test and removes it afterwards. It should be refused. The lead folder's real `.env` is never the test file.
 
-  Each logs "refused" or "not refused". The file holds only permission rules at that point, so a Read that succeeds shows nothing secret. **If either is not refused, stop here.** CIO fixes the deny and tells Arch and HOST the result before any key goes in. If a seat's session needs a restart to pick up a new deny, this is where it shows.
+  Each logs "refused" or "not refused". The file holds only permission rules at that point, so a Read that succeeds shows nothing secret. **If any is not refused, stop here.** The key does not go in "because the cap is small" (HOST). CIO fixes the deny and tells Arch and HOST the result before any key goes in. If a seat's session needs a restart to pick up a new deny, this is where it shows.
 
 ```
 scripts/seat_settings_grant.py add-key --seat lead --name PIPER_SEAT_ANTHROPIC_KEY
 ```
 
-  This last line runs only after both refusals. It asks `PIPER_SEAT_ANTHROPIC_KEY for seat lead (input hidden):`. Paste the key there and press Return. Nothing shows as you paste. The key is never part of a command.
+  This last line runs only after all three refusals. It asks `PIPER_SEAT_ANTHROPIC_KEY for seat lead (input hidden):`. Paste the key there and press Return. Nothing shows as you paste. The key is never part of a command.
 
 - **You should see:**
 
