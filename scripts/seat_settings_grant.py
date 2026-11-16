@@ -44,6 +44,7 @@ import hashlib
 import json
 import os
 import re
+import shutil
 import stat
 import sys
 import tempfile
@@ -115,10 +116,14 @@ def fleet_deny(path: Path) -> list[str]:
     deny = data.setdefault("permissions", {}).setdefault("deny", [])
     added = [rule for rule in FLEET_DENIES if rule not in deny]
     if added:
+        # Arch, 2026-11-15: this rewrites the one file every seat's session depends on, so keep the
+        # file as it was beside it. The undo is then one `mv`. An earlier copy is never overwritten:
+        # the first one is the true "before".
+        backup = path.with_name(path.name + ".before-fleet-deny")
+        if not backup.exists():
+            shutil.copy2(path, backup)
         deny.extend(added)
-        save(
-            path, data, mode=stat.S_IMODE(path.stat().st_mode)
-        )  # the shared file keeps its own mode
+        save(path, data, mode=stat.S_IMODE(path.stat().st_mode))  # the shared file keeps its mode
     return added
 
 
@@ -210,6 +215,12 @@ def main(argv: list[str] | None = None) -> int:
     if args.cmd == "fleet-deny":
         added = fleet_deny(args.shared_settings)
         print(f"shared settings: {args.shared_settings}")
+        if added:
+            backup = args.shared_settings.with_name(
+                args.shared_settings.name + ".before-fleet-deny"
+            )
+            print(f"the file as it was is kept at: {backup}")
+            print(f"to undo: mv '{backup}' '{args.shared_settings}'")
         print(
             f"added {len(added)} deny rule(s); {len(FLEET_DENIES) - len(added)} were already there. No allow, env or other rule was changed."
         )
