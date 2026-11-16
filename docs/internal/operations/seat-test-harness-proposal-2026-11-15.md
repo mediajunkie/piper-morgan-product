@@ -2,6 +2,8 @@
 
 **Status:** PROPOSAL, first draft (Exec, 2026-11-15 19:13 PT). Not ruled. Arch owns the mechanism, CIO the harness and permission side, HOST custody. Corrections go to Exec by mail; Arch turns the agreed shape into one ADR.
 
+**Draft 2 (19:24 PT):** section 7 holds the seats' corrections so far. Where section 7 and the text above differ, section 7 wins. Arch writes this up as ADR-084 after CIO's two dummy-value tests and HOST's custody answers.
+
 **Why:** xian, 2026-11-15, in conversation (relayed verbatim in mail 01M7H5DC…): "We need to solve that problem, not assign me manual tasks as a workaround for a poorly conceived solution." and "We keep changing how provider keys are used, how github is used, how piper morgan is used by our agents and it's become a tangled mess that keeps becoming my problem to manually navigate."
 
 ## 1. What went wrong
@@ -95,3 +97,34 @@ Suggested for the design work: Arch and CIO on Fable 5.2 until the ADR lands (xi
 - Any change to what protects xian's own keychain, accounts or console.
 - Any seat running `fly`.
 - A way past a classifier refusal. If a tested grant route is still refused, that route is dropped and another is proposed.
+
+## 7. Corrections merged (draft 2)
+
+From Arch (01M7H5T9…, 01M7H5MF…), HOST (01M7H55B…), Web (01M7H5B9…), CXO (01M7H5PD…), PPM (01M7H5HJ…), Docs (01M7H5JB…) and Comms (01M7H5M8…).
+
+**A. Paid calls**
+- **The bound must be hard (Arch).** A weekly tally in the repo is a reporting line, not a bound. The seat key sits in a workspace whose monthly limit *is* the seat budget, and that workspace holds nothing else. Open with Arch: whether `lead-scoring` can serve as that workspace once the older `lead-scoring-2026-10` key is revoked and the limit is lowered to the budget, so xian makes no further key.
+- **One cap enforcer (Arch).** `developer_keys_bound(providers=..., max_usd=...)` refuses to start without a cap; the spend chokepoint (`services/llm/clients.py`, #1809) adds each response's usage and stops before the cap is passed; batch submits check worst-case cost first. A build item for PPM to place and Lead to build. It is what makes "act, then report" safe.
+- **No binder change for the key source.** The existing command-line source carries it; the shell expands the variable, so the command text never holds the value.
+- **Who gets the key:** only seats that run screens (Lead, CIO, PA). Docs' guide run can use the same seat key in a fresh clone's scratch database, so that run stops needing xian's own key.
+- The 11-11 database route is narrowed to self-hosters, with its defect recorded.
+
+**B. Signed-in use**
+- **Two bounds on the test GitHub identity (Arch):** org base permission "No permission" or a team limited to the test repositories; the App installed on those repositories only.
+- **HOST's conditions for the GitHub-connected account:** a separate throwaway GitHub account preferred over xian's own; a seeded test account, never a tester's; images show no token, email or outside name; every image records sha and time; the connection is ended when the work pauses; no admin and no `ops_reader` on that account.
+- **Open, HOST and Arch against xian's 19:11 ruling:** HOST's condition 2 keeps every sign-in in xian's hand (a seat-driven browser profile he signs into; no seat reads or stores a test password). That is one sitting per account, repeated whenever a session expires. The draft's alternative is a permitted folder of seeded-account credentials. HOST to say which bound it requires now that the ruling is in, and how long a session lasts.
+- **The atlas (#2381):** CXO writes the state matrix per page and reads from the atlas; Web captures; the tracked atlas is a text index (page, state, sha, time, quoted labels, image name); images live in the private repo or a seat-held folder with a name-free pointer here. A navigation tree of record is generated from routes and templates.
+- Connector reads retry once after an MCP deploy until #2382 (stateless MCP server) lands.
+
+**C. Production facts**
+- **An endpoint can't read logs (Arch).** A recurring log fact becomes a counter written where the event is emitted, as the floored counter is; the endpoint reads the counter. Each one is a small build item.
+- **Endpoint rules:** fixed named queries in code; no parameter selecting a user, row or free text; counts, booleans and names from a fixed vocabulary; `ops_reader` checked per request; every read logged. HOST owns each threat model, including whether deployed secret names are listed at all.
+- First three (Arch): active keys by provider, the floored-action counter, the routing-to-floor tally. Comms needs counts for public copy (testers, waiting list, invites used): counts only, no personal detail.
+
+**D. Local runs**
+- One database per seat on the shared Postgres server (`CREATE DATABASE piper_<seat>`), not per-seat containers. Docs' fresh-clone run keeps its own server through a compose override.
+
+**Not access questions, left with xian by design:** syndication to Medium and LinkedIn (his byline, his accounts). Docs can hand him one paste-ready block per post if he wants it lighter.
+
+**Changed already, without waiting:** PPM names on every new acceptance row who can read it, and no longer routes a served read to xian by default.
+
