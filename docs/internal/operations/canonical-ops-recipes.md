@@ -648,19 +648,20 @@ nobody has run it, and nobody should against the shared stack). If a container i
 be made again, that goes to xian through Exec. Once 2386 lands, a seat's own stack sets
 `PIPER_STACK` and its own ports; until then it uses an override as below.
 
-**Five scripts run compose themselves, and no seat runs them on Amber (Lead's list, Arch's ruling
-on issue 2386, 11-16).** Running one breaks the rule above without typing a compose command.
+**One script still runs compose itself, and no seat runs it on Amber (Lead's list, Arch's ruling
+on issue 2386, 11-16).** Running it breaks the rule above without typing a compose command.
 
 | Script | What it does |
 |---|---|
-| `scripts/stop.sh` | `docker-compose down` on the whole stack, and `pkill -f "python main.py"`, which ends every seat's local server |
-| `scripts/db_migrate_to_volume.sh` | `docker-compose down`, then `up -d postgres` |
-| `scripts/start.sh` | the bare `docker-compose up -d`, all seven services |
 | `scripts/alpha-setup.sh` | the bare `docker-compose up -d` |
-| `scripts/run_tests.sh full` (and `coverage`, which runs the full suite) | `docker-compose up -d postgres redis` when `pgrep postgres` finds nothing. On Amber Postgres runs inside Docker, so `pgrep` on the host finds nothing (read 11-16) and this branch is always taken. `smoke`, which the pre-commit hook uses, and `fast` don't start services |
+
+Four others were on this list until 11-16. `scripts/stop.sh`, `scripts/start.sh` and
+`scripts/db_migrate_to_volume.sh` are retired (deleted; no caller). `scripts/run_tests.sh` no
+longer starts services in any mode: it tests the database port (`POSTGRES_PORT`, default 5433) and
+stops with a message when the port is closed. Its `full` and `coverage` modes still run the whole
+tree with coverage, which is slow; that is a cost, not a hazard to the shared stack.
 
 Never run `docker compose down` here either, and never `down -v`, which deletes the Postgres volume.
-Lead fixes or retires these after the 11-16 promotion; this table goes when they are gone.
 
 **A second clone on Amber shares this database unless you override it (Docs' run-check, 11-16).**
 `docker-compose.yml` pins the project name (`piper-morgan-stable`), the container names and the

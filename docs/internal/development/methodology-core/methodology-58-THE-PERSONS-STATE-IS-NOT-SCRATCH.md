@@ -24,10 +24,10 @@ the day something new is found.
 |---|---|---|
 | Login keychain | macOS, his account | `PIPER_CREDENTIAL_STORE=keychain`, the `security` CLI, any library that asks the OS store |
 | Local database | `piper_morgan` in `piper-postgres`, port 5433, volume `piper_postgres_data_v1` | any run with no `POSTGRES_DB` set; `alembic`; `create_all` in a test tree |
-| Shared Redis and Chroma data | `worktrees/lead/data/…`, bound into `piper-redis` and `piper-chromadb` | `docker compose up` or `down` from any folder; five scripts in `scripts/` (recipe 14) |
+| Shared Redis and Chroma data | `worktrees/lead/data/…`, bound into `piper-redis` and `piper-chromadb` | `docker compose up` or `down` from any folder; `scripts/alpha-setup.sh` (recipe 14; four other scripts did this until 11-16) |
 | Accounts and consoles | Anthropic, OpenAI, GitHub, Fly, his mail | a session or token that is his, wherever a seat can read it |
 | The shared checkout | `~/Development/piper-morgan-product` | git commands that discard working-tree changes (CLAUDE.md hard rule 1) |
-| Running local servers | every `python main.py` on the machine | `pkill -f "python main.py"` (in `scripts/stop.sh`) |
+| Running local servers | every `python main.py` on the machine | `pkill -f "python main.py"` (it was in `scripts/stop.sh`, retired 2026-11-16) |
 
 ## The rule
 
@@ -60,7 +60,7 @@ entry is about where a run lands. The two meet in the fix: the keychain rule fir
 4. **A second copy joins the first one's stack (11-16, Docs, Lead, Arch, CIO).** `docker-compose.yml`
    pins the project, container names and volume, so a clone's `docker compose up` and `alembic upgrade
    head` act on his database. The running Redis and Chroma containers turned out to be bound to data
-   folders inside Lead's worktree, and five scripts run `up` or `down` themselves. Caught by Docs
+   folders inside Lead's worktree, and five scripts ran `up` or `down` themselves (four fixed or retired the same day). Caught by Docs
    before anything ran, because Docs wrote its own override first. Fix: recipe 14's seat rule; issue
    2386 (`PIPER_STACK`); issue 2387 (move the data out of the worktree).
 

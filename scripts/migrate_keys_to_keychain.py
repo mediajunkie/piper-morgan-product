@@ -189,7 +189,7 @@ def print_post_migration_instructions():
     print(f"   {Colors.YELLOW}# Edit .env and remove migrated keys{Colors.END}")
     print()
     print("3. Restart Piper to use keychain keys:")
-    print(f"   {Colors.BLUE}./stop.sh && ./start.sh{Colors.END}")
+    print(f"   {Colors.BLUE}Stop the running server, then: python main.py{Colors.END}")
     print()
     print_success("Migration complete! Your API keys are now secure.")
 

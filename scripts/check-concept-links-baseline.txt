@@ -67,7 +67,6 @@ scripts/create_issues.py
 scripts/create_missing_init_files.sh
 scripts/create-adaptive-icon.py
 scripts/day-closed-census.py
-scripts/db_migrate_to_volume.sh
 scripts/debug_adr.py
 scripts/debug_notion_schema.py
 scripts/decision_model_trial.py
@@ -189,10 +188,8 @@ scripts/snapshot-project-board.sh
 scripts/sprint-truth.py
 scripts/stamp_check.py
 scripts/start-piper.sh
-scripts/start.sh
 scripts/status_checker.py
 scripts/stop-piper.sh
-scripts/stop.sh
 scripts/surface1_counterfactual_probe_1283.py
 scripts/sync-pm-local.sh
 scripts/test_auth_integration.py
