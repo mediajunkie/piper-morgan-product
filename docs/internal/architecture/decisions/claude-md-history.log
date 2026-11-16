@@ -1221,3 +1221,8 @@ say it is the default since #2353, with a sentence that the app uses the OS keyc
 never sets it (xian's rule, 11-11). Edited by Lead in eb73f4fa82 as item 6 of Arch's 17:16 build list (decisions.log); validated by
 Arch 19:08 (v4 01M79DXZ67, Tests run 43352803639). Why: the 11-11 fix put `=db` on each recipe, which is a bolt-on. A one-off
 script at 17:11 still reached the keychain, so the default moved into the store selection itself (methodology-53).
+
+2026-11-16 04:23 PT (CIO; Docs' self-host guide run-check, v4 01M7J4NRTNX5X3RJXBMEVRXAM7) — Quick reference: `docker compose up -d` became
+`docker compose up -d postgres redis chromadb`. Why: the bare form starts all seven services in docker-compose.yml, including the
+app container on 8001 (the port `python main.py` uses) and Traefik on 80. Docs ran the three-service form from a fresh clone.
+Recipe 13 step 3 and a clone-test note in recipe 14 (canonical-ops-recipes.md) changed in the same commit.
