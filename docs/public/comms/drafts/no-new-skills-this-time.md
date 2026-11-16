@@ -36,21 +36,16 @@ My chief of staff agent (Exec) gathered skill candidates reviewing "Wanted but n
 
 Exec offered to discuss with me and I was tired on October 23. They logged the plan to discuss it "tomorrow, when he's fresh" but then I didn't really get to it till November 6 when I reviewed the full set of recommendations and approved them all. One item had already addressed on November 4. Of the rest, we decided not to turn any others into skills, to fold five of them into exiting processes, and to drop the other six.
 
+So this time nothing new became a signal. At most we needed to add a line to an existing rule, tool, or permission, instead of adding a new procedure. 
 
-**6. The finding.** "Nothing became a skill. Most signal pointed at a missing line in an existing place, or at a tool or permission, not a procedure." And two of Exec's leans were already stale by review day, because the system had moved on (seats now wake from a scheduler, not session timers, and a push script already existed). CIO caught both by checking against the actual files before you saw them. [l.74, l.63, l.66]
+Even in the time we were evaluating these candidates a few of the recommendations proved to be stale (for example, seats now wake from a scheduler, not session timers, and a push script already existed). 
 
-**7. It's back on schedule.** Next cycle due Tue Dec 1. [l.74]
+# The next time
 
-## Careful with these (accuracy)
-- **13 candidates, but "12 leans".** 13 were reviewed (10 new plus 3 from July). You accepted 12 leans on Nov 6. The 13th (the skill-scope audit) was already ruled and done on Nov 4 on your "Yes finish it". Say "thirteen ideas" for the count, or "a dozen" loosely. Don't say "twelve candidates".
-- "Folded" items did get built, as small edits (a line in a briefing, a step in a runbook). The claim is no *new skill*, not no change.
-- "Every week" and "8 days running" are counts of log files that mention a topic, which "overstate chatty topics" (l.49).
-- The skill count: 34 skills with a SKILL.md (counted 11-06). The "36" in the doc's 10-23 gather was wrong.
+On December 1 we'll review again. It may turn out that monthly is too frequent. We've already accumulated quite a few skills as it is (some of which have become skills for the Piper Morgan product itself and not just for the operating model and team building it).
 
-## Your angle, maybe
-- Agents (like people) ask for new process when a sentence in the right place would do.
-- The value of a review is in the don't-build column. A review that adds nothing keeps the system small.
-- Wanting a skill vs. wanting permission: several "skills" were really requests for access or a seat.
+I like to think that it's a sign of maturity that our latest round of proposed improvements did not require writing any new skills.
+
 
 ---
 
