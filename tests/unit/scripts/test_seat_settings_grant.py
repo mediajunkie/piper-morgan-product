@@ -267,7 +267,7 @@ def test_grant_key_does_all_four_steps_in_order_when_the_reads_were_refused(
         seen["deny_at_wait"] = json.loads(path.read_text())["permissions"]["deny"]
         seen["env_at_wait"] = json.loads(path.read_text()).get("env")
         seen["shared_at_wait"] = json.loads(shared.read_text())["permissions"]["deny"]
-        return "refused"
+        return "refused refused refused"
 
     monkeypatch.setattr("builtins.input", answer)
     monkeypatch.setattr(mod.getpass, "getpass", lambda prompt: DUMMY)
@@ -295,7 +295,18 @@ def test_grant_key_does_all_four_steps_in_order_when_the_reads_were_refused(
     assert "WAITING FOR READ TESTS on seat lead" in out.out
 
 
-@pytest.mark.parametrize("reply", ["", "no", "not refused", "yes"])
+@pytest.mark.parametrize(
+    "reply",
+    [
+        "",
+        "no",
+        "yes",
+        "refused",
+        "refused refused",
+        "refused refused read",
+        "not refused refused refused",
+    ],
+)
 def test_grant_key_stops_before_the_key_unless_he_types_refused(
     seat, tmp_path, monkeypatch, capsys, tty, reply
 ):
