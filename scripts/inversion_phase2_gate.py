@@ -53,7 +53,7 @@ env -u flags, and --provider, #2340):
     env -u ANTHROPIC_API_KEY -u ANTHROPIC_BASE_URL -u ANTHROPIC_AUTH_TOKEN \
       -u ANTHROPIC_CUSTOM_HEADERS POSTGRES_PORT=5433 \
       PIPER_CREDENTIAL_STORE=db ANTHROPIC_API_KEY=… \
-      venv/bin/python scripts/inversion_phase2_gate.py --provider anthropic [--dry] [--out PATH]
+      venv/bin/python scripts/inversion_phase2_gate.py --provider anthropic --max-usd N [--dry] [--out PATH]
 
 Cost: one Haiku-class call per phase0 row (93) + two per armed row (7) +
 one per control row (7) = 114 planned calls, plus at most one repair retry
@@ -753,6 +753,12 @@ if __name__ == "__main__":
         default=None,
         help="force the router's provider (anthropic = alpha's served Haiku-class router)",
     )
+    ap.add_argument(
+        "--max-usd",
+        type=float,
+        default=None,
+        help="the most this run may spend, in dollars; required for a run that makes calls (#2383)",
+    )
     args = ap.parse_args()
     if args.audit:
         # Handled before run(): the audit touches no corpus, no fixtures and
@@ -762,5 +768,9 @@ if __name__ == "__main__":
     # #1812 aftermath: bind the developer's own keys (no server-key fallback).
     from dev_key_binding import developer_keys_bound, providers_from_flag
 
-    with developer_keys_bound(providers=providers_from_flag(args.provider), require=not args.dry):
+    with developer_keys_bound(
+        providers=providers_from_flag(args.provider),
+        max_usd=args.max_usd,
+        require=not args.dry,
+    ):
         sys.exit(asyncio.run(run(args.dry, args.out, args.provider)))

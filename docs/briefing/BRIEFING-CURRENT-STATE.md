@@ -2,7 +2,7 @@
 type: briefing
 title: BRIEFING-CURRENT-STATE.md - Where We Are Right Now
 valid_from: "2025-09-30"
-last_updated: 2026-11-15
+last_updated: 2026-11-16
 last_verified: 2026-10-27
 size_cap_bytes: 12000
 ---
@@ -48,8 +48,8 @@ log, never here. Bump `last_updated` to the newest line's date, or CI fails. Ski
   (#2021 lifts), #2023 corpus rows first. Pacing: normal from 10-16 (run-hot ended 10-15 22:00).
 - **PM's open asks** *(Exec, 2026-10-09 06:4x PDT)*: on Exec's attention rollup at
   `claude.ai/artifact/719UZ4h1NELjEwWZbDCceT` (its own header line carries the current version; do not pin one here, it was v90 at 04:2x and v95 by 06:4x). Do not copy the list here: it goes stale within hours.
-- **Usage** *(CIO, 2026-11-13 10:07 PST, last rows of `dev/heartbeats/usage-per-account.tsv`, written 09:23)*: the pipermorgan.ai
-  weekly meter is at **4%**, resetting **11-19 21:00 PST** (11-20 05:00Z). The stop line is **95%** of the weekly meter (PM-approved 10-06). Normal pacing.
+- **Usage** *(CIO, 2026-11-16 10:10 PST, last rows of `dev/heartbeats/usage-per-account.tsv`, written 09:23)*: the pipermorgan.ai
+  weekly meter is at **36%**, resetting **11-19 21:00 PST** (11-20 05:00Z). The stop line is **95%** of the weekly meter (PM-approved 10-06). Normal pacing.
 - **Mail** *(CIO, 2026-11-13 10:07 PST, from CLAUDE.md's Mail section and `scripts/mail4.py inbox`)*: **mail v4** (`scripts/mail4.py`, private
   `piper-morgan-mail` repo) is the default for every seat in this repo since the 11-09 widening; xian's CLAUDE.md Mail line went in 11-12.
   v3 (`scripts/mail-send.sh`) is for a party not on v4 (Spec) or a v4 failure, and stays the fallback until the **11-23 review**. Details:

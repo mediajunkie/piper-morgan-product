@@ -21,6 +21,7 @@ from chromadb.utils import embedding_functions
 
 from services.configuration.piper_config_loader import piper_config_loader
 from services.llm.request_key import LLMKeyRequiredError, request_spend_key
+from services.llm.spend_cap import refuse_uncounted
 
 logger = structlog.get_logger()
 
@@ -57,6 +58,9 @@ class RequestKeyedOpenAIEmbeddingFunction:
     _MODEL_NAME = "text-embedding-ada-002"
 
     def __call__(self, input):  # noqa: A002 — chromadb's EmbeddingFunction protocol names it `input`
+        # #2383: embeddings report no cost here, so a capped script run refuses them
+        # rather than spend uncounted. No cap is bound on a served request.
+        refuse_uncounted("an OpenAI embedding call")
         key = request_spend_key("openai")
         # Constructed per call — cheap next to the embedding HTTP round trip, and it
         # guarantees the credential is never cached anywhere it could cross requests.
