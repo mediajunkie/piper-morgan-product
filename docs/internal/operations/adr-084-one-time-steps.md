@@ -21,7 +21,7 @@ The ADR: `docs/internal/architecture/adrs/adr-084-seat-resources-are-separate-gr
 
 ## Step A (ADR row 2): the Anthropic seat key in Lead's settings
 
-**Owner: CIO. To write.** Unblocks #2364's gate and arm B the same hour.
+**Owner: CIO. To write.** Unblocks arm B the same hour (its $8 stop is in code). The #2364 gate runs the same hour only if #2383 (the live-call cap) has landed; if it hasn't, Lead sends Exec the planned-calls line first (26 calls, $0.20 to $0.35), as ADR-084 D2 requires for a run with no in-code stop (Lead, 11-15 22:07).
 
 What the ADR requires of this row (D2): the seat's own `.claude/settings.local.json` in the lead worktree, an `env` entry named `PIPER_SEAT_ANTHROPIC_KEY`, file mode 0600, a Read deny on that file in the same settings, and a check script that prints key names only. At the first real run, the check is that the child process saw the value (length and hash) and that no value reached any output. Whether a running session needs a restart to pick up the entry shows here; say what to do if it does.
 
