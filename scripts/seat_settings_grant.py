@@ -4,6 +4,7 @@
 Run by xian in Terminal, never by a seat (auto mode refuses a seat a settings edit, and that is
 right). It edits one file, the seat's git-ignored ``.claude/settings.local.json``:
 
+    scripts/seat_settings_grant.py fleet-deny
     scripts/seat_settings_grant.py prepare   --seat lead
     scripts/seat_settings_grant.py add-key   --seat lead --name PIPER_SEAT_ANTHROPIC_KEY
     scripts/seat_settings_grant.py add-allow --seat web  --rule 'Bash(venv/bin/python scripts/seat_session.py --account seat-plain)'
@@ -19,7 +20,9 @@ and adds a Read deny for the file to itself, so the seat's Read tool can't open 
 refused before anything real is in it. The deny is honoured for a file inside the seat's own
 worktree (tested 2026-11-15 with a dummy ``.env`` against the fleet's ``Read(**/.env)``); the same
 form did NOT stop a Read of a file outside the worktree, so it does not protect one seat's file
-from another seat.
+from another seat. ``fleet-deny`` adds two home-path denies to the settings file all PM seats
+share, to close that. Their pattern form is untested until the first sitting, which is why both
+are tested by a Read before any key exists.
 
 A seat checks that the key reached its session with no file read at all:
 
@@ -48,6 +51,16 @@ from pathlib import Path
 
 WORKTREES = Path.home() / "Development" / "piper-morgan-worktrees"
 SELF_DENY = "Read(**/.claude/settings.local.json)"
+SHARED_SETTINGS = Path.home() / ".claude-pm" / "settings.json"
+# The self-deny covers a seat's own file only: a ``**/`` deny is not applied outside the seat's
+# worktree (probe, 2026-11-15). These two name the paths from the home folder, in the one settings
+# file every PM seat shares, so no seat's Read tool opens another seat's settings file or .env
+# (Arch's ruling, 2026-11-15). A deny stops the Read tool; a file read by a command a seat runs is
+# still the classifier's to judge.
+FLEET_DENIES = (
+    "Read(~/Development/piper-morgan-worktrees/*/.claude/settings.local.json)",
+    "Read(~/Development/piper-morgan-worktrees/*/.env)",
+)
 NAME_RE = re.compile(r"^PIPER_SEAT_[A-Z0-9_]+$")
 SEAT_RE = re.compile(r"^[a-z][a-z0-9-]*$")
 
@@ -78,11 +91,11 @@ def load(path: Path) -> dict:
     return data
 
 
-def save(path: Path, data: dict) -> None:
-    """Write whole, at mode 0600, by rename, so a failure leaves the old file in place."""
-    fd, tmp = tempfile.mkstemp(dir=path.parent, prefix=".settings.local.", suffix=".tmp")
+def save(path: Path, data: dict, mode: int = stat.S_IRUSR | stat.S_IWUSR) -> None:
+    """Write whole, at ``mode`` (0600 unless told), by rename, so a failure leaves the old file."""
+    fd, tmp = tempfile.mkstemp(dir=path.parent, prefix=".settings.", suffix=".tmp")
     try:
-        os.fchmod(fd, stat.S_IRUSR | stat.S_IWUSR)
+        os.fchmod(fd, mode)
         with os.fdopen(fd, "w") as handle:
             json.dump(data, handle, indent=2)
             handle.write("\n")
@@ -91,7 +104,22 @@ def save(path: Path, data: dict) -> None:
         if os.path.exists(tmp):
             os.unlink(tmp)
         raise
-    os.chmod(path, stat.S_IRUSR | stat.S_IWUSR)
+    os.chmod(path, mode)
+
+
+def fleet_deny(path: Path) -> list[str]:
+    """Add the home-path denies to the shared settings file. Additive: nothing else is changed."""
+    if not path.exists():
+        raise SystemExit(f"{path} does not exist; nothing was changed")
+    data = load(path)
+    deny = data.setdefault("permissions", {}).setdefault("deny", [])
+    added = [rule for rule in FLEET_DENIES if rule not in deny]
+    if added:
+        deny.extend(added)
+        save(
+            path, data, mode=stat.S_IMODE(path.stat().st_mode)
+        )  # the shared file keeps its own mode
+    return added
 
 
 def add_key(data: dict, name: str, value: str) -> dict:
@@ -162,6 +190,8 @@ def main(argv: list[str] | None = None) -> int:
     for cmd in ("show", "prepare"):
         p = sub.add_parser(cmd)
         p.add_argument("--seat", required=True)
+    p = sub.add_parser("fleet-deny")
+    p.add_argument("--shared-settings", type=Path, default=SHARED_SETTINGS, help=argparse.SUPPRESS)
     p = sub.add_parser("check-env")
     p.add_argument("--name", required=True)
     args = parser.parse_args(argv)
@@ -176,6 +206,17 @@ def main(argv: list[str] | None = None) -> int:
         value = os.environ.get(args.name, "")
         print(f"{args.name}: {'set, ' + fingerprint(value) if value else 'UNSET in this session'}")
         return 0 if value else 1
+
+    if args.cmd == "fleet-deny":
+        added = fleet_deny(args.shared_settings)
+        print(f"shared settings: {args.shared_settings}")
+        print(
+            f"added {len(added)} deny rule(s); {len(FLEET_DENIES) - len(added)} were already there. No allow, env or other rule was changed."
+        )
+        print(
+            "Next: one seat tries to Read ANOTHER seat's settings file by its full path. It should be refused."
+        )
+        return 0
 
     path = settings_path(args.seat, args.root)
     data = load(path)
