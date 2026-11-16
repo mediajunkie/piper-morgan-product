@@ -1172,10 +1172,12 @@ async def create_user(
             logger.error("user_creation_failed_db_connection", username=req.username, error=str(e))
             raise HTTPException(
                 status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                # CXO 2026-11-16 (2386): the three services by name, a colon before the
+                # command and no quote marks, so it can be copied.
                 detail=(
-                    "Cannot connect to database. "
-                    "Ensure Docker is running: 'docker compose up -d', "
-                    "then try again."
+                    "Cannot connect to the database. Make sure Docker is running, then "
+                    "start the services with: docker compose up -d postgres redis chromadb. "
+                    "Then try again."
                 ),
             )
         else:
