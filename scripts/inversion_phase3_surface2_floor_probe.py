@@ -165,9 +165,20 @@ if __name__ == "__main__":
     ap.add_argument(
         "--provider", default=None, help="force the classifier's provider (anthropic | openai)"
     )
+    ap.add_argument(
+        "--max-usd",
+        type=float,
+        default=None,
+        help="the most this run may spend, in dollars; required for a run that makes calls (#2383)",
+    )
     args = ap.parse_args()
     from dev_key_binding import developer_keys_bound, providers_from_flag
 
-    with developer_keys_bound(providers=providers_from_flag(args.provider), require=True):
+    with developer_keys_bound(
+        providers=providers_from_flag(args.provider),
+        max_usd=args.max_usd,
+        planned_calls=len(args.phrase) * args.samples,
+        require=True,
+    ):
         result = asyncio.run(_probe(args.phrase, args.samples, args.provider))
     write_report(result, args.out, args.samples)

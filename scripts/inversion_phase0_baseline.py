@@ -313,10 +313,16 @@ if __name__ == "__main__":
         choices=("anthropic", "openai"),
         help="the one provider this run binds a key for and spends on (#2340)",
     )
+    ap.add_argument(
+        "--max-usd",
+        type=float,
+        default=None,
+        help="the most this run may spend, in dollars; required for a run that makes calls (#2383)",
+    )
     args = ap.parse_args()
     # #1812 aftermath: bind the developer's own keys (no server-key fallback).
     sys.path.insert(0, str(ROOT / "scripts"))
     from dev_key_binding import developer_keys_bound, providers_from_flag
 
-    with developer_keys_bound(providers=providers_from_flag(args.provider)):
+    with developer_keys_bound(providers=providers_from_flag(args.provider), max_usd=args.max_usd):
         asyncio.run(run(args.full, args.out))

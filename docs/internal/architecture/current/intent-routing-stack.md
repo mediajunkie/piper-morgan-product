@@ -2172,6 +2172,17 @@ go at the FRONT of `PHASE3_REPORTS` in `scripts/inversion_phase3_deletion_gate.p
 first; a re-score overrides). `scripts/inversion_phase1_shadow_score.py` has `--phrase` for a
 one-row re-score and `--source-prefix` for a deposit batch.
 
+**The dollar cap on live calls (#2383, 2026-11-16).** A script that makes live calls through
+`scripts/dev_key_binding.py` also needs `--max-usd N`, the most the run may spend, or it refuses
+before the first call. Inside the run, the Anthropic and OpenAI legs in `services/llm/clients.py`
+ask `services/llm/spend_cap.py` before each call and report the provider's token counts after
+it. A call that could take the total past the cap raises `SpendCapReached` and is not sent. A
+model with no price row is refused (rows exist for `claude-opus-4-8`, `claude-sonnet-4-6` and
+`claude-haiku-4-5`; no OpenAI or Gemini row yet), and so is an embedding call, which has no
+cost count. The run prints `PLANNED: …  Cap $N.` on entry and `COST: $… from the provider's
+token counts` on exit. A served request binds no cap and the hooks return at once. A batch is
+bounded before it is sent, by `router_batch.py submit --cap-usd`.
+
 **Keys for the scoring and screening scripts (#2340, 2026-11-11).** Every script that binds
 keys through `scripts/dev_key_binding.py` (the phase 0 to 3 instruments, `inversion_router_control`,
 `router_batch` and the probes) needs three things or it refuses before the first call:

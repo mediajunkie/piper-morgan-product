@@ -11,7 +11,7 @@ Usage (env-stripped per CLAUDE.md; PIPER_CREDENTIAL_STORE=db, a key named after 
 env -u flags, and --provider, #2340):
     env -u ANTHROPIC_API_KEY -u ANTHROPIC_BASE_URL -u ANTHROPIC_AUTH_TOKEN \\
       PIPER_CREDENTIAL_STORE=db ANTHROPIC_API_KEY=… \\
-      venv/bin/python scripts/inversion_router_control.py --provider anthropic \\
+      venv/bin/python scripts/inversion_router_control.py --provider anthropic --max-usd N \\
       --samples 6 --phrase "show today's tasks" --phrase "what needs my attention?" \\
       --label candidate --out /path/report.md
 
@@ -140,17 +140,23 @@ def main() -> int:
     ap.add_argument("--provider", default=None, help="anthropic = alpha's Haiku-class router")
     ap.add_argument("--label", default="control", help="baseline / candidate / …")
     ap.add_argument("--out", type=Path, required=True)
+    ap.add_argument(
+        "--max-usd",
+        type=float,
+        default=None,
+        help="the most this run may spend, in dollars; required for a run that makes calls (#2383)",
+    )
     args = ap.parse_args()
     sys.path.insert(0, str(ROOT / "scripts"))
-    from dev_key_binding import (
-        developer_keys_bound,
-        planned_calls_line,
-        providers_from_flag,
-    )
+    from dev_key_binding import developer_keys_bound, providers_from_flag
 
     _providers = providers_from_flag(args.provider)
-    with developer_keys_bound(providers=_providers, require=True):
-        print(planned_calls_line(len(args.phrase) * args.samples, _providers, "router calls"))
+    with developer_keys_bound(
+        providers=_providers,
+        max_usd=args.max_usd,
+        planned_calls=len(args.phrase) * args.samples,
+        require=True,
+    ):
         rows = asyncio.run(_control(args.phrase, args.samples, args.provider))
     write_report(rows, args.out, args.samples, args.label)
     return 1 if any(r["error"] for r in rows) else 0

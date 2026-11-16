@@ -45,6 +45,23 @@ def _mirror_read_secret(kc):
 TEST_USER_ID = "test-user-123"
 
 
+@pytest.fixture(autouse=True)
+def _empty_stand_in_credential_store():
+    """A unit test here never reads the real credential store.
+
+    Six tests in this file built ``SlackConfigService`` with no store patched, so each
+    read the machine's real store (on a developer's Mac, the shared local database). They
+    passed when that read came back empty and failed with ``SlackCredentialReadFailed``
+    whenever it failed part-way through a whole-tree run (seen 2026-11-15 and 11-16).
+    The stand-in holds nothing. A test that patches the store itself still wins.
+    """
+    empty = Mock()
+    empty.get_api_key.return_value = None
+    _mirror_read_secret(empty)
+    with patch("services.infrastructure.keychain_service.KeychainService", return_value=empty):
+        yield empty
+
+
 class TestSlackConfig:
     """Test Slack configuration dataclass"""
 
