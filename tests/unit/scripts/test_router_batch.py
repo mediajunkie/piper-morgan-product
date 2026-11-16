@@ -268,3 +268,62 @@ def test_submit_requires_a_cap_and_a_ledger(monkeypatch):
     monkeypatch.setattr(sys, "argv", ["router_batch.py", "submit", "x.jsonl", "--out", "y"])
     with pytest.raises(SystemExit):
         rb.main()
+
+
+# --- parse --arg (arm B: what the router put in one named arg) -----------------------
+
+
+def _reply(operation, **args):
+    return json.dumps(
+        {"operation": operation, "args": args, "confidence": 0.9, "rationale": "because"}
+    )
+
+
+def _parse_report(tmp_path, replies, arg=()):
+    reqs, res, out = tmp_path / "q.jsonl", tmp_path / "s.jsonl", tmp_path / "r.md"
+    reqs.write_text(
+        "".join(
+            json.dumps({"custom_id": f"m-0-{n}", "phrase": "add milk to my list", "params": {}})
+            + "\n"
+            for n in range(1, len(replies) + 1)
+        )
+    )
+    res.write_text(
+        "".join(
+            json.dumps(
+                {
+                    "custom_id": f"m-0-{n}",
+                    "type": "succeeded",
+                    "text": text,
+                    "model": "claude-haiku-4-5",
+                }
+            )
+            + "\n"
+            for n, text in enumerate(replies, 1)
+        )
+    )
+    rb._parse(SimpleNamespace(requests=str(reqs), results=str(res), out=str(out), arg=list(arg)))
+    return out.read_text()
+
+
+def test_parse_without_arg_keeps_the_three_column_table(tmp_path):
+    report = _parse_report(tmp_path, [_reply("create_todo", text="milk")])
+    assert "| phrase | routes (count) | confidence range |\n|---|---|---|\n" in report
+    assert "| add milk to my list | `create_todo` ×1 | 0.90–0.90 |\n" in report
+
+
+def test_parse_arg_counts_each_value_and_the_replies_without_it(tmp_path):
+    replies = [
+        _reply("create_todo", text="milk", project="my list"),
+        _reply("create_todo", text="milk", project="my list"),
+        _reply("create_todo", text="milk"),
+    ]
+    report = _parse_report(tmp_path, replies, arg=["project", "text"])
+    assert (
+        "| phrase | routes (count) | confidence range | args.project (count) | args.text (count) |"
+    ) in report
+    assert "|---|---|---|---|---|" in report
+    assert (
+        '| add milk to my list | `create_todo` ×3 | 0.90–0.90 | "my list" ×2, (none) ×1 '
+        '| "milk" ×3 |'
+    ) in report
