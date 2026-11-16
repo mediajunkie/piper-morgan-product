@@ -52,7 +52,7 @@ cd ~/Development/piper-morgan-product && scripts/seat_settings_grant.py grant-ke
 
   **If any Read was not refused, type what Exec gave you, or just press Return.** Anything but three times `refused` stops it. You can also press Return to stop and run the same line again later, for example if a seat is asleep or needs a restart; the parts already done are skipped. The command stops before the key. The deny rules stay, since they only add protection. The key does not go in "because the cap is small" (HOST); CIO fixes the deny first and tells Arch and HOST what the result was.
 
-  **Why it can't be shorter than this:** the wait in the middle is the point. Testing the deny with the real key already behind it would make a failed test the leak (Lead, 11-15). So his hands are: one paste, three words, one key.
+  **Why it can't be shorter than this:** the pause exists because the three Reads happen in the seats' sessions, not in your Terminal (Arch). And the wait in the middle is the point. Testing the deny with the real key already behind it would make a failed test the leak (Lead, 11-15). So his hands are: one paste, three words, one key.
 
 - **You should see:**
 
