@@ -758,11 +758,11 @@ class TestSettingsRepositoryList:
         assert exc.value.status_code == 502
         assert "installed" not in str(exc.value.detail)
 
-    async def test_installed_somewhere_with_no_slug_keeps_the_11_12_line_and_no_link(
+    async def test_installed_somewhere_with_no_slug_says_only_what_the_list_is(
         self, app_on, monkeypatch
     ):
-        # Arch 11-15: absent, never "", when no slug is set; the sentence then names
-        # no button (CXO 11-12 07:30's words stand).
+        # Arch 11-15: absent, never "", when no slug is set. CXO 11-15: with no link to
+        # give, no add-another sentence at all.
         monkeypatch.delenv(grant_mod.ENV_APP_SLUG)
         installed = gh_mod.GitHubReposResult(
             repositories=[{"id": 1, "name": "r1", "full_name": "octo/r1", "description": ""}],
@@ -772,11 +772,9 @@ class TestSettingsRepositoryList:
         with patch(_ADAPTER, cls), patch(_PREFS, new=AsyncMock(return_value={})):
             result = await routes.get_github_repositories(current_user=_user())
         assert result.install_url is None
-        assert result.note == (
-            "These are the repositories the Piper GitHub app is installed on. To add "
-            "another, install the app on it."
-        )
-        assert "Add another repository" not in result.note
+        assert result.note == "These are the repositories the Piper GitHub app is installed on."
+        assert "add another" not in result.note.lower()
+        assert "install the app" not in result.note
 
     async def test_a_search_list_carries_no_app_note(self, app_on):
         searched = gh_mod.GitHubReposResult(

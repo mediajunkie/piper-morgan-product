@@ -2634,8 +2634,8 @@ async def get_github_repositories(current_user: JWTClaims = Depends(get_current_
 
             # #2375 (CXO, Arch 2026-11-15): with something installed, the page still
             # offers the way to GitHub's install page. A fixed public URL built from
-            # the App slug; None (never "") when no slug is set, and then the sentence
-            # names no button.
+            # the App slug; None (never "") when no slug is set, and then the note says
+            # only what the list is (CXO 11-15: no add-another sentence without a way).
             install_url = app_install_url()
             note = (
                 GITHUB_APP_INSTALLED_LIST_NOTE_WITH_BUTTON

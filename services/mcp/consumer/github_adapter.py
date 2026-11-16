@@ -150,15 +150,14 @@ GITHUB_APP_INSTALL_LINK_MISSING_REPLY = (
     "installed just now. This is on our side, so please tell us."
 )
 # CXO 2026-11-12 07:30: under a non-empty list in App mode, so an absent repository is
-# explained. Never beside the empty-state line.
-GITHUB_APP_INSTALLED_LIST_NOTE = (
-    "These are the repositories the Piper GitHub app is installed on. To add another, "
-    "install the app on it."
-)
+# explained. Never beside the empty-state line. CXO 2026-11-15 evening: this is the form
+# with NO install link to give, so it says only what the list is. Its 11-12 second
+# sentence ("To add another, install the app on it.") told the person to do something
+# with no way to do it, and is gone.
+GITHUB_APP_INSTALLED_LIST_NOTE = "These are the repositories the Piper GitHub app is installed on."
 # CXO 2026-11-15 (xian's screen: "It's not clear how I'd add a new one from here"): the
 # same list with a way to GitHub's install page beside it. Used only when the response
-# also carries the install link, so the sentence never names a button that isn't there;
-# with no link the 11-12 sentence above stands.
+# also carries the install link, so the sentence never names a button that isn't there.
 GITHUB_APP_INSTALLED_LIST_NOTE_WITH_BUTTON = (
     "These are the repositories the Piper GitHub app is installed on. To add another, "
     "press Add another repository, then refresh this list."
