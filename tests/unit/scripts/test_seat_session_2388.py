@@ -403,3 +403,67 @@ def test_a_line_splits_on_whichever_separator_comes_first(ss, shared):
     assert ss.read_credentials(shared / CRED) == (ACCOUNT, "ab:cd")
     (shared / CRED).write_text(f"username: {ACCOUNT}\npassword: ab=cd\n")
     assert ss.read_credentials(shared / CRED) == (ACCOUNT, "ab=cd")
+
+
+# --- the GitHub dead-row exception (HOST 01M7JVMNWK, Lead 01M7JVJBHT) ------
+
+
+def _health(ss, **github):
+    rows = [{"name": n, "status": "not_configured"} for n in ("notion", "slack", "calendar")]
+    rows.append({"name": "github", **github})
+    return {
+        "/api/v1/integrations/health": ss.Reply(200, json.dumps({"integrations": rows}).encode())
+    }
+
+
+def test_the_dead_github_row_passes_for_web_seed_1386(ss, shared):
+    host = StubHost(ss, **_health(ss, status="degraded", can_test=False, action="reconnect"))
+    assert ss.run(ACCOUNT, host, now=1_800_000_000).startswith(ACCOUNT)
+
+
+@pytest.mark.parametrize(
+    "row",
+    [
+        {
+            "status": "degraded",
+            "can_test": True,
+            "action": "reconnect",
+        },  # a stored token still works
+        {"status": "degraded", "can_test": False, "action": None},
+        {"status": "degraded", "can_test": False},  # action missing
+        {"status": "degraded", "action": "reconnect"},  # can_test missing
+        {"status": "degraded", "can_test": 0, "action": "reconnect"},  # not a boolean
+        {"status": "failed", "can_test": False, "action": "reconnect"},
+        {"status": "failed", "can_test": True, "action": None},
+        {"status": "connected", "can_test": True, "action": None},
+        {"status": "healthy", "can_test": True, "action": None},
+    ],
+)
+def test_every_other_github_state_refuses(ss, shared, row):
+    host = StubHost(ss, **_health(ss, **row))
+    with pytest.raises(ss.Refused, match="has a connection"):
+        ss.run(ACCOUNT, host)
+    assert not (shared / f"{ACCOUNT}.session-token.json").exists()
+
+
+def test_the_dead_row_exception_is_for_github_only(ss, shared):
+    rows = [
+        {"name": "slack", "status": "degraded", "can_test": False, "action": "reconnect"},
+        {"name": "github", "status": "not_configured"},
+    ]
+    host = StubHost(
+        ss,
+        **{
+            "/api/v1/integrations/health": ss.Reply(
+                200, json.dumps({"integrations": rows}).encode()
+            )
+        },
+    )
+    with pytest.raises(ss.Refused, match="has a connection"):
+        ss.run(ACCOUNT, host)
+
+
+def test_the_exception_table_is_exactly_what_host_read(ss):
+    assert ss.GITHUB_DEAD_ROW == ("degraded", False, "reconnect")
+    assert dict(ss.ACCOUNTS[ACCOUNT].integrations) == {"github": frozenset({ss.GITHUB_DEAD_ROW})}
+    assert ss.ACCOUNTS[ACCOUNT].connectors is False

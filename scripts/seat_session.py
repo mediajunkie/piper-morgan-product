@@ -38,7 +38,7 @@ import time
 import urllib.error
 import urllib.parse
 import urllib.request
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from datetime import datetime, timezone
 from http.cookies import SimpleCookie
 from pathlib import Path
@@ -52,19 +52,35 @@ MAX_SESSION_SECONDS = (
 )
 
 
+IntegrationRow = Tuple[str, bool, Optional[str]]
+
+# The one dead state of a GitHub row (Lead's read of ``_github_card``, 11-16): the grant is
+# stale or revoked and nothing else serves. ``can_test`` True with the same status is a
+# stored personal token that still works, which is live and refuses.
+GITHUB_DEAD_ROW: IntegrationRow = ("degraded", False, "reconnect")
+
+
 @dataclass(frozen=True)
 class Account:
     """What one seeded account may hold. Empty means nothing."""
 
     credential_file: str  # under the shared folder; its name must match a Read deny
-    integrations: FrozenSet[str] = frozenset()  # integration ids allowed to be connected
+    # Integration name -> the exact rows it may show besides ``not_configured``. A row is
+    # (status, can_test, action) and all three must match (HOST, 11-16: a predicate, not a
+    # set of status names, because one status can be both a dead row and a live one).
+    integrations: Mapping[str, FrozenSet[IntegrationRow]] = field(default_factory=dict)
     provider_keys: FrozenSet[str] = frozenset()  # providers allowed to hold a test key
     connectors: bool = False  # may an MCP connector or manual token exist
 
 
 # Bound 1. A change to this table is a diff HOST reads.
 ACCOUNTS: Dict[str, Account] = {
-    "web-seed-1386": Account(credential_file="web-seed-1386-credentials-2026-10-20.txt"),
+    "web-seed-1386": Account(
+        credential_file="web-seed-1386-credentials-2026-10-20.txt",
+        # Carried over from 10-20: its OAuth connection was revoked in the 11-12 cutover.
+        # Only that dead row passes; any live GitHub state refuses (HOST 01M7JVMNWK).
+        integrations={"github": frozenset({GITHUB_DEAD_ROW})},
+    ),
 }
 
 USER_KEYS = ("username", "user", "email", "login")
@@ -235,7 +251,15 @@ def check_holds_nothing_real(
             raise Refused("the connection check could not be read")
         if state == "unknown":  # the host could not run its own check
             raise Refused("the connection check could not be read")
-        if state != "not_configured" and name not in allowed.integrations:
+        if state == "not_configured":
+            continue
+        shown = (state, row.get("can_test"), row.get("action"))
+        permitted = allowed.integrations.get(name, frozenset())
+        # ``is`` on can_test: a missing or non-boolean value never matches False.
+        if not any(
+            shown[0] == status and shown[1] is can_test and shown[2] == action
+            for status, can_test, action in permitted
+        ):
             raise Refused("the account has a connection")
 
     connectors = get("/api/v1/settings/mcp-connections")
