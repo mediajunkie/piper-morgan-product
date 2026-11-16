@@ -237,6 +237,33 @@ same push). Then verify on origin, whichever you used: `git fetch -q origin main
 **After the 2026-10-14 history rewrite:** the merge step merges the *new* `origin/main`, which is what you want. The wrapper does not
 and must not merge an old branch; the pre-push guard refuses pre-rewrite history regardless.
 
+**A retry after a lost race does not re-run the checks (2026-11-16, CIO's standing row 9u).** A code
+push holds about two minutes in the pre-push hook (gates, then smoke). On 11-16 one landing passed
+both and lost the race ten times, because log pushes were landing every 30 to 60 seconds. The hook
+now remembers a pass:
+
+- **The key** is the pushed commit's tree with the dated session logs (`dev/20NN/`) and `mailboxes/`
+  left out. Merging another seat's log or mail push leaves it unchanged. Any other change (code,
+  scripts, tests, docs, `dev/active/`) makes a new key and a full run.
+- **A pass is recorded only when HEAD is the pushed commit and `git status --porcelain` is empty.**
+  So push the branch you have checked out. Pushing a commit that isn't checked out runs the checks
+  on the worktree instead; the hook now says so and remembers nothing.
+- **It is honoured for 30 minutes**, prints `already passed on this content N min ago`, and logs
+  `outcome=gates-cached` or `outcome=smoke-cached` in `piper-prepush-smoke.log`.
+- **`PIPER_PREPUSH_NO_CACHE=1`** forces a full run.
+- **The three lints that read dated logs and mail still run on a remembered pass** (the mailbox
+  bearer lint, which reads file contents, and the mailbox and Windows filename lints; about two
+  seconds, `scripts/run-push-gates.sh --logs-and-mail`). A failure blocks the push. Lead's
+  condition: a seat's own log lines added after a pass must not go unread.
+- **No speed-up with an untracked or modified file in the worktree.** The pass isn't recorded
+  then, so the retry runs in full. That is the rule working, not the fix failing.
+- **The pass file is shared by every worktree** (it is in the git common folder). A pass one seat
+  records serves another seat pushing the same content.
+
+Tested by `scripts/git-hooks/test-remembered-pass.sh <empty scratch dir> scripts/git-hooks/pre-push`
+(a bare remote, a seat clone with stand-in gates and smoke, and a second clone that lands a log
+while the gates run): 14 checks.
+
 ## 6. "Is it my diff or the environment?" — the `ab-a-isolation` skill (Lead, 2026-08-15; concept recorded 2026-10-14)
 
 **Why:** a suite that fails during your work has two candidate causes, your diff or the run's environment/history, and arguing

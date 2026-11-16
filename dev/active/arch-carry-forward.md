@@ -1,5 +1,5 @@
 ---
-last_updated: 2026-11-16 06:34 PST (START)
+last_updated: 2026-11-16 12:28 PST (WORK)
 currency_claim: rewritten at substantive-change boundaries, verified at every START
 max_age_days: 4
 ---
@@ -26,13 +26,16 @@ context-floor directive that duplicating it here is exactly the accretion to cut
 
 ## IN FLIGHT — current state only
 
-**11-16 state (06:34, START):** main 12/12 green; inbox empty. Model Fable 5.2.
-- **ADR-084 is ACCEPTED** (xian 06:20 via Exec 01M7JBP51M): $10 a run without asking; the `lead-scoring` workspace's $150 a month is the hard cap. Older key disabled (accepted in place of deleted). Step B done (`ops_reader` ticked on web-seed-1386). **Paid runs stay stopped until Step A has run and Lead's check passes**; Exec runs the Step A sitting after Lead's promotion.
-- **Build items placed:** 2388 `seat_session.py` (CIO builds, Lead reviews, HOST reads; Arch validates against D3), 2389 `seat_account_create.py`, 2390 `ops_reader` routes, 2391 floor tally, 2392 staged-file scan, 2383 cap, 2384 MCP deploy job, **2393 per-seat databases (D5, filed by Arch)**.
-- **Issue 2386 (second clone shares the first copy's database), ruled 04:3x to 05:1x:** variables in the one compose file (`PIPER_STACK`, existing port names), defaults = today's values; proof is an identical `docker compose config` render with nothing set, which I re-run at validation. Five scripts run compose themselves (CIO's recipe 14 names them); `run_tests.sh` gets a port test and never starts services; its modes are `full` and `coverage` (my "all" was wrong). Script changes land after the promotion dispatch.
-- **Issue 2387 (filed by Arch):** Amber's Redis and Chroma data are bind-mounted from the Lead worktree. Not urgent; one sitting for xian when placed. `environment-status.md` records the location.
-- **Seat rule (CIO, recipe 14):** no seat runs `docker compose up` or `down` on the shared stack; `docker start` after a reboot.
-- **Promotion DONE and CONFORMS (09:49):** beta serves fd6ef1c669 since 09:39. Grant spent. Issue 2363 row 3 still open (needs a merge-head promotion). Signed-in view of the 2375 card is CXO's to judge. Step A not yet run by xian at 09:31.
+**11-16 state (12:28, WORK fire):** main 12/12 green; inbox empty; beta serves fd6ef1c669 since 09:39 (promotion CONFORMS, grant spent; issue 2363 row 3 still open). Model Fable 5.2.
+- **ADR-084 ACCEPTED** (xian 06:20): $10 a run; `lead-scoring` $150 a month. D2 now also says: more than one seat workspace is allowed; `piper-morgan-test` ($40) serves keys stored on seat accounts; the `web-seed-1386` key row is in without waiting on xian, **a seat's chat turns on that key wait on his two answers** (Exec asks). D3 says what was built (access cookie only, 24 h; `seat_read.py` closed list).
+- **Waiting on xian (via Exec):** Step A (seat key in Lead's settings; not started at 12:27, so paid runs, the 2364 gate and arm B stay stopped); Step C (one allow for Web: `scripts/seat_session.py --account web-seed-1386`); the two answers on `piper-morgan-test`; the invite file for `seat-github-1` (`seat_account_create.py --write-invite`, Step F0).
+- **Validated today, all from code:** 2383 spend cap (857909e2e2 + d45b201765; cap refusal ends the run; $10 check with `--approved-by`); 2388 `seat_session.py` / `seat_read.py` (ff8b9d51b7; exceptions landed dd97e4ba56, HOST's read); 2389 `seat_account_create.py` (72afafe37c; residual: both replies lost leaves an account with no held password); 2386 `PIPER_STACK` config layer (433a8c6b33, 0 of 188 rendered lines differ) and run layer (Lead's two-stack run, shared stack re-read by me, unchanged).
+- **Not verified anywhere yet:** a real paid call under the cap; a real sign-in; a real account creation. Each is the first run after xian's step.
+- **Still open on 2386:** Docs's read of the guide sentence; served bar for CXO's two setup strings; `CONTRIBUTING.md` `down -v` line (Docs). **No `down -v` on Amber, ever** (my ruling; recipe 14 is CIO's).
+- **Filed by me today:** 2387 (Amber's Redis and Chroma data live in the Lead worktree; not urgent; one sitting for xian when placed) and 2393 (per-seat databases, D5).
+- **Pre-push hook, remembered pass** (CIO's branch `cio/9u-remembered-pass` at 35bd27a752): right from my side; lands on Lead's yes; install is Pard's. Rule: a check is skipped on a hit only if everything it reads is in the key. Lead and I decide on blocking the not-checked-out case from a week's `outcome=not-checked-out` count (due about 11-23).
+- **Not built yet, mine to validate:** 2390 (`ops_reader` routes), 2391 (floor tally), 2384 (MCP deploy job), 2393. Also open: a count-only route for a seat account's after-cost on served reads.
+- **Lessons (11-16):** (1) I ruled on three lints from a description and one reads file contents; Lead caught it. Open the code a ruling rests on, every time. (2) I wrote "all" for a mode that doesn't exist; CIO caught it. (3) mail4 calls took about a minute each mid-morning and two at once hit a fetch lock: one chain at a time, in the background.
 
 **11-15 state (21:27, STOP):** main 12/12 green (Tests green on b864f6b0af, all of tonight's landings). Inbox empty. Beta serves 460b837a47 (since 17:22). **Model: xian switched this seat to Fable 5.2 at about 19:20 on 11-15** ("for the time being"); verify from the runtime reminder at START. Every ruling is in decisions.log.
 - **xian's 19:11 ruling (via Exec 01M7H5DC96):** "xian runs it" is refused as a workaround. Paid runs (the #2364 gate, arm B) stay STOPPED until the seat-key route exists. My 18:54/18:58 option (a) is withdrawn. The cause was my own 11-11 #2340 ruling: the binder's database route can't read a stored key (no ENCRYPTION_MASTER_KEY loaded).
