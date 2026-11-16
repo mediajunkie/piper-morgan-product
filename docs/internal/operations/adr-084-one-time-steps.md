@@ -137,7 +137,37 @@ scripts/seat_settings_grant.py add-key --seat lead --name PIPER_SEAT_OPENAI_KEY
 
 ## Step F0 (before Step F's connect): create the second seat account on beta
 
-**Owner: Lead. To write.** Named by Arch on 11-15 in answer to HOST's question in Step F. Lead knows how `web-seed-1386` was created; I could not find that path in source on main, so it is unverified by me and Lead writes it from what was actually done.
+**Owner: Lead.** **Status: NOT READY.** It waits on one small script, `scripts/seat_account_create.py` (not built; Lead builds it after xian's yes, HOST reads it against the list below). Written by Lead on 11-15 from the record, not from memory.
+
+**How `web-seed-1386` was actually made (the record, 2026-10-20 omnibus, 18:44 to 18:49):** xian minted beta invite codes himself and stored them in files; Web then signed the account up through beta's own setup page in its browser, with one of those codes, and wrote the account's file under `~/.piper-shared`. No seed command and no database insert. Lead did not create it. Not verified by Lead: which command xian used to mint (the repo's `scripts/mint_prod_invite.sh` is the one written for it), and what Web's session read to do it. That path can't be repeated as it was: a seat now reads neither an invite file nor a password file, which is the rule ADR-084 keeps.
+
+**The path for the second account, once the script exists** (the sign-up route is the same one a tester uses, `POST /api/v1/setup/create-user`: username, email, password twice, invite code):
+
+- **Where:** Terminal, in `~/Development/piper-morgan-product`, on main.
+- **Paste, two lines, one at a time.** The first mints one invite code on beta and prints it in your Terminal only:
+
+  ```
+  scripts/mint_prod_invite.sh --apply
+  ```
+
+  (Without `--apply` it is a dry run that mints nothing. With it, it mints exactly one.)
+
+  The second creates the account. It asks for the invite code at a hidden prompt (paste the code from the line above), makes a password itself, signs the account up on beta, and writes the account's file:
+
+  ```
+  scripts/seat_account_create.py --account <second-seat-account-name>
+  ```
+
+- **You should see:** `created <second-seat-account-name> on beta`, the path of the account's file, `mode 0600`, and `password copied to the clipboard for Step F; it clears in 60 seconds`. No password, no invite code and no cookie on screen.
+- **Seat check (HOST, from xian's screen or the atlas, until `seat_session.py` exists):** the account's own Account page shows no admin marking, no provider key and no connected service. Lead's check from source: the script's fixed list holds this account name and no other new one.
+- **If it fails:**
+  - `invite code not accepted`: the code was already spent or mistyped. Mint one more and run the second line again. Nothing was created.
+  - `that username or email is taken`: nothing was created; tell Exec, and Lead picks another name in the script's list.
+  - anything else: stop and tell Exec. An account that was created but whose file wasn't written is unusable by design; it gets a password reset, never a guess.
+
+**What the script will hold (for HOST's read when it is built):** a fixed list of allowed account names and one fixed host in code; the invite code only from a hidden prompt, never an argument or the environment; the password from the operating system's random source, written only to the file and the clipboard; output limited to the lines above; a test that searches its output for the password and the code on a forced failure; it refuses to run without a terminal.
+
+**Unverified until the script is built and run once:** that `mint_prod_invite.sh --apply` still mints and prints one code on beta as it stands today (its header says so; Lead has not run it, since it runs inside the production app), and the email address the account takes (it must be one xian controls, since password reset goes there; xian's to name).
 
 What the row must hold, whatever the path:
 - The account is created on beta by xian's hand (a sign-up with an invite code he mints, or a seed command he runs). An invite code is spent at account creation, so it is one mint for this one account.
