@@ -12,8 +12,10 @@ installed": a failed read is not absence (#2151).
 
 from __future__ import annotations
 
+import contextlib
+from contextvars import ContextVar
 from dataclasses import dataclass, field
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, Iterator, List, Optional
 
 import aiohttp
 import structlog
@@ -79,7 +81,45 @@ async def _get_json(session, url: str, token: str, params: Dict[str, Any]) -> Di
 _MAX_PAGES = 100
 
 
+#: #2379 (Arch 2026-11-15 15:49): the installation reads that answered during the
+#: current request, by token. None outside a request: nothing is held. Never shared
+#: across requests: the installed set changes whenever the person edits it on GitHub,
+#: and a held answer would serve a stale set with no signal.
+_request_reads: ContextVar[Optional[Dict[str, "InstalledRepositories"]]] = ContextVar(
+    "github_app_installation_reads", default=None
+)
+
+
+@contextlib.contextmanager
+def installation_read_scope() -> Iterator[None]:
+    """One request. Inside it, the installation read for a token runs once and its
+    answer is reused; a failed read is not held, so the next call reads again. The
+    answers are dropped when the request ends. A scope opened inside another keeps the
+    outer one's answers."""
+    if _request_reads.get() is not None:
+        yield
+        return
+    marker = _request_reads.set({})
+    try:
+        yield
+    finally:
+        _request_reads.reset(marker)
+
+
 async def list_installed_repositories(token: str) -> InstalledRepositories:
+    """The installed repositories for the token's person (see
+    ``_read_installed_repositories``), read once per request when a request scope is
+    open (#2379), and on every call otherwise."""
+    held = _request_reads.get()
+    if held is not None and token and token in held:
+        return held[token]
+    installed = await _read_installed_repositories(token)
+    if held is not None:
+        held[token] = installed
+    return installed
+
+
+async def _read_installed_repositories(token: str) -> InstalledRepositories:
     """Every repository the App is installed on for the token's person, following
     pagination to the end (Arch 2026-11-12 07:35). With a user token GitHub returns the
     overlap of the person's access and the installation's repositories, which is the set
