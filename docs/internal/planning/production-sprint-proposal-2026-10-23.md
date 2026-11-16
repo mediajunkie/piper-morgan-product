@@ -184,7 +184,7 @@ Sizes are counts, not effort. Nothing here is estimated. We'll discover more alo
 | #2352 | Local key commands: rotate-key shows the pasted key, keys add writes the OS keychain by default (11-12, Lead from #2351; CIO and Docs keep the guide off them; placed by PPM 17:28) | — |
 | #2360 | Notion CLI setup text tells the reader to export a token on a command line (11-12, Docs found it in the self-host key-page pass, CIO filed; Lead's fix; Notion isn't offered; placed by PPM 18:34) | — |
 | #2372 | create_all in the fresh-database test and setup_wizard pre-empts alembic (shared DB, self-host) (11-14, Lead found it in 2327, CIO filed; Arch picks the option; the wizard branch is unverified; placed by PPM 12:34); closed 11-15 08:35 by Lead, on main a626f3eaaa, CI scratch test PASSED (Arch), served on beta ddd3d49240 09:08 | — |
-| #2386 | A second clone on one machine shares the first one's database: compose pins project, volume, container names and ports (11-16, Lead from Docs's fresh-clone guide run; Arch and CIO rule the shape; ADR-084 seat runs must not touch xian's local data) | — |
+| #2386 | A second clone on one machine shares the first copy's database and re-points its Redis and Chroma at empty folders (11-16, Lead from Docs's fresh-clone guide run; Arch ruled PIPER_STACK; config layer and two-stack run met 12:06, guide row open) | — |
 | #482 | SEC-KMS-INTEGRATION: Migrate from environment variable to AWS KMS | PROD-INFRA |
 | #1203 | KeyAuditService query/report surfaces unwired — deferred to M5 reconsideration with the hosted-credential w… | PROD-INFRA |
 | #1257 | [REFACTOR] P7 cutover: migrate user_id→owner_id reads + drop user_id (deferred from #1252) | PROD-INFRA |
