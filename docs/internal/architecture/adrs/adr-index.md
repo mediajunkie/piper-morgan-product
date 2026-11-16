@@ -10,7 +10,7 @@ last_updated: "2026-11-07"
 
 > 🤖 **GENERATED FILE — DO NOT EDIT.** Regenerate with `python3 scripts/derive-adr-index.py`; verify with `--check`. The individual ADR files' own Status lines are the single source of truth; this index is a build artifact (Architectural Review 2026 workstream B4, closes #1455). Per the B3 rule: counts here TRIAGE, they never DISPOSE — check the live document before treating any status as the whole story.
 
-**Total ADR files**: 82 · **Numbering gaps (never filed)**: 067, 068 · **Counts by status**: Accepted: 56 · Proposed: 11 · Dormant (Proposed, unratified): 2 · Superseded: 9 · Other: 4
+**Total ADR files**: 83 · **Numbering gaps (never filed)**: 067, 068 · **Counts by status**: Accepted: 56 · Proposed: 12 · Dormant (Proposed, unratified): 2 · Superseded: 9 · Other: 4
 
 
 ## Accepted (56)
@@ -71,6 +71,7 @@ last_updated: "2026-11-07"
 - [ADR-081: GitHub identity — whose token serves a request, which app mints it, and who else may act](adr-081-github-identity-one-app-whose-token-serves-a-request.md) — **ACCEPTED, 2026-10-24** (Arch-authored, on xian's go-ahead in the Production-map rulings, 2026-10-24 17:28: "one ADR on GitHub identity"). D3 is accepted on the condition that its compatibility check passes; if it fails, D3's fallback governs. Finding F5 in `docs/internal/planning/production-map-review-round2-2026-10-23.md`.
 - [ADR-082: The offered-connector set is the one gate](adr-082-the-offered-connector-set-is-the-one-gate.md) — **ACCEPTED, 2026-11-06** (Arch-authored). This ADR records rulings already made and landed (decisions.log, 2026-10-30 to 2026-11-05) as one decision, so the next change to the offer set has a single place to read. It changes no code.
 - [ADR-083: The router may see the kind of numbered list Piper just showed](adr-083-the-router-may-see-the-last-numbered-list-kind.md) — **ACCEPTED, 2026-11-07, as D5 only.** xian said go by 08:03 (relayed by Exec, decisions.log 11-07 08:04): his explicit word on this ADR-078 amendment, not a lapsed window. D1–D3 (the slot on every router call) FAILED their screen and are not accepted. D5 is the decision; D1a (the wording) and D3a (the expiry) are accepted as the parts D5 uses. Lead lands `claude/lead-adr083` through the normal gate. PA checks it served.
+- [ADR-084: Seat resources are separate, granted once, and bounded](adr-084-seat-resources-are-separate-granted-once-and-bounded.md) — **PROPOSED, 2026-11-15** (Arch-authored, from Exec's seat-test-harness proposal). What agents use to run and test Piper (a capped provider key, test accounts, read-only production counts) is a class apart from xian's own state. Accepted only on xian's word; changes no code until then.
 
 ## Proposed (11)
 
