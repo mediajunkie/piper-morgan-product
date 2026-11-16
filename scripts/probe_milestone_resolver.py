@@ -106,6 +106,7 @@ async def run() -> int:
 if __name__ == "__main__":
     from dev_key_binding import (
         developer_keys_bound,
+        pop_approved_by_flag,
         pop_max_usd_flag,
         pop_provider_flag,
         providers_from_flag,
@@ -115,5 +116,8 @@ if __name__ == "__main__":
     _provider = pop_provider_flag(sys.argv)
     # #2383: `--max-usd N` is the most this run may spend.
     _max_usd = pop_max_usd_flag(sys.argv)
-    with developer_keys_bound(providers=providers_from_flag(_provider), max_usd=_max_usd):
+    _approved_by = pop_approved_by_flag(sys.argv)
+    with developer_keys_bound(
+        providers=providers_from_flag(_provider), max_usd=_max_usd, approved_by=_approved_by
+    ):
         sys.exit(asyncio.run(run()))

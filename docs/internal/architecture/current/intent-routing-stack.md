@@ -2179,7 +2179,10 @@ ask `services/llm/spend_cap.py` before each call and report the provider's token
 it. A call that could take the total past the cap raises `SpendCapReached` and is not sent. A
 model with no price row is refused (rows exist for `claude-opus-4-8`, `claude-sonnet-4-6` and
 `claude-haiku-4-5`; no OpenAI or Gemini row yet), and so is an embedding call, which has no
-cost count. The run prints `PLANNED: …  Cap $N.` on entry and `COST: $… from the provider's
+cost count. A refusal ends the run: the provider legs let it pass without trying another
+provider, every later call is refused, and the binder exits non-zero, so the run's rows are not
+counted (Arch, 2026-11-16). A cap above $10.00 also needs `--approved-by` with the mail id of
+Exec's relay of xian's approval. The run prints `PLANNED: …  Cap $N.` on entry and `COST: $… from the provider's
 token counts` on exit. A served request binds no cap and the hooks return at once. A batch is
 bounded before it is sent, by `router_batch.py submit --cap-usd`.
 

@@ -20,7 +20,12 @@ from services.llm.provider_bounds import (
     run_provider_call,
 )
 from services.llm.request_key import LLMKeyRequiredError
-from services.llm.spend_cap import reserve_call, settle_call
+from services.llm.spend_cap import (
+    SpendCapReached,
+    SpendCapUncounted,
+    reserve_call,
+    settle_call,
+)
 
 from .config import (
     MODEL_CONFIGS,
@@ -467,6 +472,11 @@ class LLMClient:
                 if usage_now:  # #2149 step 3: the provider's own usage, never estimated
                     cast(Dict[str, Any], served)["usage"] = dict(usage_now)
             return result
+        except (SpendCapReached, SpendCapUncounted):
+            # #2383 (Arch 2026-11-16): a script run's dollar cap refused this call. That
+            # ends the run. It is not a provider failure, so no fallback is tried and
+            # the caller never sees "all providers failed" for it.
+            raise
         except LLMKeyRequiredError as e:
             # #1809: a key refusal from the provider leg (the inverted chokepoint —
             # unbound is now an ERROR, never a server-key fallback) is a correct
@@ -549,6 +559,8 @@ class LLMClient:
                     if usage_now:  # #2149 step 3
                         cast(Dict[str, Any], served)["usage"] = dict(usage_now)
                 return result
+            except (SpendCapReached, SpendCapUncounted):
+                raise  # #2383: the cap ends the run; never try the next provider
             except LLMKeyRequiredError:
                 # #1809/#1819: the gate above (`_is_provider_configured`) is
                 # entitlement-aware, so a refusal HERE means the gate and the
