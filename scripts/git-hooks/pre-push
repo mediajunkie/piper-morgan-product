@@ -96,6 +96,9 @@
 #   and only when one commit is being pushed. It prints what it skipped and logs
 #   outcome=gates-cached or outcome=smoke-cached, which the review counts.
 # - PIPER_PREPUSH_NO_CACHE=1 turns it off for a push.
+# - The rule (Arch, 2026-11-16): a check is skipped on a hit only if everything it reads is in
+#   the key. A check that reads the left-out paths runs every time. A gate added later that
+#   reads dev/20NN/ or mailboxes/ joins the re-run list in run-push-gates.sh --logs-and-mail.
 # - On a remembered gates pass, the three lints that read those left-out paths are still run
 #   (`scripts/run-push-gates.sh --logs-and-mail`, about two seconds), and a failure blocks the
 #   push. Lead's condition, 2026-11-16: the mailbox bearer lint reads the CONTENTS of dated logs
