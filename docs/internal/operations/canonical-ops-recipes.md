@@ -643,8 +643,11 @@ piper-chromadb`. That recreates nothing and doesn't depend on the folder you're 
 binds Redis and Chroma to `./data/…` in the folder `up` ran from, and the running containers were
 made from Lead's worktrees (`docker inspect`, label `com.docker.compose.project.working_dir`, read
 11-16: `piper-postgres` from `lead-2083b`, `piper-redis` and `piper-chromadb` from `lead`). An `up`
-from another folder may recreate them on that folder's empty data (Arch named this as untested;
-nobody has run it, and nobody should against the shared stack). If a container is gone and has to
+from another folder recreates them on that folder's empty data. Measured 11-16 on a throwaway
+stack (Lead's 2386 run, 12:06): the same stack name brought up from a second folder left Postgres
+running and shared, and re-created Redis and Chroma with new container IDs bound to the second
+folder's empty `./data/`. The first copy's files stay on disk; the running services stop
+pointing at them. Nobody runs it against the shared stack. If a container is gone and has to
 be made again, that goes to xian through Exec. Once 2386 lands, a seat's own stack sets
 `PIPER_STACK` and its own ports; until then it uses an override as below.
 
