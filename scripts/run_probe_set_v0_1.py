@@ -234,9 +234,18 @@ if __name__ == "__main__":
     # #1812 aftermath: scripts must bind the developer's own keys — the
     # server-key fallback this instrument silently relied on is gone.
     sys.path.insert(0, str(PROJECT_ROOT / "scripts"))
-    from dev_key_binding import developer_keys_bound, pop_provider_flag, providers_from_flag
+    from dev_key_binding import (
+        developer_keys_bound,
+        pop_max_usd_flag,
+        pop_provider_flag,
+        providers_from_flag,
+    )
 
     # #2340: `--provider anthropic|openai` names the one account this run spends on.
     _provider = pop_provider_flag(sys.argv)
-    with developer_keys_bound(providers=providers_from_flag(_provider), require=True):
+    # #2383: `--max-usd N` is the most this run may spend.
+    _max_usd = pop_max_usd_flag(sys.argv)
+    with developer_keys_bound(
+        providers=providers_from_flag(_provider), max_usd=_max_usd, require=True
+    ):
         sys.exit(main())

@@ -27,11 +27,20 @@ provider raises ``UnboundLLMKeyError`` at the spend chokepoint (#1809), so a run
 asked for Anthropic stops when Anthropic refuses. It does not carry on against
 OpenAI.
 
+The dollar cap (#2383, ADR-084 D2). A run that makes calls states ``max_usd``
+before the first one, or the binder refuses to start. Inside the block the
+provider legs keep a running total (``services/llm/spend_cap.py``) and refuse the
+call that could take the run past the cap. The binder prints a ``PLANNED:`` line
+on entry and a ``COST:`` line, from the provider's own token counts, on exit. It
+never prints a key or the environment. A batch submit is not a live call: it is
+bounded by ``router_batch.py submit --cap-usd`` before it is sent, and passes that
+same figure here.
+
 Usage::
 
     from dev_key_binding import developer_keys_bound
 
-    with developer_keys_bound(providers=("anthropic",)):
+    with developer_keys_bound(providers=("anthropic",), max_usd=2.00, planned_calls=26):
         asyncio.run(run(...))
 """
 
@@ -72,10 +81,55 @@ def pop_provider_flag(argv: list[str]) -> Optional[str]:
     return None
 
 
-def planned_calls_line(calls: int, providers: Sequence[str], what: str = "model calls") -> str:
-    """The line a script prints before its first call (#2340 ask 3)."""
+def planned_calls_line(
+    calls: Optional[int],
+    providers: Sequence[str],
+    what: str = "model calls",
+    max_usd: Optional[float] = None,
+) -> str:
+    """The line a script prints before its first call (#2340 ask 3, #2383)."""
     named = ", ".join(providers) if providers else "no provider named"
-    return f"PLANNED: {calls} {what} on {named}. Nothing has been sent yet."
+    count = f"{calls} {what}" if calls is not None else f"{what}, count not stated"
+    cap = f" Cap ${max_usd:.2f}." if max_usd is not None else ""
+    return f"PLANNED: {count} on {named}.{cap} Nothing has been sent yet."
+
+
+def pop_max_usd_flag(argv: list[str]) -> Optional[float]:
+    """Take ``--max-usd N`` (or ``--max-usd=N``) out of ``argv`` and return N.
+
+    For the scripts whose own argument parsing runs inside the bound block. A
+    value that is not a number refuses here, before any call.
+    """
+    raw: Optional[str] = None
+    for i, arg in enumerate(argv):
+        if arg == "--max-usd" and i + 1 < len(argv):
+            raw = argv[i + 1]
+            del argv[i : i + 2]
+            break
+        if arg.startswith("--max-usd="):
+            raw = arg.split("=", 1)[1]
+            del argv[i]
+            break
+    if raw is None:
+        return None
+    try:
+        return float(raw)
+    except ValueError:
+        _refuse(f"--max-usd takes a dollar figure, not {raw!r}.")
+        return None
+
+
+def _checked_cap(max_usd: Optional[float]) -> float:
+    """The cap as a positive number, or a refusal before any call (#2383)."""
+    if max_usd is None:
+        _refuse(
+            "no cap. Pass --max-usd with the most this run may spend, in dollars: a paid "
+            "run states its cap before the first call and can't pass it (#2383, ADR-084 "
+            "D2). Refusing before the first call."
+        )
+    if isinstance(max_usd, bool) or not isinstance(max_usd, (int, float)) or not max_usd > 0:
+        _refuse(f"the cap must be a dollar figure above zero, not {max_usd!r}.")
+    return float(max_usd)  # type: ignore[arg-type]
 
 
 def _refuse(message: str) -> None:
@@ -134,15 +188,37 @@ def _developer_keys(providers: Sequence[str]) -> Dict[str, str]:
 
 @contextlib.contextmanager
 def developer_keys_bound(
-    *, providers: Sequence[str], require: bool = True
+    *,
+    providers: Sequence[str],
+    max_usd: Optional[float] = None,
+    planned_calls: Optional[int] = None,
+    announce: bool = True,
+    require: bool = True,
 ) -> Iterator[Dict[str, str]]:
     """Bind the developer's keys for ``providers``, and only those, for this block.
 
-    ``require=False`` is for dry runs that make no model call: nothing is
-    looked up and nothing is bound.
+    ``max_usd`` is the run's dollar cap and is required when the run makes calls
+    (#2383). ``planned_calls`` is the count for the ``PLANNED:`` line, when the
+    script knows it. ``announce=False`` is for a batch submit, which prints its
+    own two lines. ``require=False`` is for dry runs that make no model call:
+    nothing is looked up, nothing is bound and no cap is needed.
     """
     from services.llm.request_key import request_api_key
+    from services.llm.spend_cap import spend_cap
 
-    keys = _developer_keys(tuple(providers)) if require else {}
-    with request_api_key(keys):
-        yield keys
+    if not require:
+        with request_api_key({}):
+            yield {}
+        return
+
+    cap_usd = _checked_cap(max_usd)
+    keys = _developer_keys(tuple(providers))
+    if announce:
+        print(planned_calls_line(planned_calls, tuple(providers), max_usd=cap_usd), flush=True)
+    with spend_cap(cap_usd) as cap:
+        try:
+            with request_api_key(keys):
+                yield keys
+        finally:
+            if announce:
+                print(cap.cost_line(), flush=True)
