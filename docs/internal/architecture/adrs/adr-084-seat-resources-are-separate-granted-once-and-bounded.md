@@ -117,7 +117,7 @@ Nothing here lets a seat run `fly`, read the keychain, or pass a classifier refu
 4. Creates the test GitHub identity by hand, as a machine account (GitHub Terms B.3, read by HOST 11-15: one free machine account beside a personal account; a second personal account is not allowed; an account must be created by a human), bounds it in the org, and connects it on the second seat account.
 5. Adds the helper's exact-command allow, one per account name, the same way.
 6. Ticks "Operations reader" on the plain test account.
-7. Creates the MCP-app-scoped deploy token and stores it as a repository secret.
+7. Creates the MCP-app-scoped deploy token and stores it as a secret in a GitHub environment limited to `main` (D6), not a plain repository secret. The job is #2384.
 8. Installs CIO's batched hook and settings patches in one sitting when a batch is ready. This one recurs; it is the item this ADR doesn't remove.
 9. Adds the GitHub-connected seat account to the #2242 allowlist (one production write), then adds a second connector in his claude.ai settings and signs in to Piper as that account, once.
 
