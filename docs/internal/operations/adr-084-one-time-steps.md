@@ -267,13 +267,27 @@ rm .env
 
 ---
 
-## Arch's read of the rows so far (2026-11-15, after Steps F, G and H came in)
+## Arch's read of the whole file (2026-11-15 22:22)
 
-- **Steps F, G and H match ADR-084** (D3's two bounds on the identity, the connect-then-install order with PA's read between, the `main`-only environment for the token). No change asked.
-- **Step G part 1 and Step H use `fly` commands in xian's own Terminal.** That is by design: production writes and Fly tokens stay his, and no seat runs `fly`.
-- **Step F step 4 has xian type the second seat account's password at beta's login page.** So that password has to exist somewhere he can read it once and the helper can read it later. Step F0 says where.
-- **Still to write:** CIO's Steps A, C, D, E and I; Lead's Step F0. Steps C, D and H stay NOT READY until `seat_session.py`, Pard's plist and #2384 exist.
-- **Not yet read by me:** anything written after this note. I read the whole file again when CIO's and Lead's rows are in.
+Read in full: Steps A to J and `scripts/seat_settings_grant.py` (193 lines). Steps F, G, H and I match ADR-084 with no change asked. The findings below are on Step A and the tool; CIO owns both.
+
+**Two changes to the tool before it goes on xian's card (asked of CIO):**
+
+1. **`check-env` must accept only `PIPER_SEAT_` names.** Today it takes any name, so `check-env --name ANTHROPIC_API_KEY` (or any other variable in a seat's session) prints that value's length and the first 8 characters of its hash. For a long random key that tells nobody anything. For a short or guessable value it is a way to test guesses, and it is a fingerprint of something that isn't a seat resource. `add-key` already refuses other names with `NAME_RE`; `check-env` should refuse them the same way, with a test.
+2. **`add-allow` should accept only `Bash(...)` rules.** The ADR's grants are exact-command allows. Today the tool would also add an exact `Read(...)` or `Write(...)` rule. A deny would still beat an allowed Read, but a tool whose job is one kind of grant should refuse the others. Anything else stays a hand edit by xian.
+
+**Two changes to Step A's text:**
+
+3. **Where xian runs it.** The paste starts with `cd` into CIO's worktree and a `--ff-only` merge there. That touches a seat's working folder while its session may be running, and `--ff-only` fails if that branch has anything main doesn't. The script finds the seat's settings by absolute path, so it runs from any up-to-date checkout. Use his own checkout after its usual sync, or say what to do when the merge line refuses.
+4. **Check that the entry survived.** Claude Code itself writes to `settings.local.json` (when a permission is saved from a prompt). Whether a running session can write the file back without the new entry is untested. So: add the key while the Lead session is idle, and after the session restart run `scripts/seat_settings_grant.py show --seat lead` once more. The `env` line and `self-deny present: True` should still be there.
+
+**Read and found sound in the tool:** the value comes only from a hidden prompt and is never an argument; the write is a temp file at 0600 renamed into place, so a failure leaves the old file; nothing removes a deny; a wildcard rule is refused; a broken settings file is left alone.
+
+**Other notes:**
+- Step G part 1 and Step H use `fly` commands in xian's own Terminal. That is by design: production writes and Fly tokens stay his.
+- Step F step 4 has xian type the second seat account's password at beta's login page, so Step F0 says where that password lives.
+- **Still to write:** Lead's Step F0; HOST's provider half of Step E. Steps C, D and H stay NOT READY until `seat_session.py`, Pard's plist and #2384 exist.
+- **Unproven until the first real install** (CIO lists them too): a real key, a live session picking up the variable, and whether Claude Code honours the Read deny as written.
 
 ## Not on this list, by design
 
