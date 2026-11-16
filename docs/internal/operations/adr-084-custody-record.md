@@ -13,3 +13,4 @@ Names, dates and caps only. No value, length or id of any credential is written 
 | MCP deploy token | pending | | | Step H; waits on #2384. Expiry and name go here when chosen, no value. |
 | Seat browser LaunchAgent and debug-port bound | pending | | | HOST reads Pard's plist and wrapper before xian loads it. |
 | OpenAI seat project and hard limit | pending | | | Step E provider half; menu names unverified. |
+| In-code spend cap (#2383, 857909e2e2) | built on main, HOST read for custody: no key or environment printed | 2026-11-16 | Lead built; HOST read | Per run, in process; the workspace's monthly limit is the cross-run bound. No OpenAI price row, so capped OpenAI runs are refused. |
