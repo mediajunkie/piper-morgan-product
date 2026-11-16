@@ -155,7 +155,7 @@
                 this.style.display = 'none';
             } else {
                 const down = services.filter(s => !s.ready && !s.name.includes('optional')).map(s => s.name);
-                showError(`Not reachable from the server: ${down.join(', ')}. If you run Piper locally, start them (docker compose up -d); on a hosted instance, tell the person who runs it.`, 'Services Not Running');
+                showError(`Not reachable from the server: ${down.join(', ')}. If you run Piper on your own computer, start them with docker compose up -d postgres redis chromadb. On a hosted instance, tell the person who runs it.`, 'Services Not Running');
                 this.disabled = false;
                 this.textContent = 'Retry Check';
             }
