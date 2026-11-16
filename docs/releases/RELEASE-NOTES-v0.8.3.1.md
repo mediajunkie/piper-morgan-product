@@ -95,7 +95,7 @@ No breaking changes. Existing users will see the orientation modal on first logi
 
 ## Known Issues
 
-See [ALPHA_KNOWN_ISSUES.md](../ALPHA_KNOWN_ISSUES.md) for current known issues.
+See [ALPHA_KNOWN_ISSUES.md](../BETA_KNOWN_ISSUES.md) for current known issues.
 
 **New follow-up issue:**
 - #550: Add "Ask Piper" button to empty states (bridges users to chat when on pages without chat input)
