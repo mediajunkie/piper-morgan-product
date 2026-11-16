@@ -2,8 +2,8 @@
 """ADR-084 D3 (issue 2388): sign a seeded test account in to beta and save its session.
 
 A seat holds a session, never a password. This helper reads the account's credential
-file itself, signs in, checks that the account holds nothing real, and saves the two
-session cookies in one file under ``~/.piper-shared``. It prints the account name and
+file itself, signs in, checks that the account holds nothing real, and saves the
+access cookie (24 hours at most) in one file under ``~/.piper-shared``. It prints the account name and
 the session's expiry, and nothing else. ``scripts/seat_read.py`` reads the saved
 session; no seat does.
 
@@ -46,8 +46,10 @@ from typing import Callable, Dict, FrozenSet, Mapping, Optional, Tuple
 
 HOST = "https://beta.pipermorgan.ai"
 AUTH_COOKIE = "auth_token"
-REFRESH_COOKIE = "refresh_token"
 TIMEOUT_SECONDS = 30
+MAX_SESSION_SECONDS = (
+    86400  # HOST and Lead, 11-16: the expiry is capped here, whatever the host says
+)
 
 
 @dataclass(frozen=True)
@@ -84,7 +86,8 @@ Transport = Callable[[str, str, Optional[bytes], Mapping[str, str]], Reply]
 
 
 def shared_dir() -> Path:
-    return Path(os.environ.get("PIPER_SHARED") or Path.home() / ".piper-shared")
+    """Fixed. No environment value moves where credentials are read from (HOST, 11-16)."""
+    return Path.home() / ".piper-shared"
 
 
 def session_path(account: str) -> Path:
@@ -129,11 +132,10 @@ def read_credentials(path: Path) -> Tuple[str, str]:
         line = line.strip()
         if not line or line.startswith("#"):
             continue
-        for separator in (":", "="):
-            if separator in line:
-                key, value = line.split(separator, 1)
-                found.setdefault(key.strip().lower(), value.strip().strip("'\""))
-                break
+        positions = [line.index(sep) for sep in (":", "=") if sep in line]
+        if positions:  # split on whichever separator comes first (Lead, 11-16)
+            at = min(positions)
+            found.setdefault(line[:at].strip().lower(), line[at + 1 :].strip().strip("'\""))
     user = next((found[k] for k in USER_KEYS if found.get(k)), "")
     password = next((found[k] for k in PASSWORD_KEYS if found.get(k)), "")
     # Lead's point (11-16): say which expected name is missing, and nothing from the file.
@@ -149,7 +151,8 @@ def read_credentials(path: Path) -> Tuple[str, str]:
 
 
 def _cookies_from(reply: Reply) -> Dict[str, Tuple[str, Optional[int]]]:
-    """name -> (value, max-age) for the two session cookies in a reply."""
+    """name -> (value, max-age) for the access cookie in a reply. The refresh cookie
+    is dropped here: nothing a seat does needs a 7-day credential (Lead, 11-16)."""
     out: Dict[str, Tuple[str, Optional[int]]] = {}
     for header in reply.set_cookies:
         jar = SimpleCookie()
@@ -158,7 +161,7 @@ def _cookies_from(reply: Reply) -> Dict[str, Tuple[str, Optional[int]]]:
         except Exception:
             continue
         for name, morsel in jar.items():
-            if name in (AUTH_COOKIE, REFRESH_COOKIE) and morsel.value:
+            if name == AUTH_COOKIE and morsel.value:  # the 7-day refresh cookie is never kept
                 age = morsel["max-age"]
                 out[name] = (morsel.value, int(age) if str(age).isdigit() else None)
     return out
@@ -208,7 +211,7 @@ def check_holds_nothing_real(
     if admin.status != 403:
         raise Refused("the admin check could not be read")
 
-    keys = get("/api/v1/keys/list")
+    keys = get("/api/v1/keys/list?active_only=false")  # a deactivated key row counts too
     if keys.status != 200:
         raise Refused("the provider-key check could not be read")
     listed = _json(keys)
@@ -229,6 +232,8 @@ def check_holds_nothing_real(
         name = row.get("name") if isinstance(row, dict) else None
         state = row.get("status") if isinstance(row, dict) else None
         if not name or not state:
+            raise Refused("the connection check could not be read")
+        if state == "unknown":  # the host could not run its own check
             raise Refused("the connection check could not be read")
         if state != "not_configured" and name not in allowed.integrations:
             raise Refused("the account has a connection")
@@ -256,7 +261,12 @@ def save_session(account: str, cookies: Mapping[str, Tuple[str, Optional[int]]],
                 "value": value,
                 "domain": domain,
                 "path": "/",
-                "expires": int(now + (max_age if max_age is not None else 86400)),
+                "expires": int(
+                    now
+                    + min(
+                        max_age if max_age is not None else MAX_SESSION_SECONDS, MAX_SESSION_SECONDS
+                    )
+                ),
                 "httpOnly": True,
                 "secure": True,
                 "sameSite": "Lax",

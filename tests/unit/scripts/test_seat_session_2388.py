@@ -19,6 +19,7 @@ ACCESS = "dummy-access-cookie-value-71c2"
 REFRESH = "dummy-refresh-cookie-value-55d0"
 SECRETS = (PASSWORD, ACCESS, REFRESH)
 CRED = "web-seed-1386-credentials-2026-10-20.txt"
+FLOORED = "/api/v1/admin/floored-actions"
 
 
 def _load(name):
@@ -43,8 +44,8 @@ def sr(ss):
 
 
 @pytest.fixture
-def shared(tmp_path, monkeypatch):
-    monkeypatch.setenv("PIPER_SHARED", str(tmp_path))
+def shared(ss, tmp_path, monkeypatch):
+    monkeypatch.setattr(ss, "shared_dir", lambda: tmp_path)
     cred = tmp_path / CRED
     cred.write_text(f"username: {ACCOUNT}\npassword: {PASSWORD}\n")
     cred.chmod(0o600)
@@ -105,7 +106,10 @@ def test_saves_and_prints_name_and_expiry_only(ss, shared):
     saved = shared / f"{ACCOUNT}.session-token.json"
     assert stat.S_IMODE(saved.stat().st_mode) == 0o600
     state = json.loads(saved.read_text())
-    assert {c["name"] for c in state["cookies"]} == {"auth_token", "refresh_token"}
+    assert {c["name"] for c in state["cookies"]} == {
+        "auth_token"
+    }  # the refresh cookie is never kept
+    assert REFRESH not in saved.read_text()
     assert state["host"] == ss.HOST and state["account"] == ACCOUNT
 
 
@@ -177,6 +181,16 @@ def test_unexpected_error_prints_class_name_only(ss, shared, capsys):
         ),
         ("/api/v1/integrations/health", (200, {}), "connection check could not be read"),
         (
+            "/api/v1/integrations/health",
+            (200, {"integrations": [{"name": "github", "status": "unknown"}]}),
+            "connection check could not be read",
+        ),
+        (
+            "/api/v1/integrations/health",
+            (200, {"integrations": [{"name": "slack", "status": "failed"}]}),
+            "has a connection",
+        ),
+        (
             "/api/v1/settings/mcp-connections",
             (200, {"oauth_connections": [{"client_id": "x"}], "manual_tokens": []}),
             "has a connector",
@@ -245,34 +259,61 @@ def test_read_sends_the_cookies_and_returns_the_body(ss, sr, shared):
     assert body == '{"rows": []}'
     method, path, data, headers = host.calls[0]
     assert method == "GET" and data is None
-    assert ACCESS in headers["Cookie"]
+    assert ACCESS in headers["Cookie"] and REFRESH not in headers["Cookie"]
+    assert path == "/api/v1/admin/floored-actions?days=30"
 
 
 @pytest.mark.parametrize(
-    "path", ["/api/v1/auth/me", "/api/v1/auth/refresh", "/API/v1/AUTH/login", "/auth/login"]
+    "path",
+    [
+        "/api/v1/auth/me",
+        "/api/v1/auth/refresh",
+        "/API/v1/AUTH/login",
+        "/auth/login",
+        "/api/v1/keys/list",
+        "/api/v1/settings/mcp-connections",
+        "/api/v1/admin/account-flags?username=x",
+        "/api/v1/admin/floored-actions/",
+        "/",
+    ],
 )
-def test_read_refuses_the_sign_in_routes(ss, sr, shared, path):
+def test_read_refuses_every_path_off_the_closed_list(ss, sr, shared, path):
     _saved(ss, shared)
     host = StubHost(ss)
-    with pytest.raises(ss.Refused, match="sign-in routes"):
+    with pytest.raises(ss.Refused, match="not on the list"):
         sr.read(ACCOUNT, path, host, now=1_800_000_100)
     assert host.calls == []
 
 
-@pytest.mark.parametrize("path", ["https://evil.example/x", "//evil.example/x", "api/v1/x"])
-def test_read_refuses_anything_that_is_not_a_path_on_the_host(ss, sr, shared, path):
+@pytest.mark.parametrize(
+    "path",
+    [
+        "https://evil.example/x",
+        "//evil.example/x",
+        "api/v1/admin/floored-actions",
+        "/api/v1/x/../admin/floored-actions",
+        "/api/v1//admin/floored-actions",
+        "/./api/v1/admin/floored-actions/..",
+        "/api/v1/admin/%66loored-actions",
+        "/api/v1/admin/floored-actions#frag",
+        "/api/v1/admin/floored-actions?days=30;x=1",
+        "/api/v1/admin/floored-actions?next=//evil.example",
+        "/api/v1/admin/floored-actions?u=a@b",
+    ],
+)
+def test_read_refuses_a_path_that_is_not_in_a_plain_form(ss, sr, shared, path):
     _saved(ss, shared)
     host = StubHost(ss)
-    with pytest.raises(ss.Refused, match="one slash"):
+    with pytest.raises(ss.Refused, match="plain form"):
         sr.read(ACCOUNT, path, host, now=1_800_000_100)
     assert host.calls == []
 
 
 def test_read_does_not_print_a_body_that_echoes_a_cookie(ss, sr, shared, capsys):
     _saved(ss, shared)
-    host = StubHost(ss, **{"/api/v1/echo": ss.Reply(200, f"token={REFRESH}".encode())})
+    host = StubHost(ss, **{FLOORED: ss.Reply(200, f"token={ACCESS}".encode())})
     sr.read.__defaults__ = (host, 1_800_000_100)
-    code, text = _run_main(sr, ["--account", ACCOUNT, "/api/v1/echo"], capsys)
+    code, text = _run_main(sr, ["--account", ACCOUNT, FLOORED], capsys)
     assert code == 2 and "not printed" in text
     for secret in SECRETS:
         assert secret not in text
@@ -281,24 +322,24 @@ def test_read_does_not_print_a_body_that_echoes_a_cookie(ss, sr, shared, capsys)
 def test_read_refuses_an_expired_session(ss, sr, shared):
     _saved(ss, shared)
     with pytest.raises(ss.Refused, match="expired"):
-        sr.read(ACCOUNT, "/api/v1/x", StubHost(ss), now=1_800_000_000 + 86401)
+        sr.read(ACCOUNT, FLOORED, StubHost(ss), now=1_800_000_000 + 86401)
 
 
 def test_read_refuses_without_a_saved_session(ss, sr, shared):
     with pytest.raises(ss.Refused, match="no saved session"):
-        sr.read(ACCOUNT, "/api/v1/x", StubHost(ss))
+        sr.read(ACCOUNT, FLOORED, StubHost(ss))
 
 
 def test_read_refuses_a_name_not_on_the_list(ss, sr, shared):
     with pytest.raises(ss.Refused, match="not on the list"):
-        sr.read("xian", "/api/v1/x", StubHost(ss))
+        sr.read("xian", FLOORED, StubHost(ss))
 
 
 def test_read_reports_a_non_200_as_a_status_only(ss, sr, shared, capsys):
     _saved(ss, shared)
-    host = StubHost(ss, **{"/api/v1/gone": ss.Reply(404, ACCESS.encode())})
+    host = StubHost(ss, **{FLOORED: ss.Reply(404, ACCESS.encode())})
     sr.read.__defaults__ = (host, 1_800_000_100)
-    code, text = _run_main(sr, ["--account", ACCOUNT, "/api/v1/gone"], capsys)
+    code, text = _run_main(sr, ["--account", ACCOUNT, FLOORED], capsys)
     assert code == 2 and "answered 404" in text and ACCESS not in text
 
 
@@ -331,3 +372,34 @@ def test_a_key_name_mismatch_names_the_expected_key_and_nothing_from_the_file(
     code, out = _run_main(ss, ["--account", ACCOUNT], capsys)
     assert code == 2 and reason in out
     assert PASSWORD not in out and "secret" not in out and "name:" not in out
+
+
+def test_the_key_check_asks_for_inactive_keys_too(ss, shared):
+    host = StubHost(ss)
+    ss.run(ACCOUNT, host)
+    assert any(path == "/api/v1/keys/list?active_only=false" for _, path, _, _ in host.calls)
+
+
+def test_expiry_is_capped_in_code_whatever_the_host_says(ss, shared):
+    host = StubHost(ss)
+    host.replies["/api/v1/auth/login"] = ss.Reply(
+        200, b"{}", (f"auth_token={ACCESS}; HttpOnly; Max-Age=99999999; Path=/",)
+    )
+    ss.run(ACCOUNT, host, now=1_800_000_000)
+    state = json.loads((shared / f"{ACCOUNT}.session-token.json").read_text())
+    assert state["cookies"][0]["expires"] == 1_800_000_000 + 86400
+    assert ss.MAX_SESSION_SECONDS == 86400
+
+
+def test_no_environment_value_moves_the_shared_folder(monkeypatch, tmp_path):
+    monkeypatch.setenv("PIPER_SHARED", str(tmp_path))
+    fresh = _load("seat_session")
+    assert fresh.shared_dir() == Path.home() / ".piper-shared"
+
+
+def test_a_line_splits_on_whichever_separator_comes_first(ss, shared):
+    (shared / CRED).write_text(f"username={ACCOUNT}\npassword=ab:cd\n")
+    (shared / CRED).chmod(0o600)
+    assert ss.read_credentials(shared / CRED) == (ACCOUNT, "ab:cd")
+    (shared / CRED).write_text(f"username: {ACCOUNT}\npassword: ab=cd\n")
+    assert ss.read_credentials(shared / CRED) == (ACCOUNT, "ab=cd")

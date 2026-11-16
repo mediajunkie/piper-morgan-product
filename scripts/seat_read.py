@@ -6,8 +6,9 @@ seat has to. It prints the response body and nothing else.
 
 Bounds:
 - The host is ``seat_session.HOST``; the account must be on ``seat_session.ACCOUNTS``.
-- GET only. The path must start with ``/`` and may not be under ``/api/v1/auth/``,
-  whose replies carry tokens.
+- GET only, and only a path on the closed list below, matched on the parsed path with
+  its query split off. Adding a path is a diff HOST reads. The sign-in routes, the key
+  list and the connector list are never on it.
 - Redirects are not followed, so the cookies never go to another host.
 - If the body contains either cookie's value, nothing is printed.
 - A failure prints a fixed reason and the status code, never a header.
@@ -22,9 +23,11 @@ from __future__ import annotations
 
 import argparse
 import json
+import re
 import stat
 import sys
 import time
+import urllib.parse
 from pathlib import Path
 from typing import Dict, Optional
 
@@ -33,7 +36,22 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 import seat_session  # noqa: E402
 from seat_session import Refused, Transport  # noqa: E402
 
-FORBIDDEN_PREFIXES = ("/api/v1/auth/", "/auth/")
+# The closed list (HOST and Lead, 11-16). The ops_reader routes of issue 2390 join it as they land.
+ALLOWED_PATHS = frozenset({"/api/v1/admin/floored-actions"})
+QUERY_OK = re.compile(r"^[A-Za-z0-9_=&.-]*$")
+
+
+def checked_path(path: str) -> str:
+    """The path as it will be sent, or a refusal. Nothing is normalised: a form that
+    would need normalising is refused."""
+    if not path.startswith("/") or "%" in path or "//" in path or ".." in path or "#" in path:
+        raise Refused("the path is not in a plain form")
+    parts = urllib.parse.urlsplit(path)
+    if parts.scheme or parts.netloc or parts.fragment or not QUERY_OK.match(parts.query):
+        raise Refused("the path is not in a plain form")
+    if parts.path not in ALLOWED_PATHS:
+        raise Refused("that path is not on the list this script reads")
+    return parts.path + ("?" + parts.query if parts.query else "")
 
 
 def load_cookies(account: str, now: Optional[float] = None) -> Dict[str, str]:
@@ -66,11 +84,7 @@ def read(
 ) -> str:
     if account not in seat_session.ACCOUNTS:
         raise Refused("that account is not on the list")
-    if not path.startswith("/") or path.startswith("//"):
-        raise Refused("the path must start with one slash")
-    lowered = path.lower()
-    if any(lowered.startswith(prefix) for prefix in FORBIDDEN_PREFIXES):
-        raise Refused("paths under the sign-in routes are not read")
+    path = checked_path(path)
     cookies = load_cookies(account, now)
     header = {"Cookie": "; ".join(f"{name}={value}" for name, value in cookies.items())}
     reply = send("GET", path, None, header)
