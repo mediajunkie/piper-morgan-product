@@ -2169,3 +2169,4 @@ issue	state	milestone	sprint	title	labels	blocked_by	state_reason
 2378	CLOSED	Production		On a GitHub App grant, single-repository reads (by number, branches, releases) still reach repositories outside the installed set (2374 follow-up)	architecture		NOT_PLANNED
 2380	OPEN	Production		GitHub connect in one trip: install and authorize together (ordinary-user path)	enhancement		
 2379	OPEN	Production		On a GitHub App grant, repo-scoped reads (branches, releases, one issue) can answer for a public repository the App isn't installed on			REOPENED
+2381	OPEN	Production		Screen atlas and navigation tree of record for settings and integrations pages, refreshed per promotion (so CXO's served reads don't wait on xian's screen)			
