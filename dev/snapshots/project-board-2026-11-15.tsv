@@ -2171,3 +2171,4 @@ issue	state	milestone	sprint	title	labels	blocked_by	state_reason
 2379	OPEN	Production		On a GitHub App grant, repo-scoped reads (branches, releases, one issue) can answer for a public repository the App isn't installed on			REOPENED
 2381	OPEN	Production		Screen atlas and navigation tree of record for settings and integrations pages, refreshed per promotion (so CXO's served reads don't wait on xian's screen)			
 2382	OPEN	Production		MCP server is stateful: the first connector read after a new process fails 'Connection closed' (run stateless)	architecture		
+2383	OPEN	Production		Live-call spend cap for seat runs: the binder refuses to start without max_usd; running total at the spend chokepoint (ADR-084 build item)			

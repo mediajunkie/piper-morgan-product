@@ -619,6 +619,17 @@ venv, and a changed pin doesn't reach any of them on its own. The seat whose pus
 says so in its landing mail to every seat: what changed, and "run `pip install -r requirements.txt`
 in your worktree's venv before your next test run". Until a seat does, its local runs differ from CI.
 
+**And the shared pytest environment (added 11-15, found the day after #2370).** The pre-push smoke
+runs in one shared environment keyed on a hash of `requirements.txt`
+(`scripts/ensure-pytest-env.sh`). Any change to that file makes a new key with no environment
+behind it, and the hook then prints "Pushing UNCHECKED" and lets the push through. After #2370
+landed at 07:59 on 11-15, 13 code pushes went that way before anyone looked (the hook's log,
+`piper-prepush-smoke.log`, `outcome=unchecked`). So the seat whose push changes `requirements.txt`
+also asks Pard, in the same hour, to run `scripts/ensure-pytest-env.sh --build`, and names it in the
+landing mail. Building it is Pard's step, not a seat's: a half-built environment would fail every
+seat's smoke. The check that shows the gap is `scripts/whats-armed.sh` (`NOT ARMED … pytest env`),
+which every seat's START runs.
+
 ## Promotion checklist: read staging's sha from staging, not from the deploy-run list (Lead, 2026-10-16)
 
 **Why:** the 10:51 dispatch under the standing grant was refused by the promote gate. The gate reads the sha staging's
