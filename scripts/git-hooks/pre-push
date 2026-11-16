@@ -81,6 +81,36 @@
 #   (e.g. a path to an untracked, smoke-marked, deliberately-failing test file). Empty/unset is a
 #   no-op — routine runs are unaffected.
 
+# REMEMBERED PASS (CIO, 2026-11-16, standing row 9u; reviewed by Lead, who owns this hook).
+# On 11-16 a code push that had passed the gates and the smoke lost the push race ten times in
+# one morning: the hook holds a push for about two minutes and log pushes were landing every 30
+# to 60 seconds. So a pass is remembered:
+# - The key is the pushed commit's tree with the dated session logs (dev/20NN/) and mailboxes/
+#   left out. Another seat's log or mail push merged in leaves the key unchanged; any other
+#   change to the tree makes a new key and a full run.
+# - A pass is recorded only when HEAD is the pushed commit and `git status --porcelain` is empty,
+#   so what ran is what is pushed. (Found the same day: pushing a branch that is not checked
+#   out runs the gates on the worktree, and a failing commit read "13 of 13". That case now
+#   prints a warning and records nothing.)
+# - A recorded pass is honoured for 30 minutes, for the same kind of check (gates or smoke),
+#   and only when one commit is being pushed. It prints what it skipped and logs
+#   outcome=gates-cached or outcome=smoke-cached, which the review counts.
+# - PIPER_PREPUSH_NO_CACHE=1 turns it off for a push.
+# - The rule (Arch, 2026-11-16): a check is skipped on a hit only if everything it reads is in
+#   the key. A check that reads the left-out paths runs every time. A gate added later that
+#   reads dev/20NN/ or mailboxes/ joins the re-run list in run-push-gates.sh --logs-and-mail.
+# - On a remembered gates pass, the three lints that read those left-out paths are still run
+#   (`scripts/run-push-gates.sh --logs-and-mail`, about two seconds), and a failure blocks the
+#   push. Lead's condition, 2026-11-16: the mailbox bearer lint reads the CONTENTS of dated logs
+#   and mail, and a code push is the one moment those files are read at all, so a seat's own
+#   log lines added after a pass must not ride through unread.
+# - The pass file is in the git common folder, so every worktree shares it: a pass one seat
+#   records is honoured for another seat pushing the same content. That is sound, because the
+#   key is the content (Arch, Lead).
+# - A push of a commit that is not checked out is warned about and logged as
+#   outcome=not-checked-out. It is not blocked in this version; Lead and Arch decide that from
+#   a week's count.
+
 set -u
 top="$(git rev-parse --show-toplevel)"
 common="$(git rev-parse --git-common-dir)"
@@ -88,8 +118,39 @@ code_re='^(services/|web/|tests/|main\.py$|alembic/|pytest\.ini$|requirements[^/
 # The gates' trigger (CIO 2026-11-12, condition 1): the smoke's paths plus these.
 gates_re='^(services/|web/|tests/|main\.py$|alembic/|pytest\.ini$|requirements[^/]*\.txt$|scripts/|\.github/|\.claude/|\.[^/]*-baseline\.txt$)'
 zero=0000000000000000000000000000000000000000
+pass_window=1800   # seconds a remembered pass is honoured
 
 pushes="$(cat)"
+
+# --- Remembered pass (see header) ---
+passfile="$common/piper-prepush-pass.log"
+pass_key() {
+  # pass_key <sha>: a hash of the commit's tree without dated session logs and mail.
+  {
+    git ls-tree "$1" 2>/dev/null | grep -vE "$(printf '\t')(dev|mailboxes)\$"
+    git ls-tree "$1" dev/ 2>/dev/null | grep -vE "$(printf '\t')dev/20[0-9][0-9]\$"
+  } | git hash-object --stdin 2>/dev/null
+}
+pass_remembered() {
+  # pass_remembered <kind> <key>: 0 and prints the time if a pass is on record inside the window.
+  [ "${PIPER_PREPUSH_NO_CACHE:-}" = "1" ] && return 1
+  [ -n "$2" ] && [ -f "$passfile" ] || return 1
+  local now cutoff line ts
+  now=$(date +%s); cutoff=$((now - pass_window))
+  line="$(grep -E "^ts=[0-9]+ kind=$1 key=$2 " "$passfile" 2>/dev/null | tail -1)"
+  [ -n "$line" ] || return 1
+  ts="${line#ts=}"; ts="${ts%% *}"
+  [ "$ts" -ge "$cutoff" ] 2>/dev/null || return 1
+  echo "$(( (now - ts) / 60 )) min ago"
+}
+pass_record() {
+  # pass_record <kind> <key> <sha>: only when what ran is what is pushed.
+  [ -n "$2" ] || return 0
+  if [ "$(git rev-parse HEAD 2>/dev/null)" != "$3" ] || [ -n "$(git status --porcelain 2>/dev/null)" ]; then
+    return 0
+  fi
+  printf 'ts=%s kind=%s key=%s sha=%s worktree=%s\n' "$(date +%s)" "$1" "$2" "$3" "$top" >> "$passfile" 2>/dev/null
+}
 
 # --- Old-history guard (see header). Runs before everything else, on every push. ---
 sentinels="$common/piper-old-history-sentinels"
@@ -115,6 +176,8 @@ fi
 
 touched=""
 gates_touched=""
+push_sha=""
+push_count=0
 while read -r local_ref local_sha remote_ref remote_sha; do
   [ "$local_sha" = "$zero" ] && continue                   # branch deletion
   if [ "$remote_sha" = "$zero" ]; then
@@ -131,12 +194,26 @@ while read -r local_ref local_sha remote_ref remote_sha; do
   [ -n "$hit" ] && touched="$hit"
   ghit="$(printf '%s\n' "$files" | grep -E "$gates_re" | head -1 || true)"
   [ -n "$ghit" ] && gates_touched="$ghit"
+  if [ -n "$hit" ] || [ -n "$ghit" ]; then
+    [ "$local_sha" != "$push_sha" ] && push_count=$((push_count + 1))
+    push_sha="$local_sha"
+  fi
 done <<< "$pushes"
 
 [ -z "$touched" ] && [ -z "$gates_touched" ] && exit 0
 
 start_ts=$(date +%s)
 logfile="$common/piper-prepush-smoke.log"
+
+key=""
+if [ "$push_count" -eq 1 ]; then
+  key="$(pass_key "$push_sha")"
+  if [ "$(git rev-parse HEAD 2>/dev/null)" != "$push_sha" ]; then
+    echo "⚠️  pre-push: the commit being pushed (${push_sha:0:10}) is not the one checked out. The checks below read the WORKTREE, not that commit; check it out and push again for a result that counts." >&2
+    printf 'ts=%s worktree=%s code_path=%s outcome=not-checked-out pushed=%s\n' \
+      "$(date +%Y-%m-%dT%H:%M:%S%z)" "$top" "${gates_touched:-$touched}" "$push_sha" >> "$logfile" 2>/dev/null
+  fi
+fi
 
 # --- Push gates (see header). Before the smoke: they need no database and no lock. ---
 gates_log() {
@@ -151,6 +228,18 @@ if [ -n "$gates_touched" ]; then
   if [ "${PIPER_SKIP_PUSH_GATES:-}" = "1" ]; then
     echo "⚠️  pre-push gates SKIPPED by PIPER_SKIP_PUSH_GATES=1 (path touched: $gates_touched). Say why in your log." >&2
     gates_log "gates-skip"
+  elif [ -x "$top/scripts/run-push-gates.sh" ] && when="$(pass_remembered gates "$key")"; then
+    # The key leaves out dated logs and mail, so the lints that read them run every time.
+    light_out="$(cd "$top" && scripts/run-push-gates.sh --hook --logs-and-mail 2>&1)"
+    light_rc=$?
+    if [ $light_rc -ne 0 ]; then
+      printf '%s\n' "$light_out" | grep -vE '^PASS ' >&2
+      echo "❌ pre-push: the gates' pass on this content is remembered, but a lint that reads session logs and mail FAILED. Push blocked." >&2
+      gates_log "gates-cached-lint-fail" "key=$key"
+      exit 1
+    fi
+    echo "pre-push: gates already passed on this content $when (remembered; only dated logs or mail differ). The three lints that read logs and mail ran again and passed." >&2
+    gates_log "gates-cached" "key=$key"
   elif [ ! -x "$top/scripts/run-push-gates.sh" ]; then
     echo "⚠️  pre-push: scripts/run-push-gates.sh not found in this tree. Gates UNCHECKED." >&2
     gates_log "gates-unchecked" "reason=no_script"
@@ -170,6 +259,7 @@ if [ -n "$gates_touched" ]; then
     fi
     echo "pre-push: gates passed (${gates_summary#run-push-gates: })." >&2
     gates_log "gates-pass" "summary=\"$gates_summary\""
+    pass_record gates "$key" "$push_sha"
   fi
 fi
 
@@ -197,6 +287,12 @@ fi
 dirty="$(git status --porcelain 2>/dev/null | cut -c4- | grep -E "$code_re" || true)"
 if [ -n "$dirty" ]; then
   echo "⚠️  pre-push: smoke ran against a DIRTY tree under code paths: $(printf '%s' "$dirty" | tr '\n' ' ' | sed 's/ *$//')" >&2
+fi
+
+if when="$(pass_remembered smoke "$key")"; then
+  echo "pre-push: smoke already passed on this content $when (remembered; only dated logs or mail differ). Not re-run." >&2
+  log_line "" "smoke-cached" "key=$key"
+  exit 0
 fi
 
 py="$("$top/scripts/ensure-pytest-env.sh" 2>/dev/null)"
@@ -278,4 +374,5 @@ if [ $rc -ne 0 ]; then
 fi
 echo "pre-push: smoke passed ($summary)." >&2
 log_line "$py" "pass" "lock_strategy=$lock_strategy summary=\"$summary\""
+pass_record smoke "$key" "$push_sha"
 exit 0
