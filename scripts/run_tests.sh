@@ -68,17 +68,26 @@ setup_environment() {
             print_success "PostgreSQL detected running"
         else
             print_warning "PostgreSQL not detected - some tests may require database"
-            echo "  Run: docker-compose up -d"
+            echo "  Start Postgres yourself, then re-run. This script does not start services."
         fi
     else
-        # Unix: Use pgrep
-        if pgrep postgres > /dev/null 2>&1; then
-            print_success "PostgreSQL detected running"
+        # Unix: test the database port. `pgrep postgres` finds nothing when Postgres runs in a
+        # container, so it reported "not detected" on every Docker host (issue 2386).
+        if postgres_port_open; then
+            print_success "PostgreSQL reachable on ${POSTGRES_HOST:-localhost}:${POSTGRES_PORT:-5433}"
         else
-            print_warning "PostgreSQL not detected - some tests may require database"
-            echo "  Run: docker-compose up -d"
+            print_warning "PostgreSQL not reachable on ${POSTGRES_HOST:-localhost}:${POSTGRES_PORT:-5433} - some tests may require database"
+            echo "  Start Postgres yourself, then re-run. This script does not start services."
         fi
     fi
+}
+
+# True when something accepts a TCP connection on the database port. Works for a native Postgres
+# and for one in a container, which `pgrep postgres` on the host cannot see.
+postgres_port_open() {
+    local host="${POSTGRES_HOST:-localhost}"
+    local port="${POSTGRES_PORT:-5433}"
+    (exec 3<>"/dev/tcp/${host}/${port}") > /dev/null 2>&1
 }
 
 # Smoke Tests (< 5 seconds)
@@ -167,13 +176,14 @@ run_full_tests() {
     local start_time=$(date +%s)
 
     # Check database availability for integration tests
-    if ! pgrep postgres > /dev/null 2>&1; then
-        print_warning "PostgreSQL not running - starting with docker-compose"
-        docker-compose up -d postgres redis || {
-            print_error "Failed to start required services"
-            return 1
-        }
-        sleep 2
+    # This script never starts services (issue 2386). It used to run compose here, and on a shared
+    # host that re-creates containers other people's work is using. If the database port is closed,
+    # say what is missing and stop.
+    if ! postgres_port_open; then
+        print_error "PostgreSQL is not reachable on ${POSTGRES_HOST:-localhost}:${POSTGRES_PORT:-5433}"
+        echo "  The full suite needs Postgres and Redis. Start them yourself, then re-run."
+        echo "  This script does not start services."
+        return 1
     fi
 
     # Full test suite with coverage
