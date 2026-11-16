@@ -15,7 +15,7 @@ Bounds:
 Usage:
     scripts/seat_read.py --account web-seed-1386 '/api/v1/admin/floored-actions?days=30'
 
-Concept: docs/internal/architecture/adrs/adr-084-seat-resources-are-separate-granted-once-and-bounded.md
+Concept: docs/internal/operations/adr-084-one-time-steps.md
 """
 
 from __future__ import annotations

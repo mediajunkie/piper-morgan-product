@@ -118,7 +118,7 @@ scripts/seat_settings_grant.py check-env --name PIPER_SEAT_ANTHROPIC_KEY
 
 ## Step C (ADR row 5): the sign-in helper's exact-command allow
 
-**Owner: CIO. NOT READY: waits on `scripts/seat_session.py`** (not built; issue to be placed by PPM on xian's yes) and on HOST's seven bounds being met in it.
+**Owner: CIO. NOT READY: `scripts/seat_session.py` is built (issue 2388) and waits on Lead's review, HOST's read against the bounds, and its landing on main.** Its client is `scripts/seat_read.py`, which does one GET from the saved session and needs no grant of its own: each run goes to the classifier, because its path argument differs every time.
 
 What the ADR requires (D3): one exact-command allow per seeded account name, added by xian to the settings of each seat that does served reads. The helper prints the account name and the session's expiry only.
 
@@ -128,13 +128,13 @@ The step's shape, so only the command text is missing (CIO, 2026-11-15):
 - **Paste:** one line per account name, per seat (Web first):
 
 ```
-scripts/seat_settings_grant.py add-allow --seat web --rule 'Bash(<the helper's exact command for one account>)'
+scripts/seat_settings_grant.py add-allow --seat web --rule 'Bash(scripts/seat_session.py --account web-seed-1386)'
 ```
 
-  The rule must match the command the seat types, character for character. An exact allow covers only the bare command; anything chained onto it goes back to the classifier (traced 11-06). I write the final text here when the helper lands. The tool refuses any rule with `*` in it and never touches a deny.
+  The rule must match the command the seat types, character for character. An exact allow covers only the bare command; anything chained onto it goes back to the classifier (traced 11-06). The seat types exactly `scripts/seat_session.py --account web-seed-1386` from the top of its worktree. The tool refuses any rule with `*` in it and never touches a deny.
 
 - **You should see:** `added 1 allow rule for seat web`, then the rule counts.
-- **Seat check:** the seat runs the helper once. It prints the account name and the session's expiry, nothing else.
+- **Seat check:** the seat runs the helper once. It prints one line, `web-seed-1386 session saved, expires <time>`, and nothing else. Then `scripts/seat_read.py --account web-seed-1386 '/api/v1/admin/floored-actions?days=30'` prints the counter's JSON. If the helper prints `refused:` with a reason (for example, the account holds a provider key), nothing was saved: the seat reports the reason to HOST and Exec and does not retry.
 - **If it fails:** if the classifier still refuses the helper's run, this route is dropped and the ADR's fallback applies (he signs in himself, rarely). Nobody works around the refusal.
 
 ## Step D (ADR row 10): load the seat browser's LaunchAgent
