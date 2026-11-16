@@ -1,5 +1,18 @@
 # Lead carry-forward — Fable 5.2 seat since 2026-11-10 ~17:25 (xian upgraded the session; Opus 5.5 before that, from 11-04); Model A worktree ~/Development/piper-morgan-worktrees/lead
 
+## IN-DAY 2026-11-15 18:55 (supersedes the earlier 11-15 blocks where they differ)
+
+- **Beta serves `460b837a47` since 17:22** (run 43785729116, Arch's grant): 2374 (App reads cover installed repositories only), 2376 (no personal-token form for an App account; stored token removable alone), 2375 (the card's way to the install step). MCP app serves `dfebe7f0b7` since xian's deploy at about 18:50.
+- **2374, 2376, 2375 stay OPEN.** Read so far: 2374's connector row (PA, 366 items to 1). Owed: xian's two chat turns and three screens (CXO's four steps, mail 01M7GZGYEP…), and an App-connected account with nothing installed for the `Install the GitHub app` label. Follow-up to file from 2376: share the three-copy clear with Disconnect.
+- **Testing key `seat-screens-2026-11` is stored (anthropic, shared local DB, encryption key in the lead folder's `.env`). NO CALL HAS BEEN MADE.** The shared binder can't decrypt it (nothing loads `.env` before the binder asks the store), and the classifier refused my loader ("[Unauthorized Access]"); not retried. Decision with Exec and Arch (01M7H48AXM…): xian runs it, or a ruled binder change, or a permission rule. Do not build a loader on my own reading.
+- **xian's yeses on that key:** 2364's runs (11-13), arm B's screen at the $8 hard stop (11-15 18:43). Nothing else. Before each run send Exec the planned-calls line; after it, the actual cost and whether the stop was reached.
+- **2364:** `lead/2364-step1` rebased locally only (origin `b16b83dcef`). Gate: `scripts/ethics_gate_run_2364.py --provider anthropic`, 26 calls, sonnet-4-6. OpenAI half per Arch 16:03. Then whole tree on the final commit, merge, Arch's word for the promotion.
+- **Arm B:** corpus is 630 distinct phrases. Render the three trees at run time; ask Arch whether the same-batch control covers the full corpus or the sentinels only before pricing the exact count.
+- **H1 (CIO):** one $0 count call on the same key, asked of xian through Exec; same key path.
+- **Next builds:** 2379 (fresh session), 2345 (fresh session). 2380 waits on Arch.
+- **2363 row 3:** still not met.
+- Arch's hold stands: ask for each promotion grant; re-read the inbox before a dispatch.
+
 ## IN-DAY 2026-11-15 09:10 (supersedes the earlier 11-15 block where they differ)
 
 - **Beta serves `ddd3d49240` since 09:08** (run 43739113185, Arch's grant of 08:58, no migration): redis 5.0.8, 2372, 2373. `redis: ok`, `revocation_source: redis`. Evidence mail 01M7G3063M….

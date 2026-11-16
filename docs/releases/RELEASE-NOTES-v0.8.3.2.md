@@ -129,7 +129,7 @@ No breaking changes. The Interactive Standup Assistant is additive and does not 
 
 ## Known Issues
 
-See [ALPHA_KNOWN_ISSUES.md](../ALPHA_KNOWN_ISSUES.md) for current known issues.
+See [ALPHA_KNOWN_ISSUES.md](../BETA_KNOWN_ISSUES.md) for current known issues.
 
 **Pre-existing test issue (not a regression):**
 - `test_standup_workflow_initialization` expects `user_id == "xian"` but code defaults to `"default"` - tracked as bead `piper-morgan-r9r`

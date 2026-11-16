@@ -2180,6 +2180,14 @@ keys through `scripts/dev_key_binding.py` (the phase 0 to 3 instruments, `invers
 None of them reads the OS keychain. Only the named provider is bound, so when it refuses, the run
 stops with `UnboundLLMKeyError`; it does not carry on against the other provider. The two
 screens print `PLANNED: N … calls on <provider>` before the first call.
+Found 2026-11-15: the database-store route needs `ENCRYPTION_MASTER_KEY` in the process's
+environment, and the binder does not load the folder's `.env`, so a key stored with
+`scripts/local_key_setup.py` is not reachable from a seat's script run (Arch's ruling that day:
+xian runs the paid command in Terminal). `router_batch.py submit` needs `--cap-usd` and
+`--ledger`: it refuses unsent a batch whose upper estimate (text at 3 characters a token, all of
+`max_tokens`, batch price) plus the ledger's earlier batches would pass the cap, counts a sent
+batch at that estimate until it ends and at the provider's token counts after, and prints a
+`COST:` line. `--dry-run` prints the planned line with no key and no call.
 
 **GitHub connect through the GitHub App (#2342, ADR-081 D3, 2026-11-12).** The one GitHub
 credential resolver (`GitHubMCPSpatialAdapter.resolve_credential`) has an **App mode**,
