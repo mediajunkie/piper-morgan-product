@@ -691,13 +691,9 @@
           >
             Disconnect
           </button>
-          ${integration.name === 'github' ? `
-          <a href="${GITHUB_REPOSITORIES_URL}" class="action-btn configure-btn" id="github-repositories-link">
-            ${GITHUB_LINK_LABELS.unknown}
-          </a>` : `
           <a href="${integration.configure_url || '/settings/integrations/' + integration.name}" class="action-btn configure-btn">
             Settings
-          </a>`}
+          </a>
         ` : `
           <a
             href="/settings/integrations/${integration.name}"
@@ -708,7 +704,10 @@
           </a>
         `;
       } else if (isAPIKey) {
-        // API key integrations: Connect/Disconnect via settings page (Issue #540)
+        // API key integrations: Connect/Disconnect via settings page (Issue #540).
+        // GitHub's card is drawn HERE (API_KEY_INTEGRATIONS), so its #2375 link to the
+        // repository page lives in this branch. It was first put in the OAuth branch,
+        // which never draws GitHub, and so was not served (xian's screen, 2026-11-15).
         actionButtons = isConnected ? `
           <button
             class="action-btn disconnect-btn"
@@ -717,9 +716,13 @@
           >
             Disconnect
           </button>
+          ${integration.name === 'github' ? `
+          <a href="${GITHUB_REPOSITORIES_URL}" class="action-btn configure-btn" id="github-repositories-link">
+            ${GITHUB_LINK_LABELS.unknown}
+          </a>` : `
           <a href="${integration.configure_url}" class="action-btn configure-btn">
             Settings
-          </a>
+          </a>`}
         ` : `
           <a href="${integration.configure_url}" class="action-btn connect-btn">
             Connect
