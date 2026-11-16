@@ -80,6 +80,13 @@ ACCOUNTS: Dict[str, Account] = {
         # Carried over from 10-20: its OAuth connection was revoked in the 11-12 cutover.
         # Only that dead row passes; any live GitHub state refuses (HOST 01M7JVMNWK).
         integrations={"github": frozenset({GITHUB_DEAD_ROW})},
+        # Carried over from 10-20: an Anthropic key from the `piper-morgan-test` workspace,
+        # by the record (unverified on the console). The bound is that workspace's $40
+        # monthly limit, xian's setting; it is a seat workspace for keys stored on seat
+        # accounts (ADR-084 D2; HOST 01M7JT4WFC, Arch 01M7JV4RQX). This row only stops the
+        # helper refusing the account. A seat's chat turns on the key wait on xian's two
+        # answers through Exec. If the console shows another workspace, this comes out.
+        provider_keys=frozenset({"anthropic"}),
     ),
 }
 

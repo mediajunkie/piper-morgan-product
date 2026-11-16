@@ -171,7 +171,13 @@ def test_unexpected_error_prints_class_name_only(ss, shared, capsys):
         ("/api/v1/auth/me", (200, {"username": "someone-else"}), "not the named account"),
         ("/api/v1/admin/account-flags", (200, {"found": True}), "is an admin"),
         ("/api/v1/admin/account-flags", (503, {}), "admin check could not be read"),
-        ("/api/v1/keys/list", (200, [{"provider": "anthropic"}]), "holds a provider key"),
+        ("/api/v1/keys/list", (200, [{"provider": "openai"}]), "holds a provider key"),
+        (
+            "/api/v1/keys/list",
+            (200, [{"provider": "anthropic"}, {"provider": "gemini"}]),
+            "holds a provider key",
+        ),
+        ("/api/v1/keys/list", (200, [{"key": "x"}]), "holds a provider key"),
         ("/api/v1/keys/list", (500, []), "provider-key check could not be read"),
         ("/api/v1/keys/list", (200, {"keys": []}), "provider-key check could not be read"),
         (
@@ -467,3 +473,21 @@ def test_the_exception_table_is_exactly_what_host_read(ss):
     assert ss.GITHUB_DEAD_ROW == ("degraded", False, "reconnect")
     assert dict(ss.ACCOUNTS[ACCOUNT].integrations) == {"github": frozenset({ss.GITHUB_DEAD_ROW})}
     assert ss.ACCOUNTS[ACCOUNT].connectors is False
+
+
+# --- the Anthropic key exception (HOST 01M7JT4WFC, Arch 01M7JV4RQX) ---------
+
+
+def test_an_anthropic_key_passes_for_web_seed_1386_and_nothing_else_does(ss, shared):
+    assert ss.ACCOUNTS[ACCOUNT].provider_keys == frozenset({"anthropic"})
+    keys = [
+        {"provider": "anthropic", "is_active": True},
+        {"provider": "anthropic", "is_active": False},
+    ]
+    host = StubHost(ss, **{"/api/v1/keys/list": ss.Reply(200, json.dumps(keys).encode())})
+    assert ss.run(ACCOUNT, host, now=1_800_000_000).startswith(ACCOUNT)
+
+
+def test_the_key_exception_names_its_workspace_and_cap(ss):
+    source = (ROOT / "scripts" / "seat_session.py").read_text()
+    assert "piper-morgan-test" in source and "$40" in source
