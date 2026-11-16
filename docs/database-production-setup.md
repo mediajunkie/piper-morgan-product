@@ -18,7 +18,7 @@ Deploy, backup and incident procedure for the hosted databases lives in internal
 `docker-compose.yml` runs `postgres:15` with container name `piper-postgres`, host port 5433 mapped to 5432, and the named volume `piper_postgres_data_v1`.
 
 ```bash
-docker compose up -d
+docker compose up -d postgres redis chromadb
 python -m alembic upgrade head
 ```
 

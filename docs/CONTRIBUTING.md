@@ -52,7 +52,7 @@ source venv/bin/activate  # On Windows: venv\Scripts\activate
 pip install -r requirements.txt
 
 # Start services (Docker)
-docker compose up -d
+docker compose up -d postgres redis chromadb
 
 # Initialize database
 python scripts/init-db.py
@@ -388,7 +388,7 @@ Error: could not connect to server: Connection refused
 docker ps | grep postgres
 
 # Start services
-docker-compose up -d
+docker compose up -d postgres redis chromadb
 
 # Verify port 5433 (not 5432)
 netstat -an | grep 5433
