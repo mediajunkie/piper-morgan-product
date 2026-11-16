@@ -562,6 +562,7 @@
       const data = await response.json();
       renderOverallStatus(data);
       renderIntegrations(data.integrations);
+      labelGitHubRepositoriesLink();  // #2375: not awaited; the list is already shown
       updateLastUpdated(data.timestamp);
     } catch (error) {
       console.error('Failed to load integrations health:', error);
@@ -598,6 +599,38 @@
     // connected integrations only (summarize_integrations); render them as given.
     title.textContent = data.headline || 'Unknown Status';
     subtitle.textContent = data.summary || '';
+  }
+
+  // #2375 (xian 2026-11-15; words CXO, mechanism Arch): the connected GitHub card's
+  // way to the repository page says what it leads to. It shows the neutral label at
+  // once; one follow-up request names the step. A failed or unanswered request leaves
+  // the neutral label: the card never says "install" on a guess.
+  const GITHUB_REPOSITORIES_URL = '/settings/integrations/github#repositories';
+  const GITHUB_LINK_LABELS = {
+    none: 'Install the GitHub app',
+    some: 'Choose repositories',
+    unknown: 'Repositories',
+    not_app: 'Repositories',
+  };
+
+  async function labelGitHubRepositoriesLink() {
+    const link = document.getElementById('github-repositories-link');
+    if (!link) return;
+    let state = 'unknown';
+    try {
+      const resp = await fetch('/api/v1/settings/integrations/github/install-state');
+      if (resp.ok) {
+        const data = await resp.json();
+        if (Object.prototype.hasOwnProperty.call(GITHUB_LINK_LABELS, data.state)) state = data.state;
+      }
+    } catch (e) {
+      state = 'unknown';
+    }
+    const current = document.getElementById('github-repositories-link');
+    if (!current) return;  // the list was rendered again meanwhile
+    current.textContent = GITHUB_LINK_LABELS[state];
+    // Primary only when installing is the next step.
+    current.className = state === 'none' ? 'action-btn connect-btn' : 'action-btn configure-btn';
   }
 
   function renderIntegrations(integrations) {
@@ -658,9 +691,13 @@
           >
             Disconnect
           </button>
+          ${integration.name === 'github' ? `
+          <a href="${GITHUB_REPOSITORIES_URL}" class="action-btn configure-btn" id="github-repositories-link">
+            ${GITHUB_LINK_LABELS.unknown}
+          </a>` : `
           <a href="${integration.configure_url || '/settings/integrations/' + integration.name}" class="action-btn configure-btn">
             Settings
-          </a>
+          </a>`}
         ` : `
           <a
             href="/settings/integrations/${integration.name}"

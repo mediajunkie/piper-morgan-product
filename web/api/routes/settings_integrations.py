@@ -2490,6 +2490,24 @@ async def disconnect_github(current_user: JWTClaims = Depends(get_current_user))
 # ============================================================================
 
 
+@router.get("/github/install-state")
+async def github_install_state(current_user: JWTClaims = Depends(get_current_user)):
+    """#2375 (Arch 2026-11-15, option c): the GitHub App's install state for the
+    caller, as one word, so the Integrations card can name its way to the repository
+    page ("Install the GitHub app" / "Choose repositories"). The Integrations list
+    itself makes no GitHub call; the card asks this afterwards. ``unknown`` on any
+    failure, and the card then keeps its neutral label (CXO). No repository names and
+    no counts are returned."""
+    from services.mcp.consumer.github_adapter import INSTALL_STATE_UNKNOWN
+
+    try:
+        state = await GitHubMCPSpatialAdapter().app_install_state(str(current_user.sub))
+    except Exception:
+        logger.warning("github_install_state_failed", exc_info=True)
+        state = INSTALL_STATE_UNKNOWN
+    return {"state": state}
+
+
 @router.get("/github/repositories", response_model=GitHubRepositoryListResponse)
 async def get_github_repositories(current_user: JWTClaims = Depends(get_current_user)):
     """
