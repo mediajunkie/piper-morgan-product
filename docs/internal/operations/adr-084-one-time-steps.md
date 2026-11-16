@@ -180,7 +180,7 @@ scripts/seat_settings_grant.py add-key --seat lead --name PIPER_SEAT_OPENAI_KEY
 
 ## Step F0 (before Step F's connect): create the second seat account on beta
 
-**Owner: Lead.** **Status: BUILT, NOT READY.** `scripts/seat_account_create.py` is on main (issue 2389, 2026-11-16). It is not ready for xian until three things are done: HOST has read the script against the five conditions below, CIO's diff has added `seat-github-1` to the account list in `scripts/seat_session.py`, and the exact-command allow is in CIO's batch with Step C's. Until the name is on the list the script refuses it.
+**Owner: Lead.** **Status: READY (2026-11-16, CIO's edit on Lead's three conditions).** `scripts/seat_account_create.py` is on main (issue 2389). The three things it waited on are done: HOST read the script whole at 72afafe37c against the five conditions below and said they are met; `seat-github-1` is on the account list in `scripts/seat_session.py` (dd97e4ba56, a diff HOST read); and the exact-command allow is written below, in the same batch as Step C's. A real creation is 0 of 1: the first run is the test.
 
 **How `web-seed-1386` was actually made (the record, 2026-10-20 omnibus, 18:44 to 18:49):** xian minted beta invite codes himself and stored them in files; Web then signed the account up through beta's own setup page in its browser, with one of those codes, and wrote the account's file under `~/.piper-shared`. No seed command and no database insert. That path can't be repeated as it was: a seat now reads neither an invite file nor a password file, which is the rule ADR-084 keeps.
 
@@ -198,6 +198,14 @@ scripts/seat_settings_grant.py add-key --seat lead --name PIPER_SEAT_OPENAI_KEY
 
   It asks for the invite code at a hidden prompt, then for the email address the account should have. Nothing typed is echoed, printed, or put on the command line. It writes `~/.piper-shared/seat-github-1-invite-token.txt` at mode 0600 and refuses to run without a terminal, so a seat cannot use it.
 - **You should see:** `seat-github-1 invite file written`.
+- **Paste, a second line, the allow for the seat's half** (same Terminal; CIO's batch with Step C's):
+
+  ```
+  scripts/seat_settings_grant.py add-allow --seat lead --rule 'Bash(scripts/seat_account_create.py --account seat-github-1)'
+  ```
+
+  **You should see:** `added 1 allow rule for seat lead`, then the rule counts. The allow covers that exact command only. `--write-invite` is in no allow, by HOST's bound: it is a Terminal-only step.
+- **Standing access that removes this step from his hands:** the allow above is that access for the seat's half. Minting the code and naming the email stay his: an invite is his to give, and the address is one he controls.
 - The email must be one xian controls, since a password reset goes there. It is his to name, and it appears nowhere in this repo or in mail.
 
 **The seat's part (Lead, under the one exact-command allow):** `scripts/seat_account_create.py --account seat-github-1`. It prints `seat-github-1 created` or a fixed refusal reason, and nothing else.

@@ -386,3 +386,31 @@ def test_grant_key_refuses_a_broken_seat_file_before_touching_the_shared_one(
         )
     assert shared.read_text() == before_shared
     assert not (tmp_path / "shared-settings.json.before-fleet-deny").exists()
+
+
+def test_every_add_allow_line_in_the_steps_file_is_accepted_as_written(tmp_path):
+    """The commands xian pastes (ADR-084 Steps C and F0) must be ones the tool takes."""
+    import re
+    import shlex
+
+    steps = (ROOT / "docs" / "internal" / "operations" / "adr-084-one-time-steps.md").read_text()
+    lines = [
+        line.strip()
+        for line in steps.splitlines()
+        if line.strip().startswith("scripts/seat_settings_grant.py add-allow")
+    ]
+    assert len(lines) >= 2, lines
+    mod = _load()
+    for line in lines:
+        words = shlex.split(line)
+        seat, rule = words[words.index("--seat") + 1], words[words.index("--rule") + 1]
+        assert re.fullmatch(r"Bash\(scripts/seat_[a-z_]+\.py --account [a-z0-9-]+\)", rule), rule
+        folder = tmp_path / seat / ".claude"
+        folder.mkdir(parents=True, exist_ok=True)
+        path = folder / "settings.local.json"
+        if not path.exists():
+            path.write_text(json.dumps({"permissions": {"allow": [], "deny": []}}))
+        assert mod.main(["--root", str(tmp_path), *words[1:]]) == 0
+        assert rule in json.loads(path.read_text())["permissions"]["allow"]
+        script = rule[len("Bash(") :].split()[0]
+        assert (ROOT / script).is_file(), script

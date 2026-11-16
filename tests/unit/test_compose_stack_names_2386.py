@@ -105,3 +105,26 @@ def test_the_file_says_what_a_second_copy_must_set_before_its_first_up():
     for needed in ("PIPER_STACK=", "POSTGRES_PORT=", "REDIS_PORT=", "CHROMADB_PORT=", "BEFORE"):
         assert needed in head
     assert "docker compose up -d postgres redis chromadb" in head
+
+
+# --- the two strings a self-hoster is shown (CXO's words, 2026-11-16) ----------------
+
+ROOT = COMPOSE.parent
+
+
+def test_the_setup_pages_services_message_names_the_three_services():
+    script = (ROOT / "web" / "static" / "js" / "setup.js").read_text()
+    assert (
+        "If you run Piper on your own computer, start them with "
+        "docker compose up -d postgres redis chromadb. "
+        "On a hosted instance, tell the person who runs it." in script
+    )
+    assert "(docker compose up -d)" not in script
+
+
+def test_the_create_account_database_error_names_the_three_services():
+    route = (ROOT / "web" / "api" / "routes" / "setup.py").read_text()
+    assert "docker compose up -d postgres redis chromadb. " in route
+    assert "'docker compose up -d'" not in route
+    assert "Cannot connect to the database. Make sure Docker is running, then " in route
+    assert "Then try again." in route

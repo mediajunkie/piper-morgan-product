@@ -648,6 +648,32 @@ nobody has run it, and nobody should against the shared stack). If a container i
 be made again, that goes to xian through Exec. Once 2386 lands, a seat's own stack sets
 `PIPER_STACK` and its own ports; until then it uses an override as below.
 
+**A seat's own stack, now that `PIPER_STACK` is on main (issue 2386, 433a8c6b33).** The rule above
+is about the shared stack. A seat may run compose for a stack of its own on these conditions (Arch's
+and CIO's, 11-16, first used for the 2386 two-stack run):
+
+1. Every command carries `-p <project>`, `-f <file>` and `--project-directory <folder>`. Nothing
+   relies on the folder you are in. The folder is a throwaway one holding only the compose file and
+   an `.env` with `PIPER_STACK` and the three ports; never a copy of another `.env`.
+2. A guard runs first and refuses unless the rendered config has a project name that isn't the
+   default, no container, network or volume name starting `piper`, no name equal to a running
+   container's, every bind path inside the throwaway folder, and ports that are free and aren't
+   5433, 6379, 8000, 8001, 8082 or 80.
+3. `up -d --pull never`, and only the services you need.
+4. **No `down -v` on Amber, ever.** Tear down with `down`, then `docker volume rm` each throwaway
+   volume by its literal name after `docker volume inspect` shows the throwaway project's label.
+5. Record the three shared containers' IDs, mounts and start times and the shared volume's creation
+   time before and after. Any change fails the run and goes to CIO and Arch at once.
+6. Afterwards `docker ps -a`, `docker volume ls` and `docker network ls`, filtered on your stack
+   name, return nothing.
+7. If auto mode refuses a step, stop there and say what is still up. An idle throwaway stack is
+   safe to leave; a rephrased teardown is not.
+
+**Rendering a compose file prints a key (Lead's finding, Arch's rule, 11-16).** `docker compose
+config` fills variables from the `.env` in its project folder, and the app service passes
+`ENCRYPTION_MASTER_KEY` through, so a render run in a worktree or checkout prints that key. Render
+with `--project-directory` pointing at an empty folder and under `env -i`, never in a worktree.
+
 **One script still runs compose itself, and no seat runs it on Amber (Lead's list, Arch's ruling
 on issue 2386, 11-16).** Running it breaks the rule above without typing a compose command.
 
