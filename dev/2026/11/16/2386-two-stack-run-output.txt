@@ -1,0 +1,109 @@
+== 0. shared stack before
+/piper-postgres 60f1b879dc8e… started 2026-10-19T17:03:50.012368352Z volume:/var/lib/docker/volumes/piper_postgres_data_v1/_data->/var/lib/postgresql/data 
+/piper-redis bb1ba1c1a88f… started 2026-10-10T23:54:24.528135253Z bind:/Users/xian/Development/piper-morgan-worktrees/lead/data/redis->/data 
+/piper-chromadb 7d7d68fb6e88… started 2026-10-10T23:54:24.528626461Z bind:/Users/xian/Development/piper-morgan-worktrees/lead/data/chromadb->/chroma/chroma 
+piper_postgres_data_v1 created 2026-07-30T09:27:18-07:00
+== 1. guard, then up t2386a
+ Network t2386a-network Creating 
+ Network t2386a-network Created 
+ Volume t2386a_postgres_data_v1 Creating 
+ Volume t2386a_postgres_data_v1 Created 
+ Container t2386a-chromadb Creating 
+ Container t2386a-redis Creating 
+ Container t2386a-postgres Creating 
+ Container t2386a-chromadb Created 
+ Container t2386a-postgres Created 
+ Container t2386a-redis Created 
+ Container t2386a-redis Starting 
+ Container t2386a-chromadb Starting 
+ Container t2386a-postgres Starting 
+ Container t2386a-postgres Started 
+ Container t2386a-redis Started 
+ Container t2386a-chromadb Started 
+/t2386a-postgres a84f29bfe64b… volume:/var/lib/docker/volumes/t2386a_postgres_data_v1/_data->/var/lib/postgresql/data 
+/t2386a-redis ea212daf0d64… bind:<work>/a/data/redis->/data 
+/t2386a-chromadb 9ea17299eafd… bind:<work>/a/data/chromadb->/chroma/chroma 
+== 2. guard, then up t2386b
+ Network t2386b-network Creating 
+ Network t2386b-network Created 
+ Volume t2386b_postgres_data_v1 Creating 
+ Volume t2386b_postgres_data_v1 Created 
+ Container t2386b-redis Creating 
+ Container t2386b-chromadb Creating 
+ Container t2386b-postgres Creating 
+ Container t2386b-chromadb Created 
+ Container t2386b-redis Created 
+ Container t2386b-postgres Created 
+ Container t2386b-postgres Starting 
+ Container t2386b-redis Starting 
+ Container t2386b-chromadb Starting 
+ Container t2386b-chromadb Started 
+ Container t2386b-redis Started 
+ Container t2386b-postgres Started 
+/t2386b-postgres 8d114a1dcebb… volume:/var/lib/docker/volumes/t2386b_postgres_data_v1/_data->/var/lib/postgresql/data 
+/t2386b-redis b4da53f5b75e… bind:<work>/b/data/redis->/data 
+/t2386b-chromadb 480a2afbfee2… bind:<work>/b/data/chromadb->/chroma/chroma 
+== 3. t2386a's containers after t2386b came up
+unchanged
+== 4. one row in each database; neither reads the other's
+t2386a holds: row-of-a
+t2386b holds: row-of-b
+== 5. shared stack after both came up
+unchanged
+== 6. Arch's extra row: the SAME stack name brought up from a second folder
+ Container t2386a-postgres Running 
+ Container t2386a-redis Recreate 
+ Container t2386a-chromadb Recreate 
+ Container t2386a-chromadb Recreated 
+ Container t2386a-redis Recreated 
+ Container t2386a-chromadb Starting 
+ Container t2386a-redis Starting 
+ Container t2386a-chromadb Started 
+ Container t2386a-redis Started 
+/t2386a-postgres a84f29bfe64b… volume:/var/lib/docker/volumes/t2386a_postgres_data_v1/_data->/var/lib/postgresql/data 
+/t2386a-redis b4f39ee9c95f… bind:<work>/a-second-folder/data/redis->/data 
+/t2386a-chromadb c7aca96d86fc… bind:<work>/a-second-folder/data/chromadb->/chroma/chroma 
+RESULT 6: containers were re-created; compare the ids and bind sources above with step 1
+t2386a's database after the second folder's up holds: row-of-a
+== 7. teardown: down without -v, then each volume by its literal name
+ Container t2386a-chromadb Stopping 
+ Container t2386a-postgres Stopping 
+ Container t2386a-redis Stopping 
+ Container t2386a-chromadb Stopped 
+ Container t2386a-chromadb Removing 
+ Container t2386a-chromadb Removed 
+ Container t2386a-postgres Stopped 
+ Container t2386a-postgres Removing 
+ Container t2386a-postgres Removed 
+ Container t2386a-redis Stopped 
+ Container t2386a-redis Removing 
+ Container t2386a-redis Removed 
+ Network t2386a-network Removing 
+ Network t2386a-network Removed 
+removed volume t2386a_postgres_data_v1 (label t2386a-morgan-stable)
+ Container t2386b-redis Stopping 
+ Container t2386b-chromadb Stopping 
+ Container t2386b-postgres Stopping 
+ Container t2386b-chromadb Stopped 
+ Container t2386b-chromadb Removing 
+ Container t2386b-postgres Stopped 
+ Container t2386b-postgres Removing 
+ Container t2386b-chromadb Removed 
+ Container t2386b-postgres Removed 
+ Container t2386b-redis Stopped 
+ Container t2386b-redis Removing 
+ Container t2386b-redis Removed 
+ Network t2386b-network Removing 
+ Network t2386b-network Removed 
+removed volume t2386b_postgres_data_v1 (label t2386b-morgan-stable)
+== 8. shared stack after teardown
+unchanged
+/piper-postgres 60f1b879dc8e… started 2026-10-19T17:03:50.012368352Z volume:/var/lib/docker/volumes/piper_postgres_data_v1/_data->/var/lib/postgresql/data 
+/piper-redis bb1ba1c1a88f… started 2026-10-10T23:54:24.528135253Z bind:/Users/xian/Development/piper-morgan-worktrees/lead/data/redis->/data 
+/piper-chromadb 7d7d68fb6e88… started 2026-10-10T23:54:24.528626461Z bind:/Users/xian/Development/piper-morgan-worktrees/lead/data/chromadb->/chroma/chroma 
+piper_postgres_data_v1 created 2026-07-30T09:27:18-07:00
+== 9. nothing left behind (each listing filtered on t2386; empty means none)
+containers: []
+volumes:    []
+networks:   []
+RUN COMPLETE. The work folder is left in place: <work>
