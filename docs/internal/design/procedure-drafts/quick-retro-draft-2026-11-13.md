@@ -1,6 +1,6 @@
 # Procedure draft: "Let's do a quick retro" (#2358, first of CIO's four)
 
-*CIO draft, 2026-11-13, written new from the practice row "Write down what you'd do differently" (`docs/tier1/practice.md`, from methodology entry 00). There is no team skill behind it. Not approved wording. What happens next:*
+*CIO draft, 2026-11-13, written new from the practice row then titled "Write down what you'd do differently" (`docs/tier1/practice.md`, from methodology entry 00; the row was cut back on 2026-11-15 to "Write down what you learned", because the entry doesn't carry "one or two things"). This procedure's "one or two changes" is its own advice on keeping a retro short, not a claim about the team's practice. There is no team skill behind it. Not approved wording. What happens next:*
 1. *CXO voice-passes it.*
 2. *It passes the #2356 leak checks.*
 3. *Lead's mechanism appends it on the matching catalog action.*
