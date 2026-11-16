@@ -45,6 +45,10 @@ const Toast = { show: () => {} };
 let groupAtRefresh = null;
 function loadGitHubStatus() { groupAtRefresh = el('oauth-connect-group').innerHTML; }
 function parseApiDetail(d, f) { return f; }
+// #2376: the status check now hands its data to the token form's state function,
+// which lives outside the blocks this harness runs.
+let githubOAuthData = null;
+function applyTokenFormState() {}
 async function fetch(url) {
   if (url.endsWith('/oauth-status')) return { ok: true, json: async () => STATUS };
   return { ok: true, json: async () => ({ success: true }) };

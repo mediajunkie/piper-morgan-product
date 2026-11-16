@@ -1853,7 +1853,23 @@ surfaces:
   handler: web/api/routes/settings_integrations.py:save_github_token
   states: {verified: distinct, failed: distinct, narrowed: n/a, not_performed: n/a, substituted: n/a}
   verdict: green
-  notes: verify_github_token tells connection errors, 401 and 403 apart in its error text.
+  notes: >-
+    verify_github_token tells connection errors, 401 and 403 apart in its error text.
+    #2376: a value that isn't token-shaped is refused (400) before any call to GitHub,
+    and an App-connected account is refused (409) before it too.
+
+- id: route:POST /api/v1/settings/integrations/github/token/remove
+  kind: route
+  effect: READ
+  reads: after removing the account's personal token, the resolver's own token read (account_pat)
+  handler: web/api/routes/settings_integrations.py:remove_github_token
+  states: {verified: distinct, failed: distinct, narrowed: n/a, not_performed: n/a, substituted: n/a}
+  verdict: green
+  notes: >-
+    #2376. "Personal token removed." only when the read-back finds no token on either
+    leg. A token still readable, a read-back that failed, or a raise is success=false
+    with GITHUB_TOKEN_REMOVE_INCOMPLETE_LINE. The binding and grant are not touched.
+    Pins: test_settings_github_token_form_2376.py.
 
 - id: route:POST /api/v1/settings/integrations/github/disconnect
   kind: route
