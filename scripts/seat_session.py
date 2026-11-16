@@ -62,7 +62,7 @@ class Account:
 
 # Bound 1. A change to this table is a diff HOST reads.
 ACCOUNTS: Dict[str, Account] = {
-    "web-seed-1386": Account(credential_file="web-seed-1386.credential"),
+    "web-seed-1386": Account(credential_file="web-seed-1386-credentials-2026-10-20.txt"),
 }
 
 USER_KEYS = ("username", "user", "email", "login")
@@ -136,8 +136,15 @@ def read_credentials(path: Path) -> Tuple[str, str]:
                 break
     user = next((found[k] for k in USER_KEYS if found.get(k)), "")
     password = next((found[k] for k in PASSWORD_KEYS if found.get(k)), "")
-    if not user or not password:
-        raise Refused("credential file has no sign-in name or password key")
+    # Lead's point (11-16): say which expected name is missing, and nothing from the file.
+    if not user:
+        raise Refused(
+            "credential file has no sign-in name key; expected one of " + ", ".join(USER_KEYS)
+        )
+    if not password:
+        raise Refused(
+            "credential file has no password key; expected one of " + ", ".join(PASSWORD_KEYS)
+        )
     return user, password
 
 

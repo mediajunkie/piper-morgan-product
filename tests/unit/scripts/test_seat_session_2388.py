@@ -18,6 +18,7 @@ PASSWORD = "dummy-password-not-real-9f3a"
 ACCESS = "dummy-access-cookie-value-71c2"
 REFRESH = "dummy-refresh-cookie-value-55d0"
 SECRETS = (PASSWORD, ACCESS, REFRESH)
+CRED = "web-seed-1386-credentials-2026-10-20.txt"
 
 
 def _load(name):
@@ -44,7 +45,7 @@ def sr(ss):
 @pytest.fixture
 def shared(tmp_path, monkeypatch):
     monkeypatch.setenv("PIPER_SHARED", str(tmp_path))
-    cred = tmp_path / f"{ACCOUNT}.credential"
+    cred = tmp_path / CRED
     cred.write_text(f"username: {ACCOUNT}\npassword: {PASSWORD}\n")
     cred.chmod(0o600)
     return tmp_path
@@ -209,7 +210,7 @@ def test_unreadable_check_body_refuses(ss, shared):
 
 
 def test_refuses_a_credential_file_others_can_read(ss, shared):
-    (shared / f"{ACCOUNT}.credential").chmod(0o644)
+    (shared / CRED).chmod(0o644)
     host = StubHost(ss)
     with pytest.raises(ss.Refused, match="not mode 0600"):
         ss.run(ACCOUNT, host)
@@ -217,15 +218,13 @@ def test_refuses_a_credential_file_others_can_read(ss, shared):
 
 
 def test_reads_key_equals_value_and_email_key(ss, shared):
-    (shared / f"{ACCOUNT}.credential").write_text(
-        f"# note\nemail={ACCOUNT}\npassword='{PASSWORD}'\n"
-    )
-    (shared / f"{ACCOUNT}.credential").chmod(0o600)
-    assert ss.read_credentials(shared / f"{ACCOUNT}.credential") == (ACCOUNT, PASSWORD)
+    (shared / CRED).write_text(f"# note\nemail={ACCOUNT}\npassword='{PASSWORD}'\n")
+    (shared / CRED).chmod(0o600)
+    assert ss.read_credentials(shared / CRED) == (ACCOUNT, PASSWORD)
 
 
 def test_missing_credential_file_refuses_without_a_path(ss, shared, capsys):
-    (shared / f"{ACCOUNT}.credential").unlink()
+    (shared / CRED).unlink()
     ss.run.__defaults__ = (StubHost(ss), None)
     code, text = _run_main(ss, ["--account", ACCOUNT], capsys)
     assert code == 2 and "credential file not readable" in text
@@ -308,3 +307,27 @@ def test_neither_script_follows_a_redirect(ss):
 
     source = inspect.getsource(ss.http_transport)
     assert "NoRedirect" in source and "return None" in source
+
+
+@pytest.mark.parametrize(
+    "text, reason",
+    [
+        (
+            f"name: {ACCOUNT}\npassword: {PASSWORD}\n",
+            "no sign-in name key; expected one of username, user, email, login",
+        ),
+        (
+            f"username: {ACCOUNT}\nsecret: {PASSWORD}\n",
+            "no password key; expected one of password, pass",
+        ),
+    ],
+)
+def test_a_key_name_mismatch_names_the_expected_key_and_nothing_from_the_file(
+    ss, shared, capsys, text, reason
+):
+    (shared / CRED).write_text(text)
+    (shared / CRED).chmod(0o600)
+    ss.run.__defaults__ = (StubHost(ss), None)
+    code, out = _run_main(ss, ["--account", ACCOUNT], capsys)
+    assert code == 2 and reason in out
+    assert PASSWORD not in out and "secret" not in out and "name:" not in out
