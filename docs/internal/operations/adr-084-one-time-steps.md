@@ -255,8 +255,8 @@ What the row must hold, whatever the path:
 1. **Create the environment.** github.com/mediajunkie/piper-morgan-product, Settings, Environments, **New environment**, name `<environment-name from #2384>`. Under **Deployment branches and tags** choose **Selected branches and tags**, add **main**. (This is what stops a branch pushed with an edited workflow from reading the secret.)
    - **You should see:** the environment page showing the branch rule "main".
 2. **Create the token and copy it without showing it.** In Terminal, any folder:
-   `fly tokens create deploy -a piper-morgan-mcp -x <lifetime> | pbcopy`
-   *(exact command and expiry flag: Lead confirms before this goes on the card; HOST has not run it.)* It must name the app `piper-morgan-mcp` and **no other app, never an organization-wide token.** The token goes to your clipboard and nothing prints.
+   `fly tokens create deploy -a piper-morgan-mcp -x 2160h -n seat-mcp-deploy | pbcopy`
+   *(Line read against Fly's docs by Lead 11-15 22:24: `-a` app, `-x` expiry as a duration, `-n` name; the default expiry is 20 years, so keep `-x`. 2160h is 90 days and the name is a suggestion, yours to set. Not run by any seat. Fly's pages do not say whether a deploy token can run commands inside the app or set its secrets, so treat it as full control of `piper-morgan-mcp`: the workflow text on main and the `main`-only environment are the bound, not the token. If the command prints anything besides the token into the pipe, the stored value would be wrong, so after storing it look at the Actions run, not at the value.)* It must name the app `piper-morgan-mcp` and **no other app, never an organization-wide token.** The token goes to your clipboard and nothing prints.
 3. **Store it.** On the environment page, **Add environment secret**, name `<secret-name from #2384>`, paste, save. Then clear the clipboard: `pbcopy < /dev/null`.
    - **You should see:** the secret's name listed, "Updated now". The value is never shown again.
 4. **Tell Exec the date and the expiry** you chose (HOST's custody row takes both; no value).
