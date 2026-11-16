@@ -32,13 +32,13 @@ My chief innovation agent (CIO) ensured any future skipped cycle would be visibl
 
 # The manual review
 
-My chief of staff agent (Exec) gathered skill candidates reviewing "Wanted but not found" lines in session logs, the omnibus logs, and its own view across the team from September 1 to October 23. This added ten new candidates to three from July that had never been reviewed.
+My chief of staff agent (Exec) gathered skill candidates reviewing "Wanted but not found" lines in session logs, the omnibus logs, and its own view across the team from September 1 to October 23. This added ten new candidates to three carried over from July.
 
-Exec offered to discuss with me and I was tired on October 23. They logged the plan to discuss it "tomorrow, when he's fresh" but then I didn't really get to it till November 6 when I reviewed the full set of recommendations and approved them all. One item had already been addressed on November 4. Of the rest, we decided not to turn any others into skills, to fold five of them into existing processes, and to drop the other six.
+Exec offered to discuss with me and I was tired on October 23. They logged the plan to discuss it "tomorrow, when he's fresh" but then I didn't really get to it till November 6 when I reviewed the full set of recommendations and approved them all. Of the thirteen, we folded five into existing processes (two of those were already done by November 4), decided not to build six, and closed two that turned out to be handled already.
 
 So this time nothing new became a skill. At most we needed to add a line to an existing rule, tool, or permission, instead of adding a new procedure.
 
-Even in the time we were evaluating these candidates a few of the recommendations proved to be stale (for example, seats now wake from a scheduler, not session timers, and a push script already existed).
+Even in the time we were evaluating these candidates, two of the recommendations proved to be stale (agents now wake on a schedule, not from session timers, and a push script already existed). CIO caught both by checking against the actual files.
 
 # The next time
 
@@ -48,6 +48,6 @@ I like to think that it's a sign of maturity that our latest round of proposed i
 
 ---
 
-*Next on Building Piper Morgan: "The Wall," in which the team runs so hot we run out of usage credits before the week is over.*
+*Next on Building Piper Morgan: "The Wall," in which the team runs so hot it hits its weekly usage limit days before the week is over.*
 
 *When did you last decide not to build something when you realized you didn't really need it? How did you decide?*
