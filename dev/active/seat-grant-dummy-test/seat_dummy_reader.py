@@ -6,6 +6,7 @@ It reads one fixed file that holds a DUMMY value and one environment variable
 that holds a DUMMY value, and prints only lengths and a short hash. It makes no
 network call and writes nothing. It never prints a value.
 """
+
 import hashlib
 import os
 import pathlib
@@ -25,7 +26,9 @@ def main() -> int:
         print(f"file: NOT READ ({type(exc).__name__})")
     val = os.environ.get(VAR, "")
     if val:
-        print(f"env: {VAR} set, {len(val)} chars, sha256 {hashlib.sha256(val.encode()).hexdigest()[:8]}")
+        print(
+            f"env: {VAR} set, {len(val)} chars, sha256 {hashlib.sha256(val.encode()).hexdigest()[:8]}"
+        )
     else:
         ok = False
         print(f"env: {VAR} UNSET")
