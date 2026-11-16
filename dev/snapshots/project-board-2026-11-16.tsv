@@ -2174,7 +2174,7 @@ issue	state	milestone	sprint	title	labels	blocked_by	state_reason
 2383	OPEN	Production		Live-call spend cap for seat runs: the binder refuses to start without max_usd; running total at the spend chokepoint (ADR-084 build item)			
 2384	OPEN	Production		MCP deploy job: workflow_dispatch deploy of main's sha to the MCP app with an app-scoped token in a main-only environment (ADR-084 D6)			
 2385	OPEN	Production		GitHub personal-token clear is written twice: Disconnect and Remove token should share one function			
-2386	OPEN	Production		A second clone on one machine shares the first one's database: compose pins the project, volume and container names			
+2386	OPEN	Production		A second clone on one machine shares the first copy's database and re-points its Redis and Chroma at empty folders: compose pinned the names			
 2387	OPEN	Ongoing		Amber's shared Redis and Chroma data live in the Lead worktree	architecture		
 2388	OPEN	Production		seat_session.py: a seeded test account's beta session for seats, under HOST's six bounds (ADR-084 D3)			
 2389	OPEN	Production		seat_account_create.py: create the second seat account on beta with a password no seat sees (ADR-084 Step F0)			
