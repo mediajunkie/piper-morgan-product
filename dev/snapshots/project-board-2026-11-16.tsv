@@ -2182,3 +2182,5 @@ issue	state	milestone	sprint	title	labels	blocked_by	state_reason
 2391	OPEN	Production		Routing-to-floor tally: a counter at the emit site, read by an ops_reader route (ADR-084 D4 rule 6)			
 2392	OPEN	Ongoing		Staged-file scan for credential shapes at commit and in the push gate (ADR-084 D2)			
 2393	OPEN	Production		Per-seat local databases on the shared Postgres server (ADR-084 D5)	architecture		
+2394	OPEN	Ongoing		FLY-AUDIT: Weekly Docs Audit - 2026-11-16	documentation,fly-audit,maintenance,weekly-audit		
+2395	OPEN	Production		Unit tests that read a live credential store or database: six fixed in test_slack_config.py, six more in the Slack folder, the rest unmeasured			
