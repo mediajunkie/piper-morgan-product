@@ -118,11 +118,11 @@ scripts/seat_settings_grant.py check-env --name PIPER_SEAT_ANTHROPIC_KEY
 
 ## Step C (ADR row 5): the sign-in helper's exact-command allow
 
-**Owner: CIO. NOT READY for xian yet: `scripts/seat_session.py` is on main (issue 2388; Lead reviewed, HOST read it at ff8b9d51b7 and said land, Arch validates on main). It waits on one more diff: the exception row for `web-seed-1386` (its test-workspace key and its dead GitHub row), which HOST reads and which takes effect on xian's word about the `piper-morgan-test` workspace. Until that row lands the helper refuses this account, so adding the allow now would spend a sitting on a run that can only refuse.** Its client is `scripts/seat_read.py`, which does one GET from the saved session and needs no grant of its own: each run goes to the classifier, because its path argument differs every time.
+**Owner: CIO. READY (2026-11-16): `scripts/seat_session.py` and its exception rows are on main (issue 2388). Lead reviewed the routes, HOST read the helper at ff8b9d51b7 and the exception rows at 12c42ff864 and said land, Arch validated against D3. Web holds the allow first (HOST). The first real run is the test: 0 of 1 so far.** Two things can still make that first run print `refused:`, and neither needs anything more from xian: the key names inside the credential file are unknown to every seat (the refusal names which expected name is missing), and what beta shows for this account today is unread. Its client is `scripts/seat_read.py`, which does one GET from the saved session and needs no grant of its own: each run goes to the classifier, because its path argument differs every time.
 
 What the ADR requires (D3): one exact-command allow per seeded account name, added by xian to the settings of each seat that does served reads. The helper prints the account name and the session's expiry only.
 
-The step's shape, so only the command text is missing (CIO, 2026-11-15):
+The step (CIO, 2026-11-16):
 
 - **Where:** Terminal, in a checkout at main, as in Step A.
 - **Paste:** one line per account name, per seat (Web first):
@@ -180,7 +180,7 @@ scripts/seat_settings_grant.py add-key --seat lead --name PIPER_SEAT_OPENAI_KEY
 
 ## Step F0 (before Step F's connect): create the second seat account on beta
 
-**Owner: Lead.** **Status: BUILT, NOT READY.** `scripts/seat_account_create.py` is on main (issue 2389, 2026-11-16). It is not ready for xian until three things are done: HOST has read the script against the five conditions below, CIO's diff has added `seat-github-1` to the account list in `scripts/seat_session.py`, and the exact-command allow is in CIO's batch with Step C's. Until the name is on the list the script refuses it.
+**Owner: Lead.** **Status: READY (2026-11-16, CIO's edit on Lead's three conditions).** `scripts/seat_account_create.py` is on main (issue 2389). The three things it waited on are done: HOST read the script whole at 72afafe37c against the five conditions below and said they are met; `seat-github-1` is on the account list in `scripts/seat_session.py` (dd97e4ba56, a diff HOST read); and the exact-command allow is written below, in the same batch as Step C's. A real creation is 0 of 1: the first run is the test.
 
 **How `web-seed-1386` was actually made (the record, 2026-10-20 omnibus, 18:44 to 18:49):** xian minted beta invite codes himself and stored them in files; Web then signed the account up through beta's own setup page in its browser, with one of those codes, and wrote the account's file under `~/.piper-shared`. No seed command and no database insert. That path can't be repeated as it was: a seat now reads neither an invite file nor a password file, which is the rule ADR-084 keeps.
 
@@ -198,6 +198,14 @@ scripts/seat_settings_grant.py add-key --seat lead --name PIPER_SEAT_OPENAI_KEY
 
   It asks for the invite code at a hidden prompt, then for the email address the account should have. Nothing typed is echoed, printed, or put on the command line. It writes `~/.piper-shared/seat-github-1-invite-token.txt` at mode 0600 and refuses to run without a terminal, so a seat cannot use it.
 - **You should see:** `seat-github-1 invite file written`.
+- **Paste, a second line, the allow for the seat's half** (same Terminal; CIO's batch with Step C's):
+
+  ```
+  scripts/seat_settings_grant.py add-allow --seat lead --rule 'Bash(scripts/seat_account_create.py --account seat-github-1)'
+  ```
+
+  **You should see:** `added 1 allow rule for seat lead`, then the rule counts. The allow covers that exact command only. `--write-invite` is in no allow, by HOST's bound: it is a Terminal-only step.
+- **Standing access that removes this step from his hands:** the allow above is that access for the seat's half. Minting the code and naming the email stay his: an invite is his to give, and the address is one he controls.
 - The email must be one xian controls, since a password reset goes there. It is his to name, and it appears nowhere in this repo or in mail.
 
 **The seat's part (Lead, under the one exact-command allow):** `scripts/seat_account_create.py --account seat-github-1`. It prints `seat-github-1 created` or a fixed refusal reason, and nothing else.
@@ -218,6 +226,7 @@ It sets no flag, stores no provider key and keeps no cookie from the reply.
 - `the host refused the sign-up (422)`: a field is not in a form the host accepts, most likely the email. Nothing was created; the invite file is kept.
 - `the sign-up did not complete and the account does not sign in`: the host gave no readable answer. The script then tried to sign in with the password it had just made, and that failed too. The invite file is kept; the code may or may not be spent. Tell Exec before running it again.
 - `the account was created but its credential file could not be written`: the code is spent and the account needs a password reset, never a guess.
+- **One residual (Arch, 11-16):** if the sign-up succeeds but both its reply and the follow-up sign-in are lost, the account exists with a password nobody holds. The script reports the third line above. The remedy is xian's: a password reset or a delete. It takes two failures in a row.
 
 **Standing access that removes the hand step (ADR-084 D6):** the exact-command allow. xian's remaining part is minting one code and the one line above.
 
