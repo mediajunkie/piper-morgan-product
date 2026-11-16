@@ -333,7 +333,10 @@ class TestChatAsksToInstallNotWhichRepo:
 class TestAnEmptyUserWideReadIsNotNoIssues:
     """Requirement 2 on the user-wide reads (PA 07:31): the connector's GitHub resource
     and "my open issues" never resolve a repository, so for a person who installed the
-    App nowhere an empty result must be the install step's state, not "no issues"."""
+    App nowhere an empty result must be the install step's state, not "no issues".
+
+    #2374 (2026-11-15): the installation read now comes before any search on an App
+    grant, so the install step no longer depends on the search being empty."""
 
     @staticmethod
     def _adapter(monkeypatch, payload, installed):
@@ -383,21 +386,30 @@ class TestAnEmptyUserWideReadIsNotNoIssues:
         result = await adapter.list_open_issues(_OWNER)
         assert result.issues == [] and result.degradation is None
 
-    async def test_empty_with_a_failed_installation_read_stays_an_empty_result(
+    async def test_a_failed_installation_read_says_so_and_is_never_an_empty_result(
         self, app_on, monkeypatch
     ):
+        # #2374 (Arch 2026-11-15): the installation read comes first on an App grant,
+        # and its failure follows the repository list's handling. Before, the empty
+        # search stood.
         adapter, _ = self._adapter(
             monkeypatch, '{"total_count":0,"items":[]}', InstallationReadFailed(502)
         )
         result = await adapter.list_open_issues(_OWNER)
-        assert result.issues == [] and result.degradation is None
+        assert result.issues is None
+        assert result.degradation.reason is DegradationReason.UNREACHABLE
 
-    async def test_a_non_empty_result_never_asks_about_installations(self, app_on, monkeypatch):
+    async def test_a_non_empty_search_is_never_reached_when_installed_nowhere(
+        self, app_on, monkeypatch
+    ):
+        # #2374: PA's read of 2026-11-15. A person assigned in a public repository got
+        # their issues and no install step, because only an empty search asked.
         payload = '{"total_count":1,"items":[{"number":1,"title":"t","html_url":"u"}]}'
-        adapter, read = self._adapter(monkeypatch, payload, AssertionError("no installation read"))
+        adapter, read = self._adapter(monkeypatch, payload, InstalledRepositories(installations=0))
         result = await adapter.list_open_issues(_OWNER)
-        assert result.degradation is None and len(result.issues) == 1
-        read.assert_not_awaited()
+        assert result.issues is None
+        assert result.degradation.detail == DETAIL_APP_NOT_INSTALLED
+        read.assert_awaited_once_with("access-live")
 
     async def test_a_classic_grant_never_asks_about_installations(self, app_off, monkeypatch):
         adapter, read = self._adapter(
@@ -434,7 +446,7 @@ _USER_WIDE_READS = {
 class TestEachUserWideReadInEachOutcome:
     """Arch 2026-11-12 07:48: the two searches that resolve no repository (``assignee:@me``
     issues, ``author:@me`` pull requests), each in the outcomes of the installation read
-    that an empty result triggers. The third read, repositories, answers from the
+    (made first on an App grant since #2374). The third read, repositories, answers from the
     installation read itself on an App grant (Arch 08:02): see the class below."""
 
     async def _run(self, monkeypatch, read_name, installed):
@@ -476,11 +488,13 @@ class TestEachUserWideReadInEachOutcome:
         assert items == [] and result.degradation is None
         read.assert_awaited_once()
 
-    async def test_a_failed_installation_read_leaves_the_empty_result(
+    async def test_a_failed_installation_read_is_the_honest_failure(
         self, app_on, monkeypatch, read_name
     ):
+        # #2374: no search runs on a failed installation read.
         result, items, _ = await self._run(monkeypatch, read_name, InstallationReadFailed(503))
-        assert items == [] and result.degradation is None
+        assert items is None
+        assert result.degradation.reason is DegradationReason.UNREACHABLE
 
 
 @pytest.mark.asyncio
@@ -520,11 +534,13 @@ class TestConnectorResourceEndToEnd:
         )
         assert payload["available"] is True and payload["issues"] == [] and payload["total"] == 0
 
-    async def test_a_failed_installation_read_reads_the_empty_list_as_today(
+    async def test_a_failed_installation_read_reads_the_connectors_wait_line(
         self, app_on, monkeypatch
     ):
+        # #2374: never the empty list, and never a user-wide search.
         payload = await self._payload(monkeypatch, InstallationReadFailed(None, "timeout"))
-        assert payload["available"] is True and payload["issues"] == []
+        assert payload["available"] is False
+        assert payload["message"] == gh_mod.GITHUB_CONNECTOR_UNREACHABLE_REPLY
 
 
 class TestNoSurfaceSpellsADetailAsAString:
@@ -541,6 +557,8 @@ class TestNoSurfaceSpellsADetailAsAString:
         needles = (
             '"app_not_installed"',
             '"app_install_link_missing"',
+            '"app_not_on_repository"',
+            '"app_too_many_repositories"',
             '"cutover"',
             '"refresh_rejected"',
         )
@@ -594,12 +612,21 @@ class TestRepliesArePickedByDetail:
         assert gh_mod.github_degrade_reply(degraded) == web
         assert gh_mod.github_connector_reply(degraded) == connector
 
-    def test_the_details_are_three_named_constants(self):
+    def test_the_details_are_five_named_constants(self):
+        # #2374 added the last two.
         assert {
             grant_mod.REASON_CUTOVER,
             install_mod.DETAIL_APP_NOT_INSTALLED,
             install_mod.DETAIL_APP_INSTALL_LINK_MISSING,
-        } == {"cutover", "app_not_installed", "app_install_link_missing"}
+            install_mod.DETAIL_APP_NOT_ON_REPOSITORY,
+            install_mod.DETAIL_APP_TOO_MANY_REPOSITORIES,
+        } == {
+            "cutover",
+            "app_not_installed",
+            "app_install_link_missing",
+            "app_not_on_repository",
+            "app_too_many_repositories",
+        }
 
     def test_the_install_line_is_not_a_clarifying_question(self):
         # The get-issue handler arms a "which repo?" follow-up on REPO_UNRESOLVED; the
