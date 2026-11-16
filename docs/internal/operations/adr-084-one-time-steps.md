@@ -1,6 +1,6 @@
 # ADR-084: xian's one-time steps
 
-**Status: DRAFT, not approved. Nothing here runs until xian says yes to ADR-084** (through Exec). Asked for by Exec on 2026-11-15 (mail 01M7HF64B8…) so that his yes is followed by a paste, not a new round of mail.
+**Status: APPROVED. xian said yes to ADR-084 on 2026-11-16 at 06:20 PT** (relayed by Exec, mail 01M7JBP51M). Each step still runs only when its own row says it is ready. Done so far: Step B (06:23). Written as a draft, asked for by Exec on 2026-11-15 (mail 01M7HF64B8…) so that his yes is followed by a paste, not a new round of mail.
 
 The ADR: `docs/internal/architecture/adrs/adr-084-seat-resources-are-separate-granted-once-and-bounded.md`. Row numbers below are the ADR's ("What xian does, once"). The order here is by what each step unblocks.
 
@@ -104,6 +104,8 @@ scripts/seat_settings_grant.py check-env --name PIPER_SEAT_ANTHROPIC_KEY
   - **What a deny doesn't do:** it stops the Read tool. A file read by a command a seat runs is the classifier's to judge, and the key's cap is the limit if both fail. The deny alone does not close it.
 
 ## Step B (ADR row 6): tick "Operations reader" on the plain test account
+
+**DONE 2026-11-16, about 06:23 PT, by xian.** The page read "Saved for web-seed-1386." with "Operations reader" ticked (Exec's relay of his screenshot, mail 01M7JBW6ED). The seat check below still waits on `seat_session.py` (issue 2388).
 
 **Owner: Arch (written). HOST records it.**
 

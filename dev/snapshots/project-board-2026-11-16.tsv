@@ -2175,3 +2175,10 @@ issue	state	milestone	sprint	title	labels	blocked_by	state_reason
 2384	OPEN	Production		MCP deploy job: workflow_dispatch deploy of main's sha to the MCP app with an app-scoped token in a main-only environment (ADR-084 D6)			
 2385	OPEN	Production		GitHub personal-token clear is written twice: Disconnect and Remove token should share one function			
 2386	OPEN	Production		A second clone on one machine shares the first one's database: compose pins the project, volume and container names			
+2387	OPEN	Ongoing		Amber's shared Redis and Chroma data live in the Lead worktree	architecture		
+2388	OPEN	Production		seat_session.py: a seeded test account's beta session for seats, under HOST's six bounds (ADR-084 D3)			
+2389	OPEN	Production		seat_account_create.py: create the second seat account on beta with a password no seat sees (ADR-084 Step F0)			
+2390	OPEN	Production		ops_reader routes: active keys by provider, and the closed list pinned by a test (ADR-084 D4)			
+2391	OPEN	Production		Routing-to-floor tally: a counter at the emit site, read by an ops_reader route (ADR-084 D4 rule 6)			
+2392	OPEN	Ongoing		Staged-file scan for credential shapes at commit and in the push gate (ADR-084 D2)			
+2393	OPEN	Production		Per-seat local databases on the shared Postgres server (ADR-084 D5)	architecture		

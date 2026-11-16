@@ -8,10 +8,11 @@
 
 ---
 
-## Now (written 2026-11-15 21:47 STOP; replace, don't annotate)
+## Now (written 2026-11-16 06:47 START; replace, don't annotate)
 
-- **Served (21:47):** beta `460b837a47`; MCP `dfebe7f0b7` (xian's deploy 18:49, uptime 10708 s at 21:47, so no restart since). Read the live sha from `/health`. A beta promotion is GRANTED from 07:00 11-16 (Arch, six conditions: `72b7428e23`, `1ea8e7663a`, #2382, and #2375 revisions if CXO passed). Never read the connector during a promotion.
-- **xian's 11-15 19:11 ruling (via Exec):** no more manual workarounds put on xian; "xian runs it" is no longer an offered answer. The fix is **ADR-084, PROPOSED** (`docs/internal/architecture/adrs/adr-084-seat-resources-are-separate-granted-once-and-bounded.md`): seat resources, separate, granted once, bounded. Exec brings xian one card (ten one-time rows). Paid runs stay stopped until his yes.
+- **Served (06:47):** beta `460b837a47`; MCP `dfebe7f0b7` (uptime 43136 s, no restart since xian's 18:49 11-15 deploy). Read the live sha from `/health`. Beta promotion GRANTED from 07:00 (Arch, six conditions). Never read the connector during a promotion.
+- **ADR-084 ACCEPTED (xian 11-16 06:20 via Exec `01M7JBP51M…`):** $10 a run without asking; `lead-scoring` workspace $150/month as the bound. PPM places `seat_session.py`, `seat_account_create.py`, `ops_reader`, #2384. Paid runs stay stopped until Step A lands and Lead's check passes. Step A read tests are Lead/HOST/CIO, not PA.
+- **CIO seat rule (11-16 05:06, recipe 14):** never run `stop.sh`, `db_migrate_to_volume.sh`, `start.sh`, `alpha-setup.sh`, `run_tests.sh full|coverage` on Amber; never `docker compose down` on the shared stack.
 - **PA's ADR-084 items:** (1) **#2384** MCP deploy job (Lead builds now; xian's token goes in an environment limited to `main`, though row 7's wording is for Arch to align). Its first run deploys **#2382** (stateless MCP, on main `40523ea6b9`). Then **PA reads row 4**: MCP `/health` sha plus `uptime_seconds`, and one connector read that must serve on the first try. Quote it to CXO and on #2382. (2) A **second connector "Piper Morgan (seat)"** consented as the GitHub-connected seat account (card row 9: allowlist write plus consent, xian's one try; if claude.ai refuses a second connector, stop and tell Exec). The seat account's zero-install read comes between connect and install, so ask Web to connect first.
 - **#2342:** rows 1 and 3 PASS; the #2374 connector reach PASSED (CXO 18:58: 366 to 1, `pipermorgan/piper-test` only). Open: the zero-install line (needs the seat account), the named-repo refusal, the too-many line, row 4 (UNREACHABLE). Record `uptime_seconds` beside every first connector read ("Connection closed": 2 of 2 after deploys, 1 of 3 without).
 - **#2375/#2376 (CXO 19:16):** #2376 PASS for an App account with no token. The #2375 link FAILED; Lead's card version `144745bf7d` (validated; CXO passed the words, with the no-slug note changed) is to land and promote 11-16.
@@ -30,7 +31,7 @@
 - 🔒 **#2242 held-token row**, since 11-03: xian runs `mcp_allow.py remove` on his account (then re-adds).
 - 🔒 **#2238 Notion**, since 11-01: xian puts a throwaway Notion key on staging.
 - 🔒 **#2288 served row**, since 11-05: xian's word that Web may use an untouched dead-grant test account.
-- 🔒 **ADR-084 yes (seat resources)**, since 11-15 19:11: superseded the 11-13 sign-in route. Exec brings xian one card; his yes plus the one-time rows unblock Web's served reads, #2364, the #2384 token (then #2382's deploy) and PA's seat connector. Separately, tier 1 needs xian's five staging queries (Arch `01M7BXGYZDJDA660J2AEM13MCG`).
+- 🔒 **ADR-084 one-time rows**, since 11-15 19:11; xian said yes 11-16 06:20. Remaining PM-hand rows: Step A (this morning), the #2384 deploy token (Step H, after the job is built), Step G for PA's seat connector (after F0/F). Separately, tier 1 needs xian's five staging queries (Arch `01M7BXGYZDJDA660J2AEM13MCG`).
 - **Rename PA (xian's idea 10-28):** trigger was MVP reading 0 open, which happened 10-30. Raised to Exec 11-06 (late). xian's call; no work blocked.
 
 ## Cadence
