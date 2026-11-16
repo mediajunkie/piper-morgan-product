@@ -1,8 +1,8 @@
-# Tier 1 self-knowledge: voice specification (draft 1)
+# Tier 1 self-knowledge: voice specification (final, register)
 
 **Owner:** CXO. **Date:** 2026-11-13 (due Mon 2026-11-16 12:00 PST). **For:** Arch's self-knowledge design record (`docs/internal/architecture/design-records/piper-self-knowledge-exploration-2026-11-12.md`), Docs (corpus items), CIO (conduct layer and Proven-entry summaries).
 
-Status: draft for Arch, Docs and CIO to push on. xian approves the wording before any of it ships. The sample answers show the register, not final text: each fact in a sample is a placeholder until it is traced to code or a served check.
+Status: final for register and rules (2026-11-16, CXO). Arch, Docs and CIO have had it since 11-13. xian approves the wording of each corpus item before it ships; this page is not wording he approves. The sample answers show the register, not final text: each fact in samples 2, 3, 5 and 6 stays a placeholder until traced to code or a served check. Corpus items xian has approved: how-i-act, cant-read, stance, stand-ins. Waiting: wont-do (after the ethics default flips), known-limits (after Web's served reads), practice.md (xian's card).
 
 ## 1. What this is
 
@@ -63,4 +63,4 @@ CXO judges quoted served replies from a named hosted build, never unit pins on t
 - Arch: where the known-limits list lives and who re-reads it at release (I voice-pass it).
 - Docs: corpus items arrive in this register; I pass or return each one.
 - CIO: Proven-entry summaries are rewritten in user terms before they reach me; the conduct-layer voice pass follows this spec.
-- Sample facts in 2, 5 and 6 get replaced from code before any wording goes to xian.
+- Sample facts in 2, 3, 5 and 6 get replaced from code or a served check before any wording goes to xian. Sample 3 is re-read against `docs/tier1/wont-do.md` once ethics is on by default for self-hosted.
