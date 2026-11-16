@@ -2418,7 +2418,8 @@ async def save_github_token(
         )
 
 
-# #2376. Drafts by Lead 2026-11-15; CXO rules the words.
+# #2376. "Personal token removed." is CXO's (2026-11-15). The two refusals and the
+# incomplete line are Lead's drafts, not yet ruled.
 GITHUB_TOKEN_SHAPE_REFUSAL = (
     'That doesn\'t look like a GitHub personal access token. They start with "ghp_" or '
     '"github_pat_".'

@@ -541,11 +541,12 @@
       // #2376: the personal-token form's state comes from two reads. `connected` is the
       // page's own status (configured and valid); `oauth` is oauth-status, which says
       // whether the account is connected through the GitHub App and whether a personal
-      // token is on file. Lines: Lead's drafts 2026-11-15, CXO rules them.
+      // token is on file. Lines: CXO 2026-11-15 (the stored-token line says what Arch's
+      // source read shows: when the token serves, it serves every read).
       const PAT_TOKEN_PLACEHOLDER = 'ghp_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx';
       const PAT_STORED_PLACEHOLDER = '••••••••••••••••••••••••••••••••';
       const PAT_STORED_LINE =
-        'A personal token is also stored for this account. Piper uses it only if the GitHub app connection stops working.';
+        'A personal token is also stored for this account. Piper uses it instead of the GitHub app if the app connection stops working, and it can reach more of your GitHub than the app does.';
       const PAT_PREFIXES = ['ghp_', 'github_pat_'];
       let githubConnectedValid = false;
       let githubOAuthData = null;

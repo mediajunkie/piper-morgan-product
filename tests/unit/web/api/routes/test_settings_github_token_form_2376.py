@@ -337,7 +337,12 @@ class TestThePagesTokenForm:
         s = _state(True, {"connected": True, "app_connected": True, "pat_on_file": True})
         assert s["form"] == "none" and s["buttonShown"] == "none"  # no Update
         assert s["stored"] == "block"
-        assert s["storedLine"].startswith("A personal token is also stored for this account.")
+        # CXO 2026-11-15, verbatim.
+        assert s["storedLine"] == (
+            "A personal token is also stored for this account. Piper uses it instead of "
+            "the GitHub app if the app connection stops working, and it can reach more of "
+            "your GitHub than the app does."
+        )
 
     def test_app_connected_and_the_store_unreadable_claims_no_stored_token(self):
         s = _state(True, {"connected": True, "app_connected": True, "pat_on_file": None})
