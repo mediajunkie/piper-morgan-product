@@ -2,7 +2,7 @@
 
 **For**: someone outside the team who wants Piper to run on their own machine, so their notes and projects never sit on a hosted server.
 **Time**: about 30 minutes.
-**Status**: DRAFT 2026-11-12. Steps 1 to 9 follow the tested list in `docs/internal/operations/canonical-ops-recipes.md` section 13. Items marked **(not yet run)** have not been checked from a clean clone. On 2026-11-16 Docs ran steps 1, 2, 3 (data services only), 4 and 8 from a fresh clone with its own database and ports, and typed no key. Steps 5, 6, 7 and 9 and the chat check still wait on a real provider key. Docs will remove each marker as it is verified.
+**Status**: DRAFT 2026-11-12. Steps 1 to 9 follow the tested list in `docs/internal/operations/canonical-ops-recipes.md` section 13. Items marked **(not yet run)** have not been checked from a clean clone. On 2026-11-16 Docs ran steps 1, 2, 3 (the three named services), 4 and 8 from a fresh clone with its own database and ports, and typed no key. Steps 5, 6, 7 and 9 and the chat check still wait on a real provider key. Docs will remove each marker as it is verified.
 
 ## What you need
 
@@ -24,9 +24,9 @@
    source venv/bin/activate
    pip install -r requirements.txt
    ```
-3. **Start the supporting services** (a database, a cache and a search index). Docker Desktop must be running. **(checked 2026-11-16 from a fresh clone for the database, cache and search index only. The bare command below also lists the app, the GitHub connector, Temporal and Traefik, and that full set was not run)**
+3. **Start the supporting services** (a database, a cache and a search index). Docker Desktop must be running. Name the three services as shown: a bare `docker compose up -d` also starts the app, which takes the port step 6 needs. This guide assumes no other copy of Piper is running on the computer. **(checked 2026-11-16 from a fresh clone)**
    ```bash
-   docker compose up -d
+   docker compose up -d postgres redis chromadb
    ```
 4. **Create the database tables.**
    ```bash

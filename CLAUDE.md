@@ -124,7 +124,7 @@ If it is not empty: `git fetch origin main && git merge origin/main && git push 
 ```bash
 PIPER_CREDENTIAL_STORE=db python main.py   # server, port 8001 (entry point; not web/app.py); =db is the default since #2353, kept here for clarity
 python -m pytest tests/unit/ -v
-docker compose up -d && alembic upgrade head   # Postgres 5433
+docker compose up -d postgres redis chromadb && alembic upgrade head   # Postgres 5433; the bare form also starts the app on 8001 and Traefik on 80
 ./scripts/fix-newlines.sh         # before committing
 ```
 

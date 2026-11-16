@@ -558,7 +558,10 @@ steps as run from a fresh clone and a fresh virtual environment. Docs' page for 
 
 1. `git clone https://github.com/mediajunkie/piper-morgan-product.git` and `cd` into it.
 2. `python3.12 -m venv venv`, then `source venv/bin/activate`, then `pip install -r requirements.txt`.
-3. `docker compose up -d` (Postgres 5433, Redis 6379, ChromaDB 8000).
+3. `docker compose up -d postgres redis chromadb` (Postgres 5433, Redis 6379, ChromaDB 8000). Name the
+   three services: the bare `docker compose up -d` also builds and starts the app container on 8001
+   (the port `python main.py` needs in step 6), Traefik on 80, Temporal and the GitHub connector
+   (Docs' run-check from a fresh clone, 2026-11-16).
 4. `alembic upgrade head`.
 5. `python scripts/local_key_setup.py`, in a terminal. It asks which provider and then for the key,
    with the input hidden. On its first run it also creates the three local settings in the
@@ -632,6 +635,17 @@ which fails within about two hours of a pin change whether or not anyone asked. 
 installs in a staging folder and moves it into place only after `pip check` passes (Pard's finding,
 11-15: the old form made the environment look ready while pip was still installing, and reported a
 failed install as success).
+
+**A second clone on Amber shares this database unless you override it (Docs' run-check, 11-16).**
+`docker-compose.yml` pins the project name (`piper-morgan-stable`), the container names and the
+volume (`piper_postgres_data_v1`). So `docker compose up` or `alembic upgrade head` run from a
+fresh clone on a machine that already runs Piper acts on the same Postgres and the same data,
+which here holds xian's. A seat that tests the self-host guide or anything else from a clone on
+Amber first writes an uncommitted `docker-compose.override.yml` in the clone with its own project
+name, container names, ports and volume, reads `docker compose config` to see they took, sets
+`POSTGRES_PORT` to its own port for alembic and the scripts, and removes its containers and volume
+when done. Docs' 11-16 run used project `guidecheck`, Postgres 5434, Redis 6380 and Chroma 8010.
+On a fresh machine none of this applies.
 
 ## Promotion checklist: read staging's sha from staging, not from the deploy-run list (Lead, 2026-10-16)
 
