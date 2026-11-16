@@ -251,7 +251,7 @@ def main():
             print(
                 f"{x_mark()} Docker containers: missing {', '.join(containers['missing_required'])}"
             )
-            print(f"   Run: docker compose up -d")
+            print("   Run: docker compose up -d postgres redis chromadb")
             all_passed = False
 
         # 6. Database connection

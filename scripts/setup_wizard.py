@@ -1195,7 +1195,7 @@ async def _wizard_system_checks() -> bool:
             print("  • Docker services not running:")
             print("    1. Launch Docker Desktop application (check menu bar icon)")
             print("    2. Wait for Docker to fully start (icon stops animating)")
-            print("    3. Try: docker-compose up -d")
+            print("    3. Try: docker compose up -d postgres redis chromadb")
             print("    4. Wait 30 seconds for services to start")
             print("    5. Re-run this wizard")
             print("  • After system restart:")

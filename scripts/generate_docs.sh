@@ -195,7 +195,7 @@ git clone <repository-url>
 cd piper-morgan-platform
 
 # Start infrastructure services
-docker-compose up -d
+docker compose up -d postgres redis chromadb
 
 # Set up Python environment
 python -m venv venv
@@ -285,7 +285,7 @@ cp .env.example .env
 # - GITHUB_TOKEN
 
 # Deploy infrastructure
-docker-compose up -d
+docker compose up -d postgres redis chromadb
 
 # Initialize database (CRITICAL - currently required)
 # Note: Database initialization script needed

@@ -304,7 +304,7 @@ async def run_status_check():
 
     if db_status["status"] == "✗":
         recommendations.append("  • Fix database connectivity (see error above)")
-        recommendations.append("  • Try: docker-compose up -d db")
+        recommendations.append("  • Try: docker compose up -d postgres")
 
     if isinstance(key_status, dict):
         if "status" in key_status:
