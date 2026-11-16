@@ -39,10 +39,16 @@ cd ~/Development/piper-morgan-product && ls scripts/seat_settings_grant.py
   This should print `scripts/seat_settings_grant.py`. If it says "No such file or directory", that checkout is behind main: stop and tell Exec. A seat brings it up to date with `scripts/sync-pm-local.sh`, which never touches your uncommitted edits.
 
 ```
+scripts/seat_settings_grant.py prepare --seat lead
+```
+
+  This puts the Read deny and the file mode in place with **no key in the file**. It prints `no key was added`. **Then wait for Lead's word** (Lead's order, 11-15): Lead tries to open that settings file with its Read tool and should be refused. If Lead's Read succeeds, stop here; nothing real was in the file, and CIO fixes the deny before any key goes in. If Lead's session needs a restart to pick up the deny, this is where it happens.
+
+```
 scripts/seat_settings_grant.py add-key --seat lead --name PIPER_SEAT_ANTHROPIC_KEY
 ```
 
-  The second line asks `PIPER_SEAT_ANTHROPIC_KEY for seat lead (input hidden):`. Paste the key there and press Return. Nothing shows as you paste. The key is never part of a command.
+  This third line asks `PIPER_SEAT_ANTHROPIC_KEY for seat lead (input hidden):`. Paste the key there and press Return. Nothing shows as you paste. The key is never part of a command.
 
 - **You should see:**
 
@@ -73,7 +79,10 @@ scripts/seat_settings_grant.py check-env --name PIPER_SEAT_ANTHROPIC_KEY
   - To take the key back out: `scripts/seat_settings_grant.py remove-key --seat lead --name PIPER_SEAT_ANTHROPIC_KEY`. Revoking it on the console ends every copy, including any in a backup.
 
 - **Another seat later** (CIO, PA, Docs): the same line with that seat's name. A seat gets the key only when it names a run.
-- **Tested how:** `tests/unit/scripts/test_seat_settings_grant.py`, 11 cases on a dummy value: the value never appears in any output, the file ends at mode 0600, existing rules are kept, a deny is never removed, a broken file is left alone. **Not tested:** a real key, a live session, and whether Claude Code honours the Read deny written as `Read(**/.claude/settings.local.json)`.
+- **Tested how:** `tests/unit/scripts/test_seat_settings_grant.py`, 16 cases on a dummy value: the value never appears in any output, the file ends at mode 0600, existing rules are kept, a deny is never removed, a broken file is left alone, `check-env` and `add-allow` refuse anything but seat keys and exact `Bash(...)` rules. **Not tested:** a real key and a live session.
+- **What the Read deny does and doesn't cover** (CIO's probe, 11-15 22:38, dummy files only):
+  - A deny of the form `Read(**/name)` **is honoured inside the seat's own worktree.** With the fleet's existing `Read(**/.env)`, my Read of a dummy `.env` in my worktree was refused ("File is in a directory that is denied by your permission settings").
+  - The same deny **did not stop a Read of a dummy `.env` outside the worktree.** So the deny this step adds keeps Lead's Read tool out of Lead's own settings file. It does not stop another seat's Read tool from opening that file by its full path. For that case the limits are the classifier and the key's cap, unless HOST and Arch want a second deny that names the path from the home folder, added to every seat (open question, mailed 11-15).
 
 ## Step B (ADR row 6): tick "Operations reader" on the plain test account
 
@@ -309,6 +318,16 @@ rm .env
 ---
 
 ## Arch's read of the whole file (2026-11-15 22:22)
+
+**Update, 22:40.** All four changes below are done by CIO (`70ad8ee81b`) and I checked each in the current files: `check-env` refuses a name that isn't `PIPER_SEAT_`; `add-allow` refuses anything but an exact `Bash(...)` rule; Step A runs from xian's own checkout; and the entry is re-checked with `show` after a restart. Steps F0 (Lead) and E's provider half (HOST) are written and read.
+
+**One ruling added, on Lead's point (mail 22:28): test the Read deny before the real key is in the file.** If the deny pattern doesn't work as written, a Read of the file succeeds, and with the key already in it the test's failure is the leak. So the order in Step A is: (1) the deny goes into Lead's `settings.local.json` with no real key in the file; (2) Lead tries a Read of that file and logs "refused" or "not refused"; (3) only on "refused" does the real key go in. If it is not refused, nothing real was shown, and CIO fixes the pattern first. CIO chooses how the tool does step 1 (a made-up value under a `PIPER_SEAT_` test name that is removed afterwards, or a small command that writes the deny alone).
+
+**On Step E (HOST's caveat):** if OpenAI's project limit turns out to notify without refusing, it is not a bound, and HOST's fallback (a prepaid balance with auto-recharge off, funded to the seat budget) is the bound. Without one of the two, the OpenAI half of #2364 waits. That matches ADR-084 D1 point 3.
+
+**On Step H (Lead's read of Fly's docs):** a deploy token should be treated as full control of the MCP app, so the bound is the workflow text on main and the `main`-only environment, as D6 already says.
+
+The original findings follow, for the record.
 
 Read in full: Steps A to J and `scripts/seat_settings_grant.py` (193 lines). Steps F, G, H and I match ADR-084 with no change asked. The findings below are on Step A and the tool; CIO owns both.
 
