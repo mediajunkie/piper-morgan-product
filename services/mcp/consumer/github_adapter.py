@@ -269,6 +269,12 @@ def _qualified_search_query(
     return query
 
 
+# #2375: the states ``app_install_state`` answers with. The card's script reads these.
+INSTALL_STATE_NONE = "none"
+INSTALL_STATE_SOME = "some"
+INSTALL_STATE_UNKNOWN = "unknown"
+INSTALL_STATE_NOT_APP = "not_app"
+
 # #2374: the installed-repository qualifiers of one search. GitHub accepted 85 ``repo:``
 # qualifiers (2,289 characters) in one issue search on 2026-11-15 (unauthenticated read
 # of public repositories), so one query's qualifiers stay under 2,000 characters. Five
@@ -2047,6 +2053,34 @@ class GitHubMCPSpatialAdapter(BaseSpatialAdapter):
             user_message=GITHUB_APP_NOT_INSTALLED_REPLY,
             detail=DETAIL_APP_NOT_INSTALLED,
         )
+
+    async def app_install_state(self, user_id) -> str:
+        """#2375 (Arch 2026-11-15): the one word the Integrations card needs to label
+        its way to the repository page. ``none``: an App grant, installed on no
+        repository. ``some``: installed on one or more. ``not_app``: the account isn't
+        served by an App grant. ``unknown``: the read didn't answer (the store, GitHub,
+        a rejected grant, anything raised). Never ``none`` on a read that didn't answer.
+
+        One installation read, through ``_installed_or_degrade`` (the same read the
+        repository list makes, with the same stale handling on GitHub's 401). No
+        repository names and no counts leave this function."""
+        try:
+            credential = await self.resolve_credential(user_id)
+            if isinstance(credential, DegradationResponse):
+                if credential.reason is DegradationReason.CONNECT_REQUIRED:
+                    return INSTALL_STATE_NOT_APP
+                return INSTALL_STATE_UNKNOWN
+            if credential.leg != "oauth" or not credential.app_grant:
+                return INSTALL_STATE_NOT_APP
+            installed = await self._installed_or_degrade(credential)
+        except Exception:
+            logger.warning("GitHub App install state check failed", exc_info=True)
+            return INSTALL_STATE_UNKNOWN
+        if isinstance(installed, DegradationResponse):
+            if installed.detail in (DETAIL_APP_NOT_INSTALLED, DETAIL_APP_INSTALL_LINK_MISSING):
+                return INSTALL_STATE_NONE
+            return INSTALL_STATE_UNKNOWN
+        return INSTALL_STATE_SOME
 
     async def app_installed_repositories(
         self, user_id, *, credential=None

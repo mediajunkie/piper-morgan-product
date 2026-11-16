@@ -1880,6 +1880,19 @@ surfaces:
   verdict: exempt
   reason: write-only, no read claim
 
+- id: route:GET /api/v1/settings/integrations/github/install-state
+  kind: route
+  effect: READ
+  reads: whether the GitHub App is installed on any repository for the caller (one installation read)
+  handler: web/api/routes/settings_integrations.py:github_install_state
+  states: {verified: distinct, failed: distinct, narrowed: n/a, not_performed: distinct, substituted: n/a}
+  verdict: green
+  notes: >-
+    #2375. One word: none / some (the read answered), unknown (the store, GitHub, a
+    rejected grant or a raise), not_app (no App grant, so no read was made). Never
+    "none" on a read that didn't answer; the card keeps its neutral label on unknown.
+    Pins: test_github_install_path_2375.py.
+
 - id: route:GET /api/v1/settings/integrations/github/repositories
   kind: route
   effect: READ
