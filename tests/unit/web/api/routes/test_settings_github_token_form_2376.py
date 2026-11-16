@@ -390,6 +390,31 @@ class TestThePageSource:
         assert 'style="display: none;"' in section.splitlines()[0]
         assert "removeGitHubToken()" in section and "saveGitHubToken()" not in section
 
+    def test_every_element_the_state_script_reads_is_in_the_markup(self):
+        # The node harness stubs any id it is asked for, so a mistyped id would pass
+        # there and do nothing in a browser. Each id the #2376 functions use must be a
+        # real element in the page's markup.
+        import re
+
+        start = PAGE.index("      function syncSaveButton()")
+        script = PAGE[start : PAGE.index("      async function loadGitHubStatus", start)]
+        start = PAGE.index("      async function removeGitHubToken()")
+        script += PAGE[start : PAGE.index("      async function disconnectGitHub()", start)]
+        ids = set(re.findall(r"getElementById\('([^']+)'\)", script))
+        assert ids == {
+            "token",
+            "save-btn",
+            "form-title",
+            "pat-form-section",
+            "pat-form-hint",
+            "pat-stored-section",
+            "pat-stored-line",
+            "pat-remove-btn",
+        }
+        markup = PAGE[: PAGE.index("{% block scripts %}")]
+        missing = [i for i in sorted(ids) if f'id="{i}"' not in markup]
+        assert missing == []
+
     def test_remove_calls_the_token_route_not_disconnect(self):
         start = PAGE.index("      async function removeGitHubToken()")
         body = PAGE[start : PAGE.index("      async function disconnectGitHub()", start)]
