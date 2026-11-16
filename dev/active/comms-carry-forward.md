@@ -1,21 +1,22 @@
 # Comms carry-forward
 
-## ⭐ CURRENT STATE — 2026-11-14 21:19 PT (STOP). Read this first. It supersedes everything below.
-- **Log 11-14:** `dev/2026/11/14/2026-11-14-0619-comms-code-log.md` (DAY-CLOSED). Tomorrow creates a new log.
+## ⭐ CURRENT STATE — 2026-11-15 21:19 PT (STOP). Read this first. It supersedes everything below.
+- **Log 11-15:** `dev/2026/11/15/2026-11-15-0619-comms-code-log.md` (DAY-CLOSED). Tomorrow creates a new log.
 - **Pace (xian, 11-02):** keep working, not racing. The drain rule holds. No nudges to xian about posts (Exec 11-12).
-- **Sat 11-14 "Which Agent Did It?": DONE.** Published 13:59 (website e93c7a7), `distributed` with Medium and LinkedIn (Docs, eea1822f2a, 93e70fdad1).
-- **Sun 11-15 "No New Skills This Time" (insight):** scaffold `docs/public/comms/drafts/no-new-skills-this-time.md`, calendar `drafted`. Waiting on xian's prose, art and footer tease (to "The Wall"). Then review, fact-check, template-audit, PUBLISH-READY (category insight). Caution: 13 candidates, "12 leans".
-- **Tue 11-17 "The Wall" (building, beat 4, the bridge):** scaffold `docs/public/comms/drafts/the-wall.md`, `drafted`. Waiting on xian's prose. Footer teases arc 1.
-- **Narrative mode ADOPTED 11-14 (xian, trial):** arcs about moving a product into beta. Arc map in planning doc (Claude Docs 5vc7f1CTHhadvvPBB73h86, rev 36): 1 Letting a Stranger In (sourced, Sep 19 to Oct 7), 2 Ready or Not, 3 Open Then Hold, 4 What the Beta Is Teaching Us. **xian to pick:** cadence weekdays (I suggested narrative Tue, insight Sat, Ship Wed), arc titles, arc 1's main thread (3 options in chat). Nothing on the calendar past 11-17, and no arc 1 scaffold, until then.
+- **Sat 11-14 "Which Agent Did It?" and Sun 11-15 "No New Skills This Time": DONE, distributed.** (Sun: website 54579d0; altText and caption backfilled 1ba7dfef6f.)
+- **Tue 11-17 "The Wall" (building, the bridge):** scaffold `docs/public/comms/drafts/the-wall.md`, `drafted`. xian will try to write it before Tue. **Its footer tease must change**: it now points at arc 1, but under the cadence xian proposed the next non-Ship post is a weekend insight. Fill the tease once he picks the post.
+- **Cadence proposal (xian in chat, 11-15, NOT yet confirmed):** insight on the weekend (Sat or Sun), Ship on Tuesday, narrative on Thursday. I laid out: Ship #069 stays Wed 11-18; insight Sat 11-21 or Sun 11-22; Ship #070 Tue 11-24; narrative Thu 11-26 is Thanksgiving (my lean: skip that week, arc 1 Thu 12-3). Three open questions to xian: Thanksgiving; the weekend insight (my pick "One Account Means One Hand", then "A Grant Has to Reach the Hand That Acts", "A Perfect Score Can Pass a Blank Page"; hold "A Habit Is Not a Trigger", it echoes Sunday's aside); Ship-to-Tuesday shortens Exec's prep, relay to Exec once he confirms. **No calendar change past 11-17 and no scaffold until he answers.** Planned Ship rows #070-#073 are still Wednesdays.
+- **Arcs (adopted 11-14):** map in planning doc (Claude Docs 5vc7f1CTHhadvvPBB73h86, rev 36). Arc 1 "Letting a Stranger In" sourced (Sep 19 to Oct 7); main thread is xian's pick from three.
 - **Ship #069 "Off-Limits by Default" (Wed 11-18):** don't start the scaffold until Exec relays xian's goals. Source `docs/internal/planning/comms/ship-reviews/ship-069-week-review.html`. Then External fact-check.
-- **#2374 (11-15):** on an App grant, issue and PR searches still read every repo the person is assigned in, not just the installed set. Ship #069 External check: "narrower grants" holds for repositories only, not issue/PR searches, until 2374 lands.
+- **#2374, #2378-#2380 (11-15):** App grant scope gaps. Ship #069 check: "narrower grants" holds for the repository list, not for issue/PR searches or some single-repo reads, until those land.
+- **Exec ruling-relay 11-15 19:11 (xian, verbatim):** stop assigning xian manual workarounds; Exec is writing one design for how seats run and test Piper. Comms answered (01M7H5M8C82RSY0FKBZPMPGQEW): syndication stays his by design; production counts for copy need read-only facts.
+- **BETA_ rename (Docs, 11-15):** Comms told Docs it sent no ALPHA_ links and to flip labels to Beta; stub removal waits on HOST.
 - **Two-week sprints from Fri 11-13.** #069 ordinary, #070 first progress, #071 first final score.
-- **GitHub criteria line:** nothing Comms-shaped through #2373. #2342 is the candidate for the "what changed" note.
 - **Keychain rule (xian via Exec, 11-11; #2353):** nothing we run reads xian's login keychain without his permission.
 - **Mail v4 live;** v3 is the fallback until 11-23.
 - **Invites held (xian 11-04)** until #1551, #2261 and #2178 are done. **Waiting list (#2256):** xian first, then HOST. **HOLD (PDR-102):** no ownership claim in copy.
 - **Rule 8:** no outside person named anywhere in the repo.
-- **Standing:** next mining pass Fri 11-20.
+- **Standing:** next mining pass Fri 11-20. "What changed" note at the first user-visible Production ship (#2342 candidate).
 
 ## OLDER STATE blocks pruned 2026-11-06 (10-14 to 11-04). They are in git history and in the dated session logs.
 
