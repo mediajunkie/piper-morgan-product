@@ -3,7 +3,7 @@
 **Updated**: 2026-11-13 13:15. Older state lives in the session logs (`dev/2026/{10,11}/*/*docs-code-log.md`), not here. `gh`: prefix `GODEBUG=netdns=go` if bare `gh` hangs.
 
 ## NOW (11-14 19:12)
-- **11-15 rename done (xian's go):** four tester pages are now BETA_KNOWN_ISSUES, QUICKSTART, TESTING_GUIDE, FEATURE_GUIDE with stubs at the ALPHA_ paths. ALPHA_AGREEMENT_v2 left alone, asked xian. Remove the four stubs when Comms/PPM say no sent tester mail links the old names. FYI v4 01M7GRKFFN… sent.
+- **11-15 rename done (xian's go):** four tester pages are now BETA_KNOWN_ISSUES, QUICKSTART, TESTING_GUIDE, FEATURE_GUIDE with stubs at the ALPHA_ paths. ALPHA_AGREEMENT_v2 left alone, asked xian. Stubs: Comms, PPM and HOST have no record of sent links, only xian's hand-sent email is unknown. Remove the four stubs (git rm docs/ALPHA_{KNOWN_ISSUES,QUICKSTART,TESTING_GUIDE,FEATURE_GUIDE}.md) when xian says no message linked them. FYI v4 01M7GRKFFN… sent.
 
 ## (earlier) NOW (11-14 14:08)
 - **11-14:** "Which Agent Did It?" published and fully distributed (blog e93c7a7, LinkedIn and Medium URLs in the row, draft archived). Next publishes: Sun 11-15 "No New Skills This Time" (insight) and Tue 11-17 "The Wall" (building, last day-by-day beat), each on a Comms ready-for-docs memo. xian adopted a trial of narrative arcs (Comms ruling relay 01M7E142TS), weekdays for the new cadence not set, so the weekday table may change. 11-13 omnibus landed with Exec's theme 6 correction. xian will set provider keys (Anthropic, OpenAI) 11-14 for the Mon 11-16 guide run-check. xian is troubleshooting the GitHub App reconnect (#2342). xian has NOT yet approved the three Tier 1 texts (how-i-act, cant-read, stance).
