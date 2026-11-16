@@ -194,7 +194,7 @@ REM ============================================================================
     ) else (
         docker ps --format "{{.Names}}" | findstr /C:"piper-postgres" >nul 2>&1
         if errorlevel 1 (
-            echo        [WARN] piper-postgres not running - run: docker compose up -d
+            echo        [WARN] piper-postgres not running - run: docker compose up -d postgres redis chromadb
             set /a WARNINGS+=1
         ) else (
             echo        [PASS] Docker and piper-postgres running

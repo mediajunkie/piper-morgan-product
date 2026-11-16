@@ -218,6 +218,7 @@ It sets no flag, stores no provider key and keeps no cookie from the reply.
 - `the host refused the sign-up (422)`: a field is not in a form the host accepts, most likely the email. Nothing was created; the invite file is kept.
 - `the sign-up did not complete and the account does not sign in`: the host gave no readable answer. The script then tried to sign in with the password it had just made, and that failed too. The invite file is kept; the code may or may not be spent. Tell Exec before running it again.
 - `the account was created but its credential file could not be written`: the code is spent and the account needs a password reset, never a guess.
+- **One residual (Arch, 11-16):** if the sign-up succeeds but both its reply and the follow-up sign-in are lost, the account exists with a password nobody holds. The script reports the third line above. The remedy is xian's: a password reset or a delete. It takes two failures in a row.
 
 **Standing access that removes the hand step (ADR-084 D6):** the exact-command allow. xian's remaining part is minting one code and the one line above.
 

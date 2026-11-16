@@ -1,5 +1,24 @@
 # EXPLICIT PROJECT NAME - survives directory renames!
-name: piper-morgan-stable
+#
+# One machine, more than one copy (issue 2386, Arch's ruling of 2026-11-16).
+# Every name below starts with ${PIPER_STACK:-piper}, and the three data services read
+# their host port from a variable. With nothing set, this file renders exactly as it did
+# before: project piper-morgan-stable, containers piper-*, volume piper_postgres_data_v1,
+# ports 5433, 6379 and 8000.
+#
+# A SECOND copy on a machine that already runs Piper must set, in its own .env, BEFORE
+# the first `docker compose up`:
+#     PIPER_STACK=piper2          (any name that is not in use)
+#     POSTGRES_PORT=5543          (the app, the scripts and the setup page read this too)
+#     REDIS_PORT=6479
+#     REDIS_URL=redis://localhost:6479
+#     CHROMADB_PORT=8100
+# and start only the three data services: docker compose up -d postgres redis chromadb
+# Without those lines the second copy joins the first copy's project: it shares its
+# database, and compose may re-create its Redis and Chroma containers on the second
+# copy's empty ./data folders. The other four services keep fixed ports; a clash there
+# fails loudly and shares nothing.
+name: ${PIPER_STACK:-piper}-morgan-stable
 
 services:
   # Main Application - Piper Morgan API
@@ -7,7 +26,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: piper-app
+    container_name: ${PIPER_STACK:-piper}-app
     environment:
       - PYTHON_VERSION=3.11
       - PYTHONPATH=/app
@@ -53,14 +72,14 @@ services:
   # PostgreSQL - Main database
   postgres:
     image: postgres:15
-    container_name: piper-postgres # Fixed name
+    container_name: ${PIPER_STACK:-piper}-postgres
     restart: unless-stopped # 1594: data services must survive a host reboot
     environment:
       POSTGRES_USER: piper
       POSTGRES_PASSWORD: dev_changeme_in_production
       POSTGRES_DB: piper_morgan
     ports:
-      - "5433:5432"
+      - "${POSTGRES_PORT:-5433}:5432"
     volumes:
       # NAMED VOLUME - survives everything!
       - piper_postgres_data:/var/lib/postgresql/data
@@ -83,7 +102,7 @@ services:
     # deliberate: bump this tag + the adapter tool constants + the FastMCP test
     # fixture together (services/mcp/consumer/github_adapter.py has the map).
     image: ghcr.io/github/github-mcp-server:v1.5.0
-    container_name: piper-ghmcp
+    container_name: ${PIPER_STACK:-piper}-ghmcp
     command: ["http", "--listen-host", "0.0.0.0"]
     ports:
       - "8082:8082"
@@ -92,13 +111,13 @@ services:
   # Redis - Cache and event queue
   redis:
     image: redis:7-alpine
-    container_name: piper-redis
+    container_name: ${PIPER_STACK:-piper}-redis
     restart: unless-stopped # 1594: data services must survive a host reboot
     command: redis-server --appendonly yes
     volumes:
       - ./data/redis:/data
     ports:
-      - "6379:6379"
+      - "${REDIS_PORT:-6379}:6379"
     healthcheck:
       test: ["CMD", "redis-cli", "ping"]
       interval: 10s
@@ -108,12 +127,12 @@ services:
   # ChromaDB - Vector database
   chromadb:
     image: chromadb/chroma:latest
-    container_name: piper-chromadb
+    container_name: ${PIPER_STACK:-piper}-chromadb
     restart: unless-stopped # 1594: data services must survive a host reboot
     volumes:
       - ./data/chromadb:/chroma/chroma
     ports:
-      - "8000:8000"
+      - "${CHROMADB_PORT:-8000}:8000"
     environment:
       ANONYMIZED_TELEMETRY: "false"
       ALLOW_RESET: "true"
@@ -121,7 +140,7 @@ services:
   # Temporal - Workflow orchestration (FIXED)
   temporal:
     image: temporalio/auto-setup:latest
-    container_name: piper-temporal
+    container_name: ${PIPER_STACK:-piper}-temporal
     ports:
       - "7233:7233"
       - "8088:8088"
@@ -139,7 +158,7 @@ services:
   # Traefik - API Gateway (minimal config)
   traefik:
     image: traefik:v3.0
-    container_name: piper-traefik
+    container_name: ${PIPER_STACK:-piper}-traefik
     command:
       - "--api.insecure=true"
       - "--providers.docker=true"
@@ -154,9 +173,9 @@ services:
 
 networks:
   default:
-    name: piper-network
+    name: ${PIPER_STACK:-piper}-network
 
 volumes:
   # EXPLICIT VOLUME NAME - never loses data
   piper_postgres_data:
-    name: piper_postgres_data_v1 # Version it!
+    name: ${PIPER_STACK:-piper}_postgres_data_v1 # Version it!
