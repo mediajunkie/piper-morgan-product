@@ -54,7 +54,7 @@ What the ADR requires (D3): one exact-command allow per seeded account name, add
 
 ## Step F (ADR row 4): the test GitHub identity
 
-**Owner: HOST. To write.** A machine account created by hand (GitHub Terms B.3), a member of `pipermorgan` with base permission none or a team limited to the test repositories, never an owner. Then connect it on the second seat account and install the Piper App on the test repositories only. Its password and second factor stay xian's. Sign out of GitHub in the seat browser profile afterwards.
+**Owner: HOST. Written in `adr-084-one-time-steps-host-rows-4-and-7.md` (Row 4); partly not ready (waits on the second seat account's owner).** A machine account created by hand (GitHub Terms B.3), a member of `pipermorgan` with base permission none or a team limited to the test repositories, never an owner. Then connect it on the second seat account and install the Piper App on the test repositories only. Its password and second factor stay xian's. Sign out of GitHub in the seat browser profile afterwards.
 
 ## Step G (ADR row 9): the connector as the seat account
 
@@ -62,7 +62,7 @@ What the ADR requires (D3): one exact-command allow per seeded account name, add
 
 ## Step H (ADR row 7): the MCP deploy token
 
-**Owner: HOST. NOT READY: waits on #2384** (the deploy job). A Fly token scoped to the MCP app only, stored as a secret in a GitHub environment limited to `main`, with an expiry if Fly allows one. HOST's custody row takes its creation date from this step.
+**Owner: HOST. Written in `adr-084-one-time-steps-host-rows-4-and-7.md` (Row 7); NOT READY: waits on #2384** (the deploy job). A Fly token scoped to the MCP app only, stored as a secret in a GitHub environment limited to `main`, with an expiry if Fly allows one. HOST's custody row takes its creation date from this step.
 
 ## Step I (ADR row 8): CIO's batched hook and settings patches
 
