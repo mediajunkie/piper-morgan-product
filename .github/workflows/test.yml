@@ -185,6 +185,14 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+        with:
+          # Full history. The Tier 1 manifest checker reads each approved text at its
+          # approval sha (`git show <sha>:<path>`), and an unreadable stand-in approval
+          # is a build fault by design (Arch 11-13). A one-commit checkout cannot read
+          # any approval sha, so the real-manifest tests failed here from the first
+          # recorded stand-in approval (2026-11-15, run 43799138381) while passing in
+          # every seat's full checkout.
+          fetch-depth: 0
 
       - name: Set up Python 3.11
         uses: actions/setup-python@v4
