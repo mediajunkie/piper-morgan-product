@@ -636,6 +636,18 @@ installs in a staging folder and moves it into place only after `pip check` pass
 11-15: the old form made the environment look ready while pip was still installing, and reported a
 failed install as success).
 
+**Seat rule (11-16, Arch's ruling on issue 2386, placed by CIO): no seat runs `docker compose up`
+against Amber's shared stack from its worktree or from a clone.** To bring the shared data services
+back after a reboot, start the containers that exist: `docker start piper-postgres piper-redis
+piper-chromadb`. That recreates nothing and doesn't depend on the folder you're in. Why: compose
+binds Redis and Chroma to `./data/…` in the folder `up` ran from, and the running containers were
+made from Lead's worktrees (`docker inspect`, label `com.docker.compose.project.working_dir`, read
+11-16: `piper-postgres` from `lead-2083b`, `piper-redis` and `piper-chromadb` from `lead`). An `up`
+from another folder may recreate them on that folder's empty data (Arch named this as untested;
+nobody has run it, and nobody should against the shared stack). If a container is gone and has to
+be made again, that goes to xian through Exec. Once 2386 lands, a seat's own stack sets
+`PIPER_STACK` and its own ports; until then it uses an override as below.
+
 **A second clone on Amber shares this database unless you override it (Docs' run-check, 11-16).**
 `docker-compose.yml` pins the project name (`piper-morgan-stable`), the container names and the
 volume (`piper_postgres_data_v1`). So `docker compose up` or `alembic upgrade head` run from a

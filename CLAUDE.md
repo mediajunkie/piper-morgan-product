@@ -124,7 +124,7 @@ If it is not empty: `git fetch origin main && git merge origin/main && git push 
 ```bash
 PIPER_CREDENTIAL_STORE=db python main.py   # server, port 8001 (entry point; not web/app.py); =db is the default since #2353, kept here for clarity
 python -m pytest tests/unit/ -v
-docker compose up -d postgres redis chromadb && alembic upgrade head   # Postgres 5433; the bare form also starts the app on 8001 and Traefik on 80
+docker start piper-postgres piper-redis piper-chromadb   # Amber's shared data services (Postgres 5433); never `docker compose up` from a worktree or clone here, and migrations follow recipe 14
 ./scripts/fix-newlines.sh         # before committing
 ```
 

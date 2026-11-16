@@ -1226,3 +1226,8 @@ script at 17:11 still reached the keychain, so the default moved into the store 
 `docker compose up -d postgres redis chromadb`. Why: the bare form starts all seven services in docker-compose.yml, including the
 app container on 8001 (the port `python main.py` uses) and Traefik on 80. Docs ran the three-service form from a fresh clone.
 Recipe 13 step 3 and a clone-test note in recipe 14 (canonical-ops-recipes.md) changed in the same commit.
+
+2026-11-16 04:37 PT (CIO; Arch's ruling on issue 2386, v4 01M7J5HJNREWE6CA2KGB4K0YDE) — Quick reference: the compose line became
+`docker start piper-postgres piper-redis piper-chromadb`, with "never `docker compose up` from a worktree or clone here". Why: the
+running containers were made from Lead's worktrees and compose binds Redis and Chroma data to the folder `up` runs from, so an `up`
+from another seat's folder may recreate them on empty data. This replaces the line written at 04:23 the same day. Rule text: recipe 14.

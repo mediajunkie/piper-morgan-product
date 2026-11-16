@@ -54,8 +54,9 @@ all-clear on 2026-08-10.
 - 🔴 **Docker containers do NOT restart after an Amber reboot.** Found 2026-08-11: `piper-postgres`,
   `piper-redis`, and `piper-chromadb` were all `Exited (255)` six hours after the macOS 26.6 reboot,
   with nothing having restarted them. Nothing alerts on this — the first symptom is a connection
-  error in whatever you were doing. **After any host reboot, run `docker compose up -d postgres
-  redis chromadb` before assuming the dev environment works.** (`piper-ghmcp` came back on its own;
+  error in whatever you were doing. **After any host reboot, run `docker start piper-postgres
+  piper-redis piper-chromadb` before assuming the dev environment works** (not `docker compose up`:
+  canonical-ops-recipes.md section 14, seat rule of 2026-11-16). (`piper-ghmcp` came back on its own;
   the data services did not.)
 - Dev Postgres is on **port 5433**, not 5432. Redis 6379, ChromaDB 8000, app server 8001.
 - Database runs in the Docker container `piper-postgres`; volume `piper_postgres_data`.
