@@ -155,6 +155,14 @@ GITHUB_APP_INSTALLED_LIST_NOTE = (
     "These are the repositories the Piper GitHub app is installed on. To add another, "
     "install the app on it."
 )
+# CXO 2026-11-15 (xian's screen: "It's not clear how I'd add a new one from here"): the
+# same list with a way to GitHub's install page beside it. Used only when the response
+# also carries the install link, so the sentence never names a button that isn't there;
+# with no link the 11-12 sentence above stands.
+GITHUB_APP_INSTALLED_LIST_NOTE_WITH_BUTTON = (
+    "These are the repositories the Piper GitHub app is installed on. To add another, "
+    "press Add another repository, then refresh this list."
+)
 GITHUB_CONNECTOR_APP_NOT_INSTALLED_REPLY = (
     "You're connected to GitHub, but the Piper GitHub app isn't installed on any of your "
     "repositories yet, so there's nothing for me to read. Install it on the ones you want "

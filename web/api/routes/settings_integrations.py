@@ -265,6 +265,7 @@ class GitHubRepositoryListResponse(BaseModel):
     # #2342: a named state in place of an empty list. ``app_not_installed``: the person
     # has authorized the GitHub App but installed it on no repository. ``message`` is
     # CXO's card line; ``install_url`` is where to install it (None when no slug is set).
+    # #2375: ``install_url`` also rides a NON-EMPTY App list, for "Add another repository".
     state: Optional[str] = None
     message: Optional[str] = None
     install_url: Optional[str] = None
@@ -2494,7 +2495,7 @@ async def disconnect_github(current_user: JWTClaims = Depends(get_current_user))
 async def github_install_state(current_user: JWTClaims = Depends(get_current_user)):
     """#2375 (Arch 2026-11-15, option c): the GitHub App's install state for the
     caller, as one word, so the Integrations card can name its way to the repository
-    page ("Install the GitHub app" / "Choose repositories"). The Integrations list
+    page ("Install the GitHub app" / "Manage repositories"). The Integrations list
     itself makes no GitHub call; the card asks this afterwards. ``unknown`` on any
     failure, and the card then keeps its neutral label (CXO). No repository names and
     no counts are returned."""
@@ -2623,11 +2624,27 @@ async def get_github_repositories(current_user: JWTClaims = Depends(get_current_
         )
 
         note = None
+        install_url = None
         if source == "app_installation" and repositories:
-            from services.mcp.consumer.github_adapter import GITHUB_APP_INSTALLED_LIST_NOTE
+            from services.mcp.consumer.github_adapter import (
+                GITHUB_APP_INSTALLED_LIST_NOTE,
+                GITHUB_APP_INSTALLED_LIST_NOTE_WITH_BUTTON,
+            )
+            from services.mcp.consumer.github_app_grant import app_install_url
 
-            note = GITHUB_APP_INSTALLED_LIST_NOTE
-        return GitHubRepositoryListResponse(repositories=repositories, note=note)
+            # #2375 (CXO, Arch 2026-11-15): with something installed, the page still
+            # offers the way to GitHub's install page. A fixed public URL built from
+            # the App slug; None (never "") when no slug is set, and then the sentence
+            # names no button.
+            install_url = app_install_url()
+            note = (
+                GITHUB_APP_INSTALLED_LIST_NOTE_WITH_BUTTON
+                if install_url
+                else GITHUB_APP_INSTALLED_LIST_NOTE
+            )
+        return GitHubRepositoryListResponse(
+            repositories=repositories, note=note, install_url=install_url
+        )
 
     except HTTPException:
         raise
