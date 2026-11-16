@@ -77,7 +77,7 @@ def store(monkeypatch):
 
 def test_unset_store_refuses_without_touching_any_store(clean_env, no_store):
     with pytest.raises(SystemExit) as exc:
-        with binder.developer_keys_bound(providers=("anthropic",)):
+        with binder.developer_keys_bound(providers=("anthropic",), max_usd=1.0):
             pytest.fail("the block ran")
     assert "PIPER_CREDENTIAL_STORE" in str(exc.value)
     assert "Do not use the keychain" in str(exc.value)
@@ -86,20 +86,20 @@ def test_unset_store_refuses_without_touching_any_store(clean_env, no_store):
 def test_unset_store_refuses_even_with_a_key_in_the_environment(clean_env, no_store):
     clean_env.setenv("ANTHROPIC_API_KEY", "fake-env-anthropic")
     with pytest.raises(SystemExit):
-        with binder.developer_keys_bound(providers=("anthropic",)):
+        with binder.developer_keys_bound(providers=("anthropic",), max_usd=1.0):
             pytest.fail("the block ran")
 
 
 def test_db_store_with_environment_key_binds_it_and_asks_no_store(clean_env, no_store):
     clean_env.setenv("PIPER_CREDENTIAL_STORE", "db")
     clean_env.setenv("ANTHROPIC_API_KEY", "fake-env-anthropic")
-    with binder.developer_keys_bound(providers=("anthropic",)) as keys:
+    with binder.developer_keys_bound(providers=("anthropic",), max_usd=1.0) as keys:
         assert keys == {"anthropic": "fake-env-anthropic"}
 
 
 def test_db_store_without_environment_key_reads_only_the_named_provider(clean_env, store):
     clean_env.setenv("PIPER_CREDENTIAL_STORE", "db")
-    with binder.developer_keys_bound(providers=("anthropic",)) as keys:
+    with binder.developer_keys_bound(providers=("anthropic",), max_usd=1.0) as keys:
         assert keys == {"anthropic": "fake-db-anthropic"}
     assert store.asked == ["anthropic"]
 
@@ -110,7 +110,7 @@ def test_db_store_with_no_key_anywhere_refuses(clean_env, monkeypatch):
 
     monkeypatch.setattr(ks, "get_keychain_service", lambda: _RecordingStore())
     with pytest.raises(SystemExit) as exc:
-        with binder.developer_keys_bound(providers=("openai",)):
+        with binder.developer_keys_bound(providers=("openai",), max_usd=1.0):
             pytest.fail("the block ran")
     assert "OPENAI_API_KEY" in str(exc.value)
 
@@ -119,7 +119,7 @@ def test_no_provider_named_refuses(clean_env, no_store):
     clean_env.setenv("PIPER_CREDENTIAL_STORE", "db")
     clean_env.setenv("ANTHROPIC_API_KEY", "fake-env-anthropic")
     with pytest.raises(SystemExit) as exc:
-        with binder.developer_keys_bound(providers=binder.providers_from_flag(None)):
+        with binder.developer_keys_bound(providers=binder.providers_from_flag(None), max_usd=1.0):
             pytest.fail("the block ran")
     assert "--provider" in str(exc.value)
 
@@ -131,7 +131,7 @@ def test_only_the_named_provider_is_bound_so_the_other_refuses_before_spend(clea
     clean_env.setenv("PIPER_CREDENTIAL_STORE", "db")
     clean_env.setenv("ANTHROPIC_API_KEY", "fake-env-anthropic")
     clean_env.setenv("OPENAI_API_KEY", "fake-env-openai")
-    with binder.developer_keys_bound(providers=("anthropic",)) as keys:
+    with binder.developer_keys_bound(providers=("anthropic",), max_usd=1.0) as keys:
         assert set(keys) == {"anthropic"}
         assert request_spend_key("anthropic") == "fake-env-anthropic"
         with pytest.raises(UnboundLLMKeyError):
@@ -196,6 +196,9 @@ def test_usage_text_no_longer_sends_keys_through_the_keychain(name):
 )
 def test_the_two_screens_print_the_plan_before_the_first_call(name):
     src = (SCRIPTS / name).read_text()
-    assert "planned_calls_line(" in src
+    # phase1 prints its own count inside run(); the control passes its count to the
+    # binder, which prints the line on entry (#2383).
+    plan = "planned_calls_line(" if "phase1" in name else "planned_calls="
+    assert plan in src
     first_call = "route_all(rows, router_fn)" if "phase1" in name else "asyncio.run(_control("
-    assert src.index("planned_calls_line(") < src.index(first_call)
+    assert src.index(plan) < src.index(first_call)

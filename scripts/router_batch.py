@@ -216,7 +216,11 @@ def _submit(args) -> None:
         print("dry run: nothing sent, ledger unchanged")
         return
     model_by_id = {r["custom_id"]: r["params"]["model"] for r in reqs}
-    with developer_keys_bound(providers=("anthropic",), require=True):
+    # The batch is bounded by check_cap above, before it is sent. The binder takes the
+    # same figure; a batch makes no live call, so its PLANNED and COST lines are ours.
+    with developer_keys_bound(
+        providers=("anthropic",), max_usd=args.cap_usd, announce=False, require=True
+    ):
         from services.llm.request_key import anthropic_client_for_request
 
         client = anthropic_client_for_request()
