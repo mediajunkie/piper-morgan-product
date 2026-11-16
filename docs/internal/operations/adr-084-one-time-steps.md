@@ -153,7 +153,7 @@ The order of what it waits on (CIO, 2026-11-15):
 
 **Owner: CIO (settings half written 2026-11-15); the provider half is HOST's to write.** Unblocks #2364's OpenAI half with no count read. Variable name: `PIPER_SEAT_OPENAI_KEY`. The project's own spend limit is the bound.
 
-- **Provider half (HOST, written 2026-11-15 from OpenAI's spend-limits guide at developers.openai.com/api/docs/guides/spend-limits and a search result; I could not open OpenAI's help pages, so every menu name below is unverified until xian sees it):**
+- **Provider half is OpenAI's own pages, so it cannot be a command.** (HOST, written 2026-11-15 from OpenAI's spend-limits guide at developers.openai.com/api/docs/guides/spend-limits and a search result; I could not open OpenAI's help pages, so every menu name below is unverified until xian sees it):**
   1. On platform.openai.com make a **new project** just for seats, named for the seat budget (for example `seat-screens`). Do not reuse a project anything of yours runs on: the limit must be the seat budget and nothing else may spend in it.
   2. In that project's **Limits** (spend) settings set the **monthly spend limit to the seat budget** and **turn on "Enforce a hard limit"**. The guide says a spend *alert* only notifies and traffic continues, while a *hard limit* makes requests return `429`. **Look at the page and confirm the hard-limit switch exists and is on.** Community posts say project limits were once notification-only. If you cannot find the hard-limit switch, stop and tell Exec: then the cap is not a bound. The fallback bound is the account's **prepaid credit balance with auto-recharge off**, funded only to the seat budget (check your billing page shows prepaid credits).
   3. In the project's **API keys**, create one key. If the dialog offers **Restricted** permissions, restrict it to what the screens call (chat/responses and batch endpoints); if you cannot tell which, leave the default, since the project limit is the bound, not the key's scope.
@@ -212,7 +212,7 @@ What the row must hold, whatever the path:
 
 ## Step F (ADR row 4): the test GitHub identity
 
-**Owner: HOST.** **Status: PARTLY NOT READY.** The "connects it on the second seat account" part needs that beta account to exist. The ADR does not say who creates it (Lead's seed script, or Web). Arch named the owner on 11-15: Lead writes it as Step F0, above. Until that account exists, steps 1 to 3 can be done; steps 4 to 7 wait.
+**Owner: HOST.** **Cannot be one command: these are GitHub and beta page clicks that no script may make (it is a person's account, 2FA and consent).** **Status: PARTLY NOT READY.** The "connects it on the second seat account" part needs that beta account to exist. The ADR does not say who creates it (Lead's seed script, or Web). Arch named the owner on 11-15: Lead writes it as Step F0, above. Until that account exists, steps 1 to 3 can be done; steps 4 to 7 wait.
 
 **Why a machine account:** GitHub's terms (Section B.3, read 11-15) allow one free machine account beside a personal account, and forbid a second personal one. A human must create it.
 
@@ -274,7 +274,7 @@ What the row must hold, whatever the path:
 
 ## Step H (ADR row 7): the MCP deploy token
 
-**Owner: HOST.** **Status: NOT READY.** Waits on **#2384** (the job and the secret's exact name) and on **Lead stating what a Fly deploy token for this app can do beyond deploying** (HOST runs no fly; I have not verified whether such a token can run commands inside the app, which would make it production-database reach). The names below are placeholders until #2384 fixes them.
+**Owner: HOST.** **Two actions that cannot merge: one Terminal line, then GitHub's own page.** **Status: NOT READY.** Waits on **#2384** (the job and the secret's exact name) and on **Lead stating what a Fly deploy token for this app can do beyond deploying** (HOST runs no fly; I have not verified whether such a token can run commands inside the app, which would make it production-database reach). The names below are placeholders until #2384 fixes them.
 
 1. **Create the environment.** github.com/mediajunkie/piper-morgan-product, Settings, Environments, **New environment**, name `<environment-name from #2384>`. Under **Deployment branches and tags** choose **Selected branches and tags**, add **main**. (This is what stops a branch pushed with an edited workflow from reading the secret.)
    - **You should see:** the environment page showing the branch rule "main".
