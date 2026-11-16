@@ -2,7 +2,10 @@
 
 **Updated**: 2026-11-13 13:15. Older state lives in the session logs (`dev/2026/{10,11}/*/*docs-code-log.md`), not here. `gh`: prefix `GODEBUG=netdns=go` if bare `gh` hangs.
 
-## NOW (11-14 19:12)
+## NOW (11-15 22:12)
+- **11-15:** published and distributed "No New Skills This Time" (blog 54579d0). Renamed four tester pages to BETA_ (stubs added then removed on xian's no-hand-sent-email answer, old release-note links retargeted). Tier 1: xian approved how-i-act, cant-read, stance, stand-ins (recorded). OPEN: his yes on practice.md at c531cae276 for c-practice-01 to 13 (all verified by CIO, header and row 13 final, shown to him in the Docs chat, card on Exec's rollup 01M7H8FM8P). On his yes set approved by column name and run the checker. Checker change 569a88d668 (no history is one error in --deploy) validated by Arch, rides the 07:00 promotion. Next: Mon 11-16 guide run-check in a fresh clone with an override compose file (names, Postgres 5434, Redis 6380), no key typed by Docs. Tue 11-17 "The Wall" on a Comms PUBLISH-READY. Owed at 11-16 04:12 START: the 11-15 omnibus (Sonnet subagent, 11-14 omnibus as model, then my verification) and Step 1d.
+
+## (earlier) NOW (11-14 19:12)
 - **11-15 rename done (xian's go):** four tester pages are now BETA_KNOWN_ISSUES, QUICKSTART, TESTING_GUIDE, FEATURE_GUIDE with stubs at the ALPHA_ paths. ALPHA_AGREEMENT_v2 left alone, asked xian. Stubs: Comms, PPM and HOST have no record of sent links, only xian's hand-sent email is unknown. Remove the four stubs (git rm docs/ALPHA_{KNOWN_ISSUES,QUICKSTART,TESTING_GUIDE,FEATURE_GUIDE}.md) when xian says no message linked them. FYI v4 01M7GRKFFN… sent.
 
 ## (earlier) NOW (11-14 14:08)
