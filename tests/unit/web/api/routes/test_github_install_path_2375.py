@@ -240,13 +240,103 @@ class TestTheCardsLabel:
         assert r["url"] == "/settings/integrations/github#repositories"
 
 
+# ── the cards as the page's own script draws them, run under node ───────────────────
+#
+# The first build put the link in the branch that draws Slack and Calendar. GitHub's card
+# is drawn by the API-key branch, so beta served "Settings" (xian's screen, 2026-11-15).
+# The pins above read the label function and the source text; neither drew a card. These
+# run the page's whole script and read the HTML it writes.
+
+PAGE_STUBS = r"""
+const elements = {};
+const element = () => ({ innerHTML: '', textContent: '', className: '', style: {}, dataset: {},
+  classList: { add() {}, remove() {}, toggle() {}, contains: () => false },
+  addEventListener() {}, setAttribute() {}, querySelector: () => null, querySelectorAll: () => [] });
+const document = {
+  getElementById: (id) => (elements[id] = elements[id] || element()),
+  addEventListener() {}, querySelector: () => null, querySelectorAll: () => [],
+};
+const window = { __OFFERED_CONNECTORS__: OFFERED, location: { search: '', pathname: '/' },
+  history: { replaceState() {} }, addEventListener() {} };
+async function fetch() { return { ok: false, json: async () => ({}) }; }
+"""
+
+
+def _page_script() -> str:
+    start = CARDS.index("<script>\n  // Integration icons mapping") + len("<script>")
+    return CARDS[start : CARDS.index("</script>", start)]
+
+
+def _draw(integrations, offered=("github", "notion", "slack", "calendar")) -> str:
+    js = (
+        f"const OFFERED = {json.dumps(list(offered))};\n"
+        + PAGE_STUBS
+        + _page_script()
+        + f"""
+renderIntegrations({json.dumps(integrations)});
+process.stdout.write(document.getElementById('integrations-list').innerHTML);
+"""
+    )
+    return subprocess.run(["node", "-e", js], capture_output=True, text=True, check=True).stdout
+
+
+def _card(name, status="healthy"):
+    return {
+        "name": name,
+        "display_name": name.title(),
+        "status": status,
+        "status_message": "Connected",
+        "configure_url": f"/settings/integrations/{name}",
+    }
+
+
+def _card_html(html: str, name: str) -> str:
+    start = html.index(f'id="card-{name}"')
+    end = html.find('id="card-', start + 1)
+    return html[start:] if end == -1 else html[start:end]
+
+
+@needs_node
+class TestTheDrawnCards:
+    def test_the_connected_github_card_carries_the_link_and_no_settings_button(self):
+        github = _card_html(_draw([_card("github"), _card("notion")]), "github")
+        assert 'id="github-repositories-link"' in github
+        assert 'href="/settings/integrations/github#repositories"' in github
+        assert "Repositories" in github and "Settings" not in github
+        assert "Disconnect" in github
+
+    def test_the_link_is_on_the_page_once(self):
+        html = _draw([_card(n) for n in ("github", "notion", "slack", "calendar")])
+        assert html.count('id="github-repositories-link"') == 1
+
+    @pytest.mark.parametrize("name", ["notion", "slack", "calendar"])
+    def test_the_other_connected_cards_keep_settings(self, name):
+        card = _card_html(_draw([_card("github"), _card(name)]), name)
+        assert "Settings" in card and "github-repositories-link" not in card
+        assert f'href="/settings/integrations/{name}"' in card
+
+    def test_a_github_card_that_is_not_connected_offers_connect_and_no_link(self):
+        github = _card_html(_draw([_card("github", status="not_configured")]), "github")
+        assert "Connect" in github and "github-repositories-link" not in github
+
+    def test_a_github_card_that_needs_reconnecting_has_no_link(self):
+        card = dict(_card("github"), action="reconnect")
+        github = _card_html(_draw([card]), "github")
+        assert "Reconnect with GitHub" in github and "github-repositories-link" not in github
+
+    def test_github_outside_the_beta_list_has_no_link(self):
+        github = _card_html(_draw([_card("github")], offered=("notion",)), "github")
+        assert "github-repositories-link" not in github and "Not in this beta" in github
+
+
 class TestThePagesSource:
-    def test_the_connected_github_card_has_no_bare_settings_link(self):
-        start = CARDS.index("${integration.name === 'github' ? `")
-        branch = CARDS[start : CARDS.index("` : `", start)]
-        assert 'id="github-repositories-link"' in branch
-        assert 'href="${GITHUB_REPOSITORIES_URL}"' in branch
-        assert "${GITHUB_LINK_LABELS.unknown}" in branch and "Settings" not in branch
+    def test_github_is_drawn_by_the_api_key_branch_and_the_link_is_in_it(self):
+        assert "const API_KEY_INTEGRATIONS = ['notion', 'github'];" in CARDS
+        assert "const OAUTH_INTEGRATIONS = ['slack', 'calendar'];" in CARDS
+        start = CARDS.index("} else if (isAPIKey) {")
+        branch = CARDS[start : CARDS.index("} else if (integration.configure_url) {", start)]
+        assert branch.count('id="github-repositories-link"') == 1
+        assert CARDS.count('id="github-repositories-link"') == 1
 
     def test_the_list_is_rendered_before_the_label_is_asked_for(self):
         render = CARDS.index("      renderIntegrations(data.integrations);")
