@@ -71,7 +71,7 @@ pip install -r requirements.txt   # ~5-10 min cold; requires Python 3.11 or 3.12
 cp .env.example .env
 
 # 2. Start the local infrastructure — ONE stack per machine
-docker compose up -d
+docker compose up -d postgres redis chromadb
 # → PostgreSQL on host port 5433, Redis, ChromaDB.
 # ⚠️ The compose project/container names are fixed, not per-checkout. A second checkout on the
 #    same machine silently commandeers the first one's containers rather than erroring — don't
