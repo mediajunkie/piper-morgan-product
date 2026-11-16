@@ -179,28 +179,22 @@ scripts/seat_settings_grant.py add-key --seat lead --name PIPER_SEAT_OPENAI_KEY
 **The path for the second account, once the script exists** (the sign-up route is the same one a tester uses, `POST /api/v1/setup/create-user`: username, email, password twice, invite code):
 
 - **Where:** Terminal, in `~/Development/piper-morgan-product`, on main.
-- **Paste, two lines, one at a time.** The first mints one invite code on beta and prints it in your Terminal only:
-
-  ```
-  scripts/mint_prod_invite.sh --apply
-  ```
-
-  (Without `--apply` it is a dry run that mints nothing. With it, it mints exactly one.)
-
-  The second creates the account. It asks for the invite code at a hidden prompt (paste the code from the line above), makes a password itself, signs the account up on beta, and writes the account's file:
+- **Paste, one line** (Exec, 11-15 late evening: one command per row where it can be; this one can):
 
   ```
   scripts/seat_account_create.py --account <second-seat-account-name>
   ```
 
+  It runs `scripts/mint_prod_invite.sh --apply` itself (your own Fly sign-in, as when you mint by hand), takes the one invite code from that script's output without printing it, makes a password, signs the account up on beta, and writes the account's file. Nothing is typed or pasted besides the line. It stops at the first failure and says which step failed.
 - **You should see:** `created <second-seat-account-name> on beta`, the path of the account's file, `mode 0600`, and `password copied to the clipboard for Step F; it clears in 60 seconds`. No password, no invite code and no cookie on screen.
 - **Seat check (HOST, from xian's screen or the atlas, until `seat_session.py` exists):** the account's own Account page shows no admin marking, no provider key and no connected service. Lead's check from source: the script's fixed list holds this account name and no other new one.
 - **If it fails:**
-  - `invite code not accepted`: the code was already spent or mistyped. Mint one more and run the second line again. Nothing was created.
+  - `the mint step failed`: nothing was minted or created; the line it prints is the mint script's own. Tell Exec.
+  - `invite code not accepted`: beta refused the code the script had just minted. Nothing was created; run the line again (it mints a fresh one) and tell Exec that one code was left unused, so it can be burned.
   - `that username or email is taken`: nothing was created; tell Exec, and Lead picks another name in the script's list.
   - anything else: stop and tell Exec. An account that was created but whose file wasn't written is unusable by design; it gets a password reset, never a guess.
 
-**What the script will hold (for HOST's read when it is built):** a fixed list of allowed account names and one fixed host in code; the invite code only from a hidden prompt, never an argument or the environment; the password from the operating system's random source, written only to the file and the clipboard; output limited to the lines above; a test that searches its output for the password and the code on a forced failure; it refuses to run without a terminal.
+**What the script will hold (for HOST's read when it is built):** a fixed list of allowed account names and one fixed host in code; the invite code only from the mint script's output, held in memory, never printed, never an argument or the environment; the password from the operating system's random source, written only to the file and the clipboard; output limited to the lines above; a test that searches its output for the password and the code on a forced failure; it refuses to run without a terminal.
 
 **Unverified until the script is built and run once:** that `mint_prod_invite.sh --apply` still mints and prints one code on beta as it stands today (its header says so; Lead has not run it, since it runs inside the production app), and the email address the account takes (it must be one xian controls, since password reset goes there; xian's to name).
 
