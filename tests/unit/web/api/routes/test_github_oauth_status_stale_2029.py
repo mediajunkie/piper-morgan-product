@@ -142,13 +142,25 @@ class TestTheTestProbeMarksStale:
         assert "Disconnect" not in fix
 
 
+def _core(out):
+    """The four fields #2029 pins. #2376 added ``app_connected`` and ``pat_on_file``,
+    pinned in test_settings_github_token_form_2376.py."""
+    assert set(out) == {"connected", "stale", "serving", "status", "app_connected", "pat_on_file"}
+    return {k: out[k] for k in ("connected", "stale", "serving", "status")}
+
+
 class TestOAuthStatusStates:
     async def test_bound_is_connected_on_oauth_with_no_github_call(self, maker):
         await _seed(maker, ConnectorStatusState.BOUND.value)
         resolve = AsyncMock()
         with patch(f"{_ADAPTER}.resolve_credential", new=resolve):
             out = await github_oauth_status(current_user=_claims())
-        assert out == {"connected": True, "stale": False, "serving": "oauth", "status": "bound"}
+        assert _core(out) == {
+            "connected": True,
+            "stale": False,
+            "serving": "oauth",
+            "status": "bound",
+        }
         resolve.assert_not_awaited()
 
     async def test_stale_with_a_working_personal_token_serves_pat(self, maker):
@@ -159,7 +171,12 @@ class TestOAuthStatusStates:
             patch(f"{_ADAPTER}.search_user_repositories", new=probe),
         ):
             out = await github_oauth_status(current_user=_claims())
-        assert out == {"connected": False, "stale": True, "serving": "pat", "status": "stale"}
+        assert _core(out) == {
+            "connected": False,
+            "stale": True,
+            "serving": "pat",
+            "status": "stale",
+        }
         probe.assert_awaited_once_with(_ALPHA, limit=1)
 
     async def test_stale_with_a_rejected_personal_token_serves_nothing(self, maker):
@@ -175,7 +192,7 @@ class TestOAuthStatusStates:
             patch(f"{_ADAPTER}.search_user_repositories", new=AsyncMock(return_value=failed)),
         ):
             out = await github_oauth_status(current_user=_claims())
-        assert out == {"connected": False, "stale": True, "serving": None, "status": "stale"}
+        assert _core(out) == {"connected": False, "stale": True, "serving": None, "status": "stale"}
 
     async def test_stale_without_a_personal_token_serves_nothing_and_never_probes(self, maker):
         await _seed(maker, ConnectorStatusState.STALE.value)
@@ -186,12 +203,12 @@ class TestOAuthStatusStates:
             patch(f"{_ADAPTER}.search_user_repositories", new=probe),
         ):
             out = await github_oauth_status(current_user=_claims())
-        assert out == {"connected": False, "stale": True, "serving": None, "status": "stale"}
+        assert _core(out) == {"connected": False, "stale": True, "serving": None, "status": "stale"}
         probe.assert_not_awaited()
 
     async def test_no_binding_is_neither(self, maker):
         out = await github_oauth_status(current_user=_claims())
-        assert out == {"connected": False, "stale": False, "serving": None, "status": None}
+        assert _core(out) == {"connected": False, "stale": False, "serving": None, "status": None}
 
     async def test_a_read_401_then_status_then_regrant_round_trip(self, maker):
         # The whole story on one row: BOUND → a read's 401 → page says stale →

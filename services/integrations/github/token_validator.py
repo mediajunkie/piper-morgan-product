@@ -18,6 +18,15 @@ from typing import Any, Dict, Optional
 
 _GITHUB_USER_URL = "https://api.github.com/user"
 
+#: #2376: what a GitHub personal access token starts with (classic, fine-grained). The
+#: Settings page checks the same prefixes before it submits; the save route checks them
+#: before any call to GitHub, so a value that isn't a token is never sent there.
+PERSONAL_TOKEN_PREFIXES = ("ghp_", "github_pat_")
+
+
+def looks_like_personal_token(value: Optional[str]) -> bool:
+    return isinstance(value, str) and value.strip().startswith(PERSONAL_TOKEN_PREFIXES)
+
 
 async def verify_github_token(token: Optional[str], *, timeout: float = 10.0) -> Dict[str, Any]:
     """Validate a GitHub personal access token.

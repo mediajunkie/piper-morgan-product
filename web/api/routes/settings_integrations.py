@@ -1603,6 +1603,11 @@ async def github_oauth_status(current_user: JWTClaims = Depends(get_current_user
     probe (``search_user_repositories``, limit 1, the #2012 Test's call) just now; else
     ``None``. The probe runs only in the stale case, so a healthy page load makes no
     GitHub call.
+
+    #2376 (Arch 2026-11-15): ``app_connected`` and ``pat_on_file`` tell the page
+    whether to offer the personal-token form. On an App connection it is not offered,
+    and a token already on file is shown as stored with Remove only. ``pat_on_file``
+    is None when the store couldn't be read (never "none on file" on a failed read).
     """
     from services.connectors.binding_repository import ConnectorBindingRepository
     from services.database.session_factory import AsyncSessionFactory
@@ -1616,7 +1621,37 @@ async def github_oauth_status(current_user: JWTClaims = Depends(get_current_user
     serving: Optional[str] = "oauth" if connected else None
     if stale:
         serving = await _github_pat_serving(current_user.sub)
-    return {"connected": connected, "stale": stale, "serving": serving, "status": status_value}
+    return {
+        "connected": connected,
+        "stale": stale,
+        "serving": serving,
+        "status": status_value,
+        "app_connected": _github_app_connected(status_value),
+        "pat_on_file": await _github_pat_on_file(current_user.sub),
+    }
+
+
+def _github_app_connected(binding_status: Optional[str]) -> bool:
+    """#2376: connected through the GitHub App. In App mode a BOUND binding serves only
+    on an App grant (a classic grant never serves and is marked stale, ADR-081 D3), so
+    the binding's status and the mode answer this without reading the grant."""
+    from services.mcp.consumer.connector import ConnectorStatusState
+    from services.mcp.consumer.github_app_grant import app_mode
+
+    return binding_status == ConnectorStatusState.BOUND.value and app_mode()
+
+
+async def _github_pat_on_file(user_id: str) -> Optional[bool]:
+    """#2376: whether the account has its own personal token stored, read where the
+    resolver reads it. None when the store couldn't be read. The token never leaves
+    this function."""
+    try:
+        from services.mcp.consumer.github_adapter import GitHubMCPSpatialAdapter
+
+        return bool(await GitHubMCPSpatialAdapter.account_pat(str(user_id)))
+    except Exception:
+        logger.warning("github_pat_on_file_check_failed", exc_info=True)
+        return None
 
 
 async def _github_pat_serving(user_id: str) -> Optional[str]:
@@ -2293,9 +2328,35 @@ async def save_github_token(
     Validates the token first, then stores in keychain and environment.
     Issue #541: ALPHA-SETUP-GITHUB stuck state recovery
     """
+    from services.connectors.binding_repository import ConnectorBindingRepository
+    from services.database.session_factory import AsyncSessionFactory
     from services.infrastructure.keychain_service import KeychainService
     from services.integrations.github.config_service import GitHubConfigService
-    from services.integrations.github.token_validator import verify_github_token
+    from services.integrations.github.token_validator import (
+        looks_like_personal_token,
+        verify_github_token,
+    )
+
+    # #2376: a value that isn't token-shaped is refused HERE, before any call to
+    # GitHub. The page makes the same check; a direct call used to skip it, and the
+    # value went to GitHub's API before being refused.
+    if not looks_like_personal_token(token):
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=GITHUB_TOKEN_SHAPE_REFUSAL,
+        )
+    token = token.strip()
+    # #2376 (Arch 2026-11-15): an App-connected account is not offered a personal
+    # token. One stored there would serve every read, with its own wider reach,
+    # whenever the App connection yields no token, while the card still names the App
+    # connection. Enforced here, not only by the page hiding the form.
+    async with AsyncSessionFactory.session_scope() as session:
+        binding = await ConnectorBindingRepository(session).get(current_user.sub, "github")
+    if _github_app_connected(binding.status if binding else None):
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT,
+            detail=GITHUB_TOKEN_APP_CONNECTED_REFUSAL,
+        )
 
     # Validate the submitted PAT directly via GitHub's GET /user API.
     # #1192 slice (c): the old `router.test_connection()` path was a migration
@@ -2355,6 +2416,41 @@ async def save_github_token(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=f"Failed to save GitHub token: {str(e)}",
         )
+
+
+# #2376. "Personal token removed." is CXO's (2026-11-15). The two refusals and the
+# incomplete line are Lead's drafts, not yet ruled.
+GITHUB_TOKEN_SHAPE_REFUSAL = (
+    'That doesn\'t look like a GitHub personal access token. They start with "ghp_" or '
+    '"github_pat_".'
+)
+GITHUB_TOKEN_APP_CONNECTED_REFUSAL = (
+    "This account is connected through the Piper GitHub app, so it doesn't take a "
+    "personal token."
+)
+GITHUB_TOKEN_REMOVED_LINE = "Personal token removed."
+GITHUB_TOKEN_REMOVE_INCOMPLETE_LINE = (
+    "I couldn't confirm the personal token is gone. Try again; if it keeps failing, tell us."
+)
+
+
+@router.post("/github/token/remove")
+async def remove_github_token(current_user: JWTClaims = Depends(get_current_user)):
+    """#2376 (Arch 2026-11-15): remove the account's own GitHub personal token and
+    nothing else. The App or OAuth connection stays as it is. Success only when the
+    resolver's own read finds no token afterwards."""
+    from services.connectors.disconnect import remove_github_personal_token
+
+    try:
+        remaining = await remove_github_personal_token(str(current_user.sub))
+    except Exception:
+        logger.error("github_token_remove_failed", exc_info=True)
+        remaining = ["remove_raised"]
+    if remaining:
+        logger.warning("github_token_remove_incomplete", remaining=remaining)
+        return {"success": False, "message": GITHUB_TOKEN_REMOVE_INCOMPLETE_LINE}
+    logger.info("github_personal_token_removed")
+    return {"success": True, "message": GITHUB_TOKEN_REMOVED_LINE}
 
 
 @router.post("/github/disconnect")
