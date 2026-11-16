@@ -28,27 +28,29 @@ Each fix was correct about the thing it saw and blind to the next form along. **
 
 | position | form | separator | date | n | example |
 |---|---|---|---|---:|---|
-| col0 | `html-comment` | colon | dated | 1126 | `<!-- DAY-CLOSED: 2026-06-09 -->` |
-| **indented/quoted** | `other` | none | **UNDATED** | 31 | `- `DAY-CLOSED` predicate corrected twice more today (`f63f85371`/`072b` |
+| col0 | `html-comment` | colon | dated | 1405 | `<!-- DAY-CLOSED: 2026-06-09 -->` |
+| **indented/quoted** | `other` | none | **UNDATED** | 33 | `- `DAY-CLOSED` predicate corrected twice more today (`f63f85371`/`072b` |
 | **indented/quoted** | `bold` | colon | dated | 30 | `**DAY-CLOSED: 2026-08-04** — run at 07:1x on 08-05 as a **missed close` |
 | **indented/quoted** | `bold` | none | **UNDATED** | 28 | `**DAY-CLOSED** ✅` |
 | **indented/quoted** | `other` | colon | dated | 26 | ``DAY-CLOSED: 2026-07-30` stands. Cron `fd14a8e7` remains armed; **no r` |
-| col0 | `md-heading` | none | dated | 16 | `## DAY-CLOSED 2026-07-29 (closed retroactively at 2026-07-30 08:43)` |
+| col0 | `md-heading` | none | dated | 17 | `## DAY-CLOSED 2026-07-29 (closed retroactively at 2026-07-30 08:43)` |
+| col0 | `html-comment` | none | dated | 14 | `<!-- DAY-CLOSED 2026-10-15 21:48 PT lead-code -->` |
 | col0 | `md-heading` | em-dash | dated | 10 | `### DAY-CLOSED — 2026-06-10 23:59 PT (deferred marker, written 6/11 06` |
+| col0 | `other` | none | dated | 8 | `DAY-CLOSED 2026-10-31 23:09 PDT (Exec). Beta launch day: letters sent,` |
+| col0 | `other` | none | **UNDATED** | 7 | `6/24 DAY-CLOSED ✓. Carried the overnight watch directed by PM (team re` |
 | **indented/quoted** | `bold` | em-dash | dated | 6 | `**DAY-CLOSED** — June 13 (Saturday) closed June 14 15:03 PDT on PM-res` |
-| col0 | `other` | none | **UNDATED** | 6 | `6/24 DAY-CLOSED ✓. Carried the overnight watch directed by PM (team re` |
-| col0 | `html-comment` | none | dated | 6 | `<!-- DAY-CLOSED 2026-10-15 21:48 PT lead-code -->` |
+| col0 | `md-heading` | none | **UNDATED** | 3 | `### DAY-CLOSED sweep: Jul 3–9 (just-closed Fri–Thu window)` |
 | col0 | `other` | colon | dated | 3 | `DAY-CLOSED: 2026-08-11 -->`, committed and pushed as its own unit befo` |
-| col0 | `md-heading` | none | **UNDATED** | 2 | `### DAY-CLOSED sweep: Jul 3–9 (just-closed Fri–Thu window)` |
 | col0 | `html-comment` | none | **UNDATED** | 2 | `<!-- DAY-CLOSED -->` |
 | **indented/quoted** | `other` | em-dash | dated | 1 | `*DAY-CLOSED — 2026-06-28. PPM suspended (run-lean IDLE tier). Resume: ` |
 | **indented/quoted** | `other` | em-dash | **UNDATED** | 1 | ``DAY-CLOSED` marker** — the session ran past its last logged fire (12:` |
+| **indented/quoted** | `bold` | none | dated | 1 | `**DAY-CLOSED** 2026-11-08 21:29 PST` |
 
-**1294 lines matched. 1171 are real markers (column 0); 123 are narrations of one** (indented, quoted, or mid-sentence) — the population a bare `grep DAY-CLOSED` wrongly counts, and the reason every working predicate anchors on `^`.
+**1595 lines matched. 1469 are real markers (column 0); 126 are narrations of one** (indented, quoted, or mid-sentence) — the population a bare `grep DAY-CLOSED` wrongly counts, and the reason every working predicate anchors on `^`.
 
-**Canonical marker** (`col0` + `html-comment` + `colon` + `dated`): **1126** = 96% of real markers.
+**Canonical marker** (`col0` + `html-comment` + `colon` + `dated`): **1405** = 95% of real markers.
 
-⚠️ **Undated real markers — unreachable by ANY dated predicate: 10.** Not a formatting variant; a missing datum. No regex rescues these; their owners must add the date.
+⚠️ **Undated real markers — unreachable by ANY dated predicate: 12.** Not a formatting variant; a missing datum. No regex rescues these; their owners must add the date.
 
 <!-- END GENERATED: census-table -->
 
