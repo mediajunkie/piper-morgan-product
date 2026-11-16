@@ -173,17 +173,23 @@ class TestHandlerConsumes:
 
 
 class TestDescriptionAndScorer:
-    def test_create_todo_description_is_unchanged(self):
+    def test_create_todo_description_is_the_screened_wording(self):
         from services.intent_service.workflow_dispatcher import get_registered_workflows
         from services.intent_service.workflow_entries import register_default_workflows
 
-        """Deliberately NOT a description change: measured ×3 under this
-        exact wording, the served router already names text='web test one'
-        (3/3 action AND args right). Two candidate wordings were screened and
-        dropped for attributed ×6 regressions — zero router-prompt delta."""
+        """#1976 landed with NO description change ("Create-todo via action dispatch
+        (#1685)"): measured ×3 under it, the served router already named
+        text='web test one', and two candidate wordings were screened and dropped.
+        Arm B (#2297, Arch 2026-11-14) replaces it with the wording below, which
+        lands only if its rule-7 screen passes; that screen carries this file's
+        'add a todo to web test one' row as a control (text still named, no project)."""
         register_default_workflows()
         d = get_registered_workflows()["create_todo"].description
-        assert d == "Create-todo via action dispatch (#1685)"
+        assert d == (
+            "Create a todo. If the person names one of their projects for it, put that "
+            "project's name in args as project, in their words. Leave project out if "
+            "they don't name one."
+        )
 
     @staticmethod
     def _scorer():

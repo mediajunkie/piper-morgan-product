@@ -446,12 +446,14 @@ class TestRegistry:
         assert landing.action_triggered is False
         assert attach.TODO_PROJECT_PICK_WORKFLOW not in get_action_workflows()
 
-    def test_create_todos_router_description_is_unchanged(self):
-        """Rule 7: the handler side lands with ZERO router-prompt delta. A wording
-        that names the project arg is a separate, screened change."""
+    def test_create_todos_router_description_is_arm_bs_wording(self):
+        """Rule 7: this is Arch's arm B wording (2026-11-14), byte for byte. It is the
+        screened candidate; any other edit to it is a new screen."""
         from services.intent_service.workflow_dispatcher import get_registered_workflows
 
         workflow_entries.register_default_workflows()
         assert get_registered_workflows()["create_todo"].description == (
-            "Create-todo via action dispatch (#1685)"
+            "Create a todo. If the person names one of their projects for it, put that "
+            "project's name in args as project, in their words. Leave project out if "
+            "they don't name one."
         )

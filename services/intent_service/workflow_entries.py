@@ -3568,8 +3568,16 @@ def register_default_workflows() -> None:
         # text='web test one' for 'add a todo to web test one' (scorer row,
         # action AND args right 3/3), so no router-prompt change was needed;
         # two candidate wordings were screened and dropped (attributed
-        # regressions at ×6: dev/2026/10/13/controls/1976-*). Zero prompt delta.
-        description="Create-todo via action dispatch (#1685)",
+        # regressions at ×6: dev/2026/10/13/controls/1976-*).
+        # ARM B (#2297, Arch's wording 2026-11-14): the description now tells the
+        # router to name a project the person names. This is router catalog text
+        # (rule 7): it lands only if arm B's screen passes its bar, and is the
+        # CANDIDATE until then. Before it: "Create-todo via action dispatch (#1685)".
+        description=(
+            "Create a todo. If the person names one of their projects for it, put "
+            "that project's name in args as project, in their words. Leave project "
+            "out if they don't name one."
+        ),
         requires_context=["intent", "intent_service"],
         action_triggered=True,
         write_ask=_words.create_todo_write_ask,  # #2304
