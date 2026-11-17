@@ -140,12 +140,12 @@ scripts/seat_settings_grant.py add-allow --seat web --rule 'Bash(scripts/seat_re
   The rule must match the command the seat types, character for character. An exact allow covers only the bare command; anything chained onto it goes back to the classifier (traced 11-06). The seat types exactly `scripts/seat_session.py --account web-seed-1386` from the top of its worktree. The tool refuses any rule with `*` in it and never touches a deny.
 
 - **You should see:** `added 1 allow rule for seat web` after each line, then the rule counts.
-- **Seat check:** the seat runs the helper once. It prints one line, `web-seed-1386 session saved, expires <time>`, and nothing else. (Once Step D is done, in a seat with a seat browser it prints a second line, `web-seed-1386 placed in seat browser web, expires <time>`.) Then `scripts/seat_read.py --account web-seed-1386 '/api/v1/admin/floored-actions?days=30'` prints the counter's JSON. Then `scripts/seat_read.py --account web-seed-1386 --redirect-uri github` and the same with `calendar` each print one line with the address the sign-in returns to and nothing else (run each once; don't loop them, each run leaves one unused sign-in state in the app until its next deploy). If the helper prints `refused:` with a reason (for example, the account holds a provider key), nothing was saved: the seat reports the reason to HOST and Exec and does not retry.
+- **Seat check:** the seat runs the helper once. It prints one line, `web-seed-1386 session saved, expires <time>`, and nothing else. (Once Step D is done, in a seat with a seat browser it prints a second line, `web-seed-1386 placed in seat browser web, expires <time>`.) Then `scripts/seat_read.py --account web-seed-1386 '/api/v1/admin/floored-actions?days=30'` prints the counter's JSON. Then `scripts/seat_read.py --account web-seed-1386 --redirect-uri github` and the same with `calendar` each print one line with the address the sign-in returns to and nothing else (run each once; don't loop them, each run leaves one unused sign-in state in the app until its next deploy; Web sends the two printed lines to Lead, who puts them on issue 2282). If the helper prints `refused:` with a reason (for example, the account holds a provider key), nothing was saved: the seat reports the reason to HOST and Exec and does not retry.
 - **If it fails:** if the classifier still refuses the helper's run, this route is dropped and the ADR's fallback applies (he signs in himself, rarely). Nobody works around the refusal.
 
 ## Step D (ADR row 10): load the seat browser's LaunchAgent
 
-**Owner: CIO, with Pard. Issue 2400. NOT READY: CIO's half is on main (2026-11-16) and unread by HOST; it waits on HOST's read, then Pard's plist and wrapper, then HOST's read of those** against D3's debug-port bound (127.0.0.1 only, a dedicated profile folder at mode 0700, no wildcard origins, the port read from one place, never xian's own Chrome).
+**Owner: CIO, with Pard. Issue 2400. NOT READY: CIO's half is on main and read by HOST and Arch (2026-11-16); it waits on Pard's plist and wrapper (go given 11-16), then HOST's read of those** against D3's debug-port bound (127.0.0.1 only, a dedicated profile folder at mode 0700, no wildcard origins, the port read from one place, never xian's own Chrome).
 
 What is on main (CIO, 2026-11-16), none of it in use until this step is done:
 
@@ -158,9 +158,14 @@ Run so far (CIO, 2026-11-16 18:55 PT, a scratch test browser on a throwaway fold
 
 **The browser must be started with `--use-mock-keychain`.** Without it the browser asks the macOS login keychain for a storage key the first time it keeps a cookie, which xian's 11-11 rule forbids. With it the cookies in the profile folder are kept under a fixed key, so the folder's mode 0700 and the Read deny on its name are the protection, as D3 already says of the profile. The helper refuses a browser started without the flag.
 
+**What the seat browser may hold, and how it is revoked (HOST, 2026-11-16):**
+- It holds a seeded account's session and nothing else. No other sign-in is typed into it, and no Connect round trip with a real provider account is done in it: either would leave a real session in a profile that keeps cookies across restarts. Web's steps carry the same line.
+- To revoke: stop the browser, then delete the profile folder and the session file. Deleting the folder alone is not enough while the browser runs. The cookie also dies within 24 hours.
+- Two residuals are stated in `seat_browser.py` and accepted by HOST and Arch: the debug port has no authentication, so any process of this user on Amber can reach it; and the listener is read before the socket is opened.
+
 The order of what it waits on:
 1. ADR-084's yes. Done 2026-11-16 06:20.
-2. HOST's read of the four files above.
+2. HOST's read of the four files above. Done 2026-11-16 19:18 at 5cd39bb085 (the helper conforms), with Arch's required launcher change and the Read-deny test both done at 35b645aace.
 3. Pard builds the plist, the wrapper and a cycle-check arm (the debug port answers, the profile folder exists at mode 0700), and tests the wrapper by hand. The wrapper takes the port and folder from `scripts/seat_browser.py --where web`.
 4. HOST reads both against the bound above.
 5. CIO switches `.mcp.json` to the launcher and checks it in CIO's own session first (a seat with no row).
