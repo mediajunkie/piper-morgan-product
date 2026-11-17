@@ -8,8 +8,12 @@ get branches or an issue from a repository they never gave the App, while "my
 repositories" (#2342) and "my issues" (#2374) left it out.
 
 Layer: unit. The MCP client, the repository resolver and the installation read are
-fakes; nothing calls GitHub. Not covered here: the write paths (create, update,
-comment), which Arch ruled get the same check before the confirm; they are a later unit.
+fakes; nothing calls GitHub.
+
+The write half (same ruling: "the same check, before the confirm") is pinned below:
+the adapter's choke point in ``_verified_write``, the duplicate-title read, and the
+three places a confirm is built (create, update, close and reopen). A comment has no
+confirm; the choke point answers it.
 """
 
 from __future__ import annotations
@@ -305,3 +309,278 @@ class TestOneInstallationReadPerRequest:
     async def test_the_app_registers_the_middleware(self):
         source = open("web/app.py", encoding="utf-8").read()
         assert "app.add_middleware(InstallationReadScopeMiddleware)" in source
+
+
+# --- the write half ------------------------------------------------------------------
+
+_WRITES = {
+    "create": lambda a: a.create_issue_connector(
+        _OWNER, owner="octo", repo="public", title="t", body="b"
+    ),
+    "update": lambda a: a.update_issue_connector(
+        _OWNER, owner="octo", repo="public", issue_number=7, state="closed"
+    ),
+    "comment": lambda a: a.add_comment_connector(
+        _OWNER, owner="octo", repo="public", issue_number=7, comment="c"
+    ),
+}
+
+
+@pytest.mark.parametrize("write_name", sorted(_WRITES))
+class TestAWriteOnAnAppGrantIsNeverFiredAtARepositoryTheAppIsNotOn:
+    async def test_not_installed_on_it_is_refused_with_the_write_line(
+        self, monkeypatch, write_name
+    ):
+        adapter, seen, _ = _adapter(monkeypatch, _installed("octo/a"))
+        result = await _WRITES[write_name](adapter)
+        assert seen == []  # nothing was fired
+        assert result.verified is False and result.refused is True
+        # Not "never fired": that state sends the router to the native-token path.
+        assert result.attempted is True
+        assert result.degradation.detail == DETAIL_APP_NOT_ON_REPOSITORY
+        assert result.degradation.user_message == gh_mod.GITHUB_APP_NOT_ON_REPOSITORY_WRITE_REPLY
+        assert result.degradation.action_hint is None
+
+    async def test_installed_nowhere_is_refused_with_the_install_step(
+        self, monkeypatch, write_name
+    ):
+        adapter, seen, _ = _adapter(monkeypatch, _installed())
+        result = await _WRITES[write_name](adapter)
+        assert seen == [] and result.refused is True and result.attempted is True
+        assert result.degradation.user_message == gh_mod.GITHUB_APP_NOT_INSTALLED_REPLY
+
+    async def test_a_failed_installation_read_is_refused_and_nothing_is_fired(
+        self, monkeypatch, write_name
+    ):
+        adapter, seen, _ = _adapter(monkeypatch, InstallationReadFailed(502))
+        result = await _WRITES[write_name](adapter)
+        assert seen == [] and result.refused is True
+        assert result.degradation.reason is DegradationReason.UNREACHABLE
+
+    async def test_installed_on_it_fires_the_write(self, monkeypatch, write_name):
+        adapter, seen, read = _adapter(monkeypatch, _installed("octo/public"))
+        await _WRITES[write_name](adapter)
+        assert seen and (seen[0]["owner"], seen[0]["repo"]) == ("octo", "public")
+        read.assert_awaited_once()
+
+    @pytest.mark.parametrize(
+        "credential",
+        [_credential(leg="pat", app_grant=False), _credential(leg="oauth", app_grant=False)],
+        ids=["personal token", "classic grant"],
+    )
+    async def test_the_other_legs_make_no_installation_read(
+        self, monkeypatch, write_name, credential
+    ):
+        adapter, seen, read = _adapter(
+            monkeypatch, AssertionError("no installation read"), credential=credential
+        )
+        await _WRITES[write_name](adapter)
+        assert seen
+        read.assert_not_awaited()
+
+
+class TestTheRouterSaysTheLineAndNeverFallsBackToAnotherCredential:
+    async def test_a_refused_write_raises_refused_with_the_write_line(self, monkeypatch):
+        from services.integrations.github.github_integration_router import (
+            GitHubIntegrationRouter,
+            GitHubWriteRefused,
+        )
+
+        adapter, seen, _ = _adapter(monkeypatch, _installed("octo/a"))
+        router = GitHubIntegrationRouter.__new__(GitHubIntegrationRouter)
+        router.mcp_adapter = adapter
+        router._user_id = _OWNER
+        with pytest.raises(GitHubWriteRefused) as refused:
+            await router._try_connector_write(
+                "add_comment_connector", owner="octo", repo="public", issue_number=7, comment="c"
+            )
+        assert refused.value.user_message == gh_mod.GITHUB_APP_NOT_ON_REPOSITORY_WRITE_REPLY
+        assert refused.value.action_hint is None
+        assert seen == []
+
+
+class TestTheDuplicateTitleReadBeforeACreate:
+    async def test_not_installed_on_it_reads_nothing_and_answers_none(self, monkeypatch):
+        adapter, seen, _ = _adapter(monkeypatch, _installed("octo/a"))
+        found = await adapter.find_open_issue_by_title_connector(
+            _OWNER, owner="octo", repo="public", title="t"
+        )
+        assert found is None and seen == []
+
+    async def test_installed_on_it_reads(self, monkeypatch):
+        adapter, seen, _ = _adapter(monkeypatch, _installed("octo/public"))
+        await adapter.find_open_issue_by_title_connector(
+            _OWNER, owner="octo", repo="public", title="t"
+        )
+        assert seen and seen[0]["repo"] == "public"
+
+
+class TestTheLineSaidInPlaceOfAConfirm:
+    """``github_app_write_refusal_line``: the one check the confirm builders share."""
+
+    def _patch(self, monkeypatch, answer):
+        refusal = AsyncMock(side_effect=answer) if isinstance(answer, Exception) else None
+        refusal = refusal or AsyncMock(return_value=answer)
+        monkeypatch.setattr(GitHubMCPSpatialAdapter, "app_write_refusal", refusal)
+        return refusal
+
+    async def test_not_on_the_repository_is_the_write_line(self, monkeypatch):
+        adapter, _, _ = _adapter(monkeypatch, _installed("octo/a"))
+        self._patch(monkeypatch, await adapter._not_on_repository_response())
+        line = await gh_mod.github_app_write_refusal_line(_OWNER, "octo/public")
+        assert line == gh_mod.GITHUB_APP_NOT_ON_REPOSITORY_WRITE_REPLY
+        assert "can't read it" not in line  # the read line's reason is wrong for a write
+
+    async def test_installed_nowhere_is_the_install_step(self, monkeypatch):
+        adapter, _, _ = _adapter(monkeypatch, _installed())
+        self._patch(monkeypatch, await adapter._install_step_response())
+        line = await gh_mod.github_app_write_refusal_line(_OWNER, "octo/public")
+        assert line == gh_mod.GITHUB_APP_NOT_INSTALLED_REPLY
+
+    async def test_may_go_ahead_is_none(self, monkeypatch):
+        self._patch(monkeypatch, None)
+        assert await gh_mod.github_app_write_refusal_line(_OWNER, "octo/public") is None
+
+    @pytest.mark.parametrize("repository", [None, "", "no-slash", "a/b c"])
+    async def test_no_usable_repository_asks_nothing(self, monkeypatch, repository):
+        asked = self._patch(monkeypatch, AssertionError("not asked"))
+        assert await gh_mod.github_app_write_refusal_line(_OWNER, repository) is None
+        asked.assert_not_awaited()
+
+    async def test_no_principal_asks_nothing(self, monkeypatch):
+        asked = self._patch(monkeypatch, AssertionError("not asked"))
+        assert await gh_mod.github_app_write_refusal_line(None, "octo/public") is None
+        asked.assert_not_awaited()
+
+    async def test_a_failed_check_offers_the_confirm_and_the_choke_point_still_holds(
+        self, monkeypatch
+    ):
+        self._patch(monkeypatch, RuntimeError("store down"))
+        assert await gh_mod.github_app_write_refusal_line(_OWNER, "octo/public") is None
+
+    async def test_app_write_refusal_on_an_account_with_no_credential_is_none(self, monkeypatch):
+        adapter, _, read = _adapter(monkeypatch, AssertionError("no installation read"))
+        adapter.resolve_credential = AsyncMock(
+            return_value=await adapter.degrade(DegradationReason.CONNECT_REQUIRED)
+        )
+        assert await adapter.app_write_refusal(_OWNER, "octo/public") is None
+        read.assert_not_awaited()
+
+
+class TestTheConfirmBuilders:
+    """Create and update say the line with nothing armed or bound; close and reopen
+    answer it before the probe and before any confirm."""
+
+    _LINE = "the line"
+
+    @pytest.fixture
+    def refused(self, monkeypatch):
+        check = AsyncMock(return_value=self._LINE)
+        monkeypatch.setattr(gh_mod, "github_app_write_refusal_line", check)
+        return check
+
+    @staticmethod
+    def _intent(message, action, **context):
+        from services.domain.models import Intent
+        from services.shared_types import IntentCategory
+
+        return Intent(
+            category=IntentCategory.EXECUTION,
+            action=action,
+            confidence=1.0,
+            original_message=message,
+            context={"original_message": message, "user_id": _OWNER, **context},
+        )
+
+    async def test_create_says_the_line_and_binds_nothing(self, refused):
+        from services.intent_service.not_performed import NOT_PERFORMED_KEY, NotPerformed
+        from services.intent_service.write_confirm_words import (
+            WriteAskRequest,
+            create_issue_write_ask,
+        )
+
+        intent = self._intent(
+            "create an issue", "create_issue", title="Login fails", repository="octo/public"
+        )
+        before = dict(intent.context)
+        ask = await create_issue_write_ask(
+            WriteAskRequest(intent=intent, message="create an issue", user_id=_OWNER)
+        )
+        assert ask.reply == self._LINE and ask.words is None and ask.armed is False
+        assert ask.intent_data[NOT_PERFORMED_KEY] == NotPerformed.DEGRADED
+        assert intent.context == before  # no bound write values
+        refused.assert_awaited_once_with(_OWNER, "octo/public")
+
+    async def test_update_says_the_line_and_binds_nothing(self, refused):
+        from services.intent_service.write_confirm_words import (
+            WriteAskRequest,
+            update_issue_write_ask,
+        )
+
+        intent = self._intent(
+            "retitle issue 7",
+            "update_issue",
+            issue_number=7,
+            title="New title",
+            repository="octo/public",
+        )
+        before = dict(intent.context)
+        ask = await update_issue_write_ask(
+            WriteAskRequest(intent=intent, message="retitle issue 7", principal=_OWNER)
+        )
+        assert ask.reply == self._LINE and ask.words is None
+        assert intent.context == before
+        refused.assert_awaited_once_with(_OWNER, "octo/public")
+
+    async def test_create_and_update_offer_the_confirm_when_the_write_may_go_ahead(
+        self, monkeypatch
+    ):
+        from services.intent_service.write_confirm_words import (
+            WriteAskRequest,
+            create_issue_write_ask,
+            update_issue_write_ask,
+        )
+
+        monkeypatch.setattr(gh_mod, "github_app_write_refusal_line", AsyncMock(return_value=None))
+        create = await create_issue_write_ask(
+            WriteAskRequest(
+                intent=self._intent(
+                    "create an issue", "create_issue", title="Login fails", repository="octo/a"
+                ),
+                message="create an issue",
+                user_id=_OWNER,
+            )
+        )
+        assert create.reply is None and "octo/a" in create.words.question
+        update = await update_issue_write_ask(
+            WriteAskRequest(
+                intent=self._intent(
+                    "retitle issue 7",
+                    "update_issue",
+                    issue_number=7,
+                    title="N",
+                    repository="octo/a",
+                ),
+                message="retitle issue 7",
+                user_id=_OWNER,
+            )
+        )
+        assert update.reply is None and "octo/a" in update.words.question
+
+    @pytest.mark.parametrize("action", ["close_issue_query", "reopen_issue_query"])
+    async def test_close_and_reopen_answer_before_the_probe_and_arm_nothing(
+        self, monkeypatch, refused, action
+    ):
+        from unittest.mock import MagicMock
+
+        from services.intent_service.destructive_confirm import build_close_reopen_confirmation
+
+        probe = AsyncMock(side_effect=AssertionError("no probe of that repository"))
+        monkeypatch.setattr(GitHubMCPSpatialAdapter, "probe_issue_connector", probe)
+        verb = "close" if action.startswith("close") else "reopen"
+        intent = self._intent(f"{verb} issue 7 in octo/public", action, repository="octo/public")
+        gate = await build_close_reopen_confirmation(intent, MagicMock(), None)
+        assert gate.offer is None
+        assert gate.passthrough_result == {"message": self._LINE, "requires_clarification": False}
+        probe.assert_not_awaited()
+        refused.assert_awaited_once_with(_OWNER, "octo/public")

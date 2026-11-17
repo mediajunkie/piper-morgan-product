@@ -124,6 +124,33 @@ def github_degrade_reply(degradation) -> str:
     return getattr(degradation, "user_message", "") or "The GitHub connector is degraded."
 
 
+def github_write_refusal_reply(degradation) -> str:
+    """#2379: the line for a WRITE that was refused before it was fired. The App not
+    being on the repository has its own write wording; every other state reads as
+    ``github_degrade_reply`` has it."""
+    if getattr(degradation, "detail", None) == DETAIL_APP_NOT_ON_REPOSITORY:
+        return GITHUB_APP_NOT_ON_REPOSITORY_WRITE_REPLY
+    return github_degrade_reply(degradation)
+
+
+async def github_app_write_refusal_line(user_id, repository: Optional[str]) -> Optional[str]:
+    """#2379 (Arch 2026-11-15 15:49): the line to say INSTEAD of a write's confirm when
+    the account is on a GitHub App grant and the App isn't installed on ``repository``
+    (or is installed nowhere, or that couldn't be read). None when the confirm may be
+    offered. One place for the confirm builders (create, update, close, reopen).
+
+    A failure of this check itself answers None: the confirm is offered, and
+    ``_verified_write`` makes the same check before anything is fired."""
+    if not user_id or not repository or not _is_repo_full_name(repository):
+        return None
+    try:
+        refusal = await GitHubMCPSpatialAdapter().app_write_refusal(str(user_id), repository)
+    except Exception:  # silent-ok: #2379 — the pre-confirm check is a courtesy; _verified_write repeats it before any write is fired (logged)
+        logger.warning("GitHub App write-target check failed before the confirm", exc_info=True)
+        return None
+    return github_write_refusal_reply(refusal) if refusal is not None else None
+
+
 # #2342 (CXO 2026-11-11 19:08): authorized, but the App is installed on no repository. A
 # named state, never an empty list. The card line needs a working install link and a
 # Refresh that really re-reads; it must not show once any repository is installed.
@@ -174,6 +201,14 @@ GITHUB_CONNECTOR_APP_NOT_INSTALLED_REPLY = (
 GITHUB_APP_NOT_ON_REPOSITORY_REPLY = (
     "The Piper GitHub app isn't installed on that repository, so I can't read it. "
     "If it's yours, install it there in Settings, under Integrations."
+)
+# #2379 (Arch 2026-11-15 15:49): the same state when the turn is a WRITE (create, update,
+# close, reopen, comment). It shows in place of the confirm, so nobody confirms a write
+# that can't happen. Lead's proposal, one clause changed from CXO's read line; sent to
+# CXO 2026-11-16 (mail 01M7KCW1TP), who may reword this constant.
+GITHUB_APP_NOT_ON_REPOSITORY_WRITE_REPLY = (
+    "The Piper GitHub app isn't installed on that repository, so I can't change anything "
+    "there. If it's yours, install it there in Settings, under Integrations."
 )
 GITHUB_CONNECTOR_APP_NOT_ON_REPOSITORY_REPLY = (
     "The Piper GitHub app isn't installed on that repository, so I can't read it. "
@@ -956,6 +991,20 @@ class GitHubMCPSpatialAdapter(BaseSpatialAdapter):
             return None
         return await self._not_on_repository_response()
 
+    async def app_write_refusal(self, user_id, full_name: str) -> Optional[DegradationResponse]:
+        """#2379 (Arch 2026-11-15 15:49): on a GitHub App grant, why a write to
+        ``full_name`` can't go ahead, or None when it can (or when this isn't an App
+        grant: every other state has its own rail). Asked BEFORE a confirm is offered,
+        so the person never confirms a write GitHub will refuse; ``_verified_write``
+        asks again as the choke point. Read the line with ``github_write_refusal_reply``.
+
+        A failed installation read is a refusal too (the honest failure): a write is
+        never fired at a repository we couldn't check."""
+        credential = await self.resolve_credential(user_id)
+        if isinstance(credential, DegradationResponse):
+            return None
+        return await self._app_repository_degrade(credential, full_name)
+
     async def _installed_search_queries(self, credential, query: str, repository: Optional[str]):
         """#2374 (Arch 2026-11-15): on an App grant, the queries that cover ``query``
         over the installed repositories only, or the degrade to show instead. The
@@ -1305,6 +1354,8 @@ class GitHubMCPSpatialAdapter(BaseSpatialAdapter):
         binding = await self.resolve_credential(user_id)  # #1965 (b): the one resolver
         if isinstance(binding, DegradationResponse):
             return None
+        if await self._app_repository_degrade(binding, f"{owner}/{repo}") is not None:
+            return None  # #2379: no read of a repository the App isn't on
         try:
             async with self._mcp_client_ctx(binding) as client:
                 items = await self._list_recent_open_issues(
@@ -1348,6 +1399,22 @@ class GitHubMCPSpatialAdapter(BaseSpatialAdapter):
         if isinstance(binding_or_degrade, DegradationResponse):
             # Pre-call: the write was never fired — the ONLY safe-fallback state.
             return GitHubWriteResult(attempted=False, degradation=binding_or_degrade)
+        outside = await self._app_repository_degrade(
+            binding_or_degrade, f"{args.get('owner')}/{args.get('repo')}"
+        )
+        if outside is not None:
+            # #2379: the choke point behind the handlers' own check. Nothing is fired.
+            # ``refused`` with ``attempted`` left True, as #2106 does: "never fired"
+            # would send the router to the native-token path with a different credential.
+            _slog.warning("github_write_refused_app_not_on_repository", tool=tool)
+            return GitHubWriteResult(
+                verified=False,
+                attempted=True,
+                refused=True,
+                degradation=dataclasses.replace(
+                    outside, user_message=github_write_refusal_reply(outside), action_hint=None
+                ),
+            )
         raw_text: Optional[str] = None  # stays None if the WRITE call itself raises
         written: Optional[Dict[str, Any]] = None
         try:
