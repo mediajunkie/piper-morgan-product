@@ -42,7 +42,7 @@ an account, your LLM key, and (optionally) your tool connections.
 - [ ] A modern browser
 - [ ] **Your invite code** — the private beta is invite-only; codes come directly from
       xian, by email. If you don't have one, reply to your invitation email.
-- [ ] **Your own Anthropic API key** from [console.anthropic.com](https://console.anthropic.com/). Use a key with a spending limit you're comfortable with.
+- [ ] **Your own Anthropic API key** from [platform.claude.com](https://platform.claude.com/dashboard). Use a key with a spending limit you're comfortable with.
 - [ ] Budget roughly $5–20 for LLM API costs over the beta period — **Piper runs on
       your key and your account**; it never bills anyone else's (see What's New).
 
