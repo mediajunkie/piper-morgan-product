@@ -1,18 +1,19 @@
 # Comms carry-forward
 
-## ⭐ CURRENT STATE — 2026-11-15 21:19 PT (STOP). Read this first. It supersedes everything below.
-- **Log 11-15:** `dev/2026/11/15/2026-11-15-0619-comms-code-log.md` (DAY-CLOSED). Tomorrow creates a new log.
+## ⭐ CURRENT STATE — 2026-11-16 21:19 PT (STOP). Read this first. It supersedes everything below.
+- **Log 11-16:** `dev/2026/11/16/2026-11-16-0514-comms-code-log.md` (DAY-CLOSED). Tomorrow creates a new log.
 - **Pace (xian, 11-02):** keep working, not racing. The drain rule holds. No nudges to xian about posts (Exec 11-12).
-- **Sat 11-14 "Which Agent Did It?" and Sun 11-15 "No New Skills This Time": DONE, distributed.** (Sun: website 54579d0; altText and caption backfilled 1ba7dfef6f.)
-- **Tue 11-17 "The Wall" (building, the bridge):** scaffold `docs/public/comms/drafts/the-wall.md`, `drafted`. xian will try to write it before Tue. **Its footer tease must change**: it now points at arc 1, but under the cadence xian proposed the next non-Ship post is a weekend insight. Fill the tease once he picks the post.
-- **Cadence proposal (xian in chat, 11-15, NOT yet confirmed):** insight on the weekend (Sat or Sun), Ship on Tuesday, narrative on Thursday. I laid out: Ship #069 stays Wed 11-18; insight Sat 11-21 or Sun 11-22; Ship #070 Tue 11-24; narrative Thu 11-26 is Thanksgiving (my lean: skip that week, arc 1 Thu 12-3). Three open questions to xian: Thanksgiving; the weekend insight (my pick "One Account Means One Hand", then "A Grant Has to Reach the Hand That Acts", "A Perfect Score Can Pass a Blank Page"; hold "A Habit Is Not a Trigger", it echoes Sunday's aside); Ship-to-Tuesday shortens Exec's prep, relay to Exec once he confirms. **No calendar change past 11-17 and no scaffold until he answers.** Planned Ship rows #070-#073 are still Wednesdays.
-- **Arcs (adopted 11-14):** map in planning doc (Claude Docs 5vc7f1CTHhadvvPBB73h86, rev 36). Arc 1 "Letting a Stranger In" sourced (Sep 19 to Oct 7); main thread is xian's pick from three.
-- **Ship #069 "Off-Limits by Default" (Wed 11-18):** don't start the scaffold until Exec relays xian's goals. Source `docs/internal/planning/comms/ship-reviews/ship-069-week-review.html`. Then External fact-check.
-- **#2374, #2378-#2380 (11-15):** App grant scope gaps. Ship #069 check: "narrower grants" holds for the repository list, not for issue/PR searches or some single-repo reads, until those land.
-- **Exec ruling-relay 11-15 19:11 (xian, verbatim):** stop assigning xian manual workarounds; Exec is writing one design for how seats run and test Piper. Comms answered (01M7H5M8C82RSY0FKBZPMPGQEW): syndication stays his by design; production counts for copy need read-only facts.
-- **BETA_ rename (Docs, 11-15):** Comms told Docs it sent no ALPHA_ links and to flip labels to Beta; stub removal waits on HOST.
+- **Tue 11-17 "The Wall" (building, the bridge) — TODAY's slot:** scaffold `docs/public/comms/drafts/the-wall.md`, `drafted`, unchanged since 11-14 13:59 (nothing uncommitted in PM's checkout at 21:19). On Exec's 14:03 card. When his prose lands: review, fact-check against the scaffold's sources, audit 16/16, PUBLISH-READY to Docs. **Footer tease must change**: it points at arc 1; under the proposed cadence the next non-Ship post is a weekend insight. A day-before or same-day rewrite is normal; never offer to run my draft.
+- **Cadence proposal (xian in chat, 11-15, NOT yet confirmed):** insight on the weekend, Ship Tuesday, narrative Thursday. Open to xian: Thanksgiving (my lean: skip Thu 11-26, arc 1 Thu 12-3); weekend insight (my pick "One Account Means One Hand", then "A Grant Has to Reach the Hand That Acts", "A Perfect Score Can Pass a Blank Page"; hold "A Habit Is Not a Trigger"); Ship-to-Tuesday (relay to Exec once confirmed). **No calendar change past 11-17 and no scaffold until he answers.**
+- **Ship #069 "Off-Limits by Default" (Wed 11-18):** Exec put five DRAFT goals to xian 11-16 14:03 (rollup v1009; not ratified, don't scaffold on them). I sent Exec the no-goals fallback (01M7K6JQ4P) for use if Wednesday comes without his answer. External fact-check must keep the caveat: #2374, #2379, #2380 still OPEN (12:19 re-check), so "narrower grants" holds for repositories only. Source `docs/internal/planning/comms/ship-reviews/ship-069-week-review.html`.
+- **Possible Ship #069/#070 lines (check served state at draft time):** ADR-084 accepted with budget ($10 a run, $150 a month; xian 11-16 06:20); pre-push hook remembers a pass (live 12:46, ended the push holds); staged-credential scan at commit (live 17:00, #2392 closed); seat sign-in helper #2388 on main but 0 of 1 real sign-ins.
+- **CIO ask (11-16):** the first time a push of mine prints `already passed on this content`, mail CIO that line. Not seen yet.
+- **Buttondown (Exec v1012 follow-up 5):** answered 01M7KP117X: the rollup's 11-03 v4 text is current; whether it's pasted in Buttondown is xian's login.
+- **CIO's script rule (corrected 11-16):** only `scripts/alpha-setup.sh` is banned on Amber; no compose up/down on the shared stack.
+- **Arcs (adopted 11-14):** map in planning doc (Claude Docs 5vc7f1CTHhadvvPBB73h86, rev 36). Arc 1 "Letting a Stranger In" sourced; main thread is xian's pick.
+- **BETA_ rename:** stub removal waits on HOST.
 - **Two-week sprints from Fri 11-13.** #069 ordinary, #070 first progress, #071 first final score.
-- **Keychain rule (xian via Exec, 11-11; #2353):** nothing we run reads xian's login keychain without his permission.
+- **Keychain rule (xian 11-11; #2353):** nothing we run reads xian's login keychain without his permission.
 - **Mail v4 live;** v3 is the fallback until 11-23.
 - **Invites held (xian 11-04)** until #1551, #2261 and #2178 are done. **Waiting list (#2256):** xian first, then HOST. **HOLD (PDR-102):** no ownership claim in copy.
 - **Rule 8:** no outside person named anywhere in the repo.
