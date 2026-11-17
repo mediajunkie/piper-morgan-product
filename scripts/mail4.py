@@ -52,6 +52,32 @@ FORBIDDEN = ("xian", "pm", "ceo")
 CROCKFORD = "0123456789ABCDEFGHJKMNPQRSTVWXYZ"
 
 
+# ADR-084 D6: a ruling that puts a step on xian's hands names, in the same text, the standing
+# access that would remove it. A relay that reads as putting a step on him and has no such
+# line gets a warning. It is still sent: the words below are a guess at what a step looks like,
+# and Exec makes the real check.
+XIAN_STEP = re.compile(
+    r"\bxian\b[^.\n]{0,80}\b(?:runs?|pastes?|types?|clicks?|loads?|sets?|signs? in|creates?|"
+    r"edits?|installs?|rotates?)\b"
+    r"|\b(?:xian's|his) (?:hand|hands|paste|terminal|console)\b"
+    r"|\bone paste\b",
+    re.IGNORECASE,
+)
+STANDING_ACCESS = re.compile(r"standing access|\bD6\b", re.IGNORECASE)
+
+
+def d6_warning(kind, body):
+    """The warning for a ruling-relay that seems to put a step on xian and names no standing
+    access that would remove it, or None."""
+    if kind != "ruling-relay" or not XIAN_STEP.search(body) or STANDING_ACCESS.search(body):
+        return None
+    return (
+        "send: note (ADR-084 D6): this ruling-relay reads as putting a step on xian's hands and "
+        "has no line naming the standing access that would remove it. If it does put a step on "
+        "him, follow up with that line (or 'none exists, because ...'). Sent anyway."
+    )
+
+
 class Unmeasured(Exception):
     pass
 
@@ -279,6 +305,9 @@ def cmd_send(a):
     if not body.strip():
         print("send: empty body", file=sys.stderr)
         return 2
+    warning = d6_warning(a.type, body)
+    if warning:
+        print(warning, file=sys.stderr)
     mid, t = ulid(), now_pt()
     meta = {
         "id": mid,
