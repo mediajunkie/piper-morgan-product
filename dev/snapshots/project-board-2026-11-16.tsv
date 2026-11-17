@@ -2180,8 +2180,10 @@ issue	state	milestone	sprint	title	labels	blocked_by	state_reason
 2389	OPEN	Production		seat_account_create.py: create the second seat account on beta with a password no seat sees (ADR-084 Step F0)			
 2390	OPEN	Production		ops_reader routes: active keys by provider, and the closed list pinned by a test (ADR-084 D4)			
 2391	OPEN	Production		Routing-to-floor tally: a counter at the emit site, read by an ops_reader route (ADR-084 D4 rule 6)			
-2392	OPEN	Ongoing		Staged-file scan for credential shapes at commit and in the push gate (ADR-084 D2)			
+2392	CLOSED	Ongoing		Staged-file scan for credential shapes at commit and in the push gate (ADR-084 D2)			COMPLETED
 2393	OPEN	Production		Per-seat local databases on the shared Postgres server (ADR-084 D5)	architecture		
 2394	OPEN	Ongoing		FLY-AUDIT: Weekly Docs Audit - 2026-11-16	documentation,fly-audit,maintenance,weekly-audit		
 2395	OPEN	Production		Unit tests that read a live credential store or database: six fixed in test_slack_config.py, six more in the Slack folder, the rest unmeasured			
 2396	OPEN	Production		No per-test time limit in the full suite: a hung test would hold the run for an hour and never name itself			
+2397	OPEN	Production		Rewrite the 61 baselined credential-shaped fixture lines to build their values from parts (empties the 2392 baseline)			REOPENED
+2399	OPEN	Production		Said-instead replies on the write rail still report success: apply 2188's rule to the write-ask reply, the close/reopen passthrough and the refused-write handler			
