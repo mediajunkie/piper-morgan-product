@@ -6,7 +6,6 @@ Layers: the route's card builders called directly; the page's own script under n
 through ``scripts/card_state_file.py`` (skipped without ``node``). Not a browser.
 """
 
-import shutil
 import sys
 from pathlib import Path
 from unittest.mock import AsyncMock, patch
@@ -22,7 +21,7 @@ sys.path.insert(0, str(ROOT / "scripts"))
 
 import card_state_file as cards  # noqa: E402
 
-needs_node = pytest.mark.skipif(shutil.which("node") is None, reason="node not on PATH")
+needs_node = pytest.mark.skipif(cards.node_missing_is_a_skip(), reason="node not on PATH")
 _ADAPTER = "services.mcp.consumer.github_adapter.GitHubMCPSpatialAdapter"
 USER = "user-2401"
 META = {"display_name": "GitHub", "configure_url": "/settings/integrations/github"}

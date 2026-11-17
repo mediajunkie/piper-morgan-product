@@ -69,6 +69,13 @@ _ROUTES = "web.api.routes.integrations"
 _ADAPTER = "services.mcp.consumer.github_adapter.GitHubMCPSpatialAdapter"
 
 
+def node_missing_is_a_skip() -> bool:
+    """May a test that needs ``node`` be skipped here? On a seat without node, yes. In CI,
+    never (Arch 2026-11-17): a skipped pin would leave a stale file unnoticed at a
+    promotion, so there the test runs and ``build`` stops it with a failure."""
+    return shutil.which("node") is None and not os.environ.get("CI")
+
+
 class Stopped(Exception):
     """A reason this script can't produce the file; printed as one line."""
 
