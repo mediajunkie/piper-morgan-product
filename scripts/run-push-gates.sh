@@ -35,7 +35,8 @@
 # Exit 0 only when every gate that ran passed. It changes nothing.
 #
 # Layer: the same commands CI runs, on your working tree. It does not run the tests,
-# the architecture tests or the smoke; run those as well.
+# the architecture tests or the smoke; run those as well. The pre-push hook runs the fast
+# architecture tests and the completion ratchets through scripts/run-push-arch-tests.sh.
 #
 # Concept: docs/internal/operations/github-and-tooling-gotchas.md
 set -uo pipefail

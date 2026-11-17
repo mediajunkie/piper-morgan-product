@@ -17,7 +17,8 @@ bad() { echo "FAIL $1"; fail=$((fail+1)); }
 gates_runs() { wc -l < "$S/gates.count" 2>/dev/null | tr -d ' ' || echo 0; }
 smoke_runs() { wc -l < "$S/smoke.count" 2>/dev/null | tr -d ' ' || echo 0; }
 light_runs() { wc -l < "$S/light.count" 2>/dev/null | tr -d ' ' || echo 0; }
-: > "$S/gates.count"; : > "$S/smoke.count"; : > "$S/light.count"
+arch_runs()  { wc -l < "$S/arch.count" 2>/dev/null | tr -d ' ' || echo 0; }
+: > "$S/gates.count"; : > "$S/smoke.count"; : > "$S/light.count"; : > "$S/arch.count"
 
 git init -q --bare -b main remote.git
 git init -q -b main seed
@@ -56,7 +57,14 @@ cat > scripts/ensure-pytest-env.sh <<'EOS'
 #!/usr/bin/env bash
 echo "$(cd "$(dirname "$0")" && pwd)/fake-python"
 EOS
-chmod +x scripts/run-push-gates.sh scripts/fake-python scripts/ensure-pytest-env.sh
+# Stand-in architecture check (row 9v): count the run; fail when templates/FAIL-ARCH exists.
+cat > scripts/run-push-arch-tests.sh <<EOS
+#!/usr/bin/env bash
+echo run >> "$S/arch.count"
+if [ -e templates/FAIL-ARCH ]; then echo "FAILED tests/stand-in"; echo "run-push-arch-tests: FAILED (1 failed)"; exit 1; fi
+echo "run-push-arch-tests: passed (1 passed)"
+EOS
+chmod +x scripts/run-push-gates.sh scripts/fake-python scripts/ensure-pytest-env.sh scripts/run-push-arch-tests.sh
 echo a > tests/test_a.py; echo log > dev/2026/11/16/a-log.md; echo s > dev/active/standing.md; echo m > mailboxes/x/inbox/m.md
 git add -A; git commit -qm seed; git push -q origin main
 cd ..
@@ -142,6 +150,43 @@ if [ $rc -eq 0 ] && [ "$(gates_runs)" = "$g" ]; then ok "T11 cleaned log: rememb
 
 # T12: the not-checked-out warning is logged.
 grep -q "outcome=not-checked-out" "$(git rev-parse --git-common-dir)/piper-prepush-smoke.log" && ok "T12 a push of a commit that is not checked out is logged" || bad "T12 log line"
+
+# --- The architecture check (row 9v) ---
+LOG="$(git rev-parse --git-common-dir)/piper-prepush-smoke.log"
+# T13: a tests-only push does not run the architecture check.
+a=$(arch_runs); echo i > tests/test_i.py; git add -A; git commit -qm code-i
+git push -q origin HEAD:refs/heads/a1 2>/dev/null
+if [ "$(arch_runs)" = "$a" ]; then ok "T13 a tests-only push does not run the architecture check"; else bad "T13 arch=$(arch_runs) a=$a"; fi
+
+# T14: a templates-only push runs the gates and the architecture check, and not the smoke.
+# (Land what is here on main first, so the next push's diff from origin/main is the template alone.)
+git push -q origin HEAD:main 2>/dev/null; git fetch -q origin
+mkdir -p templates; echo t > templates/page.html; git add -A; git commit -qm template
+g=$(gates_runs); a=$(arch_runs); s=$(smoke_runs)
+out=$(git push origin HEAD:refs/heads/a2 2>&1); rc=$?
+if [ $rc -eq 0 ] && [ "$(gates_runs)" = $((g+1)) ] && [ "$(arch_runs)" = $((a+1)) ] && [ "$(smoke_runs)" = "$s" ]; then ok "T14 a templates-only push runs the gates and the architecture check, no smoke"; else bad "T14 rc=$rc gates=$(gates_runs)/$g arch=$(arch_runs)/$a smoke=$(smoke_runs)/$s: $out"; fi
+grep -q "outcome=arch-pass" "$LOG" && ok "T14b the pass is logged" || bad "T14b log line"
+
+# T15: the same content pushed again is remembered: not re-run.
+a=$(arch_runs)
+out=$(git push origin HEAD:refs/heads/a3 2>&1)
+if [ "$(arch_runs)" = "$a" ] && printf '%s' "$out" | grep -q "architecture check already passed"; then ok "T15 a remembered architecture pass is not re-run"; else bad "T15 arch=$(arch_runs) a=$a: $out"; fi
+
+# T16: a failing architecture check blocks the push, and the smoke never starts.
+echo x > templates/FAIL-ARCH; echo w > web_marker; mkdir -p web; echo w > web/app.py; git add -A; git commit -qm "bad template"
+a=$(arch_runs); s=$(smoke_runs)
+out=$(git push origin HEAD:refs/heads/a4 2>&1); rc=$?
+if [ $rc -ne 0 ] && [ "$(arch_runs)" = $((a+1)) ] && [ "$(smoke_runs)" = "$s" ] && printf '%s' "$out" | grep -q "architecture check FAILED"; then ok "T16 a failing architecture check blocks the push before the smoke"; else bad "T16 rc=$rc arch=$(arch_runs)/$a smoke=$(smoke_runs)/$s: $out"; fi
+grep -q "outcome=arch-fail" "$LOG" && ok "T16b the block is logged" || bad "T16b log line"
+
+# T17: a failed check is not remembered: the retry runs it again.
+a=$(arch_runs); git push -q origin HEAD:refs/heads/a5 2>/dev/null
+if [ "$(arch_runs)" = $((a+1)) ]; then ok "T17 a failed architecture check is run again on retry"; else bad "T17 arch=$(arch_runs) a=$a"; fi
+
+# T18: PIPER_SKIP_PUSH_GATES=1 skips it, loudly, and logs the skip.
+a=$(arch_runs)
+out=$(PIPER_SKIP_PUSH_GATES=1 git push origin HEAD:refs/heads/a6 2>&1)
+if [ "$(arch_runs)" = "$a" ] && printf '%s' "$out" | grep -q "architecture check SKIPPED" && grep -q "outcome=arch-skip" "$LOG"; then ok "T18 the skip variable skips the architecture check and logs it"; else bad "T18 arch=$(arch_runs) a=$a: $out"; fi
 
 echo "remembered-pass: $pass passed, $fail failed"
 [ "$fail" -eq 0 ]
