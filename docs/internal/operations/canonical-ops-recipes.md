@@ -273,7 +273,10 @@ Fly tokens, Slack tokens and invite codes:
   change adds, in every folder. A hit refuses the commit and prints `path:line  shape name`,
   never the value.
 - **In the push gates and CI** (`lint.yml`): every tracked text file outside `mailboxes/`, `docs/`
-  and `dev/`, which `mailbox_bearer_lint.py` reads on the line above it.
+  and `dev/`, which `mailbox_bearer_lint.py` reads on the line above it. Inside those three it
+  reads for the two shapes that lint lacks (GitHub app tokens, a bare Fly macaroon).
+- **Not covered:** a baselined line (issue 2397), and a secret with no shape, such as a seat
+  account's password.
 
 If it stops you:
 
