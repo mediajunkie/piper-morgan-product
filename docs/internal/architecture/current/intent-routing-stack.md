@@ -6556,6 +6556,22 @@ confirmed turn, never a re-extraction (create_todo text; create_reminder text, l
 name; create_issue title and repo, unstripped again; update_issue number, repo and field values). Pins:
 `test_write_ask_binding_2304.py`. Pins: `tests/unit/services/intent_service/test_write_confirm_words_2304.py`.
 
+**A GitHub App connection: a write to a repository the App isn't on is answered in place of the confirm (#2379, Arch
+2026-11-15 15:49).** On an App grant, `create_issue_write_ask`, `update_issue_write_ask` and
+`build_close_reopen_confirmation` call `github_adapter.github_app_write_refusal_line(user, owner/name)` once the
+repository is known and before anything is armed or bound. Not installed on that repository: the reply is
+`GITHUB_APP_NOT_ON_REPOSITORY_WRITE_REPLY` (CXO's yes, 2026-11-16 16:08). Installed nowhere: the install
+step's line. A failed installation read: the honest failure. Otherwise the confirm is offered as before. The adapter's
+`_verified_write` makes the same check as the choke point, so a write with no confirm (a comment, a create to the
+default repository) is never fired either; it returns `refused` (not "never fired", which would send the router to the
+native-token path) and the reply is the same line. The create draft step in `_handle_create_issue` makes the check
+too, on the named repository or the default a write would use, before a draft is offered or armed (CXO 16:08: the
+line replaces the draft offer entirely); with no App grant it reads nothing and drafts as before. The repo-scoped reads (branches, releases, one issue, the
+close/reopen probe, the duplicate-title read) make the check before any client call. The installation read runs once
+per HTTP request (`installation_read_scope`, opened by `web/middleware/installation_read_scope.py`) and is never held
+across requests. The personal-token leg and classic grants make no installation read. Pins:
+`tests/unit/services/mcp/consumer/test_github_adapter_repo_scoped_installed_2379.py`.
+
 ## Pointers
 
 - Probe report + recalibration trace: `dev/2026/07/08/routing-probe-1283-run1.md`

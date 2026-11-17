@@ -314,6 +314,13 @@ from web.middleware.canonical_host import CanonicalHostMiddleware
 app.add_middleware(CanonicalHostMiddleware)
 logger.info("✅ CanonicalHostMiddleware registered (#2282)")
 
+# #2379 (Arch 2026-11-15): one GitHub App installation read per request, dropped when the
+# response is sent. Holds nothing across requests.
+from web.middleware.installation_read_scope import InstallationReadScopeMiddleware
+
+app.add_middleware(InstallationReadScopeMiddleware)
+logger.info("✅ InstallationReadScopeMiddleware registered (#2379)")
+
 # Phase 1: Mount remaining API routers using factory pattern (Issue #385 - INFR-MAINT-REFACTOR)
 # Previously: ~90 lines of duplicate try/catch boilerplate
 # Now: Consolidated calls to RouterInitializer factory for consistency

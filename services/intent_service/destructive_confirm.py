@@ -1357,7 +1357,20 @@ async def build_close_reopen_confirmation(
         intent.context = dict(intent.context or {})
         intent.context[CONFIRM_REPOSITORY_CONTEXT_KEY] = _repo
 
-        from services.mcp.consumer.github_adapter import GitHubMCPSpatialAdapter
+        from services.mcp.consumer.github_adapter import (
+            GitHubMCPSpatialAdapter,
+            github_app_write_refusal_line,
+        )
+
+        # #2379 (Arch 2026-11-15 15:49): on a GitHub App connection, a close or reopen
+        # aimed at a repository the App isn't installed on is answered here, before
+        # any confirm is armed. Without this the probe says "unknown" (it never reads
+        # such a repository), the generic confirm is armed, and GitHub refuses the yes.
+        _not_installed = await github_app_write_refusal_line(_gh_user_id, _repo)
+        if _not_installed is not None:
+            return CloseReopenGate(
+                passthrough_result={"message": _not_installed, "requires_clarification": False}
+            )
 
         status, issue_details, _ = await GitHubMCPSpatialAdapter().probe_issue_connector(
             _gh_user_id, issue_number=issue_number, explicit_repo=_repo

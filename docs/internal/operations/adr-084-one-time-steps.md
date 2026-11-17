@@ -325,7 +325,10 @@ What the row must hold, whatever the path:
 
 **Owner: CIO. No batch is ready today.** This one recurs. It is the item ADR-084 doesn't remove: auto mode refuses a seat an edit to its own guards, and refuses Pard an edit to another seat's settings.
 
-Two items are queued and neither is built: a scan for credential shapes in staged files, and a pre-push hook change that records an earlier gate run.
+Both items that were queued on 11-15 are built (2026-11-16), and neither needed a step from xian:
+
+- The pre-push hook's remembered pass is live: Pard installed it at 12:46 on 11-16 (recipe 5 in `canonical-ops-recipes.md`).
+- The scan for credential shapes is `scripts/staged_credential_scan.py` (issue 2392). Its gate half (`--tracked`, in `lint.yml` and so in `scripts/run-push-gates.sh`) needs no install. Its commit half (`--staged`, called from `scripts/git-hooks/pre-commit`) takes effect when Pard copies that file into the common hooks folder, after HOST has read the script. Until then a commit is not checked; the push gate and CI are.
 
 The form each batch takes, so a sitting is short (CIO, 2026-11-15):
 

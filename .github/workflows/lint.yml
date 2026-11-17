@@ -167,6 +167,16 @@ jobs:
           # credential); this blocks NEW ones and prints only masked excerpts.
           python scripts/mailbox_bearer_lint.py --roots mailboxes docs dev --baseline .mailbox-bearer-lint-baseline.txt
 
+      - name: Credential-shape gate outside mail, docs and logs (issue 2392, ADR-084 D2)
+        run: |
+          # The step above reads mailboxes/, docs/ and dev/. This one reads every other
+          # tracked text file for the same shapes plus GitHub app tokens and bare Fly
+          # macaroons. The 61 lines baselined on 2026-11-16 are test fixtures and one
+          # detector's examples, keyed path:hash with the value taken out of the line
+          # before hashing. A new fixture is built at run time from parts. The same script
+          # with --staged is the commit hook. CIO's check; HOST reads it; Lead's gate.
+          python scripts/staged_credential_scan.py --tracked --baseline .staged-credential-scan-baseline.txt
+
       - name: Current-state page gate (R6 step 3)
         run: |
           # BRIEFING-CURRENT-STATE.md is a short "Now" page (size cap in its own front
