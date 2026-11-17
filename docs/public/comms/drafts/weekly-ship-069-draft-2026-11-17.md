@@ -137,7 +137,7 @@ caption: '"Who gave it a wallet?"'
 **▸ Facts**
 - Issue counts from gh-week-counts.py (Pacific week). Production open counts are PPM's. 22 of the 26 closes were Production.
 - **Spend** (Console, Workspace All, 11-06 to 11-12 UTC; Janus's transcription of your screenshots, which Exec and I haven't seen): $33.38 total, all token cost. 11-09 to 11-12: $0.07. By day, read off the bar chart, approximate: 11-06 about $13.50, 11-07 about $8.60, 11-08 about $11. Don't print the daily figures as exact.
-- By key: `lead-scoring-2026-10` is most of every large bar, `web-alpha-test-accounts` the smaller part of 11-06 to 11-08, `github-actions-e2e` slivers. Router screens, per the week review: about $12 on 11-06 to 11-08, none from 11-09 until a provider key was picked. Whether that $12 is inside the $33.38 is unverified.
+- By key: `lead-scoring-2026-10` is most of every large bar, `web-alpha-test-accounts` the smaller part of 11-06 to 11-08, `github-actions-e2e` slivers. Router screens, per the week review: about $12 on 11-06 to 11-08, none from 11-09 until a provider key was picked. That $12 is inside the $33.38: the screens ran on `lead-scoring-2026-10` (Lead, 11-17 09:01, from his logs: the key went into the app's Anthropic slot 10-26 and no change is recorded before 11-11). The "about $12" itself is the week review's figure; Lead hasn't re-added his priced screens.
 - #068 gave spend as tokens in and out. This list gives both.
 
 # 🎯 Coming up next week
