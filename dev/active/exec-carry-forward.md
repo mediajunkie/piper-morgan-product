@@ -7,7 +7,7 @@
 **Mail v4:** `python3 scripts/mail4.py inbox --role exec` every wake. Roles are space-separated on `send`. Ack only explicit IDs just read. Read a mail's body whole (`awk 'f>=2{print} /^---$/{f++}'`); don't grep out "- " lines.
 
 ## Rollup
-v1022, `719UZ4h1NELjEwWZbDCceT`. Source `dev/active/exec-attention-rollup-current.html`. Edit with Python replace plus assert; update the "vNNN, rebuilt" stamp from a `date` call; no estimated minutes. Top card: Steps A, C, D, F0, two answers. Then the keychain card, the writing card, the self-knowledge card.
+v1024, `719UZ4h1NELjEwWZbDCceT`. Source `dev/active/exec-attention-rollup-current.html`. Edit with Python replace plus assert; update the "vNNN, rebuilt" stamp from a `date` call; no estimated minutes. Top card: Steps A, C, D, F0, two answers. Then the keychain card, the writing card, the self-knowledge card.
 
 ## Waiting on xian (nothing answered or run since 06:51 on 11-16)
 Steps file: `docs/internal/operations/adr-084-one-time-steps.md`. Copy lines from it by script; never retype.
@@ -18,15 +18,15 @@ Steps file: `docs/internal/operations/adr-084-one-time-steps.md`. Copy lines fro
 - **Step C** (independent of A): three `add-allow --seat web` lines, for `seat_session.py --account web-seed-1386` and `seat_read.py --account web-seed-1386 --redirect-uri github` and `... calendar`. Lead needs none. Then Web runs the helper (0 of 1 real sign-ins).
 - **Step D** (after C, same sitting): two lines that load `com.xian.seat-browser-web` and run `seat_browser.py --check web`; expect `port 9333`. His paste is the first real run (auto mode refused Pard's hand test). If it prints `refused:`, get the reason to CIO and Pard. After it passes: CIO switches `.mcp.json` to the launcher, then Web's checks (signed-in name, second Read-deny measurement), then the served rows of 2379 and Arch's one chat turn for 2383.
 - **Step F0:** he mints one invite, runs `scripts/seat_account_create.py --account seat-github-1 --write-invite`, then the add-allow for Lead. Lead creates the account (0 of 1 real creations).
-- **Keychain yes or no:** CIO started Chrome for Testing by hand on 11-15 without `--use-mock-keychain`; it may have made or read "Chromium Safe Storage". Unverified; no seat looks. His answer is "leave it" (my recommendation) or "I'll look".
+- **Keychain: answered 11-17** ("ok to leave it. let's ensure it doesn't recur, though."). Owed to him: CIO's one line on what prevents a hand-typed repeat (mail 01M7N5Q9GX); put it on the rollup when it lands, Janus carries it.
 - **Two answers:** (1) does anything he runs himself use the `piper-morgan-test` workspace; (2) yes or no that its key on `web-seed-1386` counts as a seat key up to $40. Relay verbatim the same hour, with a decisions.log line.
-- **Writing:** "The Wall" is on the calendar for Tue 11-17 and was still Comms' scaffold at last read (his prose or a new day; check with Comms at START). Ship 069 (Wed 11-18): five draft goals need his yes or edit; Comms' fallback is mail 01M7K6JQ. Console Usage and Cost screenshots for 11-06 to 11-12.
+- **Writing:** "The Wall" stays planned for Tue 11-17 on his word; he writes it when he has quiet time; no new date. Ship 069 goals answered yes (all five) and spend figures in; both with Comms (01M7N5Q7DB). Ship 069 scaffold on main for his prose (`docs/public/comms/drafts/weekly-ship-069-draft-2026-11-17.md`); then I edit, Comms audits, Docs publishes Wed 11-18. Asked Lead which key paid the router screens' $12. Console address: Docs done (`e9ee9334e6`), Lead's four files owed (01M7N5QBSK); tell Janus by external mail when both are done.
 - **Self-knowledge, three texts awaiting his yes:** nine rules (2354, `47a65eed5f`), 13 practice rows (2355, `c531cae276`), seven procedures (2358).
 - Small: flyctl upgrade. Still his hand with a D6 line: 2087, the Buttondown text, 2344. HOST's read-only Buttondown grant goes to him only after Steps A, C, F0.
 - **For him to overrule:** on issue 2264 his 11-03 word was "yes ask"; I let HOST read the two stakeholder rows ("test data"); nothing quoted. The history decision on 2264 is his. The issue was still open at 22:01; the closing comment is Arch's or Lead's.
 
 ## In motion
-- **Beta** `4e2797bce2` since 08:07 on 11-17 (2401, 2397). Issue 2402's fix on main `456dad90a7`, not served; Lead asks Arch for a grant when CI is green. Not checked signed in; that waits on Steps C, D, F0.
+- **Beta** `4e2797bce2` since 08:07 on 11-17 (2401, 2397). Issue 2402 on main (`456dad90a7`, `3e0f20f262`), granted by Arch on a green Tests run, not served at last read; update the rollup's beta line when it serves. Not checked signed in; that waits on Steps C, D, F0.
 - Main 12 of 12 green at 22:01, including Tests on a commit after CIO's fix. `whats-armed` 31 armed, 0 not armed, 1 unmeasured.
 - Lead's unbuilt items: the 2157 drill script, 2390, 2391, 2384, 2393, 2399. Hook blocking decision needs a week of counts (about 11-23).
 - Logs without a DAY-CLOSED marker at 22:03 on 11-16: Docs (last entry 19:17), CIO (20:02), Arch (STOP entry at 21:28, marker missing). Docs nudges at its START; check they closed.

@@ -28,6 +28,7 @@ from fastapi.testclient import TestClient
 from services.auth.container import AuthContainer
 from services.mcp.consumer.connector import DegradationReason, DegradationResponse
 from services.mcp.consumer.github_adapter import GitHubCredential, GitHubReposResult
+from tests.utils.page_scripts import SHARED_ESCAPE_JS
 from web.app import app
 
 REPO = Path(__file__).resolve().parents[3]
@@ -112,7 +113,7 @@ def _render(body: str, integration: dict) -> str:
         "process.stdout.write(out.innerHTML);\n"
     )
     res = subprocess.run(
-        ["node", "-e", script, json.dumps([integration])],
+        ["node", "-e", SHARED_ESCAPE_JS + script, json.dumps([integration])],
         capture_output=True,
         text=True,
         timeout=30,

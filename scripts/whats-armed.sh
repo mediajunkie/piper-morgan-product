@@ -51,6 +51,7 @@ g() { # g <hook> <benign cmd> <refuse cmd>
   else row ARMED script "$h" "allows benign${3:+, refuses: $3}"; fi
 }
 g guard-pm-checkout.sh "git status" "cd $pm && git reset --hard"
+g guard-browser-launch.sh "echo hi" "/nonexistent-dir/chromium --version"
 g autoclose-guard.sh "echo hi" "git commit -m 'fix #1'"
 g check-branch.sh "echo hi" ""
 g pre-commit-reconcile-drafts.sh "echo hi" ""

@@ -218,7 +218,7 @@ Your Anthropic API key is wrong or missing.
 
 **Step 1**: Get a new API key from Anthropic
 
-1. Go to [console.anthropic.com](https://console.anthropic.com)
+1. Go to [platform.claude.com](https://platform.claude.com/dashboard)
 2. Sign in (use Google account)
 3. Click your profile (top-right)
 4. Click "API Keys"
