@@ -6,7 +6,7 @@ caption: '"Who gave it a wallet?"'
 
 > **SCAFFOLD for xian to write** (Comms, 2026-11-17). Nothing in a ▸ list is prose to keep. Each section has **▸ Write about** (points to cover) and **▸ Facts** (figures, issues, links, with sources). Delete the lists as you write.
 >
-> **Sources:** Exec's week review (`docs/internal/planning/comms/ship-reviews/ship-069-week-review.html`, from all ten workstream reviews, discussed with you 11-13 17:07 to 17:42); your theme pick ("Off-Limits by Default", 11-13); your yes to the five goals (11-17, via Janus and Exec); the spend from your Console screenshots (Janus's transcription); the editorial calendar; decisions.log; GitHub issue states read 11-17 at 08:4x. **Window:** Fri 11-06 to Thu 11-12. **Publishes:** Wed 11-18, so "Coming up next week" can say what happened after the window.
+> **Sources:** Exec's week review (`docs/internal/planning/comms/ship-reviews/ship-069-week-review.html`, from all ten workstream reviews, discussed with you 11-13 17:07 to 17:42); your theme pick ("Off-Limits by Default", 11-13); your yes to the five goals (11-17, via Janus and Exec); the spend from your Console screenshots (Janus's transcription); the editorial calendar; decisions.log; GitHub issue states read 11-17 at 08:37. **Window:** Fri 11-06 to Thu 11-12. **Publishes:** Wed 11-18, so "Coming up next week" can say what happened after the window.
 >
 > **The theme's guard rail** (calendar note, 11-13): lean on the week's facts (the keychain reads, the opt-in fix, the GitHub App's narrower grants). Don't retell Thursday's "The Server Has No Key".
 >
