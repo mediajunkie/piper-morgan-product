@@ -20,11 +20,63 @@ WRAPPERS = {"nohup", "exec", "command", "time", "caffeinate", "setsid", "nice"}
 # `arch -arm64 <program>`, `sudo -u <user> <program>` and `xargs <program>` passed a list of
 # known wrappers; an unknown wrapper must fail closed).
 NOT_LAUNCHERS = {
-    "ls", "strings", "file", "stat", "grep", "egrep", "rg", "codesign", "echo", "printf", "cat",
-    "test", "[", "[[", "lsof", "ps", "pgrep", "pkill", "kill", "md5", "shasum", "xattr", "which",
-    "type", "mdls", "otool", "plutil", "du", "wc", "head", "tail", "sed", "awk", "git",
-    "gh", "brew", "npm", "npx", "pip", "pip3", "python", "python3", "node", "cd", "export",
-    "chmod", "cp", "mv", "rm", "mkdir", "touch", "diff", "sort", "uniq", "tee", "true", "false",
+    "ls",
+    "strings",
+    "file",
+    "stat",
+    "grep",
+    "egrep",
+    "rg",
+    "codesign",
+    "echo",
+    "printf",
+    "cat",
+    "test",
+    "[",
+    "[[",
+    "lsof",
+    "ps",
+    "pgrep",
+    "pkill",
+    "kill",
+    "md5",
+    "shasum",
+    "xattr",
+    "which",
+    "type",
+    "mdls",
+    "otool",
+    "plutil",
+    "du",
+    "wc",
+    "head",
+    "tail",
+    "sed",
+    "awk",
+    "git",
+    "gh",
+    "brew",
+    "npm",
+    "npx",
+    "pip",
+    "pip3",
+    "python",
+    "python3",
+    "node",
+    "cd",
+    "export",
+    "chmod",
+    "cp",
+    "mv",
+    "rm",
+    "mkdir",
+    "touch",
+    "diff",
+    "sort",
+    "uniq",
+    "tee",
+    "true",
+    "false",
 }
 SHELLS = {"bash", "sh", "zsh", "/bin/bash", "/bin/sh", "/bin/zsh"}
 ASSIGN = re.compile(r"^([A-Za-z_][A-Za-z0-9_]*)=(.*)$", re.DOTALL)
@@ -94,7 +146,9 @@ def launches(cmd, names=None, depth=0):
             continue
         if word in ("open", "/usr/bin/open", "osascript", "/usr/bin/osascript"):
             # `open -a` can pass the flag after --args; osascript can't pass it at all.
-            if any(APP.search(a) for a in args) and (word.endswith("osascript") or FLAG not in args):
+            if any(APP.search(a) for a in args) and (
+                word.endswith("osascript") or FLAG not in args
+            ):
                 bad.append(word)
             continue
         if is_program(word):

@@ -49,7 +49,7 @@ REFUSED = [
     f'sudo -u someone "{TEST_BROWSER}"',
     f'echo --headless | xargs "{TEST_BROWSER}"',
     f'some-unknown-wrapper --opt "{TEST_BROWSER}"',
-    'osascript -e \'tell application "Google Chrome" to activate\'',
+    "osascript -e 'tell application \"Google Chrome\" to activate'",
     'osascript -e \'tell application "Chromium" to open location "https://example.com"\'',
     f"cat >> log.md <<'EOF'\nquoted\nEOF\n\"{TEST_BROWSER}\" --headless=new",
 ]
@@ -70,7 +70,7 @@ ALLOWED = [
     "npx playwright install chromium",
     "grep -rn chromium scripts",
     f'codesign -dv "{TEST_BROWSER}"',
-    'osascript -e \'tell application "Finder" to activate\'',
+    "osascript -e 'tell application \"Finder\" to activate'",
     # PA, 2026-11-17: heredoc text going to a file is not a launch.
     "cat >> log.md <<'EOF'\n- ran:\n/nonexistent-dir/chromium --version\nEOF",
     f'cat > note.md <<-"END"\n"{TEST_BROWSER}" --headless=new\nEND\ngit status',
