@@ -284,7 +284,7 @@ What the row must hold, whatever the path:
   fly ssh console -a piper-morgan -C "python /app/scripts/mcp_allow.py add --user-email <seat-account-email> --apply"
   ```
   `<seat-account-email>` is the GitHub-connected seat account's sign-in address from HOST's custody row. It isn't a secret.
-- **You should see:** a `--- target:` line with the database address masked. The dry run ends `DRY-RUN complete — no writes.` The `--apply` run ends `add: done for <seat-account-email> (…)`, then a `--- listed: N` block that includes the seat account.
+- **You should see:** a `--- target:` line with the database address masked. The dry run ends `DRY-RUN complete — no writes.` The `--apply` run prints the `--- listed:` block twice, before and after the write; the second one includes the seat account. It ends `add: done for <seat-account-email> (…).`
 - **Seat check:** none from a seat (no seat reads the production database). The check is part 2's consent working: an unlisted account gets a 403 at the consent page.
 - **If it fails:** `refusing: --user-email is not a plain address` means a typo, so re-run. `No such user: … — nothing written.` means the seat account doesn't exist on beta under that address, so check the address or do Step F first. Anything else: paste the error line (not the list) to Exec.
 
@@ -300,7 +300,21 @@ What the row must hold, whatever the path:
   - **403 on the consent page:** part 1 didn't stick. Run `fly ssh console -a piper-morgan -C "python /app/scripts/mcp_allow.py list"` and check the seat account is listed.
   - **The consent lands on your own account** (PA's profile read names you): remove only **Piper Morgan (seat)**, sign out of Piper, and repeat part 2.
 
-**Ending** (with HOST's review date): remove **Piper Morgan (seat)** in claude.ai, then `mcp_allow.py remove --user-id <seat-account-id> --apply` the same way as part 1.
+**Part 3: the removal check for #2242** (added 2026-11-16 by PA on Exec's 18:2x ruling `01M7KN3SAN…`; replaces the old card that removed xian's own account; about 3 minutes, same Terminal as part 1)
+
+This checks that removing an account from the allowlist cuts off a connector that's already connected, on the next call and not only at consent. The server checks the list in its token verifier as well as at consent and refresh (`services/mcp/server/allowlist.py`), so a removal should bite at once. It runs on the seat account, so your own connector is never touched.
+
+- **Order:** after part 2's seat check has passed. Wait for PA's word in between; each line below waits on the line before it.
+- **Paste 1 (remove):**
+  ```
+  fly ssh console -a piper-morgan -C "python /app/scripts/mcp_allow.py remove --user-email <seat-account-email> --apply"
+  ```
+  **You should see:** two `--- listed:` blocks (before and after the write), the second **without** the seat account, and then `remove: done for <seat-account-email> (…).` Tell PA.
+- **Seat check (PA):** one read through **Piper Morgan (seat)**. Expected: refused (the server returns no identity, so the connector reports an authorization error and no data). PA quotes the error text and MCP `uptime_seconds`, then reads your own **Piper Morgan** connector once, which must still answer as you. **FAIL** is any data returned through the seat connector after the removal.
+- **Paste 2 (add back):** part 1's `--apply` line again. **You should see:** the second `--- listed:` block includes the seat account again, then `add: done for …`. Tell PA.
+- **Seat check (PA):** one read through **Piper Morgan (seat)** answers as the seat account again. If it doesn't (the client may have dropped the connection after the 401), PA asks Exec whether to re-consent (part 2's Then line, about a minute). This is not a failure of the check.
+
+**Ending** (with HOST's review date): remove **Piper Morgan (seat)** in claude.ai, then `mcp_allow.py remove --user-email <seat-account-email> --apply` the same way as part 1 (the script takes `--user-email` or `--user-id`).
 
 ## Step H (ADR row 7): the MCP deploy token
 
