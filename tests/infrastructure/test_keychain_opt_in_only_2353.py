@@ -11,6 +11,14 @@ import pytest
 from keyring.backend import KeyringBackend
 
 from services.infrastructure import keychain_service as ks
+from tests.utils.keyring_guard import skip_if_a_real_keyring_could_be_reached
+
+
+@pytest.fixture(autouse=True)
+def _never_against_a_real_keychain():
+    """HOST 2026-11-17: checked before every test here, so a run with conftests disabled
+    skips them where an OS keyring exists."""
+    skip_if_a_real_keyring_could_be_reached()
 
 
 class RecordingKeyring(KeyringBackend):
