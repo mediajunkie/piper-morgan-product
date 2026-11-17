@@ -134,18 +134,30 @@ scripts/seat_settings_grant.py add-allow --seat web --rule 'Bash(scripts/seat_se
   The rule must match the command the seat types, character for character. An exact allow covers only the bare command; anything chained onto it goes back to the classifier (traced 11-06). The seat types exactly `scripts/seat_session.py --account web-seed-1386` from the top of its worktree. The tool refuses any rule with `*` in it and never touches a deny.
 
 - **You should see:** `added 1 allow rule for seat web`, then the rule counts.
-- **Seat check:** the seat runs the helper once. It prints one line, `web-seed-1386 session saved, expires <time>`, and nothing else. Then `scripts/seat_read.py --account web-seed-1386 '/api/v1/admin/floored-actions?days=30'` prints the counter's JSON. If the helper prints `refused:` with a reason (for example, the account holds a provider key), nothing was saved: the seat reports the reason to HOST and Exec and does not retry.
+- **Seat check:** the seat runs the helper once. It prints one line, `web-seed-1386 session saved, expires <time>`, and nothing else. (Once Step D is done, in a seat with a seat browser it prints a second line, `web-seed-1386 placed in seat browser web, expires <time>`.) Then `scripts/seat_read.py --account web-seed-1386 '/api/v1/admin/floored-actions?days=30'` prints the counter's JSON. If the helper prints `refused:` with a reason (for example, the account holds a provider key), nothing was saved: the seat reports the reason to HOST and Exec and does not retry.
 - **If it fails:** if the classifier still refuses the helper's run, this route is dropped and the ADR's fallback applies (he signs in himself, rarely). Nobody works around the refusal.
 
 ## Step D (ADR row 10): load the seat browser's LaunchAgent
 
-**Owner: CIO, with Pard. NOT READY: waits on Pard's plist and wrapper, and HOST's read of both** against D3's debug-port bound (127.0.0.1 only, a dedicated profile folder at mode 0700, no wildcard origins, the port read from one place, never xian's own Chrome).
+**Owner: CIO, with Pard. Issue 2400. NOT READY: CIO's half is on main (2026-11-16) and unread by HOST; it waits on HOST's read, then Pard's plist and wrapper, then HOST's read of those** against D3's debug-port bound (127.0.0.1 only, a dedicated profile folder at mode 0700, no wildcard origins, the port read from one place, never xian's own Chrome).
 
-The order of what it waits on (CIO, 2026-11-15):
-1. ADR-084's yes.
-2. CIO's change to `.mcp.json` so served-read seats attach to that browser (`--browserUrl`) with a persistent profile. Proven by hand on a dummy on 11-15 (`dev/active/seat-grant-dummy-test/README.md`); the tracked change is not written.
-3. Pard builds the plist, the wrapper and a cycle-check arm (the debug port answers, the profile folder exists), and tests the wrapper by hand.
+What is on main (CIO, 2026-11-16), none of it in use until this step is done:
+
+- `scripts/seat-browser.conf`: the one place a seat browser's port is written. One row today: `web 9333`. Adding a row is a diff HOST reads.
+- `scripts/seat_browser.py`: places a saved session's access cookie into the seat's browser through the debug port. Before it sends anything it reads the process listening on the port and refuses unless that is one process, bound to 127.0.0.1 only, the cohort's test browser binary, started on `~/.piper-shared/seat-browser-credential-profile-<seat>` (mode 0700) with `--use-mock-keychain` and without `--remote-allow-origins`. It prints one line: the account, the seat and the expiry. `--where <seat>` prints the port and the folder for Pard's wrapper.
+- `scripts/seat_session.py` calls it after saving a session, only in a seat that has a row. So Step C's exact-command allow covers it, and this step adds no allow. A seat with no row sees no change. If placing fails, the session stays saved, a fixed reason prints, and the exit code is 4.
+- `scripts/seat-browser-mcp.sh`: the browser tool's launcher. A seat with a row whose browser answers is attached to it (`--browserUrl`). Every other seat, and a seat whose browser is down, gets the throwaway signed-out browser `.mcp.json` starts today. **`.mcp.json` does not call it yet**; that one-line switch lands after HOST's read and takes effect at each seat's next session start.
+
+Run so far (CIO, 2026-11-16 18:55 PT, a scratch test browser on a throwaway folder and port, a made-up cookie, nothing of beta's): placed and read back as httpOnly and secure; still held after a browser restart on the same folder; a browser on another folder on the same port was refused. 35 unit tests. Not run: a real session, a seat's live browser tool through the launcher, anything under the LaunchAgent.
+
+**The browser must be started with `--use-mock-keychain`.** Without it the browser asks the macOS login keychain for a storage key the first time it keeps a cookie, which xian's 11-11 rule forbids. With it the cookies in the profile folder are kept under a fixed key, so the folder's mode 0700 and the Read deny on its name are the protection, as D3 already says of the profile. The helper refuses a browser started without the flag.
+
+The order of what it waits on:
+1. ADR-084's yes. Done 2026-11-16 06:20.
+2. HOST's read of the four files above.
+3. Pard builds the plist, the wrapper and a cycle-check arm (the debug port answers, the profile folder exists at mode 0700), and tests the wrapper by hand. The wrapper takes the port and folder from `scripts/seat_browser.py --where web`.
 4. HOST reads both against the bound above.
+5. CIO switches `.mcp.json` to the launcher and checks it in CIO's own session first (a seat with no row).
 
 - **Paste:** two lines that Pard supplies with the build, as with every LaunchAgent since 10-30. I'll copy them here when they exist, not from memory.
 - **You should see:** Pard's cycle-check arm go from red to green.
