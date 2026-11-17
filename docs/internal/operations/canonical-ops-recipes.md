@@ -274,6 +274,18 @@ this check for `services/` pushes. `templates/` is in the gates' trigger from th
 Before calling a served-path change validated, run both test files whole; the push check does not
 replace that.
 
+**The skip variable and this check (Lead, 2026-11-17).** `PIPER_SKIP_PUSH_GATES=1` skips the
+architecture check along with the gates, and `scripts/run-push-gates.sh` run by hand does not run
+it. So the old habit, "run the gates by hand, then push with the skip variable", leaves a
+served-path push unchecked. Two rules:
+- **Don't use the skip variable to save a retry.** The remembered pass does that: a retry whose
+  only new content is other seats' dated logs or mail has the same key and pays nothing. If the
+  merge brought in other seats' code, the key changes and the checks run again, which is right,
+  because the content being pushed is new.
+- **If you do skip** (a gate already red on main that isn't yours), run
+  `scripts/run-push-arch-tests.sh` by hand first on a push that touches `templates/`, `web/` or
+  `services/`, and say so in your log with the skip.
+
 ### A credential shape in a commit or a push: `scripts/staged_credential_scan.py` (issue 2392, CIO, 2026-11-16)
 
 The repo is public. Two checks read for provider keys (Anthropic, OpenAI, Google), GitHub and
