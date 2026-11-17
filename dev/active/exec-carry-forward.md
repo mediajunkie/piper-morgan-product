@@ -1,36 +1,41 @@
 # Exec carry-forward
 
-**Rewritten 2026-11-16 18:03 PST at WORK** (Fable 5.2 since 19:10 on 11-15). History: `git log -p -- dev/active/exec-carry-forward.md`. Session log: `dev/2026/11/16/2026-11-16-0421-exec-code-log.md` (open).
+**Rewritten 2026-11-16 22:02 PST at STOP** (Fable 5.2). History: `git log -p -- dev/active/exec-carry-forward.md`. Last session log: `dev/2026/11/16/2026-11-16-0421-exec-code-log.md` (closed). Start a new log on 11-17.
 
 **STATE: LIVE on LaunchAgent** `com.xian.pm-exec-cycle`, firing at :01 on hours 6, 10, 14, 18 and 22. Empty CronList is normal. Liveness is Pard's.
 
-**Mail v4:** `python3 scripts/mail4.py inbox --role exec` every wake. Roles are space-separated on `send`. Ack only explicit IDs just read. Reads and acks can pass 120 s; batches go to the background, and a commit waits for them.
+**Mail v4:** `python3 scripts/mail4.py inbox --role exec` every wake. Roles are space-separated on `send`. Ack only explicit IDs just read. Read a mail's body whole (`awk 'f>=2{print} /^---$/{f++}'`); don't grep out "- " lines.
 
 ## Rollup
-v1011, `719UZ4h1NELjEwWZbDCceT`. Source `dev/active/exec-attention-rollup-current.html`. Edit with Python replace plus assert; update the "vNNN, rebuilt" stamp; no estimated minutes. Top card: Step A, Step C, Step F0, two answers. Second card: writing.
+v1019, `719UZ4h1NELjEwWZbDCceT`. Source `dev/active/exec-attention-rollup-current.html`. Edit with Python replace plus assert; update the "vNNN, rebuilt" stamp from a `date` call; no estimated minutes. Top card: Steps A, C, D, F0, two answers. Then the keychain card, the writing card, the self-knowledge card.
 
 ## Waiting on xian (nothing answered or run since 06:51 on 11-16)
-- **Step A** (test key into Lead's settings), not started (no `~/.claude-pm/settings.json.before-fleet-deny`). Command: `cd ~/Development/piper-morgan-product && scripts/seat_settings_grant.py grant-key --seat lead --name PIPER_SEAT_ANTHROPIC_KEY`.
+Steps file: `docs/internal/operations/adr-084-one-time-steps.md`. Copy lines from it by script; never retype.
+- **Step A** (test key into Lead's settings), not started at 22:01 (no `~/.claude-pm/settings.json.before-fleet-deny`). Command: `cd ~/Development/piper-morgan-product && scripts/seat_settings_grant.py grant-key --seat lead --name PIPER_SEAT_ANTHROPIC_KEY`.
   - On `WAITING FOR READ TESTS on seat lead`: mail "go" to Lead, HOST, CIO. Lead Reads its own `.claude/settings.local.json`; HOST Reads Lead's same file by absolute path; CIO Reads its dummy `.env`. Each answers "refused" or "not refused". Give xian the three words. Anything but three "refused" stops before the key.
   - Then the hidden key prompt; he reports length and the 8-character fingerprint. Lead runs `scripts/seat_settings_grant.py check-env --name PIPER_SEAT_ANTHROPIC_KEY`. Tell CIO to remove the dummy. Undo: `mv ~/.claude-pm/settings.json.before-fleet-deny ~/.claude-pm/settings.json`.
   - After: arm B ($8 stop) and the 2364 gate (26 calls) may run; Step E (OpenAI key; no OpenAI price row, so capped OpenAI runs are refused); Step J cleanup.
-- **Step C** (independent of A): `scripts/seat_settings_grant.py add-allow --seat web --rule 'Bash(scripts/seat_session.py --account web-seed-1386)'`. Then Web runs the helper (0 of 1 real sign-ins) and `scripts/seat_read.py --account web-seed-1386 '/api/v1/admin/floored-actions?days=30'`.
-- **Step F0:** he mints one invite at `beta.pipermorgan.ai/settings/invites`, runs `scripts/seat_account_create.py --account seat-github-1 --write-invite` (hidden prompts), then `add-allow --seat lead --rule 'Bash(scripts/seat_account_create.py --account seat-github-1)'`. Lead creates the account (0 of 1 real creations).
-- **Two answers:** (1) does anything he runs himself use the `piper-morgan-test` workspace; (2) yes or no that its key on `web-seed-1386` counts as a seat key up to $40 (total then $150 + $40 a month; served chat has no per-run stop). Relay verbatim the same hour, with a decisions.log line.
-- **Writing:** "The Wall" publishes Tue 11-17 and is still Comms' scaffold (his prose or a new day). Ship 069 (Wed 11-18): five draft goals need his yes or edit; Comms' fallback if none by Wednesday is one line that the week ran without written goals. Console Usage and Cost screenshots for 11-06 to 11-12.
-- Small: flyctl upgrade; did any hand-sent email link an `ALPHA_` doc page; practice.md (`c531cae276`) via Docs.
+- **Step C** (independent of A): three `add-allow --seat web` lines, for `seat_session.py --account web-seed-1386` and `seat_read.py --account web-seed-1386 --redirect-uri github` and `... calendar`. Lead needs none. Then Web runs the helper (0 of 1 real sign-ins).
+- **Step D** (after C, same sitting): two lines that load `com.xian.seat-browser-web` and run `seat_browser.py --check web`; expect `port 9333`. His paste is the first real run (auto mode refused Pard's hand test). If it prints `refused:`, get the reason to CIO and Pard. After it passes: CIO switches `.mcp.json` to the launcher, then Web's checks (signed-in name, second Read-deny measurement), then the served rows of 2379 and Arch's one chat turn for 2383.
+- **Step F0:** he mints one invite, runs `scripts/seat_account_create.py --account seat-github-1 --write-invite`, then the add-allow for Lead. Lead creates the account (0 of 1 real creations).
+- **Keychain yes or no:** CIO started Chrome for Testing by hand on 11-15 without `--use-mock-keychain`; it may have made or read "Chromium Safe Storage". Unverified; no seat looks. His answer is "leave it" (my recommendation) or "I'll look".
+- **Two answers:** (1) does anything he runs himself use the `piper-morgan-test` workspace; (2) yes or no that its key on `web-seed-1386` counts as a seat key up to $40. Relay verbatim the same hour, with a decisions.log line.
+- **Writing:** "The Wall" is on the calendar for Tue 11-17 and was still Comms' scaffold at last read (his prose or a new day; check with Comms at START). Ship 069 (Wed 11-18): five draft goals need his yes or edit; Comms' fallback is mail 01M7K6JQ. Console Usage and Cost screenshots for 11-06 to 11-12.
+- **Self-knowledge, three texts awaiting his yes:** nine rules (2354, `47a65eed5f`), 13 practice rows (2355, `c531cae276`), seven procedures (2358).
+- Small: flyctl upgrade. Still his hand with a D6 line: 2087, the Buttondown text, 2344. HOST's read-only Buttondown grant goes to him only after Steps A, C, F0.
+- **For him to overrule:** on issue 2264 his 11-03 word was "yes ask"; I let HOST read the two stakeholder rows ("test data"); nothing quoted. The history decision on 2264 is his. The issue was still open at 22:01; the closing comment is Arch's or Lead's.
 
 ## In motion
-- **Beta** `fd6ef1c669` since 09:39. Arch granted a second promotion at 17:36 (to `2a57d566d1`, or a later head only if its sole served change is CXO's check-failed line): 2379, 2383, 2386's strings, no migration. Lead dispatches only inside 07:00 to 21:00 and with Tests green by 20:30. When it serves: update the rollup's "Where things stand" and check Lead quoted one ordinary chat turn (Arch's served check for 2383).
-- **Older rollup cards:** mail 01M7KKWMK1 asked Lead, PA, Arch, HOST, CIO and PPM, twelve numbered cards, for "cut", "seat route" or "still his hand, with the D6 line". Apply each answer to the rollup as it arrives. Don't cut a card on my own read.
-- CIO's staged credential scan is live since 17:00 (no skip variable). A pushed credential is reported to me the same hour.
-- Main 12 of 12 green at 18:01. `whats-armed` 31 armed, 0 not armed, 1 unmeasured.
+- **Beta** `74caa06638` since 18:15 on 11-16, healthy at 22:02. Not checked signed in; that waits on Steps C, D, F0.
+- Main 12 of 12 green at 22:01, including Tests on a commit after CIO's fix. `whats-armed` 31 armed, 0 not armed, 1 unmeasured.
+- Lead's unbuilt items: the 2157 drill script, 2390, 2391, 2384, 2393, 2399. Hook blocking decision needs a week of counts (about 11-23).
+- Logs without a DAY-CLOSED marker at 22:03 on 11-16: Docs (last entry 19:17), CIO (20:02), Arch (STOP entry at 21:28, marker missing). Docs nudges at its START; check they closed.
 
 ## Rules I keep
-- Timestamps only from a `date` call; no "HH:Mx".
+- Timestamps only from a `date` call; no "HH:Mx". No clock time in a card that I didn't read.
 - Every grant is xian's own edit. No seat runs `fly`. A relayed grant doesn't lift a classifier refusal. Keychain off-limits without his permission. Secrets stay in his password manager.
-- Check each ruling that puts a step on xian for the "standing access that would remove this" line (ADR-084 D6). Before recommending he do something by hand, ask why a seat can't.
-- Check the owner's log before telling xian something hasn't arrived (the voice spec miss, 11-16).
+- Check each ruling that puts a step on xian for the "standing access that would remove this" line (ADR-084 D6). Before recommending he do something by hand, ask why a seat can't. No manual workarounds handed to him.
+- Check the owner's log before telling xian something hasn't arrived.
 - Don't defer cleanup to STOP without a blocker.
 - At STOP: rewrite this file, list every other seat's close from their logs, close the log with `<!-- DAY-CLOSED: YYYY-MM-DD -->` as its last line.
 

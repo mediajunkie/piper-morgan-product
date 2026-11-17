@@ -1,8 +1,13 @@
 # Docs Carry-Forward
 
-**Updated**: 2026-11-13 13:15. Older state lives in the session logs (`dev/2026/{10,11}/*/*docs-code-log.md`), not here. `gh`: prefix `GODEBUG=netdns=go` if bare `gh` hangs.
+**Updated**: 2026-11-16 22:12. Older state lives in the session logs (`dev/2026/{10,11}/*/*docs-code-log.md`), not here. `gh`: prefix `GODEBUG=netdns=go` if bare `gh` hangs.
 
-## NOW (11-15 22:12)
+## NOW (11-16 22:12)
+- **11-16 done:** 11-15 omnibus landed. Guide steps 1-4 and 8 verified from a fresh clone (isolated stack, no key typed), bare compose commands now name services in eight docs, caution comments on compose-down lines. CI green 12 of 12. Item 12 answered: practice.md at c531cae276 (c-practice-01 to 13) is the one manifest text waiting on xian's yes (PPM's card also holds the nine rules #2354 and seven procedures #2358, not manifest rows). On his yes set approved by column name, run the checker.
+- **Blockers:** guide steps 5, 6, 7, 9 and chat check wait on Step A and the seat key (never type or read it, mktemp clone, remove stack same hour). Second-copy PIPER_STACK lines in step 3 unrun. The Wall (Tue 11-17, `drafted`) and Ship #069 (Wed 11-18, `planned`, Comms has a no-goals fallback) publish only on a Comms PUBLISH-READY with the full pre-flight. Held: b-wont-do (ethics default flip), d-known-limits (Web reads), b-github-access (#2342), glossary re-verify about 11-30, #2249, monthly audit Dec 7.
+- **Owed 11-17 04:12 START:** the 11-16 omnibus (Sonnet subagent, 11-15 omnibus as model, then verify) and Step 1d. CIO asked: mail the `gates already passed` line on the first push of mine that takes the remembered-pass path.
+
+## (earlier) NOW (11-15 22:12)
 - **11-15:** published and distributed "No New Skills This Time" (blog 54579d0). Renamed four tester pages to BETA_ (stubs added then removed on xian's no-hand-sent-email answer, old release-note links retargeted). Tier 1: xian approved how-i-act, cant-read, stance, stand-ins (recorded). OPEN: his yes on practice.md at c531cae276 for c-practice-01 to 13 (all verified by CIO, header and row 13 final, shown to him in the Docs chat, card on Exec's rollup 01M7H8FM8P). On his yes set approved by column name and run the checker. Checker change 569a88d668 (no history is one error in --deploy) validated by Arch, rides the 07:00 promotion. Next: Mon 11-16 guide run-check in a fresh clone with an override compose file (names, Postgres 5434, Redis 6380), no key typed by Docs. Tue 11-17 "The Wall" on a Comms PUBLISH-READY. Owed at 11-16 04:12 START: the 11-15 omnibus (Sonnet subagent, 11-14 omnibus as model, then my verification) and Step 1d.
 
 ## (earlier) NOW (11-14 19:12)
