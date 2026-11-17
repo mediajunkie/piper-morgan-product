@@ -104,6 +104,33 @@ def test_added_lines_reads_only_additions_with_their_numbers():
     ]
 
 
+def test_an_added_line_starting_with_two_pluses_is_scanned_under_the_right_path():
+    """Arch, 2026-11-16: in the diff it reads '+++ ...' and was taken for a file header."""
+    mod = _load()
+    value = FAKES["Anthropic key"]
+    diff = "\n".join(
+        [
+            "diff --git a/dev/log.md b/dev/log.md",
+            "--- a/dev/log.md",
+            "+++ b/dev/log.md",
+            "@@ -1,0 +2,4 @@",
+            "+before",
+            "+++ " + value,
+            "+-- not a header either",
+            "+after",
+        ]
+    )
+    rows = mod.added_lines(diff)
+    assert rows == [
+        ("dev/log.md", 2, "before"),
+        ("dev/log.md", 3, "++ " + value),
+        ("dev/log.md", 4, "-- not a header either"),
+        ("dev/log.md", 5, "after"),
+    ]
+    hits = mod.hits_in("dev/log.md", [(n, text) for _, n, text in rows])
+    assert [(h[0], h[1], h[2]) for h in hits] == [("dev/log.md", 3, "Anthropic key")]
+
+
 @pytest.fixture
 def repo(tmp_path, monkeypatch):
     for name in [n for n in os.environ if n.startswith("GIT_")]:
@@ -188,6 +215,40 @@ def test_tracked_ratchets_against_a_baseline_that_holds_no_value(repo, capsys):
     assert "tests/t.py:1  Fly token" in out
     assert "mailboxes/memo.md" not in out  # the bearer lint's root, not this scan's
     assert BODY not in out
+
+
+def test_staged_refuses_a_double_plus_line_end_to_end(repo, capsys):
+    mod, root, git = repo
+    (root / "README.md").write_text("hello\n++ " + FAKES["GitHub token (app)"] + "\nbye\n")
+    git("add", "README.md")
+    assert mod.main(["--staged"]) == 1
+    assert "README.md:2  GitHub token" in capsys.readouterr().err
+
+
+@pytest.mark.parametrize("label", ["GitHub token (app)", "Fly token (bare)"])
+def test_tracked_reads_the_bearer_roots_for_the_shapes_the_bearer_lint_lacks(repo, capsys, label):
+    """Arch, 2026-11-16: an app token in a session log was read by neither check."""
+    mod, root, git = repo
+    sys.path.insert(0, str(ROOT / "scripts"))
+    import mailbox_bearer_lint as bearer
+
+    assert (
+        bearer.scan_line(FAKES[label]) == []
+    )  # the gap: delete this test's reason if that changes
+    (root / "dev").mkdir()
+    (root / "dev" / "log.md").write_text("ran it\ntoken " + FAKES[label] + "\n")
+    (root / "docs").mkdir()
+    (root / "docs" / "page.md").write_text(
+        FAKES["Google key"] + "\n"
+    )  # the bearer lint's own shape
+    git("add", ".")
+    git("commit", "-q", "-m", "log")
+    baseline = root / "b.txt"
+    baseline.write_text(mod.baseline_key("services/old.py", 'OLD = "x"', []) + "\n")
+    mod.main(["--tracked"])
+    err = capsys.readouterr().err
+    assert "dev/log.md:2  " + label.split(" (")[0] in err
+    assert "docs/page.md" not in err
 
 
 def test_unreadable_git_is_exit_3_not_a_pass(tmp_path, monkeypatch, capsys):
