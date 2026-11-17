@@ -156,7 +156,7 @@ async def test_slacks_own_error_word_is_not_stored_or_returned():
         out = await integ._test_slack("u1")
     assert out == {
         "success": False,
-        "error": "Token invalid or expired",
+        "error": integ.SLACK_TOKEN_REFUSED_LINE,
         "error_type": "token_invalid",
     }
 
@@ -174,3 +174,32 @@ def test_the_only_exception_text_in_the_file_goes_to_a_log_call():
     source = Path(integ.__file__).read_text(encoding="utf-8").splitlines()
     uses = [line.strip() for line in source if "str(e)" in line or "str(error)" in line]
     assert uses and all(line.startswith(("logger.", "error=str(error)")) for line in uses), uses
+
+
+@pytest.mark.asyncio
+async def test_slacks_refused_token_says_one_sentence_at_the_click_and_on_the_card():
+    """CXO 2026-11-17: the Test's result (status line and toast) and the card afterwards
+    say the same sentence, with no separate fix line."""
+    service = MagicMock()
+    service.get_config = MagicMock(
+        return_value=MagicMock(bot_token=joined("xo", "xb-", "made-up-for-2402"))
+    )
+    store = PrincipalTestResultStore()
+    with (
+        patch(
+            "services.integrations.slack.config_service.SlackConfigService", return_value=service
+        ),
+        patch("aiohttp.ClientSession", return_value=_SlackSession("invalid_auth")),
+        patch.object(integ, "_get_test_result_store", lambda: store),
+    ):
+        reply = await integ.check_integration_connection("slack", current_user=USER)
+        with patch.object(
+            integ, "_get_integration_config_status", AsyncMock(return_value="configured")
+        ):
+            card = await integ._check_integration_health(
+                "slack", integ.INTEGRATION_REGISTRY["slack"], user_id=USER.sub
+            )
+    assert reply.success is False
+    assert reply.message == integ.SLACK_TOKEN_REFUSED_LINE == card.status_message
+    assert reply.error == integ.SLACK_TOKEN_REFUSED_LINE and reply.fix_suggestion is None
+    assert card.status == "failed" and "invalid_auth" not in card.model_dump_json()

@@ -87,6 +87,15 @@ class ConnectionTestResponse(BaseModel):
     stale_reason: Optional[str] = None
 
 
+# CXO 2026-11-17 (#2402): the one sentence for a token Slack's auth.test refuses. The
+# Test's result at the click (status line and toast) and the card afterwards both say
+# it, from this constant; the action is in the sentence, so there is no separate fix
+# line. Slack's own error word goes to the log only.
+SLACK_TOKEN_REFUSED_LINE = (
+    "Slack didn't accept your token. It may have expired or been revoked. "
+    "Add a new one in Settings, under Integrations."
+)
+
 # Integration metadata and error guidance
 INTEGRATION_REGISTRY = {
     "notion": {
@@ -117,10 +126,7 @@ INTEGRATION_REGISTRY = {
                 "message": "Slack OAuth token has expired",
                 "fix": "Re-authorize Slack in Settings → Integrations → Slack",
             },
-            "token_invalid": {
-                "message": "Invalid Slack token",
-                "fix": "Re-connect your Slack workspace",
-            },
+            "token_invalid": {"message": SLACK_TOKEN_REFUSED_LINE},
             "scope_missing": {
                 "message": "Missing required Slack permissions",
                 "fix": "Re-authorize with updated permissions",
@@ -810,7 +816,7 @@ async def _test_slack(user_id: Optional[str] = None) -> Dict[str, Any]:
                     logger.info("slack_test_refused", slack_error=str(data.get("error")))
                     return {
                         "success": False,
-                        "error": "Token invalid or expired",
+                        "error": SLACK_TOKEN_REFUSED_LINE,
                         "error_type": "token_invalid",
                     }
 

@@ -68,17 +68,17 @@ ROTATION_GUIDES: Dict[str, Dict] = {
         ],
     },
     "anthropic": {
-        "key_generation_url": "https://console.anthropic.com/settings/keys",
+        "key_generation_url": "https://platform.claude.com/settings/keys",
         "key_prefix": "sk-ant-",
         "steps": [
-            "Visit: https://console.anthropic.com/settings/keys",
+            "Visit: https://platform.claude.com/settings/keys",
             'Click "Create Key"',
             "Enter a name for the key",
             "Copy the key (starts with sk-ant-...)",
             "Paste it below when ready",
         ],
         "revocation_steps": [
-            "Visit: https://console.anthropic.com/settings/keys",
+            "Visit: https://platform.claude.com/settings/keys",
             "Find the old key (created N days ago)",
             'Click "Delete"',
         ],
