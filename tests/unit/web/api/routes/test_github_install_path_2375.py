@@ -35,6 +35,7 @@ from services.mcp.consumer.github_app_install import (
     InstallationReadFailed,
     InstalledRepositories,
 )
+from tests.utils.page_scripts import SHARED_ESCAPE_JS
 from web.api.routes import settings_integrations as si
 
 _USER = "11111111-1111-1111-1111-111111111111"
@@ -203,7 +204,9 @@ def _label(response) -> dict:
 })();
 """
     )
-    out = subprocess.run(["node", "-e", js], capture_output=True, text=True, check=True).stdout
+    out = subprocess.run(
+        ["node", "-e", SHARED_ESCAPE_JS + js], capture_output=True, text=True, check=True
+    ).stdout
     return json.loads(out)
 
 
@@ -280,7 +283,9 @@ renderIntegrations({json.dumps(integrations)});
 process.stdout.write(document.getElementById('integrations-list').innerHTML);
 """
     )
-    return subprocess.run(["node", "-e", js], capture_output=True, text=True, check=True).stdout
+    return subprocess.run(
+        ["node", "-e", SHARED_ESCAPE_JS + js], capture_output=True, text=True, check=True
+    ).stdout
 
 
 def _card(name, status="healthy"):

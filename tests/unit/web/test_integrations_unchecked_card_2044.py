@@ -28,6 +28,7 @@ from fastapi.testclient import TestClient
 
 from services.auth.container import AuthContainer
 from services.integrations.principal_test_results import PrincipalTestResultStore
+from tests.utils.page_scripts import SHARED_ESCAPE_JS
 from web.api.routes import integrations
 from web.app import app
 
@@ -204,7 +205,10 @@ def test_page_renders_connected_and_the_not_checked_line(client):
         "process.stdout.write(out.innerHTML);\n"
     )
     res = subprocess.run(
-        ["node", "-e", script, json.dumps([card])], capture_output=True, text=True, timeout=30
+        ["node", "-e", SHARED_ESCAPE_JS + script, json.dumps([card])],
+        capture_output=True,
+        text=True,
+        timeout=30,
     )
     assert res.returncode == 0, res.stderr
     html = " ".join(res.stdout.split())

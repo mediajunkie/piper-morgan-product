@@ -18,6 +18,7 @@ import pytest
 from fastapi.testclient import TestClient
 
 from services.auth.container import AuthContainer
+from tests.utils.page_scripts import SHARED_ESCAPE_JS
 from web.app import app
 
 REPO = Path(__file__).resolve().parents[3]
@@ -92,7 +93,7 @@ def _render(body: str, card: dict, owns_line=None) -> str:
         "process.stdout.write(out.innerHTML);\n"
     )
     res = subprocess.run(
-        ["node", "-e", script, json.dumps([card]), json.dumps(owns_line)],
+        ["node", "-e", SHARED_ESCAPE_JS + script, json.dumps([card]), json.dumps(owns_line)],
         capture_output=True,
         text=True,
         timeout=30,
@@ -120,7 +121,10 @@ def _run_test(body: str, reply: dict) -> dict:
         "process.stdout.write(JSON.stringify({toast: calls, redraws})); })();\n"
     )
     res = subprocess.run(
-        ["node", "-e", script, json.dumps(reply)], capture_output=True, text=True, timeout=30
+        ["node", "-e", SHARED_ESCAPE_JS + script, json.dumps(reply)],
+        capture_output=True,
+        text=True,
+        timeout=30,
     )
     assert res.returncode == 0, res.stderr
     return json.loads(res.stdout)

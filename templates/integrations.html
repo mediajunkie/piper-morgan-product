@@ -815,13 +815,8 @@
   // (the resolver's stale OAuth grant, ADR-070 B4), never by matching message copy.
   // #2045 (CXO ruling): the "when" fragment on a checked card, in the viewer's own zone.
   // `now` is a parameter so tests can fix the clock. Returns '' when there is no usable time.
-  // #2402: text for an HTML string. A Test's stored error can quote a remote service.
-  function escapeHtml(value) {
-    return String(value).replace(/[&<>"']/g, (ch) => (
-      { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[ch]
-    ));
-  }
-
+  // #2402: every string the route sent is escaped before a card is drawn. escapeHtml is
+  // the shell-wide helper from /static/js/escape.js (#1582), loaded by app_shell.html.
   function escapedCard(card) {
     const out = {};
     for (const [key, value] of Object.entries(card)) {

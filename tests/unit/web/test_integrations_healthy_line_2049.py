@@ -18,6 +18,7 @@ from unittest.mock import AsyncMock, patch
 import pytest
 
 from services.integrations.principal_test_results import PrincipalTestResultStore
+from tests.utils.page_scripts import SHARED_ESCAPE_JS
 from web.api.routes import integrations
 
 REPO = Path(__file__).resolve().parents[3]
@@ -68,7 +69,7 @@ def _run(last_check: str, now: str, status="healthy", msg="Healthy") -> tuple[st
         "process.stdout.write(JSON.stringify({html: out.innerHTML, same, day}));\n"
     )
     res = subprocess.run(
-        ["node", "-e", script, last_check, now, status, msg],
+        ["node", "-e", SHARED_ESCAPE_JS + script, last_check, now, status, msg],
         capture_output=True,
         text=True,
         timeout=30,
