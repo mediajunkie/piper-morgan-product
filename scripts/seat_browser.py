@@ -28,6 +28,7 @@ Bounds (D3; HOST reads a change to any of them):
 Usage:
     scripts/seat_browser.py --account web-seed-1386     # place, for the seat this runs in
     scripts/seat_browser.py --where web                  # print that seat's port and folder
+    scripts/seat_browser.py --check web                  # is that seat's own browser up (no cookie sent)
 
 Concept: docs/internal/operations/adr-084-one-time-steps.md
 """
@@ -351,14 +352,30 @@ def where(seat: str, conf: Optional[Path] = None) -> str:
     return f"port {port}\nprofile {profile_dir(seat)}"
 
 
+def check(seat: str, conf: Optional[Path] = None) -> str:
+    """The same proof ``place`` makes before it sends a cookie, with nothing sent. The
+    browser tool's launcher asks this before it attaches (Arch, 2026-11-16: the bound
+    "a dedicated seat browser, never xian's own Chrome" has to hold at the attach too).
+    Returns the port; refuses with the fixed reason otherwise."""
+    port = seats(conf).get(seat)
+    if port is None:
+        raise Refused("that seat has no seat browser")
+    browser_socket_path(seat, port)
+    return f"port {port}"
+
+
 def main(argv=None) -> int:
     parser = argparse.ArgumentParser(description="Place a saved seat session in a seat browser.")
     group = parser.add_mutually_exclusive_group(required=True)
     group.add_argument("--account", help="place this account's saved session")
     group.add_argument("--where", metavar="SEAT", help="print that seat's port and folder")
+    group.add_argument("--check", metavar="SEAT", help="is that seat's own browser on its port")
     args = parser.parse_args(argv)
     try:
-        print(where(args.where) if args.where else place(args.account, now=time.time()))
+        if args.check:
+            print(check(args.check))
+        else:
+            print(where(args.where) if args.where else place(args.account, now=time.time()))
         return 0
     except Refused as refusal:
         print(f"seat_browser: refused: {refusal}", file=sys.stderr)

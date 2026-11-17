@@ -404,7 +404,13 @@ def test_every_add_allow_line_in_the_steps_file_is_accepted_as_written(tmp_path)
     for line in lines:
         words = shlex.split(line)
         seat, rule = words[words.index("--seat") + 1], words[words.index("--rule") + 1]
-        assert re.fullmatch(r"Bash\(scripts/seat_[a-z_]+\.py --account [a-z0-9-]+\)", rule), rule
+        # One fixed command each: a helper for a named account, or one of the two fixed
+        # redirect_uri reads (issue 2282 step 5; HOST's land 2026-11-16). No path argument.
+        assert re.fullmatch(
+            r"Bash\(scripts/seat_[a-z_]+\.py --account [a-z0-9-]+"
+            r"( --redirect-uri (github|calendar))?\)",
+            rule,
+        ), rule
         folder = tmp_path / seat / ".claude"
         folder.mkdir(parents=True, exist_ok=True)
         path = folder / "settings.local.json"
