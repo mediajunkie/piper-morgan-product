@@ -28,7 +28,7 @@ You'll need at least one provider's API key:
 
 **Anthropic** (Optional):
 
-- Visit: https://console.anthropic.com/
+- Visit: https://platform.claude.com/dashboard
 - Create new key
 - Copy key (starts with `sk-ant-`)
 
