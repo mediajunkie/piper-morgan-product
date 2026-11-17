@@ -2,10 +2,10 @@
 name: duty-cycle-tick
 description: Execute one autonomous duty-cycle fire (START / WATCH / WORK / STOP) for a cycling agent. Invoked by the thin cron prompt on each fire. Use when a "DUTY CYCLE TICK" prompt fires, or to run a cycle fire manually. Holds the durable procedure so the cron prompt stays one-line.
 scope: cross-role
-version: 1.63
+version: 1.64
 created: 2026-06-06
 concept: "Concept: docs/internal/operations/liveness-current-state.md (the wake, heartbeat and alert chain this procedure runs inside); history: docs/internal/operations/duty-cycle-tick-changelog.log"
-changelog: "Full history: docs/internal/operations/duty-cycle-tick-changelog.log (v1.0-present). Most recent: v1.63 (2026-11-02) — schedule changes end with scripts/registry-plist-drift.py."
+changelog: "Full history: docs/internal/operations/duty-cycle-tick-changelog.log (v1.0-present). Most recent: v1.64 (2026-11-17) — Step 1j: every seat runs scripts/browser_keychain_check.py every fire."
 ---
 
 # duty-cycle-tick
@@ -163,6 +163,15 @@ yours with `CronDelete` and say so in the fire entry, since it would fire alongs
   changed since, that's fine to note briefly — but re-verify by rereading the draft and re-checking
   the file mtimes, don't assume. A `pubDate` in the past with no publish is not a lower-priority item
   to fold into a "watch" line; treat it exactly the way a fresh publish-ready memo would be treated.
+
+  🔴 **Step 1j — ALL roles, every fire, added 2026-11-17 (v1.64; xian on the 11-15 unflagged browser launch,
+  via Exec: "ok to leave it. let's ensure it doesn't recur, though.").** Run
+  `python3 scripts/browser_keychain_check.py`. `OK` needs no line. On `FAIL` (a Chrome or Chromium browser
+  is running without `--use-mock-keychain`), put the output in your fire entry and mail HOST and Exec in the
+  same fire with the pid and program path it printed. Don't stop the process yourself unless you started
+  it, and never look in the keychain: that is xian's call. The Bash hook `guard-browser-launch.sh` refuses
+  such a launch typed into the Bash tool; this check is for a launch from inside a script, which the hook
+  can't see. It sees only what is running when it runs.
 
   ⚪ **Step 1h — CIO only, every START, added 2026-10-15 (Exec asked for the piper-shared name check to run
   on a cadence, not on someone's memory).** Run `scripts/whats-armed.sh` and put its total line in the START
