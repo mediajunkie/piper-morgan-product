@@ -143,7 +143,7 @@ After installation, you should be able to:
 
 - **Python 3.12**: https://python.org/downloads
 - **Git**: https://git-scm.com
-- **Anthropic Console**: https://platform.claude.com/dashboard
+- **Claude Platform**: https://platform.claude.com/dashboard
 - **Piper Morgan GitHub**: https://github.com/mediajunkie/piper-morgan-product
 
 ---
