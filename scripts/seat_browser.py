@@ -23,7 +23,17 @@ Bounds (D3; HOST reads a change to any of them):
   another profile, xian's own Chrome included, is refused.
 - Output is one line: the account, the seat and the expiry. Every failure prints a fixed
   reason, never a reply, a header or an exception's text.
-- Revocation is deleting the profile folder (and the session file).
+- Revocation (HOST, 2026-11-16): stop the browser, then delete the profile folder and the
+  session file. Deleting the folder alone is not enough while the browser runs and holds
+  the cookie in memory. The cookie also dies within 24 hours.
+- The browser holds a seeded account's session and nothing else: no other sign-in is typed
+  into it, and no Connect round trip with a real provider account is done in it.
+
+Residuals, accepted by HOST and Arch (2026-11-16):
+- The debug port has no authentication. Any process of this user on this machine can reach
+  it and read what the browser holds, which is why it only ever holds a seeded account.
+- The listener is read first and the socket opened after. Another process of this user
+  could take the port in between; it could do no more than the line above already allows.
 
 Usage:
     scripts/seat_browser.py --account web-seed-1386     # place, for the seat this runs in
