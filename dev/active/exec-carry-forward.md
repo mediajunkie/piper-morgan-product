@@ -7,7 +7,7 @@
 **Mail v4:** `python3 scripts/mail4.py inbox --role exec` every wake. Roles are space-separated on `send`. Ack only explicit IDs just read. Read a mail's body whole (`awk 'f>=2{print} /^---$/{f++}'`); don't grep out "- " lines.
 
 ## Rollup
-v1045, `719UZ4h1NELjEwWZbDCceT`. Source `dev/active/exec-attention-rollup-current.html`. Edit with Python replace plus assert; update the "vNNN, rebuilt" stamp from a `date` call; no estimated minutes. Top card: Steps A, C, D, F0, two answers. Then the keychain card, the writing card, the self-knowledge card.
+v1046, `719UZ4h1NELjEwWZbDCceT`. Source `dev/active/exec-attention-rollup-current.html`. Edit with Python replace plus assert; update the "vNNN, rebuilt" stamp from a `date` call; no estimated minutes. Top card: Steps A, C, D, F0, two answers. Then the keychain card, the writing card, the self-knowledge card.
 
 ## Waiting on xian (nothing answered or run since 06:51 on 11-16)
 Steps file: `docs/internal/operations/adr-084-one-time-steps.md`. Copy lines from it by script; never retype.
