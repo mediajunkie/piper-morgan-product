@@ -165,4 +165,12 @@ def test_main_is_ok_under_strict_and_code_quality_runs_the_check():
     assert r.returncode == 0, r.stdout + r.stderr
     lint = (REPO / ".github" / "workflows" / "lint.yml").read_text()
     assert "./scripts/check-deploy-trigger-parity.sh" in lint
-    assert lint.count("- '.dockerignore'") == 2  # a push or PR that edits it runs the check
+    # A push or PR that edits .dockerignore runs the check. Since 2026-11-16 a push to
+    # main has no path filter at all (issue 2392's gate reads every tracked file), so
+    # only the pull-request filter still has to name it.
+    import yaml
+
+    loaded = yaml.safe_load(lint)
+    triggers = loaded.get("on") or loaded.get(True)
+    assert "paths" not in triggers["push"] or ".dockerignore" in triggers["push"]["paths"]
+    assert ".dockerignore" in triggers["pull_request"]["paths"]

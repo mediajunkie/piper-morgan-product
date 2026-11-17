@@ -12,25 +12,12 @@ name: Code Quality
 on:
   push:
     branches: [main]
-    paths:
-      - 'services/**'
-      - 'tests/**'
-      - 'web/**'
-      - 'templates/**'
-      - '*.py'
-      - 'pyproject.toml'
-      - '.flake8'
-      - '.pylintrc'
-      - 'setup.cfg'
-      - 'scripts/**'
-      - '**/*.md'
-      - '*.md'
-      - '.github/workflows/**'
-      - 'mailboxes/**'
-      - 'docs/**'
-      - 'dev/**'
-      - '.mailbox-bearer-lint-baseline.txt'
-      - '.dockerignore'
+    # No path filter on a push to main (Lead, 2026-11-16, with issue 2392's gate). The
+    # credential-shape step reads every tracked text file, and 307 tracked files sat
+    # outside the old filter (alembic/, config/, .claude/, cli/, deploy/, the root's
+    # docker-compose.yml, fly.toml and JSON files, the scan's own baseline). A push that
+    # changed only those ran no Code Quality at all. The old filter already matched
+    # nearly every push (dev/** and mailboxes/**), so this adds few runs.
   pull_request:
     branches: [main]
     paths:
