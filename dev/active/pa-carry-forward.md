@@ -8,29 +8,27 @@
 
 ---
 
-## Now (written 2026-11-16 06:47 START; replace, don't annotate)
+## Now (written 2026-11-16 21:47 STOP; replace, don't annotate)
 
-- **Served (06:47):** beta `460b837a47`; MCP `dfebe7f0b7` (uptime 43136 s, no restart since xian's 18:49 11-15 deploy). Read the live sha from `/health`. Beta promotion GRANTED from 07:00 (Arch, six conditions). Never read the connector during a promotion.
-- **ADR-084 ACCEPTED (xian 11-16 06:20 via Exec `01M7JBP51M…`):** $10 a run without asking; `lead-scoring` workspace $150/month as the bound. PPM places `seat_session.py`, `seat_account_create.py`, `ops_reader`, #2384. Paid runs stay stopped until Step A lands and Lead's check passes. Step A read tests are Lead/HOST/CIO, not PA.
-- **#2379 served rows (Lead 11-16 18:16):** beta `74caa06638`. One ordinary turn, the uninstalled-repo read refusal, five write refusals with no confirm first, one installed-repo control. PA can't run them (the connector has no chat; no seat chat on beta). They wait on `seat-github-1` (F0/F) plus D3's seat browser (**#2400**, filed by PPM 11-16) plus a seat-workspace key. Exec agrees: not routed to xian's screen. PA writes the quotes up for CXO. Replied `01M7KN2J5E…`.
-- **Pre-push hook remembers a pass (CIO 11-16 12:53, recipe 5):** push the branch checked out. The first time a push of PA's prints `already passed on this content N min ago`, mail CIO that line (CIO's one ask).
-- **CIO seat rule (11-16, corrected 09:55, recipe 14):** never run `scripts/alpha-setup.sh` on Amber; never `docker compose up`/`down` on the shared stack from a worktree; after a reboot `docker start piper-postgres piper-redis piper-chromadb`. (`stop.sh`, `start.sh`, `db_migrate_to_volume.sh` deleted; `run_tests.sh` no longer starts services.)
-- **PA's ADR-084 items:** (1) **#2384** MCP deploy job (Lead builds now; xian's token goes in an environment limited to `main`, though row 7's wording is for Arch to align). Its first run deploys **#2382** (stateless MCP, on main `40523ea6b9`). Then **PA reads row 4**: MCP `/health` sha plus `uptime_seconds`, and one connector read that must serve on the first try. Quote it to CXO and on #2382. (2) A **second connector "Piper Morgan (seat)"** consented as the GitHub-connected seat account (card row 9: allowlist write plus consent, xian's one try; if claude.ai refuses a second connector, stop and tell Exec). The seat account's zero-install read comes between connect and install, so ask Web to connect first.
-- **#2342:** rows 1 and 3 PASS; the #2374 connector reach PASSED (CXO 18:58: 366 to 1, `pipermorgan/piper-test` only). Open: the zero-install line (needs the seat account), the named-repo refusal, the too-many line, row 4 (UNREACHABLE). Record `uptime_seconds` beside every first connector read ("Connection closed": 2 of 2 after deploys, 1 of 3 without).
-- **#2375/#2376 (CXO 19:16):** #2376 PASS for an App account with no token. The #2375 link FAILED; Lead's card version `144745bf7d` (validated; CXO passed the words, with the no-slug note changed) is to land and promote 11-16.
-- **Web's served reads** (#2364 ×3, #2328 five, #2366, #2367, Q12, #2294 cases 1–2, #2295) now ride ADR-084 D3 (`seat_session.py` helper plus a persistent seat browser), not a xian sign-in. Results come to PA, who writes them on #2355 and asks for the #2364 after-fix run (Q13).
-- **#2364:** step 1 held on `lead/2364-step1`; option (a) (xian runs it) is withdrawn. It runs on the seat key (ADR-084 A) after xian's yes.
-- **Tier 1 staging account:** waits on xian's five staging queries (Arch `01M7BXGYZD…`). That may become ADR-084 C endpoints.
-- **xian's keychain rule (11-11)** stands. **Inspecting an old commit:** a scratch `git worktree add --detach`. **No `requests` on PATH:** use a scratch venv.
-- **Q9:** #2313; CXO's #2294 row. **Q8** on the invite hold. **R7 (#1282):** README needs a permitted push. **#2174:** read only.
-- **mail4 gotchas:** `--cc a b c`; `--type` is one of fyi, task, decision-request, ruling-relay, reply, canary. On a `cannot lock ref` error, retry. Ack `read` when work is owed. zsh: never `echo ==...` (it errors as `=` expansion).
+- **Served (21:47):** beta `74caa06638` (Lead's 18:15 promotion); MCP `dfebe7f0b7` (uptime 97085 s, no restart since xian's 11-15 18:49 deploy). Read the live sha from `/health`. Never read the connector during a promotion.
+- **ADR-084 ACCEPTED (xian 11-16 06:20).** $10 a run without asking; `lead-scoring` $150/month bounds seats' own runs. Arch D2: `piper-morgan-test` ($40) is a second seat workspace for keys stored on seat accounts; seat chat turns on it wait on xian's two answers via Exec.
+- **#2388 landed** (`dd97e4ba56`): `seat_session.py`, `seat_read.py` (GET-only, closed path list), exception rows for `web-seed-1386` and `seat-github-1`. Step C (xian's allow-line paste) unlocks Web's helper.
+- **PA's ADR-084 items:** (1) **#2384** MCP deploy job: OPEN, 3 comments, nothing built (Lead). Then Step H (xian's token, environment limited to `main`). Its first run deploys **#2382** (stateless MCP). Then **PA reads row 4**: MCP `/health` sha plus `uptime_seconds`, and one connector read that must serve on the first try; quote to CXO and on #2382. (2) **Step G** (parts 1 to 3 final at `50ebf686e0`, Arch and HOST read) runs after F0 (#2389, `seat-github-1`) and F's GitHub connect; PA's zero-install read sits between connect and install. Part 3's result goes to HOST's custody row; on FAIL file on #2242 the same hour.
+- **#2379 served rows (Lead):** wait on `seat-github-1`, #2400 (seat browser) and a seat-workspace key. Not routed to xian's screen. PA writes the quotes for CXO.
+- **Web's served reads** (#2364 x3, #2328, #2366, #2367, Q12, #2294, #2295) ride Step C plus #2400. Results to PA for #2355; then ask for the #2364 after-fix run.
+- **#2342:** open rows are the zero-install line (needs the seat account), the named-repo refusal, the too-many line, row 4. Record `uptime_seconds` beside every first connector read.
+- **Pre-push hook pass memory (CIO):** the first time a PA push prints `already passed on this content N min ago`, mail CIO that line.
+- **Commit scan (#2392):** `scripts/staged_credential_scan.py`, no skip variable; build test values from parts; false matches to CIO.
+- **CIO seat rule:** never `scripts/alpha-setup.sh`; never `docker compose up`/`down` on the shared stack; after a reboot `docker start piper-postgres piper-redis piper-chromadb`.
+- **Tier 1 staging:** waits on xian's five staging queries (Arch `01M7BXGYZD…`). **Q9** #2313; **Q8** invite hold; **R7 (#1282)** README needs a permitted push.
+- **mail4 gotchas:** `inbox --role pa`; ack is `ack <id> done --as pa`; `--cc a b c`; on `cannot lock ref`, retry. zsh has no `timeout`; never `echo ==...`.
 - **Sprint 2 started Fri 11-13.** v3 is the mail fallback until 11-23.
 
 ## PM Attention
 
 *(Exec's `cohort-attention-rollup` reads this section directly. Live items only; each with the date it became PM-gated and the smallest unblocking answer.)*
 
-- 🔒 **#2242 removal check**, since 11-03: Exec agreed 11-16 (`01M7KN3SAN…`). It is now Step G part 3 on `seat-github-1`. Arch said it conforms with two additions, and HOST asked two small things; all four are in `50ebf686e0`, sent `01M7KP7J9D…` for Arch's final read. It runs in xian's Step G sitting; no separate card. The MCP test-plan card was cut as overtaken.
+- 🔒 **#2242 removal check**, since 11-03: Exec agreed 11-16 (`01M7KN3SAN…`). It is now Step G part 3 on `seat-github-1`. Arch said it conforms with two additions, and HOST asked two small things; all four are in `50ebf686e0`; Arch's final read (11-16 18:47): conforms. It runs in xian's Step G sitting; no separate card. The MCP test-plan card was cut as overtaken.
 - 🔒 **#2238 Notion**, since 11-01: xian puts a throwaway Notion key on staging.
 - 🔒 **#2288 served row**, since 11-05: xian's word that Web may use an untouched dead-grant test account.
 - 🔒 **ADR-084 one-time rows**, since 11-15 19:11; xian said yes 11-16 06:20. Remaining PM-hand rows: Step A (this morning), the #2384 deploy token (Step H, after the job is built), Step G for PA's seat connector (after F0/F). Separately, tier 1 needs xian's five staging queries (Arch `01M7BXGYZDJDA660J2AEM13MCG`).
