@@ -1368,8 +1368,15 @@ async def build_close_reopen_confirmation(
         # such a repository), the generic confirm is armed, and GitHub refuses the yes.
         _not_installed = await github_app_write_refusal_line(_gh_user_id, _repo)
         if _not_installed is not None:
+            from services.intent_service.not_performed import NOT_PERFORMED_KEY, NotPerformed
+
             return CloseReopenGate(
-                passthrough_result={"message": _not_installed, "requires_clarification": False}
+                passthrough_result={
+                    "message": _not_installed,
+                    "requires_clarification": False,
+                    # Arch 2026-11-16 16:45: all five write verbs record the same thing.
+                    "intent_data": {NOT_PERFORMED_KEY: NotPerformed.DEGRADED, "repository": _repo},
+                }
             )
 
         status, issue_details, _ = await GitHubMCPSpatialAdapter().probe_issue_connector(

@@ -133,21 +133,31 @@ def github_write_refusal_reply(degradation) -> str:
     return github_degrade_reply(degradation)
 
 
-async def github_app_write_refusal_line(user_id, repository: Optional[str]) -> Optional[str]:
+async def github_app_write_refusal_line(
+    user_id, repository: Optional[str], *, drafting: bool = False
+) -> Optional[str]:
     """#2379 (Arch 2026-11-15 15:49): the line to say INSTEAD of a write's confirm when
     the account is on a GitHub App grant and the App isn't installed on ``repository``
     (or is installed nowhere, or that couldn't be read). None when the confirm may be
-    offered. One place for the confirm builders (create, update, close, reopen).
+    offered. One place for the confirm builders (create, update, close, reopen) and
+    the create draft step.
 
-    A failure of this check itself answers None: the confirm is offered, and
-    ``_verified_write`` makes the same check before anything is fired."""
+    When the check itself breaks (Arch 2026-11-16 16:45, CXO 16:31): the couldn't-reach
+    line, in place of the confirm. The check raises only when the credential resolver
+    or the check breaks, and the write goes through the same resolver, so a confirm
+    offered after that is a yes to a write that can't succeed. ``drafting=True`` (the
+    draft step) answers None instead: a draft arms no write, and the confirm that
+    follows makes this check."""
     if not user_id or not repository or not _is_repo_full_name(repository):
         return None
+    adapter = GitHubMCPSpatialAdapter()
     try:
-        refusal = await GitHubMCPSpatialAdapter().app_write_refusal(str(user_id), repository)
-    except Exception:  # silent-ok: #2379 — the pre-confirm check is a courtesy; _verified_write repeats it before any write is fired (logged)
+        refusal = await adapter.app_write_refusal(str(user_id), repository)
+    except Exception:
         logger.warning("GitHub App write-target check failed before the confirm", exc_info=True)
-        return None
+        if drafting:
+            return None
+        return github_degrade_reply(await adapter.degrade(DegradationReason.UNREACHABLE))
     return github_write_refusal_reply(refusal) if refusal is not None else None
 
 
@@ -702,6 +712,11 @@ class GitHubMCPSpatialAdapter(BaseSpatialAdapter):
     async def resolve(self, user_id: str, resource: ResourceQuery) -> ResolveResult:
         """Resolve a GitHub resource to a handle over the real MCP transport (#1220) —
         honest-degrade throughout (#1231 / ADR-070 D5: never silently empty).
+
+        #2379 (Arch 2026-11-16 16:45): this call makes NO installed-set check, and has
+        no caller in ``services/`` or ``web/`` today. Before it gains one, it needs
+        ``_app_repository_degrade`` on the repository it resolves: on a GitHub App grant
+        the token can read a public repository the person never gave the App.
 
         The binding-aware degrade rail (no binding / stale / unreachable / server-down →
         the matching ``ResolveMiss``) is server-agnostic and fully real. The concrete

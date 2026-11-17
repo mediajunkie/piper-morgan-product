@@ -288,6 +288,31 @@ class TestOneInstallationReadPerRequest:
             await install_mod.list_installed_repositories("t1")
         assert calls == ["t1"]
 
+    async def test_a_task_that_outlives_the_request_reads_again(self, github):
+        """Arch 2026-11-16 16:45: a task started inside the request copied the context
+        and still holds the request's holder. Once the request ends it must not reuse
+        the installed set, or store into it."""
+        import asyncio
+
+        calls, answers = github
+        answers.extend([_installed("octo/a"), _installed("octo/a", "octo/b")])
+        request_over = asyncio.Event()
+        seen: List[Any] = []
+
+        async def background():
+            await request_over.wait()
+            seen.append(await install_mod.list_installed_repositories("t1"))
+            seen.append(await install_mod.list_installed_repositories("t1"))
+
+        with installation_read_scope():
+            await install_mod.list_installed_repositories("t1")
+            task = asyncio.create_task(background())  # copies the context here
+            await asyncio.sleep(0)
+        request_over.set()
+        await task
+        assert calls == ["t1", "t1", "t1"]  # both reads after the request went to GitHub
+        assert [r["full_name"] for r in seen[0].repositories] == ["octo/a", "octo/b"]
+
     async def test_the_middleware_opens_one_scope_per_http_request(self, github):
         from web.middleware.installation_read_scope import InstallationReadScopeMiddleware
 
@@ -452,11 +477,23 @@ class TestTheLineSaidInPlaceOfAConfirm:
         assert await gh_mod.github_app_write_refusal_line(None, "octo/public") is None
         asked.assert_not_awaited()
 
-    async def test_a_failed_check_offers_the_confirm_and_the_choke_point_still_holds(
+    async def test_a_broken_check_says_the_could_not_reach_line_in_place_of_the_confirm(
         self, monkeypatch
     ):
+        # Arch 2026-11-16 16:45, CXO 16:31: a confirm offered after the check broke is
+        # a yes to a write that can't succeed (the write uses the same resolver).
+        self._patch(monkeypatch, RuntimeError("store down, with a secret in its text"))
+        line = await gh_mod.github_app_write_refusal_line(_OWNER, "octo/public")
+        unreachable = await GitHubMCPSpatialAdapter().degrade(DegradationReason.UNREACHABLE)
+        assert line == unreachable.user_message
+        assert "secret" not in line
+
+    async def test_a_broken_check_lets_a_draft_go_ahead(self, monkeypatch):
+        # A draft arms no write; the confirm that follows makes the check.
         self._patch(monkeypatch, RuntimeError("store down"))
-        assert await gh_mod.github_app_write_refusal_line(_OWNER, "octo/public") is None
+        assert (
+            await gh_mod.github_app_write_refusal_line(_OWNER, "octo/public", drafting=True) is None
+        )
 
     async def test_app_write_refusal_on_an_account_with_no_credential_is_none(self, monkeypatch):
         adapter, _, read = _adapter(monkeypatch, AssertionError("no installation read"))
@@ -580,10 +617,74 @@ class TestTheConfirmBuilders:
         verb = "close" if action.startswith("close") else "reopen"
         intent = self._intent(f"{verb} issue 7 in octo/public", action, repository="octo/public")
         gate = await build_close_reopen_confirmation(intent, MagicMock(), None)
+        from services.intent_service.not_performed import NOT_PERFORMED_KEY, NotPerformed
+
         assert gate.offer is None
-        assert gate.passthrough_result == {"message": self._LINE, "requires_clarification": False}
+        assert gate.passthrough_result == {
+            "message": self._LINE,
+            "requires_clarification": False,
+            # Arch 2026-11-16 16:45: the same marker create and update carry.
+            "intent_data": {
+                NOT_PERFORMED_KEY: NotPerformed.DEGRADED,
+                "repository": "octo/public",
+            },
+        }
         probe.assert_not_awaited()
         refused.assert_awaited_once_with(_OWNER, "octo/public")
+
+    @pytest.mark.parametrize("builder", ["create", "update", "close", "reopen"])
+    async def test_a_broken_check_says_could_not_reach_and_arms_nothing(self, monkeypatch, builder):
+        """The real line function over a check that raises, through each of the four
+        confirm builders."""
+        from unittest.mock import MagicMock
+
+        from services.intent_service.destructive_confirm import build_close_reopen_confirmation
+        from services.intent_service.write_confirm_words import (
+            WriteAskRequest,
+            create_issue_write_ask,
+            update_issue_write_ask,
+        )
+
+        monkeypatch.setattr(
+            GitHubMCPSpatialAdapter,
+            "app_write_refusal",
+            AsyncMock(side_effect=RuntimeError("store down")),
+        )
+        probe = AsyncMock(side_effect=AssertionError("no probe"))
+        monkeypatch.setattr(GitHubMCPSpatialAdapter, "probe_issue_connector", probe)
+        unreachable = (
+            await GitHubMCPSpatialAdapter().degrade(DegradationReason.UNREACHABLE)
+        ).user_message
+        if builder == "create":
+            intent = self._intent(
+                "create an issue", "create_issue", title="Login fails", repository="octo/public"
+            )
+            ask = await create_issue_write_ask(
+                WriteAskRequest(intent=intent, message="create an issue", user_id=_OWNER)
+            )
+            assert ask.reply == unreachable and ask.words is None and ask.armed is False
+        elif builder == "update":
+            intent = self._intent(
+                "retitle issue 7",
+                "update_issue",
+                issue_number=7,
+                title="N",
+                repository="octo/public",
+            )
+            ask = await update_issue_write_ask(
+                WriteAskRequest(intent=intent, message="retitle issue 7", user_id=_OWNER)
+            )
+            assert ask.reply == unreachable and ask.words is None and ask.armed is False
+        else:
+            intent = self._intent(
+                f"{builder} issue 7 in octo/public",
+                f"{builder}_issue_query",
+                repository="octo/public",
+            )
+            gate = await build_close_reopen_confirmation(intent, MagicMock(), None)
+            assert gate.offer is None
+            assert gate.passthrough_result["message"] == unreachable
+            probe.assert_not_awaited()
 
 
 class TestTheCreateDraftStep:
@@ -652,14 +753,14 @@ class TestTheCreateDraftStep:
         assert result.intent_data[NOT_PERFORMED_KEY] == NotPerformed.DEGRADED
         assert not result.intent_data.get("collaboration_gate")
         assert armed == []  # no draft was armed
-        check.assert_awaited_once_with(_OWNER, "octo/public")
+        check.assert_awaited_once_with(_OWNER, "octo/public", drafting=True)
 
     async def test_no_repository_named_checks_the_default_a_write_would_use(self, monkeypatch):
         result, check, armed = await self._run(
             monkeypatch, "help me write a ticket about the login timeout", line="the line"
         )
         assert result.message == "the line" and armed == []
-        check.assert_awaited_once_with(_OWNER, "octo/default")
+        check.assert_awaited_once_with(_OWNER, "octo/default", drafting=True)
 
     async def test_the_draft_is_offered_when_the_write_may_go_ahead(self, monkeypatch):
         result, check, armed = await self._run(

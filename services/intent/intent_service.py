@@ -13857,7 +13857,9 @@ class IntentService:
                 github_app_write_refusal_line as _gate_app_refusal_line,
             )
 
-            _gate_refusal = await _gate_app_refusal_line(_gate_user, _gate_target)
+            # drafting=True (Arch 2026-11-16 16:45): if the check itself breaks, the
+            # draft goes ahead; it arms no write, and the confirm makes the check.
+            _gate_refusal = await _gate_app_refusal_line(_gate_user, _gate_target, drafting=True)
             if _gate_refusal is not None:
                 return IntentProcessingResult(
                     success=False,  # nothing was drafted or written
@@ -20805,6 +20807,9 @@ Add any additional information here.
                                 "category": intent.category.value,
                                 "action": intent.action,
                                 "confidence": intent.confidence,
+                                # #2379 (Arch 2026-11-16 16:45): a refusal carries the
+                                # not-performed marker, as create and update do.
+                                **(_cr.get("intent_data") or {}),
                             },
                             requires_clarification=_cr.get("requires_clarification", False),
                             suggestions=all_suggestions,

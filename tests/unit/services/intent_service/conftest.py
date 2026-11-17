@@ -135,3 +135,24 @@ def _legacy_default_is_user_designated_2205(request, monkeypatch):
 
     monkeypatch.setattr(repo_resolver, "get_user_write_target", _designated)
     yield
+
+
+@pytest.fixture(autouse=True)
+def _account_is_not_on_a_github_app_grant_2379(monkeypatch):
+    """#2379: before a GitHub write's confirm is offered, the builders ask whether the
+    account is on a GitHub App grant whose App isn't installed on the target repository
+    (``GitHubMCPSpatialAdapter.app_write_refusal``). That check reads the credential
+    store. The tests in this directory are about the confirms themselves, so here the
+    answer is fixed: not an App grant, the write may go ahead. Without this, every
+    confirm test reads the real store, and with no store it gets the couldn't-reach
+    line in place of its confirm (Arch 2026-11-16 16:45).
+
+    The check itself, its refusals and its failure are pinned in
+    ``tests/unit/services/mcp/consumer/test_github_adapter_repo_scoped_installed_2379.py``,
+    which is outside this directory and does not get this fixture."""
+    from services.mcp.consumer.github_adapter import GitHubMCPSpatialAdapter
+
+    async def _may_go_ahead(self, user_id, full_name):
+        return None
+
+    monkeypatch.setattr(GitHubMCPSpatialAdapter, "app_write_refusal", _may_go_ahead)

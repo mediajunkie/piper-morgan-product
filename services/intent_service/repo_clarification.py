@@ -734,6 +734,8 @@ async def _arm_confirm_naming_repo(
         "repository": (intent.context or {}).get("repository"),
     }
     if gate.passthrough_result is not None:
+        # #2379: a refusal's not-performed marker rides the gate's own intent_data.
+        intent_data.update(gate.passthrough_result.get("intent_data") or {})
         return {
             "message": gate.passthrough_result["message"],
             "intent_data": intent_data,
