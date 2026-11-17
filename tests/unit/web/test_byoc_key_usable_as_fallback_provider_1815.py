@@ -70,16 +70,17 @@ from services.llm.request_key import (
     get_request_api_key,
     request_api_key,
 )
+from tests.utils.made_up_credentials import joined
 from web.api.routes.intent import router as intent_router
 
 SECRET = "test-secret-1815-not-a-real-key"
 
 # The tester's own key — the one the alpha invite tells them to paste into Settings.
-STORED_USER_KEY = "sk-ant-api03-the-users-own-stored-key-1815"
+STORED_USER_KEY = joined("sk", "-ant-", "api03-the-users-own-stored-key-1815")
 # The operator's OpenAI key. This is the ONLY server-owned credential in this world, and it
 # is what makes openai the resolved PRIMARY provider — i.e. what puts Anthropic in the
 # fallback position where #1815 Gap 1 lives.
-SERVER_OPENAI_KEY = "sk-the-operators-own-openai-key-1815"
+SERVER_OPENAI_KEY = joined("sk", "-", "the-operators-own-openai-key-1815")
 
 _PROVIDER_ENV_VARS = (
     "ANTHROPIC_API_KEY",

@@ -979,7 +979,9 @@ async def _1452_session_scope_nullpool(_1452_nullpool_engine, monkeypatch):
 # path, not a test backdoor). If a test's path unexpectedly makes a live LLM call, this
 # key 401s loudly instead of silently spending anything — which is itself the #1821
 # key-independence property. Tests that assert the keyless REFUSAL must NOT send it.
-E2E_FAKE_BYOC_KEY = "sk-ant-e2e-fake-never-live-1747"
+from tests.utils.made_up_credentials import joined as _joined_2397  # noqa: E402
+
+E2E_FAKE_BYOC_KEY = _joined_2397("sk", "-ant-", "e2e-fake-never-live-1747")
 
 
 async def delete_test_user_fully(session, user_id: str) -> None:

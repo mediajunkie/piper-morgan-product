@@ -46,6 +46,13 @@ import pytest
 from services.config.llm_config_service import ValidationResult
 from services.database.session_factory import AsyncSessionFactory
 from services.security.user_api_key_service import UserAPIKeyService
+from tests.utils.made_up_credentials import anthropic_key
+
+# Made-up Anthropic-shaped keys, built at run time (issue 2397).
+ORIGINAL_KEY = anthropic_key("1870: the stored key")
+NEW_KEY_NO_CREDIT = anthropic_key("1870: a new key whose account has no credit")
+NEW_KEY_REJECTED = anthropic_key("1870: a new key the provider rejects")
+NEW_KEY_GOOD = anthropic_key("1870: a new key the provider accepts")
 
 QUOTA_SENTENCE = (
     "I can't reach a language model — the API key on your account is out of "
@@ -132,7 +139,7 @@ async def test_validate_user_key_valid_returns_true_no_message(test_user, mock_k
             session=session,
             user_id=str(test_user.id),
             provider="anthropic",
-            api_key="sk-ant-aqEfYiVg7G5linYsUuCCmyecyA7tEnjFuxAxD8cd3MRbcXnBSOZXBVzvyUaLuoV9sSYBlc5oo8Eravj8tNfnQFyXEFWQyY56veWIGGPdPyICeVoriginal",
+            api_key=ORIGINAL_KEY,
             validate=False,
         )
         # #1870: hold a live reference to the SAME row `validate_user_key` will
@@ -168,7 +175,7 @@ async def test_validate_user_key_quota_failure_carries_honest_message(test_user,
             session=session,
             user_id=str(test_user.id),
             provider="anthropic",
-            api_key="sk-ant-aqEfYiVg7G5linYsUuCCmyecyA7tEnjFuxAxD8cd3MRbcXnBSOZXBVzvyUaLuoV9sSYBlc5oo8Eravj8tNfnQFyXEFWQyY56veWIGGPdPyICeVoriginal",
+            api_key=ORIGINAL_KEY,
             validate=False,
         )
 
@@ -197,7 +204,7 @@ async def test_validate_user_key_rejected_credential_differs_from_quota(test_use
             session=session,
             user_id=str(test_user.id),
             provider="anthropic",
-            api_key="sk-ant-aqEfYiVg7G5linYsUuCCmyecyA7tEnjFuxAxD8cd3MRbcXnBSOZXBVzvyUaLuoV9sSYBlc5oo8Eravj8tNfnQFyXEFWQyY56veWIGGPdPyICeVoriginal",
+            api_key=ORIGINAL_KEY,
             validate=False,
         )
 
@@ -249,7 +256,7 @@ async def test_rotate_user_key_quota_failure_raises_with_honest_message(test_use
             session=session,
             user_id=str(test_user.id),
             provider="anthropic",
-            api_key="sk-ant-aqEfYiVg7G5linYsUuCCmyecyA7tEnjFuxAxD8cd3MRbcXnBSOZXBVzvyUaLuoV9sSYBlc5oo8Eravj8tNfnQFyXEFWQyY56veWIGGPdPyICeVoriginal",
+            api_key=ORIGINAL_KEY,
             validate=False,
         )
 
@@ -258,7 +265,7 @@ async def test_rotate_user_key_quota_failure_raises_with_honest_message(test_use
                 session=session,
                 user_id=str(test_user.id),
                 provider="anthropic",
-                new_api_key="sk-ant-aqEfYiVg7G5linYsUuCCmyecyA7tEnjFuxAxD8cd3MRbcXnBSOZXBVzvyUaLuoV9sSYBlc5oo8Eravj8tNfnQFyXEFWQyY56veWIGGPdPyICeVnewnocred",
+                new_api_key=NEW_KEY_NO_CREDIT,
                 validate=True,
             )
 
@@ -282,7 +289,7 @@ async def test_rotate_user_key_rejected_credential_message_differs_from_quota(
             session=session,
             user_id=str(test_user.id),
             provider="anthropic",
-            api_key="sk-ant-aqEfYiVg7G5linYsUuCCmyecyA7tEnjFuxAxD8cd3MRbcXnBSOZXBVzvyUaLuoV9sSYBlc5oo8Eravj8tNfnQFyXEFWQyY56veWIGGPdPyICeVoriginal",
+            api_key=ORIGINAL_KEY,
             validate=False,
         )
 
@@ -291,7 +298,7 @@ async def test_rotate_user_key_rejected_credential_message_differs_from_quota(
                 session=session,
                 user_id=str(test_user.id),
                 provider="anthropic",
-                new_api_key="sk-ant-aqEfYiVg7G5linYsUuCCmyecyA7tEnjFuxAxD8cd3MRbcXnBSOZXBVzvyUaLuoV9sSYBlc5oo8Eravj8tNfnQFyXEFWQyY56veWIGGPdPyICeVnewbadkey",
+                new_api_key=NEW_KEY_REJECTED,
                 validate=True,
             )
 
@@ -314,7 +321,7 @@ async def test_rotate_user_key_valid_succeeds_with_no_message(test_user, mock_ke
             session=session,
             user_id=str(test_user.id),
             provider="anthropic",
-            api_key="sk-ant-aqEfYiVg7G5linYsUuCCmyecyA7tEnjFuxAxD8cd3MRbcXnBSOZXBVzvyUaLuoV9sSYBlc5oo8Eravj8tNfnQFyXEFWQyY56veWIGGPdPyICeVoriginal",
+            api_key=ORIGINAL_KEY,
             validate=False,
         )
 
@@ -322,7 +329,7 @@ async def test_rotate_user_key_valid_succeeds_with_no_message(test_user, mock_ke
             session=session,
             user_id=str(test_user.id),
             provider="anthropic",
-            new_api_key="sk-ant-aqEfYiVg7G5linYsUuCCmyecyA7tEnjFuxAxD8cd3MRbcXnBSOZXBVzvyUaLuoV9sSYBlc5oo8Eravj8tNfnQFyXEFWQyY56veWIGGPdPyICeVnewgoodkey",
+            new_api_key=NEW_KEY_GOOD,
             validate=True,
         )
 

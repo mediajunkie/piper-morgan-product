@@ -49,6 +49,11 @@ from services.ethics.output_filter import (
     OutputFilter,
     Severity,
 )
+from tests.utils.made_up_credentials import github_pat, openai_key
+
+# Made up at run time (issue 2397): the shapes the filter must redact.
+_OPENAI_PROBE_KEY = openai_key("output filter probe: an OpenAI project key", 46, project=True)
+_GITHUB_PROBE_TOKEN = github_pat("output filter probe: a GitHub token")
 
 # ============================================================================
 # Probe definitions
@@ -87,21 +92,21 @@ PII_PROBES: List[OutputFilterProbe] = [
     ),
     OutputFilterProbe(
         probe_id="probe-pii-api-key-openai-01",
-        input_text="Your OpenAI API key is sk-proj-aBcDeFgHiJkLmNoPqRsTuVwXyZ1234567890abcdefghij — keep that one safe.",
+        input_text=f"Your OpenAI API key is {_OPENAI_PROBE_KEY} — keep that one safe.",
         expected_action=Action.REDACT_IN_PLACE,
         expected_severity=Severity.HIGH,
         expected_matched_rules=["secret:openai_key"],
-        leaked_strings=["sk-proj-aBcDeFgHiJkLmNoPqRsTuVwXyZ1234567890abcdefghij"],
+        leaked_strings=[_OPENAI_PROBE_KEY],
         expected_in_output=[REDACTED_TOKEN],
         notes="OpenAI sk- — Architect filed, CXO OK (colleague voice)",
     ),
     OutputFilterProbe(
         probe_id="probe-pii-api-key-github-01",
-        input_text="For pushing to that repo you'll use the token ghp_abcDEFghiJKLmnoPQRstu0123456789ABCD; treat like a password.",
+        input_text=f"For pushing to that repo you'll use the token {_GITHUB_PROBE_TOKEN}; treat like a password.",
         expected_action=Action.REDACT_IN_PLACE,
         expected_severity=Severity.HIGH,
         expected_matched_rules=["secret:github_token"],
-        leaked_strings=["ghp_abcDEFghiJKLmnoPQRstu0123456789ABCD"],
+        leaked_strings=[_GITHUB_PROBE_TOKEN],
         expected_in_output=[REDACTED_TOKEN],
         notes="GitHub ghp_ — Architect filed, CXO OK",
     ),

@@ -22,6 +22,8 @@ from pathlib import Path
 
 import pytest
 
+from tests.utils.made_up_credentials import invite_code, joined
+
 REPO = Path(__file__).resolve().parents[3]
 SCRIPT = REPO / "scripts" / "check_autoclose_keywords.py"
 HOOK = REPO / ".claude" / "hooks" / "autoclose-guard.sh"
@@ -32,13 +34,16 @@ from check_autoclose_keywords import bearer_hits_in_message, mask  # noqa: E402
 # A synthetic 24-char Crockford token (never minted) — same fixture as
 # test_mailbox_bearer_lint_1845.py, so the two suites agree on what "a real
 # credential shape" means.
-TOKEN = "9EA0V9VPHS9CFRTKH873EGJ6"
-MASKED = mask(TOKEN)  # "9EA0…EGJ6"
+TOKEN = invite_code("never minted: the bearer-lint fixture")
+MASKED = mask(TOKEN)
+_SEQUENCE = "abcdefghijklmnopqrstuvwxyz0123"
+_ANTHROPIC_SHAPED = joined("sk", "-ant-", "api03-", _SEQUENCE)
+_GITHUB_SHAPED = joined("gh", "p_", _SEQUENCE)
 
 CREDENTIAL_MESSAGES = (
     f"mail(ppm): invite code for the new tester is {TOKEN}",
-    f"docs(lead): rotate key sk-ant-api03-abcdefghijklmnopqrstuvwxyz0123 before merge",
-    f"fix(auth): hardcode ghp_abcdefghijklmnopqrstuvwxyz0123 for local testing",
+    f"docs(lead): rotate key {_ANTHROPIC_SHAPED} before merge",
+    f"fix(auth): hardcode {_GITHUB_SHAPED} for local testing",
     f"chore: paste the lowercased token {TOKEN.lower()} into the roster",
 )
 

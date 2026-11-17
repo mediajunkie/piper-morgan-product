@@ -28,6 +28,7 @@ from services.security.key_strength_analyzer import KeyStrength
 from services.security.provider_key_validator import ValidationResult
 from services.security.user_api_key_service import UserAPIKeyService
 from tests.conftest import TEST_USER_ID
+from tests.utils.made_up_credentials import openai_key
 
 # ============================================================================
 # FIXTURES
@@ -297,7 +298,7 @@ async def test_valid_key_stored_successfully(test_user, mock_keychain, mock_llm_
         await session.commit()
 
         # Use a valid-looking key
-        valid_key = "sk-proj-1234567890abcdefghijklmnopqrstuvwxyz"
+        valid_key = openai_key("a valid-looking key, validator mocked", 36, project=True)
 
         # Mock the validator to indicate valid key
         with patch.object(service._validator, "validate_api_key") as mock_validate:
@@ -388,7 +389,7 @@ async def test_validation_integration_with_mock_llm_config(
         session.add(user)
         await session.commit()
 
-        valid_key = "sk-proj-abcdef1234567890abcdef1234567890"
+        valid_key = openai_key("a second valid-looking key, validator mocked", 32, project=True)
 
         # Patch validator to allow this test
         with patch.object(service._validator, "validate_api_key") as mock_validate:

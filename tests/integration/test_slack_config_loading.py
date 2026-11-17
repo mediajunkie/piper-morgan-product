@@ -18,6 +18,7 @@ from services.integrations.slack.config_service import (
     SlackConfigService,
     SlackEnvironment,
 )
+from tests.utils.made_up_credentials import joined
 
 
 @pytest.fixture(autouse=True)
@@ -197,16 +198,18 @@ slack:
 
     def test_authentication_section_parsing(self, tmp_path):
         """Test that authentication section is properly parsed from PIPER.user.md."""
+        bot_token = joined("xo", "xb-", "secret-test-token-123")
+        app_token = joined("xa", "pp-", "secret-test-token-456")
         piper_config = tmp_path / "PIPER.user.md"
         piper_config.write_text(
-            """
+            f"""
 ## 💬 Slack Integration
 
 ```yaml
 slack:
   authentication:
-    bot_token: "xoxb-secret-test-token-123"
-    app_token: "xapp-secret-test-token-456"
+    bot_token: "{bot_token}"
+    app_token: "{app_token}"
     signing_secret: "test-signing-secret-789"
 ```
         """
@@ -218,8 +221,8 @@ slack:
                 config = service.get_config("test-user-slack-config")
 
                 # Verify authentication section properly parsed
-                assert config.bot_token == "xoxb-secret-test-token-123"
-                assert config.app_token == "xapp-secret-test-token-456"
+                assert config.bot_token == bot_token
+                assert config.app_token == app_token
                 assert config.signing_secret == "test-signing-secret-789"
 
     def test_missing_authentication_section(self, tmp_path):

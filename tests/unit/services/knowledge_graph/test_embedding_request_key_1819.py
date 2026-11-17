@@ -8,7 +8,7 @@ concept" (#1812, decisions.log 2026-09-14 ×2).
 
 RED evidence (pre-fix tree, 2026-09-18 probe):
     keychain read for provider: call('openai')
-    embedding fn constructed with: sk-SERVER-KEYCHAIN-OPENAI
+    embedding fn constructed with: <the server's keychain OpenAI key>
 
 Now ``RequestKeyedOpenAIEmbeddingFunction`` holds NO key and asks ``request_spend_key
 ("openai")`` at each call: the user's own bound key, or an honest

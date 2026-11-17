@@ -17,6 +17,10 @@ import pytest
 
 from services.config.llm_config_service import ValidationResult
 from services.security.user_api_key_service import UserAPIKeyService
+from tests.utils.made_up_credentials import openai_key
+
+# Made up at run time (issue 2397); passes the real format and strength checks.
+_MADE_UP_OPENAI_KEY = openai_key("fresh install flow", 32)
 
 
 @pytest.mark.integration
@@ -50,7 +54,7 @@ async def test_api_key_validation_no_database_writes(fresh_database, transition_
             session=fresh_database,
             user_id="validation-only",  # This would fail FK constraint if stored
             provider="openai",
-            api_key="sk-tQ7xR2mV9pL4wN8bK3fJ6hD1gS5aZ0yE",
+            api_key=_MADE_UP_OPENAI_KEY,
             validate=True,
             store=False,  # The key fix from Issue #485
         )
@@ -145,7 +149,7 @@ async def test_store_user_key_with_store_true_requires_existing_user(fresh_datab
                 session=fresh_database,
                 user_id=nonexistent_user_id,
                 provider="openai",
-                api_key="sk-tQ7xR2mV9pL4wN8bK3fJ6hD1gS5aZ0yE",
+                api_key=_MADE_UP_OPENAI_KEY,
                 validate=True,
                 store=True,  # Actually try to store - should fail FK
             )
@@ -193,7 +197,7 @@ async def test_store_user_key_succeeds_after_user_created(fresh_database, transi
             session=fresh_database,
             user_id=user_id,
             provider="openai",
-            api_key="sk-tQ7xR2mV9pL4wN8bK3fJ6hD1gS5aZ0yE",
+            api_key=_MADE_UP_OPENAI_KEY,
             validate=True,
             store=True,
         )
