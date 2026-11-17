@@ -8,18 +8,6 @@ caption: ''
 
 *September 15–18, 2026*
 
-<!--
-SCAFFOLD, not a draft ("AI prompts human"). Comms supplies the shape, the verified facts and the quotes. PM writes the prose. Everything below the line is notes for PM. Delete it as the prose replaces it.
-Slot: Tue 2026-11-17 (building). Beat 4 of the Sep 7 to Oct 19 slate. Title and slot xian's (11-14).
-Sources: Exec logs 09-15 (l.135-149), 09-16 (l.19-37), 09-18 (l.45-53, 78-87, 114-116). Docs 09-16 l.10. Web 09-18 l.33-34. HOST 09-17 l.8. Omnibus 09-16 l.16, 77, 118-119, 09-17 l.41-42, 09-18 l.32 and 45. Facts gathered by a Sonnet subagent. Comms re-opened the quotes at source 11-14.
--->
-
----
-
-## Title
-**The Wall** (xian's title, 11-14).
-
-## The principle in one sentence
 
 From the outside, a team that ran out of budget, a team you told to stop, and a team that crashed all look the same: quiet. Only something written down and checked tells you which.
 

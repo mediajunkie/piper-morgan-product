@@ -2189,3 +2189,4 @@ issue	state	milestone	sprint	title	labels	blocked_by	state_reason
 2399	OPEN	Production		Said-instead replies on the write rail still report success: apply 2188's rule to the write-ask reply, the close/reopen passthrough and the refused-write handler			
 2400	OPEN	Production		Seat browser for signed-in pages and chat turns (ADR-084 D3 browser half, Step D): .mcp.json attach, cookie placement, LaunchAgent			
 2401	OPEN	Production		Integrations cards: a failed Test on a sign-in GitHub card shows no reason; a check-failed card offers Disconnect (CXO 11-17)	bug		
+2402	OPEN	Production		Integrations cards draw a Test's stored error text into innerHTML unescaped (three cards served; GitHub joins with 2401)	architecture		
