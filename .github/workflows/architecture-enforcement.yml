@@ -7,6 +7,11 @@ on:
     paths:
       - 'services/**/*.py'
       - 'web/**/*.py'
+      # 2026-11-17: the escape-helper test (TestNoLocalEscapeHelpers1582) reads every
+      # template and web/static/js/*.js. A template fix at 08:58 did not re-run this
+      # workflow, so it stayed red on the record for hours after main was fixed.
+      - 'templates/**'
+      - 'web/static/js/**'
       - 'tests/test_architecture_enforcement.py'
       - 'mypy-gate.ini'
       - 'scripts/check_mypy_gate.py'
@@ -18,6 +23,11 @@ on:
     paths:
       - 'services/**/*.py'
       - 'web/**/*.py'
+      # 2026-11-17: the escape-helper test (TestNoLocalEscapeHelpers1582) reads every
+      # template and web/static/js/*.js. A template fix at 08:58 did not re-run this
+      # workflow, so it stayed red on the record for hours after main was fixed.
+      - 'templates/**'
+      - 'web/static/js/**'
       - 'tests/test_architecture_enforcement.py'
       - 'mypy-gate.ini'
       - 'scripts/check_mypy_gate.py'
