@@ -395,7 +395,7 @@ Both items that were queued on 11-15 are built (2026-11-16), and neither needed 
 
 What the scan does not cover, so nobody reads it as covering more (HOST and Arch, 2026-11-16):
 
-- **The 61 lines in `.staged-credential-scan-baseline.txt` are the known unchecked set.** A baselined line passes whatever value sits in it, at commit and in the gate. No seat has opened those values to judge them and none will. Issue 2397 rewrites them to build each value from parts, which empties the baseline.
+- **The baseline is empty, and stays empty.** `.staged-credential-scan-baseline.txt` held 61 lines on 2026-11-16, each a line the scan did not check. Lead rewrote those fixtures to build each value from parts (issue 2397, `b56aaf2764`), and CIO regenerated the file on 2026-11-17: 0 lines. So every tracked line outside the bearer lint's three folders is now checked. Nobody adds a line to the baseline; a test that needs a key-shaped value uses `tests/utils/made_up_credentials.py`. No seat opened the old values to judge them. They are still in git history; if anyone has a reason to think one was ever real, tell Exec and it is rotated.
 - **A secret with no shape.** A seat account's password and the machine account's password are plain url-safe strings with no prefix; `staged_credential_scan.py` cannot match them. They are protected by the Read denies on the `*-credentials.txt` files and by never being typed into a file.
 
 The form each batch takes, so a sitting is short (CIO, 2026-11-15):
