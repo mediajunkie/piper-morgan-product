@@ -328,7 +328,7 @@ What the row must hold, whatever the path:
 Both items that were queued on 11-15 are built (2026-11-16), and neither needed a step from xian:
 
 - The pre-push hook's remembered pass is live: Pard installed it at 12:46 on 11-16 (recipe 5 in `canonical-ops-recipes.md`).
-- The scan for credential shapes is `scripts/staged_credential_scan.py` (issue 2392). Its gate half (`--tracked`, in `lint.yml` and so in `scripts/run-push-gates.sh`) needs no install. Its commit half (`--staged`, called from `scripts/git-hooks/pre-commit`) takes effect when Pard copies that file into the common hooks folder, after HOST has read the script. Until then a commit is not checked; the push gate and CI are.
+- The scan for credential shapes is `scripts/staged_credential_scan.py` (issue 2392). Its gate half (`--tracked`, in `lint.yml` and so in `scripts/run-push-gates.sh`) needs no install. Its commit half (`--staged`, called from `scripts/git-hooks/pre-commit`) is live: Pard installed the hook at 17:00 on 11-16, after HOST's read and Arch's validation, and it refused a probe commit at 17:07.
 
 What the scan does not cover, so nobody reads it as covering more (HOST and Arch, 2026-11-16):
 
