@@ -129,23 +129,39 @@ The step (CIO, 2026-11-16):
 
 ```
 scripts/seat_settings_grant.py add-allow --seat web --rule 'Bash(scripts/seat_session.py --account web-seed-1386)'
+scripts/seat_settings_grant.py add-allow --seat web --rule 'Bash(scripts/seat_read.py --account web-seed-1386 --redirect-uri github)'
+scripts/seat_settings_grant.py add-allow --seat web --rule 'Bash(scripts/seat_read.py --account web-seed-1386 --redirect-uri calendar)'
 ```
+
+  Lines 2 and 3 (added 2026-11-16) are the two fixed reads for issue 2282 step 5: each prints one line saying where that connector's sign-in returns to, so nobody has to start a sign-in in a browser to see it. Lead built them (9abd173fa8, fixed at 910eb6ab1d after CIO's read); HOST said land at 19:03 and Arch found them inside D3. They ride in this paste so they add no separate step.
 
   The rule must match the command the seat types, character for character. An exact allow covers only the bare command; anything chained onto it goes back to the classifier (traced 11-06). The seat types exactly `scripts/seat_session.py --account web-seed-1386` from the top of its worktree. The tool refuses any rule with `*` in it and never touches a deny.
 
-- **You should see:** `added 1 allow rule for seat web`, then the rule counts.
-- **Seat check:** the seat runs the helper once. It prints one line, `web-seed-1386 session saved, expires <time>`, and nothing else. Then `scripts/seat_read.py --account web-seed-1386 '/api/v1/admin/floored-actions?days=30'` prints the counter's JSON. If the helper prints `refused:` with a reason (for example, the account holds a provider key), nothing was saved: the seat reports the reason to HOST and Exec and does not retry.
+- **You should see:** `added 1 allow rule for seat web` after each line, then the rule counts.
+- **Seat check:** the seat runs the helper once. It prints one line, `web-seed-1386 session saved, expires <time>`, and nothing else. (Once Step D is done, in a seat with a seat browser it prints a second line, `web-seed-1386 placed in seat browser web, expires <time>`.) Then `scripts/seat_read.py --account web-seed-1386 '/api/v1/admin/floored-actions?days=30'` prints the counter's JSON. Then `scripts/seat_read.py --account web-seed-1386 --redirect-uri github` and the same with `calendar` each print one line with the address the sign-in returns to and nothing else (run each once; don't loop them, each run leaves one unused sign-in state in the app until its next deploy). If the helper prints `refused:` with a reason (for example, the account holds a provider key), nothing was saved: the seat reports the reason to HOST and Exec and does not retry.
 - **If it fails:** if the classifier still refuses the helper's run, this route is dropped and the ADR's fallback applies (he signs in himself, rarely). Nobody works around the refusal.
 
 ## Step D (ADR row 10): load the seat browser's LaunchAgent
 
-**Owner: CIO, with Pard. NOT READY: waits on Pard's plist and wrapper, and HOST's read of both** against D3's debug-port bound (127.0.0.1 only, a dedicated profile folder at mode 0700, no wildcard origins, the port read from one place, never xian's own Chrome).
+**Owner: CIO, with Pard. Issue 2400. NOT READY: CIO's half is on main (2026-11-16) and unread by HOST; it waits on HOST's read, then Pard's plist and wrapper, then HOST's read of those** against D3's debug-port bound (127.0.0.1 only, a dedicated profile folder at mode 0700, no wildcard origins, the port read from one place, never xian's own Chrome).
 
-The order of what it waits on (CIO, 2026-11-15):
-1. ADR-084's yes.
-2. CIO's change to `.mcp.json` so served-read seats attach to that browser (`--browserUrl`) with a persistent profile. Proven by hand on a dummy on 11-15 (`dev/active/seat-grant-dummy-test/README.md`); the tracked change is not written.
-3. Pard builds the plist, the wrapper and a cycle-check arm (the debug port answers, the profile folder exists), and tests the wrapper by hand.
+What is on main (CIO, 2026-11-16), none of it in use until this step is done:
+
+- `scripts/seat-browser.conf`: the one place a seat browser's port is written. One row today: `web 9333`. Adding a row is a diff HOST reads.
+- `scripts/seat_browser.py`: places a saved session's access cookie into the seat's browser through the debug port. Before it sends anything it reads the process listening on the port and refuses unless that is one process, bound to 127.0.0.1 only, the cohort's test browser binary, started on `~/.piper-shared/seat-browser-credential-profile-<seat>` (mode 0700) with `--use-mock-keychain` and without `--remote-allow-origins`. It prints one line: the account, the seat and the expiry. `--where <seat>` prints the port and the folder for Pard's wrapper.
+- `scripts/seat_session.py` calls it after saving a session, only in a seat that has a row. So Step C's exact-command allow covers it, and this step adds no allow. A seat with no row sees no change. If placing fails, the session stays saved, a fixed reason prints, and the exit code is 4.
+- `scripts/seat-browser-mcp.sh`: the browser tool's launcher. A seat with a row whose browser answers is attached to it (`--browserUrl`). Every other seat, and a seat whose browser is down, gets the throwaway signed-out browser `.mcp.json` starts today. **`.mcp.json` does not call it yet**; that one-line switch lands after HOST's read and takes effect at each seat's next session start.
+
+Run so far (CIO, 2026-11-16 18:55 PT, a scratch test browser on a throwaway folder and port, a made-up cookie, nothing of beta's): placed and read back as httpOnly and secure; still held after a browser restart on the same folder; a browser on another folder on the same port was refused. 35 unit tests. Not run: a real session, a seat's live browser tool through the launcher, anything under the LaunchAgent.
+
+**The browser must be started with `--use-mock-keychain`.** Without it the browser asks the macOS login keychain for a storage key the first time it keeps a cookie, which xian's 11-11 rule forbids. With it the cookies in the profile folder are kept under a fixed key, so the folder's mode 0700 and the Read deny on its name are the protection, as D3 already says of the profile. The helper refuses a browser started without the flag.
+
+The order of what it waits on:
+1. ADR-084's yes. Done 2026-11-16 06:20.
+2. HOST's read of the four files above.
+3. Pard builds the plist, the wrapper and a cycle-check arm (the debug port answers, the profile folder exists at mode 0700), and tests the wrapper by hand. The wrapper takes the port and folder from `scripts/seat_browser.py --where web`.
 4. HOST reads both against the bound above.
+5. CIO switches `.mcp.json` to the launcher and checks it in CIO's own session first (a seat with no row).
 
 - **Paste:** two lines that Pard supplies with the build, as with every LaunchAgent since 10-30. I'll copy them here when they exist, not from memory.
 - **You should see:** Pard's cycle-check arm go from red to green.
@@ -304,14 +320,22 @@ What the row must hold, whatever the path:
 
 This checks that removing an account from the allowlist cuts off a connector that's already connected, on the next call and not only at consent. The server checks the list in its token verifier as well as at consent and refresh (`services/mcp/server/allowlist.py`), so a removal should bite at once. It runs on the seat account, so your own connector is never touched.
 
+**D6:** this is a one-time proof and stays your hand. No standing access is proposed, because the only thing that would end it is a seat writing production's allowlist (Arch, 11-16).
+
 - **Order:** after part 2's seat check has passed. Wait for PA's word in between; each line below waits on the line before it.
-- **Paste 1 (remove):**
+- **Paste 1a (remove, dry run; it changes nothing):**
+  ```
+  fly ssh console -a piper-morgan -C "python /app/scripts/mcp_allow.py remove --user-email <seat-account-email>"
+  ```
+  **You should see:** a `--- user:` line, which **must show the seat account's address, not yours. If it shows yours, stop here** and tell Exec. Then `DRY-RUN complete — no writes.`
+- **Paste 1b (remove):** the same line with `--apply` at the end:
   ```
   fly ssh console -a piper-morgan -C "python /app/scripts/mcp_allow.py remove --user-email <seat-account-email> --apply"
   ```
   **You should see:** two `--- listed:` blocks (before and after the write), the second **without** the seat account, and then `remove: done for <seat-account-email> (…).` Tell PA.
-- **Seat check (PA):** one read through **Piper Morgan (seat)**. Expected: refused (the server returns no identity, so the connector reports an authorization error and no data). PA quotes the error text and MCP `uptime_seconds`, then reads your own **Piper Morgan** connector once, which must still answer as you. **FAIL** is any data returned through the seat connector after the removal.
-- **Paste 2 (add back):** part 1's `--apply` line again. **You should see:** the second `--- listed:` block includes the seat account again, then `add: done for …`. Tell PA.
+- **Seat check (PA):** one read through **Piper Morgan (seat)**. Expected: refused (the server returns no identity, so the connector reports an authorization error and no data). PA quotes the error text and MCP `uptime_seconds`, then reads your own **Piper Morgan** connector once, which must still answer as you. **FAIL** is any data returned through the seat connector after the removal. PA sends the result (refused or not, no data) to HOST for Step G's custody row.
+- **On FAIL, stop here; don't run paste 2.** The seat account stays off the list. PA tells Exec and files the finding on #2242 the same hour, and you do the Ending's claude.ai removal of **Piper Morgan (seat)** then.
+- **Paste 2 (add back, only on PASS):** part 1's `--apply` line again. If paste 2 is missed for any reason, the seat connector stays refused, not open, so a missed paste is never a risk. **You should see:** the second `--- listed:` block includes the seat account again, then `add: done for …`. Tell PA.
 - **Seat check (PA):** one read through **Piper Morgan (seat)** answers as the seat account again. If it doesn't (the client may have dropped the connection after the 401), PA asks Exec whether to re-consent (part 2's Then line, about a minute). This is not a failure of the check.
 
 **Ending** (with HOST's review date): remove **Piper Morgan (seat)** in claude.ai, then `mcp_allow.py remove --user-email <seat-account-email> --apply` the same way as part 1 (the script takes `--user-email` or `--user-id`).

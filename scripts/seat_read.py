@@ -20,9 +20,11 @@ browser back to, so nobody has to start a sign-in in a browser to see it:
   These routes are NOT on the list above, so their reply body can never be printed.
 - The route answers with JSON that holds the provider's sign-in address and a state
   value. The state is a bearer for that sign-in attempt. This script prints one line:
-  the host and path of the ``redirect_uri`` inside that address. The query string, the
-  state and the body are never printed, stored or logged, and a line that contains the
-  state or a cookie value is refused.
+  the scheme, host and path of the ``redirect_uri`` inside that address. The query string, the
+  state and the body are never printed, stored or logged. Three checks hold that: a
+  line that contains the state (from the reply's ``state`` key or the address's own
+  ``state`` parameter) or a cookie value is refused; a reply with no state to compare
+  is refused; and no host label or path segment over 32 characters is printed.
 - No redirect is followed and nothing is sent to the provider.
 - One request per run. Each request leaves one unused state in the app's memory. It is
   refused after 15 minutes (``STATE_EXPIRATION = 900`` in both handlers) and is dropped
@@ -65,6 +67,18 @@ REDIRECT_URI_ROUTES = {
 }
 HOST_OK = re.compile(r"^[A-Za-z0-9.-]+(:[0-9]{1,5})?$")
 PATH_OK = re.compile(r"^/[A-Za-z0-9/_.-]*$")
+# No host label or path segment longer than this is printed (CIO's read, 2026-11-16). A
+# state as both handlers mint it is one unbroken run of about a hundred characters
+# (base64 of a user id and a nonce), so this keeps a whole state out of the line even
+# in a reply where the script can't learn the state to compare. It is a bound on
+# length, not a proof: a state shorter than this in a host label, with no ``state``
+# anywhere in the reply, would not be caught. The real callback's longest part is 12.
+MAX_PART = 32
+# The app's host-switch answer ends in one of its own two page paths, nothing else.
+SWITCH_PAGES = {
+    "github": "/settings/integrations/github",
+    "calendar": "/settings/integrations/calendar",
+}
 
 
 def checked_path(path: str) -> str:
@@ -123,7 +137,7 @@ def read(
 
 
 def host_and_path(address: object) -> str:
-    """``host/path`` of an http(s) address, or a refusal. The query and fragment are
+    """``scheme://host/path`` of an http(s) address, or a refusal. The query and fragment are
     dropped, never shown."""
     if not isinstance(address, str):
         raise Refused("the reply was not in the expected form")
@@ -134,7 +148,12 @@ def host_and_path(address: object) -> str:
         or not PATH_OK.match(parts.path or "/")
     ):
         raise Refused("the address in the reply is not in a plain form")
-    return parts.netloc + (parts.path or "/")
+    pieces = parts.netloc.split(".") + (parts.path or "/").split("/")
+    if any(len(piece) > MAX_PART for piece in pieces):
+        raise Refused("a part of the address in the reply is too long to print")
+    # The scheme is shown (HOST 2026-11-16 19:03): a provider compares the registered
+    # callback as a whole string, and http against https is one way it refuses.
+    return f"{parts.scheme}://{parts.netloc}{parts.path or '/'}"
 
 
 def read_redirect_uri(
@@ -161,19 +180,34 @@ def read_redirect_uri(
         raise Refused("the reply was not in the expected form") from None
     if not isinstance(payload, dict):
         raise Refused("the reply was not in the expected form")
+    states = [payload.get("state")]
     if payload.get("switch_host_url"):
-        # #2281 (b): the app asks the browser to start the sign-in on another host.
-        line = f"{connector}: start on {host_and_path(payload['switch_host_url'])}"
+        # #2281 (b): the app asks the browser to start the sign-in on another host. It
+        # builds that address from configuration and a fixed page path and mints no
+        # state, so there is nothing to compare: the path must be that page, exactly.
+        switch = payload["switch_host_url"]
+        shown = host_and_path(switch)
+        if urllib.parse.urlsplit(switch).path != SWITCH_PAGES[connector]:
+            raise Refused("the host-switch address is not the page this script expects")
+        line = f"{connector}: start on {shown}"
     else:
         address = payload.get("auth_url")
         if not isinstance(address, str):
             raise Refused("the reply was not in the expected form")
-        values = urllib.parse.parse_qs(urllib.parse.urlsplit(address).query).get("redirect_uri")
+        query = urllib.parse.parse_qs(urllib.parse.urlsplit(address).query)
+        values = query.get("redirect_uri")
         if not values or len(values) != 1:
             raise Refused("the sign-in address does not carry exactly one redirect_uri")
         line = f"{connector} redirect_uri: {host_and_path(values[0])}"
-    state = payload.get("state")
-    secrets_seen = [v for v in cookies.values() if v] + ([state] if isinstance(state, str) else [])
+        # Arch 2026-11-16 18:43: the state as the address carries it too, so the check
+        # below holds even if a handler stops sending the ``state`` key.
+        states.extend(query.get("state", []))
+        if not any(isinstance(v, str) and v for v in states):
+            # CIO 2026-11-16 18:49: never run the check below with nothing to compare.
+            raise Refused("the reply carries no state to check the line against")
+    secrets_seen = [v for v in cookies.values() if v] + [
+        v for v in states if isinstance(v, str) and v
+    ]
     if any(secret and secret in line for secret in secrets_seen):
         raise Refused("the line would contain a session or state value; not printed")
     return line

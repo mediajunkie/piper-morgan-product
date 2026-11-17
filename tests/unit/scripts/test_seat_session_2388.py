@@ -504,7 +504,20 @@ def test_the_second_account_is_listed_and_holds_nothing(ss):
 
 GH_CONNECT = "/api/v1/settings/integrations/github/connect"
 CAL_CONNECT = "/api/v1/settings/integrations/calendar/connect"
-STATE = "made-up-state-value-" + "q" * 20
+# Shaped as both handlers mint it: base64 of a made-up user id and nonce, over 100
+# characters in one unbroken run.
+STATE = (
+    __import__("base64")
+    .urlsafe_b64encode(
+        json.dumps(
+            {"user_id": "00000000-0000-4000-8000-000000000000", "nonce": "made-up-nonce-0123456789"}
+        ).encode()
+    )
+    .decode()
+    .rstrip("=")
+    .lower()
+)
+SHORT_STATE = "made-up-short-state-1"  # under the length bound: only the comparison catches it
 CALLBACK = "https://beta.example.invalid/api/v1/settings/integrations/github/callback"
 
 
@@ -523,7 +536,7 @@ def test_redirect_uri_prints_the_host_and_path_and_nothing_else(ss, sr, shared):
     host = StubHost(ss, **{GH_CONNECT: _connect_reply(ss)})
     line = sr.read_redirect_uri(ACCOUNT, "github", host, now=1_800_000_100)
     assert line == (
-        "github redirect_uri: beta.example.invalid/api/v1/settings/integrations/github/callback"
+        "github redirect_uri: https://beta.example.invalid/api/v1/settings/integrations/github/callback"
     )
     assert STATE not in line and "made-up-id" not in line and "?" not in line
     for secret in SECRETS:
@@ -550,13 +563,13 @@ def test_redirect_uri_reports_a_host_switch_by_host_and_path(ss, sr, shared):
     )
     host = StubHost(ss, **{GH_CONNECT: reply})
     line = sr.read_redirect_uri(ACCOUNT, "github", host, now=1_800_000_100)
-    assert line == "github: start on other.example.invalid/settings/integrations/github"
+    assert line == "github: start on https://other.example.invalid/settings/integrations/github"
 
 
 @pytest.mark.parametrize(
     "reply_kwargs,reason",
     [
-        ({"redirect": "https://beta.example.invalid/cb/" + STATE}, "state value"),
+        ({"redirect": "https://beta.example.invalid/cb/" + STATE}, "too long"),
         ({"redirect": "javascript:alert(1)"}, "plain form"),
         ({"redirect": "https://user:pw@beta.example.invalid/cb"}, "plain form"),
         ({"redirect": "https://beta.example.invalid/cb%2Fx"}, "plain form"),
@@ -570,6 +583,40 @@ def test_redirect_uri_refuses_and_names_no_value(ss, sr, shared, reply_kwargs, r
     with pytest.raises(ss.Refused, match=reason) as refusal:
         sr.read_redirect_uri(ACCOUNT, "github", host, now=1_800_000_100)
     assert STATE not in str(refusal.value)
+
+
+def test_redirect_uri_refuses_a_state_in_the_path_when_the_reply_sends_no_state_key(ss, sr, shared):
+    # Arch 2026-11-16 18:43: the state is also read from the sign-in address.
+    _saved(ss, shared)
+    reply = _connect_reply(ss, redirect="https://beta.example.invalid/cb/" + STATE)
+    payload = json.loads(reply.body)
+    del payload["state"]
+    host = StubHost(ss, **{GH_CONNECT: ss.Reply(200, json.dumps(payload).encode())})
+    with pytest.raises(ss.Refused, match="too long") as refusal:
+        sr.read_redirect_uri(ACCOUNT, "github", host, now=1_800_000_100)
+    assert STATE not in str(refusal.value)
+
+
+def test_redirect_uri_compares_a_short_state_the_length_rule_would_pass(ss, sr, shared):
+    """The comparison, on its own: a state under the length bound, in the path."""
+    from urllib.parse import urlencode
+
+    _saved(ss, shared)
+    redirect = "https://beta.example.invalid/cb/" + SHORT_STATE
+    for payload in (
+        {
+            "auth_url": "https://p.example.invalid/a?" + urlencode({"redirect_uri": redirect}),
+            "state": SHORT_STATE,
+        },
+        {
+            "auth_url": "https://p.example.invalid/a?"
+            + urlencode({"redirect_uri": redirect, "state": SHORT_STATE})
+        },
+    ):
+        host = StubHost(ss, **{GH_CONNECT: ss.Reply(200, json.dumps(payload).encode())})
+        with pytest.raises(ss.Refused, match="state value") as refusal:
+            sr.read_redirect_uri(ACCOUNT, "github", host, now=1_800_000_100)
+        assert SHORT_STATE not in str(refusal.value)
 
 
 @pytest.mark.parametrize("body", [b"not json", b"[]", b'"text"'])
@@ -618,7 +665,7 @@ def test_main_takes_a_path_or_the_option_never_both_or_neither(ss, sr, shared, c
     code, text = _run_main(sr, ["--account", ACCOUNT, "--redirect-uri", "github"], capsys)
     assert code == 0
     assert text.strip() == (
-        "github redirect_uri: beta.example.invalid/api/v1/settings/integrations/github/callback"
+        "github redirect_uri: https://beta.example.invalid/api/v1/settings/integrations/github/callback"
     )
     assert len(host.calls) == 1
     code, text = _run_main(sr, ["--account", ACCOUNT], capsys)
@@ -633,3 +680,106 @@ def test_the_two_routes_exist_in_the_app_as_get_routes():
     assert 'APIRouter(prefix="/api/v1/settings/integrations"' in source
     assert '@router.get("/github/connect")' in source
     assert '@router.get("/calendar/connect")' in source
+
+
+# CIO's read (2026-11-16 18:49): four replies no handler sends today, each of which
+# printed a line containing the state at 9abd173fa8.
+
+
+def _raw_reply(ss, payload):
+    return ss.Reply(200, json.dumps(payload).encode())
+
+
+def _auth_url(redirect, with_state=True):
+    from urllib.parse import urlencode
+
+    params = {"client_id": "made-up-id", "redirect_uri": redirect}
+    if with_state:
+        params["state"] = STATE
+    return f"https://provider.example.invalid/authorize?{urlencode(params)}"
+
+
+@pytest.mark.parametrize(
+    "payload",
+    [
+        # 1. state in the redirect's path, no ``state`` key
+        {"auth_url": _auth_url("https://beta.example.invalid/cb/" + STATE)},
+        # 2. state as a host label of the redirect, no ``state`` key
+        {"auth_url": _auth_url(f"https://{STATE}.example.invalid/cb")},
+        # 3. state in the path, ``state`` key present but not a string
+        {"auth_url": _auth_url("https://beta.example.invalid/cb/" + STATE), "state": 7},
+        # 4. state in the host-switch address's path, no ``state`` key
+        {"switch_host_url": "https://other.example.invalid/settings/" + STATE},
+        # and the same four with the state nowhere the script could learn it
+        {"auth_url": _auth_url("https://beta.example.invalid/cb/" + STATE, with_state=False)},
+        {"auth_url": _auth_url(f"https://{STATE}.example.invalid/cb", with_state=False)},
+        {"switch_host_url": f"https://{STATE}.example.invalid/settings/integrations/github"},
+    ],
+    ids=[
+        "path",
+        "host-label",
+        "non-string-key",
+        "switch-path",
+        "path-unknown",
+        "host-unknown",
+        "switch-host",
+    ],
+)
+def test_redirect_uri_never_prints_a_state_in_cios_cases(
+    ss, sr, shared, capsys, monkeypatch, payload
+):
+    _saved(ss, shared)
+    host = StubHost(ss, **{GH_CONNECT: _raw_reply(ss, payload)})
+    with pytest.raises(ss.Refused) as refusal:
+        sr.read_redirect_uri(ACCOUNT, "github", host, now=1_800_000_100)
+    assert STATE not in str(refusal.value)
+    monkeypatch.setattr(ss, "http_transport", host)
+    monkeypatch.setattr(sr, "load_cookies", lambda account, now=None: {"auth_token": ACCESS})
+    code, text = _run_main(sr, ["--account", ACCOUNT, "--redirect-uri", "github"], capsys)
+    assert code == 2 and STATE not in text
+
+
+def test_redirect_uri_refuses_a_reply_with_no_state_to_compare(ss, sr, shared):
+    _saved(ss, shared)
+    payload = {"auth_url": _auth_url(CALLBACK, with_state=False)}
+    host = StubHost(ss, **{GH_CONNECT: _raw_reply(ss, payload)})
+    with pytest.raises(ss.Refused, match="no state to check"):
+        sr.read_redirect_uri(ACCOUNT, "github", host, now=1_800_000_100)
+
+
+def test_redirect_uri_takes_the_state_from_the_address_alone(ss, sr, shared):
+    _saved(ss, shared)
+    host = StubHost(ss, **{GH_CONNECT: _raw_reply(ss, {"auth_url": _auth_url(CALLBACK)})})
+    line = sr.read_redirect_uri(ACCOUNT, "github", host, now=1_800_000_100)
+    assert line.endswith("/github/callback") and STATE not in line
+
+
+def test_the_host_switch_line_is_only_ever_the_apps_own_page(ss, sr, shared):
+    _saved(ss, shared)
+    other = {"switch_host_url": "https://other.example.invalid/settings/integrations/calendar"}
+    host = StubHost(ss, **{GH_CONNECT: _raw_reply(ss, other)})
+    with pytest.raises(ss.Refused, match="not the page"):
+        sr.read_redirect_uri(ACCOUNT, "github", host, now=1_800_000_100)
+    assert set(sr.SWITCH_PAGES) == set(sr.REDIRECT_URI_ROUTES)
+
+
+def test_the_real_callback_paths_fit_the_length_rule(sr):
+    for path in (
+        "/api/v1/settings/integrations/github/callback",
+        "/api/v1/settings/integrations/calendar/callback",
+    ):
+        assert (
+            sr.host_and_path("https://beta.pipermorgan.ai" + path)
+            == "https://beta.pipermorgan.ai" + path
+        )
+    assert len(STATE) > 3 * sr.MAX_PART  # a minted state is far over the bound
+
+
+def test_the_line_shows_http_against_https(sr):
+    # HOST 2026-11-16 19:03: the scheme is part of what a provider compares.
+    assert (
+        sr.host_and_path("http://beta.example.invalid/cb?x=1") == "http://beta.example.invalid/cb"
+    )
+    assert (
+        sr.host_and_path("https://beta.example.invalid/cb#f") == "https://beta.example.invalid/cb"
+    )
