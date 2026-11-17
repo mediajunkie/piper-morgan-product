@@ -20,7 +20,7 @@ browser back to, so nobody has to start a sign-in in a browser to see it:
   These routes are NOT on the list above, so their reply body can never be printed.
 - The route answers with JSON that holds the provider's sign-in address and a state
   value. The state is a bearer for that sign-in attempt. This script prints one line:
-  the host and path of the ``redirect_uri`` inside that address. The query string, the
+  the scheme, host and path of the ``redirect_uri`` inside that address. The query string, the
   state and the body are never printed, stored or logged. Three checks hold that: a
   line that contains the state (from the reply's ``state`` key or the address's own
   ``state`` parameter) or a cookie value is refused; a reply with no state to compare
@@ -137,7 +137,7 @@ def read(
 
 
 def host_and_path(address: object) -> str:
-    """``host/path`` of an http(s) address, or a refusal. The query and fragment are
+    """``scheme://host/path`` of an http(s) address, or a refusal. The query and fragment are
     dropped, never shown."""
     if not isinstance(address, str):
         raise Refused("the reply was not in the expected form")
@@ -151,7 +151,9 @@ def host_and_path(address: object) -> str:
     pieces = parts.netloc.split(".") + (parts.path or "/").split("/")
     if any(len(piece) > MAX_PART for piece in pieces):
         raise Refused("a part of the address in the reply is too long to print")
-    return parts.netloc + (parts.path or "/")
+    # The scheme is shown (HOST 2026-11-16 19:03): a provider compares the registered
+    # callback as a whole string, and http against https is one way it refuses.
+    return f"{parts.scheme}://{parts.netloc}{parts.path or '/'}"
 
 
 def read_redirect_uri(
