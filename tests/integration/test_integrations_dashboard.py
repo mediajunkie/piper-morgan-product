@@ -249,4 +249,13 @@ class TestIntegrationRegistry:
 
             for error_type, error_info in config["errors"].items():
                 assert "message" in error_info, f"{name}/{error_type} missing message"
+                # CXO 2026-11-17 (#2402): where the action is part of the sentence there
+                # is no separate fix line, so the click and the card say one thing. Each
+                # such entry is named here; every other entry still needs its fix.
+                if (name, error_type) in {("slack", "token_invalid")}:
+                    assert "fix" not in error_info, f"{name}/{error_type} has a second line"
+                    assert (
+                        "Settings" in error_info["message"]
+                    ), f"{name}/{error_type} names no action"
+                    continue
                 assert "fix" in error_info, f"{name}/{error_type} missing fix"

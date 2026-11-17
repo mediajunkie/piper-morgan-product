@@ -112,11 +112,17 @@ def without_heredoc_text(cmd):
     return "\n".join(out)
 
 
-def launches(cmd, names=None, depth=0):
+INTO_SHELL = re.compile(r"\|\s*(?:sudo\s+)?(?:\S*/)?(?:bash|sh|zsh)(?:\s|$)")
+
+
+def launches(cmd, names=None, depth=0, strict=False):
     """Reasons this command is refused (empty when it is fine)."""
     names = set() if names is None else names  # variables holding a browser path
     bad = []
     cmd = without_heredoc_text(cmd)
+    # Text piped into a shell runs, so no command in it keeps the reader excuse (Arch):
+    # `echo <program> | sh`.
+    strict = strict or bool(INTO_SHELL.search(cmd))
     if TELL.search(cmd):
         bad.append("tell application")
     for seg in SPLIT.split(cmd):
@@ -163,12 +169,12 @@ def launches(cmd, names=None, depth=0):
             if FLAG not in args:
                 bad.append(word)
             continue
-        if word.rsplit("/", 1)[-1] in NOT_LAUNCHERS:
+        if not strict and word.rsplit("/", 1)[-1] in NOT_LAUNCHERS:
             continue
         if depth < 3:  # `eval "<program> --x"`: a quoted argument that is itself a command
             for a in args:
                 if " " in a.strip() and not is_program(a):
-                    bad.extend(launches(a, names, depth + 1))
+                    bad.extend(launches(a, names, depth + 1, strict))
         named = [a for a in args if is_program(a)]
         if named and FLAG not in args:
             bad.append(f"{word} ... {named[0]}")

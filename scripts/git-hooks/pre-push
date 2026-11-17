@@ -111,12 +111,28 @@
 #   outcome=not-checked-out. It is not blocked in this version; Lead and Arch decide that from
 #   a week's count.
 
+# THE ARCHITECTURE CHECK (CIO, 2026-11-17, standing row 9v; ruled by Arch, mail 01M7NA9QHN).
+# On 11-17 a push that added a local `escapeHtml` to a template passed the gates and the smoke
+# and turned main red for 47 minutes: nothing at push ran tests/test_architecture_enforcement.py,
+# and templates/ was not in any trigger.
+# - templates/ is now in the gates' trigger.
+# - A push that touches templates/, web/ or services/ also runs scripts/run-push-arch-tests.sh:
+#   the architecture tests without their two slow classes, plus the completion ratchets (about
+#   45 s). That script's header names what is left to CI.
+# - It runs after the gates and before the smoke, needs no database and takes no lock.
+# - A failure BLOCKS the push. PIPER_SKIP_PUSH_GATES=1 skips it along with the gates.
+# - It has its own remembered pass (kind=arch), under the same key and the same rule: it reads
+#   nothing under dev/20NN/ or mailboxes/, so a hit may skip it.
+# - Logged as outcome=arch-pass, arch-fail, arch-cached, arch-skip or arch-unchecked.
+
 set -u
 top="$(git rev-parse --show-toplevel)"
 common="$(git rev-parse --git-common-dir)"
 code_re='^(services/|web/|tests/|main\.py$|alembic/|pytest\.ini$|requirements[^/]*\.txt$)'
 # The gates' trigger (CIO 2026-11-12, condition 1): the smoke's paths plus these.
-gates_re='^(services/|web/|tests/|main\.py$|alembic/|pytest\.ini$|requirements[^/]*\.txt$|scripts/|\.github/|\.claude/|\.[^/]*-baseline\.txt$)'
+gates_re='^(services/|web/|tests/|templates/|main\.py$|alembic/|pytest\.ini$|requirements[^/]*\.txt$|scripts/|\.github/|\.claude/|\.[^/]*-baseline\.txt$)'
+# The architecture check's trigger (Arch 2026-11-17).
+arch_re='^(templates/|web/|services/)'
 zero=0000000000000000000000000000000000000000
 pass_window=1800   # seconds a remembered pass is honoured
 
@@ -176,6 +192,7 @@ fi
 
 touched=""
 gates_touched=""
+arch_touched=""
 push_sha=""
 push_count=0
 while read -r local_ref local_sha remote_ref remote_sha; do
@@ -194,6 +211,8 @@ while read -r local_ref local_sha remote_ref remote_sha; do
   [ -n "$hit" ] && touched="$hit"
   ghit="$(printf '%s\n' "$files" | grep -E "$gates_re" | head -1 || true)"
   [ -n "$ghit" ] && gates_touched="$ghit"
+  ahit="$(printf '%s\n' "$files" | grep -E "$arch_re" | head -1 || true)"
+  [ -n "$ahit" ] && arch_touched="$ahit"
   if [ -n "$hit" ] || [ -n "$ghit" ]; then
     [ "$local_sha" != "$push_sha" ] && push_count=$((push_count + 1))
     push_sha="$local_sha"
@@ -261,6 +280,42 @@ if [ -n "$gates_touched" ]; then
     gates_log "gates-pass" "summary=\"$gates_summary\""
     pass_record gates "$key" "$push_sha"
   fi
+fi
+
+# --- The architecture check (see header). After the gates, before the smoke; no lock. ---
+if [ -n "$arch_touched" ]; then
+  gates_touched_was="$gates_touched"; gates_touched="$arch_touched"   # gates_log prints this path
+  if [ "${PIPER_SKIP_PUSH_GATES:-}" = "1" ]; then
+    echo "⚠️  pre-push architecture check SKIPPED by PIPER_SKIP_PUSH_GATES=1 (path touched: $arch_touched). Say why in your log." >&2
+    gates_log "arch-skip"
+  elif when="$(pass_remembered arch "$key")"; then
+    echo "pre-push: architecture check already passed on this content $when (remembered). Not re-run." >&2
+    gates_log "arch-cached" "key=$key"
+  elif [ ! -x "$top/scripts/run-push-arch-tests.sh" ]; then
+    echo "⚠️  pre-push: scripts/run-push-arch-tests.sh not found in this tree. Architecture check UNCHECKED." >&2
+    gates_log "arch-unchecked" "reason=no_script"
+  else
+    echo "pre-push: path touched ($arch_touched) — running the architecture check (~45s)…" >&2
+    arch_out="$(cd "$top" && scripts/run-push-arch-tests.sh 2>&1)"
+    arch_rc=$?
+    arch_summary="$(printf '%s\n' "$arch_out" | grep -E '^run-push-arch-tests:' | tail -1)"
+    if [ $arch_rc -eq 3 ]; then
+      echo "⚠️  pre-push: ${arch_summary:-architecture check could not run}. Pushing with the architecture check UNCHECKED." >&2
+      gates_log "arch-unchecked" "reason=no_env"
+    elif [ $arch_rc -ne 0 ]; then
+      printf '%s\n' "$arch_out" | grep -vE '^run-push-arch-tests:' >&2
+      echo "❌ pre-push: the architecture check FAILED (${arch_summary#run-push-arch-tests: }). Push blocked: it would turn main red." >&2
+      echo "   Run scripts/run-push-arch-tests.sh to see it again. If it is already red on main, it isn't" >&2
+      echo "   your push: skip with PIPER_SKIP_PUSH_GATES=1 git push … and say why in your log." >&2
+      gates_log "arch-fail" "summary=\"$arch_summary\""
+      exit 1
+    else
+      echo "pre-push: architecture check ${arch_summary#run-push-arch-tests: }." >&2
+      gates_log "arch-pass" "summary=\"$arch_summary\""
+      pass_record arch "$key" "$push_sha"
+    fi
+  fi
+  gates_touched="$gates_touched_was"
 fi
 
 [ -z "$touched" ] && exit 0

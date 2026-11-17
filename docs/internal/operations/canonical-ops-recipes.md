@@ -262,7 +262,17 @@ now remembers a pass:
 
 Tested by `scripts/git-hooks/test-remembered-pass.sh <empty scratch dir> scripts/git-hooks/pre-push`
 (a bare remote, a seat clone with stand-in gates and smoke, and a second clone that lands a log
-while the gates run): 14 checks.
+while the gates run): 22 checks, the last eight on the architecture check below.
+
+**The architecture check (2026-11-17, Arch's ruling).** A push that touches `templates/`, `web/` or
+`services/` also runs `scripts/run-push-arch-tests.sh` after the gates and before the smoke: the
+architecture tests without `TestUnarmedAskSiteRatchet` and `TestChatPointersReachabilityRatchet`,
+plus the completion ratchets whole (146 tests, about 45 seconds). A failure blocks the push. It has
+its own remembered pass under the same key, so a retry after a lost race does not pay for it
+again. The two slow classes stay in CI; the first time either is the cause of a red main it joins
+this check for `services/` pushes. `templates/` is in the gates' trigger from the same change.
+Before calling a served-path change validated, run both test files whole; the push check does not
+replace that.
 
 ### A credential shape in a commit or a push: `scripts/staged_credential_scan.py` (issue 2392, CIO, 2026-11-16)
 
