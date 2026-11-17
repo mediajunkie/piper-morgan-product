@@ -13,6 +13,11 @@ on:
       - 'services/**'
       - 'tests/**'
       - 'web/**'
+      # Arch 2026-11-17: both are in the image and both have tests. Without them a push
+      # that changed only a template or only the CLI ran no Tests, so the promote gate
+      # could accept a run that never saw the change.
+      - 'templates/**'
+      - 'cli/**'
       - '*.py'
       - 'pyproject.toml'
       - 'requirements*.txt'
@@ -25,6 +30,11 @@ on:
       - 'services/**'
       - 'tests/**'
       - 'web/**'
+      # Arch 2026-11-17: both are in the image and both have tests. Without them a push
+      # that changed only a template or only the CLI ran no Tests, so the promote gate
+      # could accept a run that never saw the change.
+      - 'templates/**'
+      - 'cli/**'
       - '*.py'
       - 'pyproject.toml'
       - 'requirements*.txt'
