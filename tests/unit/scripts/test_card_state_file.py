@@ -127,3 +127,17 @@ def test_reading_a_card_lists_lines_and_controls_and_marks_an_error_line():
     ]
     assert cards.read_card({"list": listing, "link": None}, "b")["lines"] == ["Beta"]
     assert cards.read_card({"list": listing, "link": None}, "c") is None
+
+
+def test_building_the_file_in_process_leaves_the_store_variable_alone(monkeypatch):
+    """The script chooses the database store for its own process in main(). Called from a
+    test, _setup() must not write it into os.environ, where it would stay for every
+    later test in the run (found 2026-11-17)."""
+    import os
+
+    monkeypatch.delenv("PIPER_CREDENTIAL_STORE", raising=False)
+    cards._setup()
+    assert "PIPER_CREDENTIAL_STORE" not in os.environ
+    source = (ROOT / "scripts" / "card_state_file.py").read_text(encoding="utf-8")
+    setup_body = source[source.index("def _setup()") : source.index("def _github_outcome")]
+    assert "PIPER_CREDENTIAL_STORE" not in setup_body
