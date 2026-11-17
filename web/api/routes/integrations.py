@@ -192,6 +192,14 @@ UNCHECKED_DETAIL = "Not checked yet. Press Test."
 CHECK_FAILED_MESSAGE = "Couldn't check this just now. Press Test to try again."
 
 
+# CXO 2026-11-17 (#2402): what the Slack card and a Test's stored result say when Slack's
+# auth.test refuses the token. Slack's own error word goes to the log only.
+SLACK_TOKEN_REFUSED_LINE = (
+    "Slack didn't accept your token. It may have expired or been revoked. "
+    "Add a new one in Settings, under Integrations."
+)
+
+
 def _connection_failed(where: str, error: BaseException) -> Dict[str, Any]:
     """A Test that raised. #2402 (Arch and CXO, 2026-11-17): an exception's text never
     reaches a stored Test result, a response field or a card. It can quote a URL, a
@@ -810,7 +818,7 @@ async def _test_slack(user_id: Optional[str] = None) -> Dict[str, Any]:
                     logger.info("slack_test_refused", slack_error=str(data.get("error")))
                     return {
                         "success": False,
-                        "error": "Token invalid or expired",
+                        "error": SLACK_TOKEN_REFUSED_LINE,
                         "error_type": "token_invalid",
                     }
 

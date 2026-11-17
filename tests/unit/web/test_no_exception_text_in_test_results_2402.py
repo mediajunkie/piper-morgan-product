@@ -156,7 +156,7 @@ async def test_slacks_own_error_word_is_not_stored_or_returned():
         out = await integ._test_slack("u1")
     assert out == {
         "success": False,
-        "error": "Token invalid or expired",
+        "error": integ.SLACK_TOKEN_REFUSED_LINE,
         "error_type": "token_invalid",
     }
 
