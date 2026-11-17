@@ -7,7 +7,7 @@
 **Mail v4:** `python3 scripts/mail4.py inbox --role exec` every wake. Roles are space-separated on `send`. Ack only explicit IDs just read. Read a mail's body whole (`awk 'f>=2{print} /^---$/{f++}'`); don't grep out "- " lines.
 
 ## Rollup
-v1042, `719UZ4h1NELjEwWZbDCceT`. Source `dev/active/exec-attention-rollup-current.html`. Edit with Python replace plus assert; update the "vNNN, rebuilt" stamp from a `date` call; no estimated minutes. Top card: Steps A, C, D, F0, two answers. Then the keychain card, the writing card, the self-knowledge card.
+v1043, `719UZ4h1NELjEwWZbDCceT`. Source `dev/active/exec-attention-rollup-current.html`. Edit with Python replace plus assert; update the "vNNN, rebuilt" stamp from a `date` call; no estimated minutes. Top card: Steps A, C, D, F0, two answers. Then the keychain card, the writing card, the self-knowledge card.
 
 ## Waiting on xian (nothing answered or run since 06:51 on 11-16)
 Steps file: `docs/internal/operations/adr-084-one-time-steps.md`. Copy lines from it by script; never retype.
@@ -27,7 +27,7 @@ Steps file: `docs/internal/operations/adr-084-one-time-steps.md`. Copy lines fro
 - **For him to overrule:** on issue 2264 his 11-03 word was "yes ask"; I let HOST read the two stakeholder rows ("test data"); nothing quoted. The history decision on 2264 is his. The issue was still open at 22:01; the closing comment is Arch's or Lead's.
 
 ## In motion
-- **Beta** `4e2797bce2` since 08:07 on 11-17 (2401, 2397). Main green 12 of 12 at 10:56 (Tests 44146687482 on `b7e552bbb4` holds the fix and `298f7c4b84`). Arch's grant to `bbf4b8eb33` has its conditions met; Push pause asked of all seats (01M7NEK3Y1) until Lead's dispatch or 12:15 PT; at 12:15 decide extend or lift, and mail the list either way. Update the beta card when it serves. Lesson of 11-17: read CI, then write the sentence; I twice published a CI state read in the same script that wrote the text.
+- **Beta** `d678b0af26` since 11:31 on 11-17 (2402, Slack's sentence, console address as "Claude Platform"); second promotion of the day; not checked signed in. Main 12 of 12 green at 11:45. Push hold (from 11:08) lifted by Lead's dispatch mail. Owed by Lead: Tests trigger paths (`templates/**`, `cli/**`), assert-first in two keychain test files. Owed by CIO and Lead: a proposal on the run queue starving the staged commit. Lesson: read CI in one call, write the sentence in the next.
 - Main 12 of 12 green at 22:01, including Tests on a commit after CIO's fix. `whats-armed` 31 armed, 0 not armed, 1 unmeasured.
 - Lead's unbuilt items: the 2157 drill script, 2390, 2391, 2384, 2393, 2399. Hook blocking decision needs a week of counts (about 11-23).
 - Logs without a DAY-CLOSED marker at 22:03 on 11-16: Docs (last entry 19:17), CIO (20:02), Arch (STOP entry at 21:28, marker missing). Docs nudges at its START; check they closed.
