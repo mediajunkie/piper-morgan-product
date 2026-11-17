@@ -64,6 +64,9 @@ REFUSED = [
     f'2>/dev/null "{TEST_BROWSER}"',
     'osascript <<EOF\ntell application "Google Chrome" to activate\nEOF',
     "echo 'tell application \"Chromium\" to activate' | osascript",
+    f'echo "{TEST_BROWSER}" | sh',
+    f"echo '\"{TEST_BROWSER}\" --headless=new' | bash",
+    "printf '%s' /opt/x/chromium | /bin/zsh",
 ]
 
 ALLOWED = [
@@ -92,6 +95,8 @@ ALLOWED = [
     'git commit -m "guard: refuse /x/chromium --version forms"',
     'python3 scripts/mail4.py send --subject "hook refused /nonexistent-dir/chromium --version"',
     "(cd /tmp && ls)",
+    "echo hello | sh",
+    "git log --oneline | head -3",
 ]
 
 
