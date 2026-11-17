@@ -137,7 +137,7 @@ env -u ANTHROPIC_API_KEY -u ANTHROPIC_BASE_URL -u ANTHROPIC_AUTH_TOKEN -u ANTHRO
   PIPER_CREDENTIAL_STORE=db POSTGRES_PORT=5433 nohup venv/bin/python main.py > /tmp/piper-server.log 2>&1 &
 ```
 
-The app uses the OS keychain only when `PIPER_CREDENTIAL_STORE=keychain` is set (#2353); unset means the database store. `=db` stays on these lines for clarity. xian's rule (2026-11-11): nothing we run reads his login keychain without his permission, so a seat never sets `=keychain`. Provider keys come from the database store, or from a key variable you put on the command line after the `env -u` flags (which strip any inherited `ANTHROPIC_API_KEY`). If a run would need the keychain, stop and ask xian through Exec.
+The app uses the OS keychain only when `PIPER_CREDENTIAL_STORE=keychain` is set (#2353); unset means the database store. `=db` stays on these lines for clarity. xian's rule (2026-11-11): nothing we run reads his login keychain without his permission, so a seat never sets `=keychain`. Provider keys come from the database store, or from a key variable you put on the command line after the `env -u` flags (which strip any inherited `ANTHROPIC_API_KEY`). If a run would need the keychain, stop and ask xian through Exec. The same rule covers a browser: start Chrome or Chromium only through the browser tool or the seat browser (`scripts/seat_browser.py`); a launch by hand must carry `--use-mock-keychain`. A Bash hook refuses one without it (`.claude/hooks/guard-browser-launch.sh`), and every fire runs `scripts/browser_keychain_check.py`.
 
 A local server also needs `JWT_SECRET_KEY` set, or `main.py` refuses to start: `export JWT_SECRET_KEY=$(python -c 'import secrets; print(secrets.token_urlsafe(32))')`.
 
