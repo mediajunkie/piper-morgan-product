@@ -172,6 +172,7 @@ The order of what it waits on:
 
 - **Paste:** two lines that Pard supplies with the build, as with every LaunchAgent since 10-30. I'll copy them here when they exist, not from memory.
 - **You should see:** Pard's cycle-check arm go from red to green.
+- **Seat check (Web, after the paste):** run `scripts/seat_session.py --account web-seed-1386` and expect its second line; open a beta page and quote the signed-in name, once after a browser restart and once after a promotion; and try one Read of a dummy file inside the profile folder in Web's own session, which should be refused (HOST, 2026-11-16: the second measurement of that deny, after CIO's seat).
 - **If it fails:** the arm stays red and names why. Tell Exec what it says.
 
 ## Step E (ADR row 3): one capped OpenAI project key, added the same way as Step A
