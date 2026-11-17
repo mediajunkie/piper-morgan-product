@@ -10,7 +10,7 @@
 
 | | **Claude subscription** | **Anthropic API** |
 |---|---|---|
-| What it is | Max/Pro plan via your **claude.ai account** | Pay-per-token via **console.anthropic.com** |
+| What it is | Max/Pro plan via your **claude.ai account** | Pay-per-token via **platform.claude.com** |
 | **Used by** | **The AGENT COHORT** — Claude Code sessions (`/login` with the Claude account) | **The PIPER MORGAN PRODUCT** — the app's LLM calls via `ANTHROPIC_API_KEY` |
 | Billing | Flat-rate; usage **CAPS** (no per-token charge) | **Pay-per-token**; prepaid / auto-reload credits |
 | Limits | Rolling ~5h window + weekly caps; you hit a wall and wait for reset | Rate limits (tokens/min, requests/min) by **usage tier**; credits drain |
@@ -24,7 +24,7 @@
 
 - **An agent (Claude Code session) stalls** with a busy-signal / rate-limit → **subscription** cap. *(Every agent stall 2026-06-25→06-27 was this.)* More credits won't help; spread sessions across accounts or wait for the window to reset.
 - **A fee / charge / "scaling tier" / "higher rate limits on the Claude API" email** → **API/product** side. *(The 2026-06-27 fee + tier bump were this.)*
-- **Rule of thumb**: mentions *console.anthropic.com, usage tier, TPM/RPM, or credits* → **API**. Mentions your *Claude/Max plan or Claude Code* → **subscription**.
+- **Rule of thumb**: mentions *platform.claude.com, usage tier, TPM/RPM, or credits* → **API**. Mentions your *Claude/Max plan or Claude Code* → **subscription**.
 
 ---
 

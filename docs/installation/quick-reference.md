@@ -9,7 +9,7 @@
 - [ ] Python 3.11+ installed: `python3 --version`
 - [ ] Git installed: `git --version`
 - [ ] ~500MB disk space available
-- [ ] Anthropic API key ready ([get one here](https://console.anthropic.com))
+- [ ] Anthropic API key ready ([get one here](https://platform.claude.com/dashboard))
 
 ---
 
@@ -143,7 +143,7 @@ After installation, you should be able to:
 
 - **Python 3.12**: https://python.org/downloads
 - **Git**: https://git-scm.com
-- **Anthropic Console**: https://console.anthropic.com
+- **Anthropic Console**: https://platform.claude.com/dashboard
 - **Piper Morgan GitHub**: https://github.com/mediajunkie/piper-morgan-product
 
 ---
