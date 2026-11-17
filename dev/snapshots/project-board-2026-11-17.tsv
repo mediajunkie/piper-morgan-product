@@ -2190,3 +2190,4 @@ issue	state	milestone	sprint	title	labels	blocked_by	state_reason
 2400	OPEN	Production		Seat browser for signed-in pages and chat turns (ADR-084 D3 browser half, Step D): .mcp.json attach, cookie placement, LaunchAgent			
 2401	OPEN	Production		Integrations cards: a failed Test on a sign-in GitHub card shows no reason; a check-failed card offers Disconnect (CXO 11-17)	bug		
 2402	OPEN	Production		Integrations cards draw a Test's stored error text into innerHTML unescaped (three cards served; GitHub joins with 2401)	architecture		
+2403	OPEN	Production		Two service modules load .env at import, so every test run's environment depends on a git-ignored file	architecture		
