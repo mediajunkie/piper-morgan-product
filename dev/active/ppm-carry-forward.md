@@ -692,7 +692,7 @@ Brake FIRED (second slip = #1965 admission, found and ledgered 10-09). Memo to E
 - Update 11-15 20:01: arm B bar final on #2301 (6906825645); the T4 cross is resolved. ADR-084 build list on xian's yes now includes CIO's staged-file scan.
 - Update 11-15 20:53: #2382 on main (40523ea6b9); served only after an MCP deploy. **#2384 MCP deploy job placed in PUB**; Total 312, map v155. ADR-084 items placed ahead of the yes: #2383 and #2384. Asked Arch to align card row 7 (secret vs main-only environment). Tier 1 option 3 on main (569a88d668).
 
-## Now (rewritten at the 11-15 21:33 STOP; carry into Mon 11-16)
+## Superseded Now block (11-15 21:33 STOP, with 11-16 updates; replaced 11-16 21:34)
 
 - **Invite hold, PDR-008.** Re-verified at 21:35 11-15 with `gh issue view`: #2261, #2282 and #2342 open. #2342: row 1 PASS; row 2's card half PASS (CXO); row 3 is PA's connector read after an MCP deploy. Lift-readiness memo to Exec waits on #2342's rows, #2261's close and #2282.
 - **xian's 19:11 ruling (Exec 01M7H5DC96), the frame for everything below:** no manual workarounds on xian. One design for how seats run and test Piper: **ADR-084** (`docs/internal/architecture/adrs/adr-084-seat-resources-are-separate-granted-once-and-bounded.md`), PROPOSED, with a 10-row one-time list for xian. Exec takes it to xian as one card. Paid runs are stopped until the seat-key route works. Memory: `feedback_xian_runs_it_is_not_a_plan`. PPM rule from tonight: new acceptance rows name who can read them.
@@ -718,3 +718,47 @@ Brake FIRED (second slip = #1965 admission, found and ledgered 10-09). Memo to E
   - **Unchanged:** 2364-selfhost-wording (the ethics flip served), tier1-approval-batch and 2358-procedure-texts (both need xian's quoted yes, which are genuine wording decisions), path-b-quote and notion-offer-ask.
 
 - **Update 11-16 18:37:** Beta serves 74caa06638 (2379, 2383, 2386 strings) since 18:15. Placed #2396 and #2397 in Q, #2399 in H. Filed #2400, the seat browser (D3 browser half, Step D), and placed it in Q beside 2388. Total 324, map v164. 2379's served rows wait on 2400 and seat-github-1 (row status on 2379). The self-knowledge card names three texts waiting on xian: the rules at 47a65eed5f, practice at c531cae276, and the seven procedures. Exec's rollup is v1012. Step A not started (Exec, 18:02).
+
+## Now (rewritten at the 11-16 21:33 STOP; carry into Tue 11-17)
+
+- **Invite hold, PDR-008.** Re-verified at 21:34 11-16 with `gh issue view`: #2261, #2282 and #2342 are open. The lift-readiness memo to Exec waits on #2342's rows, #2261's close and #2282.
+- **ADR-084 is ACCEPTED** (xian, 11-16 06:20, with its budget). Steps file: `docs/internal/operations/adr-084-one-time-steps.md`.
+  - **Step B:** done.
+  - **Step A** (the seat key for Lead): not started at 18:02 (Exec's log).
+  - **Step C** (the exact allow for `seat_session.py`): xian's.
+  - **Step D** (the seat browser load): HOST said go at 19:58, after Step C.
+  - **Step F0/F** (the second seat account): xian mints the code.
+  - Rule: nothing is routed to xian's screen. Each step names the standing access that would remove it (D6). Memory: `feedback_xian_runs_it_is_not_a_plan`.
+- **Seat build items:**
+  - **2388** (`seat_session.py`): on main and validated. Its first run waits on HOST's exception diffs for web-seed-1386 and on Step C.
+  - **2389** (`seat_account_create.py`): on main, rows 1–2 met. Rows 3–5 wait on CIO's ACCOUNTS row and Step F.
+  - **2400** (seat browser, filed 18:35): CIO's half is on main at 5cd39bb085 (HOST read it at 35b645aace). Pard's LaunchAgent is at mediajunkie 360246b (HOST go at 19:58). Row 1 closes with the `.mcp.json` switch after xian's Step D load.
+  - **2390, 2391, 2393, 2395, 2396, 2397:** in Q, not started as far as I know.
+- **Beta serves `74caa06638` since 18:15.** It carries 2379, 2383 and 2386's strings.
+  - **2379 served rows:** they wait on 2400 and seat-github-1, and Exec agrees they don't go to xian's screen.
+  - **2383:** rows 1–2 are met; row 3 waits on Step A. Arch's check of one ordinary turn rides the same seat route.
+  - **#2363 row 3:** waits on a promotion from a merge head.
+- **2399** (in H): 2188's rule for the said-instead rail replies; a Lead unit, with CXO's served read.
+- **2386:** the guide row is open for Docs.
+- **2375, 2374 and 2376 served reads:** wait on 2388, 2400 and 2381.
+- **2382 row 4:** waits on the 2384 deploy.
+- **Self-knowledge card** (Exec rollup v1012): three texts wait on xian's yes:
+  - the nine rules (#2354) at `47a65eed5f`;
+  - practice.md, 13 rows (#2355), at `c531cae276`;
+  - the seven procedures (#2358) at `7caa12d2ea`, `ce46ba0542` and `c531cae276`.
+  - Four texts are approved: how-i-act, cant-read, stance and stand-ins.
+- **Production 324** (`gh` at 21:34 = Total), map **v164**, 0 unmilestoned.
+  - Placed today: 2386 (D); 2388, 2389, 2390, 2391, 2393, 2395, 2396, 2397, 2400 (Q); 2399 (H).
+  - Ongoing: 2387, 2392 (closed 17:00, the scan is live), 2394.
+- **OWED rows:**
+  - 2364-known-limit: trigger is 2388's first real run.
+  - 2364-untested-provider-row: trigger is the 2390 route.
+  - 2364-selfhost-wording: trigger is the ethics flip being served.
+  - tier1-approval-batch and 2358-procedure-texts: trigger is xian's quoted yes.
+  - rule7-key-ask, path-b-quote, notion-offer-ask: unchanged.
+- **Genuine xian decisions:** the self-knowledge texts; E5 naming for #2380; #2344; whether to look for the possible "Safe Storage" keychain item from CIO's 11-15 dummy browser (CIO through Exec). #2335 is off his list (HOST cut it).
+- **Rules carried:**
+  - Push the branch you have checked out. The pre-push hook remembers a pass for 30 minutes; mail CIO the `gates already passed` line the first time a push of mine takes that path.
+  - The staged-credential scan has been live since 17:00 and has no skip.
+  - No compose up or down on Amber; `PIPER_CREDENTIAL_STORE=db`; a classifier refusal is final.
+
