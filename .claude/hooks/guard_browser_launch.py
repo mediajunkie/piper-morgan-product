@@ -13,7 +13,9 @@ BROWSER = re.compile(
     r"|chrome|chromium|chromium-browser|google-chrome(?:-stable)?|chrome-headless-shell)$"
 )
 APP = re.compile(r"chrom(e|ium)", re.IGNORECASE)
-SPLIT = re.compile(r"&&|\|\||;|\n|\||(?<![>&\d])&(?![>&])")
+# `$(`, `(`, `)` and backticks are separators too, so a program inside them is read (Arch).
+SPLIT = re.compile(r"&&|\|\||;|\n|\||\$\(|\(|\)|`|(?<![>&\d])&(?![>&])")
+TELL = re.compile(r"tell\s+application\s+\\?[\"'][^\"']*chrom", re.IGNORECASE)
 WRAPPERS = {"nohup", "exec", "command", "time", "caffeinate", "setsid", "nice"}
 # Commands that may NAME a browser program without starting it. Any other command with a
 # browser program among its words is refused (HOST, 2026-11-17: `timeout 5 <program>`,
@@ -77,6 +79,10 @@ NOT_LAUNCHERS = {
     "tee",
     "true",
     "false",
+    "dirname",
+    "basename",
+    "realpath",
+    "readlink",
 }
 SHELLS = {"bash", "sh", "zsh", "/bin/bash", "/bin/sh", "/bin/zsh"}
 ASSIGN = re.compile(r"^([A-Za-z_][A-Za-z0-9_]*)=(.*)$", re.DOTALL)
@@ -84,7 +90,7 @@ VAR = re.compile(r"^\$\{?([A-Za-z_][A-Za-z0-9_]*)\}?$")
 
 
 HEREDOC = re.compile(r"<<-?\s*(['\"]?)([A-Za-z_][A-Za-z0-9_]*)\1")
-FEEDS_SHELL = re.compile(r"(?:^|[\s;&|(/])(?:bash|sh|zsh)(?:\s|$)")
+FEEDS_SHELL = re.compile(r"(?:^|[\s;&|(/])(?:bash|sh|zsh|osascript)(?:\s|$)")
 
 
 def without_heredoc_text(cmd):
@@ -106,11 +112,19 @@ def without_heredoc_text(cmd):
     return "\n".join(out)
 
 
-def launches(cmd, names=None, depth=0):
+INTO_SHELL = re.compile(r"\|\s*(?:sudo\s+)?(?:\S*/)?(?:bash|sh|zsh)(?:\s|$)")
+
+
+def launches(cmd, names=None, depth=0, strict=False):
     """Reasons this command is refused (empty when it is fine)."""
     names = set() if names is None else names  # variables holding a browser path
-    cmd = without_heredoc_text(cmd)
     bad = []
+    cmd = without_heredoc_text(cmd)
+    # Text piped into a shell runs, so no command in it keeps the reader excuse (Arch):
+    # `echo <program> | sh`.
+    strict = strict or bool(INTO_SHELL.search(cmd))
+    if TELL.search(cmd):
+        bad.append("tell application")
     for seg in SPLIT.split(cmd):
         seg = seg.strip().lstrip("({ ").rstrip(")} ")
         try:
@@ -155,8 +169,12 @@ def launches(cmd, names=None, depth=0):
             if FLAG not in args:
                 bad.append(word)
             continue
-        if word.rsplit("/", 1)[-1] in NOT_LAUNCHERS:
+        if not strict and word.rsplit("/", 1)[-1] in NOT_LAUNCHERS:
             continue
+        if depth < 3:  # `eval "<program> --x"`: a quoted argument that is itself a command
+            for a in args:
+                if " " in a.strip() and not is_program(a):
+                    bad.extend(launches(a, names, depth + 1, strict))
         named = [a for a in args if is_program(a)]
         if named and FLAG not in args:
             bad.append(f"{word} ... {named[0]}")

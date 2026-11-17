@@ -35,7 +35,8 @@
 # Exit 0 only when every gate that ran passed. It changes nothing.
 #
 # Layer: the same commands CI runs, on your working tree. It does not run the tests,
-# the architecture tests or the smoke; run those as well.
+# the architecture tests or the smoke; run those as well. The pre-push hook runs the fast
+# architecture tests and the completion ratchets through scripts/run-push-arch-tests.sh.
 #
 # Concept: docs/internal/operations/github-and-tooling-gotchas.md
 set -uo pipefail
@@ -47,14 +48,21 @@ PY="$ROOT/venv/bin/python"
 RUN_MYPY=1
 BUILD_MYPY=1
 RUN_RUFF=1
+# The architecture check (scripts/run-push-arch-tests.sh). By hand it runs when the work not yet on
+# origin/main touches templates/, web/ or services/, so "I ran the gates by hand" means all
+# fifteen (Arch, Lead, 2026-11-17). Under --hook the hook runs it itself, with its own remembered
+# pass, so it is off here. --arch forces it; --no-arch leaves it out.
+RUN_ARCH=auto
 # Which workflow gate commands to run. --logs-and-mail narrows it to the three lints by name.
 GATE_FILTER='.'
 LOGS_AND_MAIL_RE='scripts/(mailbox_bearer_lint|mailbox_filename_lint|windows_filename_lint)\.py'
 for arg in "$@"; do
   case "$arg" in
     --no-mypy) RUN_MYPY=0 ;;
-    --hook) BUILD_MYPY=0 ;;
-    --logs-and-mail) RUN_MYPY=0; RUN_RUFF=0; GATE_FILTER="$LOGS_AND_MAIL_RE" ;;
+    --hook) BUILD_MYPY=0; RUN_ARCH=0 ;;
+    --logs-and-mail) RUN_MYPY=0; RUN_RUFF=0; RUN_ARCH=0; GATE_FILTER="$LOGS_AND_MAIL_RE" ;;
+    --arch) RUN_ARCH=1 ;;
+    --no-arch) RUN_ARCH=0 ;;
   esac
 done
 
@@ -127,6 +135,26 @@ if [ "$RUN_MYPY" -eq 1 ]; then
   else
     echo "FAIL  mypy gate environment could not be built (scripts/bootstrap-mypy-gate-venv.sh)"
     failed=$((failed + 1))
+  fi
+fi
+
+if [ "$RUN_ARCH" = "auto" ]; then
+  RUN_ARCH=0
+  if { git diff --name-only origin/main 2>/dev/null; git ls-files --others --exclude-standard 2>/dev/null; } \
+      | grep -qE '^(templates/|web/|services/)'; then
+    RUN_ARCH=1
+  fi
+fi
+if [ "$RUN_ARCH" = "1" ]; then
+  arch_out="$(scripts/run-push-arch-tests.sh 2>&1)"; arch_rc=$?
+  arch_line="$(printf '%s\n' "$arch_out" | grep -E '^run-push-arch-tests:' | tail -1)"
+  if [ $arch_rc -eq 0 ]; then
+    ran=$((ran + 1)); echo "PASS  architecture check (${arch_line#run-push-arch-tests: })"
+  elif [ $arch_rc -eq 3 ]; then
+    echo "UNCHECKED  architecture check: ${arch_line#run-push-arch-tests: }"; unchecked=$((unchecked + 1))
+  else
+    ran=$((ran + 1)); failed=$((failed + 1)); echo "FAIL  architecture check"
+    printf '%s\n' "$arch_out" | tail -12 | sed 's/^/      /'
   fi
 fi
 
