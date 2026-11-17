@@ -536,7 +536,7 @@ def test_redirect_uri_prints_the_host_and_path_and_nothing_else(ss, sr, shared):
     host = StubHost(ss, **{GH_CONNECT: _connect_reply(ss)})
     line = sr.read_redirect_uri(ACCOUNT, "github", host, now=1_800_000_100)
     assert line == (
-        "github redirect_uri: beta.example.invalid/api/v1/settings/integrations/github/callback"
+        "github redirect_uri: https://beta.example.invalid/api/v1/settings/integrations/github/callback"
     )
     assert STATE not in line and "made-up-id" not in line and "?" not in line
     for secret in SECRETS:
@@ -563,7 +563,7 @@ def test_redirect_uri_reports_a_host_switch_by_host_and_path(ss, sr, shared):
     )
     host = StubHost(ss, **{GH_CONNECT: reply})
     line = sr.read_redirect_uri(ACCOUNT, "github", host, now=1_800_000_100)
-    assert line == "github: start on other.example.invalid/settings/integrations/github"
+    assert line == "github: start on https://other.example.invalid/settings/integrations/github"
 
 
 @pytest.mark.parametrize(
@@ -665,7 +665,7 @@ def test_main_takes_a_path_or_the_option_never_both_or_neither(ss, sr, shared, c
     code, text = _run_main(sr, ["--account", ACCOUNT, "--redirect-uri", "github"], capsys)
     assert code == 0
     assert text.strip() == (
-        "github redirect_uri: beta.example.invalid/api/v1/settings/integrations/github/callback"
+        "github redirect_uri: https://beta.example.invalid/api/v1/settings/integrations/github/callback"
     )
     assert len(host.calls) == 1
     code, text = _run_main(sr, ["--account", ACCOUNT], capsys)
@@ -769,6 +769,17 @@ def test_the_real_callback_paths_fit_the_length_rule(sr):
         "/api/v1/settings/integrations/calendar/callback",
     ):
         assert (
-            sr.host_and_path("https://beta.pipermorgan.ai" + path) == "beta.pipermorgan.ai" + path
+            sr.host_and_path("https://beta.pipermorgan.ai" + path)
+            == "https://beta.pipermorgan.ai" + path
         )
     assert len(STATE) > 3 * sr.MAX_PART  # a minted state is far over the bound
+
+
+def test_the_line_shows_http_against_https(sr):
+    # HOST 2026-11-16 19:03: the scheme is part of what a provider compares.
+    assert (
+        sr.host_and_path("http://beta.example.invalid/cb?x=1") == "http://beta.example.invalid/cb"
+    )
+    assert (
+        sr.host_and_path("https://beta.example.invalid/cb#f") == "https://beta.example.invalid/cb"
+    )
