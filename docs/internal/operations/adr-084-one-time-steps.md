@@ -166,12 +166,29 @@ Run so far (CIO, 2026-11-16 18:55 PT, a scratch test browser on a throwaway fold
 The order of what it waits on:
 1. ADR-084's yes. Done 2026-11-16 06:20.
 2. HOST's read of the four files above. Done 2026-11-16 19:18 at 5cd39bb085 (the helper conforms), with Arch's required launcher change and the Read-deny test both done at 35b645aace.
-3. Pard builds the plist, the wrapper and a cycle-check arm (the debug port answers, the profile folder exists at mode 0700), and tests the wrapper by hand. The wrapper takes the port and folder from `scripts/seat_browser.py --where web`.
+3. (Done 2026-11-16 19:48, mediajunkie 360246b; not hand-tested.) Pard builds the plist, the wrapper and a cycle-check arm (the debug port answers, the profile folder exists at mode 0700), and tests the wrapper by hand. The wrapper takes the port and folder from `scripts/seat_browser.py --where web`.
 4. HOST reads both against the bound above.
 5. CIO switches `.mcp.json` to the launcher and checks it in CIO's own session first (a seat with no row).
 
-- **Paste:** two lines that Pard supplies with the build, as with every LaunchAgent since 10-30. I'll copy them here when they exist, not from memory.
-- **You should see:** Pard's cycle-check arm go from red to green.
+- **Built (Pard, 2026-11-16 19:48, mediajunkie 360246b):** the wrapper `scripts/seat-browser-run.sh`, the plist `docs/launchagents/com.xian.seat-browser-web.plist` and a `seat-browser` arm in cycle-check. CIO read the wrapper and plist at 19:53: the command line it produces is the one `seat_browser.py --check` requires. **HOST's read of both is asked and not yet given; xian pastes only after it.**
+- **It depends on xian's own checkout:** the wrapper and line 2 run `scripts/seat_browser.py` from `~/Development/piper-morgan-product`. That file is there since CIO's sync at 19:53 (main d417ecaab2). If that checkout is ever on a commit without it, the browser does not start and the log says why.
+- **Not hand-tested:** auto mode refused Pard the hand run, and he did not work around it. So line 2 below is the first real run, under launchd.
+- **Where:** Terminal, anywhere.
+- **Paste** (two lines, copied from Pard's memo by script, not retyped):
+
+```
+cp ~/Development/mediajunkie/docs/launchagents/com.xian.seat-browser-web.plist ~/Library/LaunchAgents/ && launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/com.xian.seat-browser-web.plist
+sleep 5; python3 ~/Development/piper-morgan-product/scripts/seat_browser.py --check web
+```
+
+- **You should see:** the second line prints `port 9333`. If it prints `refused:` with a reason, the browser's own log is `~/Library/Logs/seat-browser-web.log`; tell Exec the reason. After the load Pard's cycle-check arm goes to its full assertion.
+- **To undo** (stop first, then delete; HOST's order):
+
+```
+launchctl bootout gui/$(id -u)/com.xian.seat-browser-web && ~/Development/mediajunkie/scripts/seat-browser-run.sh --revoke web
+```
+
+- **D6:** this is a one-time load. launchd keeps the browser up and restarts it after a crash or a reboot, so nothing recurs for xian. The standing access that would remove even this step is a seat being able to load a LaunchAgent, which auto mode refuses and ADR-084 leaves with xian.
 - **Seat check (Web, after the paste):** run `scripts/seat_session.py --account web-seed-1386` and expect its second line; open a beta page and quote the signed-in name, once after a browser restart and once after a promotion; and try one Read of a dummy file inside the profile folder in Web's own session, which should be refused (HOST, 2026-11-16: the second measurement of that deny, after CIO's seat).
 - **If it fails:** the arm stays red and names why. Tell Exec what it says.
 
