@@ -484,9 +484,13 @@ class TestTheLineSaidInPlaceOfAConfirm:
         # a yes to a write that can't succeed (the write uses the same resolver).
         self._patch(monkeypatch, RuntimeError("store down, with a secret in its text"))
         line = await gh_mod.github_app_write_refusal_line(_OWNER, "octo/public")
-        unreachable = await GitHubMCPSpatialAdapter().degrade(DegradationReason.UNREACHABLE)
-        assert line == unreachable.user_message
-        assert "secret" not in line
+        # CXO 2026-11-16 17:27, verbatim. It names no cause and no machinery.
+        assert line == (
+            "I couldn't check whether the Piper GitHub app is installed on that repository, "
+            "so I haven't done anything. Try again in a moment."
+        )
+        assert line == gh_mod.GITHUB_APP_WRITE_CHECK_FAILED_REPLY
+        assert "secret" not in line and "MCP" not in line
 
     async def test_a_broken_check_lets_a_draft_go_ahead(self, monkeypatch):
         # A draft arms no write; the confirm that follows makes the check.
@@ -652,9 +656,7 @@ class TestTheConfirmBuilders:
         )
         probe = AsyncMock(side_effect=AssertionError("no probe"))
         monkeypatch.setattr(GitHubMCPSpatialAdapter, "probe_issue_connector", probe)
-        unreachable = (
-            await GitHubMCPSpatialAdapter().degrade(DegradationReason.UNREACHABLE)
-        ).user_message
+        unreachable = gh_mod.GITHUB_APP_WRITE_CHECK_FAILED_REPLY
         if builder == "create":
             intent = self._intent(
                 "create an issue", "create_issue", title="Login fails", repository="octo/public"

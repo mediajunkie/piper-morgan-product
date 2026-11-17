@@ -6562,7 +6562,7 @@ name; create_issue title and repo, unstripped again; update_issue number, repo a
 repository is known and before anything is armed or bound. Not installed on that repository: the reply is
 `GITHUB_APP_NOT_ON_REPOSITORY_WRITE_REPLY` (CXO's yes, 2026-11-16 16:08). Installed nowhere: the install
 step's line. A failed installation read: the honest failure. If the check itself breaks (the credential resolver
-raising), the four confirm builders say the couldn't-reach line and arm nothing (Arch 2026-11-16 16:45: the write uses
+raising), the four confirm builders say `GITHUB_APP_WRITE_CHECK_FAILED_REPLY` (CXO 2026-11-16 17:27) and arm nothing (Arch 2026-11-16 16:45: the write uses
 the same resolver, so a confirm would be a yes to a write that can't succeed); the draft step goes ahead instead,
 since a draft arms no write. Otherwise the confirm is offered as before. The close/reopen passthrough carries the
 not-performed marker for these refusals, as create and update do (`success` on these said-instead replies: #2399). The adapter's
