@@ -572,6 +572,18 @@ def test_redirect_uri_refuses_and_names_no_value(ss, sr, shared, reply_kwargs, r
     assert STATE not in str(refusal.value)
 
 
+def test_redirect_uri_refuses_a_state_in_the_path_when_the_reply_sends_no_state_key(ss, sr, shared):
+    # Arch 2026-11-16 18:43: the state is also read from the sign-in address.
+    _saved(ss, shared)
+    reply = _connect_reply(ss, redirect="https://beta.example.invalid/cb/" + STATE)
+    payload = json.loads(reply.body)
+    del payload["state"]
+    host = StubHost(ss, **{GH_CONNECT: ss.Reply(200, json.dumps(payload).encode())})
+    with pytest.raises(ss.Refused, match="state value") as refusal:
+        sr.read_redirect_uri(ACCOUNT, "github", host, now=1_800_000_100)
+    assert STATE not in str(refusal.value)
+
+
 @pytest.mark.parametrize("body", [b"not json", b"[]", b'"text"'])
 def test_redirect_uri_refuses_a_reply_in_another_form(ss, sr, shared, body):
     _saved(ss, shared)
