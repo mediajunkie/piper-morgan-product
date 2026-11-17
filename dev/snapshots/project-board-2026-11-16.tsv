@@ -2187,3 +2187,4 @@ issue	state	milestone	sprint	title	labels	blocked_by	state_reason
 2396	OPEN	Production		No per-test time limit in the full suite: a hung test would hold the run for an hour and never name itself			
 2397	OPEN	Production		Rewrite the 61 baselined credential-shaped fixture lines to build their values from parts (empties the 2392 baseline)			REOPENED
 2399	OPEN	Production		Said-instead replies on the write rail still report success: apply 2188's rule to the write-ask reply, the close/reopen passthrough and the refused-write handler			
+2400	OPEN	Production		Seat browser for signed-in pages and chat turns (ADR-084 D3 browser half, Step D): .mcp.json attach, cookie placement, LaunchAgent			
