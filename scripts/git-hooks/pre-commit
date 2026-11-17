@@ -16,4 +16,17 @@ if [ -f "$w" ] && grep -q '#1798 RESOLVED' "$w"; then bash "$w" || true; fi
 # recurse. Skipped in a checkout that predates the file.
 r="$top/.claude/hooks/pre-commit-ruff-warn.sh"
 if [ -f "$r" ]; then bash "$r" || true; fi
+# 2026-11-16 (issue 2392, ADR-084 D2; CIO): the one BLOCKING check before the branch check. The
+# repo is public, so a line the staged change adds with a credential shape (provider key, GitHub
+# or Fly token, invite code) refuses the commit, naming file and line and never the value. A
+# checkout that predates the script is passed with a line saying so; any other failure refuses.
+s="$top/scripts/staged_credential_scan.py"
+if [ -f "$s" ]; then
+  python3 "$s" --staged --baseline "$top/.staged-credential-scan-baseline.txt" >&2 || {
+    echo "pre-commit: commit refused by staged_credential_scan.py (see above)." >&2
+    exit 1
+  }
+else
+  echo "pre-commit: staged_credential_scan.py is not in this checkout; credential shapes were NOT checked." >&2
+fi
 exec "$top/.claude/hooks/check-branch.sh"

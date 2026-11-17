@@ -264,6 +264,30 @@ Tested by `scripts/git-hooks/test-remembered-pass.sh <empty scratch dir> scripts
 (a bare remote, a seat clone with stand-in gates and smoke, and a second clone that lands a log
 while the gates run): 14 checks.
 
+### A credential shape in a commit or a push: `scripts/staged_credential_scan.py` (issue 2392, CIO, 2026-11-16)
+
+The repo is public. Two checks read for provider keys (Anthropic, OpenAI, Google), GitHub and
+Fly tokens, Slack tokens and invite codes:
+
+- **At commit** (`scripts/git-hooks/pre-commit`, installed 2026-11-16 17:00): the lines the staged
+  change adds, in every folder. A hit refuses the commit and prints `path:line  shape name`,
+  never the value.
+- **In the push gates and CI** (`lint.yml`): every tracked text file outside `mailboxes/`, `docs/`
+  and `dev/`, which `mailbox_bearer_lint.py` reads on the line above it. Inside those three it
+  reads for the two shapes that lint lacks (GitHub app tokens, a bare Fly macaroon).
+- **Not covered:** a baselined line (issue 2397), and a secret with no shape, such as a seat
+  account's password.
+
+If it stops you:
+
+- **A real credential:** take it out, write the masked form `ABCD…WXYZ`, and if it was ever
+  pushed tell Exec the same hour so it is rotated.
+- **A made-up test value:** build it at run time from parts (`"sk-" + "ant-" + body`), so the file
+  holds no matching run. Don't add a line to `.staged-credential-scan-baseline.txt`; it lists
+  the 61 fixture lines that existed on 11-16 and only shrinks.
+- **A false match** (it passes a run with fewer than 6 distinct characters, and a name with no
+  digit and no capital): mail CIO with the path and line. There is no skip variable.
+
 ## 6. "Is it my diff or the environment?" — the `ab-a-isolation` skill (Lead, 2026-08-15; concept recorded 2026-10-14)
 
 **Why:** a suite that fails during your work has two candidate causes, your diff or the run's environment/history, and arguing

@@ -13835,6 +13835,43 @@ class IntentService:
                     )
 
                     _gate_subject = _strip_repo_phrase_for(_gate_subject, _strip_target)
+            # #2379 (Arch 2026-11-15 15:49; CXO 2026-11-16 16:08: "it must replace the
+            # confirm and the create's draft offer entirely"). On a GitHub App
+            # connection, a draft aimed at a repository the App isn't installed on is
+            # answered here, before any draft is offered or armed. The repository is
+            # the one named, else the default a write would use (a database read).
+            # Drafting still needs no connector: with no App grant, or if this check
+            # itself fails, the answer is None and the draft goes ahead.
+            _gate_target = _gate_repo
+            if not _gate_target and _gate_user:
+                try:
+                    from services.integrations.github.repo_resolver import (
+                        get_user_write_target as _gate_write_target,
+                    )
+
+                    _gate_target = await _gate_write_target(_gate_user)
+                except Exception:  # silent-ok: #2379 — an unreadable default leaves the draft as it was; the write's own check still holds (logged)
+                    self.logger.warning("draft_gate_write_target_read_failed", exc_info=True)
+                    _gate_target = None
+            from services.mcp.consumer.github_adapter import (
+                github_app_write_refusal_line as _gate_app_refusal_line,
+            )
+
+            _gate_refusal = await _gate_app_refusal_line(_gate_user, _gate_target)
+            if _gate_refusal is not None:
+                return IntentProcessingResult(
+                    success=False,  # nothing was drafted or written
+                    message=_gate_refusal,
+                    intent_data={
+                        "category": intent.category.value,
+                        "action": intent.action,
+                        "confidence": intent.confidence,
+                        NOT_PERFORMED_KEY: NotPerformed.DEGRADED,
+                        "repository": _gate_target,
+                    },
+                    workflow_id=workflow_id,
+                    requires_clarification=False,
+                )
             # #1970 step 1: resolve the (unverified) router hint and log it
             # ALONGSIDE the regex read — this backstop path does not yet
             # thread the hint into gate_holds's own decision (only the rail

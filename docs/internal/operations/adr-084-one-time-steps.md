@@ -325,7 +325,15 @@ What the row must hold, whatever the path:
 
 **Owner: CIO. No batch is ready today.** This one recurs. It is the item ADR-084 doesn't remove: auto mode refuses a seat an edit to its own guards, and refuses Pard an edit to another seat's settings.
 
-Two items are queued and neither is built: a scan for credential shapes in staged files, and a pre-push hook change that records an earlier gate run.
+Both items that were queued on 11-15 are built (2026-11-16), and neither needed a step from xian:
+
+- The pre-push hook's remembered pass is live: Pard installed it at 12:46 on 11-16 (recipe 5 in `canonical-ops-recipes.md`).
+- The scan for credential shapes is `scripts/staged_credential_scan.py` (issue 2392). Its gate half (`--tracked`, in `lint.yml` and so in `scripts/run-push-gates.sh`) needs no install. Its commit half (`--staged`, called from `scripts/git-hooks/pre-commit`) is live: Pard installed the hook at 17:00 on 11-16, after HOST's read and Arch's validation, and it refused a probe commit at 17:07.
+
+What the scan does not cover, so nobody reads it as covering more (HOST and Arch, 2026-11-16):
+
+- **The 61 lines in `.staged-credential-scan-baseline.txt` are the known unchecked set.** A baselined line passes whatever value sits in it, at commit and in the gate. No seat has opened those values to judge them and none will. Issue 2397 rewrites them to build each value from parts, which empties the baseline.
+- **A secret with no shape.** A seat account's password and the machine account's password are plain url-safe strings with no prefix; `staged_credential_scan.py` cannot match them. They are protected by the Read denies on the `*-credentials.txt` files and by never being typed into a file.
 
 The form each batch takes, so a sitting is short (CIO, 2026-11-15):
 
