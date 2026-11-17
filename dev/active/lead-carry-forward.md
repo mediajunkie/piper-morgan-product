@@ -1,5 +1,20 @@
 # Lead carry-forward — Fable 5.2 seat since 2026-11-10 ~17:25 (xian upgraded the session; Opus 5.5 before that, from 11-04); Model A worktree ~/Development/piper-morgan-worktrees/lead
 
+## IN-DAY 2026-11-17 12:47 (supersedes every earlier block where they differ)
+
+- **Beta serves `d678b0af26` since 11:31** (run 44158892398, Arch: CONFORMS): 2402 (card text escaped; exception text logged only; Slack's one sentence), the console link as "Claude Platform"; on the 08:07 build (2401, 2397). No migration. **Not verified: anything a signed-in person sees.** 2401 and 2402 stay open for a served read (seat route: Steps C, D, F).
+- **Main: 12 of 12 green at 12:46.** Two reds today were mine (a local `escapeHtml` in a template, 08:11 to 08:58; a registry test, 09:59 to about 10:35), each from a local run narrower than CI's.
+- **RULES I WORK TO NOW:**
+  - Before any push touching `services/`, `web/`, `templates/` or `cli/`: CI's full-suite command (`pytest tests/ -m "not llm" -q --tb=no -rfEs` with CI's `-o addopts`) and `scripts/check_fullsuite_backlog.py`, whole. About 14 minutes. Not a list of folders I judge related.
+  - Never run a keychain-named test alone (the permission layer refused it; whole files only, under the suite's in-memory keyring). Never read `.env` or `settings.local.json` by any means; the env-file check is off, the question is xian's.
+  - Before a dispatch: read staging's `/health` sha, find its nearest tested ancestor, and check by hand that no file under `templates/` or `cli/` changed between that ancestor and staging's commit; say so in the dispatch note. Do not re-run a Tests run on a busy queue (it displaces another seat's run and does not hold); ask Exec for a push hold instead.
+  - A parametrize id that is a bare connector name ("github") gets the test skipped by conftest when no token is set.
+- **WAITING ON XIAN'S YES (through Exec, rollup v1045): `lead/promote-gate-tested-paths`, `cdd3077d93`.** Adds `templates/|cli/` to the promote gate's `TESTED_PATHS_RE` in `fly-deploy.yml`, with a test comparing it to `test.yml`. Arch has read it. Merge only on xian's yes relayed verbatim by Exec; then gates, push, tell Arch.
+- **On main today, not served paths:** `b5a2787d22` (`templates/**` and `cli/**` trigger Tests; templates and shared scripts trigger Architecture Enforcement), `b2be4a4ba7` (keyring guard in two keychain test files; HOST: conforms), `ede309b4ba` (my card-state script no longer writes the store variable into the test process). CIO's push hook: architecture check on `templates/`, `web/`, `services/` pushes; `run-push-gates.sh` by hand runs it as a fifteenth gate; drop the skip variable for retries once Pard has reinstalled (`7b1286e512` source).
+- **Card-state file:** `scripts/card_state_file.py` writes `docs/internal/operations/card-states.md` (18 states), kept current by a test. Next surface, a fresh session: click-and-card pairs for CXO, GitHub first; CXO's principle: the line at the click and the line on the card are one sentence from one source, a pair that differs is a defect row.
+- **Fresh session each:** that surface; the 2157 restore-drill script; 2403 (no import-time `.env` load; after PPM places it).
+- **Paid runs still STOPPED** (Step A, then `check-env`). 2379's served rows, 2389's real run, the `redirect_uri` reads: xian's steps (A, C, D, F). 2264: Exec has xian's decision. 2345 waits on 2342; 2399 on PPM.
+
 ## IN-DAY 2026-11-17 08:26 (supersedes every earlier block where they differ)
 
 - **Beta serves `4e2797bce2` since 08:07** (run 44121605245, Arch's 07:53 grant; no migration): 2401's two card changes and 2397's detector digests, on the 11-16 build. **Not verified: anything a signed-in person sees.**
