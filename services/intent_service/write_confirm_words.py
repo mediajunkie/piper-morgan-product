@@ -305,6 +305,23 @@ async def add_project_write_ask(request: WriteAskRequest) -> WriteAsk:
     )
 
 
+async def _app_not_on_repository(request: WriteAskRequest, repository: str) -> Optional[WriteAsk]:
+    """#2379 (Arch 2026-11-15 15:49): on a GitHub App connection, a write aimed at a
+    repository the App isn't installed on is answered here, in place of the confirm,
+    so nobody says yes to a write GitHub will refuse. Nothing is armed or bound. None:
+    offer the confirm."""
+    from services.intent_service.not_performed import NOT_PERFORMED_KEY, NotPerformed
+    from services.mcp.consumer.github_adapter import github_app_write_refusal_line
+
+    line = await github_app_write_refusal_line(request.user_id or request.principal, repository)
+    if line is None:
+        return None
+    return WriteAsk(
+        reply=line,
+        intent_data={NOT_PERFORMED_KEY: NotPerformed.DEGRADED, "repository": repository},
+    )
+
+
 async def create_issue_write_ask(request: WriteAskRequest) -> WriteAsk:
     """``Create an issue titled "x" in owner/repo?`` from the handler's own slots:
     the intent's ``title`` / ``repository``, else ``_slotfill_issue_request``. A repo
@@ -325,6 +342,9 @@ async def create_issue_write_ask(request: WriteAskRequest) -> WriteAsk:
     title = _text(strip_repo_phrase_for(title, repository))
     if not title:
         return WriteAsk()
+    refused = await _app_not_on_repository(request, repository)
+    if refused is not None:
+        return refused
     bind_write_values(intent, "create_issue", title=title, repository=repository)
     return WriteAsk(
         words=ConfirmWords(
@@ -370,6 +390,9 @@ async def update_issue_write_ask(request: WriteAskRequest) -> WriteAsk:
     fields = [said for key, said in _UPDATE_ISSUE_FIELDS if values[key]]
     if not number or not repository or not fields:
         return WriteAsk()
+    refused = await _app_not_on_repository(request, repository)
+    if refused is not None:
+        return refused
     bind_write_values(intent, "update_issue", issue_number=number, repository=repository, **values)
     changed = " and ".join(fields)
     return WriteAsk(
