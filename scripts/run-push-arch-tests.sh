@@ -17,6 +17,10 @@
 # pushes that touch services/, without another ruling. And this check does not make a narrow
 # local run a validation: before calling a served-path change validated, run both files whole.
 #
+# The `-k` filter applies to both files. No class in the ratchets file carries either name
+# today (146 = 136 + 10). A ratchet class later named with one of those words would be dropped
+# without a word: check the count if you add one (Lead, 2026-11-17).
+#
 # It reads tracked code, templates and tests; nothing under dev/20NN/ or mailboxes/. So the
 # pre-push hook may skip it on a remembered pass (Arch's rule: a check is skipped on a hit only
 # if everything it reads is in the key).
