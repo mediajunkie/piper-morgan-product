@@ -1,5 +1,5 @@
 ---
-last_updated: 2026-11-16 21:28 PST (STOP)
+last_updated: 2026-11-17 09:28 PST (WORK)
 currency_claim: rewritten at substantive-change boundaries, verified at every START
 max_age_days: 4
 ---
@@ -25,6 +25,15 @@ context-floor directive that duplicating it here is exactly the accretion to cut
 | GitHub criteria line | `gh issue list --repo mediajunkie/piper-morgan-product --label architecture --state open` — the third work-queue source (PM v1.33). Open each issue, don't write a row from the list. Report drained as "mail (N) + standing-items (N) + label:architecture (M)." |
 
 ## IN FLIGHT — current state only
+
+**11-17 state (09:28, WORK fire):** beta serves `4e2797bce2` since 08:07 (promotion CONFORMS; carries 2401 and 2397's detector). Main: Tests and Architecture Enforcement show red on runs from before Lead's 08:58 fix (1838d15c93); a Tests run on a later head was in progress at 09:27. Inbox empty. Rulings are in decisions.log.
+- **No grant is open.** The 08:26 grant (to 3e0f20f262) is void: main was red 08:11 to 08:58 on 2402's local `escapeHtml`. Lead will ask for one grant covering 2402 with the fix, CXO's Slack line (`lead/2402-slack-line`) and the console address (`lead/console-address`) once all are on main and Tests are green. **Read the served diff from `4e2797bce2` and run `tests/test_architecture_enforcement.py` and `tests/test_completion_ratchets.py` whole before answering** (my 2402 validation skipped them; that is now the rule for any served-file change).
+- **Issue 2402** (mine, filed 11-17): cards drew route strings unescaped. Both halves on main (456dad90a7, 3e0f20f262, fix 1838d15c93), unit layer. My filing overstated it: `connection_failed` was never stored or drawn (Lead's correction, on the issue). Rule that stands: an exception's text never reaches a stored Test result, a response field or a card. CXO's words: the check-failed line stands; Slack gets one sentence at the click and on the card. Served row waits on the seat route.
+- **Card-state file** (`scripts/card_state_file.py`, `docs/internal/operations/card-states.md`): the unit-test pin stays; in CI a missing node fails it (both conditions met). Next surface is words after a click, Test result first; CXO's rule is one source per sentence.
+- **Browser launch guard** (CIO, 6f5bfdab94; xian via Exec: "ok to leave it. let's ensure it doesn't recur, though."): hook plus Step 1j process check accepted. **My required change is not built: the guard must fail toward refusing** (a browser path token anywhere is a launch, with a reader allow-list; HOST's osascript line). When CIO sends the sha, re-run the 16 forms (list in my 09:08 mail 01M7N7QYP5) and update the typed-forms sentence in ADR-084 D3. Hook measured firing in 5 of 11 seats, 6 untested (HOST counts).
+- **Validated today:** 2397 detector (digest set equal, 11 of 11); commit hook refusal seen from this seat (issue 2392, 1 shape).
+- **Step A indicator:** use the date of `settings.local.json` in Lead's `.claude/` only (still Nov 3 at 09:27). `settings.json` there is the tracked project file and changes with merges.
+- **Lessons (11-17):** (1) Never pipe `git commit` into `head`: the hooks die on the closed pipe and the commit is silently lost; check `git log -1` after. (2) A branch on my screen contradicted my 2402 claim and I didn't follow it: trace a value from where it is made to where it is shown before filing. (3) "Validated" names the suites run; for served files that includes the architecture suite.
 
 **11-16 state (21:27, STOP):** main 12/12 green; inbox empty; beta serves `74caa06638` since 18:15 (promotion CONFORMS; grant fd6ef1c669 to 2a57d566d1 spent). Model Fable 5.2. Every ruling is in decisions.log.
 - **ADR-084 ACCEPTED** (xian 06:20): $10 a run; `lead-scoring` $150 a month. D3 was corrected three times today to match what was built: the helper places the access cookie only and both proofs are named; revocation order is stop the browser, delete the profile folder, then delete the session file; the seat browser holds a seeded account's session only.
