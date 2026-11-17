@@ -23,7 +23,7 @@ SENTENCE = (
     "A Claude subscription (Pro or Max) doesn't include API access. Piper needs an API key "
     "from the Anthropic Console, which is billed separately from your subscription."
 )
-LINK = '<a href="https://console.anthropic.com/" target="_blank" rel="noopener noreferrer">'
+LINK = '<a href="https://platform.claude.com/dashboard" target="_blank" rel="noopener noreferrer">'
 
 
 def _note(path: Path) -> str:
