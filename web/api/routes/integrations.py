@@ -192,6 +192,20 @@ UNCHECKED_DETAIL = "Not checked yet. Press Test."
 CHECK_FAILED_MESSAGE = "Couldn't check this just now. Press Test to try again."
 
 
+def _connection_failed(where: str, error: BaseException) -> Dict[str, Any]:
+    """A Test that raised. #2402 (Arch and CXO, 2026-11-17): an exception's text never
+    reaches a stored Test result, a response field or a card. It can quote a URL, a
+    header or a remote service's reply. It goes to the log, where the redaction filter
+    sits (#2362); the result carries the written check-failed line (#2151)."""
+    logger.warning(
+        "integration_test_raised",
+        where=where,
+        error_class=type(error).__name__,
+        error=str(error),
+    )
+    return {"success": False, "error": CHECK_FAILED_MESSAGE, "error_type": "connection_failed"}
+
+
 def _unchecked_card(integration_id: str, metadata: Dict[str, Any]) -> "IntegrationStatus":
     """The configured-but-never-tested card (#2044): this principal has no Test result
     on record (#2071; another account's result never counts)."""
@@ -318,10 +332,11 @@ async def get_integrations_health(
         )
 
     except Exception as e:
+        # #2402: the exception's text goes to the log, never into the response.
         logger.error("Failed to check integrations health", error=str(e))
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Health check failed: {str(e)}",
+            detail="Health check failed",
         )
 
 
@@ -423,12 +438,13 @@ async def check_all_connections(current_user: JWTClaims = Depends(get_current_us
             result = await check_integration_connection(integration_name, current_user=current_user)
             results.append(result)
         except Exception as e:
+            # #2402: the same written line as a single Test that couldn't run.
+            logger.error(f"Integration test failed: {integration_name}", error=str(e))
             results.append(
                 ConnectionTestResponse(
                     integration=integration_name,
                     success=False,
-                    message=f"Test failed: {str(e)}",
-                    error=str(e),
+                    message=CHECK_FAILED_MESSAGE,
                 )
             )
     return results
@@ -705,7 +721,7 @@ async def _test_integration(integration_id: str, user_id: Optional[str] = None) 
             return {"success": False, "error": f"Unknown integration: {integration_id}"}
 
     except Exception as e:
-        return {"success": False, "error": str(e), "error_type": "connection_failed"}
+        return _connection_failed("_test_integration", e)
 
 
 async def _test_notion(user_id: Optional[str] = None) -> Dict[str, Any]:
@@ -757,7 +773,7 @@ async def _test_notion(user_id: Optional[str] = None) -> Dict[str, Any]:
                 }
 
     except Exception as e:
-        return {"success": False, "error": str(e), "error_type": "connection_failed"}
+        return _connection_failed("_test_notion", e)
 
 
 async def _test_slack(user_id: Optional[str] = None) -> Dict[str, Any]:
@@ -789,14 +805,17 @@ async def _test_slack(user_id: Optional[str] = None) -> Dict[str, Any]:
                 if data.get("ok"):
                     return {"success": True}
                 else:
+                    # #2402: Slack's own error word is a remote service's text. It is
+                    # logged; the stored result and the card carry a written line.
+                    logger.info("slack_test_refused", slack_error=str(data.get("error")))
                     return {
                         "success": False,
-                        "error": data.get("error", "Token invalid or expired"),
+                        "error": "Token invalid or expired",
                         "error_type": "token_invalid",
                     }
 
     except Exception as e:
-        return {"success": False, "error": str(e), "error_type": "connection_failed"}
+        return _connection_failed("_test_slack", e)
 
 
 _GITHUB_WORKING_OAUTH = "GitHub is working, using your GitHub connection."
@@ -847,7 +866,8 @@ async def _test_github(user_id: Optional[str] = None) -> Dict[str, Any]:
     if not user_id:
         return {
             "success": False,
-            "error": "GitHub not connected. Please add your token.",
+            # CXO 2026-11-17: an account connected through the app has no token to add.
+            "error": "GitHub isn't connected. Open Settings, under Integrations, to connect it.",
             "error_type": "not_configured",
         }
     try:
@@ -886,7 +906,7 @@ async def _test_github(user_id: Optional[str] = None) -> Dict[str, Any]:
             "stale_oauth_reason": getattr(stale, "value", stale),
         }
     except Exception as e:
-        return {"success": False, "error": str(e), "error_type": "connection_failed"}
+        return _connection_failed("_test_github", e)
 
 
 async def _test_calendar(user_id: Optional[str] = None) -> Dict[str, Any]:
@@ -977,4 +997,4 @@ async def _test_calendar(user_id: Optional[str] = None) -> Dict[str, Any]:
     except ImportError:
         return {"success": False, "error": "Calendar integration not available"}
     except Exception as e:
-        return {"success": False, "error": str(e), "error_type": "connection_failed"}
+        return _connection_failed("_test_calendar", e)

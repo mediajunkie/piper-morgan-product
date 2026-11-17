@@ -492,7 +492,8 @@ class TestGitHubIntegration:
 
             assert result["success"] is False
             assert result["error_type"] == "not_configured"
-            assert "not connected" in result["error"].lower()
+            # CXO 2026-11-17 (#2402): no "add your token"; an App connection has none.
+            assert "isn't connected" in result["error"] and "token" not in result["error"]
 
 
 class TestSlackIntegration:
@@ -562,7 +563,8 @@ class TestSlackIntegration:
             result = await _test_slack(user_id="u1")
 
             assert result["success"] is False
-            assert result["error"] == "invalid_auth"
+            # #2402: Slack's own word is a remote text; the result carries a written line.
+            assert result["error"] == "Token invalid or expired"
             assert result["error_type"] == "token_invalid"
 
     @pytest.mark.asyncio
