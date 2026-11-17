@@ -204,8 +204,10 @@ GITHUB_APP_NOT_ON_REPOSITORY_REPLY = (
 )
 # #2379 (Arch 2026-11-15 15:49): the same state when the turn is a WRITE (create, update,
 # close, reopen, comment). It shows in place of the confirm, so nobody confirms a write
-# that can't happen. Lead's proposal, one clause changed from CXO's read line; sent to
-# CXO 2026-11-16 (mail 01M7KCW1TP), who may reword this constant.
+# that can't happen. CXO 2026-11-16 16:08 (mail 01M7KDAEDF): yes to this line, unchanged;
+# it must replace the confirm and the create's draft offer entirely. No connector
+# variant exists because Piper's MCP server has no write tool; CXO's words for one are
+# on issue 2379.
 GITHUB_APP_NOT_ON_REPOSITORY_WRITE_REPLY = (
     "The Piper GitHub app isn't installed on that repository, so I can't change anything "
     "there. If it's yours, install it there in Settings, under Integrations."
