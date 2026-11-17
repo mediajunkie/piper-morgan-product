@@ -142,22 +142,19 @@ async def github_app_write_refusal_line(
     offered. One place for the confirm builders (create, update, close, reopen) and
     the create draft step.
 
-    When the check itself breaks (Arch 2026-11-16 16:45, CXO 16:31): the couldn't-reach
-    line, in place of the confirm. The check raises only when the credential resolver
+    When the check itself breaks (Arch 2026-11-16 16:45, CXO 16:31 and 17:27): CXO's
+    couldn't-check line, in place of the confirm. The check raises only when the credential resolver
     or the check breaks, and the write goes through the same resolver, so a confirm
     offered after that is a yes to a write that can't succeed. ``drafting=True`` (the
     draft step) answers None instead: a draft arms no write, and the confirm that
     follows makes this check."""
     if not user_id or not repository or not _is_repo_full_name(repository):
         return None
-    adapter = GitHubMCPSpatialAdapter()
     try:
-        refusal = await adapter.app_write_refusal(str(user_id), repository)
+        refusal = await GitHubMCPSpatialAdapter().app_write_refusal(str(user_id), repository)
     except Exception:
         logger.warning("GitHub App write-target check failed before the confirm", exc_info=True)
-        if drafting:
-            return None
-        return github_degrade_reply(await adapter.degrade(DegradationReason.UNREACHABLE))
+        return None if drafting else GITHUB_APP_WRITE_CHECK_FAILED_REPLY
     return github_write_refusal_reply(refusal) if refusal is not None else None
 
 
@@ -221,6 +218,14 @@ GITHUB_APP_NOT_ON_REPOSITORY_REPLY = (
 GITHUB_APP_NOT_ON_REPOSITORY_WRITE_REPLY = (
     "The Piper GitHub app isn't installed on that repository, so I can't change anything "
     "there. If it's yours, install it there in Settings, under Integrations."
+)
+# CXO 2026-11-16 17:27 (mail 01M7KHVSPF), verbatim: the pre-confirm check itself broke.
+# Said in place of the confirm by the four confirm builders; nothing is armed. It names
+# no cause, so it is true whether GitHub or our own lookup failed. The read-side
+# unreachable line is a separate line and is unchanged.
+GITHUB_APP_WRITE_CHECK_FAILED_REPLY = (
+    "I couldn't check whether the Piper GitHub app is installed on that repository, so I "
+    "haven't done anything. Try again in a moment."
 )
 GITHUB_CONNECTOR_APP_NOT_ON_REPOSITORY_REPLY = (
     "The Piper GitHub app isn't installed on that repository, so I can't read it. "
