@@ -137,9 +137,11 @@ common="$(git rev-parse --git-common-dir)"
 # smoke files name the CLI). templates/ is left out ON PURPOSE (Lead, same day: the architecture
 # check already reads every template; the smoke would add two files for about 75 s).
 # tests/unit/scripts/test_pre_push_trigger_lists.py compares these lists with test.yml's paths.
-code_re='^(services/|web/|tests/|cli/|main\.py$|alembic/|pytest\.ini$|requirements[^/]*\.txt$)'
+# Any top-level *.py, as test.yml has it (Lead, 2026-11-17: main_mcp.py and the root conftest.py
+# were missed by `main\.py$`).
+code_re='^(services/|web/|tests/|cli/|[^/]*\.py$|alembic/|pytest\.ini$|requirements[^/]*\.txt$)'
 # The gates' trigger (CIO 2026-11-12, condition 1): the smoke's paths plus these.
-gates_re='^(services/|web/|tests/|templates/|cli/|main\.py$|alembic/|pytest\.ini$|requirements[^/]*\.txt$|scripts/|\.github/|\.claude/|\.[^/]*-baseline\.txt$)'
+gates_re='^(services/|web/|tests/|templates/|cli/|[^/]*\.py$|alembic/|pytest\.ini$|pyproject\.toml$|requirements[^/]*\.txt$|scripts/|\.github/|\.claude/|\.[^/]*-baseline\.txt$)'
 # The architecture check's trigger (Arch 2026-11-17).
 arch_re='^(templates/|web/|services/)'
 zero=0000000000000000000000000000000000000000
