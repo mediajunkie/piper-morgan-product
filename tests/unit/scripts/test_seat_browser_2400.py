@@ -410,8 +410,9 @@ def test_the_devtools_client_speaks_websocket_on_loopback(mods):
 def _launcher(tmp_path, seat, conf_text):
     top = tmp_path / seat
     (top / "scripts").mkdir(parents=True)
+    for name in ("seat-browser-mcp.sh", "seat_browser.py", "seat_session.py", "seat_read.py"):
+        (top / "scripts" / name).write_text((ROOT / "scripts" / name).read_text())
     script = top / "scripts" / "seat-browser-mcp.sh"
-    script.write_text((ROOT / "scripts" / "seat-browser-mcp.sh").read_text())
     (top / "scripts" / "seat-browser.conf").write_text(conf_text)
     done = subprocess.run(["bash", str(script), "--print"], capture_output=True, text=True)
     return done.returncode, done.stdout.split("\n"), done.stderr
@@ -421,9 +422,9 @@ def test_a_seat_without_a_row_starts_what_mcp_json_started_before(tmp_path):
     code, lines, err = _launcher(tmp_path, "cio", "web 9333\n")
     current = json.loads((ROOT / ".mcp.json").read_text())["mcpServers"]["chrome-devtools"]
     if current["command"] == "npx":  # until .mcp.json is switched to the launcher
-        assert [l for l in lines if l] == ["npx", *current["args"]]
+        assert [line for line in lines if line] == ["npx", *current["args"]]
     assert code == 0 and "--isolated" in lines and err == ""
-    assert not any(l.startswith("--browserUrl") for l in lines)
+    assert not any(line.startswith("--browserUrl") for line in lines)
 
 
 def test_a_seat_whose_browser_is_down_falls_back_and_says_so(tmp_path):
@@ -433,12 +434,96 @@ def test_a_seat_whose_browser_is_down_falls_back_and_says_so(tmp_path):
     server.close()  # nothing listens on this port now
     code, lines, err = _launcher(tmp_path, "web", f"web {port}\n")
     assert code == 0 and "--isolated" in lines
-    assert f"not answering on 127.0.0.1:{port}" in err
+    assert not any(line.startswith("--browserUrl") for line in lines)
+    assert "not attaching for 'web'" in err and "refused" in err
 
 
-def test_the_launcher_reads_the_port_from_the_conf_and_pins_the_tool():
+def test_the_launcher_never_attaches_to_another_browser_on_the_port(tmp_path):
+    """Arch, 2026-11-16: something answers /json/version on the seat's port like a browser
+    would, but it is not the seat's own browser. The tool must get the throwaway."""
+    import http.server
+
+    class Answers(http.server.BaseHTTPRequestHandler):
+        def do_GET(self):
+            body = b'{"webSocketDebuggerUrl": "ws://127.0.0.1:1/devtools/browser/abc"}'
+            self.send_response(200)
+            self.send_header("Content-Length", str(len(body)))
+            self.end_headers()
+            self.wfile.write(body)
+
+        def log_message(self, *args):
+            pass
+
+    server = http.server.HTTPServer(("127.0.0.1", 0), Answers)
+    thread = threading.Thread(target=server.serve_forever, daemon=True)
+    thread.start()
+    try:
+        code, lines, err = _launcher(tmp_path, "web", f"web {server.server_address[1]}\n")
+    finally:
+        server.shutdown()
+        server.server_close()
+    assert code == 0 and "--isolated" in lines
+    assert not any(line.startswith("--browserUrl") for line in lines)
+    assert "not attaching for 'web'" in err and "refused" in err
+
+
+def test_check_makes_the_placement_proof_and_sends_nothing(mods, conf, tmp_path, monkeypatch):
+    ss, sb = mods
+    seen = []
+    monkeypatch.setattr(sb, "browser_socket_path", lambda seat, port: seen.append((seat, port)))
+    assert sb.check("web", conf) == "port 9333"
+    assert seen == [("web", 9333)]
+    with pytest.raises(ss.Refused, match="has no seat browser"):
+        sb.check("cio", conf)
+
+    def refuse(seat, port):
+        raise ss.Refused("the browser on that port is not on this seat's profile folder")
+
+    monkeypatch.setattr(sb, "browser_socket_path", refuse)
+    with pytest.raises(ss.Refused, match="profile folder"):
+        sb.check("web", conf)
+
+
+def test_the_launcher_reads_the_port_from_the_helper_and_pins_the_tool():
     text = (ROOT / "scripts" / "seat-browser-mcp.sh").read_text()
     assert "seat-browser.conf" in text and "9333" not in text
     assert "chrome-devtools-mcp@1.10.1" in text
-    assert '--browserUrl "http://127.0.0.1:$port"' in text
-    assert "remote-allow-origins" not in text
+    assert 'seat_browser.py" --check "$seat"' in text
+    assert "curl" not in text  # an answering port is not proof of whose browser it is
+    assert "--remote-allow-origins" not in text.replace("# ", "")
+
+
+@pytest.mark.parametrize(
+    "helper_prints, helper_exit, attaches",
+    [
+        ("port 9444", 0, True),
+        ("port 9444", 2, False),  # a refusal is a refusal whatever it printed
+        ("port 9444 --executablePath=/bin/sh", 0, False),  # only 'port <digits>' is taken
+        ("", 0, False),
+    ],
+)
+def test_the_launcher_attaches_only_on_the_helpers_plain_yes(
+    tmp_path, helper_prints, helper_exit, attaches
+):
+    top = tmp_path / "web"
+    (top / "scripts").mkdir(parents=True)
+    script = top / "scripts" / "seat-browser-mcp.sh"
+    script.write_text((ROOT / "scripts" / "seat-browser-mcp.sh").read_text())
+    (top / "scripts" / "seat-browser.conf").write_text("web 9333\n")
+    (top / "scripts" / "seat_browser.py").write_text(
+        f"import sys\nprint({helper_prints!r})\nsys.exit({helper_exit})\n"
+    )
+    done = subprocess.run(["bash", str(script), "--print"], capture_output=True, text=True)
+    lines = done.stdout.split("\n")
+    assert done.returncode == 0
+    if attaches:
+        assert lines[:4] == [
+            "npx",
+            "chrome-devtools-mcp@1.10.1",
+            "--browserUrl",
+            "http://127.0.0.1:9444",
+        ]
+        assert "--isolated" not in lines and done.stderr == ""
+    else:
+        assert "--isolated" in lines and not any(l.startswith("--browserUrl") for l in lines)
+        assert "not attaching for 'web'" in done.stderr
