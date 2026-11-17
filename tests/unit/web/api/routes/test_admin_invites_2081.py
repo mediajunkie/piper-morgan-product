@@ -34,6 +34,7 @@ from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_asyn
 from services.auth import invite_admin_service as svc
 from services.auth.auth_middleware import get_current_user
 from services.database.models import InviteToken
+from tests.utils.made_up_credentials import invite_code
 from web.api.routes import admin_invites as api
 
 ADMIN_ID = uuid.uuid4()
@@ -224,7 +225,8 @@ async def test_revoke_refusals_not_found_ambiguous_already_used(db, audit):
 
 
 def test_mask_shape():
-    assert svc.mask("ABCD0123456789ABCDEFWXYZ") == "ABCD…WXYZ"
+    code = invite_code("mask shape")
+    assert svc.mask(code) == f"{code[:4]}…{code[-4:]}"
     assert svc.mask("short") == "…"
 
 

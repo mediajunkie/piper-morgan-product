@@ -24,17 +24,13 @@ import pytest
 from services.config.llm_config_service import ValidationResult
 from services.database.session_factory import AsyncSessionFactory
 from services.security.user_api_key_service import UserAPIKeyService
+from tests.utils.made_up_credentials import GOOD_ANTHROPIC_KEY, GOOD_OPENAI_KEY
 
-# Canonical "passes format+strength+leak-unknown" OpenAI-shaped key from the
-# #932/#933 suite.
-GOOD_FORMAT_KEY = "sk-X7k9mP2nQ5tR8wY3jL6hN4vC1bM0sD9fG8eA7zK5x2W4uT"
-
-# Anthropic requires its own "sk-ant-" prefix + 100+ chars (provider_key_validator.py);
-# generated once with `secrets`, verified to pass format+strength+leak-unknown.
-GOOD_FORMAT_ANTHROPIC_KEY = (
-    "sk-ant-aqEfYiVg7G5linYsUuCCmyecyA7tEnjFuxAxD8cd3MRbcXnBSOZXBVzvyUaLuoV9sSYBlc5oo8Er"
-    "av78tNfnQFyXEFWQyY56veWIGGPdPyICeV"
-)
+# Made-up keys that pass format, strength and the quick leak checks (leak status
+# "unknown"), built at run time in tests/utils/made_up_credentials.py (issue 2397).
+# Anthropic needs its own prefix and 100+ characters (provider_key_validator.py).
+GOOD_FORMAT_KEY = GOOD_OPENAI_KEY
+GOOD_FORMAT_ANTHROPIC_KEY = GOOD_ANTHROPIC_KEY
 
 QUOTA_SENTENCE = (
     "I can't reach a language model — the API key on your account is out of "

@@ -14,6 +14,7 @@ Gameplan reference: dev/2026/05/09/932-gameplan.md
 import pytest
 
 from services.security.key_leak_detector import KeyLeakDetector, LeakCheckResult
+from tests.utils.made_up_credentials import GOOD_OPENAI_KEY, joined, openai_key
 
 
 class TestKeyLeakDetectorHonestUnknown:
@@ -35,7 +36,7 @@ class TestKeyLeakDetectorHonestUnknown:
         # Realistic-looking key with high entropy, mixed case, no test/weak
         # patterns, no sequential or keyboard runs. Designed to slip past all
         # _quick_leak_checks branches.
-        unrecognized_key = "sk-X7k9mP2nQ5tR8wY3jL6hN4vC1bM0sD9fG8eA7zK5x2W4uT"
+        unrecognized_key = GOOD_OPENAI_KEY
 
         result = await detector.check_key_leaked(unrecognized_key)
 
@@ -50,10 +51,13 @@ class TestKeyLeakDetectorHonestUnknown:
     async def test_check_key_leaked_returns_critical_for_known_test_key(self, detector):
         """Known test keys must continue to be flagged critical (existing behavior preserved).
 
-        Quick-check path: api_key.lower() in self.known_test_keys.
+        Quick-check path: the key's digest is in self.known_test_key_digests. The list
+        holds digests, not keys (issue 2397), so this adds a made-up key's digest to it.
         """
-        # From _load_known_test_keys()
-        known_test_key = "sk-1234567890abcdef1234567890abcdef1234567890abcdef"
+        known_test_key = openai_key("on the detector's list for this test")
+        detector.known_test_key_digests = detector.known_test_key_digests | {
+            KeyLeakDetector._digest(known_test_key)
+        }
 
         result = await detector.check_key_leaked(known_test_key)
 
@@ -63,13 +67,34 @@ class TestKeyLeakDetectorHonestUnknown:
         assert result.source == "Known test key database"
 
     @pytest.mark.asyncio
+    @pytest.mark.parametrize("placeholder", ("your-api-key-here", "Test-API-Key", "DEMO-KEY-123"))
+    async def test_a_placeholder_on_the_shipped_list_is_critical(self, detector, placeholder):
+        """The shipped list, untouched: a placeholder is caught in any letter case."""
+        result = await detector.check_key_leaked(placeholder)
+
+        assert result.leaked is True
+        assert result.source == "Known test key database"
+        assert result.confidence == 1.0
+
+    def test_the_shipped_list_holds_digests_and_no_key(self, detector):
+        """Issue 2397: every entry is a SHA-256 hex digest, so the source file holds no
+        credential-shaped value, and the six published examples are still listed."""
+        digests = detector.known_test_key_digests
+        assert all(len(d) == 64 and set(d) <= set("0123456789abcdef") for d in digests)
+        assert len(digests) == 6 + 5  # published example keys + placeholders
+
+    def test_the_digest_ignores_letter_case(self):
+        assert KeyLeakDetector._digest("AbC") == KeyLeakDetector._digest("abc")
+        assert KeyLeakDetector._digest("abc") != KeyLeakDetector._digest("abd")
+
+    @pytest.mark.asyncio
     async def test_check_key_leaked_returns_critical_for_weak_pattern(self, detector):
         """Keys containing weak patterns must continue to be flagged critical.
 
         Quick-check path: any pattern in self.weak_patterns appears in the key.
         Uses '1234567890' which is one of the canonical weak patterns.
         """
-        weak_pattern_key = "sk-real1234567890morestuffafterthat"
+        weak_pattern_key = joined("sk", "-", "real1234567890morestuffafterthat")
 
         result = await detector.check_key_leaked(weak_pattern_key)
 

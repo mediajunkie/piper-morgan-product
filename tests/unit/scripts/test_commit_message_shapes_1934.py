@@ -25,6 +25,8 @@ from pathlib import Path
 
 import pytest
 
+from tests.utils.made_up_credentials import invite_code
+
 REPO = Path(__file__).resolve().parents[3]
 SCRIPT = REPO / "scripts" / "check_autoclose_keywords.py"
 HOOK = REPO / ".claude" / "hooks" / "autoclose-guard.sh"
@@ -34,8 +36,8 @@ sys.path.insert(0, str(REPO / "scripts"))
 from check_autoclose_keywords import commit_messages_in_bash_command, mask  # noqa: E402
 
 # Same synthetic fixture as the R5/#1845 suite — never a minted token.
-TOKEN = "9EA0V9VPHS9CFRTKH873EGJ6"
-MASKED = mask(TOKEN)  # "9EA0…EGJ6"
+TOKEN = invite_code("never minted: the bearer-lint fixture")
+MASKED = mask(TOKEN)
 _FIX_FILE = REPO / "tests" / "unit" / "scripts" / "_fixture_commit_msg_1934.txt"
 
 _KW = "clo" + "se"  # assembled so this file's own text never reads as an auto-close command

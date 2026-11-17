@@ -22,6 +22,7 @@ from services.config.llm_config_service import (
 )
 from services.security.field_encryption import FieldEncryptionService, KeyStoreConfigError
 from services.security.user_api_key_service import UserAPIKeyService
+from tests.utils.made_up_credentials import joined
 from web.api.routes.setup import (
     KEY_CHECK_COULD_NOT_RUN_MESSAGE,
     SERVER_CANNOT_STORE_KEYS_MESSAGE,
@@ -109,7 +110,9 @@ async def test_the_key_service_raises_the_typed_error_for_an_unrun_check_not_a_v
         await svc.store_user_key(
             user_id="validation-only",
             provider="anthropic",
-            api_key="sk-ant-api03-not-a-real-key-but-long-enough-to-pass-the-shape-check-0000",
+            api_key=joined(
+                "sk", "-ant-", "api03-not-a-real-key-but-long-enough-to-pass-the-shape-check-0000"
+            ),
             session=MagicMock(),
             validate=True,
             store=False,
@@ -124,7 +127,9 @@ async def test_a_validator_that_raises_is_the_typed_error_too():
         await svc.store_user_key(
             user_id="validation-only",
             provider="anthropic",
-            api_key="sk-ant-api03-not-a-real-key-but-long-enough-to-pass-the-shape-check-0000",
+            api_key=joined(
+                "sk", "-ant-", "api03-not-a-real-key-but-long-enough-to-pass-the-shape-check-0000"
+            ),
             session=MagicMock(),
             validate=True,
             store=False,
@@ -148,7 +153,11 @@ async def test_validate_key_says_the_check_could_not_run_when_the_validator_time
         response = await validate_api_key(
             ApiKeyValidateRequest(
                 provider="anthropic",
-                api_key="sk-ant-api03-not-a-real-key-but-long-enough-to-pass-the-shape-check-0000",
+                api_key=joined(
+                    "sk",
+                    "-ant-",
+                    "api03-not-a-real-key-but-long-enough-to-pass-the-shape-check-0000",
+                ),
             )
         )
     assert response.valid is False

@@ -34,13 +34,14 @@ from services.llm.request_key import (
     UserLLMKeyRequiredError,
     get_request_api_key,
 )
+from tests.utils.made_up_credentials import joined
 from web.api.routes.intent import router as intent_router
 from web.utils.llm_key import resolve_user_llm_binding
 
 SECRET = "test-secret-1823-not-a-real-key"
 
-OPENAI_KEY = "sk-oai-the-users-own-1823"
-ANTHROPIC_KEY = "sk-ant-the-users-own-1823"
+OPENAI_KEY = joined("sk", "-", "oai-the-users-own-1823")
+ANTHROPIC_KEY = joined("sk", "-ant-", "the-users-own-1823")
 
 
 @contextlib.asynccontextmanager

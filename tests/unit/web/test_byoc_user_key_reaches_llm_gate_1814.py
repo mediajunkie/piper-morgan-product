@@ -63,12 +63,13 @@ from services.intent_service.conversational_floor import (
 )
 from services.llm import clients as clients_module
 from services.llm.request_key import get_request_api_key
+from tests.utils.made_up_credentials import joined
 from web.api.routes.intent import router as intent_router
 
 SECRET = "test-secret-1814-not-a-real-key"
 
-STORED_USER_KEY = "sk-ant-api03-the-users-own-stored-key-1814"
-HEADER_USER_KEY = "sk-ant-api03-the-users-own-header-key-1814"
+STORED_USER_KEY = joined("sk", "-ant-", "api03-the-users-own-stored-key-1814")
+HEADER_USER_KEY = joined("sk", "-ant-", "api03-the-users-own-header-key-1814")
 
 # Every provider env var that could smuggle a server key into this test, neutralising it.
 _PROVIDER_ENV_VARS = (

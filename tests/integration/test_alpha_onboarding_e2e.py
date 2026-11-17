@@ -15,6 +15,8 @@ Issue #218: CORE-USERS-ONBOARD (Setup wizard)
 
 import pytest
 
+from tests.utils.made_up_credentials import openai_key
+
 # ADR-059: Onboarding on ice
 pytestmark = pytest.mark.skip(reason="ADR-059: onboarding on ice")
 
@@ -238,7 +240,7 @@ class TestAlphaOnboardingE2E:
         user_id = uuid.uuid4()
         # High-entropy fake: the #268 validator rejects "test123"-style keys as weak,
         # and this test is about storage, not the validator.
-        test_key = "sk-proj-Hq4Tz8Wm2Rk7Vb1Nc5Xj9Lp3Fd6Gs0Ya"
+        test_key = openai_key("storage, not the validator", 32, project=True)
 
         # Create user
         async with AsyncSessionFactory.session_scope_fresh() as session:

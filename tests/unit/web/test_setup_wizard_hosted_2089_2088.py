@@ -18,6 +18,7 @@ from fastapi.testclient import TestClient
 from jinja2 import Environment, FileSystemLoader
 
 from services.auth.invite_token_service import check_invite_token
+from tests.utils.made_up_credentials import invite_code
 from web.api.routes import setup as setup_routes
 
 REPO_ROOT = Path(__file__).resolve().parents[3]
@@ -152,7 +153,7 @@ class TestCheckInviteToken:
     async def test_issues_a_select_never_an_update(self):
         session = AsyncMock()
         result = MagicMock()
-        result.scalar_one_or_none.return_value = "ABCDEFGHJKMNPQRSTVWXYZ01"
+        result.scalar_one_or_none.return_value = invite_code("the stored code the select finds")
         session.execute = AsyncMock(return_value=result)
         assert await check_invite_token(session, "abcd-efgh") is True
         stmt = session.execute.await_args.args[0]

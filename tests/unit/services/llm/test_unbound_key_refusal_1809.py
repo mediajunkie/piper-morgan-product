@@ -42,8 +42,9 @@ from services.llm.request_key import (
     get_request_api_key,
     request_api_key,
 )
+from tests.utils.made_up_credentials import joined
 
-USER_KEY = "sk-ant-api03-the-users-own-key-1809"
+USER_KEY = joined("sk", "-ant-", "api03-the-users-own-key-1809")
 
 
 class _FakeAnthropicResponse:
