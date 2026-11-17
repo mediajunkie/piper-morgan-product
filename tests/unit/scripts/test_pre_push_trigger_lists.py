@@ -37,11 +37,12 @@ SMOKE_LEAVES_OUT = {
     "templates/**": "Lead 2026-11-17: the architecture check reads every template; smoke adds 2 files",
     "scripts/**": "CIO 2026-11-12: scripts pushes run the gates, not the smoke",
     ".github/workflows/**": "CIO 2026-11-12: workflow pushes run the gates, not the smoke",
-    "pyproject.toml": "never in the hook; raised with Lead 2026-11-17, undecided",
+    "pyproject.toml": "Lead 2026-11-17: gates only (ruff's settings); pytest reads pytest.ini",
 }
-GATES_LEAVE_OUT = {
-    "pyproject.toml": "never in the hook; raised with Lead 2026-11-17, undecided",
-}
+GATES_LEAVE_OUT: dict = {}
+# Every top-level Python file triggers both, as test.yml's `*.py` does (Lead, 2026-11-17:
+# `main\.py$` missed the MCP entry point and the root conftest).
+TOP_LEVEL_PY = ["main.py", "main_mcp.py", "conftest.py", "validate-phase5.py"]
 # What the hook triggers on that the workflow does not (the gates read these; Tests does not).
 GATES_ONLY = [".claude/hooks/x.sh", ".github/x.md", ".staged-credential-scan-baseline.txt"]
 BOTH_ONLY = ["pytest.ini"]
@@ -90,6 +91,11 @@ def test_gates_list_matches_the_workflow_except_where_chosen(path):
     if path not in PUSH_PATHS:
         pytest.skip("not in test.yml's list any more; remove the sample")
     assert bool(GATES.search(SAMPLES[path])) == (path not in GATES_LEAVE_OUT), path
+
+
+@pytest.mark.parametrize("name", TOP_LEVEL_PY)
+def test_every_top_level_python_file_triggers_both(name):
+    assert CODE.search(name) and GATES.search(name), name
 
 
 def test_the_gates_also_run_on_what_only_they_read():
