@@ -33,6 +33,8 @@ Usage (from the repository root, with ``node`` on PATH):
 The file is ``docs/internal/operations/card-states.md``. It is the same for the same
 code, so ``git diff`` on it between two promotions is the list of words and controls
 that changed.
+
+Concept: docs/internal/operations/card-states.md
 """
 
 from __future__ import annotations
