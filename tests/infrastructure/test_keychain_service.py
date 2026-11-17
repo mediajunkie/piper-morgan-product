@@ -143,14 +143,25 @@ class TestKeychainService:
 
 
 class TestKeychainIntegration:
-    """Integration tests with actual keychain"""
+    """A whole store, read and delete over the conftest's in-memory keyring. NEVER the real
+    keychain: xian's rule (2026-11-11) is that nothing a seat runs reads or writes it."""
 
-    @pytest.mark.skipif(
-        "fail" in keyring.get_keyring().__class__.__module__,
-        reason="no OS keyring on this host (hosted Linux CI); this test is about the real one",
-    )
-    def test_real_keychain_roundtrip(self):
-        """Can store and retrieve from real macOS keychain"""
+    def test_real_keychain_roundtrip(self, monkeypatch):
+        """Store, read and delete through the service, over the in-memory keyring only.
+
+        The name is kept for the backlog's history; "real" is no longer true. The test
+        runs only when the active backend is the conftest's in-memory one (HOST,
+        2026-11-17) and skips otherwise, so it can't touch an OS keyring by accident:
+        not with conftests disabled, not on a host with no keyring."""
+        from services.infrastructure import keychain_service
+
+        backend = keychain_service._test_keyring_backend
+        if not getattr(backend, "piper_test_in_memory", False):
+            pytest.skip("runs only over the conftest's in-memory keyring, never an OS keychain")
+        # With the store forced to db (a local full-suite run), the constructor refuses a
+        # custom service name (#1764) before any keyring call. Unset, the in-memory backend
+        # is the chosen store.
+        monkeypatch.delenv("PIPER_CREDENTIAL_STORE", raising=False)
         service = KeychainService(service_name="piper-test-integration")
 
         # Store

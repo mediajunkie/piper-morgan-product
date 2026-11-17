@@ -262,7 +262,7 @@ now remembers a pass:
 
 Tested by `scripts/git-hooks/test-remembered-pass.sh <empty scratch dir> scripts/git-hooks/pre-push`
 (a bare remote, a seat clone with stand-in gates and smoke, and a second clone that lands a log
-while the gates run): 22 checks, the last eight on the architecture check below.
+while the gates run): 25 checks, the last eleven on the architecture check below.
 
 **The architecture check (2026-11-17, Arch's ruling).** A push that touches `templates/`, `web/` or
 `services/` also runs `scripts/run-push-arch-tests.sh` after the gates and before the smoke: the
@@ -273,6 +273,26 @@ again. The two slow classes stay in CI; the first time either is the cause of a 
 this check for `services/` pushes. `templates/` is in the gates' trigger from the same change.
 Before calling a served-path change validated, run both test files whole; the push check does not
 replace that.
+
+**The skip variable and this check (Lead, 2026-11-17).** `PIPER_SKIP_PUSH_GATES=1` skips the
+architecture check along with the gates, and `scripts/run-push-gates.sh` run by hand does not run
+it. So the old habit, "run the gates by hand, then push with the skip variable", leaves a
+served-path push unchecked. Two rules:
+- **Don't use the skip variable to save a retry.** The remembered pass does that: a retry whose
+  only new content is other seats' dated logs or mail has the same key and pays nothing. If the
+  merge brought in other seats' code, the key changes and the checks run again, which is right,
+  because the content being pushed is new.
+- **If you do skip** (a gate already red on main that isn't yours), run
+  `scripts/run-push-gates.sh` by hand first and say so in your log with the skip. By hand it runs
+  the architecture check as a fifteenth gate whenever your work not yet on `origin/main` touches
+  `templates/`, `web/` or `services/` (`--arch` forces it), so "I ran the gates by hand" means all
+  fifteen (Arch, 2026-11-17).
+
+**One test reads outside the key (Arch, 2026-11-17).** `test_shadow_files_ratchet` judges every
+tracked file name, including names under `dev/20NN/` and `mailboxes/`, and it is both a ratchet
+and a smoke test. So on a remembered pass of the architecture check or of the smoke, the hook
+still runs that one test alone (`scripts/run-push-arch-tests.sh --names-only`, about two seconds).
+A backup-named file added to a dated log folder between tries blocks the push.
 
 ### A credential shape in a commit or a push: `scripts/staged_credential_scan.py` (issue 2392, CIO, 2026-11-16)
 
