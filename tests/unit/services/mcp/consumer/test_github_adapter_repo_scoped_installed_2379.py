@@ -555,7 +555,11 @@ class TestTheConfirmBuilders:
         update = await update_issue_write_ask(
             WriteAskRequest(
                 intent=self._intent(
-                    "retitle issue 7", "update_issue", issue_number=7, title="N", repository="octo/a"
+                    "retitle issue 7",
+                    "update_issue",
+                    issue_number=7,
+                    title="N",
+                    repository="octo/a",
                 ),
                 message="retitle issue 7",
                 user_id=_OWNER,
