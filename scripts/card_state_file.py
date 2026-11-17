@@ -413,7 +413,9 @@ def draw(payload: Dict[str, Any], scenario: Scenario) -> Dict[str, Any]:
         "install": scenario.install_state,
         "install_url": INSTALL_STATE,
     }
-    js = f"const INPUT = {json.dumps(given)};\n" + _BROWSER + offered + script + _RUN
+    # The shell loads the shared escape helpers before any page script (#1582).
+    shared = (ROOT / "web" / "static" / "js" / "escape.js").read_text(encoding="utf-8")
+    js = f"const INPUT = {json.dumps(given)};\n" + _BROWSER + shared + offered + script + _RUN
     done = subprocess.run(["node", "-e", js], capture_output=True, text=True, timeout=60)
     if done.returncode != 0:
         raise Stopped(f"the page's script failed under node for '{scenario.key}'")

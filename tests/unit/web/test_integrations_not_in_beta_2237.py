@@ -20,6 +20,7 @@ from fastapi.testclient import TestClient
 
 from services.auth.container import AuthContainer
 from services.integrations import integration_status_service as svc
+from tests.utils.page_scripts import SHARED_ESCAPE_JS
 from web.app import app
 
 REPO = Path(__file__).resolve().parents[3]
@@ -86,7 +87,10 @@ def _cards(body: str, health: list) -> dict[str, str]:
         "process.stdout.write(out.innerHTML);\n"
     )
     res = subprocess.run(
-        ["node", "-e", script, json.dumps(health)], capture_output=True, text=True, timeout=30
+        ["node", "-e", SHARED_ESCAPE_JS + script, json.dumps(health)],
+        capture_output=True,
+        text=True,
+        timeout=30,
     )
     assert res.returncode == 0, res.stderr
     parts = re.split(r'(?=<div class="integration-card)', res.stdout)
