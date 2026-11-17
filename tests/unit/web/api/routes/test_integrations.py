@@ -564,7 +564,10 @@ class TestSlackIntegration:
 
             assert result["success"] is False
             # #2402: Slack's own word is a remote text; the result carries a written line.
-            assert result["error"] == "Token invalid or expired"
+            assert result["error"] == (
+                "Slack didn't accept your token. It may have expired or been revoked. "
+                "Add a new one in Settings, under Integrations."
+            )
             assert result["error_type"] == "token_invalid"
 
     @pytest.mark.asyncio
