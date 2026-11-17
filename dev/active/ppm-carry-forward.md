@@ -762,3 +762,12 @@ Brake FIRED (second slip = #1965 admission, found and ledgered 10-09). Memo to E
   - The staged-credential scan has been live since 17:00 and has no skip.
   - No compose up or down on Amber; `PIPER_CREDENTIAL_STORE=db`; a classifier refusal is final.
 
+
+- **Update 11-17 14:21:**
+  - xian approved practice.md: "Yes, practice approved. No changes." (c531cae276, via Docs). It has left the waiting list.
+  - He asked how practice.md's scope was decided. Nobody decided it. PPM's half went to CXO in 01M7NSFP9C: keep the Proven-only rule and the sentence, and let him confirm the scope deliberately. OWED: one combined CXO and PPM mail to Exec. Trigger: CXO's half; whoever finishes second sends it.
+  - #2401, #2402 and #2403 are placed (C, C, Q). Total 326, map v167. Beta serves d678b0af26 (11:31).
+  - xian said "Yes, skip and fix." on 2403. His tone word: spend inside the caps is small, so write asks short. The caps are unchanged.
+  - Standing word: a promote-gate edit that only makes it stricter goes ahead on Arch's written approval, and xian is informed.
+  - 14:23: the OWED combined mail is resolved. CXO sent their view to Exec (01M7NSBN2J), and PPM sent agreement plus the product half (01M7NSPH57). Next is Exec's call whether to put it to xian.
+  - 14:54: HOLD, do not run scripts/sync-pm-local.sh until Exec mails "Step A done" or "Step A stopped" (01M7NTYN66).
