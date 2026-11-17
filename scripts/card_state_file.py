@@ -247,7 +247,6 @@ def scenarios() -> List[Scenario]:
 def _setup() -> str:
     """Make the app importable and return a made-up account id."""
     os.environ.setdefault("JWT_SECRET_KEY", secrets.token_urlsafe(32))
-    os.environ["PIPER_CREDENTIAL_STORE"] = "db"  # never the OS keychain (xian, 2026-11-11)
     if str(ROOT) not in sys.path:
         sys.path.insert(0, str(ROOT))
     return str(uuid.uuid4())
@@ -570,6 +569,10 @@ def main(argv=None) -> int:
     parser.add_argument("--out", type=Path, default=DEFAULT_OUT)
     parser.add_argument("--check", action="store_true", help="exit 1 if the file is stale")
     args = parser.parse_args(argv)
+    # Never the OS keychain (xian, 2026-11-11). Set here, for the script's own process, and
+    # not in _setup(): the tests call _setup() and build() inside pytest's process, where a
+    # value written to os.environ would stay for every test that runs after them.
+    os.environ["PIPER_CREDENTIAL_STORE"] = "db"
     try:
         text = build()
     except Stopped as stopped:
