@@ -498,3 +498,138 @@ def test_the_second_account_is_listed_and_holds_nothing(ss):
     second = ss.ACCOUNTS["seat-github-1"]
     assert second.credential_file == "seat-github-1-credentials.txt"
     assert not second.integrations and not second.provider_keys and second.connectors is False
+
+
+# --- seat_read.py --redirect-uri (issue 2282 step 5; HOST's four conditions, 11-16) ---
+
+GH_CONNECT = "/api/v1/settings/integrations/github/connect"
+CAL_CONNECT = "/api/v1/settings/integrations/calendar/connect"
+STATE = "made-up-state-value-" + "q" * 20
+CALLBACK = "https://beta.example.invalid/api/v1/settings/integrations/github/callback"
+
+
+def _connect_reply(ss, redirect=CALLBACK, extra="", **over):
+    from urllib.parse import urlencode
+
+    query = urlencode({"client_id": "made-up-id", "redirect_uri": redirect, "state": STATE})
+    payload = {"auth_url": f"https://provider.example.invalid/authorize?{query}{extra}"}
+    payload["state"] = STATE
+    payload.update(over)
+    return ss.Reply(200, json.dumps(payload).encode())
+
+
+def test_redirect_uri_prints_the_host_and_path_and_nothing_else(ss, sr, shared):
+    _saved(ss, shared)
+    host = StubHost(ss, **{GH_CONNECT: _connect_reply(ss)})
+    line = sr.read_redirect_uri(ACCOUNT, "github", host, now=1_800_000_100)
+    assert line == (
+        "github redirect_uri: beta.example.invalid/api/v1/settings/integrations/github/callback"
+    )
+    assert STATE not in line and "made-up-id" not in line and "?" not in line
+    for secret in SECRETS:
+        assert secret not in line
+    assert [(c[0], c[1], c[2]) for c in host.calls] == [("GET", GH_CONNECT, None)]  # one request
+
+
+def test_redirect_uri_drops_a_query_on_the_redirect_itself(ss, sr, shared):
+    _saved(ss, shared)
+    host = StubHost(ss, **{CAL_CONNECT: _connect_reply(ss, redirect=CALLBACK + "?next=" + STATE)})
+    line = sr.read_redirect_uri(ACCOUNT, "calendar", host, now=1_800_000_100)
+    assert line.endswith("/github/callback") and STATE not in line
+
+
+def test_redirect_uri_reports_a_host_switch_by_host_and_path(ss, sr, shared):
+    _saved(ss, shared)
+    reply = ss.Reply(
+        200,
+        json.dumps(
+            {
+                "switch_host_url": f"https://other.example.invalid/settings/integrations/github?s={STATE}"
+            }
+        ).encode(),
+    )
+    host = StubHost(ss, **{GH_CONNECT: reply})
+    line = sr.read_redirect_uri(ACCOUNT, "github", host, now=1_800_000_100)
+    assert line == "github: start on other.example.invalid/settings/integrations/github"
+
+
+@pytest.mark.parametrize(
+    "reply_kwargs,reason",
+    [
+        ({"redirect": "https://beta.example.invalid/cb/" + STATE}, "state value"),
+        ({"redirect": "javascript:alert(1)"}, "plain form"),
+        ({"redirect": "https://user:pw@beta.example.invalid/cb"}, "plain form"),
+        ({"redirect": "https://beta.example.invalid/cb%2Fx"}, "plain form"),
+        ({"extra": "&redirect_uri=https%3A%2F%2Fsecond.example.invalid%2Fcb"}, "exactly one"),
+        ({"auth_url": None}, "expected form"),
+    ],
+)
+def test_redirect_uri_refuses_and_names_no_value(ss, sr, shared, reply_kwargs, reason):
+    _saved(ss, shared)
+    host = StubHost(ss, **{GH_CONNECT: _connect_reply(ss, **reply_kwargs)})
+    with pytest.raises(ss.Refused, match=reason) as refusal:
+        sr.read_redirect_uri(ACCOUNT, "github", host, now=1_800_000_100)
+    assert STATE not in str(refusal.value)
+
+
+@pytest.mark.parametrize("body", [b"not json", b"[]", b'"text"'])
+def test_redirect_uri_refuses_a_reply_in_another_form(ss, sr, shared, body):
+    _saved(ss, shared)
+    host = StubHost(ss, **{GH_CONNECT: ss.Reply(200, body)})
+    with pytest.raises(ss.Refused, match="expected form"):
+        sr.read_redirect_uri(ACCOUNT, "github", host, now=1_800_000_100)
+
+
+def test_redirect_uri_says_only_the_status_when_the_host_refuses(ss, sr, shared):
+    _saved(ss, shared)
+    host = StubHost(ss, **{GH_CONNECT: ss.Reply(503, f"state={STATE}".encode())})
+    with pytest.raises(ss.Refused, match="answered 503") as refusal:
+        sr.read_redirect_uri(ACCOUNT, "github", host, now=1_800_000_100)
+    assert STATE not in str(refusal.value)
+
+
+def test_redirect_uri_refuses_a_connector_or_account_off_the_lists(ss, sr, shared):
+    _saved(ss, shared)
+    host = StubHost(ss)
+    with pytest.raises(ss.Refused, match="connector is not on the list"):
+        sr.read_redirect_uri(ACCOUNT, "slack", host, now=1_800_000_100)
+    with pytest.raises(ss.Refused, match="account is not on the list"):
+        sr.read_redirect_uri("someone-else", "github", host, now=1_800_000_100)
+    assert host.calls == []
+
+
+def test_the_connect_routes_can_never_be_read_as_a_body(ss, sr, shared):
+    """``read`` prints a body, and these bodies hold a state: the two lists stay apart."""
+    _saved(ss, shared)
+    assert not (set(sr.REDIRECT_URI_ROUTES.values()) & set(sr.ALLOWED_PATHS))
+    host = StubHost(ss, **{GH_CONNECT: _connect_reply(ss)})
+    for route in sr.REDIRECT_URI_ROUTES.values():
+        with pytest.raises(ss.Refused, match="not on the list"):
+            sr.read(ACCOUNT, route, host, now=1_800_000_100)
+    assert host.calls == []
+    assert sorted(sr.REDIRECT_URI_ROUTES) == ["calendar", "github"]
+
+
+def test_main_takes_a_path_or_the_option_never_both_or_neither(ss, sr, shared, capsys, monkeypatch):
+    _saved(ss, shared)
+    host = StubHost(ss, **{GH_CONNECT: _connect_reply(ss)})
+    monkeypatch.setattr(ss, "http_transport", host)
+    monkeypatch.setattr(sr, "load_cookies", lambda account, now=None: {"auth_token": ACCESS})
+    code, text = _run_main(sr, ["--account", ACCOUNT, "--redirect-uri", "github"], capsys)
+    assert code == 0
+    assert text.strip() == (
+        "github redirect_uri: beta.example.invalid/api/v1/settings/integrations/github/callback"
+    )
+    assert len(host.calls) == 1
+    code, text = _run_main(sr, ["--account", ACCOUNT], capsys)
+    assert code == 2 and "one of them" in text
+    code, text = _run_main(sr, ["--account", ACCOUNT, FLOORED, "--redirect-uri", "github"], capsys)
+    assert code == 2 and "one of them" in text
+    assert len(host.calls) == 1  # neither refusal sent anything
+
+
+def test_the_two_routes_exist_in_the_app_as_get_routes():
+    source = (ROOT / "web" / "api" / "routes" / "settings_integrations.py").read_text()
+    assert 'APIRouter(prefix="/api/v1/settings/integrations"' in source
+    assert '@router.get("/github/connect")' in source
+    assert '@router.get("/calendar/connect")' in source

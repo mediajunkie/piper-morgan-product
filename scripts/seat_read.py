@@ -13,8 +13,25 @@ Bounds:
 - If the body contains either cookie's value, nothing is printed.
 - A failure prints a fixed reason and the status code, never a header.
 
+A second mode, ``--redirect-uri github|calendar`` (issue 2282 step 5; HOST's four
+conditions and Exec's yes, 2026-11-16), reads where a connector's sign-in would send the
+browser back to, so nobody has to start a sign-in in a browser to see it:
+- One GET to that connector's connect-start route, a second closed list by exact path.
+  These routes are NOT on the list above, so their reply body can never be printed.
+- The route answers with JSON that holds the provider's sign-in address and a state
+  value. The state is a bearer for that sign-in attempt. This script prints one line:
+  the host and path of the ``redirect_uri`` inside that address. The query string, the
+  state and the body are never printed, stored or logged, and a line that contains the
+  state or a cookie value is refused.
+- No redirect is followed and nothing is sent to the provider.
+- One request per run. Each request leaves one unused state in the app's memory. It is
+  refused after 15 minutes (``STATE_EXPIRATION = 900`` in both handlers) and is dropped
+  when the app restarts; nothing sweeps it sooner, so don't run this in a loop.
+- The account needs no connected integration: ``web-seed-1386`` runs it.
+
 Usage:
     scripts/seat_read.py --account web-seed-1386 '/api/v1/admin/floored-actions?days=30'
+    scripts/seat_read.py --account web-seed-1386 --redirect-uri github
 
 Concept: docs/internal/operations/adr-084-one-time-steps.md
 """
@@ -39,6 +56,15 @@ from seat_session import Refused, Transport  # noqa: E402
 # The closed list (HOST and Lead, 11-16). The ops_reader routes of issue 2390 join it as they land.
 ALLOWED_PATHS = frozenset({"/api/v1/admin/floored-actions"})
 QUERY_OK = re.compile(r"^[A-Za-z0-9_=&.-]*$")
+
+# The connect-start routes ``--redirect-uri`` may call (HOST, 2026-11-16). Kept apart
+# from ALLOWED_PATHS on purpose: ``read`` prints a body, and these bodies hold a state.
+REDIRECT_URI_ROUTES = {
+    "github": "/api/v1/settings/integrations/github/connect",
+    "calendar": "/api/v1/settings/integrations/calendar/connect",
+}
+HOST_OK = re.compile(r"^[A-Za-z0-9.-]+(:[0-9]{1,5})?$")
+PATH_OK = re.compile(r"^/[A-Za-z0-9/_.-]*$")
 
 
 def checked_path(path: str) -> str:
@@ -96,13 +122,80 @@ def read(
     return body
 
 
+def host_and_path(address: object) -> str:
+    """``host/path`` of an http(s) address, or a refusal. The query and fragment are
+    dropped, never shown."""
+    if not isinstance(address, str):
+        raise Refused("the reply was not in the expected form")
+    parts = urllib.parse.urlsplit(address)
+    if (
+        parts.scheme not in ("http", "https")
+        or not HOST_OK.match(parts.netloc)
+        or not PATH_OK.match(parts.path or "/")
+    ):
+        raise Refused("the address in the reply is not in a plain form")
+    return parts.netloc + (parts.path or "/")
+
+
+def read_redirect_uri(
+    account: str,
+    connector: str,
+    send: Optional[Transport] = None,
+    now: Optional[float] = None,
+) -> str:
+    """One line: where ``connector``'s sign-in would return to (host and path only)."""
+    send = send or seat_session.http_transport  # resolved at call time
+    if account not in seat_session.ACCOUNTS:
+        raise Refused("that account is not on the list")
+    route = REDIRECT_URI_ROUTES.get(connector)
+    if route is None:
+        raise Refused("that connector is not on the list this script reads")
+    cookies = load_cookies(account, now)
+    header = {"Cookie": "; ".join(f"{name}={value}" for name, value in cookies.items())}
+    reply = send("GET", route, None, header)
+    if reply.status != 200:
+        raise Refused(f"the host answered {reply.status}")
+    try:
+        payload = json.loads(reply.body.decode("utf-8"))
+    except ValueError:
+        raise Refused("the reply was not in the expected form") from None
+    if not isinstance(payload, dict):
+        raise Refused("the reply was not in the expected form")
+    if payload.get("switch_host_url"):
+        # #2281 (b): the app asks the browser to start the sign-in on another host.
+        line = f"{connector}: start on {host_and_path(payload['switch_host_url'])}"
+    else:
+        address = payload.get("auth_url")
+        if not isinstance(address, str):
+            raise Refused("the reply was not in the expected form")
+        values = urllib.parse.parse_qs(urllib.parse.urlsplit(address).query).get("redirect_uri")
+        if not values or len(values) != 1:
+            raise Refused("the sign-in address does not carry exactly one redirect_uri")
+        line = f"{connector} redirect_uri: {host_and_path(values[0])}"
+    state = payload.get("state")
+    secrets_seen = [v for v in cookies.values() if v] + ([state] if isinstance(state, str) else [])
+    if any(secret and secret in line for secret in secrets_seen):
+        raise Refused("the line would contain a session or state value; not printed")
+    return line
+
+
 def main(argv=None) -> int:
     parser = argparse.ArgumentParser(description="One GET on beta as a seeded test account.")
     parser.add_argument("--account", required=True)
-    parser.add_argument("path")
+    parser.add_argument("path", nargs="?")
+    parser.add_argument(
+        "--redirect-uri",
+        choices=sorted(REDIRECT_URI_ROUTES),
+        help="print where that connector's sign-in returns to (host and path only)",
+    )
     args = parser.parse_args(argv)
     try:
-        print(read(args.account, args.path))
+        if bool(args.path) == bool(args.redirect_uri):
+            raise Refused("give a path or --redirect-uri, one of them")
+        if args.redirect_uri:
+            print(read_redirect_uri(args.account, args.redirect_uri))
+        else:
+            print(read(args.account, args.path))
         return 0
     except Refused as refusal:
         print(f"seat_read: refused: {refusal}", file=sys.stderr)
