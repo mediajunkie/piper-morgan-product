@@ -161,6 +161,7 @@ def read_redirect_uri(
         raise Refused("the reply was not in the expected form") from None
     if not isinstance(payload, dict):
         raise Refused("the reply was not in the expected form")
+    states = [payload.get("state")]
     if payload.get("switch_host_url"):
         # #2281 (b): the app asks the browser to start the sign-in on another host.
         line = f"{connector}: start on {host_and_path(payload['switch_host_url'])}"
@@ -168,12 +169,15 @@ def read_redirect_uri(
         address = payload.get("auth_url")
         if not isinstance(address, str):
             raise Refused("the reply was not in the expected form")
-        values = urllib.parse.parse_qs(urllib.parse.urlsplit(address).query).get("redirect_uri")
+        query = urllib.parse.parse_qs(urllib.parse.urlsplit(address).query)
+        values = query.get("redirect_uri")
         if not values or len(values) != 1:
             raise Refused("the sign-in address does not carry exactly one redirect_uri")
         line = f"{connector} redirect_uri: {host_and_path(values[0])}"
-    state = payload.get("state")
-    secrets_seen = [v for v in cookies.values() if v] + ([state] if isinstance(state, str) else [])
+        # Arch 2026-11-16 18:43: the state as the address carries it too, so the check
+        # below holds even if a handler stops sending the ``state`` key.
+        states.extend(query.get("state", []))
+    secrets_seen = [v for v in cookies.values() if v] + [v for v in states if isinstance(v, str)]
     if any(secret and secret in line for secret in secrets_seen):
         raise Refused("the line would contain a session or state value; not printed")
     return line
