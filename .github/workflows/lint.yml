@@ -12,25 +12,12 @@ name: Code Quality
 on:
   push:
     branches: [main]
-    paths:
-      - 'services/**'
-      - 'tests/**'
-      - 'web/**'
-      - 'templates/**'
-      - '*.py'
-      - 'pyproject.toml'
-      - '.flake8'
-      - '.pylintrc'
-      - 'setup.cfg'
-      - 'scripts/**'
-      - '**/*.md'
-      - '*.md'
-      - '.github/workflows/**'
-      - 'mailboxes/**'
-      - 'docs/**'
-      - 'dev/**'
-      - '.mailbox-bearer-lint-baseline.txt'
-      - '.dockerignore'
+    # No path filter on a push to main (Lead, 2026-11-16, with issue 2392's gate). The
+    # credential-shape step reads every tracked text file, and 307 tracked files sat
+    # outside the old filter (alembic/, config/, .claude/, cli/, deploy/, the root's
+    # docker-compose.yml, fly.toml and JSON files, the scan's own baseline). A push that
+    # changed only those ran no Code Quality at all. The old filter already matched
+    # nearly every push (dev/** and mailboxes/**), so this adds few runs.
   pull_request:
     branches: [main]
     paths:
@@ -171,9 +158,11 @@ jobs:
         run: |
           # The step above reads mailboxes/, docs/ and dev/. This one reads every other
           # tracked text file for the same shapes plus GitHub app tokens and bare Fly
-          # macaroons. The 61 lines baselined on 2026-11-16 are test fixtures and one
+          # macaroons, and reads those three folders for the two added shapes only (Arch,
+          # 11-16: an app token in a session log was read by neither). The 61 lines baselined on 2026-11-16 are test fixtures and one
           # detector's examples, keyed path:hash with the value taken out of the line
-          # before hashing. A new fixture is built at run time from parts. The same script
+          # before hashing; a baselined line is not checked (issue 2397 empties the list). A new
+          # fixture is built at run time from parts. The same script
           # with --staged is the commit hook. CIO's check; HOST reads it; Lead's gate.
           python scripts/staged_credential_scan.py --tracked --baseline .staged-credential-scan-baseline.txt
 

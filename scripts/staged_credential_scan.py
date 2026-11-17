@@ -9,8 +9,13 @@ and bare Fly macaroon prefixes below):
   hit can still be moved. With ``--baseline`` a line already listed there (an existing test
   fixture, edited around or re-indented) passes; any other added line with a shape is refused.
 - ``--tracked`` (the push gate and CI): reads every tracked text file at HEAD outside
-  ``mailboxes/``, ``docs/`` and ``dev/``. Those three are ``mailbox_bearer_lint.py``'s, with
-  its own baseline, on the line above this one in ``lint.yml``.
+  ``mailboxes/``, ``docs/`` and ``dev/`` for every shape. Those three are
+  ``mailbox_bearer_lint.py``'s, with its own baseline, on the line above this one in
+  ``lint.yml``; this scan reads them only for the shapes that lint does not name.
+
+Limits: a line in the baseline passes whatever value sits in it, so those lines are the
+known unchecked set until each is rewritten to build its value from parts. A secret with no
+shape (a seat account's password) is not something this can match.
 
 A hit prints the path, the line number and the shape's name. It never prints the value, a
 part of it, or the line. The baseline holds ``path:hash`` where the hash is of the line with
@@ -67,6 +72,7 @@ _PREFILTER = (
     r"(sk-|xox[bpa]-|xapp-|gh[pousr]_|github_pat_|AIza|fo1_|fm[12]_|FlyV1 )"
     r"[A-Za-z0-9_=+/-]{10,}|[0-9A-Za-z-]{24}"
 )
+_EXTRA_PREFILTER = r"(gh[sur]_|fm[12]_)[A-Za-z0-9_=+/-]{20,}"
 BEARER_ROOTS = ("mailboxes", "docs", "dev")
 PLACEHOLDER = "<credential>"
 
@@ -123,12 +129,16 @@ def baseline_key(path: str, line: str, credentials: Iterable[str]) -> str:
     return f"{path}:{digest}"
 
 
-def hits_in(path: str, numbered_lines: Iterable[Tuple[int, str]]) -> List[Hit]:
+def hits_in(
+    path: str, numbered_lines: Iterable[Tuple[int, str]], extra_only: bool = False
+) -> List[Hit]:
     if Path(path).suffix.lower() in bearer._SKIP_SUFFIXES:
         return []
     found: List[Hit] = []
     for number, line in numbered_lines:
         credentials = find(line, path)
+        if extra_only:
+            credentials = [c for c in credentials if _EXTRA.fullmatch(c)]
         if credentials:
             key = baseline_key(path, line, credentials)
             found.extend((path, number, shape_name(c), key) for c in credentials)
@@ -149,20 +159,30 @@ _HUNK = re.compile(r"^@@ -\d+(?:,\d+)? \+(\d+)(?:,\d+)? @@")
 
 
 def added_lines(diff: str) -> List[Tuple[str, int, str]]:
-    """(path, line number, text) for each line a unified diff adds."""
+    """(path, line number, text) for each line a unified diff adds.
+
+    ``--- `` and ``+++ `` are file headers only between a ``diff --git`` line and that file's
+    first ``@@``. Inside a hunk a line reading ``+++ x`` is an added line whose text is
+    ``++ x``, and it is scanned (Arch, 2026-11-16: read as a header, it walked past the hook)."""
     out: List[Tuple[str, int, str]] = []
     path: Optional[str] = None
     number = 0
+    in_header = False
     for raw in diff.splitlines():
-        if raw.startswith("+++ "):
-            target = raw[4:].rstrip("\t")
-            path = None if target == "/dev/null" else target[2:] if target[:2] == "b/" else target
-            continue
-        if raw.startswith("--- ") or raw.startswith("diff --git "):
+        if raw.startswith("diff --git "):
+            in_header, path = True, None
             continue
         hunk = _HUNK.match(raw)
         if hunk:
+            in_header = False
             number = int(hunk.group(1))
+            continue
+        if in_header:
+            if raw.startswith("+++ "):
+                target = raw[4:].rstrip("\t")
+                path = (
+                    None if target == "/dev/null" else target[2:] if target[:2] == "b/" else target
+                )
             continue
         if path is not None and raw.startswith("+"):
             out.append((path, number, raw[1:]))
@@ -180,10 +200,9 @@ def scan_staged() -> List[Hit]:
     return [hit for path, lines in by_path.items() for hit in hits_in(path, lines)]
 
 
-def scan_tracked() -> List[Hit]:
-    excludes = [f":(exclude){root}" for root in BEARER_ROOTS]
+def _grep_head(pattern: str, pathspecs: List[str]) -> dict:
     out = _git(
-        ["grep", "-I", "-n", "-z", "-E", _PREFILTER, "HEAD", "--", ".", *excludes],
+        ["grep", "-I", "-n", "-z", "-E", pattern, "HEAD", "--", *pathspecs],
         ok_codes=(0, 1),  # 1 is "no line matched"
     )
     by_path: dict = {}
@@ -194,7 +213,22 @@ def scan_tracked() -> List[Hit]:
         ref_path, number, text = parts
         path = ref_path.split(":", 1)[1] if ":" in ref_path else ref_path
         by_path.setdefault(path, []).append((int(number), text))
-    return [hit for path, lines in by_path.items() for hit in hits_in(path, lines)]
+    return by_path
+
+
+def scan_tracked() -> List[Hit]:
+    """Every shape outside the bearer lint's roots; inside them, the shapes that lint does
+    not name (Arch, 2026-11-16: a GitHub app user token in a session log was read by
+    neither). The bearer lint keeps its own shapes and baseline there."""
+    excludes = [f":(exclude){root}" for root in BEARER_ROOTS]
+    hits = [
+        hit
+        for path, lines in _grep_head(_PREFILTER, [".", *excludes]).items()
+        for hit in hits_in(path, lines)
+    ]
+    for path, lines in _grep_head(_EXTRA_PREFILTER, list(BEARER_ROOTS)).items():
+        hits.extend(hits_in(path, lines, extra_only=True))
+    return hits
 
 
 def read_baseline(path: Optional[Path]) -> Set[str]:
@@ -233,11 +267,7 @@ def main(argv: Optional[List[str]] = None) -> int:
 
     baseline = read_baseline(args.baseline)
     new = [hit for hit in hits if hit[3] not in baseline]
-    what = (
-        "lines the staged change adds"
-        if args.staged
-        else "tracked files outside mailboxes/, docs/ and dev/"
-    )
+    what = "lines the staged change adds" if args.staged else "tracked files"
     if not new:
         print(
             f"staged_credential_scan: OK, no new credential shape in {what} "
