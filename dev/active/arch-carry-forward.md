@@ -1,5 +1,5 @@
 ---
-last_updated: 2026-11-17 12:28 PST (WORK)
+last_updated: 2026-11-17 15:28 PST (WORK)
 currency_claim: rewritten at substantive-change boundaries, verified at every START
 max_age_days: 4
 ---
@@ -26,13 +26,18 @@ context-floor directive that duplicating it here is exactly the accretion to cut
 
 ## IN FLIGHT — current state only
 
-**11-17 state (12:28, WORK fire):** beta serves `d678b0af26` since 11:31 (third promotion today; CONFORMS; carries 2402 with its fix, CXO's Slack sentence, the console links). Main 12 of 12 green. Inbox empty. Rulings are in decisions.log. **No grant is open.**
+**11-17 state (15:28, WORK fire):** beta serves `d678b0af26` since 11:31 (third promotion today; CONFORMS; carries 2402 with its fix, CXO's Slack sentence, the console links). Main 12 of 12 green. Inbox empty. Rulings are in decisions.log. **No grant is open.**
 - **My validation rule for any served-path change (learned twice today):** run every test file that names the changed module, template or symbol at any layer (`git grep -l` over `tests/`), plus `tests/test_architecture_enforcement.py` and `tests/test_completion_ratchets.py` whole, and state the file count. Use a zsh array for path lists (a `$VAR` list is one word in zsh and silently matches nothing).
-- **CONFORMS read, until the gate fix lands:** also check that no file under `templates/` or `cli/` changed between the green tested ancestor and staging's commit.
-- **Waiting on xian (via Exec):**
-  - Yes or no on the promote gate edit (`fly-deploy.yml` `TESTED_PATHS_RE` gains `templates/|cli/`; Lead's branch `lead/promote-gate-tested-paths`, cdd3077d93, read by me, conforms). Exec's rollup v1045, recommendation yes. Exec also offered him a standing word for stricter-only gate edits.
-  - Whether any seat's git-ignored `.env` or `settings.local.json` is ever checked, and by whom. Auto mode refused the check; nobody ran it. I wrongly called it a sound exception and withdrew that.
-  - Steps A, C, D, F0 and the rest of the 11-16 list below (Step A not started at 12:27: Lead's `settings.local.json` still Nov 3; that file's date is the only signal, `settings.json` is the tracked project file).
+- **CONFORMS read:** the promote gate now counts `templates/` and `cli/` as tested (on main 7e91d9bc62), but it has not run on a promotion yet. For the first promotion after it, still check by hand that no file under `templates/` or `cli/` changed between the green tested ancestor and staging's commit.
+- **Step A is in progress (15:28):** all three seats ready since 14:47, Exec on watch, xian may paste at any time. **Do not run `scripts/sync-pm-local.sh` until Exec mails "Step A done" or "Step A stopped"** (my own sync moved his checkout at 14:37; told Exec). Not done at 15:28 by file date (Lead's `settings.local.json` still Nov 3). After Lead's `check-env` passes, the first paid run under the cap is mine to validate.
+- **xian's words today (all via Janus and Exec; verbatim in decisions.log):**
+  - Browser launch: "ok to leave it. let's ensure it doesn't recur, though."
+  - `piper-morgan-test`: nothing of his uses it ("No"); seats may spend through its key to $40 ("Yes, if that's the right way to do it, sure"). I answered conforms; HOST: right way. Read by him: $16.19 of $40, organisation $49.29 of $250. All in ADR-084 D2.
+  - Promote gate: "Yes, add those two folders." Merged (7e91d9bc62), checked on main, reported. Standing word: "Yes, changes that only make the check stricter can go ahead with Arch's approval, although I should still be informed." Scope: the promote gate only; my written "only tightens" and why, before the merge; a report to Exec the same hour.
+  - Env-file check: "Yes, skip and fix." No seat, Pard or xian counts those files; issue 2403 is the path (Production, section Q; Lead builds; I validate four rows).
+  - Spend is nominal to him inside the caps; caps, PLANNED and COST lines and the $10 rule unchanged.
+- **Still waiting on xian (via Exec):** Steps C, D, F0 and the rest of the 11-16 list below.
+- **Prompt caching (his question):** already set per request on the classifier; automatic caching is not our shape (a reply is one system prompt and one rebuilt message). Issue 2354's explicit breakpoint is the fitting change, to be built with a count-only read of cache tokens. `classifier.py` line 820's comment names the wrong model (Lead to fix).
 - **Issues I filed today:** 2402 (cards drew route strings unescaped; built and served at the unit and source layer; my filing overstated it, corrected on the issue; signed-in read still open) and 2403 (two service modules call `load_dotenv()` at import; not urgent; PPM places, Lead builds, I validate).
 - **Rulings today that others build or have built:**
   - Card-state file pin stays; in CI a missing node fails it (done).
