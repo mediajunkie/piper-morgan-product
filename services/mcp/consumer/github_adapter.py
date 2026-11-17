@@ -919,6 +919,43 @@ class GitHubMCPSpatialAdapter(BaseSpatialAdapter):
             return await self._install_step_response()
         return installed
 
+    async def _installed_names_or_degrade(self, credential):
+        """The ``owner/name`` of every repository the App is installed on, or the
+        degrade to show instead. A name GitHub would not send fails the read: dropping
+        the entry would undercount a search and wrongly refuse a repo-scoped read."""
+        installed = await self._installed_or_degrade(credential)
+        if isinstance(installed, DegradationResponse):
+            return installed
+        names = [str(r.get("full_name") or "") for r in installed.repositories]
+        if not all(_is_repo_full_name(n) for n in names):
+            logger.warning("GitHub installation listing held a malformed repository name")
+            return await self.degrade(DegradationReason.UNREACHABLE)
+        return names
+
+    async def _app_repository_degrade(
+        self, credential, full_name: str
+    ) -> Optional[DegradationResponse]:
+        """#2379 (Arch 2026-11-15 15:49): on a GitHub App grant, a read of one named
+        repository goes ahead only when the App is installed on it. Returns None when
+        it may, else the degrade to show: #2374's "not installed on that repository"
+        answer, the install step when the App is installed nowhere, or the honest
+        failure when the installation read didn't answer. Never the read itself: an App
+        user token can read a public repository the person never gave the App.
+
+        The personal-token leg and classic grants make no installation read."""
+        if not (
+            isinstance(credential, GitHubCredential)
+            and credential.leg == "oauth"
+            and credential.app_grant
+        ):
+            return None
+        names = await self._installed_names_or_degrade(credential)
+        if isinstance(names, DegradationResponse):
+            return names
+        if full_name.casefold() in {n.casefold() for n in names}:
+            return None
+        return await self._not_on_repository_response()
+
     async def _installed_search_queries(self, credential, query: str, repository: Optional[str]):
         """#2374 (Arch 2026-11-15): on an App grant, the queries that cover ``query``
         over the installed repositories only, or the degrade to show instead. The
@@ -929,14 +966,9 @@ class GitHubMCPSpatialAdapter(BaseSpatialAdapter):
         ``repo:`` qualifiers for every installed repository, split across as many
         queries as their length needs; the sets are disjoint, so the counts add up to
         GitHub's own. More queries than the bound is said plainly, never cut short."""
-        installed = await self._installed_or_degrade(credential)
-        if isinstance(installed, DegradationResponse):
-            return installed
-        names = [str(r.get("full_name") or "") for r in installed.repositories]
-        if not all(_is_repo_full_name(n) for n in names):
-            # A listing GitHub would not send. Dropping the entry would undercount.
-            logger.warning("GitHub installation listing held a malformed repository name")
-            return await self.degrade(DegradationReason.UNREACHABLE)
+        names = await self._installed_names_or_degrade(credential)
+        if isinstance(names, DegradationResponse):
+            return names
         if repository:
             if repository.casefold() in {n.casefold() for n in names}:
                 return [query]
@@ -1856,6 +1888,9 @@ class GitHubMCPSpatialAdapter(BaseSpatialAdapter):
         binding_or_degrade = await self._bound_binding_or_degrade(user_id)
         if isinstance(binding_or_degrade, DegradationResponse):
             return GitHubIssueResult(degradation=binding_or_degrade)
+        outside = await self._app_repository_degrade(binding_or_degrade, resolved.full_name)
+        if outside is not None:  # #2379: no read of a repository the App isn't on
+            return GitHubIssueResult(degradation=outside, resolved_repo=resolved.full_name)
 
         try:
             async with self._mcp_client_ctx(binding_or_degrade) as client:
@@ -1919,6 +1954,10 @@ class GitHubMCPSpatialAdapter(BaseSpatialAdapter):
 
         binding_or_degrade = await self._bound_binding_or_degrade(user_id)
         if isinstance(binding_or_degrade, DegradationResponse):
+            return "unknown", None, None
+        if await self._app_repository_degrade(binding_or_degrade, resolved.full_name) is not None:
+            # #2379: the App isn't on that repository (or that couldn't be read). No
+            # read, and no evidence either way about the issue.
             return "unknown", None, None
 
         try:
@@ -1997,6 +2036,9 @@ class GitHubMCPSpatialAdapter(BaseSpatialAdapter):
         binding_or_degrade = await self._bound_binding_or_degrade(user_id)
         if isinstance(binding_or_degrade, DegradationResponse):
             return GitHubRepoScopedResult(degradation=binding_or_degrade)
+        outside = await self._app_repository_degrade(binding_or_degrade, resolved.full_name)
+        if outside is not None:  # #2379: no read of a repository the App isn't on
+            return GitHubRepoScopedResult(degradation=outside)
 
         try:
             async with self._mcp_client_ctx(binding_or_degrade) as client:
