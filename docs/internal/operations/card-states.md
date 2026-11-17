@@ -75,8 +75,6 @@ Headline: **Needs attention** (0 of 4 checked integrations working)
 | Control | Label | Style | Goes to |
 |---|---|---|---|
 | button | Test | test-btn | `testConnection()` |
-| button | Disconnect | disconnect-btn | `disconnectAPIKeyIntegration()` |
-| link | Repositories | configure-btn | `/settings/integrations/github#repositories` |
 
 ### notion
 
@@ -87,8 +85,6 @@ Headline: **Needs attention** (0 of 4 checked integrations working)
 | Control | Label | Style | Goes to |
 |---|---|---|---|
 | button | Test | test-btn | `testConnection()` |
-| button | Disconnect | disconnect-btn | `disconnectAPIKeyIntegration()` |
-| link | Settings | configure-btn | `/settings/integrations/notion` |
 
 ### slack
 
@@ -99,8 +95,6 @@ Headline: **Needs attention** (0 of 4 checked integrations working)
 | Control | Label | Style | Goes to |
 |---|---|---|---|
 | button | Test | test-btn | `testConnection()` |
-| button | Disconnect | disconnect-btn | `disconnectIntegration()` |
-| link | Settings | configure-btn | `/settings/integrations/slack` |
 
 ### calendar
 
@@ -111,8 +105,6 @@ Headline: **Needs attention** (0 of 4 checked integrations working)
 | Control | Label | Style | Goes to |
 |---|---|---|---|
 | button | Test | test-btn | `testConnection()` |
-| button | Disconnect | disconnect-btn | `disconnectIntegration()` |
-| link | Settings | configure-btn | `/settings/integrations/calendar` |
 
 ## Connected, never tested by this account
 
@@ -372,7 +364,8 @@ State key: `github-app-failed`
 
 - 🐙
 - GitHub
-- Connected as octo-example. Not the right account? Disconnect, then connect again. Checked just now. [error style]
+- Connected as octo-example.
+- Sample error text from a failed Test. Checked just now. [error style]
 
 | Control | Label | Style | Goes to |
 |---|---|---|---|

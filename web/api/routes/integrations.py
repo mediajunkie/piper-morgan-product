@@ -45,7 +45,15 @@ class IntegrationStatus(BaseModel):
     status_icon: Optional[str] = None
     status_detail: Optional[str] = None
     show_test: bool = True
+    # ``"reconnect"`` (#2031) or ``"test_only"`` (#2401, CXO 2026-11-17: a card whose
+    # credential lookup failed offers Test and nothing that assumes a connection).
     action: Optional[str] = None
+    # #2401 (CXO 2026-11-17): a failed Test's own words on a second line, in the error
+    # style, with the check time after them; the status line above keeps the normal
+    # style. Set only where the status line says something other than the failure
+    # (the sign-in GitHub card's "Connected as ..."). Other cards put the failure in
+    # ``status_message`` and leave this unset.
+    error_line: Optional[str] = None
 
 
 class IntegrationHealthResponse(BaseModel):
@@ -437,6 +445,9 @@ _GITHUB_CARD_CONNECTED_AS = (
     "Connected as {login}. Not the right account? Disconnect, then connect again."
 )
 _GITHUB_CARD_CONNECTED_NO_LOGIN = "Connected."
+# #2401 (CXO 2026-11-17): after a failed Test the card names the account and gives the
+# failure its own line; "Not the right account?" would point at a cause nobody found.
+_GITHUB_CARD_CONNECTED_AS_ONLY = "Connected as {login}."
 _GITHUB_CARD_PAT_TITLE = "Connected via your personal token"
 _GITHUB_CARD_PAT_DETAIL = (
     "Your GitHub connection needs re-authorizing, so I'm not using it right now."
@@ -547,6 +558,8 @@ async def _github_card(
             oauth_status, oauth_error = "healthy", None
         else:
             oauth_status, oauth_error = "failed", oauth_result.error or "Connection failed"
+        if oauth_error is not None and login:
+            connected_line = _GITHUB_CARD_CONNECTED_AS_ONLY.format(login=login)
         return card(
             status=oauth_status,
             status_message=connected_line,
@@ -558,6 +571,7 @@ async def _github_card(
             can_test=True,
             last_check=oauth_result.checked_at_iso if oauth_result is not None else None,
             error=oauth_error,
+            error_line=oauth_error,
         )
     if getattr(credential, "stale_oauth_reason", None) == DegradationReason.STALE_TOKEN:
         probe = await adapter.search_user_repositories(user_id, limit=1)
@@ -609,6 +623,7 @@ async def _check_integration_health(
                 status_message=CHECK_FAILED_MESSAGE,
                 configure_url=metadata.get("configure_url"),
                 can_test=True,
+                action="test_only",  # #2401: not known to be connected
             )
 
         if config_status == "not_configured":
@@ -656,6 +671,7 @@ async def _check_integration_health(
             status_message=CHECK_FAILED_MESSAGE,
             configure_url=metadata.get("configure_url"),
             can_test=True,
+            action="test_only",  # #2401: not known to be connected
         )
 
 

@@ -223,6 +223,11 @@
         color: #7f8c8d;
       }
 
+      /* #2401: a failed Test's words on their own line under the status line */
+      .status-detail.error {
+        color: #dc3545;
+      }
+
       .integration-actions {
         display: flex;
         gap: 12px;
@@ -645,7 +650,10 @@
       const isOffered = OFFERED_CONNECTORS.includes(integration.name);
       const isOAuth = isOffered && OAUTH_INTEGRATIONS.includes(integration.name);
       const isAPIKey = isOffered && API_KEY_INTEGRATIONS.includes(integration.name);
-      const isConnected = integration.status !== 'not_configured';
+      // #2401 (CXO 2026-11-17): when the credential lookup itself failed the card does not
+      // know whether the account is connected, so nothing that assumes it is offered.
+      const testOnly = integration.action === 'test_only';
+      const isConnected = integration.status !== 'not_configured' && !testOnly;
 
       // Determine action buttons based on integration type
       let actionButtons = '';
@@ -661,6 +669,8 @@
             Disconnect
           </button>
         ` : '';
+      } else if (testOnly) {
+        actionButtons = '';  // the Test button below is the card's one control
       } else if (integration.action === 'reconnect') {
         // #2031: a grant the service no longer accepts. One Reconnect, to the
         // integration's settings page (Settings → GitHub re-grants in one step).
@@ -748,10 +758,15 @@
               ${!isOffered ? '' : `<div class="integration-status">
                 <span class="status-dot ${integration.status}"></span>
                 ${integration.status_icon ? `<span class="status-icon-inline" id="status-icon-${integration.name}">${integration.status_icon}</span>` : ''}
-                <span class="status-message ${integration.error ? 'error' : ''}" id="status-${integration.name}">
+                <span class="status-message ${integration.error && !integration.error_line ? 'error' : ''}" id="status-${integration.name}">
                   ${statusLine(integration)}
                 </span>
               </div>
+              ${integration.error_line && integration.name !== resultOwnsLine ? `
+                <div class="status-detail error" id="error-line-${integration.name}">
+                  ${withCheckedAt(integration.error_line, checkedFragment(integration))}
+                </div>
+              ` : ''}
               ${integration.status_detail && integration.name !== resultOwnsLine ? `
                 <div class="status-detail" id="detail-${integration.name}">
                   ${integration.status_detail}
@@ -810,16 +825,27 @@
     return `Last checked ${t.toLocaleDateString([], { month: 'short', day: 'numeric' })}.`;
   }
 
-  function statusLine(integration) {
-    const checked = ['healthy', 'failed', 'degraded'].includes(integration.status) && integration.last_check
+  function checkedFragment(integration) {
+    return ['healthy', 'failed', 'degraded'].includes(integration.status) && integration.last_check
       ? formatCheckedAt(integration.last_check, new Date()) : '';
+  }
+
+  function withCheckedAt(base, checked) {
+    if (!checked) return base;
+    return /[.!?]$/.test(base) ? `${base} ${checked}` : `${base}. ${checked}`;
+  }
+
+  function statusLine(integration) {
+    // #2401: a card with its failure on a second line keeps the check time there.
+    if (integration.error_line) return integration.status_message;
+    const checked = checkedFragment(integration);
     if (!checked) return integration.status_message;
     // #2066: a card whose message names its leg ("Connected with your GitHub account.",
     // #2031) keeps that sentence and gets the check time after it; only the generic
     // "Healthy" message (#2049) becomes "Healthy." so the #2045 line reads as ruled.
     const base = integration.status === 'healthy' && integration.status_message === 'Healthy'
       ? 'Healthy.' : integration.status_message;
-    return /[.!?]$/.test(base) ? `${base} ${checked}` : `${base}. ${checked}`;
+    return withCheckedAt(base, checked);
   }
 
   async function testConnection(integrationName) {
