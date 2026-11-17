@@ -269,7 +269,7 @@ while the gates run): 14 checks.
 The repo is public. Two checks read for provider keys (Anthropic, OpenAI, Google), GitHub and
 Fly tokens, Slack tokens and invite codes:
 
-- **At commit** (`scripts/git-hooks/pre-commit`, once Pard has installed it): the lines the staged
+- **At commit** (`scripts/git-hooks/pre-commit`, installed 2026-11-16 17:00): the lines the staged
   change adds, in every folder. A hit refuses the commit and prints `path:line  shape name`,
   never the value.
 - **In the push gates and CI** (`lint.yml`): every tracked text file outside `mailboxes/`, `docs/`
