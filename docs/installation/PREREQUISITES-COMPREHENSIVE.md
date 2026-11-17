@@ -162,7 +162,7 @@ piper-morgan-product/
 | Provider      | Required? | Format       | How to Get                                 |
 | ------------- | --------- | ------------ | ------------------------------------------ |
 | OpenAI        | ✅ Yes    | `sk-...`     | https://platform.openai.com/api-keys       |
-| Anthropic     | Optional  | `sk-ant-...` | https://console.anthropic.com/account/keys |
+| Anthropic     | Optional  | `sk-ant-...` | https://platform.claude.com/settings/keys |
 | Google Gemini | Optional  | API key      | https://aistudio.google.com/app/apikey     |
 | Perplexity    | Optional  | API key      | https://www.perplexity.ai/settings/api     |
 
