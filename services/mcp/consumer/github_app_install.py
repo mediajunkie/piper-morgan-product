@@ -85,24 +85,45 @@ _MAX_PAGES = 100
 #: current request, by token. None outside a request: nothing is held. Never shared
 #: across requests: the installed set changes whenever the person edits it on GitHub,
 #: and a held answer would serve a stale set with no signal.
-_request_reads: ContextVar[Optional[Dict[str, "InstalledRepositories"]]] = ContextVar(
+class _RequestReads:
+    """One request's answers. ``closed`` once the request ends: a task started inside
+    the request copied the context and still holds this object, and must not go on
+    reusing the installed set after the request is over (Arch 2026-11-16 16:45)."""
+
+    __slots__ = ("answers", "closed")
+
+    def __init__(self) -> None:
+        self.answers: Dict[str, "InstalledRepositories"] = {}
+        self.closed = False
+
+
+_request_reads: ContextVar[Optional[_RequestReads]] = ContextVar(
     "github_app_installation_reads", default=None
 )
+
+
+def _open_reads() -> Optional[_RequestReads]:
+    """The current request's holder, or None when there is none or it has ended."""
+    held = _request_reads.get()
+    return held if held is not None and not held.closed else None
 
 
 @contextlib.contextmanager
 def installation_read_scope() -> Iterator[None]:
     """One request. Inside it, the installation read for a token runs once and its
     answer is reused; a failed read is not held, so the next call reads again. The
-    answers are dropped when the request ends. A scope opened inside another keeps the
-    outer one's answers."""
-    if _request_reads.get() is not None:
+    answers are dropped when the request ends, for every task that was started inside
+    it too. A scope opened inside an open one keeps the outer one's answers."""
+    if _open_reads() is not None:
         yield
         return
-    marker = _request_reads.set({})
+    holder = _RequestReads()
+    marker = _request_reads.set(holder)
     try:
         yield
     finally:
+        holder.closed = True
+        holder.answers.clear()
         _request_reads.reset(marker)
 
 
@@ -110,12 +131,12 @@ async def list_installed_repositories(token: str) -> InstalledRepositories:
     """The installed repositories for the token's person (see
     ``_read_installed_repositories``), read once per request when a request scope is
     open (#2379), and on every call otherwise."""
-    held = _request_reads.get()
-    if held is not None and token and token in held:
-        return held[token]
+    held = _open_reads()
+    if held is not None and token and token in held.answers:
+        return held.answers[token]
     installed = await _read_installed_repositories(token)
-    if held is not None:
-        held[token] = installed
+    if held is not None and not held.closed:
+        held.answers[token] = installed
     return installed
 
 
