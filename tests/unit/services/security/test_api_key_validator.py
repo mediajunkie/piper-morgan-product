@@ -15,7 +15,15 @@ from unittest.mock import AsyncMock, Mock, patch
 import pytest
 
 from services.security.api_key_validator import APIKeyValidator, ValidationReport
+from services.security.key_leak_detector import KeyLeakDetector
 from services.security.provider_key_validator import ProviderKeyValidator, ValidationResult
+from tests.utils.made_up_credentials import (
+    GOOD_ANTHROPIC_KEY,
+    GOOD_OPENAI_KEY,
+    github_pat,
+    joined,
+    openai_key,
+)
 
 
 class TestAPIKeyValidator:
@@ -32,7 +40,7 @@ class TestAPIKeyValidator:
         """Test OpenAI key with valid format"""
         # Valid OpenAI key format: sk- + 48+ mixed characters
         # Using realistic mixed pattern to avoid fake key detection
-        valid_key = "sk-X7k9mP2nQ5tR8wY3jL6hN4vC1bM0sD9fG8eA7zK5x2W4uT"
+        valid_key = GOOD_OPENAI_KEY
 
         report = await validator.validate_api_key("openai", valid_key)
 
@@ -60,12 +68,8 @@ class TestAPIKeyValidator:
     async def test_validate_anthropic_key_valid_format(self, validator):
         """Test Anthropic key with valid format"""
         # Valid Anthropic key format: sk-ant- + 100+ mixed characters
-        # Using mixed characters to avoid fake key detection (107 total chars = 100 after prefix)
-        valid_key = (
-            "sk-ant-"
-            + "X7k9mP2nQ5tR8wY3jL6hN4vC1bM0sD9fG8eA7zK5x2W4uT6vL3nR9pM7yH5kJ4wB2gC8xN1qS0tV6mP"
-            + "aB" * 11
-        )
+        # A made-up key, built at run time (issue 2397)
+        valid_key = GOOD_ANTHROPIC_KEY
 
         report = await validator.validate_api_key("anthropic", valid_key)
 
@@ -90,7 +94,7 @@ class TestAPIKeyValidator:
     async def test_validate_github_token_valid_format(self, validator):
         """Test GitHub personal access token format"""
         # Valid GitHub PAT: ghp_ + 36+ mixed characters (40+ total)
-        valid_token = "ghp_X7k9mP2nQ5tR8wY3jL6hN4vC1bM0sD9fG8eA"
+        valid_token = github_pat("a made-up token in the personal-token format")
 
         report = await validator.validate_api_key("github", valid_token)
 
@@ -102,7 +106,7 @@ class TestAPIKeyValidator:
     async def test_validate_slack_token_valid_format(self, validator):
         """Test Slack bot token format"""
         # Valid Slack bot token: xoxb- + numbers + dash + mixed characters
-        valid_token = "xoxb-FAKE-FAKE-TESTTOKEN"  # Intentionally fake for testing
+        valid_token = joined("xo", "xb-", "FAKE-FAKE-TESTTOKEN")  # Intentionally fake for testing
 
         report = await validator.validate_api_key("slack", valid_token)
 
@@ -151,7 +155,7 @@ class TestAPIKeyValidator:
     async def test_overall_validation_logic(self, validator):
         """Test that overall_valid reflects all validation checks"""
         # Valid format, good strength, no leaks
-        strong_key = "sk-" + "X7k9mP2nQ5tR8wY3jL6hN4vC1bM0sD9fG8eA7zK5x2W4u"
+        strong_key = GOOD_OPENAI_KEY
 
         report = await validator.validate_api_key("openai", strong_key)
 
@@ -165,7 +169,7 @@ class TestAPIKeyValidator:
     @pytest.mark.smoke
     async def test_security_level_assignment(self, validator):
         """Test that security_level is assigned correctly"""
-        valid_key = "sk-X7k9mP2nQ5tR8wY3jL6hN4vC1bM0sD9fG8eA7zK5x2W4uT"
+        valid_key = GOOD_OPENAI_KEY
 
         report = await validator.validate_api_key("openai", valid_key)
 
@@ -200,7 +204,7 @@ class TestAPIKeyValidator:
     @pytest.mark.smoke
     async def test_strict_mode_parameter(self, validator):
         """Test strict_mode parameter affects validation"""
-        borderline_key = "sk-X7k9mP2nQ5tR8wY3jL6hN4vC1bM0sD9fG8eA7zK5x2W4uT"
+        borderline_key = GOOD_OPENAI_KEY
 
         # Normal mode
         normal_report = await validator.validate_api_key(
@@ -218,7 +222,7 @@ class TestAPIKeyValidator:
     @pytest.mark.smoke
     async def test_api_key_preview_privacy(self, validator):
         """Test that API key preview doesn't expose full key"""
-        full_key = "sk-" + "X7k9mP2nQ5tR8wY3jL6hN4vC1bM0sD9fG8eA7zK5x2W4u"
+        full_key = GOOD_OPENAI_KEY
 
         report = await validator.validate_api_key("openai", full_key)
 
@@ -254,7 +258,7 @@ class TestOverallValidLeakSemantics:
         # Realistic-looking OpenAI key: passes format check, has high
         # entropy, mixed case, no test/weak patterns. Same shape as the
         # detector's "unrecognized" test fixture.
-        good_key = "sk-X7k9mP2nQ5tR8wY3jL6hN4vC1bM0sD9fG8eA7zK5x2W4uT"
+        good_key = GOOD_OPENAI_KEY
 
         report = await validator.validate_api_key("openai", good_key)
 
@@ -280,9 +284,14 @@ class TestOverallValidLeakSemantics:
         _quick_leak_checks branch with confidence >= 0.9, and overall_valid
         must reflect that as a blocking failure regardless of format/strength.
         """
-        # Known test key from _load_known_test_keys() — triggers the
-        # quick-check path with severity="critical" and confidence=1.0.
-        known_test_key = "sk-1234567890abcdef1234567890abcdef1234567890abcdef"
+        # A made-up key that passes format and strength, with its digest added to the
+        # detector's known-test-key list (the list holds digests, issue 2397): the
+        # quick-check path answers severity="critical" and confidence=1.0.
+        known_test_key = openai_key("on the detector's list for this test")
+        detector = validator.leak_detector
+        detector.known_test_key_digests = detector.known_test_key_digests | {
+            KeyLeakDetector._digest(known_test_key)
+        }
 
         report = await validator.validate_api_key("openai", known_test_key)
 

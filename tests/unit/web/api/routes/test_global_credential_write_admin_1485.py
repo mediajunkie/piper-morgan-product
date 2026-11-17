@@ -35,6 +35,7 @@ from fastapi import FastAPI
 from fastapi.testclient import TestClient
 
 from services.auth.auth_middleware import get_current_user, require_admin
+from tests.utils.made_up_credentials import joined
 from web.api.routes.settings_integrations import router
 
 ADMIN_ID = uuid4()
@@ -83,7 +84,7 @@ def test_non_admin_app_token_write_refused_403_and_no_keychain_write(monkeypatch
         KC.return_value.store_api_key = lambda *a, **k: stored.append(a)
         resp = _client(NON_ADMIN_ID).post(
             "/api/v1/settings/integrations/slack/app-token",
-            json={"app_token": "xapp-1-nonadmin-attempt"},
+            json={"app_token": joined("xa", "pp-", "1-nonadmin-attempt")},
         )
     assert resp.status_code == 403
     # Honest refusal: says why, and that nothing was saved (CXO refusal contract).
@@ -103,7 +104,7 @@ def test_non_admin_refused_without_write_even_when_flag_unset(monkeypatch):
         KC.return_value.store_api_key = lambda *a, **k: stored.append(a)
         resp = _client(NON_ADMIN_ID).post(
             "/api/v1/settings/integrations/slack/app-token",
-            json={"app_token": "xapp-1-nonadmin-attempt"},
+            json={"app_token": joined("xa", "pp-", "1-nonadmin-attempt")},
         )
     assert resp.status_code in (403, 409)
     assert not stored
@@ -125,10 +126,10 @@ def test_admin_app_token_write_still_works(monkeypatch):
         KC.return_value.store_api_key = lambda *a, **k: stored.append(a)
         resp = _client(ADMIN_ID).post(
             "/api/v1/settings/integrations/slack/app-token",
-            json={"app_token": "xapp-1-admin-save"},
+            json={"app_token": joined("xa", "pp-", "1-admin-save")},
         )
     assert resp.status_code == 200
-    assert stored == [("slack_app_token", "xapp-1-admin-save")]
+    assert stored == [("slack_app_token", joined("xa", "pp-", "1-admin-save"))]
     assert resp.json()["state"] == "listening"
 
 
@@ -144,7 +145,7 @@ def test_admin_with_flag_unset_still_409_before_write(monkeypatch):
         KC.return_value.store_api_key = lambda *a, **k: stored.append(a)
         resp = _client(ADMIN_ID).post(
             "/api/v1/settings/integrations/slack/app-token",
-            json={"app_token": "xapp-1-admin-save"},
+            json={"app_token": joined("xa", "pp-", "1-admin-save")},
         )
     assert resp.status_code == 409
     assert "wasn't saved" in resp.json()["detail"]

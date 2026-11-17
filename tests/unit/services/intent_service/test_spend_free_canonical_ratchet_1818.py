@@ -47,6 +47,7 @@ from unittest.mock import AsyncMock
 import pytest
 
 from services.intent_service.pre_classifier import PreClassifier
+from tests.utils.made_up_credentials import joined
 
 # (category, action) -> a message the pre-classifier VERIFIABLY maps to that pair
 # (probed live 2026-09-20; the test re-asserts each mapping on every run).
@@ -270,8 +271,8 @@ def spend_chokepoint(monkeypatch):
     # box with a Keychain key took the other branch. A dummy key puts both on
     # the same path; it can never bill, because the chokepoint below refuses
     # every spend.
-    monkeypatch.setenv("ANTHROPIC_API_KEY", "sk-ant-test-1818-ratchet-dummy")
-    monkeypatch.setenv("OPENAI_API_KEY", "sk-test-1818-ratchet-dummy")
+    monkeypatch.setenv("ANTHROPIC_API_KEY", joined("sk", "-ant-", "test-1818-ratchet-dummy"))
+    monkeypatch.setenv("OPENAI_API_KEY", joined("sk", "-", "test-1818-ratchet-dummy"))
 
     def _recording_refusal(provider: str):
         calls.append(provider)
@@ -344,7 +345,10 @@ async def test_canonical_pair_spend_reach(pair, message, spend_chokepoint, real_
     refused = False
     try:
         with request_api_key(
-            {"anthropic": "sk-ant-test-1818-ratchet-dummy", "openai": "sk-test-1818-ratchet-dummy"}
+            {
+                "anthropic": joined("sk", "-ant-", "test-1818-ratchet-dummy"),
+                "openai": joined("sk", "-", "test-1818-ratchet-dummy"),
+            }
         ):
             result = await real_intent_service.process_intent(
                 message=message, session_id=f"spendfree-{pair[1]}", user_id=None

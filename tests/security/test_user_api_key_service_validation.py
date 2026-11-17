@@ -9,7 +9,7 @@ that:
 
   1. Format-invalid keys are rejected (ValueError).
   2. Low-entropy / strength-failing keys are rejected (ValueError).
-  3. Known test keys from KeyLeakDetector._load_known_test_keys() are
+  3. Known test keys from KeyLeakDetector._load_known_test_key_digests() are
      blocked by the leak quick-check (high confidence → blocking).
   4. Keys that pass format + strength + slip past the leak quick-check
      hit the #932 "unknown" branch (confidence=0.0) and STILL store
@@ -30,7 +30,9 @@ import pytest
 
 from services.database.models import User, UserAPIKey
 from services.database.session_factory import AsyncSessionFactory
+from services.security.key_leak_detector import KeyLeakDetector
 from services.security.user_api_key_service import UserAPIKeyService
+from tests.utils.made_up_credentials import GOOD_OPENAI_KEY, openai_key
 
 # ============================================================================
 # FIXTURES
@@ -180,22 +182,25 @@ async def test_store_user_key_validates_strength(test_user, mock_keychain, mock_
 
 @pytest.mark.asyncio
 async def test_store_user_key_blocks_known_test_key(test_user, mock_keychain, mock_llm_config):
-    """A known test key from _load_known_test_keys() → blocked with high confidence.
+    """A key on the detector's known-test-key list → blocked with high confidence.
 
     #932 + #933: the leak quick-check fires with confidence=1.0 for keys
     in the known-test-keys set. That confidence>0.0 means leak_safe
     DOES gate overall_valid (per #932's honest-unknown logic).
 
-    Uses `sk-1234567890abcdef1234567890abcdef1234567890abcdef` from
-    KeyLeakDetector._load_known_test_keys() — guaranteed to be on the
-    blocklist.
+    The list holds digests, not keys (issue 2397), so the test builds a made-up
+    key that passes format and strength, and adds its digest to this service's
+    detector: the list is then the only thing that can block it.
     """
     service = UserAPIKeyService(keychain_service=mock_keychain)
     service._llm_config = mock_llm_config
 
     async with AsyncSessionFactory.session_scope_fresh() as session:
-        # This is in the known-test-keys set (see key_leak_detector.py)
-        known_test_key = "sk-1234567890abcdef1234567890abcdef1234567890abcdef"
+        known_test_key = openai_key("on the detector's list for this test")
+        detector = service._validator.leak_detector
+        detector.known_test_key_digests = detector.known_test_key_digests | {
+            KeyLeakDetector._digest(known_test_key)
+        }
 
         with pytest.raises(ValueError) as exc_info:
             await service.store_user_key(
@@ -247,7 +252,7 @@ async def test_store_user_key_passes_unknown_leak_with_valid_format_strength(
     back to a hard gate without a real lookup), this test fails: the
     overall_valid would be False and the store would raise ValueError.
 
-    Fixture key: `sk-X7k9mP2nQ5tR8wY3jL6hN4vC1bM0sD9fG8eA7zK5x2W4uT`
+    Fixture key: `GOOD_OPENAI_KEY` from tests/utils/made_up_credentials.py
     (used in #932's tests/unit/services/security/test_api_key_validator.py
     as the canonical "passes all checks" key.)
     """
@@ -260,7 +265,7 @@ async def test_store_user_key_passes_unknown_leak_with_valid_format_strength(
         await session.commit()
 
         # Canonical "passes all real-validator checks" key from #932 suite
-        good_key = "sk-X7k9mP2nQ5tR8wY3jL6hN4vC1bM0sD9fG8eA7zK5x2W4uT"
+        good_key = GOOD_OPENAI_KEY
 
         # Pass user_id as string — the user_id DB column coerces to UUID
         # while the created_by String(255) column needs a string. The

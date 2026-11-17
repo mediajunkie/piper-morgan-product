@@ -41,31 +41,42 @@ class KeyLeakDetector:
 
     def __init__(self):
         """Initialize leak detector"""
-        self.known_test_keys = self._load_known_test_keys()
+        self.known_test_key_digests = self._load_known_test_key_digests()
         self.weak_patterns = self._load_weak_patterns()
 
-    def _load_known_test_keys(self) -> set:
-        """Load known test/example keys that should never be used"""
-        # Common test keys and examples from documentation
-        test_keys = {
+    @staticmethod
+    def _digest(api_key: str) -> str:
+        """SHA-256 of the lower-cased key: the form the deny-list is stored and compared in."""
+        return hashlib.sha256(api_key.lower().encode("utf-8")).hexdigest()
+
+    def _load_known_test_key_digests(self) -> set:
+        """Digests of known test/example keys that should never be used.
+
+        Issue 2397 (Arch 2026-11-16): the published example keys are stored as the SHA-256
+        of their lower-cased value, never as the value, so this public file holds no
+        credential-shaped run. A candidate key is compared by its digest. To add a
+        published example, add its digest (``KeyLeakDetector._digest(value)``), not the value.
+        """
+        published_example_digests = {
             # OpenAI examples
-            "sk-1234567890abcdef1234567890abcdef1234567890abcdef",
-            "sk-proj-1234567890abcdef1234567890abcdef1234567890abcdef",
-            "sk-test1234567890abcdef1234567890abcdef1234567890",
+            "e6e9657b0d9e20bb956d81de6d96f927f8b4a76882c775b22bd5b02e8d6c590e",
+            "e8b4b69691671955fee34570ab0f96790ad922c82552fe6b135390db7f7ff407",
+            "9f44dd4c53ab8c4b1af9ed29347262caebc58430668ad2b53dffa530bb3ea142",
             # Anthropic examples
-            "sk-ant-api03-1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef",
+            "2edfb8210a24a60391737d6e294f7a869714fee473d587f113ff7562f5434c77",
             # GitHub examples
-            "ghp_1234567890abcdef1234567890abcdef12345678",
-            "gho_1234567890abcdef1234567890abcdef12345678",
-            # Common placeholder patterns
+            "bf0316155996e95e18790be9064962d84ab4a6befce3d9563cf5b78d6226a2cb",
+            "a7bc1cd9e096b298c96501b8d2ce13219cde43275fdbd4fc0259539a94c5bf6c",
+        }
+        # Common placeholder patterns: not credential-shaped, kept readable.
+        placeholders = {
             "your-api-key-here",
             "replace-with-your-key",
             "example-api-key",
             "test-api-key",
             "demo-key-123",
         }
-
-        return {key.lower() for key in test_keys}
+        return published_example_digests | {self._digest(key) for key in placeholders}
 
     def _load_weak_patterns(self) -> List[str]:
         """Load patterns that indicate weak or test keys"""
@@ -134,7 +145,7 @@ class KeyLeakDetector:
         """Perform quick local checks for known issues"""
 
         # Check against known test keys
-        if api_key.lower() in self.known_test_keys:
+        if self._digest(api_key) in self.known_test_key_digests:
             return LeakCheckResult(
                 leaked=True,
                 source="Known test key database",

@@ -40,9 +40,10 @@ from services.llm.request_key import (
     request_spend_key,
 )
 from services.shared_types import IntentCategory
+from tests.utils.made_up_credentials import joined
 
-STORED_SENDER_KEY = "sk-ant-api03-the-slack-senders-own-stored-key-1809"
-STORED_SENDER_OPENAI_KEY = "sk-openai-the-slack-senders-own-stored-key-1822"
+STORED_SENDER_KEY = joined("sk", "-ant-", "api03-the-slack-senders-own-stored-key-1809")
+STORED_SENDER_OPENAI_KEY = joined("sk", "-", "openai-the-slack-senders-own-stored-key-1822")
 SERVER_CLIENT = SimpleNamespace(name="THE-SERVERS-OWN-ANTHROPIC-CLIENT")
 
 

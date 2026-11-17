@@ -13,6 +13,7 @@ from services.infrastructure.logging.url_redaction import (
     install_root_redaction_filter,
     install_url_redaction_filter,
 )
+from tests.utils.made_up_credentials import joined
 
 
 class TestURLRedactionFilter:
@@ -40,10 +41,11 @@ class TestURLRedactionFilter:
 
     def test_redacts_token_parameter(self, redaction_filter):
         """Test that token= parameter is redacted."""
-        message = "URL: https://api.slack.com/api?token=xoxb-123-456-abc"
+        token = joined("xo", "xb-", "123-456-abc")
+        message = f"URL: https://api.slack.com/api?token={token}"
         result = redaction_filter.redact_message(message)
         assert "token=[REDACTED]" in result
-        assert "xoxb-123-456-abc" not in result
+        assert token not in result
 
     def test_redacts_access_token_parameter(self, redaction_filter):
         """Test that access_token= parameter is redacted."""

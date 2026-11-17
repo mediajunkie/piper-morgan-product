@@ -5,6 +5,8 @@ from pathlib import Path
 
 import pytest
 
+from tests.utils.made_up_credentials import invite_code
+
 sys.path.insert(0, str(Path(__file__).resolve().parents[3] / "scripts"))
 import invite_redemption_read as irr  # noqa: E402
 
@@ -24,4 +26,4 @@ def test_bad_masks_refused(bad):
 def test_full_length_token_is_refused():
     """A 24-char raw token must never be accepted as a mask (hard rule 3)."""
     with pytest.raises(SystemExit):
-        irr.parse_masks("0123456789ABCDEFGHJKMNPQ")
+        irr.parse_masks(invite_code("a full-length code is never a mask"))
