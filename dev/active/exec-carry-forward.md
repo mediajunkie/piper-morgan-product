@@ -7,7 +7,7 @@
 **Mail v4:** `python3 scripts/mail4.py inbox --role exec` every wake. Roles are space-separated on `send`. Ack only explicit IDs just read. Read a mail's body whole (`awk 'f>=2{print} /^---$/{f++}'`); don't grep out "- " lines.
 
 ## Rollup
-v1023, `719UZ4h1NELjEwWZbDCceT`. Source `dev/active/exec-attention-rollup-current.html`. Edit with Python replace plus assert; update the "vNNN, rebuilt" stamp from a `date` call; no estimated minutes. Top card: Steps A, C, D, F0, two answers. Then the keychain card, the writing card, the self-knowledge card.
+v1024, `719UZ4h1NELjEwWZbDCceT`. Source `dev/active/exec-attention-rollup-current.html`. Edit with Python replace plus assert; update the "vNNN, rebuilt" stamp from a `date` call; no estimated minutes. Top card: Steps A, C, D, F0, two answers. Then the keychain card, the writing card, the self-knowledge card.
 
 ## Waiting on xian (nothing answered or run since 06:51 on 11-16)
 Steps file: `docs/internal/operations/adr-084-one-time-steps.md`. Copy lines from it by script; never retype.
@@ -20,7 +20,7 @@ Steps file: `docs/internal/operations/adr-084-one-time-steps.md`. Copy lines fro
 - **Step F0:** he mints one invite, runs `scripts/seat_account_create.py --account seat-github-1 --write-invite`, then the add-allow for Lead. Lead creates the account (0 of 1 real creations).
 - **Keychain: answered 11-17** ("ok to leave it. let's ensure it doesn't recur, though."). Owed to him: CIO's one line on what prevents a hand-typed repeat (mail 01M7N5Q9GX); put it on the rollup when it lands, Janus carries it.
 - **Two answers:** (1) does anything he runs himself use the `piper-morgan-test` workspace; (2) yes or no that its key on `web-seed-1386` counts as a seat key up to $40. Relay verbatim the same hour, with a decisions.log line.
-- **Writing:** "The Wall" stays planned for Tue 11-17 on his word; he writes it when he has quiet time; no new date. Ship 069 goals answered yes (all five) and spend figures in; both with Comms (01M7N5Q7DB). Console address task with Lead and Docs (01M7N5QBSK); tell Janus when done.
+- **Writing:** "The Wall" stays planned for Tue 11-17 on his word; he writes it when he has quiet time; no new date. Ship 069 goals answered yes (all five) and spend figures in; both with Comms (01M7N5Q7DB). Ship 069 scaffold on main for his prose (`docs/public/comms/drafts/weekly-ship-069-draft-2026-11-17.md`); then I edit, Comms audits, Docs publishes Wed 11-18. Asked Lead which key paid the router screens' $12. Console address: Docs done (`e9ee9334e6`), Lead's four files owed (01M7N5QBSK); tell Janus by external mail when both are done.
 - **Self-knowledge, three texts awaiting his yes:** nine rules (2354, `47a65eed5f`), 13 practice rows (2355, `c531cae276`), seven procedures (2358).
 - Small: flyctl upgrade. Still his hand with a D6 line: 2087, the Buttondown text, 2344. HOST's read-only Buttondown grant goes to him only after Steps A, C, F0.
 - **For him to overrule:** on issue 2264 his 11-03 word was "yes ask"; I let HOST read the two stakeholder rows ("test data"); nothing quoted. The history decision on 2264 is his. The issue was still open at 22:01; the closing comment is Arch's or Lead's.
