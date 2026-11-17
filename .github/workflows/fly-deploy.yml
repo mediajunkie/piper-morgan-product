@@ -410,8 +410,10 @@ jobs:
             n="$(gh api "repos/${GITHUB_REPOSITORY}/actions/workflows/test.yml/runs?head_sha=$1&per_page=5" -q '.workflow_runs | length')"
             [ "${n:-0}" -gt 0 ]
           }
-          # Mirrors .github/workflows/test.yml on.push.paths; keep the two in step.
-          TESTED_PATHS_RE='^(services/|tests/|web/|[^/]*\.py$|pyproject\.toml$|requirements[^/]*\.txt$|alembic/|scripts/|\.github/workflows/)'
+          # Mirrors .github/workflows/test.yml on.push.paths. The two are compared by
+          # tests/unit/test_templates_and_cli_trigger_tests_workflows.py (Arch 2026-11-17: a
+          # hand-kept pair drifted the hour test.yml gained templates/ and cli/).
+          TESTED_PATHS_RE='^(services/|tests/|web/|templates/|cli/|[^/]*\.py$|pyproject\.toml$|requirements[^/]*\.txt$|alembic/|scripts/|\.github/workflows/)'
           conclusion="$(runs_conclusion "$SHA")"
           if [ "$conclusion" = "success" ]; then
             echo "Tests concluded success on ${SHA}"
