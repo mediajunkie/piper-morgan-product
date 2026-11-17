@@ -2,8 +2,8 @@
 
 Beta session 11-04: a person with a Claude Pro subscription did not know the API is
 funded separately. CXO's sentence sits before the key field wherever the key is asked
-for (the setup wizard's key step and Settings, LLM API Keys), links to the Anthropic
-Console, and shows only while Anthropic is the chosen provider.
+for (the setup wizard's key step and Settings, LLM API Keys), links to the Claude
+Platform, and shows only while Anthropic is the chosen provider.
 
 Layers: source pins on the two templates and the wizard's script. This is not a
 browser render; the served quote of each page is Web's.
@@ -21,7 +21,7 @@ SETUP_JS = ROOT / "web/static/js/setup.js"
 
 SENTENCE = (
     "A Claude subscription (Pro or Max) doesn't include API access. Piper needs an API key "
-    "from the Anthropic Console, which is billed separately from your subscription."
+    "from the Claude Platform, which is billed separately from your subscription."
 )
 LINK = '<a href="https://platform.claude.com/dashboard" target="_blank" rel="noopener noreferrer">'
 
@@ -39,7 +39,7 @@ def test_the_note_says_cxos_sentence_and_links_to_the_console(path):
     note = _note(path)
     text = re.sub(r"<[^>]+>", "", note)
     assert " ".join(text.split()) == SENTENCE
-    assert note.count(LINK + "Anthropic Console</a>") == 1
+    assert note.count(LINK + "Claude Platform</a>") == 1
     assert path.read_text().count('id="llm-key-subscription-note"') == 1
 
 
