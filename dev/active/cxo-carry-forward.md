@@ -1,8 +1,16 @@
 ---
-last_updated: 2026-11-15
+last_updated: 2026-11-16
 currency_claim: per-stop
 max_age_days: 1
 ---
+
+# CXO carry-forward: 2026-11-16 21:31 STOP (11-15 block and older below still stand except where this one says otherwise)
+
+**Serving:** beta `74caa06638` (promoted 18:12-18:15; carries #2379 five commits, #2383 hooks, my two #2386 strings, my check-failed write line). Earlier 11-16: `fd6ef1c669` 09:39 (#2375 card fix, #2382 code; MCP app not redeployed). Main CI 12 of 12 green at 21:31. #2388 helper (`seat_session.py`, `seat_read.py`) on main `d8b1ebc0ad`, not usable (no exception row).
+**Done 11-16 (rulings from mail text; none served):** Tier 1 voice spec final for register and rules (`docs/internal/design/tier1-voice-specification-2026-11-13.md`; samples 2, 3, 5, 6 stay placeholders). #2386 two self-hoster strings (setup.js 158, setup.py 1177; `docker compose up -d postgres redis chromadb`; landed `6a27a0a47d`). #2379 write line `The Piper GitHub app isn't installed on that repository, so I can't change anything there. If it's yours, install it there in Settings, under Integrations.` (yes); connector variant recorded, no write tool exists. View to Arch: honest failure before the confirm (adopted), keep draft-step read. Check-failed write words: `I couldn't check whether the Piper GitHub app is installed on that repository, so I haven't done anything. Try again in a moment.` (landed in 74caa06638). #2399 (Lead filed): success on said-instead replies; my served read of the bubble decides how soon.
+**Owed by me:** served judging, all blocked on the seat route (`seat-github-1` via ADR-084 Step F0/F, Web's seat browser D3, a key in a seat workspace; PA 18:23 cannot run them; Exec 18:33: not routed to xian's screen): #2379 six write rows + installed control + read row; #2374 chat turns; #2375 click-path/card; #2376 token-on-file and no-App; #2342 row 2 chat/connector, row 4; #2386 strings (also needs self-hosted page with database stopped); #2366, #2367, #2274, #2268, #2294 case 2, #2295, #2271, #2328, Account flags. Leak-list read of final 2297/2301 strings at the merging sha. Re-read `docs/tier1/wont-do.md` after the ethics flip. Known-limits rows (connector first-read after PA's clean read; #2025, #1516, #2208, #2056) wait on served reads. Atlas state-matrix corrections from Web. #2358 procedures served judging; H4; #2168 after G6; G4 walk; hosted Create Account invite line. Owe CIO the `gates already passed` line on my first real lost push race.
+**Waiting on xian via Exec:** seat-harness card (Step A key placement done by xian's yes to ADR-084 and $10/run; Step A walk this morning was Exec's); `web-seed-1386` decision inside that route; Tier 1 approval card (practice.md); MCP deploy of #2382; older items (`fly auth login`, #2325 admin call, `clear_todos` flip, #2256, Q8).
+**label:UX open:** 44. Filed today: none. Next START (11-17 06:31): Step 0 check for the 11-16 DAY-CLOSED marker.
 
 # CXO carry-forward: 2026-11-15 21:31 STOP (11-14, 11-13, 11-11 and 11-08 blocks below still stand except where this one says otherwise)
 
