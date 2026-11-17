@@ -7,7 +7,7 @@
 **Mail v4:** `python3 scripts/mail4.py inbox --role exec` every wake. Roles are space-separated on `send`. Ack only explicit IDs just read. Read a mail's body whole (`awk 'f>=2{print} /^---$/{f++}'`); don't grep out "- " lines.
 
 ## Rollup
-v1020, `719UZ4h1NELjEwWZbDCceT`. Source `dev/active/exec-attention-rollup-current.html`. Edit with Python replace plus assert; update the "vNNN, rebuilt" stamp from a `date` call; no estimated minutes. Top card: Steps A, C, D, F0, two answers. Then the keychain card, the writing card, the self-knowledge card.
+v1022, `719UZ4h1NELjEwWZbDCceT`. Source `dev/active/exec-attention-rollup-current.html`. Edit with Python replace plus assert; update the "vNNN, rebuilt" stamp from a `date` call; no estimated minutes. Top card: Steps A, C, D, F0, two answers. Then the keychain card, the writing card, the self-knowledge card.
 
 ## Waiting on xian (nothing answered or run since 06:51 on 11-16)
 Steps file: `docs/internal/operations/adr-084-one-time-steps.md`. Copy lines from it by script; never retype.
@@ -26,7 +26,7 @@ Steps file: `docs/internal/operations/adr-084-one-time-steps.md`. Copy lines fro
 - **For him to overrule:** on issue 2264 his 11-03 word was "yes ask"; I let HOST read the two stakeholder rows ("test data"); nothing quoted. The history decision on 2264 is his. The issue was still open at 22:01; the closing comment is Arch's or Lead's.
 
 ## In motion
-- **Beta** `74caa06638` since 18:15 on 11-16, healthy at 22:02. Not checked signed in; that waits on Steps C, D, F0.
+- **Beta** `4e2797bce2` since 08:07 on 11-17 (2401, 2397). Issue 2402's fix on main `456dad90a7`, not served; Lead asks Arch for a grant when CI is green. Not checked signed in; that waits on Steps C, D, F0.
 - Main 12 of 12 green at 22:01, including Tests on a commit after CIO's fix. `whats-armed` 31 armed, 0 not armed, 1 unmeasured.
 - Lead's unbuilt items: the 2157 drill script, 2390, 2391, 2384, 2393, 2399. Hook blocking decision needs a week of counts (about 11-23).
 - Logs without a DAY-CLOSED marker at 22:03 on 11-16: Docs (last entry 19:17), CIO (20:02), Arch (STOP entry at 21:28, marker missing). Docs nudges at its START; check they closed.

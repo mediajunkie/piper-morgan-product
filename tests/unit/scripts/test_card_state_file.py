@@ -16,7 +16,8 @@ sys.path.insert(0, str(ROOT / "scripts"))
 
 import card_state_file as cards  # noqa: E402
 
-needs_node = pytest.mark.skipif(shutil.which("node") is None, reason="node not on PATH")
+# Skipped on a seat without node; in CI a missing node fails these (Arch 2026-11-17).
+needs_node = pytest.mark.skipif(cards.node_missing_is_a_skip(), reason="node not on PATH")
 
 
 @pytest.fixture(scope="module")
@@ -72,6 +73,28 @@ def test_a_card_outside_the_beta_list_offers_no_connect(text):
 @needs_node
 def test_the_file_is_the_same_on_a_second_run(text):
     assert cards.build() == text
+
+
+@pytest.mark.parametrize(
+    "node,ci,skip",
+    (
+        (None, "", True),
+        (None, "true", False),
+        ("/usr/bin/node", "", False),
+        ("/usr/bin/node", "true", False),
+    ),
+)
+def test_a_missing_node_is_a_skip_on_a_seat_and_never_in_ci(monkeypatch, node, ci, skip):
+    monkeypatch.setattr(shutil, "which", lambda name: node)
+    monkeypatch.setenv("CI", ci)
+    assert cards.node_missing_is_a_skip() is skip
+
+
+def test_without_node_the_build_stops_rather_than_writing_anything(monkeypatch):
+    """What CI sees if its image loses node: a failure with a plain reason."""
+    monkeypatch.setattr(shutil, "which", lambda name: None)
+    with pytest.raises(cards.Stopped, match="node is not on PATH"):
+        cards.build()
 
 
 def test_a_state_that_reaches_for_the_network_stops_the_run(monkeypatch):

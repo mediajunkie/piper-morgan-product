@@ -646,7 +646,13 @@
       return;
     }
 
-    container.innerHTML = integrations.map(integration => {
+    container.innerHTML = integrations.map(card => {
+      // #2402 (Arch 2026-11-17): the cards are one HTML string. Every string the route
+      // sent is escaped once, here, before any of it is drawn; nothing below reads `card`.
+      const integration = escapedCard(card);
+      // The name is also written inside click handlers, where HTML escaping is not
+      // enough. It is a registry key; anything else is not drawn.
+      if (!/^[a-z0-9_-]+$/.test(String(card.name))) return '';
       const isOffered = OFFERED_CONNECTORS.includes(integration.name);
       const isOAuth = isOffered && OAUTH_INTEGRATIONS.includes(integration.name);
       const isAPIKey = isOffered && API_KEY_INTEGRATIONS.includes(integration.name);
@@ -809,6 +815,21 @@
   // (the resolver's stale OAuth grant, ADR-070 B4), never by matching message copy.
   // #2045 (CXO ruling): the "when" fragment on a checked card, in the viewer's own zone.
   // `now` is a parameter so tests can fix the clock. Returns '' when there is no usable time.
+  // #2402: text for an HTML string. A Test's stored error can quote a remote service.
+  function escapeHtml(value) {
+    return String(value).replace(/[&<>"']/g, (ch) => (
+      { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[ch]
+    ));
+  }
+
+  function escapedCard(card) {
+    const out = {};
+    for (const [key, value] of Object.entries(card)) {
+      out[key] = typeof value === 'string' ? escapeHtml(value) : value;
+    }
+    return out;
+  }
+
   function formatCheckedAt(iso, now) {
     const t = new Date(iso);
     if (isNaN(t.getTime())) return '';
@@ -1226,7 +1247,7 @@
     const container = document.getElementById('integrations-list');
     container.innerHTML = `
       <div class="loading" style="color: #dc3545;">
-        <p>⚠️ ${message}</p>
+        <p>⚠️ ${escapeHtml(message)}</p>
         <button onclick="loadIntegrationsHealth()" class="test-all-btn" style="margin-top: 16px;">
           Retry
         </button>

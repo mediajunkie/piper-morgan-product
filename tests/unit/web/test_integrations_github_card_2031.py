@@ -14,6 +14,7 @@ Layers:
 
 from __future__ import annotations
 
+import html as html_text
 import json
 import shutil
 import subprocess
@@ -117,7 +118,9 @@ def _render(body: str, integration: dict) -> str:
         timeout=30,
     )
     assert res.returncode == 0, res.stderr
-    return " ".join(res.stdout.split())
+    # #2402: the page escapes route text for its HTML string (an apostrophe is drawn as
+    # an entity). These tests read the text a browser shows, so entities are decoded.
+    return html_text.unescape(" ".join(res.stdout.split()))
 
 
 needs_node = pytest.mark.skipif(shutil.which("node") is None, reason="node not on PATH")
