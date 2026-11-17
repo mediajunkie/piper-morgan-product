@@ -52,6 +52,18 @@ REFUSED = [
     "osascript -e 'tell application \"Google Chrome\" to activate'",
     'osascript -e \'tell application "Chromium" to open location "https://example.com"\'',
     f"cat >> log.md <<'EOF'\nquoted\nEOF\n\"{TEST_BROWSER}\" --headless=new",
+    # Arch, 2026-11-17: shell forms a command-word rule let through.
+    f'if true; then "{TEST_BROWSER}"; fi',
+    f'echo $("{TEST_BROWSER}")',
+    f'echo $( "{TEST_BROWSER}" )',
+    f'echo `"{TEST_BROWSER}"`',
+    "X=$(/opt/x/chromium --dump-dom https://example.com)",
+    f'eval "{TEST_BROWSER}"',
+    f"eval '\"{TEST_BROWSER}\" --headless=new'",
+    f'! "{TEST_BROWSER}"',
+    f'2>/dev/null "{TEST_BROWSER}"',
+    'osascript <<EOF\ntell application "Google Chrome" to activate\nEOF',
+    "echo 'tell application \"Chromium\" to activate' | osascript",
 ]
 
 ALLOWED = [
@@ -74,6 +86,12 @@ ALLOWED = [
     # PA, 2026-11-17: heredoc text going to a file is not a launch.
     "cat >> log.md <<'EOF'\n- ran:\n/nonexistent-dir/chromium --version\nEOF",
     f'cat > note.md <<-"END"\n"{TEST_BROWSER}" --headless=new\nEND\ngit status',
+    f'ls -l "$(dirname "{TEST_BROWSER}")"',
+    f'echo $("{TEST_BROWSER}" --use-mock-keychain --version)',
+    "cat >> log.md <<'EOF'\ntell application \"Google Chrome\" to activate\nEOF",
+    'git commit -m "guard: refuse /x/chromium --version forms"',
+    'python3 scripts/mail4.py send --subject "hook refused /nonexistent-dir/chromium --version"',
+    "(cd /tmp && ls)",
 ]
 
 
