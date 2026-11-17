@@ -15,6 +15,17 @@ BROWSER = re.compile(
 APP = re.compile(r"chrom(e|ium)", re.IGNORECASE)
 SPLIT = re.compile(r"&&|\|\||;|\n|\||(?<![>&\d])&(?![>&])")
 WRAPPERS = {"nohup", "exec", "command", "time", "caffeinate", "setsid", "nice"}
+# Commands that may NAME a browser program without starting it. Any other command with a
+# browser program among its words is refused (HOST, 2026-11-17: `timeout 5 <program>`,
+# `arch -arm64 <program>`, `sudo -u <user> <program>` and `xargs <program>` passed a list of
+# known wrappers; an unknown wrapper must fail closed).
+NOT_LAUNCHERS = {
+    "ls", "strings", "file", "stat", "grep", "egrep", "rg", "codesign", "echo", "printf", "cat",
+    "test", "[", "[[", "lsof", "ps", "pgrep", "pkill", "kill", "md5", "shasum", "xattr", "which",
+    "type", "mdls", "otool", "plutil", "du", "wc", "head", "tail", "sed", "awk", "git",
+    "gh", "brew", "npm", "npx", "pip", "pip3", "python", "python3", "node", "cd", "export",
+    "chmod", "cp", "mv", "rm", "mkdir", "touch", "diff", "sort", "uniq", "tee", "true", "false",
+}
 SHELLS = {"bash", "sh", "zsh", "/bin/bash", "/bin/sh", "/bin/zsh"}
 ASSIGN = re.compile(r"^([A-Za-z_][A-Za-z0-9_]*)=(.*)$", re.DOTALL)
 VAR = re.compile(r"^\$\{?([A-Za-z_][A-Za-z0-9_]*)\}?$")
@@ -71,16 +82,30 @@ def launches(cmd, names=None, depth=0):
         if not toks:
             continue
         word, args = toks[0], toks[1:]
-        var = VAR.match(word)
-        is_browser = bool(BROWSER.search(word)) or bool(var and var.group(1) in names)
-        if word in ("open", "/usr/bin/open") and any(APP.search(a) for a in args):
-            is_browser = True
-        if is_browser and FLAG not in args:
-            bad.append(word if not var else "$" + var.group(1))
-        elif word in SHELLS and "-c" in args and depth < 3:
+
+        def is_program(tok):
+            var = VAR.match(tok)
+            return bool(BROWSER.search(tok)) or bool(var and var.group(1) in names)
+
+        if word in SHELLS and "-c" in args and depth < 3:
             i = args.index("-c")
             if i + 1 < len(args):
                 bad.extend(launches(args[i + 1], names, depth + 1))
+            continue
+        if word in ("open", "/usr/bin/open", "osascript", "/usr/bin/osascript"):
+            # `open -a` can pass the flag after --args; osascript can't pass it at all.
+            if any(APP.search(a) for a in args) and (word.endswith("osascript") or FLAG not in args):
+                bad.append(word)
+            continue
+        if is_program(word):
+            if FLAG not in args:
+                bad.append(word)
+            continue
+        if word.rsplit("/", 1)[-1] in NOT_LAUNCHERS:
+            continue
+        named = [a for a in args if is_program(a)]
+        if named and FLAG not in args:
+            bad.append(f"{word} ... {named[0]}")
     return bad
 
 
@@ -98,7 +123,8 @@ def main():
         f"{FLAG}, so it could read or write xian's login keychain (his rule of 2026-11-11; "
         "2026-11-17: 'ensure it doesn't recur'). Use the browser tool, or the seat browser "
         "(scripts/seat_browser.py; Pard's LaunchAgent starts it). If you must start one by hand, "
-        f"put {FLAG} among its arguments. Do not work around this refusal.",
+        f"put {FLAG} among its arguments. If the command only reads the program file and was "
+        "refused anyway, tell CIO; do not work around this refusal.",
         file=sys.stderr,
     )
     return 2

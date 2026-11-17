@@ -7,9 +7,11 @@
 # made or read one "Safe Storage" item there. xian, 2026-11-17 (via Exec): "ok to leave it. let's
 # ensure it doesn't recur, though." This turns the rule into a mechanism for the Bash tool.
 #
-# Refuses a Bash command in which a Chrome or Chromium program is the thing being run (directly,
-# through nohup/env/exec, through `open -a`, through `bash -c`, or through a variable set in the
-# same command) and --use-mock-keychain is not among that launch's arguments.
+# Refuses a Bash command that has a Chrome or Chromium program among its words without
+# --use-mock-keychain, whatever stands in front of it (nohup, env, timeout, arch, sudo, xargs, an
+# unknown wrapper), plus `open -a` and `osascript` naming one, `bash -c`, and a variable set in the
+# same command. A short list of commands that only read (ls, strings, grep, ps, codesign, git ...)
+# may name the program. Fails closed on an unknown command, open on input it can't parse.
 # Heredoc text going to a file is not judged (a log entry may quote a command); one fed to a shell is.
 # Does NOT see: a launch from inside a script file or another program (python, node). The browser
 # tool's own launches and the seat browser's LaunchAgent pass the flag themselves.
