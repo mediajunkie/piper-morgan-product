@@ -272,6 +272,77 @@ Headline: **Multiple Issues** (0 of 4 checked integrations working)
 | button | Disconnect | disconnect-btn | `disconnectIntegration()` |
 | link | Settings | configure-btn | `/settings/integrations/calendar` |
 
+## Connected, Test failed, and the error text holds markup characters (the text is a sample)
+
+State key: `failed-markup`
+
+Headline: **Multiple Issues** (0 of 4 checked integrations working)
+
+### github
+
+- 🐙
+- GitHub
+- `Sample error quoting <b>markup</b> & "quotes". Checked just now. [error style]`
+
+| Control | Label | Style | Goes to |
+|---|---|---|---|
+| button | Test | test-btn | `testConnection()` |
+| button | Disconnect | disconnect-btn | `disconnectAPIKeyIntegration()` |
+| link | Repositories | configure-btn | `/settings/integrations/github#repositories` |
+
+### notion
+
+- 📝
+- Notion
+- `Sample error quoting <b>markup</b> & "quotes". Checked just now. [error style]`
+
+| Control | Label | Style | Goes to |
+|---|---|---|---|
+| button | Test | test-btn | `testConnection()` |
+| button | Disconnect | disconnect-btn | `disconnectAPIKeyIntegration()` |
+| link | Settings | configure-btn | `/settings/integrations/notion` |
+
+### slack
+
+- 💬
+- Slack
+- `Sample error quoting <b>markup</b> & "quotes". Checked just now. [error style]`
+
+| Control | Label | Style | Goes to |
+|---|---|---|---|
+| button | Test | test-btn | `testConnection()` |
+| button | Disconnect | disconnect-btn | `disconnectIntegration()` |
+| link | Settings | configure-btn | `/settings/integrations/slack` |
+
+### calendar
+
+- 📅
+- Google Calendar
+- `Sample error quoting <b>markup</b> & "quotes". Checked just now. [error style]`
+
+| Control | Label | Style | Goes to |
+|---|---|---|---|
+| button | Test | test-btn | `testConnection()` |
+| button | Disconnect | disconnect-btn | `disconnectIntegration()` |
+| link | Settings | configure-btn | `/settings/integrations/calendar` |
+
+## GitHub: connected through the GitHub app, Test failed, the error text holds markup characters
+
+State key: `github-app-failed-markup`
+
+### github
+
+- 🐙
+- GitHub
+- Connected as octo-example.
+- `Sample error quoting <b>markup</b> & "quotes". Checked just now. [error style]`
+
+| Control | Label | Style | Goes to |
+|---|---|---|---|
+| button | Test | test-btn | `testConnection()` |
+| button | Disconnect | disconnect-btn | `disconnectAPIKeyIntegration()` |
+| link | Manage repositories | configure-btn | `/settings/integrations/github#repositories` |
+
 ## GitHub: connected through the GitHub app, installed on no repository
 
 State key: `github-app-none`

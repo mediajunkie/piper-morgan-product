@@ -64,6 +64,8 @@ HEALTH = "/api/v1/integrations/health"
 INSTALL_STATE = "/api/v1/settings/integrations/github/install-state"
 CARDS = ("github", "notion", "slack", "calendar")
 SAMPLE_ERROR = "Sample error text from a failed Test"
+# Issue 2402: an error that quotes markup must be drawn as text, never as an element.
+MARKUP_ERROR = 'Sample error quoting <b>markup</b> & "quotes"'
 
 _ROUTES = "web.api.routes.integrations"
 _ADAPTER = "services.mcp.consumer.github_adapter.GitHubMCPSpatialAdapter"
@@ -95,6 +97,7 @@ class Scenario:
     github: Optional[str] = None
     install_state: Any = "unknown"  # the install-state route's answer, or "not_ok"
     login: Optional[str] = "octo-example"  # the GitHub login the card reads; None: unreadable
+    error_text: str = SAMPLE_ERROR  # what a failed Test recorded
     offered: Tuple[str, ...] = CARDS  # the connectors this beta offers (host configuration)
     show: Tuple[str, ...] = CARDS  # which cards this scenario's rows are for
 
@@ -133,6 +136,22 @@ def scenarios() -> List[Scenario]:
             "Connected, Test failed just now (the error text is a sample)",
             generic=_all("failed"),
             github="own_token",
+        ),
+        Scenario(
+            "failed-markup",
+            "Connected, Test failed, and the error text holds markup characters (the text is a sample)",
+            generic=_all("failed"),
+            github="own_token",
+            error_text=MARKUP_ERROR,
+        ),
+        Scenario(
+            "github-app-failed-markup",
+            "GitHub: connected through the GitHub app, Test failed, the error text holds markup characters",
+            generic={**others_off, "github": "failed"},
+            github="app",
+            install_state={"state": "some"},
+            error_text=MARKUP_ERROR,
+            show=gh,
         ),
         Scenario(
             "github-app-none",
@@ -271,7 +290,7 @@ def health_payload(user_id: str, scenario: Scenario) -> Dict[str, Any]:
         if state == "healthy":
             store.record_test_result(user_id, card, ok=True)
         elif state == "failed":
-            store.record_test_result(user_id, card, ok=False, error=SAMPLE_ERROR)
+            store.record_test_result(user_id, card, ok=False, error=scenario.error_text)
 
     async def config_status(integration_id, user_id=None):
         return config.get(scenario.generic.get(integration_id, "not_configured"), "configured")
@@ -482,6 +501,12 @@ def read_card(drawn: Dict[str, Any], name: str) -> Optional[Dict[str, Any]]:
 # --- the file ---------------------------------------------------------------------------
 
 
+def _shown(line: str) -> str:
+    """A line as this Markdown file shows it: one that holds markup characters goes in a
+    code span, so a reader sees the characters the card drew, not what they would render."""
+    return f"`{line}`" if any(ch in line for ch in "<>&`") else line
+
+
 def _style(css: str) -> str:
     names = [c for c in css.split() if c != "action-btn"]
     return ", ".join(names) or "plain"
@@ -522,7 +547,7 @@ def build() -> str:
             if card is None:
                 out += ["No card is drawn.", ""]
                 continue
-            out += [f"- {line}" for line in card["lines"]] or ["- (no text)"]
+            out += [f"- {_shown(line)}" for line in card["lines"]] or ["- (no text)"]
             out.append("")
             if card["controls"]:
                 out += ["| Control | Label | Style | Goes to |", "|---|---|---|---|"]
