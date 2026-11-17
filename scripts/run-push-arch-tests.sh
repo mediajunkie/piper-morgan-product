@@ -25,7 +25,14 @@
 # pre-push hook may skip it on a remembered pass (Arch's rule: a check is skipped on a hit only
 # if everything it reads is in the key).
 #
-# Usage: scripts/run-push-arch-tests.sh        (by hand, or from scripts/git-hooks/pre-push)
+# ONE TEST READS OUTSIDE THE KEY (Arch, 2026-11-17): `test_shadow_files_ratchet` in the ratchets
+# file runs a bare `git ls-files` and judges every tracked file NAME, dated logs and mail included.
+# A retry with the same code plus a backup-named file in a dated log folder has the same key. So
+# on a remembered pass (this check's or the smoke's, which carries the same test) the hook runs
+# `--names-only`: that one test alone, a few seconds. A failure blocks the push.
+#
+# Usage: scripts/run-push-arch-tests.sh               (by hand, or from scripts/git-hooks/pre-push)
+#        scripts/run-push-arch-tests.sh --names-only  (the one test that reads file names)
 # Exit 0 passed, 1 a test failed, 3 the pytest env is not provisioned (nothing was checked).
 # Last line is always `run-push-arch-tests: <summary>`.
 #
@@ -39,8 +46,13 @@ if [ -z "$py" ] || [ ! -x "$py" ]; then
   echo "run-push-arch-tests: UNCHECKED, pytest env not provisioned (scripts/ensure-pytest-env.sh --build, or ask Pard)"
   exit 3
 fi
-out="$(PYTHONPATH=. "$py" -m pytest tests/test_architecture_enforcement.py tests/test_completion_ratchets.py \
-  -q --tb=line -p no:cacheprovider -o addopts="--import-mode=importlib" -k "$SLOW" 2>&1)"
+if [ "${1:-}" = "--names-only" ]; then
+  out="$(PYTHONPATH=. "$py" -m pytest "tests/test_completion_ratchets.py::test_shadow_files_ratchet" \
+    -q --tb=line -p no:cacheprovider -o addopts="--import-mode=importlib" 2>&1)"
+else
+  out="$(PYTHONPATH=. "$py" -m pytest tests/test_architecture_enforcement.py tests/test_completion_ratchets.py \
+    -q --tb=line -p no:cacheprovider -o addopts="--import-mode=importlib" -k "$SLOW" 2>&1)"
+fi
 rc=$?
 summary="$(printf '%s\n' "$out" | grep -E '[0-9]+ (passed|failed|error)' | tail -1)"
 if [ $rc -ne 0 ]; then

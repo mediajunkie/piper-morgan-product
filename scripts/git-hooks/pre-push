@@ -124,6 +124,11 @@
 # - It has its own remembered pass (kind=arch), under the same key and the same rule: it reads
 #   nothing under dev/20NN/ or mailboxes/, so a hit may skip it.
 # - Logged as outcome=arch-pass, arch-fail, arch-cached, arch-skip or arch-unchecked.
+# - One test in it, `test_shadow_files_ratchet`, judges every tracked file NAME, including names
+#   under dev/20NN/ and mailboxes/, which the key leaves out (Arch, 2026-11-17). It is also a
+#   smoke test. So on a remembered pass of either kind the hook runs that one test alone
+#   (`scripts/run-push-arch-tests.sh --names-only`, a few seconds) and a failure blocks the push:
+#   outcome=arch-cached-names-fail or smoke-cached-names-fail.
 
 set -u
 top="$(git rev-parse --show-toplevel)"
@@ -282,6 +287,21 @@ if [ -n "$gates_touched" ]; then
   fi
 fi
 
+names_only_ok() {
+  # names_only_ok <kind>: on a remembered pass, run the one test that reads file names outside
+  # the key. 0 = passed or could not run (warned); 1 = failed (the caller blocks the push).
+  [ -x "$top/scripts/run-push-arch-tests.sh" ] || return 0
+  local nout nrc
+  nout="$(cd "$top" && scripts/run-push-arch-tests.sh --names-only 2>&1)"; nrc=$?
+  if [ $nrc -eq 1 ]; then
+    printf '%s\n' "$nout" >&2
+    echo "❌ pre-push: the $1 pass on this content is remembered, but the file-name ratchet (test_shadow_files_ratchet) FAILED on a file added since. Push blocked." >&2
+    return 1
+  fi
+  [ $nrc -eq 3 ] && echo "⚠️  pre-push: file-name ratchet not run (pytest env not provisioned)." >&2
+  return 0
+}
+
 # --- The architecture check (see header). After the gates, before the smoke; no lock. ---
 if [ -n "$arch_touched" ]; then
   gates_touched_was="$gates_touched"; gates_touched="$arch_touched"   # gates_log prints this path
@@ -289,7 +309,8 @@ if [ -n "$arch_touched" ]; then
     echo "⚠️  pre-push architecture check SKIPPED by PIPER_SKIP_PUSH_GATES=1 (path touched: $arch_touched). Say why in your log." >&2
     gates_log "arch-skip"
   elif when="$(pass_remembered arch "$key")"; then
-    echo "pre-push: architecture check already passed on this content $when (remembered). Not re-run." >&2
+    if ! names_only_ok architecture; then gates_log "arch-cached-names-fail" "key=$key"; exit 1; fi
+    echo "pre-push: architecture check already passed on this content $when (remembered). The file-name ratchet ran again and passed." >&2
     gates_log "arch-cached" "key=$key"
   elif [ ! -x "$top/scripts/run-push-arch-tests.sh" ]; then
     echo "⚠️  pre-push: scripts/run-push-arch-tests.sh not found in this tree. Architecture check UNCHECKED." >&2
@@ -345,6 +366,7 @@ if [ -n "$dirty" ]; then
 fi
 
 if when="$(pass_remembered smoke "$key")"; then
+  if ! names_only_ok smoke; then log_line "" "smoke-cached-names-fail" "key=$key"; exit 1; fi
   echo "pre-push: smoke already passed on this content $when (remembered; only dated logs or mail differ). Not re-run." >&2
   log_line "" "smoke-cached" "key=$key"
   exit 0

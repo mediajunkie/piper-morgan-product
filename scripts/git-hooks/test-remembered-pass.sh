@@ -18,7 +18,8 @@ gates_runs() { wc -l < "$S/gates.count" 2>/dev/null | tr -d ' ' || echo 0; }
 smoke_runs() { wc -l < "$S/smoke.count" 2>/dev/null | tr -d ' ' || echo 0; }
 light_runs() { wc -l < "$S/light.count" 2>/dev/null | tr -d ' ' || echo 0; }
 arch_runs()  { wc -l < "$S/arch.count" 2>/dev/null | tr -d ' ' || echo 0; }
-: > "$S/gates.count"; : > "$S/smoke.count"; : > "$S/light.count"; : > "$S/arch.count"
+names_runs() { wc -l < "$S/names.count" 2>/dev/null | tr -d ' ' || echo 0; }
+: > "$S/gates.count"; : > "$S/smoke.count"; : > "$S/light.count"; : > "$S/arch.count"; : > "$S/names.count"
 
 git init -q --bare -b main remote.git
 git init -q -b main seed
@@ -60,6 +61,11 @@ EOS
 # Stand-in architecture check (row 9v): count the run; fail when templates/FAIL-ARCH exists.
 cat > scripts/run-push-arch-tests.sh <<EOS
 #!/usr/bin/env bash
+if [ "\${1:-}" = "--names-only" ]; then
+  echo run >> "$S/names.count"
+  if git ls-files | grep -q "\.bak\$"; then echo "FAILED stand-in shadow file"; echo "run-push-arch-tests: FAILED (1 failed)"; exit 1; fi
+  echo "run-push-arch-tests: passed (1 passed)"; exit 0
+fi
 echo run >> "$S/arch.count"
 if [ -e templates/FAIL-ARCH ]; then echo "FAILED tests/stand-in"; echo "run-push-arch-tests: FAILED (1 failed)"; exit 1; fi
 echo "run-push-arch-tests: passed (1 passed)"
@@ -187,6 +193,21 @@ if [ "$(arch_runs)" = $((a+1)) ]; then ok "T17 a failed architecture check is ru
 a=$(arch_runs)
 out=$(PIPER_SKIP_PUSH_GATES=1 git push origin HEAD:refs/heads/a6 2>&1)
 if [ "$(arch_runs)" = "$a" ] && printf '%s' "$out" | grep -q "architecture check SKIPPED" && grep -q "outcome=arch-skip" "$LOG"; then ok "T18 the skip variable skips the architecture check and logs it"; else bad "T18 arch=$(arch_runs) a=$a: $out"; fi
+
+# T19 (Arch's finding): a retry whose only change is a backup-named file in a dated log folder
+# keeps the key; the remembered pass still runs the file-name ratchet, which blocks it.
+git rm -q templates/FAIL-ARCH; git commit -qm "template fixed"
+git push -q origin HEAD:refs/heads/a7 2>/dev/null
+a=$(arch_runs); n=$(names_runs)
+echo old > dev/2026/11/16/a-log.md.bak; git add -A; git commit -qm "a backup-named file in a dated log folder"
+out=$(git push origin HEAD:refs/heads/a8 2>&1); rc=$?
+if [ $rc -ne 0 ] && [ "$(arch_runs)" = "$a" ] && [ "$(names_runs)" -gt "$n" ] && printf '%s' "$out" | grep -q "file-name ratchet"; then ok "T19 a backup-named file in a dated log blocks a remembered pass; the full check is not re-run"; else bad "T19 rc=$rc arch=$(arch_runs)/$a names=$(names_runs)/$n: $out"; fi
+grep -q "outcome=arch-cached-names-fail" "$LOG" && ok "T19b the block is logged" || bad "T19b log line"
+
+# T20: with the file removed, the remembered pass lets the push through.
+git rm -q dev/2026/11/16/a-log.md.bak; git commit -qm "backup file removed"
+out=$(git push origin HEAD:refs/heads/a8 2>&1); rc=$?
+if [ $rc -eq 0 ] && [ "$(arch_runs)" = "$a" ]; then ok "T20 file removed: remembered pass honoured, landed"; else bad "T20 rc=$rc arch=$(arch_runs)/$a: $out"; fi
 
 echo "remembered-pass: $pass passed, $fail failed"
 [ "$fail" -eq 0 ]
