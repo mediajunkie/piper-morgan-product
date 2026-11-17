@@ -304,14 +304,22 @@ What the row must hold, whatever the path:
 
 This checks that removing an account from the allowlist cuts off a connector that's already connected, on the next call and not only at consent. The server checks the list in its token verifier as well as at consent and refresh (`services/mcp/server/allowlist.py`), so a removal should bite at once. It runs on the seat account, so your own connector is never touched.
 
+**D6:** this is a one-time proof and stays your hand. No standing access is proposed, because the only thing that would end it is a seat writing production's allowlist (Arch, 11-16).
+
 - **Order:** after part 2's seat check has passed. Wait for PA's word in between; each line below waits on the line before it.
-- **Paste 1 (remove):**
+- **Paste 1a (remove, dry run; it changes nothing):**
+  ```
+  fly ssh console -a piper-morgan -C "python /app/scripts/mcp_allow.py remove --user-email <seat-account-email>"
+  ```
+  **You should see:** a `--- user:` line, which **must show the seat account's address, not yours. If it shows yours, stop here** and tell Exec. Then `DRY-RUN complete — no writes.`
+- **Paste 1b (remove):** the same line with `--apply` at the end:
   ```
   fly ssh console -a piper-morgan -C "python /app/scripts/mcp_allow.py remove --user-email <seat-account-email> --apply"
   ```
   **You should see:** two `--- listed:` blocks (before and after the write), the second **without** the seat account, and then `remove: done for <seat-account-email> (…).` Tell PA.
-- **Seat check (PA):** one read through **Piper Morgan (seat)**. Expected: refused (the server returns no identity, so the connector reports an authorization error and no data). PA quotes the error text and MCP `uptime_seconds`, then reads your own **Piper Morgan** connector once, which must still answer as you. **FAIL** is any data returned through the seat connector after the removal.
-- **Paste 2 (add back):** part 1's `--apply` line again. **You should see:** the second `--- listed:` block includes the seat account again, then `add: done for …`. Tell PA.
+- **Seat check (PA):** one read through **Piper Morgan (seat)**. Expected: refused (the server returns no identity, so the connector reports an authorization error and no data). PA quotes the error text and MCP `uptime_seconds`, then reads your own **Piper Morgan** connector once, which must still answer as you. **FAIL** is any data returned through the seat connector after the removal. PA sends the result (refused or not, no data) to HOST for Step G's custody row.
+- **On FAIL, stop here; don't run paste 2.** The seat account stays off the list. PA tells Exec and files the finding on #2242 the same hour, and you do the Ending's claude.ai removal of **Piper Morgan (seat)** then.
+- **Paste 2 (add back, only on PASS):** part 1's `--apply` line again. If paste 2 is missed for any reason, the seat connector stays refused, not open, so a missed paste is never a risk. **You should see:** the second `--- listed:` block includes the seat account again, then `add: done for …`. Tell PA.
 - **Seat check (PA):** one read through **Piper Morgan (seat)** answers as the seat account again. If it doesn't (the client may have dropped the connection after the 401), PA asks Exec whether to re-consent (part 2's Then line, about a minute). This is not a failure of the check.
 
 **Ending** (with HOST's review date): remove **Piper Morgan (seat)** in claude.ai, then `mcp_allow.py remove --user-email <seat-account-email> --apply` the same way as part 1 (the script takes `--user-email` or `--user-id`).
