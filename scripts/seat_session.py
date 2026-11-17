@@ -23,6 +23,9 @@ HOST's bounds, all enforced here:
 Usage:
     scripts/seat_session.py --account web-seed-1386
 
+In a seat that has a seat browser (issue 2400) it then prints a second line,
+``<account> placed in seat browser <seat>, expires <time>``; see ``place_in_seat_browser``.
+
 Concept: docs/internal/architecture/adrs/adr-084-seat-resources-are-separate-granted-once-and-bounded.md
 """
 
@@ -339,6 +342,40 @@ def run(account: str, send: Transport = http_transport, now: Optional[float] = N
     return f"{account} session saved, expires {stamp}"
 
 
+def place_in_seat_browser(account: str) -> int:
+    """ADR-084 D3 browser half (issue 2400): when the seat this runs in has a seat browser
+    (a row in ``scripts/seat-browser.conf``), put the session just saved into it, so the
+    seat's browser tool reads pages signed in. A seat with no row gets nothing more than
+    before. A failure here leaves the saved session in place and exits 4 with a fixed
+    reason; ``scripts/seat_browser.py`` holds the bounds."""
+    try:
+        scripts = str(Path(__file__).resolve().parent)
+        if scripts not in sys.path:
+            sys.path.insert(0, scripts)
+        import seat_browser
+
+        if seat_browser.this_seat() not in seat_browser.seats():
+            return 0
+        try:
+            print(seat_browser.place(account))
+            return 0
+        except (
+            seat_browser.Refused
+        ) as refusal:  # that module's own class when this file is __main__
+            print(
+                f"seat_session: session saved, not placed in the seat browser: {refusal}",
+                file=sys.stderr,
+            )
+            return 4
+    except Exception as error:  # never print an exception's own text
+        print(
+            "seat_session: session saved, not placed in the seat browser: "
+            f"unexpected {type(error).__name__}",
+            file=sys.stderr,
+        )
+        return 4
+
+
 def main(argv=None) -> int:
     parser = argparse.ArgumentParser(
         description="Sign a seeded test account in to beta and save its session."
@@ -347,13 +384,13 @@ def main(argv=None) -> int:
     args = parser.parse_args(argv)
     try:
         print(run(args.account))
-        return 0
     except Refused as refusal:
         print(f"seat_session: refused: {refusal}", file=sys.stderr)
         return 2
     except Exception as error:  # never print an exception's own text: it may carry a URL or a body
         print(f"seat_session: refused: unexpected {type(error).__name__}", file=sys.stderr)
         return 3
+    return place_in_seat_browser(args.account)
 
 
 if __name__ == "__main__":
