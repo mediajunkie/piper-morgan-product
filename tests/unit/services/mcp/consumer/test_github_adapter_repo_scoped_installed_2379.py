@@ -584,3 +584,88 @@ class TestTheConfirmBuilders:
         assert gate.passthrough_result == {"message": self._LINE, "requires_clarification": False}
         probe.assert_not_awaited()
         refused.assert_awaited_once_with(_OWNER, "octo/public")
+
+
+class TestTheCreateDraftStep:
+    """CXO 2026-11-16 16:08: the line replaces the create's draft offer entirely. The
+    handler's draft step ("help me write a ticket …") answers it before a draft is
+    offered or armed; a named repository and the default a write would use both count."""
+
+    _GATE = "services.intent_service.collaboration_gate"
+    _ROUTER = "services.integrations.github.github_integration_router.GitHubIntegrationRouter"
+    _TARGET = "services.integrations.github.repo_resolver.get_user_write_target"
+    _DEFAULT = "services.integrations.github.repo_resolver.get_user_default_repo"
+
+    @staticmethod
+    def _draft_intent(message):
+        from services.domain.models import Intent
+        from services.shared_types import IntentCategory
+
+        return Intent(
+            original_message=message,
+            category=IntentCategory.EXECUTION,
+            action="create_ticket",
+            confidence=0.95,
+            context={},
+        )
+
+    async def _run(self, monkeypatch, message, *, line, default="octo/default"):
+        from unittest.mock import patch
+
+        from services.intent.intent_service import IntentService
+
+        check = AsyncMock(return_value=line)
+        monkeypatch.setattr(gh_mod, "github_app_write_refusal_line", check)
+        service = IntentService()
+        armed = []
+        monkeypatch.setattr(
+            service.workflow_offer_service,
+            "set_pending_offer",
+            lambda *a, **k: armed.append(a),
+        )
+        with (
+            patch(f"{self._GATE}._load_preferences", new=AsyncMock(return_value={})),
+            patch(f"{self._ROUTER}.initialize", new=AsyncMock()),
+            patch(f"{self._ROUTER}.is_available", new=AsyncMock(return_value=True)),
+            patch(f"{self._ROUTER}.create_issue", new=AsyncMock()) as write,
+            patch(self._TARGET, new=AsyncMock(return_value=default)),
+            patch(self._DEFAULT, new=AsyncMock(return_value=default)),
+        ):
+            result = await service._handle_create_issue(
+                self._draft_intent(message), "wf-1", "sess-1", user_id=_OWNER
+            )
+        write.assert_not_awaited()
+        return result, check, armed
+
+    async def test_a_named_repository_the_app_is_not_on_gets_the_line_and_no_draft(
+        self, monkeypatch
+    ):
+        from services.intent_service.not_performed import NOT_PERFORMED_KEY, NotPerformed
+
+        result, check, armed = await self._run(
+            monkeypatch,
+            "help me write a ticket about the login timeout in octo/public",
+            line="the line",
+        )
+        assert result.message == "the line"
+        assert result.success is False and result.requires_clarification is False
+        assert result.intent_data[NOT_PERFORMED_KEY] == NotPerformed.DEGRADED
+        assert not result.intent_data.get("collaboration_gate")
+        assert armed == []  # no draft was armed
+        check.assert_awaited_once_with(_OWNER, "octo/public")
+
+    async def test_no_repository_named_checks_the_default_a_write_would_use(self, monkeypatch):
+        result, check, armed = await self._run(
+            monkeypatch, "help me write a ticket about the login timeout", line="the line"
+        )
+        assert result.message == "the line" and armed == []
+        check.assert_awaited_once_with(_OWNER, "octo/default")
+
+    async def test_the_draft_is_offered_when_the_write_may_go_ahead(self, monkeypatch):
+        result, check, armed = await self._run(
+            monkeypatch, "help me write a ticket about the login timeout", line=None
+        )
+        assert result.intent_data.get("collaboration_gate") is True
+        assert "login timeout" in result.message
+        assert armed  # the draft was armed as before
+        check.assert_awaited_once()
