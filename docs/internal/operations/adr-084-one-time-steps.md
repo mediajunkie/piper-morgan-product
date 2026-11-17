@@ -145,7 +145,7 @@ scripts/seat_settings_grant.py add-allow --seat web --rule 'Bash(scripts/seat_re
 
 ## Step D (ADR row 10): load the seat browser's LaunchAgent
 
-**Owner: CIO, with Pard. Issue 2400. NOT READY: CIO's half is on main and read by HOST and Arch (2026-11-16); it waits on Pard's plist and wrapper (go given 11-16), then HOST's read of those** against D3's debug-port bound (127.0.0.1 only, a dedicated profile folder at mode 0700, no wildcard origins, the port read from one place, never xian's own Chrome).
+**Owner: CIO, with Pard. Issue 2400. READY (2026-11-16 19:53), to be done after Step C: CIO's half is on main, validated by Arch and read by HOST; Pard's plist and wrapper are built and read by HOST** against D3's debug-port bound (127.0.0.1 only, a dedicated profile folder at mode 0700, no wildcard origins, the port read from one place, never xian's own Chrome).
 
 What is on main (CIO, 2026-11-16), none of it in use until this step is done:
 
@@ -160,17 +160,17 @@ Run so far (CIO, 2026-11-16 18:55 PT, a scratch test browser on a throwaway fold
 
 **What the seat browser may hold, and how it is revoked (HOST, 2026-11-16):**
 - It holds a seeded account's session and nothing else. No other sign-in is typed into it, and no Connect round trip with a real provider account is done in it: either would leave a real session in a profile that keeps cookies across restarts. Web's steps carry the same line.
-- To revoke: stop the browser, then delete the profile folder and the session file. Deleting the folder alone is not enough while the browser runs. The cookie also dies within 24 hours.
+- To revoke, in this order: stop the browser, delete the profile folder, then delete the session file (`~/.piper-shared/web-seed-1386.session-token.json`). Deleting the folder alone is not enough while the browser runs, and while the session file exists the next `seat_session.py` run places the cookie again. The cookie also dies within 24 hours.
 - Two residuals are stated in `seat_browser.py` and accepted by HOST and Arch: the debug port has no authentication, so any process of this user on Amber can reach it; and the listener is read before the socket is opened.
 
 The order of what it waits on:
 1. ADR-084's yes. Done 2026-11-16 06:20.
 2. HOST's read of the four files above. Done 2026-11-16 19:18 at 5cd39bb085 (the helper conforms), with Arch's required launcher change and the Read-deny test both done at 35b645aace.
 3. (Done 2026-11-16 19:48, mediajunkie 360246b; not hand-tested.) Pard builds the plist, the wrapper and a cycle-check arm (the debug port answers, the profile folder exists at mode 0700), and tests the wrapper by hand. The wrapper takes the port and folder from `scripts/seat_browser.py --where web`.
-4. HOST reads both against the bound above.
+4. HOST reads both against the bound above. Done 2026-11-16 19:53.
 5. CIO switches `.mcp.json` to the launcher and checks it in CIO's own session first (a seat with no row).
 
-- **Built (Pard, 2026-11-16 19:48, mediajunkie 360246b):** the wrapper `scripts/seat-browser-run.sh`, the plist `docs/launchagents/com.xian.seat-browser-web.plist` and a `seat-browser` arm in cycle-check. CIO read the wrapper and plist at 19:53: the command line it produces is the one `seat_browser.py --check` requires. **HOST's read of both is asked and not yet given; xian pastes only after it.**
+- **Built (Pard, 2026-11-16 19:48, mediajunkie 360246b):** the wrapper `scripts/seat-browser-run.sh`, the plist `docs/launchagents/com.xian.seat-browser-web.plist` and a `seat-browser` arm in cycle-check. CIO read the wrapper and plist at 19:53: the command line it produces is the one `seat_browser.py --check` requires. **HOST read all three at 19:53 (v4 01M7KT7BBD): conforms; nothing holds this step from HOST once Step C is done.**
 - **It depends on xian's own checkout:** the wrapper and line 2 run `scripts/seat_browser.py` from `~/Development/piper-morgan-product`. That file is there since CIO's sync at 19:53 (main d417ecaab2). If that checkout is ever on a commit without it, the browser does not start and the log says why.
 - **Not hand-tested:** auto mode refused Pard the hand run, and he did not work around it. So line 2 below is the first real run, under launchd.
 - **Where:** Terminal, anywhere.
@@ -182,7 +182,7 @@ sleep 5; python3 ~/Development/piper-morgan-product/scripts/seat_browser.py --ch
 ```
 
 - **You should see:** the second line prints `port 9333`. If it prints `refused:` with a reason, the browser's own log is `~/Library/Logs/seat-browser-web.log`; tell Exec the reason. After the load Pard's cycle-check arm goes to its full assertion.
-- **To undo** (stop first, then delete; HOST's order):
+- **To undo** (stop first, then delete the profile; then delete the session file named above, HOST's order):
 
 ```
 launchctl bootout gui/$(id -u)/com.xian.seat-browser-web && ~/Development/mediajunkie/scripts/seat-browser-run.sh --revoke web
@@ -454,7 +454,7 @@ Read in full: Steps A to J and `scripts/seat_settings_grant.py` (193 lines). Ste
 **Other notes:**
 - Step G part 1 and Step H use `fly` commands in xian's own Terminal. That is by design: production writes and Fly tokens stay his.
 - Step F step 4 has xian type the second seat account's password at beta's login page, so Step F0 says where that password lives.
-- **Still to write:** Lead's Step F0; HOST's provider half of Step E. Steps C, D and H stay NOT READY until `seat_session.py`, Pard's plist and #2384 exist.
+- **Still to write:** Lead's Step F0; HOST's provider half of Step E. Steps C and D are READY since 2026-11-16 (`seat_session.py` and Pard's plist exist and are read); Step H stays NOT READY until #2384 exists.
 - **Unproven until the first real install** (CIO lists them too): a real key, a live session picking up the variable, and whether Claude Code honours the Read deny as written.
 
 ## Not on this list, by design

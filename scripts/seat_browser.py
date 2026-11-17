@@ -23,9 +23,10 @@ Bounds (D3; HOST reads a change to any of them):
   another profile, xian's own Chrome included, is refused.
 - Output is one line: the account, the seat and the expiry. Every failure prints a fixed
   reason, never a reply, a header or an exception's text.
-- Revocation (HOST, 2026-11-16): stop the browser, then delete the profile folder and the
-  session file. Deleting the folder alone is not enough while the browser runs and holds
-  the cookie in memory. The cookie also dies within 24 hours.
+- Revocation (HOST, 2026-11-16), in this order: stop the browser, delete the profile
+  folder, then delete the session file. Deleting the folder alone is not enough while the
+  browser runs and holds the cookie in memory, and while the session file exists the next
+  ``seat_session.py`` run places the cookie again. The cookie also dies within 24 hours.
 - The browser holds a seeded account's session and nothing else: no other sign-in is typed
   into it, and no Connect round trip with a real provider account is done in it.
 
