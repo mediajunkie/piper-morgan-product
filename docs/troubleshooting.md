@@ -67,7 +67,7 @@ python main.py setup
 **Error**: Setup wizard rejects Anthropic API key.
 
 **Solution**:
-1. Verify key from https://console.anthropic.com/settings/keys
+1. Verify key from https://platform.claude.com/settings/keys
 2. Ensure key starts with `sk-ant-`
 3. Verify key has Claude API access
 
