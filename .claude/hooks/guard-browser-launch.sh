@@ -10,6 +10,7 @@
 # Refuses a Bash command in which a Chrome or Chromium program is the thing being run (directly,
 # through nohup/env/exec, through `open -a`, through `bash -c`, or through a variable set in the
 # same command) and --use-mock-keychain is not among that launch's arguments.
+# Heredoc text going to a file is not judged (a log entry may quote a command); one fed to a shell is.
 # Does NOT see: a launch from inside a script file or another program (python, node). The browser
 # tool's own launches and the seat browser's LaunchAgent pass the flag themselves.
 # scripts/browser_keychain_check.py is the after-the-fact check for what this cannot see.

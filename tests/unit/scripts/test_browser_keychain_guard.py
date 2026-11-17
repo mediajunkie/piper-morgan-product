@@ -41,6 +41,8 @@ REFUSED = [
     "open -na Chromium",
     "/opt/homebrew/bin/chromium --headless",
     "chrome-headless-shell --dump-dom https://example.com",
+    f'bash <<EOF\n"{TEST_BROWSER}" --headless=new\nEOF',
+    f"cat >> log.md <<'EOF'\nquoted\nEOF\n\"{TEST_BROWSER}\" --headless=new",
 ]
 
 ALLOWED = [
@@ -55,6 +57,9 @@ ALLOWED = [
     "npx chrome-devtools-mcp@1.10.1 --isolated",
     "git commit -m 'chrome guard'",
     "cat docs/chromium-notes.md",
+    # PA, 2026-11-17: heredoc text going to a file is not a launch.
+    "cat >> log.md <<'EOF'\n- ran:\n/nonexistent-dir/chromium --version\nEOF",
+    f'cat > note.md <<-"END"\n"{TEST_BROWSER}" --headless=new\nEND\ngit status',
 ]
 
 

@@ -20,9 +20,33 @@ ASSIGN = re.compile(r"^([A-Za-z_][A-Za-z0-9_]*)=(.*)$", re.DOTALL)
 VAR = re.compile(r"^\$\{?([A-Za-z_][A-Za-z0-9_]*)\}?$")
 
 
+HEREDOC = re.compile(r"<<-?\s*(['\"]?)([A-Za-z_][A-Za-z0-9_]*)\1")
+FEEDS_SHELL = re.compile(r"(?:^|[\s;&|(/])(?:bash|sh|zsh)(?:\s|$)")
+
+
+def without_heredoc_text(cmd):
+    """The command with heredoc bodies taken out: text going to a file is not a launch
+    (PA, 2026-11-17: a log entry quoting a browser command was refused). A heredoc fed
+    to a shell (``bash <<EOF``) is kept, because its body does run."""
+    out, end, keep = [], None, False
+    for line in cmd.split("\n"):
+        if end is not None:
+            if line.strip() == end:
+                end = None
+            elif keep:
+                out.append(line)
+            continue
+        out.append(line)
+        m = HEREDOC.search(line)
+        if m:
+            end, keep = m.group(2), bool(FEEDS_SHELL.search(line[: m.start()]))
+    return "\n".join(out)
+
+
 def launches(cmd, names=None, depth=0):
     """Reasons this command is refused (empty when it is fine)."""
     names = set() if names is None else names  # variables holding a browser path
+    cmd = without_heredoc_text(cmd)
     bad = []
     for seg in SPLIT.split(cmd):
         seg = seg.strip().lstrip("({ ").rstrip(")} ")
