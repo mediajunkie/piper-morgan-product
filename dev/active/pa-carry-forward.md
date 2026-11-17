@@ -29,7 +29,7 @@
 
 *(Exec's `cohort-attention-rollup` reads this section directly. Live items only; each with the date it became PM-gated and the smallest unblocking answer.)*
 
-- 🔒 **#2242 held-token row**, since 11-03: xian runs `mcp_allow.py remove` on his account (then re-adds).
+- 🔒 **#2242 held-token row**, since 11-03: proposed to Exec 11-16 (`01M7KM4PDM…`) to fold into Step G's sitting on `seat-github-1` (add, PA reads, remove, PA's read refused, add again), not xian's own account. Add the three lines to Step G once Exec agrees. The MCP test-plan card was cut as overtaken (file marked 11-16).
 - 🔒 **#2238 Notion**, since 11-01: xian puts a throwaway Notion key on staging.
 - 🔒 **#2288 served row**, since 11-05: xian's word that Web may use an untouched dead-grant test account.
 - 🔒 **ADR-084 one-time rows**, since 11-15 19:11; xian said yes 11-16 06:20. Remaining PM-hand rows: Step A (this morning), the #2384 deploy token (Step H, after the job is built), Step G for PA's seat connector (after F0/F). Separately, tier 1 needs xian's five staging queries (Arch `01M7BXGYZDJDA660J2AEM13MCG`).
