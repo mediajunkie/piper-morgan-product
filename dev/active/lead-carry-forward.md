@@ -1,5 +1,16 @@
 # Lead carry-forward — Fable 5.2 seat since 2026-11-10 ~17:25 (xian upgraded the session; Opus 5.5 before that, from 11-04); Model A worktree ~/Development/piper-morgan-worktrees/lead
 
+## IN-DAY 2026-11-17 08:26 (supersedes every earlier block where they differ)
+
+- **Beta serves `4e2797bce2` since 08:07** (run 44121605245, Arch's 07:53 grant; no migration): 2401's two card changes and 2397's detector digests, on the 11-16 build. **Not verified: anything a signed-in person sees.**
+- **2397 CLOSED.** New test values come from `tests/utils/made_up_credentials.py`; the scan's baseline is empty and stays empty (CIO). A parametrize id that is a bare connector name ("github") gets the test skipped by `tests/conftest.py` when no token is set: use ids like `card-github`.
+- **Card-state file:** `scripts/card_state_file.py` writes `docs/internal/operations/card-states.md` (18 states). A unit test keeps the tracked file current; in CI a missing node fails it (Arch). After any change to a card: `venv/bin/python scripts/card_state_file.py`, read the diff, commit it. **Each dispatch note carries `git diff <beta sha>..<main sha> -- docs/internal/operations/card-states.md` or "no change".** Next surface, a fresh session: words after a click (a Test's result first, then confirm dialogs), then the Settings index card and the GitHub repository page.
+- **2401: served, CXO PASS at the file layer; open for a served read on a signed-in account** (seat route).
+- **2402: both halves on main, NOT served** (`456dad90a7` escaping; `3e0f20f262` exception text logged only). Tests run 44125295632 on `00ff52a125` holds both (pending at 08:26; 44122872316 on `50a121565e` holds only the first). **Next: read that run; when green, ask Arch for one grant for both commits; before dispatch read staging's `/health` sha, beta's health and quiet flag, the hold file, the Alpha Health Watch, the inbox.** Not built: CXO's "I couldn't reach <Name>" line (it would replace the check-failed line; Arch's "reach" point is open). Mail 01M7N54WB0 holds the premise correction.
+- **Never push a served-path change between asking for a grant and the end of the promotion** (a push moves staging).
+- **Paid runs still STOPPED** (Step A, then `check-env`). 2379's served rows, 2389's real run, the first `redirect_uri` reads: xian's one-time steps (A, C, D, F). 2264: Exec has xian's decision. 2345 waits on 2342; 2399 on PPM.
+- **Fresh session each:** the 2157 restore-drill script (HOST's design v2 of 11-12; three seats read it before xian), the card-state file's next surface.
+
 ## DAY-CLOSE 2026-11-16 21:48 (supersedes every earlier block where they differ)
 
 - **Beta serves `74caa06638` since 18:15** (run 44001294994, Arch's 17:36 grant; no migration): 2379 on top of the 09:39 promotion. Health read at dispatch only. **Not verified: anything a signed-in person sees** (2379, 2375 card, 2383's hooks).
