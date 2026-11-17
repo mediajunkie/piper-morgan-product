@@ -129,12 +129,16 @@ The step (CIO, 2026-11-16):
 
 ```
 scripts/seat_settings_grant.py add-allow --seat web --rule 'Bash(scripts/seat_session.py --account web-seed-1386)'
+scripts/seat_settings_grant.py add-allow --seat web --rule 'Bash(scripts/seat_read.py --account web-seed-1386 --redirect-uri github)'
+scripts/seat_settings_grant.py add-allow --seat web --rule 'Bash(scripts/seat_read.py --account web-seed-1386 --redirect-uri calendar)'
 ```
+
+  Lines 2 and 3 (added 2026-11-16) are the two fixed reads for issue 2282 step 5: each prints one line saying where that connector's sign-in returns to, so nobody has to start a sign-in in a browser to see it. Lead built them (9abd173fa8, fixed at 910eb6ab1d after CIO's read); HOST said land at 19:03 and Arch found them inside D3. They ride in this paste so they add no separate step.
 
   The rule must match the command the seat types, character for character. An exact allow covers only the bare command; anything chained onto it goes back to the classifier (traced 11-06). The seat types exactly `scripts/seat_session.py --account web-seed-1386` from the top of its worktree. The tool refuses any rule with `*` in it and never touches a deny.
 
-- **You should see:** `added 1 allow rule for seat web`, then the rule counts.
-- **Seat check:** the seat runs the helper once. It prints one line, `web-seed-1386 session saved, expires <time>`, and nothing else. (Once Step D is done, in a seat with a seat browser it prints a second line, `web-seed-1386 placed in seat browser web, expires <time>`.) Then `scripts/seat_read.py --account web-seed-1386 '/api/v1/admin/floored-actions?days=30'` prints the counter's JSON. If the helper prints `refused:` with a reason (for example, the account holds a provider key), nothing was saved: the seat reports the reason to HOST and Exec and does not retry.
+- **You should see:** `added 1 allow rule for seat web` after each line, then the rule counts.
+- **Seat check:** the seat runs the helper once. It prints one line, `web-seed-1386 session saved, expires <time>`, and nothing else. (Once Step D is done, in a seat with a seat browser it prints a second line, `web-seed-1386 placed in seat browser web, expires <time>`.) Then `scripts/seat_read.py --account web-seed-1386 '/api/v1/admin/floored-actions?days=30'` prints the counter's JSON. Then `scripts/seat_read.py --account web-seed-1386 --redirect-uri github` and the same with `calendar` each print one line with the address the sign-in returns to and nothing else (run each once; don't loop them, each run leaves one unused sign-in state in the app until its next deploy). If the helper prints `refused:` with a reason (for example, the account holds a provider key), nothing was saved: the seat reports the reason to HOST and Exec and does not retry.
 - **If it fails:** if the classifier still refuses the helper's run, this route is dropped and the ADR's fallback applies (he signs in himself, rarely). Nobody works around the refusal.
 
 ## Step D (ADR row 10): load the seat browser's LaunchAgent
