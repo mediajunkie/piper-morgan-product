@@ -5,6 +5,8 @@
 **Why:** nothing on the MCP surface gets listed (R7: Smithery, Claude directory, Registry) until xian has
 tested it himself. The 10-01 draft was never run. This version replaces it.
 
+> **Status 2026-11-16 (PA): overtaken; don't run this text.** Since the 11-12 move to the GitHub App, the connector serves only repositories the App is installed on (11-15: 366 issues down to 1, `pipermorgan/piper-test`), the accounts are on beta not alpha, and step 5's count and wording no longer apply. Before any rewrite for xian, PA runs the same rows itself on the seat connector "Piper Morgan (seat)" (ADR-084 Step G, account `seat-github-1`). xian's own run comes back only as the R7 listing gate, rewritten for the App, when the #2242 allowlist opens.
+
 Takes about 15 minutes. Run it in one client first (claude.ai or Claude Desktop). Each step says what
 you should see. Note anything that differs, in your own words: that note is the test result.
 
