@@ -1,5 +1,13 @@
 # Lead carry-forward — Opus 5.5 seat since 2026-11-17 21:30 (xian moved the session off Fable 5.2 at the week's Fable limit, until it resets); Fable 5.2 from 2026-11-10 ~17:25 to then; Model A worktree ~/Development/piper-morgan-worktrees/lead
 
+## IN-DAY 2026-11-18 08:25 (supersedes every earlier block where they differ)
+
+- **Beta serves `d678b0af26`** (since 11-17 11:31). **A promotion is in hand:** Arch GRANTED 2405 at `9344bd3c51` (mail 01M7QQCGGE). Staging read `882f2d8869` at the pre-check. Tests: green on `084a039097` (holds 2403 and 2405); run 44346242170 on `9c4e1a8e18` (card-state, a tested path) in progress. Pre-checks done: beta healthy, quiet true; no hold file; 0 alembic files; Alpha Health Watch run in progress. **Before dispatch:** that Tests run green; staging's nearest tested ancestor; by hand, no `templates/` or `cli/` change since it (2403 changed `cli/commands/publish.py` in `3caa01414b`, tested on `084a039097`); re-read the inbox; the card-states diff for CXO. **No served-path push until the promotion ends.**
+- **Built today:** 2404 driver (all three reads conform; `--real` waits on Step A only); 2405 (granted); 2403 (rows 1 to 3 conform; row 4 is a person's); the card-state file's GitHub Test section (7 of 8 pairs differ, with CXO).
+- **Fresh session or compaction: the 2157 restore-drill one-command script** (HOST's v2 plus Arch's Redis answer, issue comments 6842567831 and 6842598715). It handles the master key and a copy of production, so it waits for that trigger; its run waits on xian, the 2158 bucket and the key-backup record. Read the fly lines doc and HOST's runbook draft first.
+- **Step A: Friday 11-20 at the earliest**, procedure unchanged (below).
+- **A correction of mine today:** log headings and five issue comments carried made-up clock times (20 to 60 minutes ahead); all corrected with notes. Every time comes from `date` in the same command.
+
 ## IN-DAY 2026-11-17 18:49 (supersedes every earlier block where they differ)
 
 - **Beta serves `d678b0af26` since 11:31** (Arch: CONFORMS). Main 12 of 12 green at 18:46. **Not verified: anything a signed-in person sees.**
