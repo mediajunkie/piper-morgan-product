@@ -14,14 +14,7 @@ from unittest.mock import AsyncMock, MagicMock, Mock, patch
 
 import pytest
 
-# Load .env file for tests
-try:
-    from dotenv import load_dotenv
-
-    load_dotenv()
-except ImportError:
-    pass  # python-dotenv not required, but helpful for tests
-
+# #2403: no .env load at import; it ran at collection for every pytest process.
 from services.config.llm_config_service import (
     LLMConfigService,
     LLMProvider,

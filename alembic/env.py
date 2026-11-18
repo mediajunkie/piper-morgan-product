@@ -1,6 +1,13 @@
 from logging.config import fileConfig
+from pathlib import Path
 
+from dotenv import load_dotenv
 from sqlalchemy import engine_from_config, pool
+
+# #2403: alembic is an entry point (guide step 4, recipe 14), so it loads the
+# repository's .env itself; services/ no longer does at import. A variable already
+# set in the environment wins, as before.
+load_dotenv(Path(__file__).resolve().parent.parent / ".env")
 
 # #1312: autogenerate compares target_metadata to the DB, so every module that
 # registers tables on the shared Base MUST be imported here — otherwise its

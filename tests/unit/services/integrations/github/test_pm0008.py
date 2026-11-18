@@ -7,10 +7,8 @@ import asyncio
 import os
 
 import pytest
-from dotenv import load_dotenv
 
-# Load environment variables
-load_dotenv()
+# #2403: no .env load at import; it ran at collection for every pytest process.
 
 
 @pytest.mark.smoke

@@ -3,11 +3,7 @@ Document ingestion for knowledge base with relationship analysis
 PM-007 Enhancement: Dynamic knowledge hierarchy and relationships
 """
 
-from dotenv import load_dotenv
-
-# Load environment variables
-load_dotenv()
-
+# #2403: no .env load at import; entry points load it.
 import hashlib
 import json
 from datetime import datetime

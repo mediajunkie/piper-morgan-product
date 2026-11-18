@@ -15,13 +15,12 @@ import pytest
 # integration lane.
 pytestmark = pytest.mark.llm
 import requests
-from dotenv import load_dotenv
 
 from config.notion_user_config import ConfigurationError, NotionUserConfig
 from services.publishing.publisher import Publisher
 
-# Load real environment - CRITICAL for integration tests
-load_dotenv()
+# #2403: no .env load at import (it ran at collection, for every pytest process, even
+# with this lane deselected). Set the lane's variables in the shell that runs it.
 
 # Test configuration - Load from configuration with env variable fallback
 try:
