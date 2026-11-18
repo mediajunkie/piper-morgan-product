@@ -123,9 +123,12 @@ The calendar's `theme` column is the category. It must match the weekday of `pub
 | Day | Category | Goes to | Calendar URL fields |
 |---|---|---|---|
 | Sat, Sun | `insight` | blog, Medium and LinkedIn | `mediumURL`, `linkedinURL`, `liPubDate` |
-| Tue, Thu | `building` | blog and Medium only | `mediumURL` |
-| Wed | `ship` | LinkedIn only (blog home is `/shipping-news/`) | `linkedinURL`, `liPubDate` |
+| Thu | `building` | blog and Medium only | `mediumURL` |
+| Tue | `ship` (from 2026-11-24; `building` before) | LinkedIn only (blog home is `/shipping-news/`) | `linkedinURL`, `liPubDate` |
+| Wed | `ship` before 2026-11-20 only (Ship #069, 11-18, is the last); none after | LinkedIn only | `linkedinURL`, `liPubDate` |
 | Mon, Fri | none | no post | none |
+
+New cadence, xian 11-17 (relayed by Comms, mail 01M7PEGKEN): Ship on Tuesday from #070, one narrative on Thursday, one insight on the weekend (usually Saturday). No narrative Thanksgiving week, so no post Thu 11-26. The validator date-gates this: `slot_for` in `scripts/validate-editorial-calendar.py` uses the old table before 2026-11-20 and the new one from then. Syndication targets did not change with the days: narrative Medium only, insight Medium and LinkedIn, Ship LinkedIn only.
 
 - A memo's category is a claim to check against this table, not a source. Comms' memos and the row itself can both be wrong (both were, on 11-07).
 - A row moves to `distributed` when its category's legs are done. xian crossposts by hand and sends URLs. Medium returns 403 to scripts, so take his URL as given.

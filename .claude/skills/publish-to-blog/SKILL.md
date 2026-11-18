@@ -153,19 +153,19 @@ error. So check the row against the slot table before passing `--category`:
 ```bash
 python3 - "{exact calendar title}" <<'EOF'
 import csv, datetime, runpy, sys
-slots = runpy.run_path("scripts/validate-editorial-calendar.py", run_name="slots")["SLOT_BY_WEEKDAY"]
+slot_for = runpy.run_path("scripts/validate-editorial-calendar.py", run_name="slots")["slot_for"]
 rows = [r for r in csv.DictReader(open("docs/internal/planning/comms/editorial-calendar.csv")) if r["title"] == sys.argv[1]]
 if len(rows) != 1:
     sys.exit(f"STOP: {len(rows)} calendar rows titled {sys.argv[1]!r}")
 r = rows[0]
 d = datetime.date.fromisoformat(r["pubDate"])
-want = slots.get(d.weekday())
+want = slot_for(r["pubDate"], d.weekday())
 print(f"{r['pubDate']} {d:%a}: row says {r['theme']}, slot says {want or 'no post'}")
 sys.exit(0 if r["theme"] == want else "STOP: ask Comms before --category")
 EOF
 ```
 
-- The table is `SLOT_BY_WEEKDAY` in `scripts/validate-editorial-calendar.py`, so there's one copy. The
+- The table is `SLOT_BY_WEEKDAY` (before 2026-11-20) and `SLOT_BY_WEEKDAY_NEW` (from then: Tue ship, Thu building, Sat and Sun insight), read through `slot_for`, in `scripts/validate-editorial-calendar.py`, so there's one copy. The
   readable form, with syndication targets, is "Publishing Slots and Syndication" in
   `docs/briefing/BRIEFING-ESSENTIAL-DOCS.md`. Sat and Sun are insight, Tue and Thu building, Wed ship,
   and Mon and Fri have no post.

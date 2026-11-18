@@ -119,6 +119,16 @@ ALT_TEXT_WARN_CHARS = 400
 
 # Weekday slot -> category (Mon=0). Source: reference_publishing_cadence; see BRIEFING-ESSENTIAL-DOCS.md.
 SLOT_BY_WEEKDAY = {1: "building", 2: "ship", 3: "building", 5: "insight", 6: "insight"}
+# From 2026-11-20 (xian's ruling 11-17, relayed by Comms): Ship Tuesday, one narrative Thursday, insight on the
+# weekend. Ship #069 stays on Wed 11-18 and The Wall ran Tue 11-17, so dates before the cutover use the old table.
+SLOT_BY_WEEKDAY_NEW = {1: "ship", 3: "building", 5: "insight", 6: "insight"}
+SLOT_CUTOVER = "2026-11-20"
+
+
+def slot_for(pub_date: str, weekday: int):
+    """Category slot for a pubDate (ISO string) on that weekday, honoring the 11-20 cutover."""
+    table = SLOT_BY_WEEKDAY_NEW if pub_date >= SLOT_CUTOVER else SLOT_BY_WEEKDAY
+    return table.get(weekday)
 WEEKDAY_NAMES = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
 OPEN_STATUSES = {"planned", "drafted", "draft", "ready", "queued", "ready-for-docs"}
 
@@ -303,7 +313,7 @@ def check_row(line_no: int, row: list[str], idx: dict) -> tuple[list[str], list[
         except ValueError:
             wd = None
         if wd is not None:
-            want = SLOT_BY_WEEKDAY.get(wd)
+            want = slot_for(val("pubDate"), wd)
             if want is None:
                 warnings.append(
                     f"{tag}: pubDate {val('pubDate')} is a {WEEKDAY_NAMES[wd]}, which has no post slot"
