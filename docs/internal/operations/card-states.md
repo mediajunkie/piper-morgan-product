@@ -692,5 +692,6 @@ State key: `test-github-did-not-answer`
 - The card after the page redraws it:
   - 🐙
   - GitHub
+  - Connected
   - Couldn't check this just now. Press Test to try again.
 - The click's line is on the redrawn card: yes

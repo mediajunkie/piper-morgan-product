@@ -771,14 +771,19 @@
                   ${statusLine(integration)}
                 </span>
               </div>
-              ${integration.error_line && !couldNotCheckLine[integration.name] ? `
+              ${integration.error_line ? `
                 <div class="status-detail error" id="error-line-${integration.name}">
-                  ${withCheckedAt(integration.error_line, checkedFragment(integration))}
+                  ${couldNotCheckLine[integration.name] ? integration.error_line : withCheckedAt(integration.error_line, checkedFragment(integration))}
                 </div>
               ` : ''}
-              ${integration.status_detail && !couldNotCheckLine[integration.name] ? `
+              ${integration.status_detail && !(couldNotCheckLine[integration.name] && integration.status === 'connected') ? `
                 <div class="status-detail" id="detail-${integration.name}">
                   ${integration.status_detail}
+                </div>
+              ` : ''}
+              ${couldNotCheckLine[integration.name] && integration.status !== 'unknown' ? `
+                <div class="status-detail" id="could-not-check-${integration.name}">
+                  ${escapeHtml(couldNotCheckLine[integration.name])}
                 </div>
               ` : ''}
               ${integration.fix_suggestion ? `
@@ -855,7 +860,11 @@
   }
 
   function statusLine(integration) {
-    if (couldNotCheckLine[integration.name]) return couldNotCheckLine[integration.name];
+    // CXO 2026-11-18: while a couldn't-check line is held, the card claims no fresh check.
+    if (couldNotCheckLine[integration.name]) {
+      return integration.status === 'healthy' && integration.status_message === 'Healthy'
+        ? 'Healthy.' : integration.status_message;
+    }
     // #2401: a card with its failure on a second line keeps the check time there.
     if (integration.error_line) return integration.status_message;
     const checked = checkedFragment(integration);
