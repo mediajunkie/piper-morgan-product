@@ -34,7 +34,7 @@ My head of sapient trust agent (HOST) resumed working on Thursday night after th
 
 # Preserving continuity
 
-[Comms: why was there a machine restart at the same time as the outage and is this suggesting that we did the handoff memos before hitting the wall or after resuming? There is a missing beat here or connection I don't understand.]
+We had already planned to restart Amber that weekend and bring every agent back as a fresh session, so the morning we came back was also the morning every seat had to write down where it was.
 
 
 [will finish writing once the above is resolved:]
