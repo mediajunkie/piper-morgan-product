@@ -795,7 +795,7 @@ Brake FIRED (second slip = #1965 admission, found and ledgered 10-09). Memo to E
 - **Self-knowledge:**
   - Approved: practice.md (xian 11-17, "No changes", c531cae276), how-i-act, cant-read, stance and stand-ins.
   - Still waiting on xian: the nine rules (#2354, 47a65eed5f) and the seven procedures (#2358).
-  - The practice scope: CXO (01M7NSBN2J) and PPM (01M7NSPH57) agree to keep the header and rows and record the scope as a decision. Exec decides whether to put it to xian.
+  - The practice scope: decided. xian 11-18 07:51 via Exec (01M7QNQ4JJ): "yes, no changes needed now". The scope is deliberately what the team has proven in its own work, and it's recorded in decisions.log. (Updated 07:57.)
 - **Production 327** (`gh` at 21:34 = Total), map **v168**, 0 unmilestoned. Placed 11-17: 2401 and 2402 (C), 2403 and 2404 (Q). 2397 closed 07:23.
 - **OWED rows:**
   - 2364-known-limit: trigger is 2388's first real run.
@@ -805,7 +805,6 @@ Brake FIRED (second slip = #1965 admission, found and ledgered 10-09). Memo to E
   - rule7-key-ask, path-b-quote, notion-offer-ask: unchanged.
 - **Genuine xian decisions:**
   - the nine rules and the procedures;
-  - the practice scope, if Exec puts it;
   - E5 naming for #2380;
   - #2344;
   - the possible "Safe Storage" keychain item.
