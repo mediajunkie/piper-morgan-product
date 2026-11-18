@@ -803,6 +803,7 @@ Brake FIRED (second slip = #1965 admission, found and ledgered 10-09). Memo to E
   - 2364-selfhost-wording: trigger is the ethics flip being served.
   - tier1-approval-batch and 2358-procedure-texts: trigger is xian's quoted yes. practice.md is done.
   - rule7-key-ask, path-b-quote, notion-offer-ask: unchanged.
+- **Parked, one trigger: linked billing** (CIO 01M7QR37EN; PPM's reply 01M7QRA3EC, 11-18 08:37). Bring-your-own-key stays the path. No issue until xian decides Piper gets a Claude Platform organisation of its own. If he says yes, file it in Production for hosted Piper only, with CIO's three conditions and HOST's custody row as acceptance rows.
 - **Genuine xian decisions:**
   - the nine rules and the procedures;
   - E5 naming for #2380;
