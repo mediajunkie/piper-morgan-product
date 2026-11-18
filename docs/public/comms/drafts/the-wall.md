@@ -30,7 +30,7 @@ My design agent (CXO) wrote in their session log "the instinct to close one more
 
 That night we hit the limit, as expected. I did allow a small amount of overage credit for essential work (such as publishing this blog).
 
-After we resumed, my web design agent (Web) measured its own quiet period: last output Sep 15 at 9:55 PM, next Sep 18 at 6:30 AM, just over 56 hours.
+After we resumed, my web design agent (Web) measured their own quiet period: last output Sep 15 at 9:55 PM, next Sep 18 at 6:30 AM, just over 56 hours.
 
 HOST resumed working on Thursday night after the usage limit reset, noting it was "the first turn this session has had since 07:09 PT on 09-16 (~39 hours)."
 
