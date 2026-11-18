@@ -1,8 +1,16 @@
 ---
-last_updated: 2026-11-16
+last_updated: 2026-11-17
 currency_claim: per-stop
 max_age_days: 1
 ---
+
+# CXO carry-forward: 2026-11-17 21:31 STOP (11-16 block and older below still stand except where this one says otherwise)
+
+**Serving:** beta `d678b0af26` as of Lead's 11:31 dispatch (carries #2402, Slack's sentence, the "Claude Platform" key note, GitHub "isn't connected"); not re-checked after. Main CI 12 of 12 green at 21:31 (red 08:11-08:58 from a local escapeHtml, fixed `1838d15c93`; Slack registry test red then fixed `49c863ef3a`).
+**Done 11-17:** `practice.md` scope: sent my view to Exec (keep header and 13 rows, record the scope as a decision); PPM agreed in one mail, CIO's record agrees. xian approved the 13 rows. Nothing else ruled today; no served reads.
+**Owed by me:** served judging, all blocked on the seat route; Exec 18:27: Step A (and C, D, F0) is Friday 11-20 at the earliest, xian away from Amber. That covers #2379 rows, #2401, #2402, #2374, #2375, #2376, #2342 rows 2 and 4, #2386 strings, #2366, #2367. Words-after-a-click rulings wait on Lead's click-line/card-line pairs (GitHub first). Leak-list read of #2297/#2301 at the merging sha. wont-do.md re-read after the ethics flip; known-limits rows after served reads; #2399 by my served read of the bubble.
+**Rules/slips:** mail4 `--cc` takes the last role unless repeated per role or checked in the "sent" line; sync-pm-local.sh free again (Exec 18:02), held only between Exec's "Step A started" and "done/stopped".
+**label:UX open:** 44. Filed today: none. Next START (11-18 06:31): Step 0 check for the 11-17 DAY-CLOSED marker.
 
 # CXO carry-forward: 2026-11-16 21:31 STOP (11-15 block and older below still stand except where this one says otherwise)
 
