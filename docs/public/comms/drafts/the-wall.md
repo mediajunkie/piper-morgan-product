@@ -34,7 +34,11 @@ My head of sapient trust agent (HOST) resumed working on Thursday night after th
 
 # Preserving continuity
 
-[Comms: why was there a machine restart at the same tim as the outage 
+We had already planned to restart Amber that weekend and bring every agent back as a fresh session, so the morning we came back was also the morning every seat had to write down where it was.
+
+
+[will finish writing once the above is resolved:]
+
 **5. Coming back: who was really there?** Fri Sep 18. You asked whether any roles should prepare a handoff doc before the machine restarted. Exec found the restart gate already existed, wanting a dated handoff from each resident, and read "GREEN=0 WAIVED=0 RED=24" and "DO NOT REBOOT". Exec's answer: "all of them, the mechanism already says so, and it blocks the reboot by design." [Exec 09-18 l.45-53]
 - You ruled a cold start with Exec first, so as to "not risk the lead developer's mental model of what they're working on just yet." [Exec 09-18 l.78]
 - By late morning the gate read "4 GREEN → 7 GREEN", and "the 4 remaining RED are exactly the 4 dark roles — nobody awake is outstanding." [Exec 09-18 l.114-116]
