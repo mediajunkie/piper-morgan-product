@@ -275,3 +275,22 @@ def test_a_card_already_saying_it_couldnt_check_does_not_say_it_twice(body):
         "can_test": True,
     }
     assert _render(body, unknown, memory={"calendar": COULD_NOT}).count(COULD_NOT) == 1
+
+
+@needs_node
+def test_a_held_generic_healthy_card_reads_exactly_healthy_with_a_full_stop(body):
+    """Arch's nit (2026-11-18): ``statusLine`` turns the generic card's "Healthy" into
+    "Healthy." by comparing the word. If the route's word changes, this fails instead of
+    the held card silently losing its full stop."""
+    import re
+
+    healthy = {
+        "name": "calendar",
+        "display_name": "Google Calendar",
+        "status": "healthy",
+        "status_message": "Healthy",
+        "can_test": True,
+    }
+    html = _render(body, healthy, memory={"calendar": COULD_NOT})
+    line = re.search(r'id="status-calendar">\s*(.*?)\s*</span>', html)
+    assert line and line.group(1) == "Healthy."
