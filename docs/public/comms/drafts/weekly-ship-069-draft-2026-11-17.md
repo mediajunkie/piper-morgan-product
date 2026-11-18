@@ -115,14 +115,14 @@ We have realized the rules don't always get remembered, and patched scripts don'
 
 To apply this pattern to your own work, once you notice a fix being applied to two different surfaces, look for the common chokepoint before you have to write a third fix.
 
-**Related patterns:** #068's "Guard against a class of problems" (the same idea, for tenancy).
+**Related patterns:** Weekly Ship #068's "Guard against a class of problems" (the same idea, for tenancy).
 
 **Thanks,**
 xian + Piper Morgan Development Team
 
 This is Weekly Ship #069. Previous: [#068 "Whose Connection Is It, Anyway?"](https://pipermorgan.ai/shipping-news/weekly-ship-068-whose-connection-is-it-anyway).
 
-*P.S. [xian: optional]*
+*P.S. Getting real interest from peers interested in trying Piper Morgan in their real work or their own businesses. Exciting and a bit scary!*
 
 *P.P.S. Full session logs and technical details available in the [GitHub repository](https://github.com/mediajunkie/piper-morgan-product) and [documentation site](https://pmorgan.tech). Yes, you can copy it. That just makes our protocol stronger.*
 
