@@ -91,7 +91,7 @@ async def test_401_is_no_access_and_writes_nothing(intent_service):
     result, writer = await _run(intent_service, v)
     writer.set_default_repo.assert_not_awaited()
     assert (
-        "Your GitHub connection needs re-authorizing, so I couldn't check "
+        "GitHub no longer accepts your connection, so I couldn't check "
         "mediajunkie/piper-morgan-product and haven't changed your default." in result.message
     )
     assert "Reconnect with GitHub" in result.message

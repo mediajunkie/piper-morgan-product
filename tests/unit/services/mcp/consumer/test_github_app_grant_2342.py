@@ -1062,7 +1062,7 @@ class TestConnectorLines:
             DegradationResponse(reason=DegradationReason.STALE_TOKEN, user_message="short")
         )
         assert line == (
-            "Your GitHub connection needs re-authorizing. Reconnect GitHub in the Piper "
+            "GitHub no longer accepts your connection. Reconnect GitHub in the Piper "
             "Morgan app, in Settings under Integrations."
         )
 

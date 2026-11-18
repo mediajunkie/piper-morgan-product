@@ -9884,7 +9884,7 @@ class IntentService:
             # "can't see <repo>" line is retired; nothing in the validator can
             # honestly produce it.
             message = (
-                f"Your GitHub connection needs re-authorizing, so I couldn't check {full_name} "
+                f"GitHub no longer accepts your connection, so I couldn't check {full_name} "
                 "and haven't changed your default. Open Settings \u2192 Integrations and choose "
                 "Reconnect with GitHub."
             )

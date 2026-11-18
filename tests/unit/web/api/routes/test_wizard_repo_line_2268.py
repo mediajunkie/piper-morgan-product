@@ -70,7 +70,7 @@ class TestTheLineFollowsTheConnection:
         line = await _line(state)
         assert line == GITHUB_STALE_TOKEN_REPLY
         assert line == (
-            "Your GitHub connection needs re-authorizing. "
+            "GitHub no longer accepts your connection. "
             "Reconnect GitHub in Settings, under Integrations."
         )
 

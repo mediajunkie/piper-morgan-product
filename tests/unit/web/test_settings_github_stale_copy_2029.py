@@ -61,7 +61,7 @@ def test_stale_without_a_serving_token_shows_needs_reconnecting(body):
     assert "iconEl.textContent = '⚠️'" in no_pat
     assert "titleEl.textContent = 'Needs reconnecting'" in no_pat
     assert (
-        '"GitHub no longer accepts your connection, so I can\'t read your GitHub right now."'
+        '"GitHub no longer accepts your connection."'
         in no_pat
     )
 
@@ -85,7 +85,7 @@ def test_stale_with_a_working_personal_token(body):
     stale = _branch(fn, "if (data.stale) {", "return;")
     pat = _branch(stale, "if (data.serving === 'pat') {", "} else {")
     assert "titleEl.textContent = 'Connected via your personal token'" in pat
-    assert '"Your GitHub connection needs re-authorizing, so I\'m not using it right now."' in pat
+    assert '"GitHub no longer accepts your connection, so I\'m not using it right now."' in pat
 
 
 def test_connected_wording(body):

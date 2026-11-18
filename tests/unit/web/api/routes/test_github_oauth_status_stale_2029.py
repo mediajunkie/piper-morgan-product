@@ -133,11 +133,11 @@ class TestTheTestProbeMarksStale:
         # The #2012 reply as landed...
         assert result["success"] is False
         assert result["error_type"] == "stale_token"
-        assert result["error"] == "Your GitHub connection needs re-authorizing."
+        assert result["error"] == "GitHub no longer accepts your connection."
         # ...and the page now agrees: the row is STALE.
         assert await _status(maker) == ConnectorStatusState.STALE.value
         message, fix = integrations._get_error_guidance("github", "stale_token")
-        assert message == "Your GitHub connection needs re-authorizing"
+        assert message == "GitHub no longer accepts your connection."
         assert fix == "In Settings → Integrations → GitHub, Reconnect with GitHub"
         assert "Disconnect" not in fix
 

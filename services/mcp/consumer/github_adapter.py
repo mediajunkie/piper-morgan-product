@@ -85,8 +85,9 @@ CREDENTIAL_STORE_FAILED_MESSAGE = (
     "I couldn't read your GitHub connection just now, so I haven't checked GitHub. "
     "Try again in a moment. If it keeps failing, reconnect GitHub in Settings, under Integrations."
 )
+# CXO 2026-11-18: one name per fact, in chat as on the Integrations card.
 GITHUB_STALE_TOKEN_REPLY = (
-    "Your GitHub connection needs re-authorizing. Reconnect GitHub in Settings, under Integrations."
+    "GitHub no longer accepts your connection. Reconnect GitHub in Settings, under Integrations."
 )
 # #2342 (CXO's FINAL lines, 2026-11-11 19:38): a classic grant met after the move to the
 # GitHub App. "choose which repositories I can see" is the App's install choice; "saved
@@ -248,7 +249,7 @@ GITHUB_CONNECTOR_UNREACHABLE_REPLY = (
     "I couldn't reach GitHub just now. This is temporary, so please try again in a moment."
 )
 GITHUB_CONNECTOR_STALE_REPLY = (
-    "Your GitHub connection needs re-authorizing. Reconnect GitHub in the Piper Morgan app, "
+    "GitHub no longer accepts your connection. Reconnect GitHub in the Piper Morgan app, "
     "in Settings under Integrations."
 )
 GITHUB_CONNECTOR_CUTOVER_STALE_REPLY = (
@@ -851,7 +852,7 @@ class GitHubMCPSpatialAdapter(BaseSpatialAdapter):
             # operator ERROR log (see _mcp_client_ctx). Distinct from UNREACHABLE so a
             # config problem never reads as a server outage (the 2026-07-12 Fly sting).
             DegradationReason.MISCONFIGURED: "GitHub isn't configured correctly on this deployment.",
-            DegradationReason.STALE_TOKEN: "Your GitHub connection needs re-authorizing.",
+            DegradationReason.STALE_TOKEN: "GitHub no longer accepts your connection.",
             DegradationReason.REPO_UNRESOLVED: (
                 "Which repo? I couldn't tell which repository you mean — name one "
                 "(e.g. `owner/name`), link a repo to your project, or set a default repo."

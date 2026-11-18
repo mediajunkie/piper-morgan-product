@@ -61,7 +61,7 @@ async def test_revoked_grant_fails_the_test_with_a_reconnect_fix():
     resolve.assert_awaited_once_with("u1")
     probe.assert_awaited_once()
     message, fix = integrations._get_error_guidance("github", result["error_type"])
-    assert "re-authoriz" in message
+    assert message == "GitHub no longer accepts your connection."  # CXO 2026-11-18
     assert "Reconnect with GitHub" in fix  # #2029: one step, no Disconnect first
 
 
@@ -102,7 +102,7 @@ async def test_stale_oauth_with_working_pat_says_so():
     assert result["success"] is True
     assert result["message"] == (
         "GitHub is working, using your personal token. "
-        "Your GitHub connection needs re-authorizing, so I'm not using it right now."
+        "GitHub no longer accepts your connection, so I'm not using it right now."
     )
     assert result["stale_oauth_reason"] == "stale_token"
 

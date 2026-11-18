@@ -1,5 +1,9 @@
-"""#2053 (CXO's three rulings on the stale GitHub card): the warning toast's title, a
-Reconnect link in every stale state, and the re-authorize sentence shown once after a Test.
+"""#2053 (CXO's three rulings on the stale GitHub card): the warning toast's title and a
+Reconnect link in every stale state. Its third rule (the sentence shown once after a
+Test, the card leaving it off) is retired by CXO's 2026-11-18 ruling: the card keeps its
+own lines, so a person who missed the toast still sees why. Also here, CXO's and Arch's
+2026-11-18 rule: after a Test that couldn't run, the card keeps that Test's line until the
+next Test of that card or a page load (page memory only).
 
 Runs the page's OWN ``testConnection`` and ``renderIntegrations`` under Node with minimal
 DOM/fetch stubs (no browser: no CSS, no click). Skipped when ``node`` is absent.
@@ -23,7 +27,7 @@ from web.app import app
 
 REPO = Path(__file__).resolve().parents[3]
 PAGE = "/settings/integrations"
-SENTENCE = "Your GitHub connection needs re-authorizing, so I'm not using it right now."
+SENTENCE = "GitHub no longer accepts your connection, so I'm not using it right now."
 STALE_MSG = f"GitHub is working, using your personal token. {SENTENCE}"
 
 needs_node = pytest.mark.skipif(shutil.which("node") is None, reason="node not on PATH")
@@ -83,17 +87,19 @@ NO_TOKEN_CARD = {
 }
 
 
-def _render(body: str, card: dict, owns_line=None) -> str:
+def _render(body: str, card: dict, memory=None) -> str:
+    """Draw one card. ``memory`` is the page's couldn't-check memory before the draw."""
     script = (
         "const window = { __OFFERED_CONNECTORS__: ['github', 'calendar'] };\n"
         "const out = {};\n"
         "const document = { getElementById(id) { return id === 'integrations-list' ? out : null; } };\n"
         + _consts_and_renderer(body)
-        + "\nresultOwnsLine = JSON.parse(process.argv[2]);\nrenderIntegrations(JSON.parse(process.argv[1]));\n"
+        + "\nObject.assign(couldNotCheckLine, JSON.parse(process.argv[2]));\n"
+        "renderIntegrations(JSON.parse(process.argv[1]));\n"
         "process.stdout.write(out.innerHTML);\n"
     )
     res = subprocess.run(
-        ["node", "-e", SHARED_ESCAPE_JS + script, json.dumps([card]), json.dumps(owns_line)],
+        ["node", "-e", SHARED_ESCAPE_JS + script, json.dumps([card]), json.dumps(memory or {})],
         capture_output=True,
         text=True,
         timeout=30,
@@ -105,9 +111,10 @@ def _render(body: str, card: dict, owns_line=None) -> str:
 
 
 def _run_test(body: str, reply: dict) -> dict:
-    """Run testConnection; record the toast and what the redraw was asked to own."""
+    """Run testConnection; record the toast and the page's couldn't-check memory at the
+    redraw."""
     script = (
-        "const calls = []; const redraws = []; let resultOwnsLine = null;\n"
+        "const calls = []; const redraws = []; const couldNotCheckLine = {};\n"
         "const el = { disabled: false, textContent: '', classList: {add(){}, remove(){}, toggle(){}} };\n"
         "const dot = { className: '' };\n"
         "const card = { querySelector(s) { return s === '.status-dot' ? dot : { appendChild(){} }; } };\n"
@@ -115,7 +122,7 @@ def _run_test(body: str, reply: dict) -> dict:
         "  createElement() { return {}; } };\n"
         "const fetch = async () => ({ json: async () => JSON.parse(process.argv[1]) });\n"
         "const Toast = { show(type, title, message) { calls.push({type, message, title}); } };\n"
-        "function loadIntegrationsHealth() { redraws.push(resultOwnsLine); }\n"
+        "function loadIntegrationsHealth() { redraws.push({ ...couldNotCheckLine }); }\n"
         + _handler(body)
         + "\n(async () => { await testConnection('github');\n"
         "process.stdout.write(JSON.stringify({toast: calls, redraws})); })();\n"
@@ -130,12 +137,13 @@ def _run_test(body: str, reply: dict) -> dict:
     return json.loads(res.stdout)
 
 
-def _reply(success=True, message=STALE_MSG, stale_reason="stale_token") -> dict:
+def _reply(success=True, message=STALE_MSG, stale_reason="stale_token", check_ran=True) -> dict:
     return {
         "integration": "github",
         "success": success,
         "message": message,
         "stale_reason": stale_reason,
+        "check_ran": check_ran,
     }
 
 
@@ -177,22 +185,52 @@ def test_stale_no_token_card_still_has_reconnect_and_no_test(body):
     assert 'id="test-btn-github"' not in html
 
 
-# ── 3. the re-authorize sentence once after a Test ────────────────────────────
+# ── 3. the card keeps its own lines (CXO 2026-11-18, retiring #2053's third rule) ──
 
 
 @needs_node
-def test_warning_test_asks_the_redraw_to_drop_the_detail(body):
-    assert _run_test(body, _reply())["redraws"] == ["github"]
-    assert _run_test(body, _reply(message="ok", stale_reason=None))["redraws"] == [None]
+def test_a_test_that_ran_leaves_no_couldnt_check_line(body):
+    assert _run_test(body, _reply())["redraws"] == [{}]
+    assert _run_test(body, _reply(message="ok", stale_reason=None))["redraws"] == [{}]
 
 
 @needs_node
-def test_sentence_appears_once_with_the_result_on_screen(body):
-    # No Test yet: the card's own subtitle carries it, once.
-    assert _render(body, PAT_CARD).count(SENTENCE) == 1
-    # After a warning Test: the result (toast + status line) owns it; the card does not.
-    redrawn = _render(body, PAT_CARD, owns_line="github")
-    assert SENTENCE not in redrawn
+def test_the_card_keeps_the_sentence_after_a_warning_test(body):
+    """The toast says it and the redrawn card says it too, in the same words."""
+    assert SENTENCE in _run_test(body, _reply())["toast"][0]["message"]
+    redrawn = _render(body, PAT_CARD)
+    assert redrawn.count(SENTENCE) == 1
     assert "Connected via your personal token" in redrawn
-    shown = _run_test(body, _reply())["toast"][0]["message"] + " " + redrawn
-    assert shown.count(SENTENCE) == 1
+
+
+# ── 4. a Test that couldn't run keeps its line on the card (page memory only) ─
+
+COULD_NOT = "Couldn't check this just now. Press Test to try again."
+UNCHECKED_CARD = {  # a generic card; the rule is the page's, the same for every card
+    "name": "calendar",
+    "display_name": "Google Calendar",
+    "status": "connected",
+    "status_message": "Connected",
+    "status_detail": "Not checked yet. Press Test.",
+    "can_test": True,
+}
+
+
+@needs_node
+def test_a_couldnt_run_test_is_remembered_for_the_redraw(body):
+    out = _run_test(
+        body, _reply(success=False, message=COULD_NOT, stale_reason=None, check_ran=False)
+    )
+    assert out["redraws"] == [{"github": COULD_NOT}]
+
+
+@needs_node
+def test_after_a_couldnt_run_test_the_card_shows_the_click_line(body):
+    html = _render(body, UNCHECKED_CARD, memory={"calendar": COULD_NOT})
+    assert COULD_NOT in html and "Not checked yet. Press Test." not in html
+
+
+@needs_node
+def test_a_page_load_clears_it(body):
+    html = _render(body, UNCHECKED_CARD)  # a fresh page: empty memory
+    assert "Not checked yet. Press Test." in html and COULD_NOT not in html

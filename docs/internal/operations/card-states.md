@@ -21,7 +21,7 @@ Headline: **Nothing connected yet**
 
 - 🐙
 - GitHub
-- Not configured
+- Not connected
 
 | Control | Label | Style | Goes to |
 |---|---|---|---|
@@ -175,7 +175,7 @@ Headline: **All Systems Healthy** (4 of 4 connected integrations working)
 
 - 🐙
 - GitHub
-- Healthy. Checked just now.
+- Connected via your personal token. Checked just now.
 
 | Control | Label | Style | Goes to |
 |---|---|---|---|
@@ -472,7 +472,7 @@ State key: `github-token-serving-stale`
 - GitHub
 - ⚠️
 - Connected via your personal token
-- Your GitHub connection needs re-authorizing, so I'm not using it right now.
+- GitHub no longer accepts your connection, so I'm not using it right now.
 
 | Control | Label | Style | Goes to |
 |---|---|---|---|
@@ -626,28 +626,29 @@ State key: `test-own-token`
 - The card after the page redraws it:
   - 🐙
   - GitHub
-  - Healthy. Checked just now.
+  - Connected via your personal token. Checked just now.
 - The click's line is on the redrawn card: **no**
 
 ## Test: A saved token is serving; the sign-in needs re-authorizing
 
 State key: `test-token-serving-stale`
 
-- Toast (warning): **Works, needs attention**. GitHub is working, using your personal token. Your GitHub connection needs re-authorizing, so I'm not using it right now.
-- At the click, the card's line: GitHub is working, using your personal token. Your GitHub connection needs re-authorizing, so I'm not using it right now. [warning style]
+- Toast (warning): **Works, needs attention**. GitHub is working, using your personal token. GitHub no longer accepts your connection, so I'm not using it right now.
+- At the click, the card's line: GitHub is working, using your personal token. GitHub no longer accepts your connection, so I'm not using it right now. [warning style]
 - The card after the page redraws it:
   - 🐙
   - GitHub
   - ⚠️
   - Connected via your personal token
+  - GitHub no longer accepts your connection, so I'm not using it right now.
 - The click's line is on the redrawn card: **no**
 
 ## Test: The sign-in needs re-authorizing and nothing is serving
 
 State key: `test-needs-reconnecting`
 
-- Toast (error): **Test Failed**. Your GitHub connection needs re-authorizing
-- At the click, the card's line: Your GitHub connection needs re-authorizing [error style]
+- Toast (error): **Test Failed**. GitHub no longer accepts your connection.
+- At the click, the card's line: GitHub no longer accepts your connection. [error style]
 - At the click, a fix line: In Settings → Integrations → GitHub, Reconnect with GitHub
 - The card after the page redraws it:
   - 🐙
@@ -655,19 +656,19 @@ State key: `test-needs-reconnecting`
   - ⚠️
   - Needs reconnecting
   - GitHub no longer accepts your connection.
-- The click's line is on the redrawn card: **no**
+- The click's line is on the redrawn card: yes
 
 ## Test: Nothing connected
 
 State key: `test-not-connected`
 
-- Toast (error): **Test Failed**. GitHub is not connected for your account
-- At the click, the card's line: GitHub is not connected for your account [error style]
+- Toast (error): **Test Failed**. GitHub isn't connected for your account.
+- At the click, the card's line: GitHub isn't connected for your account. [error style]
 - At the click, a fix line: In Settings → Integrations → GitHub, Connect with GitHub
 - The card after the page redraws it:
   - 🐙
   - GitHub
-  - Not configured
+  - Not connected
 - The click's line is on the redrawn card: **no**
 
 ## Test: The credential lookup itself failed
@@ -691,6 +692,5 @@ State key: `test-github-did-not-answer`
 - The card after the page redraws it:
   - 🐙
   - GitHub
-  - Connected
-  - Not checked yet. Press Test.
-- The click's line is on the redrawn card: **no**
+  - Couldn't check this just now. Press Test to try again.
+- The click's line is on the redrawn card: yes

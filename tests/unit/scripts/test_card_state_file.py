@@ -168,3 +168,30 @@ def test_a_passing_test_shows_the_routes_own_line_in_the_toast_and_at_the_click(
         "- Toast (success): **Test Passed**. GitHub is working, using your personal token." in row
     )
     assert "- At the click, the card's line: GitHub is working, using your personal token." in row
+
+
+# CXO 2026-11-18: any fact the click names that still holds is on the redrawn card, in
+# the same words, and one fact has one name.
+FACTS_ON_THE_CARD = {
+    "test-own-token": "Connected via your personal token.",
+    "test-token-serving-stale": "GitHub no longer accepts your connection, so I'm not using it right now.",
+    "test-needs-reconnecting": "GitHub no longer accepts your connection.",
+    "test-not-connected": "Not connected",
+    "test-lookup-failed": "Couldn't check this just now. Press Test to try again.",
+    "test-github-did-not-answer": "Couldn't check this just now. Press Test to try again.",
+}
+
+
+@needs_node
+@pytest.mark.parametrize("key,fact", sorted(FACTS_ON_THE_CARD.items()))
+def test_the_fact_the_click_names_is_on_the_redrawn_card(text, key, fact):
+    row = _section(text, key)
+    after = row[row.index("- The card after the page redraws it:") :]
+    assert fact in after
+
+
+@needs_node
+def test_re_authorizing_is_retired_from_the_github_test_rows(text):
+    clicked = text[text.index("# After pressing Test") :]
+    rows = "\n".join(ln for ln in clicked.splitlines() if not ln.startswith("## "))
+    assert "re-authoriz" not in rows

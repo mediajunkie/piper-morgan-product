@@ -85,6 +85,10 @@ class ConnectionTestResponse(BaseModel):
     # never on ``message`` copy.
     leg: Optional[str] = None
     stale_reason: Optional[str] = None
+    # CXO's and Arch's rulings, 2026-11-18 (mail): False when the check couldn't run (nothing was
+    # recorded). The page keeps that Test's line on the card until the next Test of that
+    # card or a page load; no server state holds it. Clients key on this, never on copy.
+    check_ran: bool = True
 
 
 # CXO 2026-11-17 (#2402): the one sentence for a token Slack's auth.test refuses. The
@@ -154,11 +158,12 @@ INTEGRATION_REGISTRY = {
             # #2029: one step — the OAuth callback upserts the grant and sets the binding
             # BOUND over a STALE row, so no Disconnect is needed first.
             "stale_token": {
-                "message": "Your GitHub connection needs re-authorizing",
+                # CXO 2026-11-18: one name per fact, on the card and at the click.
+                "message": "GitHub no longer accepts your connection.",
                 "fix": "In Settings → Integrations → GitHub, Reconnect with GitHub",
             },
             "connect_required": {
-                "message": "GitHub is not connected for your account",
+                "message": "GitHub isn't connected for your account.",
                 "fix": "In Settings → Integrations → GitHub, Connect with GitHub",
             },
             "unreachable": {
@@ -400,6 +405,7 @@ async def check_integration_connection(
                 success=False,
                 message=CHECK_FAILED_MESSAGE,
                 latency_ms=round(latency_ms, 2),
+                check_ran=False,
             )
         else:
             error_msg = result.get("error", result.get("error_type", "Unknown error"))
@@ -427,6 +433,7 @@ async def check_integration_connection(
             integration=integration_name,
             success=False,
             message=CHECK_FAILED_MESSAGE,
+            check_ran=False,
             latency_ms=round(latency_ms, 2),
         )
 
@@ -451,6 +458,7 @@ async def check_all_connections(current_user: JWTClaims = Depends(get_current_us
                     integration=integration_name,
                     success=False,
                     message=CHECK_FAILED_MESSAGE,
+                    check_ran=False,
                 )
             )
     return results
@@ -471,12 +479,14 @@ _GITHUB_CARD_CONNECTED_NO_LOGIN = "Connected."
 # failure its own line; "Not the right account?" would point at a cause nobody found.
 _GITHUB_CARD_CONNECTED_AS_ONLY = "Connected as {login}."
 _GITHUB_CARD_PAT_TITLE = "Connected via your personal token"
-_GITHUB_CARD_PAT_DETAIL = (
-    "Your GitHub connection needs re-authorizing, so I'm not using it right now."
-)
-_GITHUB_CARD_RECONNECT_TITLE = "Needs reconnecting"
+# CXO 2026-11-18 (the card-state file's Test pairs): one fact, one name. The stale grant
+# is "GitHub no longer accepts your connection." at the click, on the card and in chat.
 GITHUB_CARD_RECONNECT_DETAIL = "GitHub no longer accepts your connection."
-_GITHUB_CARD_NOT_CONFIGURED = "Not configured"
+_GITHUB_CARD_PAT_DETAIL = "GitHub no longer accepts your connection, so I'm not using it right now."
+# The own-token card after a passing Test names the leg the Test named (CXO 2026-11-18).
+_GITHUB_CARD_PAT_HEALTHY = "Connected via your personal token."
+_GITHUB_CARD_RECONNECT_TITLE = "Needs reconnecting"
+_GITHUB_CARD_NOT_CONFIGURED = "Not connected"
 _WARNING_ICON = "⚠️"
 
 
@@ -608,6 +618,17 @@ async def _github_card(
             # #2053 (CXO): Reconnect in every stale state, beside Test.
             action="reconnect",
         )
+    if getattr(credential, "leg", None) == "pat":
+        # CXO 2026-11-18: the own-token card after a passing Test says which leg served,
+        # as the Test did. Untested or failed, the generic path below governs as before.
+        pat_result = _get_test_result_store().get_test_result(user_id, "github")
+        if pat_result is not None and pat_result.ok:
+            return card(
+                status="healthy",
+                status_message=_GITHUB_CARD_PAT_HEALTHY,
+                can_test=True,
+                last_check=pat_result.checked_at_iso,
+            )
     return None
 
 
@@ -827,8 +848,7 @@ async def _test_slack(user_id: Optional[str] = None) -> Dict[str, Any]:
 _GITHUB_WORKING_OAUTH = "GitHub is working, using your GitHub connection."
 _GITHUB_WORKING_PAT = "GitHub is working, using your personal token."
 _GITHUB_WORKING_PAT_STALE_OAUTH = (
-    "GitHub is working, using your personal token. "
-    "Your GitHub connection needs re-authorizing, so I'm not using it right now."
+    f"GitHub is working, using your personal token. {_GITHUB_CARD_PAT_DETAIL}"
 )
 
 

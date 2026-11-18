@@ -27,7 +27,7 @@ OAUTH = "GitHub is working, using your GitHub connection."
 PAT = "GitHub is working, using your personal token."
 STALE = (
     "GitHub is working, using your personal token. "
-    "Your GitHub connection needs re-authorizing, so I'm not using it right now."
+    "GitHub no longer accepts your connection, so I'm not using it right now."
 )
 
 

@@ -462,9 +462,12 @@
   // API key integrations with dedicated settings pages (Issue #540, #541)
   const API_KEY_INTEGRATIONS = ['notion', 'github'];
 
-  // #2053: the card whose Test result currently owns the re-authorize line (set only
-  // around the post-Test redraw; renderIntegrations omits that card's status_detail).
-  let resultOwnsLine = null;
+
+  // CXO and Arch, 2026-11-18: after a Test that couldn't run (``check_ran`` false, nothing
+  // recorded on the server), the card keeps that Test's line until the next Test of that
+  // card or a page load. Page memory only. It replaces #2053's rule, which left a stale
+  // card's warning off the redraw: the card now keeps its own lines.
+  const couldNotCheckLine = {};
 
   // Status icons for overall health
   const STATUS_ICONS = {
@@ -768,12 +771,12 @@
                   ${statusLine(integration)}
                 </span>
               </div>
-              ${integration.error_line && integration.name !== resultOwnsLine ? `
+              ${integration.error_line && !couldNotCheckLine[integration.name] ? `
                 <div class="status-detail error" id="error-line-${integration.name}">
                   ${withCheckedAt(integration.error_line, checkedFragment(integration))}
                 </div>
               ` : ''}
-              ${integration.status_detail && integration.name !== resultOwnsLine ? `
+              ${integration.status_detail && !couldNotCheckLine[integration.name] ? `
                 <div class="status-detail" id="detail-${integration.name}">
                   ${integration.status_detail}
                 </div>
@@ -852,6 +855,7 @@
   }
 
   function statusLine(integration) {
+    if (couldNotCheckLine[integration.name]) return couldNotCheckLine[integration.name];
     // #2401: a card with its failure on a second line keeps the check time there.
     if (integration.error_line) return integration.status_message;
     const checked = checkedFragment(integration);
@@ -873,7 +877,6 @@
     btn.disabled = true;
     btn.classList.add('testing');
     btn.textContent = 'Testing...';
-    let testOwnsLine = null;
     // #2067: remembered so a lapsed sign-in puts the card back exactly as it was
     // (the class string, not classList reads: the Node harness pins stub the list).
     const lineBefore = statusEl.textContent;
@@ -902,7 +905,10 @@
       // (``stale_reason`` set) is a warning, not a plain success.
       const stale = Boolean(result.success && result.stale_reason);
       dot.className = `status-dot ${result.success ? (stale ? 'degraded' : 'healthy') : 'failed'}`;
-      if (stale) testOwnsLine = integrationName;
+      // The couldn't-check line: kept when the check couldn't run, dropped by any Test
+      // that ran. Keyed on the route's flag, never on its words.
+      if (result.check_ran === false) couldNotCheckLine[integrationName] = result.message;
+      else delete couldNotCheckLine[integrationName];
 
       if (result.success) {
         statusEl.textContent = result.message;
@@ -945,16 +951,13 @@
     // goes) and the page summary ("N of M healthy"); redraw both from the one source,
     // the health route, instead of patching the card by hand. A redraw failure is
     // not a Test failure, so it never reaches the toast.
-    // #2053: after a warning Test the result owns the re-authorize line (toast and
-    // status line), so this one redraw omits that card's status_detail.
-    resultOwnsLine = testOwnsLine;
     try {
       await loadIntegrationsHealth();
     } catch (error) {
       console.error('Failed to redraw integrations after Test:', error);
     }
-    resultOwnsLine = null;
   }
+
 
   async function testAllConnections() {
     const btn = document.getElementById('test-all-btn');
@@ -979,6 +982,8 @@
 
         const stale = Boolean(result.success && result.stale_reason);
         dot.className = `status-dot ${result.success ? (stale ? 'degraded' : 'healthy') : 'failed'}`;
+        if (result.check_ran === false) couldNotCheckLine[result.integration] = result.message;
+        else delete couldNotCheckLine[result.integration];
         statusEl.textContent = result.message;
         statusEl.classList.toggle('error', !result.success);
         statusEl.classList.toggle('warning', stale);

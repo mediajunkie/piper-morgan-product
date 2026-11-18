@@ -158,7 +158,7 @@ def test_health_json_per_state(client):
     assert (pat["status_icon"], pat["status_message"], pat["status_detail"]) == (
         "⚠️",
         "Connected via your personal token",
-        "Your GitHub connection needs re-authorizing, so I'm not using it right now.",
+        "GitHub no longer accepts your connection, so I'm not using it right now.",
     )
     stale = _github_json(client, "stale_nothing")
     assert (stale["status_icon"], stale["status_message"], stale["status_detail"]) == (
@@ -170,7 +170,7 @@ def test_health_json_per_state(client):
     nothing = _github_json(client, "nothing")
     assert (nothing["status"], nothing["status_message"], nothing["can_test"]) == (
         "not_configured",
-        "Not configured",
+        "Not connected",  # CXO 2026-11-18: GitHub's chip
         False,
     )
     for card in (oauth, pat, stale, nothing):
@@ -218,7 +218,7 @@ def test_rendered_token_serving_card(client, body):
     html = _render(body, _github_json(client, "pat_stale"))
     assert "⚠️" in html
     assert "Connected via your personal token" in html
-    assert "Your GitHub connection needs re-authorizing, so I'm not using it right now." in html
+    assert "GitHub no longer accepts your connection, so I'm not using it right now." in html
     assert 'class="status-dot degraded"' in html
     assert 'id="test-btn-github"' in html and "disabled" not in html
     assert 'id="reconnect-btn-github"' in html  # #2053 (CXO): Reconnect beside Test
@@ -242,7 +242,7 @@ def test_rendered_needs_reconnecting_card(client, body):
 @needs_node
 def test_rendered_not_configured_card(client, body):
     html = _render(body, _github_json(client, "nothing"))
-    assert "Not configured" in html
+    assert "Not connected" in html
     assert 'id="test-btn-github"' in html and "disabled" in html
     assert ">Connect<" in html.replace(" <", "<").replace("> ", ">")
     assert 'id="reconnect-btn-github"' not in html and "⚠️" not in html

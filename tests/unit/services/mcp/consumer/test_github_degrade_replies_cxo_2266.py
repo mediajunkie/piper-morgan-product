@@ -28,13 +28,13 @@ class TestCxosTwoLines:
 
     def test_the_stale_line_by_text(self):
         assert GITHUB_STALE_TOKEN_REPLY == (
-            "Your GitHub connection needs re-authorizing. Reconnect GitHub in Settings, under Integrations."
+            "GitHub no longer accepts your connection. Reconnect GitHub in Settings, under Integrations."
         )
 
     async def test_a_stale_degrade_read_alone_gets_the_way_on(self):
         d = await GitHubMCPSpatialAdapter().degrade(DegradationReason.STALE_TOKEN)
         assert (
-            d.user_message == "Your GitHub connection needs re-authorizing."
+            d.user_message == "GitHub no longer accepts your connection."
         )  # the composable phrase
         assert github_degrade_reply(d) == GITHUB_STALE_TOKEN_REPLY
 
@@ -65,6 +65,6 @@ class TestTheStandaloneRendersUseTheHelper:
         """The default-repo check composes its own sentence from the short phrase; it is
         not routed through the helper and its wording is CXO's 10-30 line."""
         src = (REPO / "services/intent/intent_service.py").read_text()
-        assert "Your GitHub connection needs re-authorizing, so I couldn't check" in src
+        assert "GitHub no longer accepts your connection, so I couldn't check" in src
         tree = ast.parse(src)
         assert tree  # parses: the sed left the module whole

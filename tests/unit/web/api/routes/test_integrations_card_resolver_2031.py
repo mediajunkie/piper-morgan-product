@@ -37,7 +37,7 @@ PAT_AFTER_DISCONNECT = GitHubCredential(
 )
 STALE_NOTHING = DegradationResponse(
     reason=DegradationReason.STALE_TOKEN,
-    user_message="Your GitHub connection needs re-authorizing.",
+    user_message="GitHub no longer accepts your connection.",
 )
 NOTHING = DegradationResponse(
     reason=DegradationReason.CONNECT_REQUIRED, user_message="Connect GitHub to continue."
@@ -90,7 +90,7 @@ async def test_pat_serving_with_stale_grant_is_the_warning_token_state():
     assert status.status_message == "Connected via your personal token"
     assert (
         status.status_detail
-        == "Your GitHub connection needs re-authorizing, so I'm not using it right now."
+        == "GitHub no longer accepts your connection, so I'm not using it right now."
     )
     assert status.can_test is True and status.show_test is True
     assert status.action == "reconnect"  # #2053 (CXO): Reconnect in every stale state
@@ -124,7 +124,7 @@ async def test_stale_grant_and_a_token_github_also_refuses_needs_reconnecting():
 async def test_nothing_at_all_is_not_configured():
     status, _ = await _card(NOTHING)
     assert status.status == "not_configured"
-    assert status.status_message == "Not configured"
+    assert status.status_message == "Not connected"  # CXO 2026-11-18: GitHub's chip
     assert status.can_test is False
     assert status.action is None and status.status_icon is None
 

@@ -30,7 +30,7 @@ OAUTH = "GitHub is working, using your GitHub connection."
 PAT = "GitHub is working, using your personal token."
 STALE = (
     "GitHub is working, using your personal token. "
-    "Your GitHub connection needs re-authorizing, so I'm not using it right now."
+    "GitHub no longer accepts your connection, so I'm not using it right now."
 )
 FAILURE = "GitHub rejected the token."
 
@@ -81,7 +81,8 @@ def _run(body: str, reply: dict) -> dict:
         "  createElement() { return {}; } };\n"
         "const fetch = async () => ({ json: async () => JSON.parse(process.argv[1]) });\n"
         "const Toast = { show(type, title, message) { calls.push({type, message, title}); } };\n"
-        "function loadIntegrationsHealth() {}\n"  # #2045: the page redraws after a Test
+        "function loadIntegrationsHealth() {}\n"
+        "const couldNotCheckLine = {};\n"  # the page's couldn't-check memory (CXO, Arch 11-18)  # #2045: the page redraws after a Test
         + _handler(body)
         + "\n(async () => { await testConnection('github');\n"
         "process.stdout.write(JSON.stringify({toast: calls, status: status.text,\n"
@@ -201,6 +202,7 @@ def _run_all(body: str, replies: list) -> dict:
         "const fetch = async () => ({ json: async () => JSON.parse(process.argv[1]) });\n"
         "const Toast = { show(type, title, message) { toasts.push({type, message, title}); } };\n"
         "function loadIntegrationsHealth() {}\n"
+        "const couldNotCheckLine = {};\n"  # the page's couldn't-check memory (CXO, Arch 11-18)
         + _test_all(body)
         + "\n(async () => { await testAllConnections();\n"
         "const out = {}; for (const [k, v] of Object.entries(cards))\n"
