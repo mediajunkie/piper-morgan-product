@@ -49,6 +49,6 @@ Over the next week or so we made several changes to duty cycles, the models assi
 
 ---
 
-*Next on Building Piper Morgan: That was the last of the day-by-day chapters. From here the story zooms out to the larger arc of taking Piper Morgan into beta, starting with "Letting a Stranger In," in which our first outside tester asks to join and we discover that our hosted alpha has been running a build from July.*
+*Next on Building Piper Morgan: That was the last of the day-by-day chapters. From here the story zooms out to the larger arc of taking Piper Morgan into beta, starting with "Inviting Company In," in which our first outside tester asks to join and we discover that our hosted alpha has been running a build from July.*
 
 *[Reader question, yours to write. A start: "If your team went quiet tomorrow, how would you know whether they were stuck, stopped or done?"]*
