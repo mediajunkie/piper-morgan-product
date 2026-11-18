@@ -1,5 +1,5 @@
 ---
-last_updated: 2026-11-17 15:28 PST (WORK)
+last_updated: 2026-11-17 18:29 PST (WORK)
 currency_claim: rewritten at substantive-change boundaries, verified at every START
 max_age_days: 4
 ---
@@ -26,10 +26,10 @@ context-floor directive that duplicating it here is exactly the accretion to cut
 
 ## IN FLIGHT — current state only
 
-**11-17 state (15:28, WORK fire):** beta serves `d678b0af26` since 11:31 (third promotion today; CONFORMS; carries 2402 with its fix, CXO's Slack sentence, the console links). Main 12 of 12 green. Inbox empty. Rulings are in decisions.log. **No grant is open.**
+**11-17 state (18:29, WORK fire):** beta serves `d678b0af26` since 11:31 (third promotion today; CONFORMS; carries 2402 with its fix, CXO's Slack sentence, the console links). Main 12 of 12 green. Inbox empty. Rulings are in decisions.log. **No grant is open.**
 - **My validation rule for any served-path change (learned twice today):** run every test file that names the changed module, template or symbol at any layer (`git grep -l` over `tests/`), plus `tests/test_architecture_enforcement.py` and `tests/test_completion_ratchets.py` whole, and state the file count. Use a zsh array for path lists (a `$VAR` list is one word in zsh and silently matches nothing).
 - **CONFORMS read:** the promote gate now counts `templates/` and `cli/` as tested (on main 7e91d9bc62), but it has not run on a promotion yet. For the first promotion after it, still check by hand that no file under `templates/` or `cli/` changed between the green tested ancestor and staging's commit.
-- **Step A has not started (18:05):** Exec released both holds at 18:02; the sync of xian's checkout is free again. When he does start, Exec mails "Step A started"; from that mail until "done" or "stopped", no sync of his checkout. After Lead's `check-env` passes, the first paid run under the cap is mine to validate.
+- **Step A is Friday 11-20** (Exec's mail 01M7P7NMPD, a relay of Docs: xian is away from Amber and the command must run there). Exec reads the same wait onto his other Terminal steps (C, D, the script half of F0). No seat stands by before then; the checkout sync is free. On Friday Exec mails "Step A started", and from that mail until "done" or "stopped" nobody syncs his checkout. Blocked until then: paid runs, the signed-in reads on beta, the seat browser's first run. After Lead's `check-env` passes, the first paid run under the cap is mine to validate.
 - **xian's words today (all via Janus and Exec; verbatim in decisions.log):**
   - Browser launch: "ok to leave it. let's ensure it doesn't recur, though."
   - `piper-morgan-test`: nothing of his uses it ("No"); seats may spend through its key to $40 ("Yes, if that's the right way to do it, sure"). I answered conforms; HOST: right way. Read by him: $16.19 of $40, organisation $49.29 of $250. All in ADR-084 D2.
@@ -38,6 +38,7 @@ context-floor directive that duplicating it here is exactly the accretion to cut
   - Spend is nominal to him inside the caps; caps, PLANNED and COST lines and the $10 rule unchanged.
 - **Still waiting on xian (via Exec):** Steps C, D, F0 and the rest of the 11-16 list below.
 - **Prompt caching (his question):** already set per request on the classifier; automatic caching is not our shape (a reply is one system prompt and one rebuilt message). Issue 2354's explicit breakpoint is the fitting change, to be built with a count-only read of cache tokens. `classifier.py` line 820's comment names the wrong model (Lead to fix).
+- **Issue 2404** (Lead's, filed 11-17): a seat driver for the self-host guide's keyed steps (6, 7, 9, chat check). Ruled: scratch database on the shared local Postgres, not a throwaway stack. I read the script against six items on the issue (key by environment name only; run-generated master key; store `db`; planned turns and COST from provider counts; teardown on every exit; what it writes to the shared Redis and Chroma). Build doesn't wait on Step A; the real run does.
 - **Issues I filed today:** 2402 (cards drew route strings unescaped; built and served at the unit and source layer; my filing overstated it, corrected on the issue; signed-in read still open) and 2403 (two service modules call `load_dotenv()` at import; not urgent; PPM places, Lead builds, I validate).
 - **Rulings today that others build or have built:**
   - Card-state file pin stays; in CI a missing node fails it (done).
