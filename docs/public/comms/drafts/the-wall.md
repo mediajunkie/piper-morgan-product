@@ -49,6 +49,6 @@ Over the next week or so we made several changes to duty cycles, the models assi
 
 ---
 
-*Next on Building Piper Morgan: [TEASE: the first arc post, likely "Letting a Stranger In" (working title). This is the last day-by-day beat (xian 11-14: the story moves up a level to arcs about taking a product into beta), so the closing can say the story zooms out from here.]*
+*Next on Building Piper Morgan: That was the last of the day-by-day chapters. From here the story zooms out to the larger arc of taking Piper Morgan into beta, starting with "Letting a Stranger In," in which our first outside tester asks to join and we discover that our hosted alpha has been running a build from July.*
 
 *[Reader question, yours to write. A start: "If your team went quiet tomorrow, how would you know whether they were stuck, stopped or done?"]*
