@@ -452,6 +452,20 @@ default browser of the machine it runs on (it did, on 2026-11-11, until this was
 Limit of the outbound sink: `aiohttp.ClientSession()` ignores the proxy environment, so the sink
 neither refuses nor records those calls. It covers httpx and the Anthropic SDK only.
 
+**The self-host guide's keyed steps: `scripts/guide_keyed_steps_run.py` (#2404, Lead, 2026-11-18).**
+The same scratch-database shape, for guide steps 6 to 9 and "Check it works". It prints the guide's
+expected line, the line seen and the layer for each step. `--stub` seeds a made-up key and spends
+nothing. `--real` reads `PIPER_SEAT_ANTHROPIC_KEY` only, after ADR-084 Step A, and prints PLANNED
+before any model call and COST from the server's `llm_usage` lines. Three things it does that the
+fault run doesn't:
+- Every process gets `PYTHON_DOTENV_DISABLED=1`, so no `.env` is read.
+- The server runs in a run folder that links the tree's entries except `data` and `.env`. In Lead's
+  worktree `data/chromadb` is the shared Chroma container's volume, and the app's in-process Chroma
+  client writes `./data/chromadb`.
+- Redis gets database 14 with an owner marker, and the keys it wrote are deleted by name.
+
+The key is seeded through `KeychainService().store_api_key`, step 5's own call.
+
 ## 10. A step only xian can run because he holds the secrets: one command with hidden prompts (CIO, 2026-11-11, #2341)
 
 xian, 11-11, running #2174's refresh check by hand: "I find this process super tedious and wish we could
