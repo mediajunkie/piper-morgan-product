@@ -8,16 +8,15 @@ caption: ''
 
 *September 15–18, 2026*
 
-Once I got my full agent fleet running autonomously I had to start watching my usage limits again for the first time in a while. This was exacerbated by my giving the most token-expensive Claude model (Fable) to my lead developer agent (Lead) to boost the development effort.
-
 My usage limits reset each Thursday evening at 10pm, coincidentally also the last day of the Piper Morgan workweek (it's a long story). On a Tuesday in mid September I noticed we had already used 97% of the weekly limit, with more than two full days left to go. It looks like we'd hit the wall in about 12 hours at the current rate.
 
 I've spent more money than I'd care to admit on overage credits in the past and I had turned off that fearture, so when the team hit that wall, they were really going to hav to go idle (unless I logged some of them into my other Claude account, which has its own disruptive complications).
 
-
 The first thing I told the team to do was defer any non-urgent work two days, anything not on the critical path. I also warned the team that we might hit the wall hard and just have everything stop. My chief of staff agent (Exec) agreed that "a spent quota stops work cleanly, which looks identical ... to a crash."
 
 # How it happened
+
+Once I got my full agent fleet running autonomously my usage rate shot up. This was exacerbated by my giving the most token-expensive Claude model (Fable) to my lead developer agent (Lead) to boost the development effort. The increased usage was masked for a while by a summer Claude promotion I hadn't even been aware of 
 
 - Why it came early: the summer promotion had ended Sep 13, lowering the ceiling, and Exec found 48 subagent runs in a few days, all on Fable by default. [Exec 09-15 l.148-149]
 
