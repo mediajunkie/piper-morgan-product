@@ -8,6 +8,8 @@
 
 The Tier 1 corpus's teachable-practice rows that come from `methodology-core`. A Proven entry is written for the team, with roles, issue numbers and incidents, so none is usable as written (design record, CIO's area 5). Each row below rewrites one entry's practice for a person asking Piper "how should I…?". Piper retrieves a row on a matching turn and answers from it in its own words. The row is not a script to recite.
 
+**Scope, ruled (xian, 2026-11-18 07:51, to Exec, verbatim): "yes, no changes needed now".** The page's scope is deliberately "what the team has proven in its own work": a row is added only when a methodology entry is Proven and passes CIO's screen (useful to a person doing product work) and CXO's (voice). Planning topics are not covered, by choice. Until 11-18 that scope was a by-product of the source rule, not a decision (CIO's account to Docs, mail 01M7NRWVX6). Recorded in decisions.log by Exec. "Now" is his word: it can be revisited. Next candidate rows come from the 12-29 methodology audit.
+
 Source: the Status and Summary lines from 9p (2026-11-12). 19 entries are Proven. 14 of them are covered by the 13 rows below (two rows draw on two entries, and one row was cut), and 5 are left out with the reason given.
 
 **CXO's pass (11-13 06:50):** 11 rows passed. Two were returned and rewritten the same morning ("Don't call it done early", now one habit; "Write down what you'd do differently", formerly "Close each cycle…"). One row was cut (13). The two rewrites wait on CXO's second look.
