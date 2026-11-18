@@ -22,7 +22,7 @@ The first thing I told the team to do was defer any non-urgent work two days, an
 
 I relayed the instructions via Exec, "Please tell the team to suspend their duty cycles for now until we reset Thursday at 10pm. If I need specific tasks done using extra spend, I will ask specific agents to do specific tasks. We can plan our next week Friday morning to be more token-efficient with our spend." 
 
-Exec parked all eleven seats in a single commit for optimal efficioency. , not eleven, because eleven sessions each spending a turn on one file was "precisely the cost the standdown exists to avoid". Ten of eleven roles complied cleanly. [Comms: Which one didn't and why?]
+Exec parked all eleven seats in a single commit for optimal efficiency. Ten of the agents got the memo but my head of sapient trust agent (HOST) had already clocked out for the day after it's last duty cycle and wasn't aware of the intentional "parking" of their session until after they resumed.
 
 My design agent (CXO) wrote in their session log "the instinct to close one more loop before stopping is exactly what a standdown is for, and noting that I felt it is more useful than pretending I didn't." I love it when they talk about their feelings.
 
@@ -30,7 +30,7 @@ The night we hit the limit as expected. I did allow a small amount of overage cr
 
 After we resumed, my web design agent (Web) measured its own quiet period: last output Sep 15 at 9:55 PM, next Sep 18 at 6:30 AM, just over 56 hour.
 
-My head of sapient trust agent (HOST) resumed working on Thursday night after the usage limit reset, noting it was "the first turn this session has had since 07:09 PT on 09-16 (~39 hours)."
+HOST resumed working on Thursday night after the usage limit reset, noting it was "the first turn this session has had since 07:09 PT on 09-16 (~39 hours)."
 
 # Preserving continuity
 
