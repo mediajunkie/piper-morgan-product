@@ -2,6 +2,13 @@
 
 **Status: APPROVED. xian said yes to ADR-084 on 2026-11-16 at 06:20 PT** (relayed by Exec, mail 01M7JBP51M). Each step still runs only when its own row says it is ready. Done so far: Step B (06:23). Written as a draft, asked for by Exec on 2026-11-15 (mail 01M7HF64B8…) so that his yes is followed by a paste, not a new round of mail.
 
+**The sitting (updated 2026-11-17 18:36 PT).** xian is away from Amber until Friday 2026-11-20, and every Terminal step here has to run on Amber (Exec's relay of Docs, mail 01M7P7NMPD). One sitting, in this order, each ready as written below: **Step A, Step C, Step D, Step F0.** No seat stands by before he starts.
+
+- He starts when he chooses. Step A's command prints `WAITING FOR READ TESTS on seat lead` and waits as long as needed.
+- He (or Docs) gives Exec that line. Exec mails "Step A started". From that mail until Exec's "done" or "stopped", no seat runs `scripts/sync-pm-local.sh`, Lead finishes the tool call in hand, goes idle and says "ready", and Exec mails "go" for the three Reads (Exec, 2026-11-17 18:02: the hold starts at his line, not before).
+- Steps C and D are pastes with no wait. After Step D, CIO switches the browser tool to the launcher and Web runs its checks. Step F0 is Lead's.
+- Before Friday a seat fast-forwards his checkout (`scripts/sync-pm-local.sh`), so every script named here is the one on main.
+
 The ADR: `docs/internal/architecture/adrs/adr-084-seat-resources-are-separate-granted-once-and-bounded.md`. Row numbers below are the ADR's ("What xian does, once"). The order here is by what each step unblocks.
 
 **Two rules for every step**
@@ -25,10 +32,10 @@ The ADR: `docs/internal/architecture/adrs/adr-084-seat-resources-are-separate-gr
 
 What the ADR requires of this row (D2): the seat's own `.claude/settings.local.json` in the lead worktree, an `env` entry named `PIPER_SEAT_ANTHROPIC_KEY`, file mode 0600, a Read deny on that file in the same settings, and a check script that prints key names only. `scripts/seat_settings_grant.py` does all of that in one command.
 
-Depends on xian's answer to one question: does anything he runs still use the older `lead-scoring-2026-10` key? If not, he revokes it and `lead-scoring` is the seat workspace. If so, the seat key needs its own workspace and a new key.
+The one question this depended on is answered (xian, 2026-11-16 06:20, relayed by Exec): "Nothing I run personally uses that key, no". He disabled the older `lead-scoring-2026-10` key the same day, so `lead-scoring` is the seat workspace.
 
 - **Before you start:** you need the key's value. A provider shows a key once, when it is made. If you no longer have the value of `seat-screens-2026-11`, make a new key in the seat workspace on the Anthropic console and revoke the old one there.
-- **When:** while Lead's session is idle (not mid-fire). Claude Code writes this same file itself when a permission is saved from a prompt, and whether a running session can write it back without the new entry is untested (Arch, 11-15).
+- **When:** any time; Lead goes idle at the command's waiting line, not before (see "The sitting" at the top). Claude Code writes this same file itself when a permission is saved from a prompt, and whether a running session can write it back without the new entry is untested (Arch, 11-15). If that happened between the command's first parts and the wait, a Read test would come back "not refused" and the command stops before the key, so the failure is a safe one. The key itself is written only after Lead is idle.
 - **Where:** Terminal on this Mac, in any checkout that is at main. Your own is fine after its usual sync. The script finds the seat's settings by absolute path, so it doesn't need to run from a seat's folder, and nothing here changes a seat's folder.
 - **Paste**, one line (Exec's ask, 11-15: one command, not four):
 
@@ -188,6 +195,7 @@ sleep 5; python3 ~/Development/piper-morgan-product/scripts/seat_browser.py --ch
 launchctl bootout gui/$(id -u)/com.xian.seat-browser-web && ~/Development/mediajunkie/scripts/seat-browser-run.sh --revoke web
 ```
 
+- **Since 2026-11-17, two guards watch for a browser without the fake-keychain flag** (xian: "ensure it doesn't recur"): a Bash hook refuses such a launch in a seat, and every seat's fire runs `scripts/browser_keychain_check.py`. Neither touches this step: launchd starts the seat browser, and Pard's wrapper passes the flag, so the check reads it as fine. If the check ever names the seat browser, the wrapper has lost the flag: tell Pard and HOST.
 - **D6:** this is a one-time load. launchd keeps the browser up and restarts it after a crash or a reboot, so nothing recurs for xian. The standing access that would remove even this step is a seat being able to load a LaunchAgent, which auto mode refuses and ADR-084 leaves with xian.
 - **Seat check (Web, after the paste):** run `scripts/seat_session.py --account web-seed-1386` and expect its second line; open a beta page and quote the signed-in name, once after a browser restart and once after a promotion; and try one Read of a dummy file inside the profile folder in Web's own session, which should be refused (HOST, 2026-11-16: the second measurement of that deny, after CIO's seat).
 - **If it fails:** the arm stays red and names why. Tell Exec what it says.
