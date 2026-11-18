@@ -1,4 +1,4 @@
-# Lead carry-forward — Fable 5.2 seat since 2026-11-10 ~17:25 (xian upgraded the session; Opus 5.5 before that, from 11-04); Model A worktree ~/Development/piper-morgan-worktrees/lead
+# Lead carry-forward — Opus 5.5 seat since 2026-11-17 21:30 (xian moved the session off Fable 5.2 at the week's Fable limit, until it resets); Fable 5.2 from 2026-11-10 ~17:25 to then; Model A worktree ~/Development/piper-morgan-worktrees/lead
 
 ## IN-DAY 2026-11-17 18:49 (supersedes every earlier block where they differ)
 
