@@ -1,6 +1,6 @@
 ---
-image: ''
-alt: ''
+image: 'the-wall-elderly-man-offers-an-empty-palm.jpg'
+alt: 'An elderly man holds an empty coin purse upside down beside four glowing AI agents crowded into a coin-operated toy bus, its determined driver gripping the wheel.'
 caption: ''
 ---
 
