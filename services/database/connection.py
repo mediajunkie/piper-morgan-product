@@ -7,12 +7,12 @@ import os
 from typing import Optional
 
 import structlog
-from dotenv import load_dotenv
 from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_async_engine
 from sqlalchemy.orm import declarative_base
 
-# Load environment variables from .env file
-load_dotenv()
+# #2403: no .env load here. Entry points load it (main.py, alembic/env.py, the guide's
+# scripts); a library module that changes the process environment on import made every
+# test run depend on a git-ignored file.
 
 logger = structlog.get_logger()
 

@@ -29,10 +29,6 @@ from pathlib import Path
 # validated below before any database connection.
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
-from dotenv import load_dotenv  # noqa: E402
-
-load_dotenv("/Users/xian/Development/piper-morgan/piper-morgan-product/.env")
-os.environ.setdefault("POSTGRES_PORT", "5433")
 from sqlalchemy import create_engine, text  # noqa: E402
 
 from services.auth.invite_token_service import generate_invite_token  # noqa: E402
@@ -65,12 +61,24 @@ def _validate(args) -> None:
         raise SystemExit(f"refusing: count must be 1..{MAX_COUNT}")
 
 
+def _load_settings() -> None:
+    """#2403: this repository's own .env (guide step 8), loaded when the command runs,
+    never on import (a test imports this module). The old line named a fixed path on one
+    machine, which on a clone loaded nothing; services/ used to load the right file at
+    import, and no longer does. On the hosted image there is no .env: a no-op."""
+    from dotenv import load_dotenv
+
+    load_dotenv(Path(__file__).resolve().parent.parent / ".env")
+    os.environ.setdefault("POSTGRES_PORT", "5433")
+
+
 def main():
     ap = argparse.ArgumentParser(description="#1344 mint alpha invite tokens")
     ap.add_argument("count", type=int, nargs="?", default=0, help="how many tokens to mint")
     ap.add_argument("--apply", action="store_true", help="execute (default: dry-run)")
     args = ap.parse_args()
     _validate(args)
+    _load_settings()
 
     if args.count < 1:
         raise SystemExit("count must be >= 1")

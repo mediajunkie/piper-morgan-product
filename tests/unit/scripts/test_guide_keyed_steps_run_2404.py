@@ -263,6 +263,10 @@ def test_real_run_without_the_key_starts_nothing(g, monkeypatch):
 
 def _wire(g, monkeypatch, calls, *, claim_fails=False):
     monkeypatch.setattr(g, "remove_leftovers", lambda: [])
+    monkeypatch.setattr(g, "shared_chroma_folder", lambda: None)
+    monkeypatch.setattr(g, "LOCK_DIR", Path(g.tempfile.mkdtemp()) / "lock")
+    monkeypatch.setattr(g, "take_lock", lambda lock_dir=None: g.LOCK_DIR.mkdir())
+    monkeypatch.setattr(g, "release_lock", lambda lock_dir=None: calls.append("unlocked"))
 
     def claim(run_id):
         if claim_fails:
@@ -290,6 +294,7 @@ def test_teardown_runs_when_a_step_fails(g, monkeypatch):
     assert "release" in calls
     assert ("drop", "piper_guide_run_0a1b2c3d", "piper_guide_app_0a1b2c3d") in calls
     assert any(line.startswith("TEARDOWN:") and "run folder" in line for line in out)
+    assert "unlocked" in calls
 
 
 def test_redis_not_claimed_is_not_touched(g, monkeypatch):
@@ -376,3 +381,38 @@ def test_step_7_and_9_lines_are_still_what_the_app_shows(g):
         ">Open Piper</a",
     ):
         assert text in page
+
+
+def test_parent_environment_setting_never_reaches_the_run(g):
+    env = g.server_env(
+        {"PIPER_ENVIRONMENT": "production", "FLY_APP_NAME": "piper-morgan"},
+        db_url=RUN_DB_URL,
+        master_key="run-master",
+        port=61000,
+    )
+    assert "PIPER_ENVIRONMENT" not in env and "FLY_APP_NAME" not in env
+
+
+def test_cost_lines_go_through_the_key_search_before_printing():
+    source = (ROOT / "scripts" / "guide_keyed_steps_run.py").read_text()
+    assert "rendered = cost_lines + [" in source
+    assert "def _cost(self, server: Server) -> List[str]:" in source
+
+
+def test_one_run_at_a_time(g, tmp_path):
+    lock = tmp_path / "piper-guide-run.lock"
+    g.take_lock(lock)
+    with pytest.raises(g.Refused) as refused:
+        g.take_lock(lock)
+    assert str(lock) in str(refused.value)
+    g.release_lock(lock)
+    g.take_lock(lock)  # free again after release
+    g.release_lock(lock)
+
+
+def test_the_shared_chroma_folder_comes_from_docker_inspect(g):
+    assert g.chroma_source_from("/Users/someone/wt/data/chromadb\n") == Path(
+        "/Users/someone/wt/data/chromadb"
+    )
+    assert g.chroma_source_from("") is None
+    assert g.chroma_source_from("Error: no such object") is None

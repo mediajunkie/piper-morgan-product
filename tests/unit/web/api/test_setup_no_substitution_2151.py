@@ -106,3 +106,14 @@ async def test_the_github_token_is_actually_checked(status, valid, message_name)
     assert out.valid is valid
     assert out.message == getattr(setup_routes, message_name)
     assert "saved" not in out.message
+
+
+@pytest.fixture(autouse=True)
+def _first_account_on_this_install(monkeypatch):
+    """#2405: these pin the first account's path. The shared dev database may hold
+    completed accounts, which would answer the later-account line instead."""
+
+    async def _no_other_account(principal):
+        return False
+
+    monkeypatch.setattr("web.api.routes.setup._another_account_completed_setup", _no_other_account)

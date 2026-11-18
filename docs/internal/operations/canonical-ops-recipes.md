@@ -684,6 +684,19 @@ repository, and started the server with `--no-browser` on a free port instead of
 Two things a newcomer meets that are product questions, not steps: the account step needs an invite
 code on a private install (step 8), and the setup page called the database store "Keychain" until CXO's wording of 2026-11-12 ("Use saved key").
 
+**Where `.env` is read (#2403, 2026-11-18).** Only by entry points: `main.py`, `alembic/env.py`,
+`scripts/local_key_setup.py` and `scripts/mint_invite_tokens.py` (each inside the run, never on
+import), and `cli/commands/publish.py` when run directly. No module under `services/` or `web/`
+loads it, and nothing a pytest run imports loads it on import (`TestNoDotenvLoadOnImport`). So a
+**pytest run's environment is the shell's plus what `tests/conftest.py` sets**, the same in a
+worktree with a `.env` as in CI without one. A test that needs a variable sets it (`monkeypatch.setenv`).
+A variable already set in the shell always wins over the file.
+
+**The first account owns the saved key (#2405, 2026-11-18).** The key stored at step 5 is copied into
+the account's own key row when the first account on the install finishes setup with "Use saved
+key". A later account on the same install is told the saved key is the first account's and pastes
+its own. On a hosted deployment nothing is copied.
+
 ## 14. Amber's shared local database: who runs a new migration (CIO, 2026-11-13)
 
 Every seat on Amber, and xian's own local runs, share one local database: `piper_morgan` in the

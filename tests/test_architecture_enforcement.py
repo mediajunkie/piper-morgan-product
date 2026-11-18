@@ -9459,3 +9459,106 @@ class TestMainAppStaysWarmForGrantRefresh2342:
         assert "GitHubAppRefreshPhase" in (repo_root / "web" / "startup.py").read_text(
             encoding="utf-8"
         )
+
+
+class TestNoDotenvLoadOnImport:
+    """#2403 (Lead, 2026-11-18; Arch validates): no module under ``services/`` or
+    ``web/`` loads a dotenv file, and no module a pytest run imports does so at import.
+
+    Two service modules called ``load_dotenv()`` at import, so every pytest process in a
+    worktree with a ``.env`` took that git-ignored file's variables. Entry points load it
+    themselves (``main.py``, ``alembic/env.py``, the guide's scripts in their ``main``).
+    The checks read the AST, so a mention in a string or comment is not a call.
+    """
+
+    _REPO = Path(__file__).resolve().parent.parent
+    _LOADERS = {"load_dotenv", "dotenv_values", "find_dotenv"}
+
+    @classmethod
+    def _calls(cls, source: str, *, module_level_only: bool) -> list:
+        import ast
+
+        tree = ast.parse(source)
+        if module_level_only:
+            # Statements run at import: the module body, and the bodies of top-level
+            # if/try/with blocks, but not ``if __name__ == "__main__":`` and not defs.
+            nodes, stack = [], list(tree.body)
+            while stack:
+                stmt = stack.pop()
+                if isinstance(stmt, (ast.FunctionDef, ast.AsyncFunctionDef, ast.ClassDef)):
+                    continue
+                if isinstance(stmt, ast.If) and "__main__" in ast.unparse(stmt.test):
+                    continue
+                if isinstance(stmt, (ast.If, ast.Try, ast.With)):
+                    for field in ("body", "orelse", "finalbody", "handlers"):
+                        for child in getattr(stmt, field, []) or []:
+                            stack.extend(
+                                child.body if isinstance(child, ast.ExceptHandler) else [child]
+                            )
+                    continue
+                nodes.append(stmt)
+            walk = [n for stmt in nodes for n in ast.walk(stmt)]
+        else:
+            walk = list(ast.walk(tree))
+        found = []
+        for node in walk:
+            if isinstance(node, ast.Call):
+                name = getattr(node.func, "id", None) or getattr(node.func, "attr", None)
+                if name in cls._LOADERS:
+                    found.append(node.lineno)
+            if isinstance(node, (ast.Import, ast.ImportFrom)) and not module_level_only:
+                mod = getattr(node, "module", None) or ""
+                names = [a.name for a in node.names]
+                if mod == "dotenv" or "dotenv" in names:
+                    found.append(node.lineno)
+        return found
+
+    def _scan(self, paths, *, module_level_only: bool) -> list:
+        hits = []
+        for path in paths:
+            try:
+                source = path.read_text(encoding="utf-8")
+            except (OSError, UnicodeDecodeError):
+                continue
+            for line in self._calls(source, module_level_only=module_level_only):
+                hits.append(f"{path.relative_to(self._REPO)}:{line}")
+        return hits
+
+    def test_services_and_web_never_touch_dotenv(self):
+        paths = [p for d in ("services", "web") for p in (self._REPO / d).rglob("*.py")]
+        assert len(paths) > 500, "the scan found too few files to mean anything"
+        hits = self._scan(paths, module_level_only=False)
+        assert not hits, (
+            "dotenv in a library module (#2403): entry points load .env, services/ and "
+            f"web/ never do: {hits}"
+        )
+
+    def test_nothing_a_test_run_imports_loads_dotenv_at_import(self):
+        tests = [
+            p
+            for p in (self._REPO / "tests").rglob("*.py")
+            if "archive" not in p.parts and (p.name.startswith("test_") or p.name == "conftest.py")
+        ]
+        # cli/commands: every module is imported by tests/unit/cli/test_cli_commands_import_1700.py.
+        cli = list((self._REPO / "cli").rglob("*.py"))
+        assert len(tests) > 500 and cli
+        hits = self._scan(tests + cli, module_level_only=True)
+        assert not hits, (
+            "a module pytest imports loads .env on import (#2403); load it in the "
+            f"entry point's main or under __main__ instead: {hits}"
+        )
+
+    def test_the_check_catches_a_call_added_back(self):
+        added = "import os\nfrom dotenv import load_dotenv\nload_dotenv()\n"
+        guarded = (
+            'if __name__ == "__main__":\n    from dotenv import load_dotenv\n    load_dotenv()\n'
+        )
+        in_main = "def main():\n    from dotenv import load_dotenv\n    load_dotenv()\n"
+        in_try = "try:\n    from dotenv import load_dotenv\n    load_dotenv()\nexcept ImportError:\n    pass\n"
+        mention = 'NOTE = "load_dotenv() is not called here"\n'
+        assert self._calls(added, module_level_only=True) == [3]
+        assert self._calls(in_try, module_level_only=True) == [3]
+        assert self._calls(guarded, module_level_only=True) == []
+        assert self._calls(in_main, module_level_only=True) == []
+        assert self._calls(mention, module_level_only=False) == []
+        assert self._calls(added, module_level_only=False) == [2, 3]

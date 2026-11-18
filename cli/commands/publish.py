@@ -17,10 +17,13 @@ from typing import Optional
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 
-# CRITICAL: Load environment variables FIRST before importing services
-from dotenv import load_dotenv
+# CRITICAL: Load environment variables FIRST before importing services, but only when
+# this file is the command being run (#2403): the cli import test imports every command
+# module, and a load here put the worktree's .env into every pytest process.
+if __name__ == "__main__":
+    from dotenv import load_dotenv
 
-load_dotenv()
+    load_dotenv()
 
 # Now safe to import services that depend on environment variables
 from services.intent_service.canonical_handlers import CanonicalHandlers

@@ -275,6 +275,13 @@ def main(
     try:
         for note in ensure_settings(path, env):
             out(note)
+        if environ is None:
+            # #2403: services/ no longer loads .env at import, so the rest of this
+            # install's settings (a second copy's database port, for one) come from
+            # here. Only on a real run: a test's injected environment never loads a file.
+            from dotenv import load_dotenv
+
+            load_dotenv(path)
         quiet_logs()
         service = store_factory()
         check_database(service)
