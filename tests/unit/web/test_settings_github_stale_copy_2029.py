@@ -60,10 +60,7 @@ def test_stale_without_a_serving_token_shows_needs_reconnecting(body):
     no_pat = stale[stale.index("} else {") :]
     assert "iconEl.textContent = '⚠️'" in no_pat
     assert "titleEl.textContent = 'Needs reconnecting'" in no_pat
-    assert (
-        '"GitHub no longer accepts your connection."'
-        in no_pat
-    )
+    assert '"GitHub no longer accepts your connection."' in no_pat
 
 
 def test_stale_keeps_the_connect_group_as_reconnect(body):
