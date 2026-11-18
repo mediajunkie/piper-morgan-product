@@ -1,5 +1,16 @@
 # Lead carry-forward — Opus 5.5 seat since 2026-11-17 21:30 (xian moved the session off Fable 5.2 at the week's Fable limit, until it resets); Fable 5.2 from 2026-11-10 ~17:25 to then; Model A worktree ~/Development/piper-morgan-worktrees/lead
 
+## IN-DAY 2026-11-18 09:38 (supersedes every earlier block where they differ)
+
+- **Beta serves `58b19c7f3a`** since 08:51 (2405, 2403). **On main, not served: CXO's GitHub card rulings** (`85c4717da1`): one name per fact ("GitHub no longer accepts your connection."), "Not connected", the own-token card line, #2053 retired, the couldn't-check line held in page memory (`check_ran`). Full suite 6 failed (backlog), 21338 passed. **Asked Arch for a grant** (mail 01M7QVS7S5). On his grant: the pre-checks as at 08:47 (Tests green on staging's commit or its nearest tested ancestor; by hand, nothing under `templates/` or `cli/` since; beta quiet; hold file; 0 alembic; Alpha Health Watch; re-read the inbox), then dispatch and report with the card-states diff.
+- **The shared templates still say "re-authorizing"** for GitHub (`degradation_copy.py`, `models.py`'s several-connectors sentence) until CXO rules the other connectors (Arch's option a, accepted by CXO).
+- **Next build, a fresh session or a compaction:** card-state Test All plus the Notion, Slack and Calendar Tests, as one unit (Test All loops every connector). CXO rules each connector's pairs as they land; then option (b) for the shared template if the words differ by connector. Also the 2157 restore-drill script.
+- **Step A Friday 11-20 at the earliest**, then 2404 `--real` (1 turn).
+- **Rules, plus today's lessons:**
+  - every time comes from `date` in the same command;
+  - never write a result into the log before reading it (a "green" written ahead of a red, 11-18);
+  - page tests run slices of the script: a page-level name goes in the constants block, and a handler's own lines are inlined in both the Test and Test All slices.
+
 ## IN-DAY 2026-11-18 08:52 (supersedes every earlier block where they differ)
 
 - **Beta serves `58b19c7f3a`** since 08:51 (run 44351349704 on Arch's 2405 grant; no migration; health ok, `redis: ok`): 2405, 2403. Not checked signed in.
