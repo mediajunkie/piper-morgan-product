@@ -65,6 +65,6 @@ Sources: arcs planning doc "Arc 1 sourced" (a Sonnet subagent read the Sep 19 to
 
 ---
 
-*Next on Building Piper Morgan: [TEASE: the Sat 11-21 insight, once you pick it. My suggestion is "A Blocker Framed as Yes or No".]*
+*Next on Building Piper Morgan: [TEASE: Sat 11-21 "A Blocker Framed as Yes or No" (your yes to the sketch, 11-18; confirm the title). Its episode: a three-day blocker framed as a yes/no on reading a file, your "not assign me manual tasks" on Nov 15, and the design that followed.]*
 
 *[Reader question, yours to write. A start: "Who was the first stranger to use your product, and were they really a stranger?"]*
