@@ -234,3 +234,44 @@ def test_after_a_couldnt_run_test_the_card_shows_the_click_line(body):
 def test_a_page_load_clears_it(body):
     html = _render(body, UNCHECKED_CARD)  # a fresh page: empty memory
     assert "Not checked yet. Press Test." in html and COULD_NOT not in html
+
+
+# CXO 2026-11-18 (second ruling): while a couldn't-check line is held, the card keeps its
+# reason, and only a claim of a fresh check is hidden.
+
+
+@needs_node
+def test_a_stale_card_keeps_its_reason_beside_the_couldnt_check_line(body):
+    html = _render(body, PAT_CARD, memory={"github": COULD_NOT})
+    assert "Connected via your personal token" in html
+    assert SENTENCE in html
+    assert COULD_NOT in html
+
+
+@needs_node
+def test_a_healthy_card_claims_no_fresh_check_while_the_line_is_held(body):
+    from datetime import datetime, timezone
+
+    healthy = {
+        "name": "calendar",
+        "display_name": "Google Calendar",
+        "status": "healthy",
+        "status_message": "Healthy",
+        "last_check": datetime.now(timezone.utc).isoformat(),
+        "can_test": True,
+    }
+    assert "Checked just now" in _render(body, healthy)  # the claim exists without the hold
+    held = _render(body, healthy, memory={"calendar": COULD_NOT})
+    assert "Checked just now" not in held and COULD_NOT in held
+
+
+@needs_node
+def test_a_card_already_saying_it_couldnt_check_does_not_say_it_twice(body):
+    unknown = {
+        "name": "calendar",
+        "display_name": "Google Calendar",
+        "status": "unknown",
+        "status_message": COULD_NOT,
+        "can_test": True,
+    }
+    assert _render(body, unknown, memory={"calendar": COULD_NOT}).count(COULD_NOT) == 1
