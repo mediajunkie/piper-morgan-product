@@ -93,7 +93,9 @@ elif not drafts:
 elif status in ("distributed", "published"):
     nxt = "done."
 else:
-    nxt = "xian's first look (he gates the Comms handoff), then Comms review; publish Wednesday."
+    # xian 2026-11-17 (decisions.log 20:26): the Ship moves to Tuesday from #070; #069 stays Wednesday.
+    day = "Tuesday" if int(ship) >= 70 else "Wednesday"
+    nxt = f"xian's first look (he gates the Comms handoff), then Comms review; publish {day}."
 print(f"ship-status #{ship}: " + " · ".join(parts) + f" · NEXT: {nxt}")
 EOF
 }
