@@ -89,11 +89,11 @@ The team added 45 new issues to the current Production milestone, mostly derived
 
 # 🎯 Coming up next week
 
-For this beta push to production, I have moved to team to two-week sprints. This will give us a little more breathing room in sprint planning and a more typical cadence. I approved fix goals for this sprint:
+For this beta push to production, I have moved to team to two-week sprints. This will give us a little more breathing room in sprint planning and a more typical cadence. I approved these goals for this sprint:
 
-  1. Finish the GitHub move: My manual testing of the new repositories card is re, then the classic-scope issue (#2261) closes and PPM writes the lift-readiness memo.
-  2. Agents test without your hands (ADR-084): the test key, the sign-in helper and the second test account in place; the first paid screen and the first signed-in read by an agent.
-  3. Sprint 2's first week: the todo rows (#2219, #2294, #2295, #2328), the wizard (#2268, #2274, #2275, #2286) and Path B (#2297, #2301).
+  1. Finish the GitHub move: My manual testing of the new repositories card is required for this.
+  2. Agents can test without requiring my hands-on steps so often. 
+  3. [Comms: please suggest how to express this a single coherent goal] Sprint 2's first week: the todo rows (#2219, #2294, #2295, #2328), the wizard (#2268, #2274, #2275, #2286) and Path B (#2297, #2301).
   4. Self-host and self-knowledge: the guide's clean-clone run finished with a key, and the Tier 1 texts approved against CXO's voice spec.
   5. Editorial: "The Wall" and Ship #069 out, and your pick of the weekly cadence and weekdays.
 - **Since the window:** your reconnect, and #2342 rows 2 and 3 served 11-15 (Arch 15:22 and 15:56). The App grant read the private repository it's installed on and not one it isn't.
