@@ -1,23 +1,31 @@
 # Comms carry-forward
 
-## ⭐ CURRENT STATE — 2026-11-16 21:19 PT (STOP). Read this first. It supersedes everything below.
-- **Log 11-16:** `dev/2026/11/16/2026-11-16-0514-comms-code-log.md` (DAY-CLOSED). Tomorrow creates a new log.
-- **Pace (xian, 11-02):** keep working, not racing. The drain rule holds. No nudges to xian about posts (Exec 11-12).
-- **Tue 11-17 "The Wall" (building, the bridge) — TODAY's slot:** scaffold `docs/public/comms/drafts/the-wall.md`, `drafted`, unchanged since 11-14 13:59 (nothing uncommitted in PM's checkout at 21:19). On Exec's 14:03 card. When his prose lands: review, fact-check against the scaffold's sources, audit 16/16, PUBLISH-READY to Docs. **Footer tease must change**: it points at arc 1; under the proposed cadence the next non-Ship post is a weekend insight. A day-before or same-day rewrite is normal; never offer to run my draft.
-- **Cadence proposal (xian in chat, 11-15, NOT yet confirmed):** insight on the weekend, Ship Tuesday, narrative Thursday. Open to xian: Thanksgiving (my lean: skip Thu 11-26, arc 1 Thu 12-3); weekend insight (my pick "One Account Means One Hand", then "A Grant Has to Reach the Hand That Acts", "A Perfect Score Can Pass a Blank Page"; hold "A Habit Is Not a Trigger"); Ship-to-Tuesday (relay to Exec once confirmed). **No calendar change past 11-17 and no scaffold until he answers.**
-- **Ship #069 "Off-Limits by Default" (Wed 11-18):** Exec put five DRAFT goals to xian 11-16 14:03 (rollup v1009; not ratified, don't scaffold on them). I sent Exec the no-goals fallback (01M7K6JQ4P) for use if Wednesday comes without his answer. External fact-check must keep the caveat: #2374, #2379, #2380 still OPEN (12:19 re-check), so "narrower grants" holds for repositories only. Source `docs/internal/planning/comms/ship-reviews/ship-069-week-review.html`.
-- **Possible Ship #069/#070 lines (check served state at draft time):** ADR-084 accepted with budget ($10 a run, $150 a month; xian 11-16 06:20); pre-push hook remembers a pass (live 12:46, ended the push holds); staged-credential scan at commit (live 17:00, #2392 closed); seat sign-in helper #2388 on main but 0 of 1 real sign-ins.
+## ⭐ CURRENT STATE — 2026-11-17 21:19 PT (STOP). Read this first. It supersedes everything below.
+- **Log 11-17:** `dev/2026/11/17/2026-11-17-0619-comms-code-log.md` (DAY-CLOSED). Tomorrow creates a new log.
+- **Pace (xian, 11-02):** keep working, not racing. Drain rule holds. No nudges to xian about posts (Exec 11-12).
+- **Draft-state check:** `git log -1 --format='%h %ad %an' -- <one path>` per draft. Admin-UI edits arrive as his commits (memory feedback_check_each_draft_with_its_own_git_log, after 11-17's miss).
+- **"The Wall" PUBLISHED 11-17 20:30 and distributed (Medium only).** Done.
+- **CADENCE RULED (xian 11-17, decisions.log 20:26):** Ship on Tuesday from #070 (11-24; Ships #070-#073 moved to Tue 11-24, 12-01, 12-08, 12-15), narrative Thursday, insight on the weekend (usually Saturday). No narrative Thanksgiving week (no Thu 11-26). Ship #069 stays Wed 11-18. Docs date-gated the validator (slot_for, new table from 11-20). Syndication unchanged: narrative = Medium only, insight = Medium + LinkedIn, Ship = LinkedIn only.
+- **Thu 11-19 "Inviting Company In" (building, arc 1, xian's title):** SCAFFOLD DONE 11-17 at `docs/public/comms/drafts/inviting-company-in.md`, row `drafted`. Sep 19 to Oct 7, six beats, three through-lines for him to pick. Waits on his prose. Footer tease = the Sat 11-21 insight once he picks it.
+- **⚠ The Wall's LIVE footer says "our first outside tester asks to join". WRONG.** Invites had gone out since 07-12, and an outside signup happened 09-02. The fix ("a new outside tester") needs xian's OK, then Docs edits the published post. Asked 11-17 21:21 in chat.
+- **Sketch put to xian 11-17 ~20:30, AWAITING his four answers.** No calendar rows past 11-19 until he says yes.
+  1. Is the sketch OK as tentative? Narratives: Thu 12-03 "Ready or Not" (late Oct; start ~Oct 20 to cover the Oct 8-28 gap), Thu 12-10 "Open, Then Hold", Thu 12-17 "What the Beta Is Teaching Us". Insights: Sat 11-28 "Test the Page You Draw", Sat 12-05 "A Record Is Not a Delivery", Sat 12-12 "A Deletion Can Fail Its Own Gate", Sat 12-19 from the next mining pass (Nov 17 to Dec 3, about Dec 4).
+  2. Sat 11-21 = "A Blocker Framed as Yes or No"? It needs a scaffold by Fri 11-20.
+  3. Thu 12-24: run, move or skip?
+  4. Era 8 "The Beta" from 10-31 (Era 7 ends 10-30)? On yes, mail Web (`src/lib/episodes.ts` in the website repo) and Docs (post cluster tags). Ship #069 is the first post fully in the beta, so it should be tagged then or re-tagged later.
+- **Mining pass Nov 6-16 done 11-17** (results in the 11-17 log at 20:27; 5 of 5 spot-checked quotes match). The unused older pool is listed there too. "One Account Means One Hand" is USED (ran 11-14 as "Which Agent Did It?"). There are no unpublished insight drafts.
+- **Ship #069 "Off-Limits by Default" (Wed 11-18):** my scaffold `docs/public/comms/drafts/weekly-ship-069-draft-2026-11-17.md`, last d879ced1da 14:06 (added xian's 11-17 spend framing as a fact, hers to publish or not). No prose from xian yet. When it lands: fact-check against the scaffold, run the audit with the Ship calibration, then PUBLISH-READY. Open calls for xian: (a) the alt typo "vending machin e", fixed only with his OK; (b) narrower-grants wording (#2374/#2379 open, "you choose the repositories").
 - **CIO ask (11-16):** the first time a push of mine prints `already passed on this content`, mail CIO that line. Not seen yet.
 - **Buttondown (Exec v1012 follow-up 5):** answered 01M7KP117X: the rollup's 11-03 v4 text is current; whether it's pasted in Buttondown is xian's login.
 - **CIO's script rule (corrected 11-16):** only `scripts/alpha-setup.sh` is banned on Amber; no compose up/down on the shared stack.
-- **Arcs (adopted 11-14):** map in planning doc (Claude Docs 5vc7f1CTHhadvvPBB73h86, rev 36). Arc 1 "Letting a Stranger In" sourced; main thread is xian's pick.
+- **Arcs (adopted 11-14):** map in planning doc (Claude Docs 5vc7f1CTHhadvvPBB73h86, rev 36). Arc 1 is now "Inviting Company In" (Thu 11-19).
 - **BETA_ rename:** stub removal waits on HOST.
 - **Two-week sprints from Fri 11-13.** #069 ordinary, #070 first progress, #071 first final score.
 - **Keychain rule (xian 11-11; #2353):** nothing we run reads xian's login keychain without his permission.
 - **Mail v4 live;** v3 is the fallback until 11-23.
 - **Invites held (xian 11-04)** until #1551, #2261 and #2178 are done. **Waiting list (#2256):** xian first, then HOST. **HOLD (PDR-102):** no ownership claim in copy.
 - **Rule 8:** no outside person named anywhere in the repo.
-- **Standing:** next mining pass Fri 11-20. "What changed" note at the first user-visible Production ship (#2342 candidate).
+- **Standing:** mining pass Nov 6-16 done 11-17; next about Fri 12-04 (Nov 17 to Dec 3). "What changed" note at the first user-visible Production ship (#2342 candidate).
 
 ## OLDER STATE blocks pruned 2026-11-06 (10-14 to 11-04). They are in git history and in the dated session logs.
 
