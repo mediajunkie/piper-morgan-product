@@ -91,38 +91,31 @@ The team added 45 new issues to the current Production milestone, mostly derived
 
 For this beta push to production, I have moved to team to two-week sprints. This will give us a little more breathing room in sprint planning and a more typical cadence. I approved these goals for this sprint:
 
-  1. Finish the GitHub move: My manual testing of the new repositories card is required for this.
-  2. Agents can test without requiring my hands-on steps so often. 
-  3. [Comms: please suggest how to express this a single coherent goal] Sprint 2's first week: the todo rows (#2219, #2294, #2295, #2328), the wizard (#2268, #2274, #2275, #2286) and Path B (#2297, #2301).
-  4. Self-host and self-knowledge: the guide's clean-clone run finished with a key, and the Tier 1 texts approved against CXO's voice spec.
-  5. Editorial: "The Wall" and Ship #069 out, and your pick of the weekly cadence and weekdays.
-- **Since the window:** your reconnect, and #2342 rows 2 and 3 served 11-15 (Arch 15:22 and 15:56). The App grant read the private repository it's installed on and not one it isn't.
-- **ADR-084 accepted 11-16 06:20** ("Yes to ADR-084 and budget"): an agent may spend up to $10 a run without asking, $150 a month at most.
-- **Two safeguards live 11-16:** a push that loses a race no longer re-runs two minutes of checks, and a commit that adds a credential shape is refused (#2392, closed).
+1. Finish the GitHub move: My manual testing of the new repositories card is required for this.
+2. Agents can test without requiring my hands-on steps so often. 
+3. Close four issues with the Todo feature
+4. Close four issues with the setup wizard
+5.[Comms: help me describe this, suggest wording:] Path B (#2297, #2301).
+6. Enable convenient self-hosting for beta testers who want to do it that way.
+7. Make sure Piper Morgan knows itself, what it can do, how it works, and the product's ethos as well as the team building it does.
 
 # 🚧 Blockers & asks
 
-[xian]
+Beta invitations remain on hold until I close the per-user isolation epic the a GitHub "classic-scope issue. Also, the search gap with GitHub issues and pull requests is still open.
 
-**▸ Facts**
-- Invitations stay on hold until the per-user isolation epic (#1551) and the classic-scope issue (#2261) are done. Disconnect revoking at GitHub (#2178) is closed.
-- The issue and PR search gap (#2374) is still open.
-- For readers: the waiting list at pipermorgan.ai/try/beta/ is the way in.
+Note: We expect to resume inviting beta testers soon. Sign up at pipermorgan.ai/try/beta/ to join the wait list.
 
 # 🔎 This week's learning pattern
 
-## [xian: pattern name, a noun phrase]
+## Fix it at the chokepoint.
 
-**▸ Candidates** (pick one):
-1. **"Fix it at the chokepoint."** Three keychain reads, each patched in its own script, until the default changed in the one place every path passes through.
-2. **"Built isn't served."** The MCP app a week behind, a promotion hidden by a merge commit, seven built items that never closed.
+As noted above, we found three places where agents were reading my keychain (a server start, a smoke test and a check script) and initially patched each case with its own script. Then we got wise and supplanted them with a single script that runs at a step all the paths must pass through.
 
-**▸ Facts for the five parts** (candidate 1):
-- **Discovery:** a rule each script has to remember fails at the next script nobody patched. Changing the default where every path goes through holds for all of them.
-- **Example:** your keychain. A server start, a smoke test and a check script each reached it in the same week. The per-script fixes (#2338, #2340) held for their scripts. The opt-in store (#2353) closed the class.
-- **Why it matters:** "off-limits" has to be the default, or it depends on every agent remembering it every time.
-- **Application:** when the same fix lands on a second surface, look for the chokepoint before the third.
-- **Related patterns:** #068's "Guard against a class of problems" (the same idea, for tenancy); this week's post "The Server Has No Key".
+We have realized the rules don't always get remembered, and patched scripts don't help the next script we find with the problem. Changing the default where every path goes through covers all cases. If the default is off-limits, we don't have to rely on agents remembering each time. 
+
+To apply this pattern to your own work, once you notice a fix being applied to two different surfaces, look for the common chokepoint before you have to write a third fix.
+
+**Related patterns:** #068's "Guard against a class of problems" (the same idea, for tenancy).
 
 **Thanks,**
 xian + Piper Morgan Development Team
