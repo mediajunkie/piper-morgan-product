@@ -129,6 +129,8 @@ def slot_for(pub_date: str, weekday: int):
     """Category slot for a pubDate (ISO string) on that weekday, honoring the 11-20 cutover."""
     table = SLOT_BY_WEEKDAY_NEW if pub_date >= SLOT_CUTOVER else SLOT_BY_WEEKDAY
     return table.get(weekday)
+
+
 WEEKDAY_NAMES = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
 OPEN_STATUSES = {"planned", "drafted", "draft", "ready", "queued", "ready-for-docs"}
 
