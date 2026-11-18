@@ -298,3 +298,14 @@ def _all_connectors_offered_2237(monkeypatch):
         "BETA_OFFERED_CONNECTORS",
         {"github": "GitHub", "slack": "Slack", "calendar": "Google Calendar", "notion": "Notion"},
     )
+
+
+@pytest.fixture(autouse=True)
+def _first_account_on_this_install(monkeypatch):
+    """#2405: these pin the first account's path. The shared dev database may hold
+    completed accounts, which would answer the later-account line instead."""
+
+    async def _no_other_account(principal):
+        return False
+
+    monkeypatch.setattr("web.api.routes.setup._another_account_completed_setup", _no_other_account)

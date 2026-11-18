@@ -109,3 +109,14 @@ def test_the_server_side_line_claims_no_action_it_does_not_take():
         "The server can't store keys right now, so no key can be saved. Your key isn't the "
         "problem. This is on our side, so please tell us."
     )
+
+
+@pytest.fixture(autouse=True)
+def _first_account_on_this_install(monkeypatch):
+    """#2405: these pin the first account's path. The shared dev database may hold
+    completed accounts, which would answer the later-account line instead."""
+
+    async def _no_other_account(principal):
+        return False
+
+    monkeypatch.setattr("web.api.routes.setup._another_account_completed_setup", _no_other_account)

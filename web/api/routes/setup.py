@@ -163,8 +163,14 @@ class SetupCompleteRequest(BaseModel):
     openai_key: Optional[str] = Field(default=None, description="OpenAI API key (optional)")
     anthropic_key: Optional[str] = Field(default=None, description="Anthropic API key (optional)")
     notion_key: Optional[str] = Field(default=None, description="Notion API key (optional)")
+    # #2405 (Arch 2026-11-18): set by setup.js only when "Use saved key" succeeded for
+    # the chosen LLM provider. The server never infers a copy from a null key.
+    saved_key_provider: Optional[str] = Field(
+        default=None,
+        description="The LLM provider whose key came from Use saved key (local installs)",
+    )
 
-    @field_validator("default_llm_provider")
+    @field_validator("default_llm_provider", "saved_key_provider")
     @classmethod
     def default_provider_can_serve(cls, v: Optional[str]) -> Optional[str]:
         """#2368 (Arch 2026-11-13 15:14): `complete_setup` appends this value to
@@ -353,6 +359,13 @@ async def require_setup_incomplete() -> None:
                 "credentials and projects from Settings → Integrations instead."
             ),
         )
+
+
+def _principal_or_none(current_user: object) -> Optional[str]:
+    """The signed-in account's id, or None. A route called directly (not through
+    FastAPI) gets its ``Depends`` default here, which has no ``sub``."""
+    sub = getattr(current_user, "sub", None)
+    return str(sub) if sub else None
 
 
 def _setup_principal(current_user: JWTClaims, body_user_id: Optional[str]) -> str:
@@ -838,10 +851,103 @@ async def validate_api_key(req: ApiKeyValidateRequest):
 HOSTED_NO_KEYCHAIN_MESSAGE = (
     "Paste your key here. This hosted version doesn't read saved keys from your computer."
 )
+# #2405 (CXO 2026-11-18, Arch's rule 5): what a later account on a local install hears
+# from check-keychain and use-keychain. One constant for both, so the two can't differ.
+SAVED_KEY_BELONGS_TO_FIRST_ACCOUNT_MESSAGE = (
+    "The saved key on this computer belongs to the first account set up here. "
+    "Paste your own key here."
+)
+
+
+async def _another_account_completed_setup(principal: Optional[str]) -> bool:
+    """#2405: has any account other than ``principal`` finished setup on this install?
+    The key a person stores at the terminal (guide step 5) is the installer's, and the
+    installer is the first account; every later account brings its own key."""
+    async with AsyncSessionFactory.session_scope_fresh() as session:
+        if principal is None:
+            result = await session.execute(
+                text("SELECT COUNT(*) FROM users WHERE setup_complete = true")
+            )
+        else:
+            result = await session.execute(
+                text(
+                    "SELECT COUNT(*) FROM users WHERE setup_complete = true "
+                    "AND CAST(id AS text) <> :uid"
+                ),
+                {"uid": str(principal)},
+            )
+        return (result.scalar() or 0) > 0
+
+
+async def _copy_saved_key_for_first_account(
+    session,
+    principal: str,
+    req: "SetupCompleteRequest",
+    service: "UserAPIKeyService",
+) -> Optional[str]:
+    """#2405 (Arch 2026-11-18, rules 1, 2, 4 and 6): give the first account on a local
+    install its own row for the key saved at the terminal, so a turn spends it (#1812:
+    there is no server key; the key becomes this account's). Returns the provider copied,
+    or None. Copies only when every condition holds; otherwise logs the one that held it
+    back and copies nothing. The install-wide slot is left as it is (copy, not move). No
+    key text in any log line or exception."""
+    provider = req.saved_key_provider
+    if not provider:
+        return None
+    from services.infrastructure.deployment import is_hosted_deployment
+
+    def held(reason: str) -> None:
+        logger.info("saved_key_copy_skipped", provider=provider, reason=reason)
+
+    if is_hosted_deployment():
+        held("hosted")
+        return None
+    if getattr(req, f"{provider}_key", None):
+        held("a pasted key was sent for this provider")  # a pasted key wins
+        return None
+    if await _another_account_completed_setup(principal):
+        held("another account has completed setup on this install")
+        return None
+    from services.database.models import UserAPIKey
+
+    existing = await session.execute(
+        select(UserAPIKey.id).where(
+            UserAPIKey.user_id == uuid.UUID(principal), UserAPIKey.provider == provider
+        )
+    )
+    if existing.first() is not None:
+        held("this account already has a key row for this provider")
+        return None
+    from services.infrastructure.keychain_service import KeychainService
+
+    # #2405 (Arch): read only to copy it to the first local account, under every
+    # condition above.
+    # global-ok: the install-wide key saved at the terminal (guide step 5)
+    saved = await KeychainService().aget_api_key(provider)
+    if not saved:
+        held("no saved key on this install")
+        return None
+    try:
+        await service.store_user_key(
+            user_id=principal,
+            provider=provider,
+            api_key=saved,
+            session=session,
+            validate=False,  # the key was saved at the terminal; the provider isn't asked
+        )
+    except KeyStoreConfigError:
+        raise  # the route's own 503: the server can't store keys
+    except Exception as e:
+        logger.warning("saved_key_copy_failed", provider=provider, error_type=type(e).__name__)
+        return None
+    logger.info("saved_key_copied_to_first_account", provider=provider)
+    return provider
 
 
 @router.get("/check-keychain/{provider}", response_model=KeychainCheckResponse)
-async def check_keychain(provider: str):
+async def check_keychain(
+    provider: str, current_user: Optional[JWTClaims] = Depends(get_current_user_or_none)
+):
     """
     Check if an API key exists in the system keychain.
 
@@ -872,6 +978,12 @@ async def check_keychain(provider: str):
         )
 
     try:
+        if await _another_account_completed_setup(_principal_or_none(current_user)):
+            # #2405 rule 5: the saved key is the first account's; never offer it again.
+            return KeychainCheckResponse(
+                provider=provider, exists=False, message=SAVED_KEY_BELONGS_TO_FIRST_ACCOUNT_MESSAGE
+            )
+
         from services.infrastructure.keychain_service import KeychainService
 
         keychain = KeychainService()
@@ -899,7 +1011,10 @@ async def check_keychain(provider: str):
 
 
 @router.post("/use-keychain", response_model=KeychainUseResponse)
-async def use_keychain(req: KeychainUseRequest):
+async def use_keychain(
+    req: KeychainUseRequest,
+    current_user: Optional[JWTClaims] = Depends(get_current_user_or_none),
+):
     """
     Retrieve API key from keychain and validate it.
 
@@ -925,6 +1040,15 @@ async def use_keychain(req: KeychainUseRequest):
         )
 
     try:
+        if await _another_account_completed_setup(_principal_or_none(current_user)):
+            # #2405 rule 5: the key is never read for a later account.
+            return KeychainUseResponse(
+                provider=req.provider,
+                success=False,
+                valid=False,
+                message=SAVED_KEY_BELONGS_TO_FIRST_ACCOUNT_MESSAGE,
+            )
+
         from services.infrastructure.keychain_service import KeychainService
 
         keychain = KeychainService()
@@ -1248,6 +1372,11 @@ async def complete_setup(
                 except Exception as e:
                     logger.warning("anthropic_key_storage_failed", user_id=user_id, error=str(e))
 
+            # #2405: the first local account's key saved at the terminal becomes its own.
+            copied_provider = await _copy_saved_key_for_first_account(
+                session, user_id, req, service
+            )
+
             # Store Notion key (Issue #527: ALPHA-SETUP-NOTION)
             # #2237: Notion is outside the offered set; a key sent anyway is not stored.
             if req.notion_key and connector_offered("notion"):
@@ -1288,6 +1417,8 @@ async def complete_setup(
                 authorized_providers.append("openai")
             if req.anthropic_key:
                 authorized_providers.append("anthropic")
+            if copied_provider and copied_provider not in authorized_providers:
+                authorized_providers.append(copied_provider)  # #2405 rule 3
             if req.default_llm_provider and req.default_llm_provider not in authorized_providers:
                 authorized_providers.append(req.default_llm_provider)
 

@@ -593,7 +593,11 @@
                     openai_key: keychainKeys.openai ? null : apiKeys.openai,
                     anthropic_key: keychainKeys.anthropic ? null : apiKeys.anthropic,
                     gemini_key: keychainKeys.gemini ? null : apiKeys.gemini,
-                    notion_key: keychainKeys.notion ? null : apiKeys.notion
+                    notion_key: keychainKeys.notion ? null : apiKeys.notion,
+                    // #2405: say which LLM key came from Use saved key; the server
+                    // decides whether this account gets its own copy of it.
+                    saved_key_provider: (llmProviderSelect && keychainKeys[llmProviderSelect.value])
+                        ? llmProviderSelect.value : null
                 })
             });
             const data = await response.json();

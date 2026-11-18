@@ -376,3 +376,19 @@ def test_step_7_and_9_lines_are_still_what_the_app_shows(g):
         ">Open Piper</a",
     ):
         assert text in page
+
+
+def test_parent_environment_setting_never_reaches_the_run(g):
+    env = g.server_env(
+        {"PIPER_ENVIRONMENT": "production", "FLY_APP_NAME": "piper-morgan"},
+        db_url=RUN_DB_URL,
+        master_key="run-master",
+        port=61000,
+    )
+    assert "PIPER_ENVIRONMENT" not in env and "FLY_APP_NAME" not in env
+
+
+def test_cost_lines_go_through_the_key_search_before_printing():
+    source = (ROOT / "scripts" / "guide_keyed_steps_run.py").read_text()
+    assert "rendered = cost_lines + [" in source
+    assert "def _cost(self, server: Server) -> List[str]:" in source

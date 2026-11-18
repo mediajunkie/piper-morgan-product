@@ -53,7 +53,11 @@ What the run holds to (Arch's read list and CIO's conditions on issue 2404):
      after, and the run says whether it changed.
   7. A leftover from a crashed run (database, role, or Redis keys under this run's
      marker) is listed and removed by the next run. Redis keys without the marker stop
-     the run.
+     the run. What a killed run leaves (HOST, 2026-11-18): a scratch database holding the
+     key encrypted under a master key nobody kept, its role, the run's Redis keys, and a
+     run folder under the system temp folder (``guide-run-*``) with the server's log. The
+     next run drops the database, role and Redis keys; the run folder is the system's
+     temp to clear, and a ``--real`` run's log there was never searched for the key.
 
 Usage (repo root, local Postgres and Redis up):
     venv/bin/python scripts/guide_keyed_steps_run.py --stub
@@ -128,6 +132,7 @@ STRIPPED = (
     "ALL_PROXY",
     "all_proxy",
     "FLY_APP_NAME",
+    "PIPER_ENVIRONMENT",  # Arch 2026-11-18: never let a parent's setting reach the run
 )
 
 # What the guide tells a person to expect, per step. Docs read these from the guide and
@@ -799,6 +804,7 @@ class Run:
         server: Optional[Server] = None
         stub = sink = None
         texts_to_scan: List[str] = []
+        cost_lines: List[str] = []
         redis_claimed = False
         try:
             for line in remove_leftovers():
@@ -882,12 +888,13 @@ class Run:
             if server is not None:
                 self.teardown.append(server.stop())
                 texts_to_scan.append(server.log_path.read_text(errors="replace"))
-                self._cost(server)
+                cost_lines = self._cost(server)
             if stub:
                 stub.close()
             if sink:
                 sink.close()
-            rendered = [line for b in self.blocks for line in b.render()]
+            # HOST 2026-11-18: everything printed after the run is searched first.
+            rendered = cost_lines + [line for b in self.blocks for line in b.render()]
             leaked = leak_found(key, texts_to_scan + rendered)
             if not leaked:
                 for line in rendered:
@@ -920,13 +927,13 @@ class Run:
             for line in self.teardown:
                 self.say(f"TEARDOWN: {line}")
 
-    def _cost(self, server: Server) -> None:
+    def _cost(self, server: Server) -> List[str]:
+        """The COST lines, returned, not printed: they go through the key search first."""
         calls = usage_calls(server.lines("llm_usage"))
         total, lines = priced(calls)
-        for line in lines:
-            self.say(f"  call: {line}")
+        out = [f"  call: {line}" for line in lines]
         checks = server.lines("Validating LLM providers")
-        self.say(
+        out.append(
             f"COST: ${total:.6f} from {len(calls)} llm_usage line(s), the provider's own counts"
             + (
                 " (the stand-in's fixed counts on a stub run; nothing spent)"
@@ -936,6 +943,7 @@ class Run:
             + f"; plus the startup key check ({len(checks)} 'Validating LLM providers' line(s) "
             f"in the server log), at most ${startup_check_bound():.6f} each"
         )
+        return out
 
     def _steps(
         self,
@@ -1048,6 +1056,8 @@ class Run:
                 "anthropic_key": None,  # what setup.js sends for a key taken by Use saved key
                 "gemini_key": None,
                 "notion_key": None,
+                # setup.js since #2405: which LLM key came from Use saved key
+                "saved_key_provider": PROVIDER if ub.get("success") and ub.get("valid") else None,
             },
         )
         comp = _json(complete)
@@ -1063,12 +1073,17 @@ class Run:
                     f"create-user -> {made.status_code}: {mb.get('message') or mb.get('detail')!r}",
                     f"signed in: {'yes' if made.cookies else 'no'} (session cookies set by create-user)",
                     f"complete -> {complete.status_code}: {comp.get('message') or comp.get('detail')!r}",
+                ]
+                + [
+                    "server: " + ln.split("]", 1)[-1].strip()
+                    for ln in server.lines("saved_key_cop")
                 ],
                 "the mint's stdout (code masked); HTTP reply",
                 "The account was made with the guide's invite path (its mint command, then "
                 "create-user). The mint's last line, about HOST's roster, is left out, as the "
                 "guide says to ignore it. complete is the call setup.js makes after "
-                "create-user, with no key in it for a key taken by Use saved key.",
+                "create-user: no key in it for a key taken by Use saved key, and (since #2405) "
+                "saved_key_provider naming it. The server line shows whether it copied the key.",
             )
         )
 

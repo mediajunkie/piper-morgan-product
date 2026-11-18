@@ -243,3 +243,14 @@ def test_the_keychain_no_store_message_carries_the_type_not_the_cause():
     # #2353 reworded the sentence; the rule is the same: the type, never the cause.
     assert "unavailable ({type(e).__name__})" in src
     assert "unavailable ({e})" not in src and "unavailable ({str(e)})" not in src
+
+
+@pytest.fixture(autouse=True)
+def _first_account_on_this_install(monkeypatch):
+    """#2405: these pin the first account's path. The shared dev database may hold
+    completed accounts, which would answer the later-account line instead."""
+
+    async def _no_other_account(principal):
+        return False
+
+    monkeypatch.setattr("web.api.routes.setup._another_account_completed_setup", _no_other_account)
