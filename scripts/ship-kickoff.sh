@@ -64,7 +64,27 @@ def tree(path):
                          capture_output=True, text=True).stdout.split()
     return out
 files = tree("mailboxes/exec/inbox") + tree("mailboxes/exec/read")
-filed = sorted({r for r in roles for f in files if os.path.basename(f).startswith(f"workstream-{ship}-{r}-")})
+filed = {r for r in roles for f in files if os.path.basename(f).startswith(f"workstream-{ship}-{r}-")}
+# Mail v4 (the default for every seat since 2026-11-09): a review sent with mail4.py is a message in the
+# piper-morgan-mail clone, not a file under mailboxes/. Count a role as filed when a message from it has
+# a subject naming this Ship and "workstream" (2026-11-17: #069 showed 7/9 with CXO's and HOST's v4
+# reviews uncounted). Read-only, from the clone's origin/main; if the clone is absent the file count stands.
+def v4_filed():
+    repo = os.environ.get("PIPER_MAIL4_REPO") or os.path.expanduser("~/Development/piper-morgan-mail")
+    if not os.path.isdir(os.path.join(repo, ".git")):
+        return set()
+    subprocess.run(["git", "-C", repo, "fetch", "-q", "origin", "main"], capture_output=True)
+    hits = subprocess.run(["git", "-C", repo, "grep", "-l", "-i", "-E",
+                           rf"^subject:.*(workstream.*{ship}|{ship}.*workstream)", "origin/main", "--", "messages"],
+                          capture_output=True, text=True).stdout.split()
+    got = set()
+    for h in hits:
+        head = subprocess.run(["git", "-C", repo, "show", h], capture_output=True, text=True).stdout.split("\n---", 2)[0]
+        m = re.search(r"^from:\s*(\S+)", head, re.M)
+        if m and m.group(1) in roles:
+            got.add(m.group(1))
+    return got
+filed = sorted(filed | v4_filed())
 missing = [r for r in roles if r not in filed]
 syn = f"docs/internal/planning/comms/ship-reviews/ship-{ship}-week-review.html"
 has_syn = os.path.exists(syn)
@@ -93,7 +113,9 @@ elif not drafts:
 elif status in ("distributed", "published"):
     nxt = "done."
 else:
-    nxt = "xian's first look (he gates the Comms handoff), then Comms review; publish Wednesday."
+    # xian 2026-11-17 (decisions.log 20:26): the Ship moves to Tuesday from #070; #069 stays Wednesday.
+    day = "Tuesday" if int(ship) >= 70 else "Wednesday"
+    nxt = f"xian's first look (he gates the Comms handoff), then Comms review; publish {day}."
 print(f"ship-status #{ship}: " + " · ".join(parts) + f" · NEXT: {nxt}")
 EOF
 }
@@ -165,7 +187,7 @@ A short **"Next week"** section: what you intend to land ${NEXT_START} to ${NEXT
 
 ## File it
 
-Write it as \`workstream-${SHIP}-{your-role}-{date}.md\` and send it to \`mailboxes/exec/inbox/\` with \`scripts/mail-send.sh\`.
+Send it to \`exec\` on mail v4 (\`scripts/mail4.py send --to exec --type reply\`), with a subject that starts \`workstream-${SHIP}-{your-role}-{date}\`. The status line counts a review by that subject, so keep the word \"workstream\" and the Ship number in it. A file sent with \`scripts/mail-send.sh\` to \`mailboxes/exec/inbox/\` as \`workstream-${SHIP}-{your-role}-{date}.md\` is still counted.
 
 — Exec
 EOF
