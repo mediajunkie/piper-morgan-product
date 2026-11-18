@@ -772,3 +772,4 @@ Brake FIRED (second slip = #1965 admission, found and ledgered 10-09). Memo to E
   - 14:23: the OWED combined mail is resolved. CXO sent their view to Exec (01M7NSBN2J), and PPM sent agreement plus the product half (01M7NSPH57). Next is Exec's call whether to put it to xian.
   - 14:54: HOLD, do not run scripts/sync-pm-local.sh until Exec mails "Step A done" or "Step A stopped" (01M7NTYN66).
   - 18:07: the sync hold was released by Exec at 18:02 (01M7P690FB). It returns at Exec's "Step A started" mail.
+  - 18:30: Step A, C, D and F0 (xian's Amber Terminal steps) wait until Fri 11-20 (Exec 01M7P7NMPD). Until then: no paid runs, no signed-in beta reads (2379, 2401, 2402, 2383 row 3), no seat browser, no seat-github-1. The invite hold's served rows can't move before Friday. Not blocked: 2403, the 2404 build, and promotions.

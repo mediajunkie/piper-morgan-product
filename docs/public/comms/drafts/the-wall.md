@@ -10,7 +10,15 @@ caption: ''
 
 Once I got my full agent fleet running autonomously I had to start watching my usage limits again for the first time in a while. This was exacerbated by my giving the most token-expensive Claude model (Fable) to my lead developer agent (Lead) to boost the development effort.
 
-**1. The warning.** Tue Sep 15, 5:50 PM. You told the team the account was at 97% of its weekly all-models limit, and Fable (the top model) at 100%, with the wall expected within 12 hours and the reset Thursday at 10 PM. Usage credits were off. Your instruction: defer non-urgent work two days, and a quiet fire is expected, not a fault, because "a spent quota stops work cleanly, which looks identical from outside to a crash." [Exec 09-15 l.135-138]
+My usage limits reset each Thursday evening at 10pm, coincidentally also the last day of the Piper Morgan workweek (it's a long story). On a Tuesday in mid September I noticed we had already used 97% of the weekly limit, with more than two full days left to go. It looks like we'd hit the wall in about 12 hours at the current rate.
+
+I've spent more money than I'd care to admit on overage credits in the past and I had turned off that fearture, so when the team hit that wall, they were really going to hav to go idle (unless I logged some of them into my other Claude account, which has its own disruptive complications).
+
+
+The first thing I told the team to do was defer any non-urgent work two days, anything not on the critical path. I also warned the team that we might hit the wall hard and just have everything stop. My chief of staff agent (Exec) agreed that "a spent quota stops work cleanly, which looks identical ... to a crash."
+
+# How it happened
+
 - Why it came early: the summer promotion had ended Sep 13, lowering the ceiling, and Exec found 48 subagent runs in a few days, all on Fable by default. [Exec 09-15 l.148-149]
 
 **2. Hitting it.** That night the limit was hit. You added overage credit for essential work only. Web later measured its own silence: last output Sep 15 at 9:55 PM, next Sep 18 at 6:30 AM, about 56.6 hours. [Docs 09-16 l.10, Web 09-18 l.33-34]
