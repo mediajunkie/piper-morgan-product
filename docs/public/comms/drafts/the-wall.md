@@ -9,9 +9,6 @@ caption: ''
 *September 15–18, 2026*
 
 
-From the outside, a team that ran out of budget, a team you told to stop, and a team that crashed all look the same: quiet. Only something written down and checked tells you which.
-
-## Beats, in order (facts verified, source in brackets)
 
 **1. The warning.** Tue Sep 15, 5:50 PM. You told the team the account was at 97% of its weekly all-models limit, and Fable (the top model) at 100%, with the wall expected within 12 hours and the reset Thursday at 10 PM. Usage credits were off. Your instruction: defer non-urgent work two days, and a quiet fire is expected, not a fault, because "a spent quota stops work cleanly, which looks identical from outside to a crash." [Exec 09-15 l.135-138]
 - Why it came early: the summer promotion had ended Sep 13, lowering the ceiling, and Exec found 48 subagent runs in a few days, all on Fable by default. [Exec 09-15 l.148-149]
