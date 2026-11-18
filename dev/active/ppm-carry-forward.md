@@ -785,7 +785,7 @@ Brake FIRED (second slip = #1965 admission, found and ledgered 10-09). Memo to E
   - 2400: row 1 waits on Step D, then the `.mcp.json` switch.
   - 2404 (seat driver for the guide's keyed steps): the build is unblocked (Lead, fresh session); the real run waits on Step A. HOST, Arch and CIO read it first.
   - 2390, 2391, 2393, 2395, 2396 and 2403 are in Q. On 2403 xian said "Yes, skip and fix."; Lead builds and Arch validates.
-- **Beta serves `d678b0af26` since 11-17 11:31.** It carries 2401, 2402, Slack's sentence and the console address. Before it, 4e2797bce2 (08:07) and 74caa06638 (11-16).
+- **Beta serves `58b19c7f3a` since 11-18 08:51 (2405, 2403; PPM /health 09:33).** Before it: `d678b0af26` since 11-17 11:31. It carries 2401, 2402, Slack's sentence and the console address. Before it, 4e2797bce2 (08:07) and 74caa06638 (11-16).
   - 2401 and 2402: the served page read waits on 2400 (the seat browser).
   - 2379's served rows: wait on 2400 and seat-github-1.
   - 2383 row 3: waits on Step A.
