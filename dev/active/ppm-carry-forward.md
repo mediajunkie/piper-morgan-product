@@ -719,7 +719,7 @@ Brake FIRED (second slip = #1965 admission, found and ledgered 10-09). Memo to E
 
 - **Update 11-16 18:37:** Beta serves 74caa06638 (2379, 2383, 2386 strings) since 18:15. Placed #2396 and #2397 in Q, #2399 in H. Filed #2400, the seat browser (D3 browser half, Step D), and placed it in Q beside 2388. Total 324, map v164. 2379's served rows wait on 2400 and seat-github-1 (row status on 2379). The self-knowledge card names three texts waiting on xian: the rules at 47a65eed5f, practice at c531cae276, and the seven procedures. Exec's rollup is v1012. Step A not started (Exec, 18:02).
 
-## Now (rewritten at the 11-16 21:33 STOP; carry into Tue 11-17)
+## Superseded Now block (11-16 21:33 STOP, with 11-17 updates; replaced 11-17 21:34)
 
 - **Invite hold, PDR-008.** Re-verified at 21:34 11-16 with `gh issue view`: #2261, #2282 and #2342 are open. The lift-readiness memo to Exec waits on #2342's rows, #2261's close and #2282.
 - **ADR-084 is ACCEPTED** (xian, 11-16 06:20, with its budget). Steps file: `docs/internal/operations/adr-084-one-time-steps.md`.
@@ -773,3 +773,45 @@ Brake FIRED (second slip = #1965 admission, found and ledgered 10-09). Memo to E
   - 14:54: HOLD, do not run scripts/sync-pm-local.sh until Exec mails "Step A done" or "Step A stopped" (01M7NTYN66).
   - 18:07: the sync hold was released by Exec at 18:02 (01M7P690FB). It returns at Exec's "Step A started" mail.
   - 18:30: Step A, C, D and F0 (xian's Amber Terminal steps) wait until Fri 11-20 (Exec 01M7P7NMPD). Until then: no paid runs, no signed-in beta reads (2379, 2401, 2402, 2383 row 3), no seat browser, no seat-github-1. The invite hold's served rows can't move before Friday. Not blocked: 2403, the 2404 build, and promotions.
+
+## Now (rewritten at the 11-17 21:33 STOP; carry into Wed 11-18)
+
+- **Invite hold, PDR-008.** Re-verified at 21:34 11-17 with `gh issue view`: #2261, #2282 and #2342 are open. The lift-readiness memo to Exec waits on #2342's served rows, #2261's close and #2282. xian said yes to the week's goal 1, which names that memo.
+- **xian's Amber Terminal steps (A, C, D, F0) wait until Fri 11-20** at the earliest (Exec 01M7P7NMPD, 18:27). He is away from Amber. Until then there are no paid runs, no signed-in beta reads, no seat browser and no seat-github-1. On Friday Exec mails "Step A started", and from then until "done" or "stopped" nobody runs `scripts/sync-pm-local.sh`. That sync is free now; I ran it at 18:07 (1303ba8994).
+- **ADR-084** steps file: `docs/internal/operations/adr-084-one-time-steps.md`. Step B is done. Arch added the $250 organisation limit to D2 (seat bounds stay $150 and $40, and the test workspace reads $16.19 of $40). Rule: nothing is routed to xian's screen (D6; memory `feedback_xian_runs_it_is_not_a_plan`).
+- **Seat build items, all open:**
+  - 2388: its first run waits on HOST's exception diffs and Step C.
+  - 2389: rows 3–5 wait on CIO's ACCOUNTS row and Step F.
+  - 2400: row 1 waits on Step D, then the `.mcp.json` switch.
+  - 2404 (seat driver for the guide's keyed steps): the build is unblocked (Lead, fresh session); the real run waits on Step A. HOST, Arch and CIO read it first.
+  - 2390, 2391, 2393, 2395, 2396 and 2403 are in Q. On 2403 xian said "Yes, skip and fix."; Lead builds and Arch validates.
+- **Beta serves `d678b0af26` since 11-17 11:31.** It carries 2401, 2402, Slack's sentence and the console address. Before it, 4e2797bce2 (08:07) and 74caa06638 (11-16).
+  - 2401 and 2402: the served page read waits on 2400 (the seat browser).
+  - 2379's served rows: wait on 2400 and seat-github-1.
+  - 2383 row 3: waits on Step A.
+  - #2363 row 3: waits on a promotion from a merge head.
+  - 2382 row 4: waits on 2384.
+- **2399** (H), **2386** (guide row for Docs, now with 2404 as its driver), and the served reads of **2375, 2374 and 2376**: unchanged, waiting on 2388, 2400 and 2381.
+- **Self-knowledge:**
+  - Approved: practice.md (xian 11-17, "No changes", c531cae276), how-i-act, cant-read, stance and stand-ins.
+  - Still waiting on xian: the nine rules (#2354, 47a65eed5f) and the seven procedures (#2358).
+  - The practice scope: CXO (01M7NSBN2J) and PPM (01M7NSPH57) agree to keep the header and rows and record the scope as a decision. Exec decides whether to put it to xian.
+- **Production 327** (`gh` at 21:34 = Total), map **v168**, 0 unmilestoned. Placed 11-17: 2401 and 2402 (C), 2403 and 2404 (Q). 2397 closed 07:23.
+- **OWED rows:**
+  - 2364-known-limit: trigger is 2388's first real run.
+  - 2364-untested-provider-row: trigger is the 2390 route.
+  - 2364-selfhost-wording: trigger is the ethics flip being served.
+  - tier1-approval-batch and 2358-procedure-texts: trigger is xian's quoted yes. practice.md is done.
+  - rule7-key-ask, path-b-quote, notion-offer-ask: unchanged.
+- **Genuine xian decisions:**
+  - the nine rules and the procedures;
+  - the practice scope, if Exec puts it;
+  - E5 naming for #2380;
+  - #2344;
+  - the possible "Safe Storage" keychain item.
+- **Rules carried:**
+  - Push the branch you have checked out. The pre-push hook remembers a pass for 30 minutes; mail CIO the `gates already passed` line the first time a push of mine takes that path (not yet seen).
+  - The staged-credential scan has no skip, and its baseline is empty since 2397.
+  - No compose up or down on Amber; `PIPER_CREDENTIAL_STORE=db`; a classifier refusal is final.
+  - Standing word: a promote-gate edit that only makes it stricter goes ahead on Arch's written approval, and xian is informed.
+  - Spend asks inside the caps are short; the caps are unchanged.
