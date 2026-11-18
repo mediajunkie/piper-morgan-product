@@ -794,18 +794,18 @@ Brake FIRED (second slip = #1965 admission, found and ledgered 10-09). Memo to E
 - **2399** (H), **2386** (guide row for Docs, now with 2404 as its driver), and the served reads of **2375, 2374 and 2376**: unchanged, waiting on 2388, 2400 and 2381.
 - **Self-knowledge:**
   - Approved: practice.md (xian 11-17, "No changes", c531cae276), how-i-act, cant-read, stance and stand-ins.
-  - Still waiting on xian: the nine rules (#2354, 47a65eed5f) and the seven procedures (#2358).
+  - xian approved the nine rules (#2354, wording at 47a65eed5f) and the seven procedures list (#2358) on 11-18 (Exec 01M7R3B1AQ, Janus 11:45). Lead builds 2354, asking Arch whether rule 7's paid run applies (01M7R3EFKN), and that run would wait on Step A. 2358 builds in PPM's 11-13 order, procedure 1 first. What remains is each issue's served acceptance. (Updated 11:54.)
   - The practice scope: decided. xian 11-18 07:51 via Exec (01M7QNQ4JJ): "yes, no changes needed now". The scope is deliberately what the team has proven in its own work, and it's recorded in decisions.log. (Updated 07:57.)
 - **Production 327** (`gh` at 21:34 = Total), map **v168**, 0 unmilestoned. Placed 11-17: 2401 and 2402 (C), 2403 and 2404 (Q). 2397 closed 07:23.
 - **OWED rows:**
   - 2364-known-limit: trigger is 2388's first real run.
   - 2364-untested-provider-row: trigger is the 2390 route.
   - 2364-selfhost-wording: trigger is the ethics flip being served.
-  - tier1-approval-batch and 2358-procedure-texts: trigger is xian's quoted yes. practice.md is done.
+  - tier1-approval-batch (b-wont-do, d-known-limits): trigger is xian's quoted yes, then Docs sets `approved`. practice.md is done.
+  - 2358-procedure-texts: DISCHARGED 11-18 11:54, on xian's quoted yes on the seven (Exec 01M7R3B1AQ).
   - rule7-key-ask, path-b-quote, notion-offer-ask: unchanged.
 - **Parked, one trigger: linked billing** (CIO 01M7QR37EN; PPM's reply 01M7QRA3EC, 11-18 08:37). Bring-your-own-key stays the path. No issue until xian decides Piper gets a Claude Platform organisation of its own. If he says yes, file it in Production for hosted Piper only, with CIO's three conditions and HOST's custody row as acceptance rows.
 - **Genuine xian decisions:**
-  - the nine rules and the procedures;
   - E5 naming for #2380;
   - #2344;
   - the possible "Safe Storage" keychain item.
