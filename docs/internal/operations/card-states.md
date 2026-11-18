@@ -6,9 +6,10 @@ which words and controls changed.
 
 Each row is the health route's own payload for that state, drawn by the page's own
 script under node. It is not a browser and not the served app: no layout, no
-styling, no click, no sign-in. Words that
-appear only after a click (toasts, dialogs, a Test's result) are not here; nor are
-the Settings index and the GitHub repository page. The screen atlas covers layout.
+styling, no sign-in. The last section presses the GitHub card's Test: the app's
+Test route answers, the page shows the result, then redraws from the health route.
+Not here: the other cards' Tests, Test All, the confirm dialogs, the Settings index
+and the GitHub repository page. The screen atlas covers layout.
 
 ## Nothing connected
 
@@ -585,3 +586,111 @@ Headline: **Connected, not yet tested** (0 of 4 checked)
 | Control | Label | Style | Goes to |
 |---|---|---|---|
 | button | Disconnect | disconnect-btn | `disconnectIntegration()` |
+
+# After pressing Test: the GitHub card
+
+Each state starts from the card as drawn, presses Test, and reads what the page
+shows. "On the redrawn card" says whether the line shown at the click is one of
+the card's lines after the page redraws it (CXO: one sentence, one source).
+
+## Test: Through the GitHub app, installed on a repository
+
+State key: `test-app-installed`
+
+- Toast (success): **Test Passed**. GitHub is working, using your GitHub connection.
+- At the click, the card's line: GitHub is working, using your GitHub connection.
+- The card after the page redraws it:
+  - 🐙
+  - GitHub
+  - Connected as octo-example. Not the right account? Disconnect, then connect again. Checked just now.
+- The click's line is on the redrawn card: **no**
+
+## Test: Through the GitHub app, installed on no repository
+
+State key: `test-app-not-installed`
+
+- Toast (success): **Test Passed**. GitHub is working, using your GitHub connection.
+- At the click, the card's line: GitHub is working, using your GitHub connection.
+- The card after the page redraws it:
+  - 🐙
+  - GitHub
+  - Connected as octo-example. Not the right account? Disconnect, then connect again. Checked just now.
+- The click's line is on the redrawn card: **no**
+
+## Test: With a saved token
+
+State key: `test-own-token`
+
+- Toast (success): **Test Passed**. GitHub is working, using your personal token.
+- At the click, the card's line: GitHub is working, using your personal token.
+- The card after the page redraws it:
+  - 🐙
+  - GitHub
+  - Healthy. Checked just now.
+- The click's line is on the redrawn card: **no**
+
+## Test: A saved token is serving; the sign-in needs re-authorizing
+
+State key: `test-token-serving-stale`
+
+- Toast (warning): **Works, needs attention**. GitHub is working, using your personal token. Your GitHub connection needs re-authorizing, so I'm not using it right now.
+- At the click, the card's line: GitHub is working, using your personal token. Your GitHub connection needs re-authorizing, so I'm not using it right now. [warning style]
+- The card after the page redraws it:
+  - 🐙
+  - GitHub
+  - ⚠️
+  - Connected via your personal token
+- The click's line is on the redrawn card: **no**
+
+## Test: The sign-in needs re-authorizing and nothing is serving
+
+State key: `test-needs-reconnecting`
+
+- Toast (error): **Test Failed**. Your GitHub connection needs re-authorizing
+- At the click, the card's line: Your GitHub connection needs re-authorizing [error style]
+- At the click, a fix line: In Settings → Integrations → GitHub, Reconnect with GitHub
+- The card after the page redraws it:
+  - 🐙
+  - GitHub
+  - ⚠️
+  - Needs reconnecting
+  - GitHub no longer accepts your connection.
+- The click's line is on the redrawn card: **no**
+
+## Test: Nothing connected
+
+State key: `test-not-connected`
+
+- Toast (error): **Test Failed**. GitHub is not connected for your account
+- At the click, the card's line: GitHub is not connected for your account [error style]
+- At the click, a fix line: In Settings → Integrations → GitHub, Connect with GitHub
+- The card after the page redraws it:
+  - 🐙
+  - GitHub
+  - Not configured
+- The click's line is on the redrawn card: **no**
+
+## Test: The credential lookup itself failed
+
+State key: `test-lookup-failed`
+
+- Toast (error): **Test Failed**. Couldn't check this just now. Press Test to try again.
+- At the click, the card's line: Couldn't check this just now. Press Test to try again. [error style]
+- The card after the page redraws it:
+  - 🐙
+  - GitHub
+  - Couldn't check this just now. Press Test to try again.
+- The click's line is on the redrawn card: yes
+
+## Test: Connected, and GitHub did not answer the read
+
+State key: `test-github-did-not-answer`
+
+- Toast (error): **Test Failed**. Couldn't check this just now. Press Test to try again.
+- At the click, the card's line: Couldn't check this just now. Press Test to try again. [error style]
+- The card after the page redraws it:
+  - 🐙
+  - GitHub
+  - Connected
+  - Not checked yet. Press Test.
+- The click's line is on the redrawn card: **no**

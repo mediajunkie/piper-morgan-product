@@ -22,8 +22,16 @@ How a row is made (the method of the #2031 test, with nothing typed by hand):
 
 What it is not: a browser, or the served app. No CSS, no layout, no click, no real
 account, no network, no middleware.
-A control hidden by a style sheet would still be listed. Words that only appear after
-a click (toasts, dialogs, a Test's result) are not here.
+A control hidden by a style sheet would still be listed.
+
+After a click (CXO and Arch, 2026-11-17: the last two served misses were there): the GitHub
+card's Test, state by state. The app's own Test route is called with the same stubs, its
+result goes into the same per-account store the health route reads, and the page's own
+``testConnection()`` runs under node: the toast, the line the card shows at the click, any
+fix line, and the card as the page redraws it from the health route. CXO's rule: the line at
+the click and the line on the card are one sentence from one source; the file says whether
+the click's line is on the redrawn card. Not yet here: the other cards' Tests, Test All, and
+the confirm dialogs.
 
 Usage (from the repository root, with ``node`` on PATH):
     venv/bin/python scripts/card_state_file.py                # write the file
@@ -100,6 +108,9 @@ class Scenario:
     error_text: str = SAMPLE_ERROR  # what a failed Test recorded
     offered: Tuple[str, ...] = CARDS  # the connectors this beta offers (host configuration)
     show: Tuple[str, ...] = CARDS  # which cards this scenario's rows are for
+    # The GitHub read a Test makes: "ok", "not_installed" (the app is on no repository) or
+    # "unreachable" (GitHub did not answer)
+    repos: str = "ok"
 
 
 def _all(state: str) -> Dict[str, str]:
@@ -241,6 +252,66 @@ def scenarios() -> List[Scenario]:
     ]
 
 
+def clicks() -> List[Scenario]:
+    """The GitHub card's Test, state by state: what the card was, and what the Test meets.
+    The card starts connected and untested; the other cards are off."""
+    off = {c: "not_configured" for c in CARDS if c != "github"}
+    start = {**off, "github": "connected"}
+    gh = ("github",)
+    return [
+        Scenario(
+            "test-app-installed",
+            "Through the GitHub app, installed on a repository",
+            generic=start,
+            github="app",
+            install_state={"state": "some"},
+            show=gh,
+        ),
+        Scenario(
+            "test-app-not-installed",
+            "Through the GitHub app, installed on no repository",
+            generic=start,
+            github="app",
+            install_state={"state": "none"},
+            repos="not_installed",
+            show=gh,
+        ),
+        Scenario(
+            "test-own-token", "With a saved token", generic=start, github="own_token", show=gh
+        ),
+        Scenario(
+            "test-token-serving-stale",
+            "A saved token is serving; the sign-in needs re-authorizing",
+            generic=start,
+            github="pat_stale",
+            show=gh,
+        ),
+        Scenario(
+            "test-needs-reconnecting",
+            "The sign-in needs re-authorizing and nothing is serving",
+            generic=start,
+            github="stale_nothing",
+            show=gh,
+        ),
+        Scenario("test-not-connected", "Nothing connected", generic=off, github="nothing", show=gh),
+        Scenario(
+            "test-lookup-failed",
+            "The credential lookup itself failed",
+            generic=start,
+            github="unreachable",
+            show=gh,
+        ),
+        Scenario(
+            "test-github-did-not-answer",
+            "Connected, and GitHub did not answer the read",
+            generic=start,
+            github="own_token",
+            repos="unreachable",
+            show=gh,
+        ),
+    ]
+
+
 # --- step 1: the route's payload ------------------------------------------------------
 
 
@@ -277,10 +348,40 @@ def _github_outcome(name: str):
     }[name]
 
 
+def _repos_result(kind: str):
+    from services.mcp.consumer.connector import DegradationReason, DegradationResponse
+    from services.mcp.consumer.github_adapter import GitHubReposResult
+    from services.mcp.consumer.github_app_install import DETAIL_APP_NOT_INSTALLED
+
+    if kind == "not_installed":
+        return GitHubReposResult(
+            degradation=DegradationResponse(
+                reason=DegradationReason.CONNECT_REQUIRED,
+                user_message="The GitHub app isn't installed on a repository.",
+                detail=DETAIL_APP_NOT_INSTALLED,
+            )
+        )
+    if kind == "unreachable":
+        return GitHubReposResult(
+            degradation=DegradationResponse(
+                reason=DegradationReason.UNREACHABLE, user_message="GitHub didn't answer."
+            )
+        )
+    return GitHubReposResult(repositories=[{"full_name": "o/r"}])
+
+
 def health_payload(user_id: str, scenario: Scenario) -> Dict[str, Any]:
     """The health route's own answer for this scenario."""
+    return run_routes(user_id, scenario)[1]
+
+
+def run_routes(
+    user_id: str, scenario: Scenario, test: Optional[str] = None
+) -> Tuple[Optional[Dict[str, Any]], Dict[str, Any]]:
+    """The Test route's answer for ``test`` (when given), then the health route's answer,
+    both under one set of stubs and one per-account result store, as on the server: the
+    health route reads what the Test recorded."""
     from services.integrations.principal_test_results import PrincipalTestResultStore
-    from services.mcp.consumer.github_adapter import GitHubReposResult
     from web.api.routes import integrations as routes
 
     config = {"not_configured": "not_configured", "check_failed": "unknown"}
@@ -304,7 +405,7 @@ def health_payload(user_id: str, scenario: Scenario) -> Dict[str, Any]:
             raise RuntimeError("the login could not be read")
         return scenario.login
 
-    probe = GitHubReposResult(repositories=[{"full_name": "o/r"}])
+    probe = _repos_result(scenario.repos)
     with ExitStack() as stack:
         stack.enter_context(patch(f"{_ROUTES}._get_integration_config_status", new=config_status))
         stack.enter_context(patch(f"{_ROUTES}._get_test_result_store", new=lambda: store))
@@ -323,20 +424,22 @@ def health_payload(user_id: str, scenario: Scenario) -> Dict[str, Any]:
         stack.enter_context(
             patch(f"{_ADAPTER}.search_user_repositories", new=AsyncMock(return_value=probe))
         )
+        who = SimpleNamespace(sub=user_id)
+        tested = None
         try:
-            reply = asyncio.run(
-                routes.get_integrations_health(current_user=SimpleNamespace(sub=user_id))
-            )
+            if test is not None:
+                tested = asyncio.run(
+                    routes.check_integration_connection(test, current_user=who)
+                ).model_dump(mode="json")
+            reply = asyncio.run(routes.get_integrations_health(current_user=who))
         except Exception as error:
-            raise Stopped(
-                f"the health route raised {type(error).__name__} for '{scenario.key}'"
-            ) from None
+            raise Stopped(f"a route raised {type(error).__name__} for '{scenario.key}'") from None
         if reached:
             raise Stopped(
                 f"state '{scenario.key}' reached for the network or a database; an input "
                 "it depends on is not stubbed"
             )
-    return reply.model_dump(mode="json")
+    return tested, reply.model_dump(mode="json")
 
 
 # --- step 2: the page's own script, under node -----------------------------------------
@@ -385,6 +488,58 @@ _RUN = r"""
 """
 
 
+_CLICK = r"""
+const toasts = [];
+const Toast = { show(kind, title, message) { toasts.push({ kind, title, message }); } };
+const appended = [];
+// As in a browser: an element nobody has created is not there (the fix line is created
+// on the first failed Test, and a passing Test removes it if it is).
+document.createElement = () => Object.assign(element(), { remove() {} });
+const pageGet = document.getElementById;
+document.getElementById = (id) => (id.startsWith('fix-') ? null : pageGet(id));
+const styled = (el) => {
+  const set = new Set();
+  el.classList = { add: (c) => set.add(c), remove: (c) => set.delete(c),
+    toggle: (c, on) => ((on === undefined ? !set.has(c) : on) ? set.add(c) : set.delete(c)),
+    contains: (c) => set.has(c) };
+  el.classes = set;
+  return el;
+};
+const dot = element();
+const details = Object.assign(element(), { appendChild: (child) => appended.push(child) });
+elements['card-' + INPUT.name] = Object.assign(element(), {
+  querySelector: (sel) => (sel === '.status-dot' ? dot : sel === '.integration-details' ? details : null),
+});
+elements['status-' + INPUT.name] = styled(element());
+const pageFetch = fetch;
+fetch = async (url, options) => {
+  if (url === INPUT.test_url) {
+    fetched.push(url);
+    return { ok: true, status: 200, json: async () => INPUT.test };
+  }
+  return pageFetch(url, options);
+};
+"""
+
+_CLICK_RUN = r"""
+(async () => {
+  await testConnection(INPUT.name);
+  await new Promise((resolve) => setTimeout(resolve, 0));
+  const status = elements['status-' + INPUT.name];
+  process.stdout.write(JSON.stringify({
+    toasts,
+    line: status.textContent,
+    style: [...status.classes].filter((c) => c === 'error' || c === 'warning'),
+    fix: appended.map((e) => e.textContent),
+    dot: dot.className,
+    list: (elements['integrations-list'] || {}).innerHTML || '',
+    link: elements[LINK] ? { text: elements[LINK].textContent, cls: elements[LINK].className } : null,
+    fetched,
+  }));
+})();
+"""
+
+
 def page_scripts() -> Tuple[str, str]:
     """The page's offered-connectors line, and its script from the template."""
     from services.integrations import integration_status_service
@@ -402,7 +557,13 @@ def page_scripts() -> Tuple[str, str]:
     return f"window.__OFFERED_CONNECTORS__ = {json.dumps(offered)};\n", script
 
 
-def draw(payload: Dict[str, Any], scenario: Scenario) -> Dict[str, Any]:
+def draw(
+    payload: Dict[str, Any],
+    scenario: Scenario,
+    test: Optional[Tuple[str, Dict[str, Any]]] = None,
+) -> Dict[str, Any]:
+    """Run the page's script under node: draw the page, or (``test`` given as the card
+    name and the Test route's reply) press that card's Test and let the page redraw."""
     offered, script = page_scripts()
     if scenario.offered is not None:
         offered = f"window.__OFFERED_CONNECTORS__ = {json.dumps(list(scenario.offered))};\n"
@@ -412,9 +573,16 @@ def draw(payload: Dict[str, Any], scenario: Scenario) -> Dict[str, Any]:
         "install": scenario.install_state,
         "install_url": INSTALL_STATE,
     }
+    run = _RUN
+    harness = _BROWSER
+    if test is not None:
+        given.update(name=test[0], test=test[1], test_url=f"/api/v1/integrations/test/{test[0]}")
+        harness = _BROWSER.replace("async function fetch", "let fetch = async function")
+        harness += _CLICK
+        run = _CLICK_RUN
     # The shell loads the shared escape helpers before any page script (#1582).
     shared = (ROOT / "web" / "static" / "js" / "escape.js").read_text(encoding="utf-8")
-    js = f"const INPUT = {json.dumps(given)};\n" + _BROWSER + shared + offered + script + _RUN
+    js = f"const INPUT = {json.dumps(given)};\n" + harness + shared + offered + script + run
     done = subprocess.run(["node", "-e", js], capture_output=True, text=True, timeout=60)
     if done.returncode != 0:
         raise Stopped(f"the page's script failed under node for '{scenario.key}'")
@@ -526,9 +694,10 @@ def build() -> str:
         "",
         "Each row is the health route's own payload for that state, drawn by the page's own",
         "script under node. It is not a browser and not the served app: no layout, no",
-        "styling, no click, no sign-in. Words that",
-        "appear only after a click (toasts, dialogs, a Test's result) are not here; nor are",
-        "the Settings index and the GitHub repository page. The screen atlas covers layout.",
+        "styling, no sign-in. The last section presses the GitHub card's Test: the app's",
+        "Test route answers, the page shows the result, then redraws from the health route.",
+        "Not here: the other cards' Tests, Test All, the confirm dialogs, the Settings index",
+        "and the GitHub repository page. The screen atlas covers layout.",
         "",
     ]
     for scenario in scenarios():
@@ -561,6 +730,32 @@ def build() -> str:
             else:
                 out.append("No button or link.")
             out.append("")
+    out += [
+        "# After pressing Test: the GitHub card",
+        "",
+        "Each state starts from the card as drawn, presses Test, and reads what the page",
+        'shows. "On the redrawn card" says whether the line shown at the click is one of',
+        "the card's lines after the page redraws it (CXO: one sentence, one source).",
+        "",
+    ]
+    for scenario in clicks():
+        tested, payload = run_routes(user_id, scenario, test="github")
+        pressed = draw(payload, scenario, test=("github", tested))
+        out += [f"## Test: {scenario.title}", "", f"State key: `{scenario.key}`", ""]
+        for toast in pressed["toasts"]:
+            out.append(
+                f"- Toast ({toast['kind']}): **{toast['title']}**. {_shown(toast['message'])}"
+            )
+        style = f" [{', '.join(pressed['style'])} style]" if pressed["style"] else ""
+        out.append(f"- At the click, the card's line: {_shown(pressed['line'])}{style}")
+        for fix in pressed["fix"]:
+            out.append(f"- At the click, a fix line: {_shown(fix)}")
+        card = read_card(pressed, "github")
+        lines = card["lines"] if card else []
+        out.append("- The card after the page redraws it:")
+        out += [f"  - {_shown(line)}" for line in lines] or ["  - (no card is drawn)"]
+        on_card = any(pressed["line"] and pressed["line"] in line for line in lines)
+        out += [f"- The click's line is on the redrawn card: {'yes' if on_card else '**no**'}", ""]
     return "\n".join(out).rstrip() + "\n"
 
 
