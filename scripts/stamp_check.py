@@ -16,7 +16,8 @@ to read/, a triage of someone else's memo) is skipped. For each new memo's front
   WARN   an `HH:Mx` or `~HH:MM` form near now (v1.50 bans both; write the minute), a time more than
          30 minutes behind now (drafted earlier? say so), or a date-only stamp that isn't today
 `MAIL_STAMP_CHECK=warn` turns every BLOCK into a WARN, for a memo deliberately stamped another time.
-Log mode only warns. It looks at added lines in staged `dev/YYYY/MM/DD/*-log.md` files that are `#`
+Log mode refuses since 2026-11-18 (xian's yes to CIO's 11-13 clock-rule proposal, relayed by Comms):
+see `review_added` for what it refuses and what it only warns on. Before that it only warned. It looks at added lines in staged `dev/YYYY/MM/DD/*-log.md` files that are `#`
 headings carrying a time, and only for today's log: it flags an estimated form or a time ahead of now, not
 one behind (a heading can fairly carry the time a wake began). It also reads today's `*(Role, date time`
 attributions on added lines of BRIEFING-CURRENT-STATE.md (10-17: the briefing held 7 `HH:Mx` stamps, two
@@ -27,7 +28,7 @@ Since 11-03 it also warns on an `HH:Mx` form in any added line of today's log, a
 Stamp-now mode (xian 10-30 via Exec, "make it easier to do such things without having to remember"): a memo
 may say `date: now` (or `date: now PT`), and every such file in one call gets the same clock reading, so the
 sent mirror and every recipient copy match. A time nobody types can't be a guess.
-Exit 0 = nothing blocking; 1 = a BLOCK (mail mode only). Owner: CIO. Review: 2026-12-08.
+Exit 0 = nothing blocking; 1 = a BLOCK (mail mode) or a refusal (log mode); 3 = log mode could not run. Owner: CIO. Review: 2026-12-08.
 """
 
 import os
@@ -168,46 +169,77 @@ def mail(paths, now) -> int:
 
 
 def log_staged(now) -> int:
-    today = now.strftime("%Y-%m-%d")
+    """Read the staged added lines and judge them. Exit 1 if anything is refused."""
     files = git("diff", "--cached", "--name-only").stdout.split()
+    added = {}
     for f in files:
-        m = re.match(r"dev/\d{4}/\d{2}/\d{2}/(\d{4}-\d{2}-\d{2})-.*-log\.md$", f)
-        if not m or m.group(1) != today:
+        if not (LOG_NAME.match(f) or TRACKERS.match(f) or f in (BRIEFING, DECISIONS)):
             continue
-        for line in git("diff", "--cached", "-U0", "--", f).stdout.splitlines():
-            if line.startswith("+#"):
-                v = judge(line[1:], now, today)
-                if v and "behind" not in v[1] and "dated" not in v[1]:
-                    print(f"stamp-check WARN: {f}: heading '{line[1:].strip()[:70]}': {v[1]}")
-            elif line.startswith("+") and not line.startswith("+++"):
-                for est in body_estimates(line[1:]):
-                    print(
-                        f"stamp-check WARN: {f}: '{est}' in a log line is an estimate; write the minute"
-                    )
-    for f in files:
-        if not TRACKERS.match(f):
-            continue
-        for line in git("diff", "--cached", "-U0", "--", f).stdout.splitlines():
-            if line.startswith("+") and not line.startswith("+++"):
-                for est in body_estimates(line[1:]):
-                    print(f"stamp-check WARN: {f}: '{est}' is an estimate; write the minute")
-    if BRIEFING in files:
-        for line in git("diff", "--cached", "-U0", "--", BRIEFING).stdout.splitlines():
-            if not line.startswith("+") or line.startswith("+++"):
-                continue
-            for stamp in briefing_stamps(line[1:], today):
-                v = judge(stamp, now, today)
-                if v and "behind" not in v[1] and "dated" not in v[1]:
-                    print(f"stamp-check WARN: {BRIEFING}: '{stamp}': {v[1]}")
-    if DECISIONS in files:
-        for line in git("diff", "--cached", "-U0", "--", DECISIONS).stdout.splitlines():
-            if not line.startswith("+") or line.startswith("+++"):
-                continue
-            for stamp in decision_stamps(line[1:], today):
-                v = judge(stamp, now, today)
-                if v and "behind" not in v[1] and "dated" not in v[1]:
-                    print(f"stamp-check WARN: {DECISIONS}: '{stamp}': {v[1]}")
+        added[f] = [
+            line[1:]
+            for line in git("diff", "--cached", "-U0", "--", f).stdout.splitlines()
+            if line.startswith("+") and not line.startswith("+++")
+        ]
+    findings = review_added(added, now)
+    for level, f, why in findings:
+        print(
+            f"stamp-check {level}: {f}: {why}",
+            file=sys.stderr if level == "REFUSED" else sys.stdout,
+        )
+    if any(level == "REFUSED" for level, _, _ in findings):
+        print(
+            "stamp-check: commit refused (clock rule, xian 2026-11-18). Read `date` and write the minute; "
+            '`scripts/log-entry.sh "title"` writes a heading with the clock. A time you are quoting goes '
+            "in backticks.",
+            file=sys.stderr,
+        )
+        return 1
     return 0
+
+
+LOG_NAME = re.compile(r"dev/\d{4}/\d{2}/\d{2}/(\d{4}-\d{2}-\d{2})-.*-log\.md$")
+
+
+def unquoted(line: str) -> str:
+    """The line without its backtick spans: the escape for a time quoted from someone else."""
+    return re.sub(r"`[^`]*`", "", line)
+
+
+def review_added(added, now):
+    """Judge added lines per staged file. Returns (level, file, why) rows, level REFUSED or WARN.
+
+    Refused (xian's yes 2026-11-18, CIO's 11-13 proposal): a heading in today's log with a time
+    ahead of the clock, or with an estimated form (`HH:Mx` or `~HH:MM`); an `HH:Mx` on any added
+    line of today's log, a role's standing-items or carry-forward file, the briefing or
+    decisions.log. Backticks are the only escape. Still a warning: a briefing attribution or a
+    decisions.log stamp ahead of the clock."""
+    today = now.strftime("%Y-%m-%d")
+    out = []
+    for f, lines in added.items():
+        m = LOG_NAME.match(f)
+        todays_log = bool(m) and m.group(1) == today
+        checked = todays_log or bool(TRACKERS.match(f)) or f in (BRIEFING, DECISIONS)
+        for raw in lines:
+            line = unquoted(raw)
+            if todays_log and line.startswith("#"):
+                v = judge(line, now, today)
+                if v and "behind" not in v[1] and "dated" not in v[1]:
+                    out.append(("REFUSED", f, f"heading '{raw.strip()[:70]}': {v[1]}"))
+                    continue
+            if checked:
+                for est in body_estimates(line):
+                    out.append(("REFUSED", f, f"'{est}' is an estimated minute; write the minute"))
+            if f == BRIEFING:
+                for stamp in briefing_stamps(line, today):
+                    v = judge(stamp, now, today)
+                    if v and "ahead" in v[1]:
+                        out.append(("WARN", f, f"'{stamp}': {v[1]}"))
+            if f == DECISIONS:
+                for stamp in decision_stamps(line, today):
+                    v = judge(stamp, now, today)
+                    if v and "ahead" in v[1]:
+                        out.append(("WARN", f, f"'{stamp}': {v[1]}"))
+    return out
 
 
 def body_estimates(line: str):
@@ -239,7 +271,13 @@ def main(argv) -> int:
     if argv[:1] == ["--mail"]:
         return mail(argv[1:], now)
     if argv == ["--log-staged"]:
-        return log_staged(now)
+        try:
+            return log_staged(now)
+        except Exception as error:  # a broken check never blocks a commit (exit 3, not 1)
+            print(
+                f"stamp-check: could not run ({type(error).__name__}); not checked", file=sys.stderr
+            )
+            return 3
     print(__doc__.split("\n\n")[2], file=sys.stderr)
     return 2
 

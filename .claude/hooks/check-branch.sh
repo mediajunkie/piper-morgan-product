@@ -32,10 +32,14 @@ if [ ! -t 0 ]; then
     fi
 fi
 
-# Stamp check on today's session-log headings (xian 2026-10-16 via Exec; warn only, never blocks):
-# flags an HH:Mx form or a heading time ahead of the clock. scripts/stamp_check.py has the rules.
+# Stamp check (xian 2026-10-16 via Exec, warn only; refuses since xian's yes of 2026-11-18, the clock rule):
+# an HH:Mx form or a heading time ahead of the clock blocks the commit. scripts/stamp_check.py has the rules;
+# its exit 1 is a refusal, and any other non-zero (it could not run) lets the commit through.
 TOP=$(git rev-parse --show-toplevel 2>/dev/null)
-[ -f "$TOP/scripts/stamp_check.py" ] && (cd "$TOP" && python3 scripts/stamp_check.py --log-staged 2>/dev/null)
+if [ -f "$TOP/scripts/stamp_check.py" ]; then
+    (cd "$TOP" && python3 scripts/stamp_check.py --log-staged)
+    [ $? -eq 1 ] && exit 2
+fi
 
 # Current-state page gate at the commit (CIO 2026-10-23, after a briefing edit without a last_updated bump
 # turned Code Quality red on main for three pushes): when the briefing is staged, run the same check CI runs

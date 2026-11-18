@@ -95,3 +95,60 @@ def test_trackers_pattern_matches_role_trackers_only():
     assert sc.TRACKERS.match("dev/active/cio-standing-items.md")
     assert sc.TRACKERS.match("dev/active/exec-carry-forward.md")
     assert not sc.TRACKERS.match("dev/active/duty-cycle-registry.tsv")
+
+
+# The clock rule (xian's yes 2026-11-18, CIO's 11-13 proposal): log mode refuses.
+LOG = "dev/2026/10/16/2026-10-16-0744-cio-code-log.md"
+OLD_LOG = "dev/2026/10/15/2026-10-15-0744-cio-code-log.md"
+
+
+def levels(added):
+    return [level for level, _, _ in sc.review_added(added, NOW)]
+
+
+@pytest.mark.parametrize(
+    "line, refused",
+    [
+        ("## 16:20 Mail wake", False),
+        ("## 16:05 START", False),  # behind the clock: a heading may carry when a wake began
+        ("## 16:21 Mail wake", True),  # ahead by a minute
+        ("## 16:2x Mail wake", True),
+        ("## ~16:15 Mail wake", True),
+        ("## Mail wake (10-15 22:11 to 10-16 06:21)", False),  # Lead's false positive, 11-13
+        ("## Quoting Exec's `16:4x` heading", False),  # backticks are the escape
+        ("- Lead's reply came 16:1x.", True),
+        ("- Lead wrote `16:1x` in his memo.", False),
+        ("- stamped 16:10, and 14:46:39", False),
+    ],
+)
+def test_todays_log_refusals(line, refused):
+    assert ("REFUSED" in levels({LOG: [line]})) is refused
+
+
+def test_an_older_days_log_is_not_judged():
+    assert levels({OLD_LOG: ["## 23:5x late", "- at 22:1x"]}) == []
+
+
+def test_trackers_briefing_and_decisions_refuse_an_estimated_minute():
+    for f in (
+        "dev/active/cio-standing-items.md",
+        "dev/active/exec-carry-forward.md",
+        sc.BRIEFING,
+        sc.DECISIONS,
+    ):
+        assert levels({f: ["row: done 16:0x"]}) == ["REFUSED"], f
+        assert levels({f: ["row: done `16:0x` (quoted)"]}) == [], f
+
+
+def test_other_files_are_not_judged():
+    assert levels({"docs/internal/operations/x.md": ["at 16:0x"]}) == []
+
+
+def test_briefing_attribution_ahead_of_the_clock_only_warns():
+    line = "- **Usage** *(CIO, 2026-10-16 16:40 PST, rows)*: 68%."
+    assert levels({sc.BRIEFING: [line]}) == ["WARN"]
+    assert levels({sc.DECISIONS: ["2026-10-16 16:45 PT (xian) — X"]}) == ["WARN"]
+
+
+def test_a_refused_heading_is_reported_once():
+    assert levels({LOG: ["## 16:2x wake"]}) == ["REFUSED"]

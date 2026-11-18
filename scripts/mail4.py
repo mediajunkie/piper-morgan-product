@@ -78,6 +78,30 @@ def d6_warning(kind, body):
     )
 
 
+# The clock rule (xian's yes 2026-11-18, relayed by Comms; CIO's 11-13 proposal): an estimated minute
+# (`17:4x`) in a body or an ack note is refused. A time quoted from someone else goes in backticks.
+# Times ahead of the clock are not checked here: a body can name a time still to come.
+ESTIMATED_MINUTE = re.compile(r"\b\d{1,2}:\d[xX]\b")
+
+
+def estimated_minutes(text):
+    """The `HH:Mx` forms in ``text`` outside code fences and backticks."""
+    bare = re.sub(r"```.*?```", "", text or "", flags=re.S)
+    bare = re.sub(r"`[^`\n]*`", "", bare)
+    return [m.group(0) for m in ESTIMATED_MINUTE.finditer(bare)]
+
+
+def clock_refusal(where, text):
+    """The refusal message for ``text`` with an estimated minute outside backticks, or None."""
+    found = estimated_minutes(text)
+    if not found:
+        return None
+    return (
+        f"{where}: refused (clock rule, xian 2026-11-18): {', '.join(found)} is an estimated minute. "
+        "Read `date` and write the minute, or put a time you are quoting in backticks."
+    )
+
+
 class Unmeasured(Exception):
     pass
 
@@ -305,6 +329,10 @@ def cmd_send(a):
     if not body.strip():
         print("send: empty body", file=sys.stderr)
         return 2
+    refusal = clock_refusal("send", body)
+    if refusal:
+        print(refusal, file=sys.stderr)
+        return 2
     warning = d6_warning(a.type, body)
     if warning:
         print(warning, file=sys.stderr)
@@ -395,6 +423,10 @@ def cmd_ack(a):
         return 2
     if role not in recipients(m):
         print(f"ack: {role} is not a recipient of {a.id}", file=sys.stderr)
+        return 2
+    refusal = clock_refusal("ack", a.note)
+    if refusal:
+        print(refusal, file=sys.stderr)
         return 2
     line = f"{a.id} {now_pt().isoformat(timespec='seconds')} {a.state}"
     if a.note:
