@@ -141,3 +141,30 @@ def test_building_the_file_in_process_leaves_the_store_variable_alone(monkeypatc
     source = (ROOT / "scripts" / "card_state_file.py").read_text(encoding="utf-8")
     setup_body = source[source.index("def _setup()") : source.index("def _github_outcome")]
     assert "PIPER_CREDENTIAL_STORE" not in setup_body
+
+
+@needs_node
+def test_every_test_click_state_has_a_section(text):
+    keys = [c.key for c in cards.clicks()]
+    assert len(set(keys)) == len(keys)
+    assert not set(keys) & {s.key for s in cards.scenarios()}
+    for key in keys:
+        assert f"State key: `{key}`" in text
+
+
+@needs_node
+def test_no_click_row_is_the_pages_own_error_branch(text):
+    """The page's ``catch`` shows "Test Error" / "Failed to test github" when its own script
+    throws. In this file that means the harness, not the app, broke (it did once, on a
+    lookup a browser answers with null); a row like that is never a reading of the page."""
+    clicked = text[text.index("# After pressing Test") :]
+    assert "**Test Error**" not in clicked and "Failed to test" not in clicked
+
+
+@needs_node
+def test_a_passing_test_shows_the_routes_own_line_in_the_toast_and_at_the_click(text):
+    row = _section(text, "test-own-token")
+    assert (
+        "- Toast (success): **Test Passed**. GitHub is working, using your personal token." in row
+    )
+    assert "- At the click, the card's line: GitHub is working, using your personal token." in row
