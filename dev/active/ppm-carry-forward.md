@@ -771,3 +771,4 @@ Brake FIRED (second slip = #1965 admission, found and ledgered 10-09). Memo to E
   - Standing word: a promote-gate edit that only makes it stricter goes ahead on Arch's written approval, and xian is informed.
   - 14:23: the OWED combined mail is resolved. CXO sent their view to Exec (01M7NSBN2J), and PPM sent agreement plus the product half (01M7NSPH57). Next is Exec's call whether to put it to xian.
   - 14:54: HOLD, do not run scripts/sync-pm-local.sh until Exec mails "Step A done" or "Step A stopped" (01M7NTYN66).
+  - 18:07: the sync hold was released by Exec at 18:02 (01M7P690FB). It returns at Exec's "Step A started" mail.
