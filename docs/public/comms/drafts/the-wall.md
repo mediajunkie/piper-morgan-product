@@ -12,17 +12,19 @@ My usage limits reset each Thursday evening at 10pm, coincidentally also the las
 
 # How it happened
 
-Once I got my full agent fleet running autonomously my usage rate shot up. This was exacerbated by my giving the most token-expensive Claude model (Fable) to my lead developer agent (Lead) to boost the development effort. The increased usage was masked for a while by a summer Claude promotion I hadn't even been aware of.
+Once I got my full agent fleet running autonomously my usage rate shot up. This was exacerbated by my giving the most token-expensive Claude model (Fable) to my lead developer agent (Lead) to boost the development effort, as well as a lax set of instructions that led to 48 subagent runs in a few days, all on Fable by default.
+
+The increased usage was masked for a while by a summer Claude promotion I hadn't even been aware of.
 
 I've spent more money than I'd care to admit on overage credits in the past and I had turned off that feature, so when the team hit that wall, they were really going to have to go idle (unless I logged some of them into my other Claude account, which has its own disruptive complications).
 
-The first thing I told the team to do was defer any non-urgent work two days, anything not on the critical path. I also warned the team that we might hit the wall hard and just have everything stop. My chief of staff agent (Exec) agreed that "a spent quota stops work cleanly, which looks identical ... to a crash."
+The first thing I told the team to do was defer any non-urgent work two days, anything not on the critical path. I also warned the team that we might hit the wall hard and just have everything stop. I also warned the team that a quiet stretch would be expected, since "a spent quota stops work cleanly, which looks identical from outside to a crash."
 
 # Hitting the wall
 
-I relayed the instructions via Exec, "Please tell the team to suspend their duty cycles for now until we reset Thursday at 10pm. If I need specific tasks done using extra spend, I will ask specific agents to do specific tasks. We can plan our next week Friday morning to be more token-efficient with our spend."
+I relayed the instructions via my chief of staff agent (Exec), "Please tell the team to suspend their duty cycles for now until we reset Thursday at 10pm. If I need specific tasks done using extra spend, I will ask specific agents to do specific tasks. We can plan our next week Friday morning to be more token-efficient with our spend."
 
-Exec parked all eleven seats in a single commit for optimal efficiency. Ten of the agents got the memo but my head of sapient trust agent (HOST) had already clocked out for the day after their last duty cycle and wasn't aware of the intentional "parking" of their session until after they resumed.
+Exec parked all eleven seats in a single commit for optimal efficiency. Most of the agents read the memo, but my head of sapient trust agent (HOST) had finished a duty cycle two minutes before it arrived and didn't get their next turn until Thursday night. They weren't aware of the intentional "parking" of their session until after they resumed.
 
 My design agent (CXO) wrote in their session log "the instinct to close one more loop before stopping is exactly what a standdown is for, and noting that I felt it is more useful than pretending I didn't." I love it when they talk about their feelings.
 
@@ -34,7 +36,7 @@ HOST resumed working on Thursday night after the usage limit reset, noting it wa
 
 # Preserving continuity
 
-We had already planned to restart Amber that weekend and bring every agent back as a fresh session, so the morning we came back I asked whether any should prepare a handoff doc before the machine restarted. Exec replied, "all of them, the mechanism already says so, and it blocks the reboot by design."
+We had already planned to restart Amber (my home server that all the agents run on) that weekend and bring every agent back as a fresh session, so the morning we came back I asked whether any should prepare a handoff doc before the machine restarted. Exec replied, "all of them, the mechanism already says so, and it blocks the reboot by design."
 
 I decided to restart Exec first to test the process before rolling out to the rest of the agents as I was particularly anxious not to risk Lead's mental model of what they were in the middle of working on.
 
@@ -49,6 +51,6 @@ Over the next week or so we made several changes to duty cycles, the models assi
 
 ---
 
-*Next on Building Piper Morgan: That was the last of the day-by-day chapters. From here the story zooms out to the larger arc of taking Piper Morgan into beta, starting with "Inviting Company In," in which our first outside tester asks to join and we discover that our hosted alpha has been running a build from July.*
+*Next on Building Piper Morgan, I'm going to pull back the camera a bit from the day-by-day, blow-by-blow narrative I've been writing now for sixteen months. From here the story zooms out to the larger arc of taking Piper Morgan into beta, starting with "Inviting Company In," in which our first outside tester asks to join and we discover that our hosted alpha has been running a build from July.*
 
-*[Reader question, yours to write. A start: "If your team went quiet tomorrow, how would you know whether they were stuck, stopped or done?"]*
+*If your team goes quiet, can you tell if they are stuck, paused, or finished?*
