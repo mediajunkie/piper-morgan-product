@@ -198,7 +198,7 @@ Link the image to the post on pipermorgan.ai. Format:
 
 Required sections in this order (per template v4.1):
 
-1. **Frontmatter** (image + alt + caption)
+1. **Frontmatter** (image + alt + caption): **always the standard Ship image**, copied from the last published Ship's frontmatter (`image: 'piper-ship.png'` and its alt). **Never the hero image.** The site always shows `piper-ship.webp` for a Ship. The Step 4c hero image goes in the body, under External relations, and nowhere else. (xian, 11-18: the hero image in Ship #069's frontmatter was an error.)
 2. **Title**: `# Weekly Ship #{NNN}: {Theme}` — **title case for the whole H1, theme included** (template-audit #2, after Ship #058 shipped in sentence case). Sentence case is for the section headings below, not the title
 3. **Dateline**: `*{Month DD–DD, YYYY}*`
 4. **Opening**: 2–3 paragraphs capturing the theme or major milestone. Reference the previous Ship's theme for continuity if natural.
