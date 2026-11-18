@@ -462,7 +462,7 @@ Read in full: Steps A to J and `scripts/seat_settings_grant.py` (193 lines). Ste
 **Other notes:**
 - Step G part 1 and Step H use `fly` commands in xian's own Terminal. That is by design: production writes and Fly tokens stay his.
 - Step F step 4 has xian type the second seat account's password at beta's login page, so Step F0 says where that password lives.
-- **Still to write:** Lead's Step F0; HOST's provider half of Step E. Steps C and D are READY since 2026-11-16 (`seat_session.py` and Pard's plist exist and are read); Step H stays NOT READY until #2384 exists.
+- **Still to write:** HOST's provider half of Step E. (Lead's Step F0 is written and READY since 2026-11-16; checked against the script on main 2026-11-17, nothing stale.) Steps C and D are READY since 2026-11-16 (`seat_session.py` and Pard's plist exist and are read); Step H stays NOT READY until #2384 exists.
 - **Unproven until the first real install** (CIO lists them too): a real key, a live session picking up the variable, and whether Claude Code honours the Read deny as written.
 
 ## Not on this list, by design
