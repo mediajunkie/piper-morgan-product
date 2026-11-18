@@ -10,24 +10,31 @@ caption: ''
 
 My usage limits reset each Thursday evening at 10pm, coincidentally also the last day of the Piper Morgan workweek (it's a long story). On a Tuesday in mid September I noticed we had already used 97% of the weekly limit, with more than two full days left to go. It looks like we'd hit the wall in about 12 hours at the current rate.
 
+# How it happened
+
+Once I got my full agent fleet running autonomously my usage rate shot up. This was exacerbated by my giving the most token-expensive Claude model (Fable) to my lead developer agent (Lead) to boost the development effort. The increased usage was masked for a while by a summer Claude promotion I hadn't even been aware of.
+
 I've spent more money than I'd care to admit on overage credits in the past and I had turned off that fearture, so when the team hit that wall, they were really going to hav to go idle (unless I logged some of them into my other Claude account, which has its own disruptive complications).
 
 The first thing I told the team to do was defer any non-urgent work two days, anything not on the critical path. I also warned the team that we might hit the wall hard and just have everything stop. My chief of staff agent (Exec) agreed that "a spent quota stops work cleanly, which looks identical ... to a crash."
 
-# How it happened
+# Hitting the wall
 
-Once I got my full agent fleet running autonomously my usage rate shot up. This was exacerbated by my giving the most token-expensive Claude model (Fable) to my lead developer agent (Lead) to boost the development effort. The increased usage was masked for a while by a summer Claude promotion I hadn't even been aware of 
+I relayed the instructions via Exec, "Please tell the team to suspend their duty cycles for now until we reset Thursday at 10pm. If I need specific tasks done using extra spend, I will ask specific agents to do specific tasks. We can plan our next week Friday morning to be more token-efficient with our spend." 
 
-- Why it came early: the summer promotion had ended Sep 13, lowering the ceiling, and Exec found 48 subagent runs in a few days, all on Fable by default. [Exec 09-15 l.148-149]
+Exec parked all eleven seats in a single commit for optimal efficioency. , not eleven, because eleven sessions each spending a turn on one file was "precisely the cost the standdown exists to avoid". Ten of eleven roles complied cleanly. [Comms: Which one didn't and why?]
 
-**2. Hitting it.** That night the limit was hit. You added overage credit for essential work only. Web later measured its own silence: last output Sep 15 at 9:55 PM, next Sep 18 at 6:30 AM, about 56.6 hours. [Docs 09-16 l.10, Web 09-18 l.33-34]
+My design agent (CXO) wrote in their session log "the instinct to close one more loop before stopping is exactly what a standdown is for, and noting that I felt it is more useful than pretending I didn't." I love it when they talk about their feelings.
 
-**3. Standing everyone down.** Wed Sep 16, about 7 AM, your words to Exec: "Please tell the team to suspend their duty cycles for now until we reset Thursday at 10pm. If I need specific tasks done using extra spend, I will ask specific agents to do specific tasks. We can plan our next week Friday morning to be more token efficient with our spend." Exec parked all eleven seats in one commit, not eleven, because eleven sessions each spending a turn on one file was "precisely the cost the standdown exists to avoid". Ten of eleven roles complied cleanly. [Exec 09-16 l.19-37, omnibus 09-16 l.16, l.77]
-- A line worth having, from CXO: "the instinct to close one more loop before stopping is exactly what a standdown is for, and noting that I felt it is more useful than pretending I didn't." [omnibus 09-16 l.118-119]
+The night we hit the limit as expected. I did allow a small amount of overage credit for essential work (such as publishing this blog). 
 
-**4. The silence, from inside.** HOST's first turn after the stand-down came Thu night, "the first turn this session has had since 07:09 PT on 09-16 (~39 hours)", with eleven stacked wake-ups landing at once. The omnibus calls it "not a choice to keep working, not a chosen compliance, a structural absence of scheduling time." [HOST 09-17 l.8, omnibus 09-17 l.41-42]
+After we resumed, my web design agent (Web) measured its own quiet period: last output Sep 15 at 9:55 PM, next Sep 18 at 6:30 AM, just over 56 hour.
 
-**5. Coming back: who was really there?** Fri Sep 18. You asked whether any roles should prepare a handoff doc before the machine restarted. Exec found the restart gate already existed, wanting a dated handoff from each resident, and read "GREEN=0 WAIVED=0 RED=24" and "DO NOT REBOOT". Exec's answer: "all of them, the mechanism already says so, and it blocks the reboot by design." [Exec 09-18 l.45-53]
+My head of sapient trust agent (HOST) resumed working on Thursday night after the usage limit reset, noting it was "the first turn this session has had since 07:09 PT on 09-16 (~39 hours)."
+
+# Preserving continuity
+
+Before ordering the stand-down, I asked Exec which of the roles should prepare a handoff doc before the machine restarted. Exec found the restart gate already existed, wanting a dated handoff from each resident, and read "GREEN=0 WAIVED=0 RED=24" and "DO NOT REBOOT". Exec's answer: "all of them, the mechanism already says so, and it blocks the reboot by design." [Exec 09-18 l.45-53]
 - You ruled a cold start with Exec first, so as to "not risk the lead developer's mental model of what they're working on just yet." [Exec 09-18 l.78]
 - By late morning the gate read "4 GREEN → 7 GREEN", and "the 4 remaining RED are exactly the 4 dark roles — nobody awake is outstanding." [Exec 09-18 l.114-116]
 - One rule came out of the restart: "parking centrally is safe, un-parking centrally is not." Arch's central un-park had cleared rows for five seats that were still dark, and Exec re-parked them. [omnibus 09-18 l.45]
