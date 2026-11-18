@@ -796,7 +796,7 @@ Brake FIRED (second slip = #1965 admission, found and ledgered 10-09). Memo to E
   - Approved: practice.md (xian 11-17, "No changes", c531cae276), how-i-act, cant-read, stance and stand-ins.
   - xian approved the nine rules (#2354, wording at 47a65eed5f) and the seven procedures list (#2358) on 11-18 (Exec 01M7R3B1AQ, Janus 11:45). Lead builds 2354, asking Arch whether rule 7's paid run applies (01M7R3EFKN), and that run would wait on Step A. 2358 builds in PPM's 11-13 order, procedure 1 first. What remains is each issue's served acceptance. (Updated 11:54.)
   - The practice scope: decided. xian 11-18 07:51 via Exec (01M7QNQ4JJ): "yes, no changes needed now". The scope is deliberately what the team has proven in its own work, and it's recorded in decisions.log. (Updated 07:57.)
-- **Production 327** (`gh` at 21:34 = Total), map **v168**, 0 unmilestoned. Placed 11-17: 2401 and 2402 (C), 2403 and 2404 (Q). 2397 closed 07:23.
+- **Production 329** (`gh` 11-18 12:13 = Total), map **v171**; 11-18 placed 2405 (D) and 2406 (E). Before: 327 at 11-17 21:34, map v168, 0 unmilestoned. Placed 11-17: 2401 and 2402 (C), 2403 and 2404 (Q). 2397 closed 07:23.
 - **OWED rows:**
   - 2364-known-limit: trigger is 2388's first real run.
   - 2364-untested-provider-row: trigger is the 2390 route.
