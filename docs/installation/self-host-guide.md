@@ -2,7 +2,7 @@
 
 **For**: someone outside the team who wants Piper to run on their own machine, so their notes and projects never sit on a hosted server.
 **Time**: about 30 minutes.
-**Status**: DRAFT 2026-11-12. Steps 1 to 9 follow the tested list in `docs/internal/operations/canonical-ops-recipes.md` section 13. Items marked **(not yet run)** have not been checked from a clean clone. On 2026-11-16 Docs ran steps 1, 2, 3 (the three named services), 4 and 8 from a fresh clone with its own database and ports, and typed no key. Steps 5, 6, 7 and 9 and the chat check still wait on a real provider key. Docs will remove each marker as it is verified.
+**Status**: DRAFT 2026-11-12. Steps 1 to 9 follow the tested list in `docs/internal/operations/canonical-ops-recipes.md` section 13. Items marked **(not yet run)** have not been checked from a clean clone. On 2026-11-16 Docs ran steps 1, 2, 3 (the three named services), 4 and 8 from a fresh clone with its own database and ports, and typed no key. On 2026-11-18 Lead's driver (`scripts/guide_keyed_steps_run.py`, issue 2404) ran steps 6, 7, 8 and 9 against a scratch database on a running local Postgres, with a stand-in model and a key seeded by the driver through the call step 5 makes. It checked HTTP replies and page text, with no browser clicks. Step 5 is not run by a seat, because it needs a person at a terminal. The chat check does not pass yet: on that path Piper answers that it needs a key of your own (issue 2405, with Arch to rule the fix). A run with a real provider key waits on Step A, planned for Friday 2026-11-20. Docs will remove each marker as it is verified.
 
 ## What you need
 
@@ -55,7 +55,7 @@
 
 ## Check it works
 
-Ask Piper a short question in the chat. **(not yet run: this needs a real provider key and was only run with a stand-in key so far)** If it answers, the key and the install are good.
+Ask Piper a short question in the chat. **(not yet passing: on 2026-11-18 the driver's run got "Piper runs on an LLM key of your own" instead of an answer, issue 2405; a real-key run is still to do)** If it answers, the key and the install are good.
 
 ## What your install offers
 
