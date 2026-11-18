@@ -34,31 +34,18 @@ My head of sapient trust agent (HOST) resumed working on Thursday night after th
 
 # Preserving continuity
 
-We had already planned to restart Amber that weekend and bring every agent back as a fresh session, so the morning we came back was also the morning every seat had to write down where it was.
+We had already planned to restart Amber that weekend and bring every agent back as a fresh session, so the morning we came back I asked whether any should prepare a handoff doc before the machine restarted. Exec replied, "all of them, the mechanism already says so, and it blocks the reboot by design." 
 
+I decided to restart Exec first to test the process before rolling out to the rest of the agents as I was particularly anxious not to risk Lead's mental model of what they were in the middle of working on.
 
-[will finish writing once the above is resolved:]
+Handoff memos had once been an essential part of my chat-based process. As Claude sessions became capable of running much longer, and then added the ability to spontaneously compress context and continue, the drumbeat of regular handoffs became less frequent and less fundamental.
 
-**5. Coming back: who was really there?** Fri Sep 18. You asked whether any roles should prepare a handoff doc before the machine restarted. Exec found the restart gate already existed, wanting a dated handoff from each resident, and read "GREEN=0 WAIVED=0 RED=24" and "DO NOT REBOOT". Exec's answer: "all of them, the mechanism already says so, and it blocks the reboot by design." [Exec 09-18 l.45-53]
-- You ruled a cold start with Exec first, so as to "not risk the lead developer's mental model of what they're working on just yet." [Exec 09-18 l.78]
-- By late morning the gate read "4 GREEN → 7 GREEN", and "the 4 remaining RED are exactly the 4 dark roles — nobody awake is outstanding." [Exec 09-18 l.114-116]
-- One rule came out of the restart: "parking centrally is safe, un-parking centrally is not." Arch's central un-park had cleared rows for five seats that were still dark, and Exec re-parked them. [omnibus 09-18 l.45]
+The general continuity of my contextual infrastructure is pretty reliable these days, but intentional handoffs before a fresh session give the agents a chance to reflect on what they currently know that might not be obvious to a fresh session. 
 
-**6. Your correction of the history (optional).** Exec framed the handoff ritual as something automation replaced. You: "the handoff was sort of the functional carry forward back then…" Exec's revised reading: what killed the ritual was "the reader disappearing" when sessions became long-lived. [Exec 09-18 l.83-87]
+# Staying on budget
 
-## Careful with these (accuracy)
-- **The sources don't quite say "the restart showed which seats were really working."** They show which seats were awake (they filed handoffs) and which were parked (the 4 dark roles). Say that, not that some agents were faking work.
-- You didn't stand everyone down at the wall itself. The warning was Tue evening, the limit hit overnight, and the stand-down came Wed morning, on overage credits.
-- The handoff gate was for restarting the machine (Amber), after the reset, not for the limit itself.
-- HOST thought its own row was never parked. Exec later traced that it was parked and then cleared by HOST's own stop. Disputed, so leave it out or call it a claim that needed checking.
-- The 09-18 omnibus names an outside alpha tester (l.66, 192-193). Don't use it.
-- No decisions.log entries for Sep 16-18.
-- The week the agents went quiet is also the week before beat 5 ("Still Running July"). If you want larger chunks of time, beat 5 (Sep 19-22: alpha found running a July build, the move to Fly) could join this post.
+Over the next week or so we made several changes to duty cycles, the models assigned and some other inefficiencies and after a few more close calls I've managed to stay under the cap now consistently. If anything, I want to scrape as close the cap as possible or I feel like I'm leaving tokens on the table that are just going to expire anyhow.
 
-## Your angle, maybe
-- Budget is the real clock. A weekly limit is a deadline nobody put on the calendar.
-- "Stop" is a hard instruction to give agents built to drain work. One commit, not eleven.
-- Silence is ambiguous. The fix wasn't more monitoring, it was each seat writing down where it was.
 
 ---
 
