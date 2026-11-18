@@ -34,7 +34,8 @@ My head of sapient trust agent (HOST) resumed working on Thursday night after th
 
 # Preserving continuity
 
-Before ordering the stand-down, I asked Exec which of the roles should prepare a handoff doc before the machine restarted. Exec found the restart gate already existed, wanting a dated handoff from each resident, and read "GREEN=0 WAIVED=0 RED=24" and "DO NOT REBOOT". Exec's answer: "all of them, the mechanism already says so, and it blocks the reboot by design." [Exec 09-18 l.45-53]
+[Comms: why was there a machine restart at the same tim as the outage 
+**5. Coming back: who was really there?** Fri Sep 18. You asked whether any roles should prepare a handoff doc before the machine restarted. Exec found the restart gate already existed, wanting a dated handoff from each resident, and read "GREEN=0 WAIVED=0 RED=24" and "DO NOT REBOOT". Exec's answer: "all of them, the mechanism already says so, and it blocks the reboot by design." [Exec 09-18 l.45-53]
 - You ruled a cold start with Exec first, so as to "not risk the lead developer's mental model of what they're working on just yet." [Exec 09-18 l.78]
 - By late morning the gate read "4 GREEN → 7 GREEN", and "the 4 remaining RED are exactly the 4 dark roles — nobody awake is outstanding." [Exec 09-18 l.114-116]
 - One rule came out of the restart: "parking centrally is safe, un-parking centrally is not." Arch's central un-park had cleared rows for five seats that were still dark, and Exec re-parked them. [omnibus 09-18 l.45]
