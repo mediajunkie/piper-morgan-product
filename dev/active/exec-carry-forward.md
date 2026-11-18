@@ -1,6 +1,6 @@
 # Exec carry-forward
 
-**Rewritten 2026-11-16 22:02 PST at STOP** (Fable 5.2). History: `git log -p -- dev/active/exec-carry-forward.md`. Last session log: `dev/2026/11/16/2026-11-16-0421-exec-code-log.md` (closed). Start a new log on 11-17.
+**Rewritten 2026-11-16 22:02 PST at STOP** (Fable 5.2; Opus 5.5 from 11-17 21:29, xian: "we've hit the Fable limit"). History: `git log -p -- dev/active/exec-carry-forward.md`. Last session log: `dev/2026/11/16/2026-11-16-0421-exec-code-log.md` (closed). Start a new log on 11-17.
 
 **STATE: LIVE on LaunchAgent** `com.xian.pm-exec-cycle`, firing at :01 on hours 6, 10, 14, 18 and 22. Empty CronList is normal. Liveness is Pard's.
 
