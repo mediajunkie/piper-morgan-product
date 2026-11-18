@@ -51,6 +51,6 @@ Over the next week or so we made several changes to duty cycles, the models assi
 
 ---
 
-*Next on Building Piper Morgan, I'm going to pull back the camera a bit from the day-by-day, blow-by-blow narrative I've been writing now for sixteen months. From here the story zooms out to the larger arc of taking Piper Morgan into beta, starting with "Inviting Company In," in which our first outside tester asks to join and we discover that our hosted alpha has been running a build from July.*
+*Next on Building Piper Morgan, I'm going to pull back the camera a bit from the day-by-day, blow-by-blow narrative I've been writing now for sixteen months. From here the story zooms out to the larger arc of taking Piper Morgan into beta, starting with "Inviting Company In," in which a new outside tester asks to join and we discover that our hosted alpha has been running a build from July.*
 
 *If your team goes quiet, can you tell if they are stuck, paused, or finished?*
