@@ -42,7 +42,10 @@ What the run holds to (Arch's read list and CIO's conditions on issue 2404):
      database and its role, the run's Redis keys, the run folder.
   6. Shared stores (CIO, 2026-11-17). Postgres: a database and a login role made for the
      run (``piper_guide_run_<id>``, never ``piper_morgan``), the role a non-superuser with
-     rights on that database only; the server is given the database by name. Redis: the
+     table rights in that database only. (CIO, 2026-11-18: like every role it gets CONNECT
+     and TEMP on every database through PUBLIC, so it can connect to ``piper_morgan``; it
+     has no table rights there, and on Postgres 15 it can't create one. PUBLIC's rights on
+     xian's database are not changed.) The server is given the database by name. Redis: the
      run's own database number (REDIS_DB below), checked empty first, holding an owner
      marker, and the keys it lists at the end are deleted by name. Chroma: the server
      only opens a TCP connection to the shared Chroma server (the setup check); the
@@ -379,7 +382,8 @@ def remove_leftovers() -> List[str]:
 
 def create_db_and_role(db: str, role: str, environ: Mapping[str, str]) -> str:
     """Create the run's database, migrate it to head as the compose superuser, and create
-    a non-superuser login role with rights on that database only. Returns the app URL."""
+    a non-superuser login role with table rights in that database only (it keeps PUBLIC's
+    CONNECT and TEMP elsewhere, as every role does). Returns the app URL."""
     psql_ok(f"CREATE DATABASE {db}")
     password = os.environ.get("POSTGRES_PASSWORD", "dev_changeme_in_production")
     env = base_env(environ)
@@ -755,6 +759,52 @@ class Server:
 # ── the steps ────────────────────────────────────────────────────────────────
 
 
+LOCK_DIR = Path(tempfile.gettempdir()) / "piper-guide-run.lock"
+
+
+def take_lock(lock_dir: Path = LOCK_DIR) -> None:
+    """One run at a time (CIO, 2026-11-18): the leftover cleanup would otherwise drop a
+    running run's database and Redis keys. ``mkdir`` is atomic, as in the pre-push hook."""
+    try:
+        lock_dir.mkdir()
+    except FileExistsError:
+        raise Refused(
+            f"another guide run holds {lock_dir}. If none is running (a killed run leaves "
+            "it), remove that folder and run again."
+        ) from None
+
+
+def release_lock(lock_dir: Path = LOCK_DIR) -> None:
+    try:
+        lock_dir.rmdir()
+    except OSError:
+        pass
+
+
+def chroma_source_from(inspect_output: str) -> Optional[Path]:
+    """The host folder mounted at the Chroma container's data path, from ``docker
+    inspect``'s output, or None."""
+    text = inspect_output.strip()
+    return Path(text) if text.startswith("/") else None
+
+
+def shared_chroma_folder() -> Optional[Path]:
+    """Where the shared Chroma container keeps its data on this machine (CIO: read it,
+    don't assume this worktree)."""
+    out = subprocess.run(
+        [
+            "docker",
+            "inspect",
+            "piper-chromadb",
+            "--format",
+            '{{range .Mounts}}{{if eq .Destination "/chroma/chroma"}}{{.Source}}{{end}}{{end}}',
+        ],
+        capture_output=True,
+        text=True,
+    )
+    return chroma_source_from(out.stdout) if out.returncode == 0 else None
+
+
 @dataclass
 class Block:
     step: str
@@ -798,8 +848,9 @@ class Run:
         self.say(
             f"tree: {_git('rev-parse', 'HEAD')}" + (" (served paths edited)" if _dirty() else "")
         )
-        shared_chroma = ROOT / "data" / "chromadb"
-        chroma_before = listing(shared_chroma)
+        take_lock()
+        shared_chroma = shared_chroma_folder()
+        chroma_before = listing(shared_chroma) if shared_chroma else {}
         run_dir = Path(tempfile.mkdtemp(prefix="guide-run-"))
         server: Optional[Server] = None
         stub = sink = None
@@ -814,7 +865,8 @@ class Run:
             redis_claimed = True
             db_url = create_db_and_role(db, role, self.environ)
             self.say(
-                f"scratch database {db}, login role {role} (non-superuser, this database only)"
+                f"scratch database {db}, login role {role} (non-superuser; table rights in "
+                "this database only)"
             )
             master = new_master_key()
             left_out = make_run_folder(ROOT, run_dir)
@@ -919,11 +971,17 @@ class Run:
             self.teardown += drop_db_and_role(db, role)
             shutil.rmtree(run_dir, ignore_errors=True)
             self.teardown.append(f"run folder {run_dir} removed: {not run_dir.exists()}")
-            change = listing_change(chroma_before, listing(shared_chroma))
-            self.teardown.append(
-                "shared data/chromadb: "
-                + ("unchanged" if not change else "CHANGED: " + "; ".join(change[:10]))
-            )
+            if shared_chroma is None:
+                self.teardown.append(
+                    "shared Chroma folder: could not read it from docker inspect; NOT CHECKED"
+                )
+            else:
+                change = listing_change(chroma_before, listing(shared_chroma))
+                self.teardown.append(
+                    f"shared Chroma folder {shared_chroma}: "
+                    + ("unchanged" if not change else "CHANGED: " + "; ".join(change[:10]))
+                )
+            release_lock()
             for line in self.teardown:
                 self.say(f"TEARDOWN: {line}")
 
