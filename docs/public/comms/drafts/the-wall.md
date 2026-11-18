@@ -18,7 +18,7 @@ The increased usage was masked for a while by a summer Claude promotion I hadn't
 
 I've spent more money than I'd care to admit on overage credits in the past and I had turned off that feature, so when the team hit that wall, they were really going to have to go idle (unless I logged some of them into my other Claude account, which has its own disruptive complications).
 
-The first thing I told the team to do was defer any non-urgent work two days, anything not on the critical path. I also warned the team that we might hit the wall hard and just have everything stop. I also warned the team that a quiet stretch would be expected, since "a spent quota stops work cleanly, which looks identical from outside to a crash."
+The first thing I told the team to do was defer any non-urgent work two days, anything not on the critical path. I also warned the team that we might hit the wall hard and just have everything stop since "a spent quota stops work cleanly, which looks identical from outside to a crash."
 
 # Hitting the wall
 
