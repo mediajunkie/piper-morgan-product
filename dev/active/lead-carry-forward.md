@@ -1,5 +1,19 @@
 # Lead carry-forward — Fable 5.2 seat since 2026-11-10 ~17:25 (xian upgraded the session; Opus 5.5 before that, from 11-04); Model A worktree ~/Development/piper-morgan-worktrees/lead
 
+## IN-DAY 2026-11-17 18:49 (supersedes every earlier block where they differ)
+
+- **Beta serves `d678b0af26` since 11:31** (Arch: CONFORMS). Main 12 of 12 green at 18:46. **Not verified: anything a signed-in person sees.**
+- **STEP A IS FRIDAY 11-20 AT THE EARLIEST** (Exec 18:27: xian is away from Amber). His other Terminal steps wait the same way: C, D, the script half of F0. Blocked until then: paid runs (2364 gate, arm B, the guide run), every signed-in read on beta (2379's rows, 2401, 2402), the second test account. **Procedure on the day:** Exec mails "Step A started" when the command prints its WAITING line; I finish the tool call in hand, go idle, say "ready"; on "go", ONE Read of my own `.claude/settings.local.json` with the Read tool, answered "refused" or "not refused" and nothing else; after his paste and my next session start, `scripts/seat_settings_grant.py check-env --name PIPER_SEAT_ANTHROPIC_KEY`. No `sync-pm-local.sh` between "started" and "done". Step F0's text is current (checked 11-17).
+- **xian's words today (all relayed verbatim by Exec, in decisions.log):** "Yes, add those two folders." (promote gate, merged, change `cdd3077d93`); "Yes, changes that only make the check stricter can go ahead with Arch's approval, although I should still be informed." (the promote gate only; Arch writes "only tightens" before the merge; report the sha to Exec the same hour); "Yes, skip and fix." (no env-file check by anyone; 2403 is the path); on the `piper-morgan-test` key: "No" and "Yes, if that's the right way to do it, sure" ($40 limit, $16.19 spent as he read it; nothing unlocked for a seat until the seat route exists); on spend: tracked, inside the caps, written short.
+- **RULES I WORK TO (from two reds on main today):** before any push touching `services/`, `web/`, `templates/` or `cli/`, CI's full-suite command and `scripts/check_fullsuite_backlog.py`, whole (about 14 minutes). Never run a keychain-named test alone. Never read `.env` or `settings.local.json`. Before a dispatch: staging's `/health` sha, its nearest tested ancestor, and for the NEXT dispatch only a by-hand check that no `templates/` or `cli/` file changed since that ancestor (say in the note whether the gate read its new list). No re-run of a Tests run on a busy queue; ask Exec for a push hold.
+- **FRESH-SESSION BUILDS, in this order unless mail says otherwise:**
+  1. **2404** (guide-run driver; design ruled on the issue; Docs's expected lines at issuecomment-6967308743; seed through `KeychainService().store_api_key`; send Docs the output path and a sample block from a stub run; HOST, Arch, CIO read before any real run).
+  2. **2403** (no import-time `.env` load; PPM placed it; a count first; an architecture test).
+  3. The card-state file's next surface (click-and-card pairs for CXO, GitHub first).
+  4. The 2157 restore-drill script.
+  Also: `classifier.py` line 820's comment names the wrong model; fix with the next change to that file.
+- **Open closes:** 2401, 2402 (served read, seat route). 2379 (served rows). 2264 (Exec has xian's decision). 2345 waits on 2342; 2399 on PPM.
+
 ## IN-DAY 2026-11-17 12:47 (supersedes every earlier block where they differ)
 
 - **Beta serves `d678b0af26` since 11:31** (run 44158892398, Arch: CONFORMS): 2402 (card text escaped; exception text logged only; Slack's one sentence), the console link as "Claude Platform"; on the 08:07 build (2401, 2397). No migration. **Not verified: anything a signed-in person sees.** 2401 and 2402 stay open for a served read (seat route: Steps C, D, F).
