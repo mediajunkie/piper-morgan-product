@@ -127,8 +127,8 @@ yours with `CronDelete` and say so in the fire entry, since it would fire alongs
   "
   ```
   If anything prints and PM is present in the current conversation, remind them right then — name
-  the platforms (Medium+LinkedIn for narratives/insights, LinkedIn-only for Ships, per
-  `reference_syndication_targets_by_category`). If PM isn't present, note it in the fire entry and
+  the platforms (insight: Medium and LinkedIn; narrative/building: Medium only; Ship: LinkedIn only, per
+  `reference_syndication_targets_by_category` and the table in BRIEFING-ESSENTIAL-DOCS.md). If PM isn't present, note it in the fire entry and
   let this same check resurface it at every subsequent fire — a reminder given once and never
   re-checked is exactly the failure this step exists to close. **Deliberately windowed to the last
   7 days**: an older `published`-not-`distributed` row may be genuinely blog-only by design
