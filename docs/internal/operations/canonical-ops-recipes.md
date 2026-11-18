@@ -743,7 +743,18 @@ stack (Lead's 2386 run, 12:06): the same stack name brought up from a second fol
 running and shared, and re-created Redis and Chroma with new container IDs bound to the second
 folder's empty `./data/`. The first copy's files stay on disk; the running services stop
 pointing at them. Nobody runs it against the shared stack. If a container is gone and has to
-be made again, that goes to xian through Exec. Once 2386 lands, a seat's own stack sets
+be made again, that goes to xian through Exec.
+
+**A local server started from Lead's worktree writes into the shared Chroma's files (Lead's
+finding, 2026-11-18, issue 2404).** The `piper-chromadb` container's volume is
+`~/Development/piper-morgan-worktrees/lead/data/chromadb` (`docker inspect`, read 11-18). The
+app's own Chroma client is in-process (`chromadb.PersistentClient` at `./data/chromadb`, relative
+to the server's folder, in `services/knowledge_graph/ingestion.py`). So any `python main.py`
+started from Lead's worktree that reaches that client opens the same files the container serves,
+from a second process. The same holds for `data/preferences`. **Start a local server from another
+folder, or from a run folder whose `data` is its own** (as `scripts/guide_keyed_steps_run.py`
+does: every top-level entry linked except `data` and `.env`). Issue 2387 moves the shared data
+out of the worktree, which ends this case. Once 2386 lands, a seat's own stack sets
 `PIPER_STACK` and its own ports; until then it uses an override as below.
 
 **A seat's own stack, now that `PIPER_STACK` is on main (issue 2386, 433a8c6b33).** The rule above
