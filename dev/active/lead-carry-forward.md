@@ -1,5 +1,19 @@
 # Lead carry-forward — Opus 5.5 seat since 2026-11-17 21:30 (xian moved the session off Fable 5.2 at the week's Fable limit, until it resets); Fable 5.2 from 2026-11-10 ~17:25 to then; Model A worktree ~/Development/piper-morgan-worktrees/lead
 
+## IN-DAY 2026-11-18 08:52 (supersedes every earlier block where they differ)
+
+- **Beta serves `58b19c7f3a`** since 08:51 (run 44351349704 on Arch's 2405 grant; no migration; health ok, `redis: ok`): 2405, 2403. Not checked signed in.
+- **Waiting on CXO** (mail 01M7QS0FHH: is "re-authorizing" retired in chat replies too; 01M7QS16CJ: her stale-token row retires part of #2053). Then build her GitHub card rulings as one unit:
+  - the own-token card says "Connected via your personal token. Checked just now.";
+  - the stale card keeps "Connected via your personal token. GitHub no longer accepts your connection, so I'm not using it right now.";
+  - the needs-reauth click line becomes "GitHub no longer accepts your connection.";
+  - the nothing-connected click line becomes "GitHub isn't connected for your account." and the chip "Not connected";
+  - the click's line stays on the card after a couldn't-run Test, as page state only (Arch: cleared on load, replaced by the next Test);
+  - a test that each fact the click names is on the redrawn card.
+  Eight test files pin these strings (2012, 2029, 2031 twice, 2037 twice, 2049, 2053). It touches `web/` and `templates/`: full suite and the gate before the push.
+- **Fresh session or compaction:** card-state Test All plus the other three cards' Tests as one unit (Test All loops every connector); the 2157 restore-drill script.
+- **Step A Friday 11-20 at the earliest**, then 2404 `--real` (1 turn; PLANNED and COST lines on the issue).
+
 ## IN-DAY 2026-11-18 08:25 (supersedes every earlier block where they differ)
 
 - **Beta serves `d678b0af26`** (since 11-17 11:31). **A promotion is in hand:** Arch GRANTED 2405 at `9344bd3c51` (mail 01M7QQCGGE). Staging read `882f2d8869` at the pre-check. Tests: green on `084a039097` (holds 2403 and 2405); run 44346242170 on `9c4e1a8e18` (card-state, a tested path) in progress. Pre-checks done: beta healthy, quiet true; no hold file; 0 alembic files; Alpha Health Watch run in progress. **Before dispatch:** that Tests run green; staging's nearest tested ancestor; by hand, no `templates/` or `cli/` change since it (2403 changed `cli/commands/publish.py` in `3caa01414b`, tested on `084a039097`); re-read the inbox; the card-states diff for CXO. **No served-path push until the promotion ends.**
