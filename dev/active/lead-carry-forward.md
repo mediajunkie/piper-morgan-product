@@ -1,10 +1,16 @@
 # Lead carry-forward — Opus 5.5 seat since 2026-11-17 21:30 (xian moved the session off Fable 5.2 at the week's Fable limit, until it resets); Fable 5.2 from 2026-11-10 ~17:25 to then; Model A worktree ~/Development/piper-morgan-worktrees/lead
 
-## IN-DAY 2026-11-19 07:25 (supersedes every earlier block where they differ)
+## IN-DAY 2026-11-19 08:25 (supersedes every earlier block where they differ)
 
-- **Beta serves `1cebb644f8` since 07:03** (run 44549882385, under the grant). Mailed Web/CXO/HOST/Arch (01M7T5CB3S) and Exec (01M7T5CDMX). The next promotion waits until the Alpha Health Watch runs green on this build.
-- **The disconnect unit is on main: `7d88a343e4`.** Rows sent to CXO (cc Arch), 01M7T6AG6C. Two calls left for her: the singular closing line, and "integration" allowed in Notion's sentence. It's not served until the next promotion.
-- **#2407** (degrade_nudge: no GitHub default; the callers pass the connector from the metadata) is built and waits on its full suite. Then push, then close with evidence.
+- **Beta serves `1cebb644f8` since 07:03.** The Alpha Health Watch has been green on it since (15:26Z onward).
+- **The disconnect unit is complete on main:**
+  - `7d88a343e4`;
+  - Arch's condition (a grant plus a token is the unknown leg) and CXO's "at Google" nit, `8b4423e059`;
+  - CXO's rows, `f34fe7bef5`.
+
+  CXO accepted the words; reply 01M7T9QX is out to Arch and CXO.
+- **NEXT: promote `f34fe7bef5` or later,** once Tests is green on it and staging serves it. Don't promote `5248d2e592`: it lacks Arch's condition. After the promotion, ask Web for a signed-in pass on Disconnect and Disconnect All, and CXO for her served read.
+- #2407 closed (`8598f87d7d`, `5248d2e592`; `mypy_dict_item` ceiling 5 → 3).
 - **Step A Friday 11-20 at the earliest**, then 2404 `--real`, the 2354 count and H1, and 2406. 2157 proof 3 waits on #2158.
 
 ## IN-DAY 2026-11-18 21:12 (supersedes every earlier block where they differ)
