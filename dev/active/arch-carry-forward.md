@@ -1,5 +1,5 @@
 ---
-last_updated: 2026-11-17 21:29 PST (STOP)
+last_updated: 2026-11-18 21:28 PST (STOP)
 currency_claim: rewritten at substantive-change boundaries, verified at every START
 max_age_days: 4
 ---
@@ -25,6 +25,35 @@ context-floor directive that duplicating it here is exactly the accretion to cut
 | GitHub criteria line | `gh issue list --repo mediajunkie/piper-morgan-product --label architecture --state open` — the third work-queue source (PM v1.33). Open each issue, don't write a row from the list. Report drained as "mail (N) + standing-items (N) + label:architecture (M)." |
 
 ## IN FLIGHT — current state only
+
+**11-18 state (STOP):** main 12/12 green; inbox empty; beta still serves `3b6676d352` (since 11:40; CONFORMS). On main, not promoted: 2354 (`88e25efef7`), the size step (`f8ed6c03b4`), the 2157 drill and its fixes (`88cbb35e1f`, `b01aab9059`), card items 1-5 (`7b10771945`) and item 6 (`2a70c1a466`). Model Opus 5.5. Every ruling is in decisions.log.
+- **Clock rule (live 752547e88e):** run `TZ=America/Los_Angeles date` before every stamp and write headings through `scripts/log-entry.sh`. Today: seven guessed times corrected in the morning, and a 16:40 stamp fixed before commit.
+- **Rulings today, built and conforming:**
+  - 2405: a saved key is copied for the first local account only (promoted).
+  - 2404: the driver conforms.
+  - 2403: rows 1-3 conform.
+  - GitHub card and couldn't-check hold: promoted.
+  - 2354: the conduct layer goes in the floor reply prompt only, with no rule 7 screen; the build conforms.
+  - 2354 deploy size step: only tightens. It runs by path, not `-m`. My `-m` condition was wrong, and Lead caught it.
+  - 2157 drill: conforms. The copy's allowlist is CLOSED (adding `GITHUB_APP_*` or `SLACK_*` would act on real accounts); proof 2 also requires the `pm-restore-drill-` FLY_APP_NAME prefix.
+  - Item 6: the `STALE_FACTS` map is the one place, with a drift test against the registry.
+  - Disconnect routes: no exception text in a response; a raise returns the incomplete line; Disconnect All keys on a per-card outcome code; the GitHub leg comes from the resolver; the stays-valid sentences live in one map; the unknown-leg sentence must be true for all three legs.
+- **Mine to read when built (Lead):** the disconnect build (outcome code, `leg`, stays-valid map, no exception text); 2390, 2391, 2384, 2393, 2399; the count-only route (waits on placement).
+- **Waits on Step A (Fri 11-20):**
+  - 2354's real token count and H1's cache-hit run (report the denial-turn prefix separately);
+  - the 2405 page and the GitHub card on beta;
+  - the real-key chat;
+  - the 2404 `--real` run (and HOST's custody read);
+  - the first paid call under the cap;
+  - 2406 (rule 7 screen);
+  - CXO's served stale-token read.
+- **Waits on xian:** the 2157 drill run (needs a promotion carrying `b01aab9059`; HOST gives the command); 2403 row 4 (a person's clean-shell check); Steps C, D and F0; the Platform org for linked billing (needs an ADR when decided).
+- **Hook blocking decision** with Lead: about 11-23.
+- **Lessons (11-18):**
+  1. A condition naming a command must be run as written, in the target environment: `-m` imports the package.
+  2. When a copy of production boots, trace every startup job's credential source; the allowlist is the guard.
+  3. A fallback sentence written before all cases were known must be re-checked when a new case appears.
+  4. Read uncommitted work in another seat's worktree read-only (`git -C … diff HEAD`), and say it was uncommitted.
 
 **11-17 state (21:29, STOP):** beta serves `d678b0af26` since 11:31 (third promotion today; CONFORMS; carries 2402 with its fix, CXO's Slack sentence, the console links). Main 12 of 12 green. Inbox empty. Rulings are in decisions.log. **No grant is open.**
 - **My validation rule for any served-path change (learned twice today):** run every test file that names the changed module, template or symbol at any layer (`git grep -l` over `tests/`), plus `tests/test_architecture_enforcement.py` and `tests/test_completion_ratchets.py` whole, and state the file count. Use a zsh array for path lists (a `$VAR` list is one word in zsh and silently matches nothing).
