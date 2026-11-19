@@ -12,7 +12,14 @@
   - the title back to "Nothing to Do", body "Nothing is connected.";
   - tests, then the full suite (it touches web and templates).
 
-  **CXO has answered the classic leg (01M7S3GABX):** the Slack shape. Dialog: "I'll disconnect GitHub and revoke Piper's access there. You can connect it again anytime." Cleared is success; revoke-failed is warning. Disconnect All names GitHub only for the app or token legs, and Notion whenever it's listed. If the resolver can't name the leg, use her one-sentence fallback. The map test covers the three GitHub legs. **Arch 01M7S3ZFGB:** the leg-unknown fallback must be true for all three legs (CXO's first sentence isn't, for classic). CXO rewords it; it goes in the map under GitHub's `unknown` leg, with a test that the `unknown` entry claims nothing a single leg would make false. Build with her words if they've arrived; otherwise ask, and build the rest. Only blocker left: a fresh session or a compaction.
+  **CXO has answered the classic leg (01M7S3GABX):** the Slack shape. Dialog: "I'll disconnect GitHub and revoke Piper's access there. You can connect it again anytime." Cleared is success; revoke-failed is warning. Disconnect All names GitHub only for the app or token legs, and Notion whenever it's listed. If the resolver can't name the leg, use her one-sentence fallback. The map test covers the three GitHub legs. **Arch 01M7S3ZFGB:** the leg-unknown fallback must be true for all three legs (CXO's first sentence isn't, for classic). CXO rewords it; it goes in the map under GitHub's `unknown` leg, with a test that the `unknown` entry claims nothing a single leg would make false. **Her words have arrived (01M7S4FFKW, plus Arch 01M7S4JRY8 and CXO 01M7S4P271), verbatim:**
+  - unknown-leg dialog: "I'll disconnect GitHub. If you connected it with the Piper GitHub app or a personal token, that stays on at GitHub until you remove it in GitHub's settings. You can connect it again anytime.";
+  - unknown-leg cleared toast (warning style): "GitHub disconnected. If you connected it with the Piper GitHub app or a personal token, remove that in GitHub's settings too.";
+  - Disconnect All with GitHub's leg unknown: with Notion listed, "Notion also needs you to remove Piper in its settings, and GitHub may too if you connected it with the app or a token."; without Notion, "GitHub may need you to remove Piper in its settings if you connected it with the app or a token.";
+  - a known app or token leg keeps "GitHub and Notion also need you to remove Piper in their own settings"; a known classic leg isn't named;
+  - test: nothing in the `unknown` entry (dialog, toast or All line) asserts something a single leg would make false.
+
+  Every word is ruled now. Only blocker left: a fresh session or a compaction.
 - **Promotion at the 06:46 fire (the grant's window opens at 07:00).** Pre-checks as usual; the card-states diff for CXO; name `b01aab9059` for HOST's drill sitting.
 - Main green at 20:05. Everything from today is on main, not served.
 
