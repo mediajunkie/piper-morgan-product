@@ -61,6 +61,7 @@ from .connector import (
     ResolveResult,
     ResourceHandle,
     ResourceQuery,
+    stale_fact,
 )
 from .mcp_client import MCPClient
 
@@ -325,7 +326,7 @@ class GoogleCalendarMCPAdapter(BaseSpatialAdapter):
             DegradationReason.CONNECT_REQUIRED: "Connect Google Calendar to continue.",
             DegradationReason.RESOURCE_NOT_FOUND: "That Google Calendar resource wasn't found.",
             DegradationReason.UNREACHABLE: "Google Calendar's MCP server is unreachable right now.",
-            DegradationReason.STALE_TOKEN: "Your Google Calendar connection needs re-authorizing.",
+            DegradationReason.STALE_TOKEN: stale_fact("Google Calendar"),
         }
         return DegradationResponse(
             reason=reason,

@@ -46,6 +46,7 @@ from .connector import (
     ResolveResult,
     ResourceHandle,
     ResourceQuery,
+    stale_fact,
 )
 
 logger = logging.getLogger(__name__)
@@ -116,7 +117,7 @@ class SlackMCPAdapter(BaseSpatialAdapter):
             DegradationReason.CONNECT_REQUIRED: "Connect Slack to continue.",
             DegradationReason.RESOURCE_NOT_FOUND: "That Slack resource wasn't found.",
             DegradationReason.UNREACHABLE: "Slack is unreachable right now.",
-            DegradationReason.STALE_TOKEN: "Your Slack connection needs re-authorizing.",
+            DegradationReason.STALE_TOKEN: stale_fact("Slack"),
         }
         return DegradationResponse(
             reason=reason, user_message=messages.get(reason, "The Slack connector is degraded.")

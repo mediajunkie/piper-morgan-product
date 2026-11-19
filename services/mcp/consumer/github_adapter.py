@@ -50,6 +50,7 @@ from .connector import (
     ResolveResult,
     ResourceHandle,
     ResourceQuery,
+    stale_fact,
 )
 from .connector_grant_store import ConnectorGrantStore
 from .github_app_grant import REASON_CUTOVER, app_install_url, app_mode, looks_like_record
@@ -852,7 +853,7 @@ class GitHubMCPSpatialAdapter(BaseSpatialAdapter):
             # operator ERROR log (see _mcp_client_ctx). Distinct from UNREACHABLE so a
             # config problem never reads as a server outage (the 2026-07-12 Fly sting).
             DegradationReason.MISCONFIGURED: "GitHub isn't configured correctly on this deployment.",
-            DegradationReason.STALE_TOKEN: "GitHub no longer accepts your connection.",
+            DegradationReason.STALE_TOKEN: stale_fact("GitHub"),
             DegradationReason.REPO_UNRESOLVED: (
                 "Which repo? I couldn't tell which repository you mean — name one "
                 "(e.g. `owner/name`), link a repo to your project, or set a default repo."

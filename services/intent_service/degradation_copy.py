@@ -16,7 +16,7 @@ connector.py) — share the currency (the enum), not the container.
 
 from __future__ import annotations
 
-from services.mcp.consumer.connector import DegradationReason
+from services.mcp.consumer.connector import DegradationReason, stale_fact, stale_step
 
 # Per-reason nudge templates. `{c}` = connector display name (e.g. "GitHub").
 # Neutral phrasing so one line serves every surface (priority, project, …).
@@ -28,9 +28,9 @@ _NUDGES = {
     DegradationReason.CONNECT_REQUIRED: (
         "{c} isn't connected yet — connect it and I'll pull in your data."
     ),
-    DegradationReason.STALE_TOKEN: (
-        "Your {c} connection needs re-authorizing — reconnect it in Settings and I'll pick back up."
-    ),
+    # CXO 2026-11-18 (Arch's option b): the connector's own sentence, from its map (see
+    # degrade_nudge), then this template's own next step.
+    DegradationReason.STALE_TOKEN: "{fact} {step} and I'll pick back up.",
     DegradationReason.UNREACHABLE: ("I can't reach {c} right now — try again in a moment."),
     # #1398/ADR-070-A A4: a deployment config problem, NOT a user connect action —
     # honest that it's on our side, and never leaks the missing config detail.
@@ -53,4 +53,6 @@ def degrade_nudge(reason: DegradationReason, connector: str = "GitHub") -> str:
     only invoke this when they have a real reason, so silence here is a defensive default,
     not the honest-degrade path)."""
     template = _NUDGES.get(reason)
-    return template.format(c=connector) if template else ""
+    if not template:
+        return ""
+    return template.format(c=connector, fact=stale_fact(connector), step=stale_step(connector))

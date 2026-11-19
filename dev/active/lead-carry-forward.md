@@ -1,5 +1,12 @@
 # Lead carry-forward — Opus 5.5 seat since 2026-11-17 21:30 (xian moved the session off Fable 5.2 at the week's Fable limit, until it resets); Fable 5.2 from 2026-11-10 ~17:25 to then; Model A worktree ~/Development/piper-morgan-worktrees/lead
 
+## IN-DAY 2026-11-18 20:25 (supersedes every earlier block where they differ)
+
+- **On main, not served (beta `3b6676d352`):** CXO's card Test words (`7b10771945`), item 6 (`2a70c1a466`), the 2157 drill script and decrypt guard (`b01aab9059`), and section 10's hang-up handling (`a188f666f3`). Main 12 of 12 green at 20:05. **Next promotion:** the pre-checks as usual, the card-states diff for CXO, and `b01aab9059` named for HOST (the sitting page goes to xian through Exec once beta serves it).
+- **Next build:** the card-state file's confirm dialogs (CXO's next surface).
+- #2407 filed (`degrade_nudge` defaults to GitHub; not urgent).
+- **Step A Friday 11-20 at the earliest**, then 2404 `--real`, the 2354 count and H1, and 2406.
+
 ## IN-DAY 2026-11-18 19:03 (supersedes every earlier block where they differ)
 
 - **Both compaction-gated builds are done** (18:46 fire): the card-state Notion, Slack and Calendar Tests and Test All (`cd26a96cdf`; CXO has 5 word questions, 01M7RVGRJ8), and the 2157 drill script (`88cbb35e1f`; reads asked of Arch, HOST and CIO, 01M7RW0ZC1; xian runs it only after a promotion carries it). Nothing compaction-gated is left.

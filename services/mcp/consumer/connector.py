@@ -34,6 +34,33 @@ class ConnectorStatusState(enum.Enum):
     STALE = "stale"  # bound, but the token needs refresh
 
 
+#: CXO 2026-11-18: each connector's one sentence for a grant it no longer accepts, and its
+#: own next step, keyed by display name. The card, the Test, the adapter's degrade and the
+#: chat copy all read it here, so a person sees the same words everywhere (Arch: one place,
+#: no second copy). A key or token can't be reconnected, so Notion and Slack say "add".
+STALE_FACTS = {
+    "GitHub": ("GitHub no longer accepts your connection.", "Reconnect it in Settings"),
+    "Google Calendar": (
+        "Google Calendar no longer accepts your connection.",
+        "Reconnect it in Settings",
+    ),
+    "Notion": ("Notion didn't accept your key.", "Add a new key in Settings"),
+    "Slack": ("Slack didn't accept your token.", "Add a new token in Settings"),
+}
+
+
+def stale_fact(connector: str) -> str:
+    """That connector's sentence; a connector without one gets the generic form."""
+    known = STALE_FACTS.get(connector)
+    return known[0] if known else f"{connector} no longer accepts your connection."
+
+
+def stale_step(connector: str) -> str:
+    """That connector's next step, without the closing clause the template adds."""
+    known = STALE_FACTS.get(connector)
+    return known[1] if known else "Reconnect it in Settings"
+
+
 class DegradationReason(enum.Enum):
     """Why a connector can't serve a request (drives honest degradation)."""
 
