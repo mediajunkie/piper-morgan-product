@@ -1737,7 +1737,7 @@ class CanonicalHandlers:
 
     async def _get_project_metadata(
         self, projects: list, user_id: Optional[str] = None
-    ) -> Dict[str, Dict]:
+    ) -> Dict[str, Any]:
         """
         Issue #18: Get real project metadata from GitHub.
 
