@@ -2194,3 +2194,4 @@ issue	state	milestone	sprint	title	labels	blocked_by	state_reason
 2404	OPEN	Production		Seat driver for the self-host guide's keyed steps (6, 7, 9 and the chat check), ADR-084 D2			
 2405	OPEN	Production		Self-host: the key stored at guide step 5 never becomes the account's key, so the guide's chat check answers user_key_required	bug		
 2406	OPEN	Production		PIPER.md bullets that overlap the 2354 conduct rules: replace them, as a router-prompt change under rule 7 (paid, after Step A)			
+2407	OPEN	Production		degrade_nudge names GitHub on paths that pass no connector			
