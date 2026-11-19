@@ -195,3 +195,48 @@ def test_re_authorizing_is_retired_from_the_github_test_rows(text):
     clicked = text[text.index("# After pressing Test") :]
     rows = "\n".join(ln for ln in clicked.splitlines() if not ln.startswith("## "))
     assert "re-authoriz" not in rows
+
+
+# --- the Notion, Slack and Calendar Tests, and Test All (Lead 2026-11-18) ----------------
+
+
+@needs_node
+def test_every_connector_test_and_test_all_state_has_a_section(text):
+    keys = [c.key for c in cards.connector_clicks()] + [c.key for c in cards.test_all_clicks()]
+    others = {s.key for s in cards.scenarios()} | {c.key for c in cards.clicks()}
+    assert len(set(keys)) == len(keys) and not set(keys) & others
+    for key in keys:
+        assert f"State key: `{key}`" in text
+    for card, outcomes in cards._CONNECTOR_OUTCOMES.items():
+        assert len([c for c in cards.connector_clicks() if c.show == (card,)]) == len(outcomes)
+
+
+@needs_node
+def test_a_connector_test_reaches_the_apps_own_check(text):
+    """The words come from the app's ``_test_*`` checks and routes, not from this script:
+    a refused Slack token shows the route's own constant, at the click and on the card."""
+    from web.api.routes.integrations import CHECK_FAILED_MESSAGE, SLACK_TOKEN_REFUSED_LINE
+
+    row = _section(text, "test-slack-refused")
+    assert f"- At the click, the card's line: {SLACK_TOKEN_REFUSED_LINE} [error style]" in row
+    assert f"  - {SLACK_TOKEN_REFUSED_LINE} Checked just now. [error style]" in row
+    for key in ("test-notion-no-answer", "test-calendar-store-failed", "test-slack-raised"):
+        assert f"- At the click, the card's line: {CHECK_FAILED_MESSAGE}" in _section(text, key)
+
+
+@needs_node
+def test_test_all_shows_one_toast_and_every_cards_line(text):
+    row = _section(text, "test-all-pass")
+    assert "- Toast (success): **All Tests Passed**. 4 of 4 connections successful" in row
+    for card in cards.CARDS:
+        assert f"### {card}" in row
+    assert "**Some Tests Failed**. 1 of 4" in _section(text, "test-all-mixed")
+
+
+def test_the_connector_stand_in_refuses_any_other_address():
+    """A Test that reached past the stood-in replies would stop, not draw a reply."""
+    session = cards._connector_session({"notion": "ok"})()
+    with pytest.raises(OSError):
+        session.get("https://example.invalid/")
+    with pytest.raises(OSError):
+        session.post("https://api.other.example/v1/users/me")

@@ -6,10 +6,10 @@ which words and controls changed.
 
 Each row is the health route's own payload for that state, drawn by the page's own
 script under node. It is not a browser and not the served app: no layout, no
-styling, no sign-in. The last section presses the GitHub card's Test: the app's
-Test route answers, the page shows the result, then redraws from the health route.
-Not here: the other cards' Tests, Test All, the confirm dialogs, the Settings index
-and the GitHub repository page. The screen atlas covers layout.
+styling, no sign-in. The last sections press each card's Test, then Test All: the
+app's Test routes answer, the page shows the result, then redraws from the health
+route. Not here: the confirm dialogs, the Settings index and the GitHub repository
+page. The screen atlas covers layout.
 
 ## Nothing connected
 
@@ -695,3 +695,382 @@ State key: `test-github-did-not-answer`
   - Connected
   - Couldn't check this just now. Press Test to try again.
 - The click's line is on the redrawn card: yes
+
+# After pressing Test: the Notion, Slack and Calendar cards
+
+As for GitHub. What each Test meets is stood in for underneath the app's own check:
+the stored credential (a made-up one) and the connector's reply. The error text the
+app records is its own.
+
+## Notion
+
+### Test: Notion answers
+
+State key: `test-notion-ok`
+
+- Toast (success): **Test Passed**. Notion connection successful
+- At the click, the card's line: Notion connection successful
+- The card after the page redraws it:
+  - 📝
+  - Notion
+  - Healthy. Checked just now.
+- The click's line is on the redrawn card: **no**
+
+### Test: Notion refuses the key
+
+State key: `test-notion-refused`
+
+- Toast (error): **Test Failed**. Invalid Notion API key
+- At the click, the card's line: Invalid Notion API key [error style]
+- At the click, a fix line: Check your Notion integration token in Settings → Integrations → Notion
+- The card after the page redraws it:
+  - 📝
+  - Notion
+  - API key invalid or expired. Checked just now. [error style]
+- The click's line is on the redrawn card: **no**
+
+### Test: Notion answers with a server error
+
+State key: `test-notion-no-answer`
+
+- Toast (error): **Test Failed**. Couldn't check this just now. Press Test to try again.
+- At the click, the card's line: Couldn't check this just now. Press Test to try again. [error style]
+- The card after the page redraws it:
+  - 📝
+  - Notion
+  - Connected
+  - Couldn't check this just now. Press Test to try again.
+- The click's line is on the redrawn card: yes
+
+### Test: The call to Notion fails on our side
+
+State key: `test-notion-raised`
+
+- Toast (error): **Test Failed**. Couldn't check this just now. Press Test to try again.
+- At the click, the card's line: Couldn't check this just now. Press Test to try again. [error style]
+- The card after the page redraws it:
+  - 📝
+  - Notion
+  - Connected
+  - Couldn't check this just now. Press Test to try again.
+- The click's line is on the redrawn card: yes
+
+### Test: No key is stored
+
+State key: `test-notion-not-connected`
+
+- Toast (error): **Test Failed**. Error: not_configured
+- At the click, the card's line: Error: not_configured [error style]
+- The card after the page redraws it:
+  - 📝
+  - Notion
+  - Not configured
+- The click's line is on the redrawn card: **no**
+
+## Slack
+
+### Test: Slack answers
+
+State key: `test-slack-ok`
+
+- Toast (success): **Test Passed**. Slack connection successful
+- At the click, the card's line: Slack connection successful
+- The card after the page redraws it:
+  - 💬
+  - Slack
+  - Healthy. Checked just now.
+- The click's line is on the redrawn card: **no**
+
+### Test: Slack refuses the token
+
+State key: `test-slack-refused`
+
+- Toast (error): **Test Failed**. Slack didn't accept your token. It may have expired or been revoked. Add a new one in Settings, under Integrations.
+- At the click, the card's line: Slack didn't accept your token. It may have expired or been revoked. Add a new one in Settings, under Integrations. [error style]
+- The card after the page redraws it:
+  - 💬
+  - Slack
+  - Slack didn't accept your token. It may have expired or been revoked. Add a new one in Settings, under Integrations. Checked just now. [error style]
+- The click's line is on the redrawn card: yes
+
+### Test: The call to Slack fails on our side
+
+State key: `test-slack-raised`
+
+- Toast (error): **Test Failed**. Couldn't check this just now. Press Test to try again.
+- At the click, the card's line: Couldn't check this just now. Press Test to try again. [error style]
+- The card after the page redraws it:
+  - 💬
+  - Slack
+  - Connected
+  - Couldn't check this just now. Press Test to try again.
+- The click's line is on the redrawn card: yes
+
+### Test: No token is stored
+
+State key: `test-slack-not-connected`
+
+- Toast (error): **Test Failed**. Error: not_configured
+- At the click, the card's line: Error: not_configured [error style]
+- The card after the page redraws it:
+  - 💬
+  - Slack
+  - Not configured
+- The click's line is on the redrawn card: **no**
+
+## Calendar
+
+### Test: Google refreshes the grant and the calendar read works
+
+State key: `test-calendar-ok`
+
+- Toast (success): **Test Passed**. Google Calendar connection successful
+- At the click, the card's line: Google Calendar connection successful
+- The card after the page redraws it:
+  - 📅
+  - Google Calendar
+  - Healthy. Checked just now.
+- The click's line is on the redrawn card: **no**
+
+### Test: Google says the grant was revoked
+
+State key: `test-calendar-revoked`
+
+- Toast (error): **Test Failed**. Error: token_invalid
+- At the click, the card's line: Error: token_invalid [error style]
+- The card after the page redraws it:
+  - 📅
+  - Google Calendar
+  - Token expired or revoked. Please reconnect. Checked just now. [error style]
+- The click's line is on the redrawn card: **no**
+
+### Test: Google answers the refresh with a server error
+
+State key: `test-calendar-no-answer`
+
+- Toast (error): **Test Failed**. Couldn't check this just now. Press Test to try again.
+- At the click, the card's line: Couldn't check this just now. Press Test to try again. [error style]
+- The card after the page redraws it:
+  - 📅
+  - Google Calendar
+  - Connected
+  - Couldn't check this just now. Press Test to try again.
+- The click's line is on the redrawn card: yes
+
+### Test: The grant has no calendar access
+
+State key: `test-calendar-insufficient-scope`
+
+- Toast (error): **Test Failed**. Error: insufficient_scope
+- At the click, the card's line: Error: insufficient_scope [error style]
+- The card after the page redraws it:
+  - 📅
+  - Google Calendar
+  - Google refused the calendar read: the connection doesn't include calendar access. Disconnect, connect again, and approve calendar access. Checked just now. [error style]
+- The click's line is on the redrawn card: **no**
+
+### Test: The Calendar service is not switched on for the app
+
+State key: `test-calendar-api-not-enabled`
+
+- Toast (error): **Test Failed**. Error: api_not_enabled
+- At the click, the card's line: Error: api_not_enabled [error style]
+- The card after the page redraws it:
+  - 📅
+  - Google Calendar
+  - Google refused the calendar read: the Calendar service isn't switched on for this app yet. That's a setup step on our side. Reconnecting won't help. Checked just now. [error style]
+- The click's line is on the redrawn card: **no**
+
+### Test: Google refuses the read for a reason it doesn't classify
+
+State key: `test-calendar-error`
+
+- Toast (error): **Test Failed**. Error: error
+- At the click, the card's line: Error: error [error style]
+- The card after the page redraws it:
+  - 📅
+  - Google Calendar
+  - Google refused the calendar read, and I couldn't tell why. Reconnecting may help. If it doesn't, tell us. Checked just now. [error style]
+- The click's line is on the redrawn card: **no**
+
+### Test: Google refuses the read: the calendar was not found
+
+State key: `test-calendar-not-found`
+
+- Toast (error): **Test Failed**. Error: not_found
+- At the click, the card's line: Error: not_found [error style]
+- The card after the page redraws it:
+  - 📅
+  - Google Calendar
+  - Google refused the calendar read (not_found). Reconnect and try again. Checked just now. [error style]
+- The click's line is on the redrawn card: **no**
+
+### Test: The call to Google fails on our side
+
+State key: `test-calendar-raised`
+
+- Toast (error): **Test Failed**. Couldn't check this just now. Press Test to try again.
+- At the click, the card's line: Couldn't check this just now. Press Test to try again. [error style]
+- The card after the page redraws it:
+  - 📅
+  - Google Calendar
+  - Connected
+  - Couldn't check this just now. Press Test to try again.
+- The click's line is on the redrawn card: yes
+
+### Test: The credential store did not answer
+
+State key: `test-calendar-store-failed`
+
+- Toast (error): **Test Failed**. Couldn't check this just now. Press Test to try again.
+- At the click, the card's line: Couldn't check this just now. Press Test to try again. [error style]
+- The card after the page redraws it:
+  - 📅
+  - Google Calendar
+  - Connected
+  - Couldn't check this just now. Press Test to try again.
+- The click's line is on the redrawn card: yes
+
+### Test: No grant is stored
+
+State key: `test-calendar-not-connected`
+
+- Toast (error): **Test Failed**. Error: not_configured
+- At the click, the card's line: Error: not_configured [error style]
+- The card after the page redraws it:
+  - 📅
+  - Google Calendar
+  - Not configured
+- The click's line is on the redrawn card: **no**
+
+# After pressing Test All
+
+Test All runs every card's Test through the app's Test All route, shows one toast,
+puts each result's line on its card, then redraws the page from the health route.
+
+## Test All: Every card connected, and every Test passes
+
+State key: `test-all-pass`
+
+- Toast (success): **All Tests Passed**. 4 of 4 connections successful
+
+### github
+
+- At the click, the card's line: GitHub is working, using your personal token.
+- The card after the page redraws it:
+  - 🐙
+  - GitHub
+  - Connected via your personal token. Checked just now.
+- The click's line is on the redrawn card: **no**
+
+### notion
+
+- At the click, the card's line: Notion connection successful
+- The card after the page redraws it:
+  - 📝
+  - Notion
+  - Healthy. Checked just now.
+- The click's line is on the redrawn card: **no**
+
+### slack
+
+- At the click, the card's line: Slack connection successful
+- The card after the page redraws it:
+  - 💬
+  - Slack
+  - Healthy. Checked just now.
+- The click's line is on the redrawn card: **no**
+
+### calendar
+
+- At the click, the card's line: Google Calendar connection successful
+- The card after the page redraws it:
+  - 📅
+  - Google Calendar
+  - Healthy. Checked just now.
+- The click's line is on the redrawn card: **no**
+
+## Test All: One passes, one is refused, one couldn't be checked, one not connected
+
+State key: `test-all-mixed`
+
+- Toast (warning): **Some Tests Failed**. 1 of 4 connections successful
+
+### github
+
+- At the click, the card's line: GitHub is working, using your personal token.
+- The card after the page redraws it:
+  - 🐙
+  - GitHub
+  - Connected via your personal token. Checked just now.
+- The click's line is on the redrawn card: **no**
+
+### notion
+
+- At the click, the card's line: Invalid Notion API key [error style]
+- The card after the page redraws it:
+  - 📝
+  - Notion
+  - API key invalid or expired. Checked just now. [error style]
+- The click's line is on the redrawn card: **no**
+
+### slack
+
+- At the click, the card's line: Couldn't check this just now. Press Test to try again. [error style]
+- The card after the page redraws it:
+  - 💬
+  - Slack
+  - Connected
+  - Couldn't check this just now. Press Test to try again.
+- The click's line is on the redrawn card: yes
+
+### calendar
+
+- At the click, the card's line: Error: not_configured [error style]
+- The card after the page redraws it:
+  - 📅
+  - Google Calendar
+  - Not configured
+- The click's line is on the redrawn card: **no**
+
+## Test All: Nothing connected
+
+State key: `test-all-nothing`
+
+- Toast (warning): **Some Tests Failed**. 0 of 4 connections successful
+
+### github
+
+- At the click, the card's line: GitHub isn't connected for your account. [error style]
+- The card after the page redraws it:
+  - 🐙
+  - GitHub
+  - Not connected
+- The click's line is on the redrawn card: **no**
+
+### notion
+
+- At the click, the card's line: Error: not_configured [error style]
+- The card after the page redraws it:
+  - 📝
+  - Notion
+  - Not configured
+- The click's line is on the redrawn card: **no**
+
+### slack
+
+- At the click, the card's line: Error: not_configured [error style]
+- The card after the page redraws it:
+  - 💬
+  - Slack
+  - Not configured
+- The click's line is on the redrawn card: **no**
+
+### calendar
+
+- At the click, the card's line: Error: not_configured [error style]
+- The card after the page redraws it:
+  - 📅
+  - Google Calendar
+  - Not configured
+- The click's line is on the redrawn card: **no**
