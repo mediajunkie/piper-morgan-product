@@ -290,3 +290,26 @@ def test_the_connector_stand_in_refuses_any_other_address():
         session.get("https://example.invalid/")
     with pytest.raises(OSError):
         session.post("https://api.other.example/v1/users/me")
+
+
+# --- the confirm dialogs before a disconnect (Lead 2026-11-18, CXO's next surface) ------
+
+
+@needs_node
+def test_every_connected_card_and_disconnect_all_show_a_dialog_and_cancel_sends_nothing(text):
+    section = text[text.index("# Before a disconnect") :]
+    connected = section[: section.index("## Dialogs: Nothing connected")]
+    for card in cards.CARDS:
+        assert f"### Disconnect on {card} (`" in connected
+    assert connected.count("- Title: **") == len(cards.CARDS) + 1  # each card, then All
+    assert "No dialog." not in connected
+    assert section.count("Sent to a disconnect route after Cancel: nothing") == len(
+        cards.dialog_pages()
+    )
+
+
+@needs_node
+def test_disconnect_all_lists_the_cards_by_their_drawn_names(text):
+    row = _section(text, "dialogs-connected")
+    for name in ("Notion", "Slack", "GitHub", "Google Calendar"):
+        assert f"  > • {name}" in row

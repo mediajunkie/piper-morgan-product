@@ -33,8 +33,10 @@ the click and the line on the card are one sentence from one source; the file sa
 the click's line is on the redrawn card. The Notion, Slack and Calendar cards' Tests follow, and
 Test All: those Tests run the app's own per-connector checks, with the credential read and the
 connector's reply stubbed underneath them (a made-up key; Notion's, Slack's and Google's answers
-stood in for, so the words come from the app's code, not this file). Not yet here: the confirm
-dialogs.
+stood in for, so the words come from the app's code, not this file). Then the confirm dialogs
+before a disconnect: each card's Disconnect and Disconnect All are pressed on a drawn page, the
+page's own call to ``Dialog.confirm`` is recorded, and the dialog is answered Cancel, so nothing
+is disconnected. Not yet here: what happens after a confirmed disconnect.
 
 Usage (from the repository root, with ``node`` on PATH):
     venv/bin/python scripts/card_state_file.py                # write the file
@@ -579,6 +581,8 @@ def health_payload(user_id: str, scenario: Scenario) -> Dict[str, Any]:
 
 #: ``run_routes``'s ``test`` value that presses Test All.
 TEST_ALL = "*"
+#: ``draw``'s ``test`` name that presses every Disconnect and answers Cancel.
+DIALOGS = "dialogs"
 
 
 def run_routes(user_id: str, scenario: Scenario, test: Optional[str] = None) -> Tuple[Any, Any]:
@@ -777,6 +781,53 @@ _TEST_ALL_RUN = r"""
 """
 
 
+_DIALOG = r"""
+const toasts = [];
+const Toast = { show(kind, title, message) { toasts.push({ kind, title, message }); } };
+const dialogs = [];
+// Every dialog is answered Cancel: nothing is disconnected.
+const Dialog = { confirm: async (config) => { dialogs.push(config); return false; } };
+// Disconnect All reads the drawn cards; as in a browser, a card without a status dot (one
+// not offered in this beta) has none.
+const pageAll = document.querySelectorAll;
+document.querySelectorAll = (sel) => {
+  if (sel !== '.integration-card') return pageAll(sel);
+  const html = (elements['integrations-list'] || { innerHTML: '' }).innerHTML;
+  return html.split('id="card-').slice(1).map((chunk) => {
+    const name = chunk.slice(0, chunk.indexOf('"'));
+    const h3 = (chunk.match(/<h3>([^<]*)<\/h3>/) || [])[1];
+    const cls = (chunk.match(/class="status-dot ([^"]*)"/) || [])[1];
+    const dot = cls === undefined ? null
+      : { classList: { contains: (c) => cls.split(' ').includes(c) } };
+    return { id: 'card-' + name,
+      querySelector: (q) => (q === '.status-dot' ? dot : q === 'h3' ? { textContent: h3 } : null) };
+  });
+};
+"""
+
+_DIALOG_RUN = r"""
+(async () => {
+  await loadIntegrationsHealth();
+  await new Promise((resolve) => setTimeout(resolve, 0));
+  const html = (elements['integrations-list'] || {}).innerHTML || '';
+  const pressed = [];
+  for (const m of html.matchAll(/onclick="(disconnect[A-Za-z]*)\(([^)]*)\)"/g)) {
+    const arg = m[2].replace(/&#39;|&quot;|['"]/g, '');
+    const before = dialogs.length;
+    await eval(m[1])(arg);
+    pressed.push({ call: `${m[1]}('${arg}')`, card: arg, dialog: dialogs[before] || null });
+  }
+  const before = dialogs.length;
+  const toastsBefore = toasts.length;
+  await disconnectAllIntegrations();
+  process.stdout.write(JSON.stringify({
+    pressed, all: dialogs[before] || null, allToasts: toasts.slice(toastsBefore),
+    disconnected: fetched.filter((u) => u.includes('disconnect')),
+  }));
+})();
+"""
+
+
 def page_scripts() -> Tuple[str, str]:
     """The page's offered-connectors line, and its script from the template."""
     from services.integrations import integration_status_service
@@ -813,7 +864,10 @@ def draw(
     }
     run = _RUN
     harness = _BROWSER
-    if test is not None:
+    if test is not None and test[0] == DIALOGS:
+        harness += _DIALOG
+        run = _DIALOG_RUN
+    elif test is not None:
         url = (
             "/api/v1/integrations/test-all"
             if test[0] == TEST_ALL
@@ -939,8 +993,9 @@ def build() -> str:
         "script under node. It is not a browser and not the served app: no layout, no",
         "styling, no sign-in. The last sections press each card's Test, then Test All: the",
         "app's Test routes answer, the page shows the result, then redraws from the health",
-        "route. Not here: the confirm dialogs, the Settings index and the GitHub repository",
-        "page. The screen atlas covers layout.",
+        "route. Last, the confirm dialogs before a disconnect, answered Cancel. Not here: what",
+        "a confirmed disconnect does, the Settings index and the GitHub repository page. The",
+        "screen atlas covers layout.",
         "",
     ]
     for scenario in scenarios():
@@ -1001,6 +1056,7 @@ def build() -> str:
         out += [f"- The click's line is on the redrawn card: {'yes' if on_card else '**no**'}", ""]
     out += _connector_click_rows(user_id)
     out += _test_all_rows(user_id)
+    out += _dialog_rows(user_id)
     return "\n".join(out).rstrip() + "\n"
 
 
@@ -1044,6 +1100,64 @@ def _pressed_rows(pressed: Dict[str, Any], card: str) -> List[str]:
     on_card = any(pressed["line"] and pressed["line"] in line for line in lines)
     out += [f"- The click's line is on the redrawn card: {'yes' if on_card else '**no**'}", ""]
     return out
+
+
+def dialog_pages() -> List[Scenario]:
+    """The pages the confirm dialogs are pressed from."""
+    return [
+        Scenario("dialogs-connected", "Every card connected", generic=_all("connected")),
+        Scenario(
+            "dialogs-nothing",
+            "Nothing connected",
+            generic=_all("not_configured"),
+            github="nothing",
+        ),
+    ]
+
+
+def _dialog_rows(user_id: str) -> List[str]:
+    out = [
+        "# Before a disconnect: the confirm dialogs",
+        "",
+        "Each card's Disconnect, then Disconnect All, pressed on the drawn page. The rows are",
+        "what the page asked the dialog to show; every dialog is answered Cancel, and the last",
+        "line of each page says whether anything was sent to a disconnect route.",
+        "",
+    ]
+    for scenario in dialog_pages():
+        payload = health_payload(user_id, scenario)
+        pressed = draw(payload, scenario, test=(DIALOGS, None))
+        out += [f"## Dialogs: {scenario.title}", "", f"State key: `{scenario.key}`", ""]
+        for row in pressed["pressed"]:
+            out += [f"### Disconnect on {row['card']} (`{row['call']}`)", ""]
+            out += _dialog_lines(row["dialog"])
+        out += ["### Disconnect All", ""]
+        if pressed["all"]:
+            out += _dialog_lines(pressed["all"])
+        for toast in pressed["allToasts"]:
+            out.append(
+                f"- Toast ({toast['kind']}): **{toast['title']}**. {_shown(toast['message'])}"
+            )
+        if not pressed["all"] and not pressed["allToasts"]:
+            out.append("- No dialog and no toast.")
+        sent = ", ".join(pressed["disconnected"]) or "nothing"
+        if out[-1] != "":
+            out.append("")
+        out += [f"Sent to a disconnect route after Cancel: {sent}", ""]
+    return out
+
+
+def _dialog_lines(dialog: Optional[Dict[str, Any]]) -> List[str]:
+    if dialog is None:
+        return ["- No dialog.", ""]
+    message = [ln for ln in str(dialog.get("message", "")).split("\n")]
+    out = [f"- Title: **{_shown(str(dialog.get('title', '')))}**", "- Message:"]
+    out += [f"  > {_shown(ln)}" if ln else "  >" for ln in message]
+    out.append(
+        f"- Buttons: {dialog.get('confirmText') or 'OK'} (confirm), "
+        f"{dialog.get('cancelText') or 'Cancel'}"
+    )
+    return out + [""]
 
 
 def _test_all_rows(user_id: str) -> List[str]:
@@ -1106,7 +1220,7 @@ def main(argv=None) -> int:
         return 0
     args.out.parent.mkdir(parents=True, exist_ok=True)
     args.out.write_text(text, encoding="utf-8")
-    pressed = len(clicks()) + len(connector_clicks()) + len(test_all_clicks())
+    pressed = len(clicks()) + len(connector_clicks()) + len(test_all_clicks()) + len(dialog_pages())
     print(f"card_state_file: wrote {args.out} ({len(scenarios())} states, {pressed} presses)")
     return 0
 

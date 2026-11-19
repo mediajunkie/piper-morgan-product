@@ -8,8 +8,9 @@ Each row is the health route's own payload for that state, drawn by the page's o
 script under node. It is not a browser and not the served app: no layout, no
 styling, no sign-in. The last sections press each card's Test, then Test All: the
 app's Test routes answer, the page shows the result, then redraws from the health
-route. Not here: the confirm dialogs, the Settings index and the GitHub repository
-page. The screen atlas covers layout.
+route. Last, the confirm dialogs before a disconnect, answered Cancel. Not here: what
+a confirmed disconnect does, the Settings index and the GitHub repository page. The
+screen atlas covers layout.
 
 ## Nothing connected
 
@@ -1077,3 +1078,66 @@ State key: `test-all-nothing`
   - Google Calendar
   - Not connected
 - The click's line is on the redrawn card: **no**
+
+# Before a disconnect: the confirm dialogs
+
+Each card's Disconnect, then Disconnect All, pressed on the drawn page. The rows are
+what the page asked the dialog to show; every dialog is answered Cancel, and the last
+line of each page says whether anything was sent to a disconnect route.
+
+## Dialogs: Every card connected
+
+State key: `dialogs-connected`
+
+### Disconnect on notion (`disconnectAPIKeyIntegration('notion')`)
+
+- Title: **Disconnect Notion?**
+- Message:
+  > I'll disconnect your Notion integration. You can set it up again anytime.
+- Buttons: Disconnect (confirm), Cancel
+
+### Disconnect on slack (`disconnectIntegration('slack')`)
+
+- Title: **Disconnect Slack?**
+- Message:
+  > I'll disconnect your Slack integration. You can set it up again anytime.
+- Buttons: Disconnect (confirm), Cancel
+
+### Disconnect on github (`disconnectAPIKeyIntegration('github')`)
+
+- Title: **Disconnect Github?**
+- Message:
+  > I'll disconnect your Github integration. You can set it up again anytime.
+- Buttons: Disconnect (confirm), Cancel
+
+### Disconnect on calendar (`disconnectIntegration('calendar')`)
+
+- Title: **Disconnect Calendar?**
+- Message:
+  > I'll disconnect your Calendar integration. You can set it up again anytime.
+- Buttons: Disconnect (confirm), Cancel
+
+### Disconnect All
+
+- Title: **Disconnect all integrations?**
+- Message:
+  > I'll disconnect these integrations:
+  > • Notion
+  > • Slack
+  > • GitHub
+  > • Google Calendar
+  >
+  > You can set them up again anytime.
+- Buttons: Disconnect all (confirm), Cancel
+
+Sent to a disconnect route after Cancel: nothing
+
+## Dialogs: Nothing connected
+
+State key: `dialogs-nothing`
+
+### Disconnect All
+
+- Toast (info): **Nothing to Do**. No integrations to disconnect
+
+Sent to a disconnect route after Cancel: nothing
