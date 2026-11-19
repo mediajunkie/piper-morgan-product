@@ -590,6 +590,34 @@ def _github_disconnect_leg(credential: Any) -> str:
     return "unknown"
 
 
+async def _github_token_held(user_id: str) -> bool:
+    """Arch 01M7T6ZN3C: whether Piper holds a copy of the person's own GitHub token, read
+    from the copies ``_disconnect_github`` deletes (the Settings keychain copy, the key
+    service's copy, and the at-rest row). Connecting the app or a classic sign-in never
+    deletes an earlier token, so a grant and a token can both be held; the token then stays
+    valid at GitHub after a disconnect. Presence only: the keychain reads are judged on
+    provenance alone, and the at-rest row on its metadata (no decrypt). Any read that
+    fails answers True, so the words never claim less than may stay."""
+    try:
+        import uuid
+
+        from services.database.session_factory import AsyncSessionFactory
+        from services.infrastructure.keychain_service import KeychainService, SecretProvenance
+        from services.security.user_api_key_service import UserAPIKeyService
+
+        keychain = KeychainService()
+        for provider in ("github_token", "github"):
+            read = await keychain.aread_secret(provider, user_id)
+            if read.provenance is not SecretProvenance.VERIFIED_ABSENT:
+                return True
+        async with AsyncSessionFactory.session_scope() as session:
+            keys = await UserAPIKeyService().list_user_keys(session, uuid.UUID(str(user_id)))
+        return any(key.get("provider") == "github" for key in keys)
+    except Exception as e:  # silent-ok: logged; the leg reads "unknown", the card still draws
+        logger.warning("github_token_presence_read_failed", error_class=type(e).__name__)
+        return True
+
+
 async def _github_card_and_leg(
     metadata: Dict[str, Any], user_id: Optional[str]
 ) -> tuple[Optional[IntegrationStatus], str]:
@@ -636,6 +664,8 @@ async def _github_card_and_leg(
     adapter = GitHubMCPSpatialAdapter()
     credential = await adapter.resolve_credential(user_id)
     leg = _github_disconnect_leg(credential)
+    if leg in ("app", "oauth") and await _github_token_held(user_id):
+        leg = "unknown"  # a grant and a token at once: two legs (Arch 01M7T6ZN3C)
     if isinstance(credential, DegradationResponse):
         if credential.reason == DegradationReason.STALE_TOKEN:
             return needs_reconnecting, leg

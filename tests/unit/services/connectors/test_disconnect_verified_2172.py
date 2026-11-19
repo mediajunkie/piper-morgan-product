@@ -313,11 +313,12 @@ class TestRoutesNeverClaimSuccessOnAPartialClear:
         assert resp["success"] is True
         # CXO 2026-11-18: the place is one a person can find ("your Google account's
         # settings" for Calendar), from the one map.
-        from services.connectors.disconnect_words import REMOVE_PLACE
+        from services.connectors.disconnect_words import REMOVE_PLACE, REVOKE_AT
 
         assert resp["message"] == (
             f"{service} disconnected. Piper no longer holds your access. I couldn't revoke it "
-            f"at {service}, so it stays valid there until you remove Piper in "
+            f"at {REVOKE_AT.get(service, service)}, so it stays valid there until you remove "
+            "Piper in "
             f"{REMOVE_PLACE[service]}."
         )
 

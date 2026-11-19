@@ -129,11 +129,17 @@ def disconnect_words(connector: str, leg: Optional[str] = None) -> DisconnectWor
     return DISCONNECT_WORDS[(connector, None)]
 
 
+#: Where the access was granted, for the revoke line (CXO 2026-11-19: Calendar's access is
+#: granted at Google).
+REVOKE_AT = {"Google Calendar": "Google"}
+
+
 def revoke_failed_line(service: str) -> str:
     """Piper's copies are gone but the provider-side revoke failed (CXO 10-25, place fixed
     11-18). Added to the success message, in warning style."""
+    at = REVOKE_AT.get(service, service)
     return (
-        f"Piper no longer holds your access. I couldn't revoke it at {service}, so it stays "
+        f"Piper no longer holds your access. I couldn't revoke it at {at}, so it stays "
         f"valid there until you remove Piper in {REMOVE_PLACE[service]}."
     )
 

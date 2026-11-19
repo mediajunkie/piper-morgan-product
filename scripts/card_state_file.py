@@ -121,6 +121,9 @@ class Scenario:
     # Notion, Slack, Calendar: what their Test meets, per card (see _CONNECTOR_OUTCOMES); a
     # card not named meets no stored credential
     tests: Dict[str, str] = field(default_factory=dict)
+    # Whether Piper also holds the person's own GitHub token beside a grant (Arch 01M7T6ZN3C:
+    # a grant plus a token is two legs, so a disconnect's leg is unknown)
+    token_held: bool = False
 
 
 def _all(state: str) -> Dict[str, str]:
@@ -628,6 +631,11 @@ def run_routes(user_id: str, scenario: Scenario, test: Optional[str] = None) -> 
         stack.enter_context(patch(f"{_ROUTES}._get_test_result_store", new=lambda: store))
         stack.enter_context(patch(f"{_ADAPTER}.resolve_credential", new=resolve))
         stack.enter_context(patch(f"{_ADAPTER}.account_login", new=account_login))
+
+        async def token_held(*args, **kwargs):
+            return scenario.token_held
+
+        stack.enter_context(patch(f"{_ROUTES}._github_token_held", new=token_held))
         # The route turns a failure into a "couldn't check" card, so a state that reached
         # for the network would draw the wrong words quietly. Refuse and stop instead.
         reached: List[str] = []
@@ -1214,6 +1222,13 @@ def dialog_pages() -> List[Scenario]:
             "Every card connected, GitHub through the app",
             generic=_all("connected"),
             github="app",
+        ),
+        Scenario(
+            "dialogs-github-app-and-token",
+            "Every card connected, GitHub through the app with a saved token too",
+            generic=_all("connected"),
+            github="app",
+            token_held=True,
         ),
         Scenario(
             "dialogs-github-classic",

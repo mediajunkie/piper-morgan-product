@@ -1183,6 +1183,55 @@ State key: `dialogs-github-app`
 
 Sent to a disconnect route after Cancel: nothing
 
+## Dialogs: Every card connected, GitHub through the app with a saved token too
+
+State key: `dialogs-github-app-and-token`
+
+### Disconnect on notion (`disconnectAPIKeyIntegration('notion')`)
+
+- Title: **Disconnect Notion?**
+- Message:
+  > I'll delete the copy of your Notion key that Piper holds. The key stays valid in Notion until you remove the integration there. You can connect it again anytime.
+- Buttons: Disconnect (confirm), Cancel
+
+### Disconnect on slack (`disconnectIntegration('slack')`)
+
+- Title: **Disconnect Slack?**
+- Message:
+  > I'll disconnect Slack and revoke Piper's access there. You can connect it again anytime.
+- Buttons: Disconnect (confirm), Cancel
+
+### Disconnect on github (`disconnectAPIKeyIntegration('github')`)
+
+- Title: **Disconnect GitHub?**
+- Message:
+  > I'll disconnect GitHub. If you connected it with the Piper GitHub app or a personal token, that stays on at GitHub until you remove it in GitHub's settings. You can connect it again anytime.
+- Buttons: Disconnect (confirm), Cancel
+
+### Disconnect on calendar (`disconnectIntegration('calendar')`)
+
+- Title: **Disconnect Google Calendar?**
+- Message:
+  > I'll disconnect Google Calendar and revoke Piper's access there. You can connect it again anytime.
+- Buttons: Disconnect (confirm), Cancel
+
+### Disconnect All
+
+- Title: **Disconnect all integrations?**
+- Message:
+  > I'll disconnect these:
+  > • Notion
+  > • Slack
+  > • GitHub
+  > • Google Calendar
+  >
+  > Notion also needs you to remove Piper in its settings, and GitHub may too if you connected it with the app or a token.
+  >
+  > You can connect them again anytime.
+- Buttons: Disconnect all (confirm), Cancel
+
+Sent to a disconnect route after Cancel: nothing
+
 ## Dialogs: Every card connected, GitHub with a classic sign-in
 
 State key: `dialogs-github-classic`
@@ -1508,7 +1557,7 @@ State key: `disconnect-calendar-cleared`
 
 State key: `disconnect-calendar-revoke-failed`
 
-- Toast (warning): **Disconnected**. Google Calendar disconnected. Piper no longer holds your access. I couldn't revoke it at Google Calendar, so it stays valid there until you remove Piper in your Google account's settings.
+- Toast (warning): **Disconnected**. Google Calendar disconnected. Piper no longer holds your access. I couldn't revoke it at Google, so it stays valid there until you remove Piper in your Google account's settings.
 - calendar after the redraw:
   - 📅
   - Google Calendar

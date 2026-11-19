@@ -93,6 +93,7 @@ def test_github_with_no_leg_or_a_leg_the_map_lacks_is_unknown_never_a_guess():
 
 
 def test_the_revoke_line_names_a_place_a_person_can_find():
+    assert "I couldn't revoke it at Google, so" in revoke_failed_line("Google Calendar")
     assert revoke_failed_line("Google Calendar").endswith(
         "until you remove Piper in your Google account's settings."
     )
@@ -197,3 +198,65 @@ def test_the_card_leg_comes_from_the_resolvers_answer():
     assert _github_disconnect_leg(cred(leg="pat", stale_oauth_reason=stale)) == "unknown"
     degraded = DegradationResponse(reason=DegradationReason.UNREACHABLE, user_message="x")
     assert _github_disconnect_leg(degraded) == "unknown"
+
+
+# --- a grant and a token at once (Arch 01M7T6ZN3C) -----------------------------------
+
+META = {"display_name": "GitHub", "configure_url": "/settings/integrations/github"}
+
+
+async def _leg_with(credential, held):
+    from web.api.routes import integrations as routes
+
+    async def resolve(*args, **kwargs):
+        return credential
+
+    async def token_held(user_id):
+        if isinstance(held, Exception):
+            raise held
+        return held
+
+    async def login(*args, **kwargs):
+        return "octo-example"
+
+    with (
+        patch(
+            "services.mcp.consumer.github_adapter.GitHubMCPSpatialAdapter.resolve_credential",
+            new=resolve,
+        ),
+        patch(
+            "services.mcp.consumer.github_adapter.GitHubMCPSpatialAdapter.account_login",
+            new=login,
+        ),
+        patch.object(routes, "_github_token_held", new=token_held),
+    ):
+        _card, leg = await routes._github_card_and_leg(META, "u-1")
+    return leg
+
+
+def _grant(app_grant):
+    return SimpleNamespace(leg="oauth", app_grant=app_grant, stale_oauth_reason=None, token="t")
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize("app_grant", [True, False])
+async def test_a_grant_plus_a_saved_token_is_the_unknown_leg(app_grant):
+    assert await _leg_with(_grant(app_grant), held=True) == "unknown"
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize("app_grant,leg", [(True, "app"), (False, "oauth")])
+async def test_a_grant_with_no_token_keeps_its_leg(app_grant, leg):
+    assert await _leg_with(_grant(app_grant), held=False) == leg
+
+
+@pytest.mark.asyncio
+async def test_a_failed_presence_read_is_the_unknown_leg():
+    """The read itself answers True on any failure, so the leg is unknown."""
+    from web.api.routes import integrations as routes
+
+    with patch(
+        "services.infrastructure.keychain_service.KeychainService.aread_secret",
+        side_effect=RuntimeError("store down"),
+    ):
+        assert await routes._github_token_held("u-1") is True
