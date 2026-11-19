@@ -204,7 +204,10 @@ class TestProjectMetadataGate:
     async def test_not_configured_degrades_honestly(self, handlers):
         with patch(f"{SVC}.is_configured", new=AsyncMock(return_value=False)):
             md = await handlers._get_project_metadata(["Proj A"], user_id="u1")
-        assert md == {"__degrade_reason__": DegradationReason.NOT_CONFIGURED}
+        assert md == {
+            "__degrade_reason__": DegradationReason.NOT_CONFIGURED,
+            "__degrade_connector__": "GitHub",
+        }
 
     @pytest.mark.asyncio
     async def test_configured_user_passes_the_gate(self, handlers):
@@ -217,7 +220,10 @@ class TestProjectMetadataGate:
             DS.return_value.get_connection_status.return_value = {"connected": False}
             md = await handlers._get_project_metadata(["Proj A"], user_id="u1")
         # passes the gate; the (legacy PAT-side) connection check governs after
-        assert md == {"__degrade_reason__": DegradationReason.CONNECT_REQUIRED}
+        assert md == {
+            "__degrade_reason__": DegradationReason.CONNECT_REQUIRED,
+            "__degrade_connector__": "GitHub",
+        }
 
 
 # ---------------------------------------------------------------------------
@@ -251,4 +257,7 @@ class TestPriorityMetadataBindingFirst:
     async def test_truly_unconfigured_still_degrades(self, handlers):
         with patch(f"{SVC}.is_configured", new=AsyncMock(return_value=False)):
             md = await handlers._get_priority_metadata(user_id="u1")
-        assert md == {"degrade_reason": DegradationReason.NOT_CONFIGURED}
+        assert md == {
+            "degrade_reason": DegradationReason.NOT_CONFIGURED,
+            "degrade_connector": "GitHub",
+        }

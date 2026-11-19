@@ -46,8 +46,11 @@ _NUDGES = {
 }
 
 
-def degrade_nudge(reason: DegradationReason, connector: str = "GitHub") -> str:
+def degrade_nudge(reason: DegradationReason, connector: str) -> str:
     """The user-facing "connect me / here's what's missing" line for a degradation reason.
+
+    ``connector`` is the display name the caller degraded on (the ``STALE_FACTS`` key); it
+    has no default, so a path that forgets it fails instead of reading as GitHub (#2407).
 
     Returns '' for an unknown/None reason (caller then stays silent — but callers should
     only invoke this when they have a real reason, so silence here is a defensive default,
