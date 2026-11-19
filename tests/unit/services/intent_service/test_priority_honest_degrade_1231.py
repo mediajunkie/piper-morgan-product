@@ -34,7 +34,10 @@ _SVC = "services.integrations.integration_status_service.IntegrationStatusServic
 async def test_priority_metadata_not_configured_is_not_configured_reason(handlers):
     with patch(f"{_SVC}.is_configured", new=AsyncMock(return_value=False)):
         md = await handlers._get_priority_metadata(user_id="u1")
-    assert md == {"degrade_reason": DegradationReason.NOT_CONFIGURED}  # onboard gap
+    assert md == {
+        "degrade_reason": DegradationReason.NOT_CONFIGURED,
+        "degrade_connector": "GitHub",
+    }  # onboard gap
 
 
 @pytest.mark.asyncio
@@ -45,13 +48,18 @@ async def test_priority_metadata_not_connected_is_connect_required_reason(handle
     ):
         DS.return_value.get_connection_status.return_value = {"connected": False}
         md = await handlers._get_priority_metadata(user_id="u1")
-    assert md == {"degrade_reason": DegradationReason.CONNECT_REQUIRED}  # reconnect gap
+    assert md == {
+        "degrade_reason": DegradationReason.CONNECT_REQUIRED,
+        "degrade_connector": "GitHub",
+    }  # reconnect gap
 
 
 def test_detailed_priorities_surfaces_nudge_from_reason(handlers):
     uc = MagicMock(organization=None)
     out = handlers._format_detailed_priorities(
-        ["Ship beta"], uc, {"degrade_reason": DegradationReason.NOT_CONFIGURED}
+        ["Ship beta"],
+        uc,
+        {"degrade_reason": DegradationReason.NOT_CONFIGURED, "degrade_connector": "GitHub"},
     )
     assert "connect" in out.lower()  # honest nudge, not silent
     assert "Ship beta" in out
@@ -73,7 +81,10 @@ async def test_project_metadata_not_configured_reason(handlers):
     # this degrade, including connected ones.
     with patch(f"{_SVC}.is_configured", new=AsyncMock(return_value=False)):
         md = await handlers._get_project_metadata(["Proj A"], user_id="u1")
-    assert md == {"__degrade_reason__": DegradationReason.NOT_CONFIGURED}
+    assert md == {
+        "__degrade_reason__": DegradationReason.NOT_CONFIGURED,
+        "__degrade_connector__": "GitHub",
+    }
 
 
 @pytest.mark.asyncio
@@ -84,14 +95,20 @@ async def test_project_metadata_not_connected_reason(handlers):
     ):
         DS.return_value.get_connection_status.return_value = {"connected": False}
         md = await handlers._get_project_metadata(["Proj A"], user_id="u1")
-    assert md == {"__degrade_reason__": DegradationReason.CONNECT_REQUIRED}
+    assert md == {
+        "__degrade_reason__": DegradationReason.CONNECT_REQUIRED,
+        "__degrade_connector__": "GitHub",
+    }
 
 
 def test_degrade_nudge_helper_surfaces_on_reason_else_silent(handlers):
     assert (
         "connect"
         in handlers._degrade_nudge(
-            {"__degrade_reason__": DegradationReason.CONNECT_REQUIRED}
+            {
+                "__degrade_reason__": DegradationReason.CONNECT_REQUIRED,
+                "__degrade_connector__": "GitHub",
+            }
         ).lower()
     )
     assert handlers._degrade_nudge({}) == ""
@@ -104,8 +121,8 @@ def test_degrade_nudge_helper_surfaces_on_reason_else_silent(handlers):
 def test_policy_distinguishes_onboard_from_reconnect():
     """The whole point of the NOT_CONFIGURED enum-add (Arch): onboard vs reconnect get
     DIFFERENT copy, not one collapsed message."""
-    onboard = degrade_nudge(DegradationReason.NOT_CONFIGURED)
-    reconnect = degrade_nudge(DegradationReason.CONNECT_REQUIRED)
+    onboard = degrade_nudge(DegradationReason.NOT_CONFIGURED, "GitHub")
+    reconnect = degrade_nudge(DegradationReason.CONNECT_REQUIRED, "GitHub")
     assert onboard and reconnect
     assert onboard != reconnect
     assert "set up" in onboard.lower()  # onboard framing
@@ -114,11 +131,19 @@ def test_policy_distinguishes_onboard_from_reconnect():
 
 def test_policy_is_connector_parameterized():
     assert "Calendar" in degrade_nudge(DegradationReason.CONNECT_REQUIRED, connector="Calendar")
-    assert "GitHub" in degrade_nudge(DegradationReason.CONNECT_REQUIRED)  # default
+    assert "GitHub" in degrade_nudge(DegradationReason.CONNECT_REQUIRED, "GitHub")
+
+
+def test_the_nudge_has_no_connector_default_2407():
+    """#2407 (Arch): a path that forgets its connector fails, never reads as GitHub."""
+    import inspect
+
+    param = inspect.signature(degrade_nudge).parameters["connector"]
+    assert param.default is inspect.Parameter.empty
 
 
 def test_policy_unknown_reason_is_empty():
-    assert degrade_nudge(None) == ""
+    assert degrade_nudge(None, "GitHub") == ""
 
 
 def test_every_degradation_reason_has_nudge_copy():

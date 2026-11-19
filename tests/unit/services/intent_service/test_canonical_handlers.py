@@ -3173,7 +3173,10 @@ class TestIntegrationTipLogic847:
             # Not configured → #1231 honest-degrade reason (was silent {})
             from services.mcp.consumer.connector import DegradationReason
 
-            assert result == {"degrade_reason": DegradationReason.NOT_CONFIGURED}
+            assert result == {
+                "degrade_reason": DegradationReason.NOT_CONFIGURED,
+                "degrade_connector": "GitHub",
+            }
 
     @pytest.mark.asyncio
     async def test_get_calendar_context_returns_none_without_user_id(self, canonical_handlers):

@@ -1387,7 +1387,11 @@ class CanonicalHandlers:
             # reason→copy policy — not a silent omission, not an inline string.
             from services.intent_service.degradation_copy import degrade_nudge
 
-            details.append(f"\n\n*{degrade_nudge(priority_metadata['degrade_reason'])}*")
+            # #2407: the connector the metadata degraded on, never a default.
+            nudge = degrade_nudge(
+                priority_metadata["degrade_reason"], priority_metadata["degrade_connector"]
+            )
+            details.append(f"\n\n*{nudge}*")
 
         if user_context.organization:
             details.append(f"\n\nOrganization context: {user_context.organization}")
@@ -1728,11 +1732,12 @@ class CanonicalHandlers:
             return ""
         from services.intent_service.degradation_copy import degrade_nudge
 
-        return f"\n\n*{degrade_nudge(reason)}*"
+        # #2407: the connector the metadata degraded on, never a default.
+        return f"\n\n*{degrade_nudge(reason, metadata['__degrade_connector__'])}*"
 
     async def _get_project_metadata(
         self, projects: list, user_id: Optional[str] = None
-    ) -> Dict[str, Dict]:
+    ) -> Dict[str, Any]:
         """
         Issue #18: Get real project metadata from GitHub.
 
@@ -1761,7 +1766,10 @@ class CanonicalHandlers:
                 from services.mcp.consumer.connector import DegradationReason
 
                 logger.debug("GitHub not configured — honest-degrade (#1231)")
-                return {"__degrade_reason__": DegradationReason.NOT_CONFIGURED}
+                return {
+                    "__degrade_reason__": DegradationReason.NOT_CONFIGURED,
+                    "__degrade_connector__": "GitHub",
+                }
 
             # Import and instantiate GitHub domain service
             from services.domain.github_domain_service import GitHubDomainService
@@ -1774,7 +1782,10 @@ class CanonicalHandlers:
                 from services.mcp.consumer.connector import DegradationReason
 
                 logger.debug("GitHub not connected — honest-degrade (#1231)")
-                return {"__degrade_reason__": DegradationReason.CONNECT_REQUIRED}
+                return {
+                    "__degrade_reason__": DegradationReason.CONNECT_REQUIRED,
+                    "__degrade_connector__": "GitHub",
+                }
 
             # Get repositories list (#1723: async since the adapter implemented it)
             repos = await github_service.list_repositories()
@@ -1859,7 +1870,10 @@ class CanonicalHandlers:
                     from services.mcp.consumer.connector import DegradationReason
 
                     logger.debug("GitHub not configured for user — honest-degrade (#1231)")
-                    return {"degrade_reason": DegradationReason.NOT_CONFIGURED}
+                    return {
+                        "degrade_reason": DegradationReason.NOT_CONFIGURED,
+                        "degrade_connector": "GitHub",
+                    }
             except Exception as e:  # silent-ok: degrades to empty context, but LOGGED — this block's own comment says "never a silent {}" and the exception path was doing exactly that (#1423 3b)
                 logger.warning("github_status_probe_failed", error=str(e), user_id=user_id)
                 return {}
@@ -1876,7 +1890,10 @@ class CanonicalHandlers:
                 from services.mcp.consumer.connector import DegradationReason
 
                 logger.debug("GitHub not connected — honest-degrade (#1231)")
-                return {"degrade_reason": DegradationReason.CONNECT_REQUIRED}
+                return {
+                    "degrade_reason": DegradationReason.CONNECT_REQUIRED,
+                    "degrade_connector": "GitHub",
+                }
 
             # Get default repository from the user-scoped resolver (#1366 Component A).
             # piper_config_loader.load_github_config().default_repository is a single

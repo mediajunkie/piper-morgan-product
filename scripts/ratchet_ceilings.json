@@ -11,7 +11,7 @@
   "mypy_await_not_async": 0,
   "mypy_call_arg": 3,
   "mypy_call_overload": 6,
-  "mypy_dict_item": 5,
+  "mypy_dict_item": 3,
   "mypy_func_returns_value": 0,
   "mypy_has_type": 2,
   "mypy_index": 10,
