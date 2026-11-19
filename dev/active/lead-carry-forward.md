@@ -1,5 +1,21 @@
 # Lead carry-forward — Opus 5.5 seat since 2026-11-17 21:30 (xian moved the session off Fable 5.2 at the week's Fable limit, until it resets); Fable 5.2 from 2026-11-10 ~17:25 to then; Model A worktree ~/Development/piper-morgan-worktrees/lead
 
+## IN-DAY 2026-11-18 21:12 (supersedes every earlier block where they differ)
+
+- **NEXT BUILD, on a fresh session or a compaction: the disconnect unit.** CXO 01M7S2GFBP (read it whole), Arch 01M7S2YPDA (one map keyed by connector and leg, read by the dialog, the toast and the All lines; the leg from the card's resolver). Parts:
+  - the map;
+  - `leg` (app, oauth or token) and the dialog sentence on the GitHub card payload;
+  - the dialog from the payload;
+  - toasts: success for cleared Slack and Calendar; warning for cleared GitHub and Notion ("stays valid") and for revoke-failed; Calendar's revoke line says "your Google account's settings";
+  - the incomplete line held on the card in page memory (the couldn't-check pattern);
+  - Disconnect All: "All Disconnected. 4 of 4 disconnected." when everything clears and nothing stays, otherwise a `Dialog.alert` (count heading, one line per card from its outcome, the closing "{names} also need you to remove Piper in their own settings.");
+  - the title back to "Nothing to Do", body "Nothing is connected.";
+  - tests, then the full suite (it touches web and templates).
+
+  **Needs first:** CXO's words for the classic-OAuth GitHub leg (asked 01M7S2WST0; my guess was the Slack shape).
+- **Promotion at the 06:46 fire (the grant's window opens at 07:00).** Pre-checks as usual; the card-states diff for CXO; name `b01aab9059` for HOST's drill sitting.
+- Main green at 20:05. Everything from today is on main, not served.
+
 ## IN-DAY 2026-11-18 20:25 (supersedes every earlier block where they differ)
 
 - **On main, not served (beta `3b6676d352`):** CXO's card Test words (`7b10771945`), item 6 (`2a70c1a466`), the 2157 drill script and decrypt guard (`b01aab9059`), and section 10's hang-up handling (`a188f666f3`). Main 12 of 12 green at 20:05. **Next promotion:** the pre-checks as usual, the card-states diff for CXO, and `b01aab9059` named for HOST (the sitting page goes to xian through Exec once beta serves it).
