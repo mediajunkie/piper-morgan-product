@@ -1,31 +1,27 @@
 # Comms carry-forward
 
-## ⭐ CURRENT STATE — 2026-11-17 21:19 PT (STOP). Read this first. It supersedes everything below.
-- **Log 11-17:** `dev/2026/11/17/2026-11-17-0619-comms-code-log.md` (DAY-CLOSED). Tomorrow creates a new log.
+## ⭐ CURRENT STATE — 2026-11-18 21:19 PT (STOP). Read this first. It supersedes everything below.
+- **Log 11-18:** `dev/2026/11/18/2026-11-18-0619-comms-code-log.md` (DAY-CLOSED). Tomorrow creates a new log.
 - **Pace (xian, 11-02):** keep working, not racing. Drain rule holds. No nudges to xian about posts (Exec 11-12).
-- **Draft-state check:** `git log -1 --format='%h %ad %an' -- <one path>` per draft. Admin-UI edits arrive as his commits (memory feedback_check_each_draft_with_its_own_git_log, after 11-17's miss).
-- **"The Wall" PUBLISHED 11-17 20:30 and distributed (Medium only).** Done.
-- **CADENCE RULED (xian 11-17, decisions.log 20:26):** Ship on Tuesday from #070 (11-24; Ships #070-#073 moved to Tue 11-24, 12-01, 12-08, 12-15), narrative Thursday, insight on the weekend (usually Saturday). No narrative Thanksgiving week (no Thu 11-26). Ship #069 stays Wed 11-18. Docs date-gated the validator (slot_for, new table from 11-20). Syndication unchanged: narrative = Medium only, insight = Medium + LinkedIn, Ship = LinkedIn only.
-- **Thu 11-19 "Inviting Company In" (building, arc 1, xian's title):** SCAFFOLD DONE 11-17 at `docs/public/comms/drafts/inviting-company-in.md`, row `drafted`. Sep 19 to Oct 7, six beats, three through-lines for him to pick. Waits on his prose. Footer tease = the Sat 11-21 insight once he picks it.
-- **⚠ The Wall's LIVE footer says "our first outside tester asks to join". WRONG.** Invites had gone out since 07-12, and an outside signup happened 09-02. The fix ("a new outside tester") needs xian's OK, then Docs edits the published post. Asked 11-17 21:21 in chat.
-- **Sketch put to xian 11-17 ~20:30, AWAITING his four answers.** No calendar rows past 11-19 until he says yes.
-  1. Is the sketch OK as tentative? Narratives: Thu 12-03 "Ready or Not" (late Oct; start ~Oct 20 to cover the Oct 8-28 gap), Thu 12-10 "Open, Then Hold", Thu 12-17 "What the Beta Is Teaching Us". Insights: Sat 11-28 "Test the Page You Draw", Sat 12-05 "A Record Is Not a Delivery", Sat 12-12 "A Deletion Can Fail Its Own Gate", Sat 12-19 from the next mining pass (Nov 17 to Dec 3, about Dec 4).
-  2. Sat 11-21 = "A Blocker Framed as Yes or No"? It needs a scaffold by Fri 11-20.
-  3. Thu 12-24: run, move or skip?
-  4. Era 8 "The Beta" from 10-31 (Era 7 ends 10-30)? On yes, mail Web (`src/lib/episodes.ts` in the website repo) and Docs (post cluster tags). Ship #069 is the first post fully in the beta, so it should be tagged then or re-tagged later.
-- **Mining pass Nov 6-16 done 11-17** (results in the 11-17 log at 20:27; 5 of 5 spot-checked quotes match). The unused older pool is listed there too. "One Account Means One Hand" is USED (ran 11-14 as "Which Agent Did It?"). There are no unpublished insight drafts.
-- **Ship #069 "Off-Limits by Default" (Wed 11-18):** my scaffold `docs/public/comms/drafts/weekly-ship-069-draft-2026-11-17.md`, last d879ced1da 14:06 (added xian's 11-17 spend framing as a fact, hers to publish or not). No prose from xian yet. When it lands: fact-check against the scaffold, run the audit with the Ship calibration, then PUBLISH-READY. Open calls for xian: (a) the alt typo "vending machin e", fixed only with his OK; (b) narrower-grants wording (#2374/#2379 open, "you choose the repositories").
-- **CIO ask (11-16):** the first time a push of mine prints `already passed on this content`, mail CIO that line. Not seen yet.
-- **Buttondown (Exec v1012 follow-up 5):** answered 01M7KP117X: the rollup's 11-03 v4 text is current; whether it's pasted in Buttondown is xian's login.
-- **CIO's script rule (corrected 11-16):** only `scripts/alpha-setup.sh` is banned on Amber; no compose up/down on the shared stack.
-- **Arcs (adopted 11-14):** map in planning doc (Claude Docs 5vc7f1CTHhadvvPBB73h86, rev 36). Arc 1 is now "Inviting Company In" (Thu 11-19).
-- **BETA_ rename:** stub removal waits on HOST.
-- **Two-week sprints from Fri 11-13.** #069 ordinary, #070 first progress, #071 first final score.
-- **Keychain rule (xian 11-11; #2353):** nothing we run reads xian's login keychain without his permission.
-- **Mail v4 live;** v3 is the fallback until 11-23.
-- **Invites held (xian 11-04)** until #1551, #2261 and #2178 are done. **Waiting list (#2256):** xian first, then HOST. **HOLD (PDR-102):** no ownership claim in copy.
-- **Rule 8:** no outside person named anywhere in the repo.
-- **Standing:** mining pass Nov 6-16 done 11-17; next about Fri 12-04 (Nov 17 to Dec 3). "What changed" note at the first user-visible Production ship (#2342 candidate).
+- **Draft-state check:** `git log -1 --format='%h %ad %s' -- <one path>` per draft, plus `git -C <shared checkout> status --short docs/public/comms/drafts/` (read-only).
+- **Clock rule LIVE (752547e88e, xian approved 11-18 10:39, decisions.log):** no estimated `HH:Mx` minute, future time or `~` heading in logs, carry-forward, standing items, briefing or decisions.log; mail4 refuses one in a body. Quote a time in backticks. Helper: `scripts/log-entry.sh "title"`.
+- **CADENCE (xian 11-17):** Ship Tuesday from #070 (11-24), narrative Thursday, insight Saturday. No Thu 11-26, no Thu 12-24.
+- **Ship #069 "Off-Limits by Default":** PUBLISHED and DISTRIBUTED 11-18 (LinkedIn). Done. Ship hero is always piper-ship.webp (memory feedback_ship_hero_is_always_piper_ship).
+- **"The Wall" footer fixed** ("a new outside tester asks to join") on site, Medium and archive. Done.
+- **Era 8 "The Beta" starts 10-31** (xian 11-18).
+- **Calendar sketch APPROVED as tentative (xian 11-18, "adapt as we go").** Rows and scaffolds:
+  - Thu 11-19 "Inviting Company In" (arc 1): scaffold `docs/public/comms/drafts/inviting-company-in.md`, row drafted. **Waits on xian's prose** (unchanged since e404b1c16d 10:35 as of 21:19). Footer tease names Sat 11-21.
+  - Sat 11-21 "A Blocker Framed as Yes or No": scaffold `a-blocker-framed-as-yes-or-no.md`, row drafted. Waits on prose. Tease: Sat 11-28.
+  - Sat 11-28 "Test the Page You Draw": scaffold `test-the-page-you-draw.md`, row drafted. Tease: Thu 12-03.
+  - Thu 12-03 "Ready or Not" (arc 2, Oct 20-31): scaffold `ready-or-not.md`, row drafted. Beat 2 is headline-sourced only; source line by line if xian keeps it. Overlaps "At Long Last, Beta".
+  - Tentative rows, no scaffold yet: Sat 12-05 "A Record Is Not a Delivery", Thu 12-10 "Open, Then Hold", Sat 12-12 "A Deletion Can Fail Its Own Gate", Thu 12-17 "What the Beta Is Teaching Us", Sat 12-19 placeholder (next mining pass). **Trigger for 12-05/12-10/12-12 scaffolds: Thu 11-19 lands.**
+- **Title lock:** 11-21, 11-28 and 12-03 titles need xian's confirmation before the preceding post goes to Docs (xian: "will verify titles later").
+- **When a post's prose lands:** review, fact-check against the scaffold, template-audit, PUBLISH-READY to Docs.
+- **CIO ask (11-16):** first push printing `already passed on this content` → mail CIO that line. Not seen yet.
+- **Mining pass next about Fri 12-04** (Nov 17 to Dec 3).
+- **Mail v4 live;** v3 fallback until 11-23.
+- **Arcs (adopted 11-14):** map in planning doc (Claude Docs 5vc7f1CTHhadvvPBB73h86).
+- **Standing rules:** keychain off-limits (never `=keychain`); only `scripts/alpha-setup.sh` banned on Amber, no compose up/down; invites held (xian 11-04); HOLD (PDR-102) no ownership claim in copy; Rule 8 no outside names; never mail or cc PM.
 
 ## OLDER STATE blocks pruned 2026-11-06 (10-14 to 11-04). They are in git history and in the dated session logs.
 
