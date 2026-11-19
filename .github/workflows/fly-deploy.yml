@@ -552,6 +552,13 @@ jobs:
           # closed, so nothing unsafe could ship, but (c) was inert.
           scripts/check-release-parity.sh "${{ steps.img.outputs.sha }}"
 
+      # #2354 (Arch 11-18, mail 01M7RJEDRW: only tightens; xian's standing word for stricter
+      # promote-gate edits): print the conduct layer's size in the deploy log; above the cap the
+      # module exits 1 and the promote stops. Run by path, not -m: -m imports the package's __init__
+      # (classifier, structlog), which this job never installs. The file alone imports only __future__.
+      - name: Conduct layer size (prints; fails the promote above the cap)
+        run: python3 services/intent_service/conduct_layer.py
+
       - name: Copy that exact image into alpha's own registry repository
         id: copy
         env:
