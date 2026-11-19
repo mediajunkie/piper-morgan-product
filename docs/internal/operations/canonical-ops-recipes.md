@@ -480,13 +480,20 @@ gives him one command instead of a list of steps with placeholders to edit. The 
    in shell history. A child process gets a secret through its environment or stdin.
 3. **It does every step itself,** including starting and stopping helpers such as `fly proxy`, and it
    stops them on every path, failures included. If a step fails, it prints the error and stops before
-   the next one.
+   the next one. **"Every path" includes the window closing and a kill** (CIO, 2026-11-18, reading
+   #2157's drill): `try/finally` runs on an exception and on Ctrl-C, but not on SIGHUP or SIGTERM, which
+   end Python without it. A script that makes something outside the machine (an app, a database, a copy
+   of data) sets handlers for both that raise KeyboardInterrupt, and its output tolerates a closed
+   terminal (an OSError on a write), so cleanup finishes. A test raises an interrupt mid-run and checks
+   that cleanup ran.
 4. **It prints one marked block to paste back,** and nothing secret is in that block. If any step ever
    prints a value the run holds, that value is replaced with `[hidden]`.
 5. **If the procedure replaces a secret** (a GitHub refresh replaces the refresh token), the script
    shows the new one once, only when he answers yes, and outside the block.
-6. **Unit tests pin rules 2 to 4:** no secret in argv or in the block, helpers stopped on every path,
-   and a failed first step stops the run. xian's first run is the served check, and no seat can stand in
+6. **Unit tests pin rules 2 to 4:** no secret in argv or in the block, helpers stopped on every path
+   (an interrupt included), and a failed first step stops the run. A credential sent to a local helper
+   (a `fly proxy` port) goes only after a check that the helper is the one listening: the port was free
+   before it started, and its process is still running. xian's first run is the served check, and no seat can stand in
    for it.
 7. **The seat that needs the result writes the script.** The issue or memo that asks xian gives him the
    one command line, and never asks him to paste a secret into a session, memo, issue or chat.
