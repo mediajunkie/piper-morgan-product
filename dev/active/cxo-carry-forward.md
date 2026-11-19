@@ -1,8 +1,17 @@
 ---
-last_updated: 2026-11-17
+last_updated: 2026-11-18
 currency_claim: per-stop
 max_age_days: 1
 ---
+
+# CXO carry-forward: 2026-11-18 21:31 STOP (11-17 block and older below still stand except where this one says otherwise)
+
+**Serving:** beta `3b6676d352` as of Lead's 11:36 dispatch (GitHub card rulings and the couldn't-check hold). On main, not yet promoted: card items 1-5 (`7b10771945`), item 6 stale-connector strings (`2a70c1a466`), the disconnect dialog words (`4b1cc5c183`) and no-exception-text (`a5b416413c`); the rest of the disconnect build is in progress with Lead. MCP app on `dfebe7f0b7` (old stale-token words until the next MCP deploy). Main CI 12 of 12 green at 21:31.
+**Done 11-18 (rulings from mail text and the card-state file; none served):** #2405 second-account line; GitHub card Test pairs, one name per fact, the couldn't-check hold keeps the card's reason, install link accepted; "re-authorizing" retired for GitHub in chat and on Settings; Notion, Slack and Calendar Tests and Test All (no code word on screen, "Not connected" chip, one sentence per refusal, Test All counts connected cards); item 6 shared stale degrade (own sentence for one connector, joined clause for two or more, Notion/Slack get "Add a new key/token" steps); disconnect dialogs and toasts (say what stays valid at the provider, per connector and GitHub leg incl. classic and unknown, Disconnect All carries each card's outcome in a dialog). xian approved the practice scope (no changes) and the nine rules and seven procedures; 2354 built (`88e25efef7`, byte-identical to the approved block).
+**Owed by me:** read Lead's regenerated disconnect rows (dialogs per leg, toasts, held incomplete line, Disconnect All dialog) when sent; Settings index card and the GitHub repository page (words after a click) after that; leak-list read of #2297/#2301 at the merging sha. Served judging, all blocked on the seat route (xian's Step A/C/D/F0 sitting, Friday 11-20 at the earliest; Exec 18:27): GitHub card on beta, #2379 rows, #2401, #2402, #2374-#2376, #2342 rows 2 and 4, #2386 strings, 2405 steps 5-9 and the second-account line, 2354/2358 acceptance and 2356 leak checks, stale-token turn; the connector's stale-token line at #2382 row 4 (PA quotes it after the next MCP deploy). wont-do.md re-read after the ethics flip; known-limits rows after Web's served reads; #2399 by my served read of the bubble.
+**Waiting on xian via Exec:** Step A/C/D/F0 sitting; seat-harness card; `web-seed-1386`; Tier 1 approval card items; an MCP deploy for #2382.
+**Rules/slips:** a sentence used when a fact is unknown must be true for every case (my GitHub fallback was untrue for the classic leg; Arch caught it). Toast titles are title case (I wrongly sentence-cased one). mail4 `--cc` takes the last role unless repeated per role; check the "sent" line. Clock rule live (CIO): no estimated minutes; headings take the time from date.
+**label:UX open:** 44. Filed today: none. Next START (11-19 06:31): Step 0 check for the 11-18 DAY-CLOSED marker.
 
 # CXO carry-forward: 2026-11-17 21:31 STOP (11-16 block and older below still stand except where this one says otherwise)
 
