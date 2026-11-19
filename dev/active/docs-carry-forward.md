@@ -1,8 +1,15 @@
 # Docs Carry-Forward
 
-**Updated**: 2026-11-17 22:12. Older state lives in the session logs (`dev/2026/{10,11}/*/*docs-code-log.md`), not here. `gh`: prefix `GODEBUG=netdns=go` if bare `gh` hangs.
+**Updated**: 2026-11-18 22:12. Older state lives in the session logs (`dev/2026/{10,11}/*/*docs-code-log.md`), not here. `gh`: prefix `GODEBUG=netdns=go` if bare `gh` hangs.
 
-## NOW (11-17 22:12)
+## NOW (11-18 22:12)
+- **11-18 done:** 11-17 omnibus landed, Step 1d sent. Guide status/check wording matches Lead's 2404 driver and the 2405 fix. Practice scope recorded. The Wall footer fixed live. Era 8 "The Beta" live (Web); Ship #069 published (the-beta), image piper-ship.webp, LinkedIn in, row distributed, draft archived. CI 12 of 12 green, mail 0 unacked.
+- **Blockers:** Step A is xian's, Fri 11-20 at Amber (I relay his WAITING line to Exec, never touch the key). Guide served read of steps 5 to 9 and the chat check waits on 2405 promotion (Lead); then remove "(not yet run)" markers only as verified and tell CIO the day it ran. Consider a guide line for a second account on one install. Second-copy PIPER_STACK lines in step 3 unrun.
+- **Owed 11-19 04:12 START:** the 11-18 omnibus (Sonnet subagent, 11-17 omnibus as model, then verify) and Step 1d. Calendar: Thu 11-19 "Inviting Company In" publishes only on a Comms PUBLISH-READY (building, Medium only). From Tue 11-24 Ships go Tuesday (validator gated 11-20). CIO's hook ask: mail the `gates already passed` line on the first push taking the remembered-pass path.
+- **Held:** b-wont-do, d-known-limits, b-github-access (#2342), glossary re-verify about 11-30, #2249, monthly audit Dec 7.
+- **Mistakes to not repeat:** mail before the push it describes; guessed times (use scripts/log-entry.sh); the website blog-metadata.csv has mixed CRLF/LF, edit it bytewise never through csv.writer; "done" is a keyword in zsh for-loops (do not `ack ... done` inside one); no `timeout` on macOS; format .py with scripts/ensure-ruff.sh before pushing.
+
+## (earlier) NOW (11-17 22:12)
 - **11-17 done:** practice.md approved (xian, no changes), manifest approved set, 25 rows 0 errors. "The Wall" published 20:30 and on Medium (draft archived, row distributed). Syndication map fixed in my own skills (insight LI+Medium, narrative Medium only, Ship LI only). Cadence ruling applied: validator `slot_for` gated at 2026-11-20 (Ship Tue, narrative Thu, insight weekend), briefing table and publish-to-blog updated. CI 12 of 12 green, mail 0 unacked.
 - **Blockers:** Ship #069 (Wed 11-18, `drafted`) publishes only on a Comms PUBLISH-READY (full pre-flight, diff two copies, image vs alt, slot check, dry-run). Guide steps 5, 6, 7, 9 and chat check: step 5 needs a person; 6, 7, 9, chat via Lead's issue 2404 seeded-key driver, then I write the guide's check section and by-layer status line (person's wording "a short reply appears, with no error"; question "What can you help me with?") and remove "(not yet run)" markers as verified. Step A is xian's, Friday 11-20 at Amber; I relay his WAITING line to Exec, never touch the key. Second-copy PIPER_STACK lines in step 3 unrun.
 - **Owed 11-18 04:12 START:** the 11-17 omnibus (Sonnet subagent, 11-16 omnibus as model, then verify) and Step 1d (DAY-CLOSED nudges). CIO's hook ask: mail the `gates already passed` line the first time a push takes the remembered-pass path.
