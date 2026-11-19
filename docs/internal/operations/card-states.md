@@ -1184,7 +1184,7 @@ State key: `disconnect-github-incomplete`
 
 State key: `disconnect-github-raised`
 
-- Toast (error): **Disconnect Failed**. Failed to disconnect GitHub: Sample error text from a failed Test
+- Toast (error): **Disconnect Failed**. I couldn't fully disconnect GitHub: a saved copy of your access may still be stored, so Piper may still be able to use it. Try Disconnect again; if it keeps failing, tell us.
 - github after the redraw:
   - 🐙
   - GitHub
@@ -1226,7 +1226,7 @@ State key: `disconnect-notion-incomplete`
 
 State key: `disconnect-notion-raised`
 
-- Toast (error): **Disconnect Failed**. Failed to disconnect Notion: Sample error text from a failed Test
+- Toast (error): **Disconnect Failed**. I couldn't fully disconnect Notion: a saved copy of your access may still be stored, so Piper may still be able to use it. Try Disconnect again; if it keeps failing, tell us.
 - notion after the redraw:
   - 📝
   - Notion
@@ -1268,7 +1268,7 @@ State key: `disconnect-slack-incomplete`
 
 State key: `disconnect-slack-raised`
 
-- Toast (error): **Disconnect Failed**. Failed to disconnect Slack: Sample error text from a failed Test
+- Toast (error): **Disconnect Failed**. I couldn't fully disconnect Slack: a saved copy of your access may still be stored, so Piper may still be able to use it. Try Disconnect again; if it keeps failing, tell us.
 - slack after the redraw:
   - 💬
   - Slack
@@ -1310,7 +1310,7 @@ State key: `disconnect-calendar-incomplete`
 
 State key: `disconnect-calendar-raised`
 
-- Toast (error): **Disconnect Failed**. Failed to disconnect Calendar: Sample error text from a failed Test
+- Toast (error): **Disconnect Failed**. I couldn't fully disconnect Google Calendar: a saved copy of your access may still be stored, so Piper may still be able to use it. Try Disconnect again; if it keeps failing, tell us.
 - calendar after the redraw:
   - 📅
   - Google Calendar

@@ -358,6 +358,12 @@ def _disconnected_message(service: str, result) -> str:
     return message
 
 
+def _disconnect_outcome(result) -> str:
+    """Arch 2026-11-18: a stable code beside the sentence (``cleared``, ``revoke_failed``,
+    ``incomplete``), so Disconnect All counts and groups on it, never on the words."""
+    return "revoke_failed" if result.provider_revoke_failed else "cleared"
+
+
 def _disconnect_incomplete(service: str):
     """The route's answer when ``DisconnectResult.cleared`` is False (#2172): a 503 whose
     ``detail`` the page shows, never ``success: true``."""
@@ -366,7 +372,7 @@ def _disconnect_incomplete(service: str):
     line = DISCONNECT_INCOMPLETE_LINE.format(service=service)
     return JSONResponse(
         status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
-        content={"success": False, "detail": line, "message": line},
+        content={"success": False, "detail": line, "message": line, "outcome": "incomplete"},
     )
 
 
@@ -667,14 +673,15 @@ async def disconnect_slack(current_user: JWTClaims = Depends(get_current_user)):
         return {
             "success": True,
             "message": _disconnected_message("Slack", result),
+            "outcome": _disconnect_outcome(result),
         }
 
     except Exception as e:
         logger.error("slack_disconnect_failed", error=str(e), exc_info=True)
-        raise HTTPException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Failed to disconnect Slack: {str(e)}",
-        )
+        # Arch 2026-11-18: the error goes to the log above, never into a response (it
+        # can carry a URL, a query or a token fragment). A raise may have stopped
+        # anywhere, so the one true sentence is the incomplete line.
+        return _disconnect_incomplete("Slack")
 
 
 # ============================================================================
@@ -1699,14 +1706,15 @@ async def disconnect_calendar(
         return {
             "success": True,
             "message": _disconnected_message("Google Calendar", result),
+            "outcome": _disconnect_outcome(result),
         }
 
     except Exception as e:
         logger.error("calendar_disconnect_failed", error=str(e), exc_info=True)
-        raise HTTPException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Failed to disconnect Calendar: {str(e)}",
-        )
+        # Arch 2026-11-18: the error goes to the log above, never into a response (it
+        # can carry a URL, a query or a token fragment). A raise may have stopped
+        # anywhere, so the one true sentence is the incomplete line.
+        return _disconnect_incomplete("Google Calendar")
 
 
 # ============================================================================
@@ -2019,14 +2027,15 @@ async def disconnect_notion(current_user: JWTClaims = Depends(get_current_user))
         return {
             "success": True,
             "message": "Notion disconnected",
+            "outcome": _disconnect_outcome(result),
         }
 
     except Exception as e:
         logger.error("notion_disconnect_failed", error=str(e), exc_info=True)
-        raise HTTPException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Failed to disconnect Notion: {str(e)}",
-        )
+        # Arch 2026-11-18: the error goes to the log above, never into a response (it
+        # can carry a URL, a query or a token fragment). A raise may have stopped
+        # anywhere, so the one true sentence is the incomplete line.
+        return _disconnect_incomplete("Notion")
 
 
 # ============================================================================
@@ -2476,14 +2485,15 @@ async def disconnect_github(current_user: JWTClaims = Depends(get_current_user))
             "success": True,
             # #2178: plus CXO's line when GitHub's revoke failed (never on a PAT-only account).
             "message": _disconnected_message("GitHub", result),
+            "outcome": _disconnect_outcome(result),
         }
 
     except Exception as e:
         logger.error("github_disconnect_failed", error=str(e), exc_info=True)
-        raise HTTPException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Failed to disconnect GitHub: {str(e)}",
-        )
+        # Arch 2026-11-18: the error goes to the log above, never into a response (it
+        # can carry a URL, a query or a token fragment). A raise may have stopped
+        # anywhere, so the one true sentence is the incomplete line.
+        return _disconnect_incomplete("GitHub")
 
 
 # ============================================================================
