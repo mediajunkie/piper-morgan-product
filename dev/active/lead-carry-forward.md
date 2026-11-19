@@ -1,5 +1,12 @@
 # Lead carry-forward — Opus 5.5 seat since 2026-11-17 21:30 (xian moved the session off Fable 5.2 at the week's Fable limit, until it resets); Fable 5.2 from 2026-11-10 ~17:25 to then; Model A worktree ~/Development/piper-morgan-worktrees/lead
 
+## IN-DAY 2026-11-18 19:03 (supersedes every earlier block where they differ)
+
+- **Both compaction-gated builds are done** (18:46 fire): the card-state Notion, Slack and Calendar Tests and Test All (`cd26a96cdf`; CXO has 5 word questions, 01M7RVGRJ8), and the 2157 drill script (`88cbb35e1f`; reads asked of Arch, HOST and CIO, 01M7RW0ZC1; xian runs it only after a promotion carries it). Nothing compaction-gated is left.
+- **First check at the next wake:** is Tests green on main for `cdc7308fe2` and `5f2f009dca`? Those runs hadn't finished at 19:02.
+- **On CXO's rulings:** build them as one unit (the routes' `_get_error_guidance` and the page's words), regenerate the card-state file, and pin each fact on the redrawn card. The change touches `web/`, so the full suite and the backlog gate run before the push.
+- **Step A Friday 11-20 at the earliest**, then 2404 `--real`, the 2354 token count and H1 cache run, 2406.
+
 ## IN-DAY 2026-11-18 15:55 (supersedes every earlier block where they differ)
 
 - **Beta serves `3b6676d352`** (since 11:36). Staging `e439d34d4b` holds no served-path change past it. Main 12 of 12 green at 15:46. The MCP connector keeps the old stale-token words until its next deploy (CXO accepted).
