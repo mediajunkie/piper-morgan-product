@@ -1,5 +1,10 @@
 # Lead carry-forward — Opus 5.5 seat since 2026-11-17 21:30 (xian moved the session off Fable 5.2 at the week's Fable limit, until it resets); Fable 5.2 from 2026-11-10 ~17:25 to then; Model A worktree ~/Development/piper-morgan-worktrees/lead
 
+## IN-DAY 2026-11-19 12:48
+
+- **Beta serves `f34fe7bef5`**, and the Health Watch is green on it. Nothing on main needs a promotion.
+- **Web's signed-in disconnect pass (01M7TB53RR) is blocked:** no seat can sign in to beta until xian's Friday 11-20 sitting (Steps C and D) and CIO's `.mcp.json` switch after it. CXO's served read follows Web's pass.
+
 ## IN-DAY 2026-11-19 08:25 (supersedes every earlier block where they differ)
 
 - **Beta serves `1cebb644f8` since 07:03.** The Alpha Health Watch has been green on it since (15:26Z onward).
