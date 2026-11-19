@@ -659,7 +659,7 @@ class LLMClient:
         # — there is no server-key fallback (PM ruling, #1812; the operator seam is
         # gone since step 5). Always a fresh per-request client, billed to the acting
         # user. The key is never logged here.
-        from services.llm.cacheable_prompt import anthropic_user_content
+        from services.llm.cacheable_prompt import anthropic_system_content, anthropic_user_content
         from services.llm.request_key import anthropic_client_for_request
 
         _client_started = time.monotonic()
@@ -679,7 +679,8 @@ class LLMClient:
 
         # Add system prompt if provided
         if system:
-            request_params["system"] = system
+            # #2354: a CacheablePrompt system gets its own breakpoint after its prefix.
+            request_params["system"] = anthropic_system_content(system)
 
         # Note: Anthropic doesn't support response_format like OpenAI
         # JSON mode must be handled via prompt engineering

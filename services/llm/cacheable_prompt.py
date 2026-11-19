@@ -33,3 +33,15 @@ def anthropic_user_content(prompt: str):
             {"type": "text", "text": str(prompt[n:])},
         ]
     return str(prompt)
+
+
+def anthropic_system_content(system: str):
+    """#2354: the ``system`` parameter: a plain string, or text blocks with the
+    cache breakpoint after the static prefix (the reply prompt's fixed part)."""
+    n = getattr(system, "cache_prefix_len", 0)
+    if isinstance(system, CacheablePrompt) and 0 < n <= len(system):
+        blocks = [{"type": "text", "text": str(system[:n]), "cache_control": {"type": "ephemeral"}}]
+        if n < len(system):
+            blocks.append({"type": "text", "text": str(system[n:])})
+        return blocks
+    return str(system)

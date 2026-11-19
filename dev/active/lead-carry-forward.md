@@ -1,5 +1,12 @@
 # Lead carry-forward — Opus 5.5 seat since 2026-11-17 21:30 (xian moved the session off Fable 5.2 at the week's Fable limit, until it resets); Fable 5.2 from 2026-11-10 ~17:25 to then; Model A worktree ~/Development/piper-morgan-worktrees/lead
 
+## IN-DAY 2026-11-18 15:55 (supersedes every earlier block where they differ)
+
+- **Beta serves `3b6676d352`** (since 11:36). Staging `e439d34d4b` holds no served-path change past it. Main 12 of 12 green at 15:46. The MCP connector keeps the old stale-token words until its next deploy (CXO accepted).
+- **2354 built after the compaction** (`services/intent_service/conduct_layer.py`, the floor prefix with its own breakpoint, 19 tests). Push after the full suite and the backlog gate read clean, then: report to Arch (conformance, the denial-turn prefix may sit under 1,024, the deploy-log print as an only-tightens gate edit) and a comment on 2354 with Verified how.
+- **Next, a fresh session or a compaction:** card-state Test All plus the Notion, Slack and Calendar Tests (one unit); the 2157 restore-drill script (HOST v2 plus Arch's Redis answer).
+- **Step A Friday 11-20 at the earliest**, then 2404 `--real`, the 2354 token count and H1 cache run, 2406.
+
 ## IN-DAY 2026-11-18 09:38 (supersedes every earlier block where they differ)
 
 - **Beta serves `58b19c7f3a`** since 08:51 (2405, 2403). **On main, not served: CXO's GitHub card rulings** (`85c4717da1`): one name per fact ("GitHub no longer accepts your connection."), "Not connected", the own-token card line, #2053 retired, the couldn't-check line held in page memory (`check_ran`). Full suite 6 failed (backlog), 21338 passed. **Asked Arch for a grant** (mail 01M7QVS7S5). On his grant: the pre-checks as at 08:47 (Tests green on staging's commit or its nearest tested ancestor; by hand, nothing under `templates/` or `cli/` since; beta quiet; hold file; 0 alembic; Alpha Health Watch; re-read the inbox), then dispatch and report with the card-states diff.
