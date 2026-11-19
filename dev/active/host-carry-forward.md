@@ -1,10 +1,12 @@
 ---
-last_updated: 2026-11-17
+last_updated: 2026-11-18
 currency_claim: per-stop
 max_age_days: 1
 ---
 
 # HOST carry-forward
+
+**11-18 21:26 STOP (current; 11-17 block below is older)**: Done 11-18: 2404 driver custody read (conforms, two asks met at 9344bd3c51); #2157 restore-drill read (my first read too wide; CIO's three findings owned; re-read at b01aab9059 conforms; CIO and Arch closed too); xian's drill page `docs/internal/operations/restore-drill-2157-xian-sitting.md` written (hung-destroy line added); clock rule live; xian's three words in the custody table; linked billing parked. Still open: drill goes to xian via Exec only after a promotion carries b01aab9059 (I check beta's served commit first); Step A Reads Friday 11-20 on Exec's "go"; first --check web waits on xian Steps C, D; hook untested in six seats; ops_reader route diffs (#2390, #2391); Pard push-check hook reinstall; Role Health Check ~11-23; Agent 360 v0.6 ~12-04. Offered Arch a read of where the 2405 saved key lands if it crosses stores.
 
 **11-17 21:26 STOP (current; blocks below are older)**: Step A is Friday 11-20 (xian away from Amber): my two Reads (Lead's settings.local.json by full path; CIO's decoy `cio/.env`) run only after Exec mails "Step A started" then "go"; reply "refused"/"not refused", nothing from the file. Steps C, D, F0 script half wait on xian the same day. Owed reads: Lead's restore-drill script (#2157), the 2404 scratch-DB driver (holds the seat key), ops_reader route diffs (#2390, #2391), CIO's push-check hook reinstall by Pard. Custody rows owed as steps land (C, D, F, G3, H; first real session and --check web run). Hook tested in 5 of 11 seats (CIO, PA, Arch, HOST, Exec); six untested. Role Health Check ~11-23; Agent 360 v0.6 ~12-04. 11-17 closed items: env-file check skipped by xian ("Yes, skip and fix"; issue 2403 is the path), test workspace $40 read by xian ($16.19 spent), spend tone noted, Lead role card points to xian's promote-gate standing word. Waiting: xian (Steps C, D, F0), Exec ("go"), Lead (drill script, 2404 driver).
 
