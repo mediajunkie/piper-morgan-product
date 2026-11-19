@@ -821,7 +821,7 @@ Brake FIRED (second slip = #1965 admission, found and ledgered 10-09). Memo to E
 - **Invite hold, PDR-008.** Re-verified 11-18 21:33 with `gh issue view`: #2261, #2282 and #2342 are OPEN. The lift-readiness memo to Exec waits on #2342's served rows, #2261's close and #2282. It is the week's goal 1, which xian said yes to.
 - **xian's Amber Terminal steps (A, C, D, F0) wait until Fri 11-20** at the earliest (Exec 01M7P7NMPD). Until then: no paid runs, no signed-in beta reads, no seat browser, no seat-github-1. When Exec mails "Step A started", nobody runs `scripts/sync-pm-local.sh` until "done" or "stopped".
 - **ADR-084** steps file: `docs/internal/operations/adr-084-one-time-steps.md`. Step B is done. Organisation limit $250; seat bounds $150 and $40. Nothing is routed to xian's screen.
-- **Beta serves `3b6676d352` since 11-18 11:36** (CXO's GitHub card wording, 0b1c352c0b). Before it: `58b19c7f3a` from 08:51 (2405, 2403), and `d678b0af26` from 11-17 11:31 (2401, 2402). None of these has been read signed in.
+- **Beta serves `f34fe7bef5` (built 11-19 08:17; PPM /health 09:33: disconnect line, the grant-plus-token unknown leg, 2407).** Before it `3b6676d352` since 11-18 11:36 (CXO's GitHub card wording, 0b1c352c0b). Before it: `58b19c7f3a` from 08:51 (2405, 2403), and `d678b0af26` from 11-17 11:31 (2401, 2402). None of these has been read signed in.
 - **Waiting, each with its blocker:**
   - Step D: the signed-in reads of 2379, 2401 and 2402, and 2400 row 1 (the seat browser), then the `.mcp.json` switch.
   - Step A:
@@ -835,7 +835,7 @@ Brake FIRED (second slip = #1965 admission, found and ledgered 10-09). Memo to E
   - 2403 row 4 is a person's check (a clean-shell server start and alembic). The other three rows conform (Arch 08:21).
   - 2399 (H), and the served reads of 2375, 2374 and 2376: waiting on 2388, 2400 and 2381.
 - **Self-knowledge:** xian approved the nine rules (#2354) and the seven procedures list (#2358) on 11-18. Arch ruled 12:04 that 2354 needs no rule-7 run if the layer goes only in the floor's reply prompt, so it can land before Friday with no spend; Lead builds it in a fresh session. 2358 builds in PPM's 11-13 order. The practice scope was ruled deliberate on 11-18 ("yes, no changes needed now"), and practice.md is approved.
-- **Production 330** (`gh` 11-18 21:35 = Total), map **v172**, 0 unmilestoned, 0 Production closes on 11-18. Placed 11-18: 2405 (D, beside 2386), 2406 (E, beside 2354), 2407 (H, beside 2399; Arch's degrade_nudge GitHub default, not urgent).
+- **Production 329** (11-19 09:33: 2407 closed 07:43, served on f34fe7bef5; map v173). Before: **330** (`gh` 11-18 21:35 = Total), map **v172**, 0 unmilestoned, 0 Production closes on 11-18. Placed 11-18: 2405 (D, beside 2386), 2406 (E, beside 2354), 2407 (H, beside 2399; Arch's degrade_nudge GitHub default, not urgent).
 - **OWED rows:**
   - 2364-known-limit: trigger is 2388's first real run.
   - 2364-untested-provider-row: trigger is the 2390 route.
