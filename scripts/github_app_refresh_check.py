@@ -39,6 +39,7 @@ import argparse
 import getpass
 import json
 import os
+import signal
 import socket
 import subprocess  # noqa: S404 - runs flyctl and the sibling check script, fixed argv
 import sys
@@ -245,6 +246,30 @@ def has_terminal() -> bool:
         return False
 
 
+def _interrupt(signum, frame):
+    raise KeyboardInterrupt
+
+
+class hangups_interrupt:
+    """Section 10 rule 3 (CIO 11-18): a closed window (SIGHUP) or a kill (SIGTERM) takes
+    the Ctrl-C path, so the run's ``finally`` still stops what it started. The previous
+    handlers come back on exit."""
+
+    def __enter__(self):
+        self._before = {}
+        for sig in (signal.SIGHUP, signal.SIGTERM):
+            try:
+                self._before[sig] = signal.signal(sig, _interrupt)
+            except ValueError:  # not the main thread: nothing to install
+                pass
+        return self
+
+    def __exit__(self, *exc):
+        for sig, handler in self._before.items():
+            signal.signal(sig, handler)
+        return False
+
+
 def main(argv: Optional[List[str]] = None, terminal: Callable[[], bool] = has_terminal) -> int:
     p = argparse.ArgumentParser(description="ADR-081 D3 refresh check as one command (#2341)")
     p.add_argument("--repo", default=DEFAULT_REPO, help="the TEST repository (owner/name)")
@@ -282,16 +307,17 @@ def main(argv: Optional[List[str]] = None, terminal: Callable[[], bool] = has_te
         held += [new_token, new_refresh]
         lines.append(old_token_line(secrets["old_token"]))
         proxy = None
-        try:
-            if ns.mcp_url:
-                mcp_url = ns.mcp_url
-            else:
-                proxy = start_proxy()
-                mcp_url = f"http://localhost:{SIDECAR_PORT}/mcp"
-            code, table = run_check(ns, mcp_url, new_token)
-            lines.append(table)
-        finally:
-            stop_proxy(proxy)
+        with hangups_interrupt():
+            try:
+                if ns.mcp_url:
+                    mcp_url = ns.mcp_url
+                else:
+                    proxy = start_proxy()
+                    mcp_url = f"http://localhost:{SIDECAR_PORT}/mcp"
+                code, table = run_check(ns, mcp_url, new_token)
+                lines.append(table)
+            finally:
+                stop_proxy(proxy)
         if "FAIL" in lines[1]:
             code = code or 1
 

@@ -24,6 +24,7 @@ python3 scripts/restore_drill_2157.py --org <fly org slug>
 
 - It always tries to destroy what it made, even after an error or Ctrl-C or a closed window. It prints "If this stops, destroy these by hand: ..." with the three names before it starts. If you see any of those names still in `fly apps list`, destroy them: `fly apps destroy <name> --yes`, and only names starting `pm-restore-drill-`.
 - A stopped step names its reason. Five things are unverified from a seat (the image's JSON shape, a snapshot-made cluster taking the new password, the copy reaching its database and Redis, staged secrets reaching the machine, beta's image booting without ChromaDB or GitHub MCP). Any of them can stop the run; the copy is still destroyed.
+- If a destroy hangs, press Ctrl-C (once cleanup starts the script ignores a closed window or a kill), then destroy the three printed names by hand.
 - `--keep` leaves the copy up for you to look at. Don't use it unless asked; the copy holds everyone's data.
 
 ## What the block can say

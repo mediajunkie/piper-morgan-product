@@ -416,3 +416,34 @@ def test_the_shared_chroma_folder_comes_from_docker_inspect(g):
     )
     assert g.chroma_source_from("") is None
     assert g.chroma_source_from("Error: no such object") is None
+
+
+def test_a_hang_up_takes_the_ctrl_c_path_and_handlers_come_back(g):
+    """Section 10 rule 3 (CIO 11-18): a closed window or a kill runs the cleanup."""
+    import signal
+
+    before = signal.getsignal(signal.SIGHUP)
+    with g.hangups_interrupt():
+        assert signal.getsignal(signal.SIGHUP) is g._interrupt
+        assert signal.getsignal(signal.SIGTERM) is g._interrupt
+        with pytest.raises(KeyboardInterrupt):
+            g._interrupt(signal.SIGHUP, None)
+    assert signal.getsignal(signal.SIGHUP) is before
+
+
+def test_main_runs_inside_the_hang_up_guard(g, monkeypatch):
+    import signal
+
+    seen = []
+
+    class FakeRun:
+        def __init__(self, *a):
+            pass
+
+        def execute(self):
+            seen.append(signal.getsignal(signal.SIGTERM))
+            return 0
+
+    monkeypatch.setattr(g, "Run", FakeRun)
+    assert g.main(["--stub"]) == 0
+    assert seen == [g._interrupt] and signal.getsignal(signal.SIGTERM) is not g._interrupt
