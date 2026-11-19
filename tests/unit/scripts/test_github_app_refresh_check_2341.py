@@ -224,3 +224,34 @@ def test_without_a_terminal_it_refuses_before_any_prompt(monkeypatch, capsys):
     code = rc.main(["--uninstalled-private-repo", "o/private"], terminal=lambda: False)
     assert code == 2
     assert rc.NO_TERMINAL in capsys.readouterr().out
+
+
+def test_a_hang_up_takes_the_ctrl_c_path_and_handlers_come_back():
+    """Section 10 rule 3 (CIO 11-18): a closed window or a kill still stops the proxy."""
+    import signal
+
+    before = signal.getsignal(signal.SIGTERM)
+    with rc.hangups_interrupt():
+        assert signal.getsignal(signal.SIGHUP) is rc._interrupt
+        with pytest.raises(KeyboardInterrupt):
+            rc._interrupt(signal.SIGTERM, None)
+    assert signal.getsignal(signal.SIGTERM) is before
+
+
+def test_the_proxy_is_stopped_when_a_hang_up_lands_mid_check(monkeypatch, capsys):
+    stopped = []
+    monkeypatch.setattr(rc, "ask_secrets", lambda: {"old_token": "o", "refresh_token": "r"})
+    monkeypatch.setattr(
+        rc, "refresh", lambda s: ({"access_token": "n", "refresh_token": "m"}, "refresh ok")
+    )
+    monkeypatch.setattr(rc, "old_token_line", lambda t: "old line")
+    monkeypatch.setattr(rc, "start_proxy", lambda: "proxy")
+    monkeypatch.setattr(rc, "stop_proxy", lambda p: stopped.append(p))
+
+    def hang_up(*a):
+        raise KeyboardInterrupt
+
+    monkeypatch.setattr(rc, "run_check", hang_up)
+    with pytest.raises(KeyboardInterrupt):
+        rc.main(["--uninstalled-private-repo", "o/p"], terminal=lambda: True)
+    assert stopped == ["proxy"]

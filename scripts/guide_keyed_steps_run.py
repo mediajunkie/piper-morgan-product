@@ -78,6 +78,7 @@ import os
 import re
 import secrets
 import shutil
+import signal
 import socket
 import subprocess
 import sys
@@ -1227,6 +1228,30 @@ def _dirty() -> bool:
     return bool(_git("status", "--porcelain", "--", "services", "web", "templates", "main.py"))
 
 
+def _interrupt(signum, frame):
+    raise KeyboardInterrupt
+
+
+class hangups_interrupt:
+    """Section 10 rule 3 (CIO 11-18): a closed window (SIGHUP) or a kill (SIGTERM) takes
+    the Ctrl-C path, so the run's ``finally`` still stops what it started. The previous
+    handlers come back on exit."""
+
+    def __enter__(self):
+        self._before = {}
+        for sig in (signal.SIGHUP, signal.SIGTERM):
+            try:
+                self._before[sig] = signal.signal(sig, _interrupt)
+            except ValueError:  # not the main thread: nothing to install
+                pass
+        return self
+
+    def __exit__(self, *exc):
+        for sig, handler in self._before.items():
+            signal.signal(sig, handler)
+        return False
+
+
 def main(argv: Optional[List[str]] = None) -> int:
     ap = argparse.ArgumentParser(description="Run the self-host guide's keyed steps (issue 2404).")
     mode = ap.add_mutually_exclusive_group(required=True)
@@ -1237,7 +1262,8 @@ def main(argv: Optional[List[str]] = None) -> int:
     # Before anything this process imports could call load_dotenv: no .env, here either.
     os.environ["PYTHON_DOTENV_DISABLED"] = "1"
     try:
-        return Run("real" if args.real else "stub", args.turns, os.environ).execute()
+        with hangups_interrupt():
+            return Run("real" if args.real else "stub", args.turns, os.environ).execute()
     except Refused as refusal:
         print(f"guide_keyed_steps_run: stopped: {refusal}", file=sys.stderr)
         return 2
