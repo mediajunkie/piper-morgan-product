@@ -36,7 +36,9 @@ connector's reply stubbed underneath them (a made-up key; Notion's, Slack's and 
 stood in for, so the words come from the app's code, not this file). Then the confirm dialogs
 before a disconnect: each card's Disconnect and Disconnect All are pressed on a drawn page, the
 page's own call to ``Dialog.confirm`` is recorded, and the dialog is answered Cancel, so nothing
-is disconnected. Not yet here: what happens after a confirmed disconnect.
+is disconnected. Then a confirmed disconnect, outcome by outcome: the app's own disconnect route
+runs with the one clearing call underneath it (``disconnect_connector``) stood in for, the page
+shows its toast, and the card is redrawn from the health route.
 
 Usage (from the repository root, with ``node`` on PATH):
     venv/bin/python scripts/card_state_file.py                # write the file
@@ -583,6 +585,8 @@ def health_payload(user_id: str, scenario: Scenario) -> Dict[str, Any]:
 TEST_ALL = "*"
 #: ``draw``'s ``test`` name that presses every Disconnect and answers Cancel.
 DIALOGS = "dialogs"
+#: ``draw``'s ``test`` name that presses one Disconnect (or All, "*") and confirms it.
+CONFIRMED = "confirmed"
 
 
 def run_routes(user_id: str, scenario: Scenario, test: Optional[str] = None) -> Tuple[Any, Any]:
@@ -828,6 +832,67 @@ _DIALOG_RUN = r"""
 """
 
 
+_CONFIRMED = r"""
+const toasts = [];
+const Toast = { show(kind, title, message) { toasts.push({ kind, title, message }); } };
+const dialogs = [];
+const Dialog = { confirm: async (config) => { dialogs.push(config); return true; } };
+console.error = () => {};
+const pageAll2 = document.querySelectorAll;
+document.querySelectorAll = (sel) => {
+  if (sel !== '.integration-card') return pageAll2(sel);
+  const html = (elements['integrations-list'] || { innerHTML: '' }).innerHTML;
+  return html.split('id="card-').slice(1).map((chunk) => {
+    const name = chunk.slice(0, chunk.indexOf('"'));
+    const h3 = (chunk.match(/<h3>([^<]*)<\/h3>/) || [])[1];
+    const cls = (chunk.match(/class="status-dot ([^"]*)"/) || [])[1];
+    const dot = cls === undefined ? null
+      : { classList: { contains: (c) => cls.split(' ').includes(c) } };
+    return { id: 'card-' + name,
+      querySelector: (q) => (q === '.status-dot' ? dot : q === 'h3' ? { textContent: h3 } : null) };
+  });
+};
+let drawnOnce = false;
+const pageFetch2 = fetch;
+fetch = async (url, options) => {
+  const m = url.match(/^\/api\/v1\/settings\/integrations\/([a-z_]+)\/disconnect$/);
+  if (m) {
+    fetched.push(url);
+    const r = INPUT.replies[m[1]];
+    return { ok: r.status >= 200 && r.status < 300, status: r.status, json: async () => r.body };
+  }
+  if (url === INPUT.health_url) {
+    fetched.push(url);
+    const body = drawnOnce ? INPUT.after : INPUT.health;
+    drawnOnce = true;
+    return { ok: true, status: 200, json: async () => body };
+  }
+  return pageFetch2(url, options);
+};
+"""
+
+_CONFIRMED_RUN = r"""
+(async () => {
+  await loadIntegrationsHealth();
+  await new Promise((resolve) => setTimeout(resolve, 0));
+  if (INPUT.press === '*') {
+    await disconnectAllIntegrations();
+  } else {
+    const html = (elements['integrations-list'] || {}).innerHTML || '';
+    const m = [...html.matchAll(/onclick="(disconnect[A-Za-z]*)\(([^)]*)\)"/g)]
+      .find((x) => x[2].replace(/&#39;|&quot;|['"]/g, '') === INPUT.press);
+    await eval(m[1])(INPUT.press);
+  }
+  for (let i = 0; i < 10; i++) await new Promise((resolve) => setTimeout(resolve, 0));
+  process.stdout.write(JSON.stringify({
+    toasts, list: (elements['integrations-list'] || {}).innerHTML || '',
+    link: elements[LINK] ? { text: elements[LINK].textContent, cls: elements[LINK].className } : null,
+    disconnected: fetched.filter((u) => u.includes('disconnect')),
+  }));
+})();
+"""
+
+
 def page_scripts() -> Tuple[str, str]:
     """The page's offered-connectors line, and its script from the template."""
     from services.integrations import integration_status_service
@@ -867,6 +932,12 @@ def draw(
     if test is not None and test[0] == DIALOGS:
         harness += _DIALOG
         run = _DIALOG_RUN
+    elif test is not None and test[0] == CONFIRMED:
+        press, replies, after = test[1]
+        given.update(press=press, replies=replies, after=after)
+        harness = _BROWSER.replace("async function fetch", "let fetch = async function")
+        harness += _CONFIRMED
+        run = _CONFIRMED_RUN
     elif test is not None:
         url = (
             "/api/v1/integrations/test-all"
@@ -879,6 +950,8 @@ def draw(
         run = _TEST_ALL_RUN if test[0] == TEST_ALL else _CLICK_RUN
     # The shell loads the shared escape helpers before any page script (#1582).
     shared = (ROOT / "web" / "static" / "js" / "escape.js").read_text(encoding="utf-8")
+    # The page's own <script src> before its inline script (templates/integrations.html).
+    shared += (ROOT / "web" / "static" / "js" / "api-error-parser.js").read_text(encoding="utf-8")
     js = f"const INPUT = {json.dumps(given)};\n" + harness + shared + offered + script + run
     done = subprocess.run(["node", "-e", js], capture_output=True, text=True, timeout=60)
     if done.returncode != 0:
@@ -1057,6 +1130,7 @@ def build() -> str:
     out += _connector_click_rows(user_id)
     out += _test_all_rows(user_id)
     out += _dialog_rows(user_id)
+    out += _confirmed_rows(user_id)
     return "\n".join(out).rstrip() + "\n"
 
 
@@ -1147,6 +1221,119 @@ def _dialog_rows(user_id: str) -> List[str]:
     return out
 
 
+#: What the clearing call under a disconnect route can meet. ``revoke_failed``: Piper holds
+#: nothing, the provider-side revoke failed; ``incomplete``: a copy is still stored or
+#: couldn't be read back; ``raised``: the call failed (the sample text stands in for it).
+_DISCONNECT_OUTCOMES = (
+    ("cleared", "Every copy is gone"),
+    ("revoke_failed", "Piper holds nothing; the revoke at the provider failed"),
+    ("incomplete", "A copy is still stored, or couldn't be read back"),
+    ("raised", "The clearing call failed (the error text is a sample)"),
+)
+_DISCONNECT_ROUTES = {
+    "github": "disconnect_github",
+    "notion": "disconnect_notion",
+    "slack": "disconnect_slack",
+    "calendar": "disconnect_calendar",
+}
+
+
+def disconnect_clicks() -> List[Tuple[str, str, str, Dict[str, str]]]:
+    """(key, title, pressed card or "*" for All, outcome per card)."""
+    out = []
+    for card in CARDS:
+        for outcome, title in _DISCONNECT_OUTCOMES:
+            key = f"disconnect-{card}-{outcome.replace('_', '-')}"
+            out.append((key, f"{card}: {title}", card, {card: outcome}))
+    out += [
+        ("disconnect-all-cleared", "All: every card cleared", "*", {c: "cleared" for c in CARDS}),
+        (
+            "disconnect-all-mixed",
+            "All: one revoke failed, one incomplete, two cleared",
+            "*",
+            {
+                "github": "cleared",
+                "notion": "cleared",
+                "slack": "revoke_failed",
+                "calendar": "incomplete",
+            },
+        ),  # fmt: skip
+    ]
+    return out
+
+
+def run_disconnect(user_id: str, outcomes: Dict[str, str]) -> Dict[str, Dict[str, Any]]:
+    """Each named card's own disconnect route, with ``disconnect_connector`` stood in for;
+    the reply as the page receives it (status and body)."""
+    from fastapi import HTTPException
+
+    from services.connectors.disconnect import DisconnectResult
+    from web.api.routes import settings_integrations as routes
+
+    async def clearing(user, connector):
+        outcome = outcomes[connector]
+        if outcome == "raised":
+            raise RuntimeError(SAMPLE_ERROR)
+        return DisconnectResult(
+            connector=connector,
+            remaining=("a stored copy",) if outcome == "incomplete" else (),
+            provider_revoke_failed=outcome == "revoke_failed",
+        )
+
+    who = SimpleNamespace(sub=user_id)
+    replies: Dict[str, Dict[str, Any]] = {}
+    with patch("services.connectors.disconnect.disconnect_connector", new=clearing):
+        for card in outcomes:
+            try:
+                reply = asyncio.run(getattr(routes, _DISCONNECT_ROUTES[card])(current_user=who))
+            except HTTPException as error:
+                replies[card] = {"status": error.status_code, "body": {"detail": error.detail}}
+                continue
+            if hasattr(reply, "status_code") and hasattr(reply, "body"):
+                replies[card] = {"status": reply.status_code, "body": json.loads(reply.body)}
+            else:
+                replies[card] = {"status": 200, "body": reply}
+    return replies
+
+
+def _confirmed_rows(user_id: str) -> List[str]:
+    out = [
+        "# After a confirmed disconnect",
+        "",
+        "Each card's Disconnect (and Disconnect All), confirmed, from a page where every card",
+        "is connected. The card's own disconnect route answers, with the one clearing call",
+        "under it stood in for; the page shows its toast and redraws from the health route, on",
+        "which a card that was cleared reads as not connected.",
+        "",
+    ]
+    before = Scenario("disconnect-before", "", generic=_all("connected"), github="own_token")
+    for key, title, press, outcomes in disconnect_clicks():
+        replies = run_disconnect(user_id, outcomes)
+        gone = {c for c, r in replies.items() if r["status"] == 200}
+        after_generic = {c: ("not_configured" if c in gone else "connected") for c in CARDS}
+        after = Scenario(
+            key,
+            title,
+            generic=after_generic,
+            github="nothing" if "github" in gone else "own_token",
+        )
+        payload_before = health_payload(user_id, before)
+        payload_after = health_payload(user_id, after)
+        pressed = draw(payload_before, after, test=(CONFIRMED, (press, replies, payload_after)))
+        out += [f"## Disconnect: {title}", "", f"State key: `{key}`", ""]
+        out += [
+            f"- Toast ({t['kind']}): **{t['title']}**. {_shown(t['message'])}"
+            for t in pressed["toasts"]
+        ] or ["- No toast."]
+        for card in [press] if press != "*" else list(CARDS):
+            drawn = read_card(pressed, card)
+            lines = drawn["lines"] if drawn else []
+            out.append(f"- {card} after the redraw:")
+            out += [f"  - {_shown(line)}" for line in lines] or ["  - (no card is drawn)"]
+        out.append("")
+    return out
+
+
 def _dialog_lines(dialog: Optional[Dict[str, Any]]) -> List[str]:
     if dialog is None:
         return ["- No dialog.", ""]
@@ -1220,7 +1407,13 @@ def main(argv=None) -> int:
         return 0
     args.out.parent.mkdir(parents=True, exist_ok=True)
     args.out.write_text(text, encoding="utf-8")
-    pressed = len(clicks()) + len(connector_clicks()) + len(test_all_clicks()) + len(dialog_pages())
+    pressed = (
+        len(clicks())
+        + len(connector_clicks())
+        + len(test_all_clicks())
+        + len(dialog_pages())
+        + len(disconnect_clicks())
+    )
     print(f"card_state_file: wrote {args.out} ({len(scenarios())} states, {pressed} presses)")
     return 0
 

@@ -1141,3 +1141,223 @@ State key: `dialogs-nothing`
 - Toast (info): **Nothing to Do**. No integrations to disconnect
 
 Sent to a disconnect route after Cancel: nothing
+
+# After a confirmed disconnect
+
+Each card's Disconnect (and Disconnect All), confirmed, from a page where every card
+is connected. The card's own disconnect route answers, with the one clearing call
+under it stood in for; the page shows its toast and redraws from the health route, on
+which a card that was cleared reads as not connected.
+
+## Disconnect: github: Every copy is gone
+
+State key: `disconnect-github-cleared`
+
+- Toast (success): **Disconnected**. GitHub disconnected
+- github after the redraw:
+  - 🐙
+  - GitHub
+  - Not connected
+
+## Disconnect: github: Piper holds nothing; the revoke at the provider failed
+
+State key: `disconnect-github-revoke-failed`
+
+- Toast (success): **Disconnected**. GitHub disconnected. Piper no longer holds your access. I couldn't revoke it at GitHub, so it stays valid there until you remove Piper in GitHub's settings.
+- github after the redraw:
+  - 🐙
+  - GitHub
+  - Not connected
+
+## Disconnect: github: A copy is still stored, or couldn't be read back
+
+State key: `disconnect-github-incomplete`
+
+- Toast (error): **Disconnect Failed**. I couldn't fully disconnect GitHub: a saved copy of your access may still be stored, so Piper may still be able to use it. Try Disconnect again; if it keeps failing, tell us.
+- github after the redraw:
+  - 🐙
+  - GitHub
+  - Connected
+  - Not checked yet. Press Test.
+
+## Disconnect: github: The clearing call failed (the error text is a sample)
+
+State key: `disconnect-github-raised`
+
+- Toast (error): **Disconnect Failed**. Failed to disconnect GitHub: Sample error text from a failed Test
+- github after the redraw:
+  - 🐙
+  - GitHub
+  - Connected
+  - Not checked yet. Press Test.
+
+## Disconnect: notion: Every copy is gone
+
+State key: `disconnect-notion-cleared`
+
+- Toast (success): **Disconnected**. Notion disconnected
+- notion after the redraw:
+  - 📝
+  - Notion
+  - Not connected
+
+## Disconnect: notion: Piper holds nothing; the revoke at the provider failed
+
+State key: `disconnect-notion-revoke-failed`
+
+- Toast (success): **Disconnected**. Notion disconnected
+- notion after the redraw:
+  - 📝
+  - Notion
+  - Not connected
+
+## Disconnect: notion: A copy is still stored, or couldn't be read back
+
+State key: `disconnect-notion-incomplete`
+
+- Toast (error): **Disconnect Failed**. I couldn't fully disconnect Notion: a saved copy of your access may still be stored, so Piper may still be able to use it. Try Disconnect again; if it keeps failing, tell us.
+- notion after the redraw:
+  - 📝
+  - Notion
+  - Connected
+  - Not checked yet. Press Test.
+
+## Disconnect: notion: The clearing call failed (the error text is a sample)
+
+State key: `disconnect-notion-raised`
+
+- Toast (error): **Disconnect Failed**. Failed to disconnect Notion: Sample error text from a failed Test
+- notion after the redraw:
+  - 📝
+  - Notion
+  - Connected
+  - Not checked yet. Press Test.
+
+## Disconnect: slack: Every copy is gone
+
+State key: `disconnect-slack-cleared`
+
+- Toast (success): **Disconnected**. Slack disconnected
+- slack after the redraw:
+  - 💬
+  - Slack
+  - Not connected
+
+## Disconnect: slack: Piper holds nothing; the revoke at the provider failed
+
+State key: `disconnect-slack-revoke-failed`
+
+- Toast (success): **Disconnected**. Slack disconnected. Piper no longer holds your access. I couldn't revoke it at Slack, so it stays valid there until you remove Piper in Slack's settings.
+- slack after the redraw:
+  - 💬
+  - Slack
+  - Not connected
+
+## Disconnect: slack: A copy is still stored, or couldn't be read back
+
+State key: `disconnect-slack-incomplete`
+
+- Toast (error): **Disconnect Failed**. I couldn't fully disconnect Slack: a saved copy of your access may still be stored, so Piper may still be able to use it. Try Disconnect again; if it keeps failing, tell us.
+- slack after the redraw:
+  - 💬
+  - Slack
+  - Connected
+  - Not checked yet. Press Test.
+
+## Disconnect: slack: The clearing call failed (the error text is a sample)
+
+State key: `disconnect-slack-raised`
+
+- Toast (error): **Disconnect Failed**. Failed to disconnect Slack: Sample error text from a failed Test
+- slack after the redraw:
+  - 💬
+  - Slack
+  - Connected
+  - Not checked yet. Press Test.
+
+## Disconnect: calendar: Every copy is gone
+
+State key: `disconnect-calendar-cleared`
+
+- Toast (success): **Disconnected**. Google Calendar disconnected
+- calendar after the redraw:
+  - 📅
+  - Google Calendar
+  - Not connected
+
+## Disconnect: calendar: Piper holds nothing; the revoke at the provider failed
+
+State key: `disconnect-calendar-revoke-failed`
+
+- Toast (success): **Disconnected**. Google Calendar disconnected. Piper no longer holds your access. I couldn't revoke it at Google Calendar, so it stays valid there until you remove Piper in Google Calendar's settings.
+- calendar after the redraw:
+  - 📅
+  - Google Calendar
+  - Not connected
+
+## Disconnect: calendar: A copy is still stored, or couldn't be read back
+
+State key: `disconnect-calendar-incomplete`
+
+- Toast (error): **Disconnect Failed**. I couldn't fully disconnect Google Calendar: a saved copy of your access may still be stored, so Piper may still be able to use it. Try Disconnect again; if it keeps failing, tell us.
+- calendar after the redraw:
+  - 📅
+  - Google Calendar
+  - Connected
+  - Not checked yet. Press Test.
+
+## Disconnect: calendar: The clearing call failed (the error text is a sample)
+
+State key: `disconnect-calendar-raised`
+
+- Toast (error): **Disconnect Failed**. Failed to disconnect Calendar: Sample error text from a failed Test
+- calendar after the redraw:
+  - 📅
+  - Google Calendar
+  - Connected
+  - Not checked yet. Press Test.
+
+## Disconnect: All: every card cleared
+
+State key: `disconnect-all-cleared`
+
+- Toast (success): **All Disconnected**. 4 of 4 integrations disconnected
+- github after the redraw:
+  - 🐙
+  - GitHub
+  - Not connected
+- notion after the redraw:
+  - 📝
+  - Notion
+  - Not connected
+- slack after the redraw:
+  - 💬
+  - Slack
+  - Not connected
+- calendar after the redraw:
+  - 📅
+  - Google Calendar
+  - Not connected
+
+## Disconnect: All: one revoke failed, one incomplete, two cleared
+
+State key: `disconnect-all-mixed`
+
+- Toast (warning): **Partial Disconnect**. 3 of 4 disconnected. Failed: Google Calendar
+- github after the redraw:
+  - 🐙
+  - GitHub
+  - Not connected
+- notion after the redraw:
+  - 📝
+  - Notion
+  - Not connected
+- slack after the redraw:
+  - 💬
+  - Slack
+  - Not connected
+- calendar after the redraw:
+  - 📅
+  - Google Calendar
+  - Connected
+  - Not checked yet. Press Test.

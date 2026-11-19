@@ -313,3 +313,31 @@ def test_disconnect_all_lists_the_cards_by_their_drawn_names(text):
     row = _section(text, "dialogs-connected")
     for name in ("Notion", "Slack", "GitHub", "Google Calendar"):
         assert f"  > • {name}" in row
+
+
+@needs_node
+def test_every_confirmed_disconnect_has_a_section_and_no_row_is_a_harness_error(text):
+    section = text[text.index("# After a confirmed disconnect") :]
+    for key, *_ in cards.disconnect_clicks():
+        assert f"State key: `{key}`" in section
+    # A page script that can't find a shared helper throws into the toast; that is the
+    # harness, not the app (parseApiDetail was missing once, 2026-11-18).
+    assert "is not defined" not in section and "No toast." not in section
+
+
+@needs_node
+def test_a_cleared_disconnect_redraws_the_card_not_connected(text):
+    for card in cards.CARDS:
+        row = _section(text, f"disconnect-{card}-cleared")
+        assert "- Toast (success): **Disconnected**." in row
+        assert row.rstrip().endswith("- Not connected")
+
+
+def test_the_disconnect_stand_in_replaces_only_the_clearing_call():
+    """The route's own words: the stub is the one call under it, nothing above."""
+    user_id = cards._setup()
+    replies = cards.run_disconnect(user_id, {"slack": "incomplete"})
+    from web.api.routes.settings_integrations import DISCONNECT_INCOMPLETE_LINE
+
+    assert replies["slack"]["status"] == 503
+    assert replies["slack"]["body"]["detail"] == DISCONNECT_INCOMPLETE_LINE.format(service="Slack")
