@@ -130,8 +130,11 @@ class TestIntegrationsAPIWithMocks:
 
             assert response.success is False
             assert response.integration == "notion"
-            assert response.message is not None
-            assert response.fix_suggestion is not None
+            # CXO 2026-11-18: Notion's refused key is one sentence with its action; no fix.
+            from web.api.routes.integrations import NOTION_KEY_REFUSED_LINE
+
+            assert response.message == NOTION_KEY_REFUSED_LINE
+            assert response.fix_suggestion is None
 
     @pytest.mark.asyncio
     async def test_test_all_endpoint_returns_results_for_all(self):
@@ -252,10 +255,26 @@ class TestIntegrationRegistry:
                 # CXO 2026-11-17 (#2402): where the action is part of the sentence there
                 # is no separate fix line, so the click and the card say one thing. Each
                 # such entry is named here; every other entry still needs its fix.
-                if (name, error_type) in {("slack", "token_invalid")}:
+                # CXO 2026-11-18 added Notion's refused key (its action is in the sentence,
+                # as Slack's) and Calendar's four read refusals, whose card sentence is the
+                # line at the click too; one of them (the API not switched on) has no action
+                # a person can take, and says so.
+                if (name, error_type) in {
+                    ("slack", "token_invalid"),
+                    ("notion", "api_key_invalid"),
+                }:
                     assert "fix" not in error_info, f"{name}/{error_type} has a second line"
                     assert (
                         "Settings" in error_info["message"]
                     ), f"{name}/{error_type} names no action"
+                    continue
+                if (name, error_type) in {
+                    ("calendar", "insufficient_scope"),
+                    ("calendar", "api_not_enabled"),
+                    ("calendar", "error"),
+                    ("calendar", "not_found"),
+                }:
+                    assert "fix" not in error_info, f"{name}/{error_type} has a second line"
+                    assert error_info["message"].endswith("."), f"{name}/{error_type}"
                     continue
                 assert "fix" in error_info, f"{name}/{error_type} missing fix"

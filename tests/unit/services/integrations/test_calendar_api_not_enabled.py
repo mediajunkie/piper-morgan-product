@@ -121,12 +121,11 @@ async def test_settings_test_catch_all_does_not_promise_that_reconnecting_fixes_
 
 @pytest.mark.asyncio
 async def test_settings_test_keeps_the_known_classes_on_their_lines():
-    """CXO: only the catch-all and the new class change."""
+    """CXO 2026-11-18: no code word on screen. A 401 on the read is the revoked fact."""
     result = await _settings_test_with_read_error("unauthorized")
     assert result["error_type"] == "unauthorized"
-    assert result["error"] == (
-        "Google refused the calendar read (unauthorized). Reconnect and try again."
-    )
+    assert result["error"] == "Google Calendar no longer accepts your connection."
+    assert "(unauthorized)" not in result["error"]
 
 
 @pytest.mark.asyncio

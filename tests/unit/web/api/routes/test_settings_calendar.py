@@ -98,7 +98,8 @@ class TestGetCalendarSettings:
         _kc, patches = self._patches("expired_refresh_token", refresh_error="revoked")
         result = await self._get(patches)
         assert result["configured"] is True and result["valid"] is False
-        assert "expired or revoked" in result["error"]
+        # CXO 2026-11-18: one name per fact, the same sentence as the card's.
+        assert result["error"] == "Google Calendar no longer accepts your connection."
 
     @pytest.mark.asyncio
     @pytest.mark.parametrize(

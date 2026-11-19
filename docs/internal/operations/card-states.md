@@ -32,7 +32,7 @@ Headline: **Nothing connected yet**
 
 - 📝
 - Notion
-- Not configured
+- Not connected
 
 | Control | Label | Style | Goes to |
 |---|---|---|---|
@@ -43,7 +43,7 @@ Headline: **Nothing connected yet**
 
 - 💬
 - Slack
-- Not configured
+- Not connected
 
 | Control | Label | Style | Goes to |
 |---|---|---|---|
@@ -54,7 +54,7 @@ Headline: **Nothing connected yet**
 
 - 📅
 - Google Calendar
-- Not configured
+- Not connected
 
 | Control | Label | Style | Goes to |
 |---|---|---|---|
@@ -720,14 +720,13 @@ State key: `test-notion-ok`
 
 State key: `test-notion-refused`
 
-- Toast (error): **Test Failed**. Invalid Notion API key
-- At the click, the card's line: Invalid Notion API key [error style]
-- At the click, a fix line: Check your Notion integration token in Settings → Integrations → Notion
+- Toast (error): **Test Failed**. Notion didn't accept your key. It may have expired or been revoked. Add a new one in Settings, under Integrations.
+- At the click, the card's line: Notion didn't accept your key. It may have expired or been revoked. Add a new one in Settings, under Integrations. [error style]
 - The card after the page redraws it:
   - 📝
   - Notion
-  - API key invalid or expired. Checked just now. [error style]
-- The click's line is on the redrawn card: **no**
+  - Notion didn't accept your key. It may have expired or been revoked. Add a new one in Settings, under Integrations. Checked just now. [error style]
+- The click's line is on the redrawn card: yes
 
 ### Test: Notion answers with a server error
 
@@ -759,12 +758,13 @@ State key: `test-notion-raised`
 
 State key: `test-notion-not-connected`
 
-- Toast (error): **Test Failed**. Error: not_configured
-- At the click, the card's line: Error: not_configured [error style]
+- Toast (error): **Test Failed**. Notion isn't connected for your account.
+- At the click, the card's line: Notion isn't connected for your account. [error style]
+- At the click, a fix line: In Settings → Integrations → Notion, Connect
 - The card after the page redraws it:
   - 📝
   - Notion
-  - Not configured
+  - Not connected
 - The click's line is on the redrawn card: **no**
 
 ## Slack
@@ -810,12 +810,13 @@ State key: `test-slack-raised`
 
 State key: `test-slack-not-connected`
 
-- Toast (error): **Test Failed**. Error: not_configured
-- At the click, the card's line: Error: not_configured [error style]
+- Toast (error): **Test Failed**. Slack isn't connected for your account.
+- At the click, the card's line: Slack isn't connected for your account. [error style]
+- At the click, a fix line: In Settings → Integrations → Slack, Add to Slack
 - The card after the page redraws it:
   - 💬
   - Slack
-  - Not configured
+  - Not connected
 - The click's line is on the redrawn card: **no**
 
 ## Calendar
@@ -836,13 +837,14 @@ State key: `test-calendar-ok`
 
 State key: `test-calendar-revoked`
 
-- Toast (error): **Test Failed**. Error: token_invalid
-- At the click, the card's line: Error: token_invalid [error style]
+- Toast (error): **Test Failed**. Google Calendar no longer accepts your connection.
+- At the click, the card's line: Google Calendar no longer accepts your connection. [error style]
+- At the click, a fix line: In Settings → Integrations → Google Calendar, Reconnect
 - The card after the page redraws it:
   - 📅
   - Google Calendar
-  - Token expired or revoked. Please reconnect. Checked just now. [error style]
-- The click's line is on the redrawn card: **no**
+  - Google Calendar no longer accepts your connection. Checked just now. [error style]
+- The click's line is on the redrawn card: yes
 
 ### Test: Google answers the refresh with a server error
 
@@ -861,49 +863,49 @@ State key: `test-calendar-no-answer`
 
 State key: `test-calendar-insufficient-scope`
 
-- Toast (error): **Test Failed**. Error: insufficient_scope
-- At the click, the card's line: Error: insufficient_scope [error style]
+- Toast (error): **Test Failed**. Google refused the calendar read: the connection doesn't include calendar access. Disconnect, connect again, and approve calendar access.
+- At the click, the card's line: Google refused the calendar read: the connection doesn't include calendar access. Disconnect, connect again, and approve calendar access. [error style]
 - The card after the page redraws it:
   - 📅
   - Google Calendar
   - Google refused the calendar read: the connection doesn't include calendar access. Disconnect, connect again, and approve calendar access. Checked just now. [error style]
-- The click's line is on the redrawn card: **no**
+- The click's line is on the redrawn card: yes
 
 ### Test: The Calendar service is not switched on for the app
 
 State key: `test-calendar-api-not-enabled`
 
-- Toast (error): **Test Failed**. Error: api_not_enabled
-- At the click, the card's line: Error: api_not_enabled [error style]
+- Toast (error): **Test Failed**. Google refused the calendar read: the Calendar service isn't switched on for this app yet. That's a setup step on our side. Reconnecting won't help.
+- At the click, the card's line: Google refused the calendar read: the Calendar service isn't switched on for this app yet. That's a setup step on our side. Reconnecting won't help. [error style]
 - The card after the page redraws it:
   - 📅
   - Google Calendar
   - Google refused the calendar read: the Calendar service isn't switched on for this app yet. That's a setup step on our side. Reconnecting won't help. Checked just now. [error style]
-- The click's line is on the redrawn card: **no**
+- The click's line is on the redrawn card: yes
 
 ### Test: Google refuses the read for a reason it doesn't classify
 
 State key: `test-calendar-error`
 
-- Toast (error): **Test Failed**. Error: error
-- At the click, the card's line: Error: error [error style]
+- Toast (error): **Test Failed**. Google refused the calendar read, and I couldn't tell why. Reconnecting may help. If it doesn't, tell us.
+- At the click, the card's line: Google refused the calendar read, and I couldn't tell why. Reconnecting may help. If it doesn't, tell us. [error style]
 - The card after the page redraws it:
   - 📅
   - Google Calendar
   - Google refused the calendar read, and I couldn't tell why. Reconnecting may help. If it doesn't, tell us. Checked just now. [error style]
-- The click's line is on the redrawn card: **no**
+- The click's line is on the redrawn card: yes
 
 ### Test: Google refuses the read: the calendar was not found
 
 State key: `test-calendar-not-found`
 
-- Toast (error): **Test Failed**. Error: not_found
-- At the click, the card's line: Error: not_found [error style]
+- Toast (error): **Test Failed**. Google couldn't find your calendar. Reconnect and try again.
+- At the click, the card's line: Google couldn't find your calendar. Reconnect and try again. [error style]
 - The card after the page redraws it:
   - 📅
   - Google Calendar
-  - Google refused the calendar read (not_found). Reconnect and try again. Checked just now. [error style]
-- The click's line is on the redrawn card: **no**
+  - Google couldn't find your calendar. Reconnect and try again. Checked just now. [error style]
+- The click's line is on the redrawn card: yes
 
 ### Test: The call to Google fails on our side
 
@@ -935,12 +937,13 @@ State key: `test-calendar-store-failed`
 
 State key: `test-calendar-not-connected`
 
-- Toast (error): **Test Failed**. Error: not_configured
-- At the click, the card's line: Error: not_configured [error style]
+- Toast (error): **Test Failed**. Google Calendar isn't connected for your account.
+- At the click, the card's line: Google Calendar isn't connected for your account. [error style]
+- At the click, a fix line: In Settings → Integrations → Google Calendar, Connect with Google
 - The card after the page redraws it:
   - 📅
   - Google Calendar
-  - Not configured
+  - Not connected
 - The click's line is on the redrawn card: **no**
 
 # After pressing Test All
@@ -994,7 +997,7 @@ State key: `test-all-pass`
 
 State key: `test-all-mixed`
 
-- Toast (warning): **Some Tests Failed**. 1 of 4 connections successful
+- Toast (warning): **Some Tests Failed**. 1 of 3 connections successful, 1 not connected
 
 ### github
 
@@ -1007,12 +1010,12 @@ State key: `test-all-mixed`
 
 ### notion
 
-- At the click, the card's line: Invalid Notion API key [error style]
+- At the click, the card's line: Notion didn't accept your key. It may have expired or been revoked. Add a new one in Settings, under Integrations. [error style]
 - The card after the page redraws it:
   - 📝
   - Notion
-  - API key invalid or expired. Checked just now. [error style]
-- The click's line is on the redrawn card: **no**
+  - Notion didn't accept your key. It may have expired or been revoked. Add a new one in Settings, under Integrations. Checked just now. [error style]
+- The click's line is on the redrawn card: yes
 
 ### slack
 
@@ -1026,18 +1029,18 @@ State key: `test-all-mixed`
 
 ### calendar
 
-- At the click, the card's line: Error: not_configured [error style]
+- At the click, the card's line: Google Calendar isn't connected for your account. [error style]
 - The card after the page redraws it:
   - 📅
   - Google Calendar
-  - Not configured
+  - Not connected
 - The click's line is on the redrawn card: **no**
 
 ## Test All: Nothing connected
 
 State key: `test-all-nothing`
 
-- Toast (warning): **Some Tests Failed**. 0 of 4 connections successful
+- Toast (info): **Nothing to test yet**. Connect an integration first.
 
 ### github
 
@@ -1050,27 +1053,27 @@ State key: `test-all-nothing`
 
 ### notion
 
-- At the click, the card's line: Error: not_configured [error style]
+- At the click, the card's line: Notion isn't connected for your account. [error style]
 - The card after the page redraws it:
   - 📝
   - Notion
-  - Not configured
+  - Not connected
 - The click's line is on the redrawn card: **no**
 
 ### slack
 
-- At the click, the card's line: Error: not_configured [error style]
+- At the click, the card's line: Slack isn't connected for your account. [error style]
 - The card after the page redraws it:
   - 💬
   - Slack
-  - Not configured
+  - Not connected
 - The click's line is on the redrawn card: **no**
 
 ### calendar
 
-- At the click, the card's line: Error: not_configured [error style]
+- At the click, the card's line: Google Calendar isn't connected for your account. [error style]
 - The card after the page redraws it:
   - 📅
   - Google Calendar
-  - Not configured
+  - Not connected
 - The click's line is on the redrawn card: **no**
