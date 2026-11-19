@@ -28,7 +28,8 @@ Since 11-03 it also warns on an `HH:Mx` form in any added line of today's log, a
 Stamp-now mode (xian 10-30 via Exec, "make it easier to do such things without having to remember"): a memo
 may say `date: now` (or `date: now PT`), and every such file in one call gets the same clock reading, so the
 sent mirror and every recipient copy match. A time nobody types can't be a guess.
-Exit 0 = nothing blocking; 1 = a BLOCK (mail mode) or a refusal (log mode); 3 = log mode could not run. Owner: CIO. Review: 2026-12-08.
+Exit 0 = nothing blocking; 1 = a BLOCK (mail mode) or a refusal (log mode, one line in piper-stamp-refusals.log
+under the git common dir); 3 = log mode could not run. Owner: CIO. Review: 2026-12-08.
 """
 
 import os
@@ -187,6 +188,7 @@ def log_staged(now) -> int:
             file=sys.stderr if level == "REFUSED" else sys.stdout,
         )
     if any(level == "REFUSED" for level, _, _ in findings):
+        record_refusal(findings, now)
         print(
             "stamp-check: commit refused (clock rule, xian 2026-11-18). Read `date` and write the minute; "
             '`scripts/log-entry.sh "title"` writes a heading with the clock. A time you are quoting goes '
@@ -195,6 +197,25 @@ def log_staged(now) -> int:
         )
         return 1
     return 0
+
+
+def record_refusal(findings, now) -> None:
+    """One line per refused commit in `piper-stamp-refusals.log` under the git common dir, so the rule's
+    refusal rate can be counted (a refused commit leaves nothing in git). Never fails the check."""
+    try:
+        common = git("rev-parse", "--git-common-dir").stdout.strip()
+        if not common:
+            return
+        top = git("rev-parse", "--show-toplevel").stdout.strip()
+        refused = [f for level, f, _ in findings if level == "REFUSED"]
+        line = (
+            f"ts={now:%Y-%m-%dT%H:%M%z} worktree={top} refused={len(refused)} "
+            f"files={','.join(sorted(set(refused)))}\n"
+        )
+        with open(os.path.join(common, "piper-stamp-refusals.log"), "a", encoding="utf-8") as out:
+            out.write(line)
+    except Exception:
+        pass
 
 
 LOG_NAME = re.compile(r"dev/\d{4}/\d{2}/\d{2}/(\d{4}-\d{2}-\d{2})-.*-log\.md$")
