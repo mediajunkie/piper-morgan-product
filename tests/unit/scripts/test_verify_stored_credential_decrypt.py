@@ -90,3 +90,40 @@ def test_a_different_host_is_not_refused():
 
 def test_words():
     assert v.word(0) == "ok" and v.word(2) == "fail:2"
+
+
+# --- the drill's own copy (HOST's design v2; scripts/restore_drill_2157.py) -------------
+
+LIVE = "postgresql+asyncpg://piper:x@piper-morgan-db.flycast:5432/piper_morgan"
+
+
+def test_own_database_is_refused_outside_the_drill_copy(capsys, monkeypatch):
+    """On beta (no drill variable) the flag proves nothing about a copy: refused."""
+    monkeypatch.setenv("DATABASE_URL", LIVE)
+    monkeypatch.delenv(v.DRILL_COPY_ENV, raising=False)
+    with patch.object(v, "one_encrypted_row", side_effect=AssertionError("must not be read")):
+        code = v.main(["--own-database-in-drill-copy"])
+    assert capsys.readouterr().out == "fail:5\n" and code == v.EXIT_SAME_HOST_AS_LIVE
+
+
+@pytest.mark.parametrize("value", ["", "1", "true", "YES"])
+def test_only_the_exact_drill_value_unlocks_it(capsys, monkeypatch, value):
+    monkeypatch.setenv("DATABASE_URL", LIVE)
+    monkeypatch.setenv(v.DRILL_COPY_ENV, value)
+    with patch.object(v, "one_encrypted_row", side_effect=AssertionError("must not be read")):
+        assert v.main(["--own-database-in-drill-copy"]) == v.EXIT_SAME_HOST_AS_LIVE
+
+
+def test_inside_the_drill_copy_it_reads_its_own_database(capsys, monkeypatch):
+    monkeypatch.setenv("DATABASE_URL", LIVE)
+    monkeypatch.setenv(v.DRILL_COPY_ENV, "yes")
+    seen = []
+    with patch.object(v, "one_encrypted_row", side_effect=lambda url: seen.append(url)):
+        code = v.main(["--own-database-in-drill-copy"])
+    assert seen == [LIVE]
+    assert capsys.readouterr().out in ("fail:2\n", "fail:3\n") and code in (2, 3)
+
+
+def test_the_two_ways_cannot_be_given_together():
+    with pytest.raises(SystemExit):
+        v.main(["--own-database-in-drill-copy", "--database-url", "postgres://u:p@h/db"])

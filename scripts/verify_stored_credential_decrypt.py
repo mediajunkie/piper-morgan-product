@@ -21,6 +21,16 @@ being proved):
 No Piper app boots against the copy (Arch's rule 2): this is one SELECT and one decrypt.
 ``--database-url`` is required (Arch 18:34): no default, so a dropped flag never proves alpha.
 
+Inside the drill's own copy (HOST's design v2, 11-12, run by ``scripts/restore_drill_2157.py``):
+the copy app boots against the copy with the key from the recorded backup, so the proof runs
+there, on the process's own database:
+
+    fly ssh console -a <copy app> -C "python /app/scripts/verify_stored_credential_decrypt.py \
+        --own-database-in-drill-copy"
+
+That flag works only where ``PIPER_RESTORE_DRILL_COPY`` is ``yes``, a variable only the drill
+script sets, on the copy app; anywhere else it prints ``fail:5`` as before.
+
 Concept: docs/internal/operations/restore-drill-2157-lead-half-fly-lines-DRAFT-2026-11-04.md
 """
 
@@ -37,6 +47,9 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 EXIT_OK, EXIT_DECRYPT_FAILED, EXIT_NO_ROW, EXIT_NO_KEY, EXIT_DB_UNREADABLE = 0, 1, 2, 3, 4
 EXIT_SAME_HOST_AS_LIVE = 5  # the URL names the process's own live database, not a copy
+#: Set only on the restore drill's copy app (``scripts/restore_drill_2157.py``), never on a
+#: deployment: there the process's own database IS the copy.
+DRILL_COPY_ENV = "PIPER_RESTORE_DRILL_COPY"
 
 
 def _host(url: str) -> str:
@@ -96,15 +109,28 @@ def verdict(row: Optional[Tuple[str, str]], encryptor) -> Tuple[str, int]:
 
 def main(argv=None) -> int:
     parser = argparse.ArgumentParser(description="prints ok or fail; nothing else")
-    parser.add_argument(
+    where = parser.add_mutually_exclusive_group(required=True)
+    where.add_argument(
         "--database-url",
-        required=True,
-        help="the COPY's URL; required, and never the process's own DATABASE_URL host",
+        help="the COPY's URL; never the process's own DATABASE_URL host",
+    )
+    where.add_argument(
+        "--own-database-in-drill-copy",
+        action="store_true",
+        help=f"inside the drill's copy app only (where {DRILL_COPY_ENV}=yes): its own database",
     )
     ns = parser.parse_args(argv)
-    if refuses_live_database(ns.database_url, os.environ.get("DATABASE_URL")):
+    live = os.environ.get("DATABASE_URL")
+    if ns.own_database_in_drill_copy:
+        if os.environ.get(DRILL_COPY_ENV) != "yes" or not live:
+            print(word(EXIT_SAME_HOST_AS_LIVE))
+            return EXIT_SAME_HOST_AS_LIVE
+        url = live
+    elif refuses_live_database(ns.database_url, live):
         print(word(EXIT_SAME_HOST_AS_LIVE))
         return EXIT_SAME_HOST_AS_LIVE
+    else:
+        url = ns.database_url
     try:
         from services.security.field_encryption import FieldEncryptionService
 
@@ -112,7 +138,7 @@ def main(argv=None) -> int:
     except Exception:
         encryptor = None
     try:
-        row = one_encrypted_row(ns.database_url)
+        row = one_encrypted_row(url)
     except Exception:
         print(word(EXIT_DB_UNREADABLE))
         return EXIT_DB_UNREADABLE
