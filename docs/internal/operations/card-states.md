@@ -1085,7 +1085,7 @@ Each card's Disconnect, then Disconnect All, pressed on the drawn page. The rows
 what the page asked the dialog to show; every dialog is answered Cancel, and the last
 line of each page says whether anything was sent to a disconnect route.
 
-## Dialogs: Every card connected
+## Dialogs: Every card connected, GitHub with a saved token
 
 State key: `dialogs-connected`
 
@@ -1093,28 +1093,28 @@ State key: `dialogs-connected`
 
 - Title: **Disconnect Notion?**
 - Message:
-  > I'll disconnect Notion. You can connect it again anytime.
+  > I'll delete the copy of your Notion key that Piper holds. The key stays valid in Notion until you remove the integration there. You can connect it again anytime.
 - Buttons: Disconnect (confirm), Cancel
 
 ### Disconnect on slack (`disconnectIntegration('slack')`)
 
 - Title: **Disconnect Slack?**
 - Message:
-  > I'll disconnect Slack. You can connect it again anytime.
+  > I'll disconnect Slack and revoke Piper's access there. You can connect it again anytime.
 - Buttons: Disconnect (confirm), Cancel
 
 ### Disconnect on github (`disconnectAPIKeyIntegration('github')`)
 
 - Title: **Disconnect GitHub?**
 - Message:
-  > I'll disconnect GitHub. You can connect it again anytime.
+  > I'll delete the copy of your GitHub token that Piper holds. The token stays valid at GitHub until you delete it there. You can connect it again anytime.
 - Buttons: Disconnect (confirm), Cancel
 
 ### Disconnect on calendar (`disconnectIntegration('calendar')`)
 
 - Title: **Disconnect Google Calendar?**
 - Message:
-  > I'll disconnect Google Calendar. You can connect it again anytime.
+  > I'll disconnect Google Calendar and revoke Piper's access there. You can connect it again anytime.
 - Buttons: Disconnect (confirm), Cancel
 
 ### Disconnect All
@@ -1127,6 +1127,235 @@ State key: `dialogs-connected`
   > • GitHub
   > • Google Calendar
   >
+  > GitHub and Notion also need you to remove Piper in their own settings.
+  >
+  > You can connect them again anytime.
+- Buttons: Disconnect all (confirm), Cancel
+
+Sent to a disconnect route after Cancel: nothing
+
+## Dialogs: Every card connected, GitHub through the app
+
+State key: `dialogs-github-app`
+
+### Disconnect on notion (`disconnectAPIKeyIntegration('notion')`)
+
+- Title: **Disconnect Notion?**
+- Message:
+  > I'll delete the copy of your Notion key that Piper holds. The key stays valid in Notion until you remove the integration there. You can connect it again anytime.
+- Buttons: Disconnect (confirm), Cancel
+
+### Disconnect on slack (`disconnectIntegration('slack')`)
+
+- Title: **Disconnect Slack?**
+- Message:
+  > I'll disconnect Slack and revoke Piper's access there. You can connect it again anytime.
+- Buttons: Disconnect (confirm), Cancel
+
+### Disconnect on github (`disconnectAPIKeyIntegration('github')`)
+
+- Title: **Disconnect GitHub?**
+- Message:
+  > I'll disconnect GitHub. The Piper GitHub app stays installed on your account until you remove it in GitHub's settings. You can connect it again anytime.
+- Buttons: Disconnect (confirm), Cancel
+
+### Disconnect on calendar (`disconnectIntegration('calendar')`)
+
+- Title: **Disconnect Google Calendar?**
+- Message:
+  > I'll disconnect Google Calendar and revoke Piper's access there. You can connect it again anytime.
+- Buttons: Disconnect (confirm), Cancel
+
+### Disconnect All
+
+- Title: **Disconnect all integrations?**
+- Message:
+  > I'll disconnect these:
+  > • Notion
+  > • Slack
+  > • GitHub
+  > • Google Calendar
+  >
+  > GitHub and Notion also need you to remove Piper in their own settings.
+  >
+  > You can connect them again anytime.
+- Buttons: Disconnect all (confirm), Cancel
+
+Sent to a disconnect route after Cancel: nothing
+
+## Dialogs: Every card connected, GitHub with a classic sign-in
+
+State key: `dialogs-github-classic`
+
+### Disconnect on notion (`disconnectAPIKeyIntegration('notion')`)
+
+- Title: **Disconnect Notion?**
+- Message:
+  > I'll delete the copy of your Notion key that Piper holds. The key stays valid in Notion until you remove the integration there. You can connect it again anytime.
+- Buttons: Disconnect (confirm), Cancel
+
+### Disconnect on slack (`disconnectIntegration('slack')`)
+
+- Title: **Disconnect Slack?**
+- Message:
+  > I'll disconnect Slack and revoke Piper's access there. You can connect it again anytime.
+- Buttons: Disconnect (confirm), Cancel
+
+### Disconnect on github (`disconnectAPIKeyIntegration('github')`)
+
+- Title: **Disconnect GitHub?**
+- Message:
+  > I'll disconnect GitHub and revoke Piper's access there. You can connect it again anytime.
+- Buttons: Disconnect (confirm), Cancel
+
+### Disconnect on calendar (`disconnectIntegration('calendar')`)
+
+- Title: **Disconnect Google Calendar?**
+- Message:
+  > I'll disconnect Google Calendar and revoke Piper's access there. You can connect it again anytime.
+- Buttons: Disconnect (confirm), Cancel
+
+### Disconnect All
+
+- Title: **Disconnect all integrations?**
+- Message:
+  > I'll disconnect these:
+  > • Notion
+  > • Slack
+  > • GitHub
+  > • Google Calendar
+  >
+  > Notion also needs you to remove Piper in its settings.
+  >
+  > You can connect them again anytime.
+- Buttons: Disconnect all (confirm), Cancel
+
+Sent to a disconnect route after Cancel: nothing
+
+## Dialogs: Every card connected, GitHub's leg unknown (GitHub couldn't be reached)
+
+State key: `dialogs-github-unknown`
+
+### Disconnect on notion (`disconnectAPIKeyIntegration('notion')`)
+
+- Title: **Disconnect Notion?**
+- Message:
+  > I'll delete the copy of your Notion key that Piper holds. The key stays valid in Notion until you remove the integration there. You can connect it again anytime.
+- Buttons: Disconnect (confirm), Cancel
+
+### Disconnect on slack (`disconnectIntegration('slack')`)
+
+- Title: **Disconnect Slack?**
+- Message:
+  > I'll disconnect Slack and revoke Piper's access there. You can connect it again anytime.
+- Buttons: Disconnect (confirm), Cancel
+
+### Disconnect on github (`disconnectAPIKeyIntegration('github')`)
+
+- Title: **Disconnect GitHub?**
+- Message:
+  > I'll disconnect GitHub. If you connected it with the Piper GitHub app or a personal token, that stays on at GitHub until you remove it in GitHub's settings. You can connect it again anytime.
+- Buttons: Disconnect (confirm), Cancel
+
+### Disconnect on calendar (`disconnectIntegration('calendar')`)
+
+- Title: **Disconnect Google Calendar?**
+- Message:
+  > I'll disconnect Google Calendar and revoke Piper's access there. You can connect it again anytime.
+- Buttons: Disconnect (confirm), Cancel
+
+### Disconnect All
+
+- Title: **Disconnect all integrations?**
+- Message:
+  > I'll disconnect these:
+  > • Notion
+  > • Slack
+  > • GitHub
+  > • Google Calendar
+  >
+  > Notion also needs you to remove Piper in its settings, and GitHub may too if you connected it with the app or a token.
+  >
+  > You can connect them again anytime.
+- Buttons: Disconnect all (confirm), Cancel
+
+Sent to a disconnect route after Cancel: nothing
+
+## Dialogs: GitHub with a classic sign-in, Slack and Calendar connected, Notion not
+
+State key: `dialogs-github-classic-no-notion`
+
+### Disconnect on slack (`disconnectIntegration('slack')`)
+
+- Title: **Disconnect Slack?**
+- Message:
+  > I'll disconnect Slack and revoke Piper's access there. You can connect it again anytime.
+- Buttons: Disconnect (confirm), Cancel
+
+### Disconnect on github (`disconnectAPIKeyIntegration('github')`)
+
+- Title: **Disconnect GitHub?**
+- Message:
+  > I'll disconnect GitHub and revoke Piper's access there. You can connect it again anytime.
+- Buttons: Disconnect (confirm), Cancel
+
+### Disconnect on calendar (`disconnectIntegration('calendar')`)
+
+- Title: **Disconnect Google Calendar?**
+- Message:
+  > I'll disconnect Google Calendar and revoke Piper's access there. You can connect it again anytime.
+- Buttons: Disconnect (confirm), Cancel
+
+### Disconnect All
+
+- Title: **Disconnect all integrations?**
+- Message:
+  > I'll disconnect these:
+  > • Slack
+  > • GitHub
+  > • Google Calendar
+  >
+  > You can connect them again anytime.
+- Buttons: Disconnect all (confirm), Cancel
+
+Sent to a disconnect route after Cancel: nothing
+
+## Dialogs: GitHub's leg unknown, Slack and Calendar connected, Notion not
+
+State key: `dialogs-github-unknown-no-notion`
+
+### Disconnect on slack (`disconnectIntegration('slack')`)
+
+- Title: **Disconnect Slack?**
+- Message:
+  > I'll disconnect Slack and revoke Piper's access there. You can connect it again anytime.
+- Buttons: Disconnect (confirm), Cancel
+
+### Disconnect on github (`disconnectAPIKeyIntegration('github')`)
+
+- Title: **Disconnect GitHub?**
+- Message:
+  > I'll disconnect GitHub. If you connected it with the Piper GitHub app or a personal token, that stays on at GitHub until you remove it in GitHub's settings. You can connect it again anytime.
+- Buttons: Disconnect (confirm), Cancel
+
+### Disconnect on calendar (`disconnectIntegration('calendar')`)
+
+- Title: **Disconnect Google Calendar?**
+- Message:
+  > I'll disconnect Google Calendar and revoke Piper's access there. You can connect it again anytime.
+- Buttons: Disconnect (confirm), Cancel
+
+### Disconnect All
+
+- Title: **Disconnect all integrations?**
+- Message:
+  > I'll disconnect these:
+  > • Slack
+  > • GitHub
+  > • Google Calendar
+  >
+  > GitHub may need you to remove Piper in its settings if you connected it with the app or a token.
+  >
   > You can connect them again anytime.
 - Buttons: Disconnect all (confirm), Cancel
 
@@ -1138,7 +1367,7 @@ State key: `dialogs-nothing`
 
 ### Disconnect All
 
-- Toast (info): **Nothing to do**. Nothing is connected.
+- Toast (info): **Nothing to Do**. Nothing is connected.
 
 Sent to a disconnect route after Cancel: nothing
 
@@ -1153,7 +1382,7 @@ which a card that was cleared reads as not connected.
 
 State key: `disconnect-github-cleared`
 
-- Toast (success): **Disconnected**. GitHub disconnected
+- Toast (warning): **Disconnected**. GitHub disconnected. Your token stays valid at GitHub until you delete it there.
 - github after the redraw:
   - 🐙
   - GitHub
@@ -1163,7 +1392,7 @@ State key: `disconnect-github-cleared`
 
 State key: `disconnect-github-revoke-failed`
 
-- Toast (success): **Disconnected**. GitHub disconnected. Piper no longer holds your access. I couldn't revoke it at GitHub, so it stays valid there until you remove Piper in GitHub's settings.
+- Toast (warning): **Disconnected**. GitHub disconnected. Piper no longer holds your access. I couldn't revoke it at GitHub, so it stays valid there until you remove Piper in GitHub's settings.
 - github after the redraw:
   - 🐙
   - GitHub
@@ -1178,7 +1407,7 @@ State key: `disconnect-github-incomplete`
   - 🐙
   - GitHub
   - Connected
-  - Not checked yet. Press Test.
+  - I couldn't fully disconnect GitHub: a saved copy of your access may still be stored, so Piper may still be able to use it. Try Disconnect again; if it keeps failing, tell us.
 
 ## Disconnect: github: The clearing call failed (the error text is a sample)
 
@@ -1189,23 +1418,13 @@ State key: `disconnect-github-raised`
   - 🐙
   - GitHub
   - Connected
-  - Not checked yet. Press Test.
+  - I couldn't fully disconnect GitHub: a saved copy of your access may still be stored, so Piper may still be able to use it. Try Disconnect again; if it keeps failing, tell us.
 
 ## Disconnect: notion: Every copy is gone
 
 State key: `disconnect-notion-cleared`
 
-- Toast (success): **Disconnected**. Notion disconnected
-- notion after the redraw:
-  - 📝
-  - Notion
-  - Not connected
-
-## Disconnect: notion: Piper holds nothing; the revoke at the provider failed
-
-State key: `disconnect-notion-revoke-failed`
-
-- Toast (success): **Disconnected**. Notion disconnected
+- Toast (warning): **Disconnected**. Notion disconnected. Your key stays valid in Notion until you remove the integration there.
 - notion after the redraw:
   - 📝
   - Notion
@@ -1220,7 +1439,7 @@ State key: `disconnect-notion-incomplete`
   - 📝
   - Notion
   - Connected
-  - Not checked yet. Press Test.
+  - I couldn't fully disconnect Notion: a saved copy of your access may still be stored, so Piper may still be able to use it. Try Disconnect again; if it keeps failing, tell us.
 
 ## Disconnect: notion: The clearing call failed (the error text is a sample)
 
@@ -1231,13 +1450,13 @@ State key: `disconnect-notion-raised`
   - 📝
   - Notion
   - Connected
-  - Not checked yet. Press Test.
+  - I couldn't fully disconnect Notion: a saved copy of your access may still be stored, so Piper may still be able to use it. Try Disconnect again; if it keeps failing, tell us.
 
 ## Disconnect: slack: Every copy is gone
 
 State key: `disconnect-slack-cleared`
 
-- Toast (success): **Disconnected**. Slack disconnected
+- Toast (success): **Disconnected**. Slack disconnected.
 - slack after the redraw:
   - 💬
   - Slack
@@ -1247,7 +1466,7 @@ State key: `disconnect-slack-cleared`
 
 State key: `disconnect-slack-revoke-failed`
 
-- Toast (success): **Disconnected**. Slack disconnected. Piper no longer holds your access. I couldn't revoke it at Slack, so it stays valid there until you remove Piper in Slack's settings.
+- Toast (warning): **Disconnected**. Slack disconnected. Piper no longer holds your access. I couldn't revoke it at Slack, so it stays valid there until you remove Piper in Slack's settings.
 - slack after the redraw:
   - 💬
   - Slack
@@ -1262,7 +1481,7 @@ State key: `disconnect-slack-incomplete`
   - 💬
   - Slack
   - Connected
-  - Not checked yet. Press Test.
+  - I couldn't fully disconnect Slack: a saved copy of your access may still be stored, so Piper may still be able to use it. Try Disconnect again; if it keeps failing, tell us.
 
 ## Disconnect: slack: The clearing call failed (the error text is a sample)
 
@@ -1273,13 +1492,13 @@ State key: `disconnect-slack-raised`
   - 💬
   - Slack
   - Connected
-  - Not checked yet. Press Test.
+  - I couldn't fully disconnect Slack: a saved copy of your access may still be stored, so Piper may still be able to use it. Try Disconnect again; if it keeps failing, tell us.
 
 ## Disconnect: calendar: Every copy is gone
 
 State key: `disconnect-calendar-cleared`
 
-- Toast (success): **Disconnected**. Google Calendar disconnected
+- Toast (success): **Disconnected**. Google Calendar disconnected.
 - calendar after the redraw:
   - 📅
   - Google Calendar
@@ -1289,7 +1508,7 @@ State key: `disconnect-calendar-cleared`
 
 State key: `disconnect-calendar-revoke-failed`
 
-- Toast (success): **Disconnected**. Google Calendar disconnected. Piper no longer holds your access. I couldn't revoke it at Google Calendar, so it stays valid there until you remove Piper in Google Calendar's settings.
+- Toast (warning): **Disconnected**. Google Calendar disconnected. Piper no longer holds your access. I couldn't revoke it at Google Calendar, so it stays valid there until you remove Piper in your Google account's settings.
 - calendar after the redraw:
   - 📅
   - Google Calendar
@@ -1304,7 +1523,7 @@ State key: `disconnect-calendar-incomplete`
   - 📅
   - Google Calendar
   - Connected
-  - Not checked yet. Press Test.
+  - I couldn't fully disconnect Google Calendar: a saved copy of your access may still be stored, so Piper may still be able to use it. Try Disconnect again; if it keeps failing, tell us.
 
 ## Disconnect: calendar: The clearing call failed (the error text is a sample)
 
@@ -1315,13 +1534,127 @@ State key: `disconnect-calendar-raised`
   - 📅
   - Google Calendar
   - Connected
-  - Not checked yet. Press Test.
+  - I couldn't fully disconnect Google Calendar: a saved copy of your access may still be stored, so Piper may still be able to use it. Try Disconnect again; if it keeps failing, tell us.
+
+## Disconnect: github (app leg): Every copy is gone
+
+State key: `disconnect-github-app-cleared`
+
+- Toast (warning): **Disconnected**. GitHub disconnected. The Piper GitHub app stays installed until you remove it in GitHub's settings.
+- github after the redraw:
+  - 🐙
+  - GitHub
+  - Not connected
+
+## Disconnect: github (app leg): Piper holds nothing; the revoke at the provider failed
+
+State key: `disconnect-github-app-revoke-failed`
+
+- Toast (warning): **Disconnected**. GitHub disconnected. Piper no longer holds your access. I couldn't revoke it at GitHub, so it stays valid there until you remove Piper in GitHub's settings.
+- github after the redraw:
+  - 🐙
+  - GitHub
+  - Not connected
+
+## Disconnect: github (oauth leg): Every copy is gone
+
+State key: `disconnect-github-oauth-cleared`
+
+- Toast (success): **Disconnected**. GitHub disconnected.
+- github after the redraw:
+  - 🐙
+  - GitHub
+  - Not connected
+
+## Disconnect: github (oauth leg): Piper holds nothing; the revoke at the provider failed
+
+State key: `disconnect-github-oauth-revoke-failed`
+
+- Toast (warning): **Disconnected**. GitHub disconnected. Piper no longer holds your access. I couldn't revoke it at GitHub, so it stays valid there until you remove Piper in GitHub's settings.
+- github after the redraw:
+  - 🐙
+  - GitHub
+  - Not connected
+
+## Disconnect: github (unknown leg): Every copy is gone
+
+State key: `disconnect-github-unknown-cleared`
+
+- Toast (warning): **Disconnected**. GitHub disconnected. If you connected it with the Piper GitHub app or a personal token, remove that in GitHub's settings too.
+- github after the redraw:
+  - 🐙
+  - GitHub
+  - Not connected
+
+## Disconnect: github (unknown leg): Piper holds nothing; the revoke at the provider failed
+
+State key: `disconnect-github-unknown-revoke-failed`
+
+- Toast (warning): **Disconnected**. GitHub disconnected. Piper no longer holds your access. I couldn't revoke it at GitHub, so it stays valid there until you remove Piper in GitHub's settings.
+- github after the redraw:
+  - 🐙
+  - GitHub
+  - Not connected
 
 ## Disconnect: All: every card cleared
 
 State key: `disconnect-all-cleared`
 
-- Toast (success): **All Disconnected**. 4 of 4 integrations disconnected
+- No toast.
+- A dialog:
+  - Title: **4 of 4 disconnected.**
+  - Message:
+    > GitHub and Notion also need you to remove Piper in their own settings.
+  - Buttons: OK (only)
+- github after the redraw:
+  - 🐙
+  - GitHub
+  - Not connected
+- notion after the redraw:
+  - 📝
+  - Notion
+  - Not connected
+- slack after the redraw:
+  - 💬
+  - Slack
+  - Not connected
+- calendar after the redraw:
+  - 📅
+  - Google Calendar
+  - Not connected
+
+## Disconnect: All: every card cleared, GitHub with a classic sign-in, Notion not connected
+
+State key: `disconnect-all-cleared-nothing-stays`
+
+- Toast (success): **All Disconnected**. 3 of 3 disconnected.
+- github after the redraw:
+  - 🐙
+  - GitHub
+  - Not connected
+- notion after the redraw:
+  - 📝
+  - Notion
+  - Not connected
+- slack after the redraw:
+  - 💬
+  - Slack
+  - Not connected
+- calendar after the redraw:
+  - 📅
+  - Google Calendar
+  - Not connected
+
+## Disconnect: All: every card cleared, GitHub's leg unknown
+
+State key: `disconnect-all-cleared-github-unknown`
+
+- No toast.
+- A dialog:
+  - Title: **4 of 4 disconnected.**
+  - Message:
+    > Notion also needs you to remove Piper in its settings, and GitHub may too if you connected it with the app or a token.
+  - Buttons: OK (only)
 - github after the redraw:
   - 🐙
   - GitHub
@@ -1343,7 +1676,16 @@ State key: `disconnect-all-cleared`
 
 State key: `disconnect-all-mixed`
 
-- Toast (warning): **Partial Disconnect**. 3 of 4 disconnected. Failed: Google Calendar
+- No toast.
+- A dialog:
+  - Title: **3 of 4 disconnected.**
+  - Message:
+    > Slack: I couldn't revoke Piper's access, so it stays valid there until you remove Piper in Slack's settings.
+    >
+    > Google Calendar: I couldn't fully disconnect it. A saved copy of your access may still be stored. Press Disconnect on its card to try again.
+    >
+    > GitHub and Notion also need you to remove Piper in their own settings.
+  - Buttons: OK (only)
 - github after the redraw:
   - 🐙
   - GitHub
@@ -1360,4 +1702,4 @@ State key: `disconnect-all-mixed`
   - 📅
   - Google Calendar
   - Connected
-  - Not checked yet. Press Test.
+  - I couldn't fully disconnect Google Calendar: a saved copy of your access may still be stored, so Piper may still be able to use it. Try Disconnect again; if it keeps failing, tell us.

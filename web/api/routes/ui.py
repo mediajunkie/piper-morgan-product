@@ -606,6 +606,7 @@ async def integrations_page(request: Request):
     user_context = _extract_user_context(request)
     # #2237: the page's connectable cards come from the one offered-set constant, read
     # at request time. Everything else renders greyed as "coming".
+    from services.connectors.disconnect_words import page_all_words
     from services.integrations import integration_status_service
 
     return templates.TemplateResponse(
@@ -616,6 +617,8 @@ async def integrations_page(request: Request):
             "offered_connectors": list(
                 integration_status_service.offered_connectors()
             ),  # #2238: this host's set
+            # CXO and Arch 2026-11-18: Disconnect All's closing lines, from the one map.
+            "disconnect_all": page_all_words(),
         },
     )
 

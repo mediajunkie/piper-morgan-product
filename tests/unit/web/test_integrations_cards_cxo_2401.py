@@ -77,7 +77,7 @@ async def test_a_failed_credential_lookup_is_test_only(name, how):
     )
     with (
         patch.object(routes, "_get_integration_config_status", lookup),
-        patch.object(routes, "_github_card", AsyncMock(side_effect=RuntimeError("down"))),
+        patch.object(routes, "_github_card_and_leg", AsyncMock(side_effect=RuntimeError("down"))),
     ):
         card = await routes._check_integration_health(name, meta, user_id=USER)
     assert card.status == "unknown" and card.status_message == routes.CHECK_FAILED_MESSAGE

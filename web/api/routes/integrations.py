@@ -55,6 +55,14 @@ class IntegrationStatus(BaseModel):
     # (the sign-in GitHub card's "Connected as ..."). Other cards put the failure in
     # ``status_message`` and leave this unset.
     error_line: Optional[str] = None
+    # CXO and Arch 2026-11-18 (the disconnect unit): GitHub's leg as the card's one resolver
+    # names it ("app", "oauth" for a classic sign-in, "token", or "unknown"; ADR-070 B4),
+    # and every card's disconnect words from the one map (``disconnect_words``): the
+    # dialog, the cleared toast, whether something stays valid at the provider (a warning
+    # toast), and how Disconnect All's closing line names the card. The page keys on these,
+    # never on the card's words.
+    disconnect_leg: Optional[str] = None
+    disconnect: Optional[Dict[str, Any]] = None
 
 
 class IntegrationHealthResponse(BaseModel):
@@ -559,6 +567,32 @@ def _recorded_check_iso(principal: Optional[str], integration_id: str) -> Option
 async def _github_card(
     metadata: Dict[str, Any], user_id: Optional[str]
 ) -> Optional[IntegrationStatus]:
+    """GitHub's card alone (see ``_github_card_and_leg``)."""
+    card, _leg = await _github_card_and_leg(metadata, user_id)
+    return card
+
+
+def _github_disconnect_leg(credential: Any) -> str:
+    """The leg a disconnect leaves behind, from the resolver's own answer (Arch
+    01M7S2YPDA): the app's grant, a classic sign-in, or the person's token. A degrade, or
+    a token covering for a stale grant (two legs at once), is ``unknown``: never a guess."""
+    from services.mcp.consumer.connector import DegradationResponse
+
+    if isinstance(credential, DegradationResponse):
+        return "unknown"
+    if getattr(credential, "stale_oauth_reason", None) is not None:
+        return "unknown"
+    leg = getattr(credential, "leg", None)
+    if leg == "oauth":
+        return "app" if getattr(credential, "app_grant", False) else "oauth"
+    if leg == "pat":
+        return "token"
+    return "unknown"
+
+
+async def _github_card_and_leg(
+    metadata: Dict[str, Any], user_id: Optional[str]
+) -> tuple[Optional[IntegrationStatus], str]:
     """GitHub's Integrations card from the resolver's outcome (#2031, ADR-070 B4/B5).
 
     - OAuth leg serving → Connected.
@@ -597,19 +631,20 @@ async def _github_card(
         action="reconnect",
     )
     if not user_id:
-        return not_configured
+        return not_configured, "unknown"
 
     adapter = GitHubMCPSpatialAdapter()
     credential = await adapter.resolve_credential(user_id)
+    leg = _github_disconnect_leg(credential)
     if isinstance(credential, DegradationResponse):
         if credential.reason == DegradationReason.STALE_TOKEN:
-            return needs_reconnecting
+            return needs_reconnecting, leg
         if credential.reason in (
             DegradationReason.CONNECT_REQUIRED,
             DegradationReason.NOT_CONFIGURED,
         ):
-            return not_configured
-        return None
+            return not_configured, leg
+        return None, leg
     if getattr(credential, "leg", None) == "oauth":
         # #2066: the OAuth-leg card carries the last recorded check like the generic
         # path below does, so the #2045 time line ("Healthy. Checked just now." /
@@ -629,7 +664,7 @@ async def _github_card(
             login: Optional[str] = await adapter.account_login(user_id)
         except GitHubReadFailed as e:
             if e.reason is DegradationReason.STALE_TOKEN:
-                return needs_reconnecting
+                return needs_reconnecting, leg
             login = None
         except Exception:  # silent-ok: the card still renders; the login is omitted
             login = None
@@ -659,11 +694,11 @@ async def _github_card(
             last_check=oauth_result.checked_at_iso if oauth_result is not None else None,
             error=oauth_error,
             error_line=oauth_error,
-        )
+        ), leg
     if getattr(credential, "stale_oauth_reason", None) == DegradationReason.STALE_TOKEN:
         probe = await adapter.search_user_repositories(user_id, limit=1)
         if probe.degradation is not None:
-            return needs_reconnecting
+            return needs_reconnecting, leg
         return card(
             status="degraded",
             status_icon=_WARNING_ICON,
@@ -672,7 +707,7 @@ async def _github_card(
             can_test=True,
             # #2053 (CXO): Reconnect in every stale state, beside Test.
             action="reconnect",
-        )
+        ), leg
     if getattr(credential, "leg", None) == "pat":
         # CXO 2026-11-18: the own-token card after a passing Test says which leg served,
         # as the Test did. Untested or failed, the generic path below governs as before.
@@ -683,12 +718,33 @@ async def _github_card(
                 status_message=_GITHUB_CARD_PAT_HEALTHY,
                 can_test=True,
                 last_check=pat_result.checked_at_iso,
-            )
-    return None
+            ), leg
+    return None, leg
 
 
 async def _check_integration_health(
     integration_id: str, metadata: Dict[str, Any], user_id: Optional[str] = None
+) -> IntegrationStatus:
+    """The card (``_integration_card``) with its disconnect words from the one map
+    (CXO and Arch 2026-11-18). GitHub's leg is the one its card's resolver named."""
+    from dataclasses import asdict
+
+    from services.connectors.disconnect_words import DISCONNECT_WORDS, disconnect_words
+
+    legs: Dict[str, str] = {}
+    card = await _integration_card(integration_id, metadata, user_id, legs)
+    if integration_id == "github":
+        card.disconnect_leg = legs.get("github", "unknown")
+    if any(key[0] == integration_id for key in DISCONNECT_WORDS):
+        card.disconnect = asdict(disconnect_words(integration_id, card.disconnect_leg))
+    return card
+
+
+async def _integration_card(
+    integration_id: str,
+    metadata: Dict[str, Any],
+    user_id: Optional[str],
+    legs: Dict[str, str],
 ) -> IntegrationStatus:
     """Check health of a specific integration without active testing.
 
@@ -704,7 +760,7 @@ async def _check_integration_health(
         # A mapped outcome is the card; ``None`` means the user's own token serves with
         # nothing stale, so the configured path below (cached Test result) governs.
         if integration_id == "github":
-            github_card = await _github_card(metadata, user_id)
+            github_card, legs["github"] = await _github_card_and_leg(metadata, user_id)
             if github_card is not None:
                 return github_card
             config_status = "configured"

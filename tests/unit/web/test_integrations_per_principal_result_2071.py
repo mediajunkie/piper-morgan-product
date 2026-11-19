@@ -68,7 +68,9 @@ def store():
         patch.object(
             integrations, "_get_integration_config_status", new=AsyncMock(return_value="configured")
         ),
-        patch.object(integrations, "_github_card", new=AsyncMock(return_value=None)),
+        patch.object(
+            integrations, "_github_card_and_leg", new=AsyncMock(return_value=(None, "token"))
+        ),
     ):
         yield s
 

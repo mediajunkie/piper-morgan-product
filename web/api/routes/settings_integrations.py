@@ -341,21 +341,33 @@ DISCONNECT_INCOMPLETE_LINE = (
     "stored, so Piper may still be able to use it. Try Disconnect again; if it keeps "
     "failing, tell us."
 )
-# Piper's copies are gone but the provider-side revoke failed (Slack, Google, GitHub #2178): added to
-# the success message, never the failure toast. Words: CXO 10-25 16:00.
-DISCONNECT_REVOKE_FAILED_LINE = (
-    "Piper no longer holds your access. I couldn't revoke it at {service}, so it stays "
-    "valid there until you remove Piper in {service}'s settings."
-)
 
 
 def _disconnected_message(service: str, result) -> str:
     """The success message (#2172): "{service} disconnected", plus CXO's revoke line
-    when the provider-side revoke failed."""
+    when the provider-side revoke failed (the place from the one map, CXO 11-18)."""
+    from services.connectors.disconnect_words import revoke_failed_line
+
     message = f"{service} disconnected"
     if result.provider_revoke_failed:
-        message += ". " + DISCONNECT_REVOKE_FAILED_LINE.format(service=service)
+        message += ". " + revoke_failed_line(service)
     return message
+
+
+def _disconnected(service: str, result) -> dict:
+    """A cleared disconnect's reply: the message, the stable outcome code, and the line
+    Disconnect All shows for this card when it has something to say (CXO 11-18 D). The
+    page takes a cleared card's toast and its "stays valid" words from the card payload,
+    whose leg the resolver named (Arch 01M7S2YPDA), never from here."""
+    from services.connectors.disconnect_words import all_revoke_failed_line
+
+    outcome = _disconnect_outcome(result)
+    return {
+        "success": True,
+        "message": _disconnected_message(service, result),
+        "outcome": outcome,
+        "all_line": all_revoke_failed_line(service) if outcome == "revoke_failed" else None,
+    }
 
 
 def _disconnect_outcome(result) -> str:
@@ -369,10 +381,18 @@ def _disconnect_incomplete(service: str):
     ``detail`` the page shows, never ``success: true``."""
     from fastapi.responses import JSONResponse
 
+    from services.connectors.disconnect_words import all_incomplete_line
+
     line = DISCONNECT_INCOMPLETE_LINE.format(service=service)
     return JSONResponse(
         status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
-        content={"success": False, "detail": line, "message": line, "outcome": "incomplete"},
+        content={
+            "success": False,
+            "detail": line,
+            "message": line,
+            "outcome": "incomplete",
+            "all_line": all_incomplete_line(service),
+        },
     )
 
 
@@ -670,11 +690,7 @@ async def disconnect_slack(current_user: JWTClaims = Depends(get_current_user)):
             return _disconnect_incomplete("Slack")
         logger.info("slack_disconnected")
 
-        return {
-            "success": True,
-            "message": _disconnected_message("Slack", result),
-            "outcome": _disconnect_outcome(result),
-        }
+        return _disconnected("Slack", result)
 
     except Exception as e:
         logger.error("slack_disconnect_failed", error=str(e), exc_info=True)
@@ -1703,11 +1719,7 @@ async def disconnect_calendar(
             return _disconnect_incomplete("Google Calendar")
         logger.info("calendar_disconnected", user_id=current_user.sub)
 
-        return {
-            "success": True,
-            "message": _disconnected_message("Google Calendar", result),
-            "outcome": _disconnect_outcome(result),
-        }
+        return _disconnected("Google Calendar", result)
 
     except Exception as e:
         logger.error("calendar_disconnect_failed", error=str(e), exc_info=True)
@@ -2024,11 +2036,7 @@ async def disconnect_notion(current_user: JWTClaims = Depends(get_current_user))
             return _disconnect_incomplete("Notion")
         logger.info("notion_disconnected")
 
-        return {
-            "success": True,
-            "message": "Notion disconnected",
-            "outcome": _disconnect_outcome(result),
-        }
+        return _disconnected("Notion", result)
 
     except Exception as e:
         logger.error("notion_disconnect_failed", error=str(e), exc_info=True)
@@ -2481,12 +2489,7 @@ async def disconnect_github(current_user: JWTClaims = Depends(get_current_user))
             return _disconnect_incomplete("GitHub")
         logger.info("github_disconnected")
 
-        return {
-            "success": True,
-            # #2178: plus CXO's line when GitHub's revoke failed (never on a PAT-only account).
-            "message": _disconnected_message("GitHub", result),
-            "outcome": _disconnect_outcome(result),
-        }
+        return _disconnected("GitHub", result)
 
     except Exception as e:
         logger.error("github_disconnect_failed", error=str(e), exc_info=True)

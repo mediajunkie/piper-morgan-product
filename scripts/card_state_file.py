@@ -433,6 +433,11 @@ def _github_outcome(name: str):
             reason=DegradationReason.CONNECT_REQUIRED, user_message="Connect GitHub to continue."
         ),
         "unreachable": lambda: (_ for _ in ()).throw(RuntimeError("lookup failed")),
+        # The resolver answers but can't name a leg (GitHub didn't answer it): the card is
+        # drawn as configured, and a disconnect's leg is unknown.
+        "leg_unknown": lambda: DegradationResponse(
+            reason=DegradationReason.UNREACHABLE, user_message="GitHub didn't answer."
+        ),
     }[name]
 
 
@@ -790,7 +795,10 @@ const toasts = [];
 const Toast = { show(kind, title, message) { toasts.push({ kind, title, message }); } };
 const dialogs = [];
 // Every dialog is answered Cancel: nothing is disconnected.
-const Dialog = { confirm: async (config) => { dialogs.push(config); return false; } };
+const Dialog = {
+  confirm: async (config) => { dialogs.push(config); return false; },
+  alert: async (config) => { dialogs.push(Object.assign({ alert: true }, config)); },
+};
 // The drawn cards, read from the list the page wrote, as a browser's DOM would hold them.
 const drawnCards = () => {
   const html = (elements['integrations-list'] || { innerHTML: '' }).innerHTML;
@@ -838,7 +846,10 @@ _CONFIRMED = r"""
 const toasts = [];
 const Toast = { show(kind, title, message) { toasts.push({ kind, title, message }); } };
 const dialogs = [];
-const Dialog = { confirm: async (config) => { dialogs.push(config); return true; } };
+const Dialog = {
+  confirm: async (config) => { dialogs.push(config); return true; },
+  alert: async (config) => { dialogs.push(Object.assign({ alert: true }, config)); },
+};
 console.error = () => {};
 // The drawn cards, read from the list the page wrote, as a browser's DOM would hold them.
 const drawnCards = () => {
@@ -891,7 +902,8 @@ _CONFIRMED_RUN = r"""
   }
   for (let i = 0; i < 10; i++) await new Promise((resolve) => setTimeout(resolve, 0));
   process.stdout.write(JSON.stringify({
-    toasts, list: (elements['integrations-list'] || {}).innerHTML || '',
+    toasts, alerts: dialogs.filter((d) => d.alert),
+    list: (elements['integrations-list'] || {}).innerHTML || '',
     link: elements[LINK] ? { text: elements[LINK].textContent, cls: elements[LINK].className } : null,
     disconnected: fetched.filter((u) => u.includes('disconnect')),
   }));
@@ -911,9 +923,12 @@ def page_scripts() -> Tuple[str, str]:
     script = body[start : body.index("</script>", start)]
     if "{{" in script or "{%" in script:
         raise Stopped("the page's script now has template tags; it must be rendered, not read")
-    # The page route fills the list from this same call (web/api/routes/ui.py).
+    # The page route fills these from the same calls (web/api/routes/ui.py).
+    from services.connectors.disconnect_words import page_all_words
+
     offered = list(integration_status_service.offered_connectors())
-    return f"window.__OFFERED_CONNECTORS__ = {json.dumps(offered)};\n", script
+    words = f"window.__DISCONNECT_ALL__ = {json.dumps(page_all_words())};\n"
+    return f"window.__OFFERED_CONNECTORS__ = {json.dumps(offered)};\n", words + script
 
 
 def draw(
@@ -961,7 +976,10 @@ def draw(
     js = f"const INPUT = {json.dumps(given)};\n" + harness + shared + offered + script + run
     done = subprocess.run(["node", "-e", js], capture_output=True, text=True, timeout=60)
     if done.returncode != 0:
-        raise Stopped(f"the page's script failed under node for '{scenario.key}'")
+        raise Stopped(
+            f"the page's script failed under node for '{scenario.key}': "
+            + " | ".join(ln for ln in done.stderr.splitlines() if "Error" in ln)[:300]
+        )
     return json.loads(done.stdout)
 
 
@@ -1185,7 +1203,42 @@ def _pressed_rows(pressed: Dict[str, Any], card: str) -> List[str]:
 def dialog_pages() -> List[Scenario]:
     """The pages the confirm dialogs are pressed from."""
     return [
-        Scenario("dialogs-connected", "Every card connected", generic=_all("connected")),
+        Scenario(
+            "dialogs-connected",
+            "Every card connected, GitHub with a saved token",
+            generic=_all("connected"),
+            github="own_token",
+        ),
+        Scenario(
+            "dialogs-github-app",
+            "Every card connected, GitHub through the app",
+            generic=_all("connected"),
+            github="app",
+        ),
+        Scenario(
+            "dialogs-github-classic",
+            "Every card connected, GitHub with a classic sign-in",
+            generic=_all("connected"),
+            github="oauth_classic",
+        ),
+        Scenario(
+            "dialogs-github-unknown",
+            "Every card connected, GitHub's leg unknown (GitHub couldn't be reached)",
+            generic=_all("connected"),
+            github="leg_unknown",
+        ),
+        Scenario(
+            "dialogs-github-classic-no-notion",
+            "GitHub with a classic sign-in, Slack and Calendar connected, Notion not",
+            generic={**_all("connected"), "notion": "not_configured"},
+            github="oauth_classic",
+        ),
+        Scenario(
+            "dialogs-github-unknown-no-notion",
+            "GitHub's leg unknown, Slack and Calendar connected, Notion not",
+            generic={**_all("connected"), "notion": "not_configured"},
+            github="leg_unknown",
+        ),
         Scenario(
             "dialogs-nothing",
             "Nothing connected",
@@ -1244,15 +1297,51 @@ _DISCONNECT_ROUTES = {
 }
 
 
-def disconnect_clicks() -> List[Tuple[str, str, str, Dict[str, str]]]:
-    """(key, title, pressed card or "*" for All, outcome per card)."""
+#: GitHub's card state before a confirmed disconnect, per leg the card's resolver names.
+_GITHUB_BEFORE = {
+    "token": "own_token",
+    "app": "app",
+    "oauth": "oauth_classic",
+    "unknown": "leg_unknown",
+}
+
+
+def disconnect_clicks() -> List[Tuple[str, str, str, Dict[str, str], str]]:
+    """(key, title, pressed card or "*" for All, outcome per card, GitHub's state before)."""
     out = []
     for card in CARDS:
         for outcome, title in _DISCONNECT_OUTCOMES:
+            if card == "notion" and outcome == "revoke_failed":
+                continue  # Notion has no provider-side revoke (disconnect.py): it can't fail
             key = f"disconnect-{card}-{outcome.replace('_', '-')}"
-            out.append((key, f"{card}: {title}", card, {card: outcome}))
+            out.append((key, f"{card}: {title}", card, {card: outcome}, "own_token"))
+    for leg in ("app", "oauth", "unknown"):
+        for outcome in ("cleared", "revoke_failed"):
+            key = f"disconnect-github-{leg}-{outcome.replace('_', '-')}"
+            title = f"github ({leg} leg): " + dict(_DISCONNECT_OUTCOMES)[outcome]
+            out.append((key, title, "github", {"github": outcome}, _GITHUB_BEFORE[leg]))
     out += [
-        ("disconnect-all-cleared", "All: every card cleared", "*", {c: "cleared" for c in CARDS}),
+        (
+            "disconnect-all-cleared",
+            "All: every card cleared",
+            "*",
+            {c: "cleared" for c in CARDS},
+            "own_token",
+        ),
+        (
+            "disconnect-all-cleared-nothing-stays",
+            "All: every card cleared, GitHub with a classic sign-in, Notion not connected",
+            "*",
+            {"github": "cleared", "slack": "cleared", "calendar": "cleared"},
+            "oauth_classic",
+        ),
+        (
+            "disconnect-all-cleared-github-unknown",
+            "All: every card cleared, GitHub's leg unknown",
+            "*",
+            {c: "cleared" for c in CARDS},
+            "leg_unknown",
+        ),
         (
             "disconnect-all-mixed",
             "All: one revoke failed, one incomplete, two cleared",
@@ -1263,6 +1352,7 @@ def disconnect_clicks() -> List[Tuple[str, str, str, Dict[str, str]]]:
                 "slack": "revoke_failed",
                 "calendar": "incomplete",
             },
+            "own_token",
         ),  # fmt: skip
     ]
     return out
@@ -1312,16 +1402,25 @@ def _confirmed_rows(user_id: str) -> List[str]:
         "which a card that was cleared reads as not connected.",
         "",
     ]
-    before = Scenario("disconnect-before", "", generic=_all("connected"), github="own_token")
-    for key, title, press, outcomes in disconnect_clicks():
+    for key, title, press, outcomes, github_before in disconnect_clicks():
+        # The page lists what it draws as connected: a card the run doesn't press is off.
+        listed = set(outcomes) if press == "*" else set(CARDS)
+        before = Scenario(
+            "disconnect-before",
+            "",
+            generic={c: ("connected" if c in listed else "not_configured") for c in CARDS},
+            github=github_before if "github" in listed else "nothing",
+        )
         replies = run_disconnect(user_id, outcomes)
         gone = {c for c, r in replies.items() if r["status"] == 200}
-        after_generic = {c: ("not_configured" if c in gone else "connected") for c in CARDS}
+        after_generic = {
+            c: ("not_configured" if c in gone or c not in listed else "connected") for c in CARDS
+        }
         after = Scenario(
             key,
             title,
             generic=after_generic,
-            github="nothing" if "github" in gone else "own_token",
+            github="nothing" if "github" in gone or "github" not in listed else github_before,
         )
         payload_before = health_payload(user_id, before)
         payload_after = health_payload(user_id, after)
@@ -1331,6 +1430,8 @@ def _confirmed_rows(user_id: str) -> List[str]:
             f"- Toast ({t['kind']}): **{t['title']}**. {_shown(t['message'])}"
             for t in pressed["toasts"]
         ] or ["- No toast."]
+        for alert in pressed["alerts"]:
+            out += ["- A dialog:"] + [f"  {line}" for line in _dialog_lines(alert) if line]
         for card in [press] if press != "*" else list(CARDS):
             drawn = read_card(pressed, card)
             lines = drawn["lines"] if drawn else []
@@ -1346,10 +1447,13 @@ def _dialog_lines(dialog: Optional[Dict[str, Any]]) -> List[str]:
     message = [ln for ln in str(dialog.get("message", "")).split("\n")]
     out = [f"- Title: **{_shown(str(dialog.get('title', '')))}**", "- Message:"]
     out += [f"  > {_shown(ln)}" if ln else "  >" for ln in message]
-    out.append(
-        f"- Buttons: {dialog.get('confirmText') or 'OK'} (confirm), "
-        f"{dialog.get('cancelText') or 'Cancel'}"
-    )
+    if dialog.get("alert"):
+        out.append(f"- Buttons: {dialog.get('okLabel') or 'OK'} (only)")
+    else:
+        out.append(
+            f"- Buttons: {dialog.get('confirmText') or 'OK'} (confirm), "
+            f"{dialog.get('cancelText') or 'Cancel'}"
+        )
     return out + [""]
 
 

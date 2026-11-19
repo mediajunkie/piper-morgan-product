@@ -90,7 +90,7 @@ async def test_nothing_of_the_exception_is_stored_returned_or_drawn(name):
             patch.object(
                 integ, "_get_integration_config_status", AsyncMock(return_value="configured")
             ),
-            patch.object(integ, "_github_card", AsyncMock(return_value=None)),
+            patch.object(integ, "_github_card_and_leg", AsyncMock(return_value=(None, "token"))),
         ):
             card = await integ._check_integration_health(
                 name, integ.INTEGRATION_REGISTRY[name], user_id=USER.sub

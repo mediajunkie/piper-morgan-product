@@ -435,6 +435,7 @@
 <script src="/static/js/api-error-parser.js"></script>
 <script>
   window.__OFFERED_CONNECTORS__ = {{ offered_connectors | default([]) | tojson }};
+  window.__DISCONNECT_ALL__ = {{ disconnect_all | default({}) | tojson }};
 </script>
 <script>
   // Integration icons mapping
@@ -468,6 +469,20 @@
   // card or a page load. Page memory only. It replaces #2053's rule, which left a stale
   // card's warning off the redraw: the card now keeps its own lines.
   const couldNotCheckLine = {};
+
+  // CXO and Arch, 2026-11-18 (the disconnect unit): each card's disconnect words come from
+  // the one server map, carried on the card's payload (GitHub's leg as its own resolver
+  // named it), and Disconnect All's closing lines from the same map, given to the page
+  // once. The page holds no words of its own for these. A disconnect that doesn't fully
+  // clear holds its line on the card in ``couldNotCheckLine``, by the same rule: the next
+  // action on that card, or a page load, clears it.
+  const disconnectWordsByCard = {};
+  const DISCONNECT_ALL = window.__DISCONNECT_ALL__ || {};
+
+  function closingLine(notes) {
+    const key = Object.entries(notes).map(([name, note]) => `${name}:${note}`).sort().join('|');
+    return key ? ((DISCONNECT_ALL.closing || {})[key] || null) : null;
+  }
 
   // Status icons for overall health
   const STATUS_ICONS = {
@@ -649,6 +664,9 @@
       return;
     }
 
+    integrations.forEach(card => {
+      if (card && card.disconnect) disconnectWordsByCard[card.name] = card.disconnect;
+    });
     container.innerHTML = integrations.map(card => {
       // #2402 (Arch 2026-11-17): the cards are one HTML string. Every string the route
       // sent is escaped once, here, before any of it is drawn; nothing below reads `card`.
@@ -1081,73 +1099,35 @@
   }
 
   async function disconnectIntegration(integrationName) {
-    const btn = document.getElementById(`disconnect-btn-${integrationName}`);
-    // CXO 2026-11-18: the name the card draws (its own field), never one built from the id.
-    const displayName = cardDisplayName(integrationName);
-
-    const ok = await Dialog.confirm({
-      title: `Disconnect ${displayName}?`,
-      message: `I'll disconnect ${displayName}. You can connect it again anytime.`,
-      confirmText: 'Disconnect'
-    });
-    if (!ok) return;
-
-    if (btn) {
-      btn.disabled = true;
-      btn.textContent = 'Disconnecting...';
-    }
-
-    try {
-      const response = await fetch(`/api/v1/settings/integrations/${integrationName}/disconnect`, {
-        method: 'POST'
-      });
-      if (response.status === 401) {
-        // #2067: signed out; the modal is up. Put the button back, change nothing.
-        if (btn) { btn.disabled = false; btn.textContent = 'Disconnect'; }
-        return;
-      }
-
-      if (!response.ok) {
-        const error = await response.json();
-        throw new Error(parseApiDetail(error.detail, 'Disconnect failed'));
-      }
-
-      const data = await response.json();
-
-      if (data.success) {
-        Toast.show('success', 'Disconnected', data.message || `${displayName} disconnected`);
-        // Reload integrations to update UI
-        loadIntegrationsHealth();
-      } else {
-        throw new Error(data.message || 'Disconnect failed');
-      }
-    } catch (error) {
-      console.error('Disconnect failed:', error);
-      Toast.show('error', 'Disconnect Failed', error.message);
-      if (btn) {
-        btn.disabled = false;
-        btn.textContent = 'Disconnect';
-      }
-    }
+    return disconnectCard(integrationName);
   }
 
   // Disconnect API key integration (Issue #540: Notion, GitHub, etc.)
   async function disconnectAPIKeyIntegration(integrationName) {
+    return disconnectCard(integrationName);
+  }
+
+  async function disconnectCard(integrationName) {
     const btn = document.getElementById(`disconnect-btn-${integrationName}`);
     // CXO 2026-11-18: the name the card draws (its own field), never one built from the id.
     const displayName = cardDisplayName(integrationName);
+    const words = disconnectWordsByCard[integrationName] || null;
 
     const ok = await Dialog.confirm({
       title: `Disconnect ${displayName}?`,
-      message: `I'll disconnect ${displayName}. You can connect it again anytime.`,
+      message: words ? words.dialog : `I'll disconnect ${displayName}. You can connect it again anytime.`,
       confirmText: 'Disconnect'
     });
     if (!ok) return;
+    delete couldNotCheckLine[integrationName];  // a new action on this card
 
     if (btn) {
       btn.disabled = true;
       btn.textContent = 'Disconnecting...';
     }
+    const resetButton = () => {
+      if (btn) { btn.disabled = false; btn.textContent = 'Disconnect'; }
+    };
 
     try {
       const response = await fetch(`/api/v1/settings/integrations/${integrationName}/disconnect`, {
@@ -1155,31 +1135,37 @@
       });
       if (response.status === 401) {
         // #2067: signed out; the modal is up. Put the button back, change nothing.
-        if (btn) { btn.disabled = false; btn.textContent = 'Disconnect'; }
+        resetButton();
+        return;
+      }
+      const data = await response.json().catch(() => ({}));
+
+      if (response.ok && data.success) {
+        // Keyed on the route's outcome code, never on its words (Arch 2026-11-18).
+        if (data.outcome === 'revoke_failed') {
+          Toast.show('warning', 'Disconnected', data.message);
+        } else if (words) {
+          // CXO: what stays valid at the provider is said, in warning style.
+          Toast.show(words.stays ? 'warning' : 'success', 'Disconnected', words.cleared);
+        } else {
+          Toast.show('success', 'Disconnected', data.message || `${displayName} disconnected`);
+        }
+        loadIntegrationsHealth();
         return;
       }
 
-      if (!response.ok) {
-        const error = await response.json();
-        throw new Error(parseApiDetail(error.detail, 'Disconnect failed'));
-      }
-
-      const data = await response.json();
-
-      if (data.success) {
-        Toast.show('success', 'Disconnected', data.message || `${displayName} disconnected`);
-        // Reload integrations to update UI
+      const line = parseApiDetail(data.detail, 'Disconnect failed');
+      Toast.show('error', 'Disconnect Failed', line);
+      resetButton();
+      if (data.outcome === 'incomplete') {
+        // CXO: the card keeps "Connected" and this line, not "Not checked yet. Press Test."
+        couldNotCheckLine[integrationName] = line;
         loadIntegrationsHealth();
-      } else {
-        throw new Error(data.message || 'Disconnect failed');
       }
     } catch (error) {
       console.error('Disconnect failed:', error);
       Toast.show('error', 'Disconnect Failed', error.message);
-      if (btn) {
-        btn.disabled = false;
-        btn.textContent = 'Disconnect';
-      }
+      resetButton();
     }
   }
 
@@ -1200,15 +1186,23 @@
     });
 
     if (connected.length === 0) {
-      Toast.show('info', 'Nothing to do', 'Nothing is connected.');
+      Toast.show('info', 'Nothing to Do', 'Nothing is connected.');
       return;
     }
 
     // Confirmation dialog
     const names = connected.map(i => `• ${i.display_name}`).join('\n');
+    // CXO 2026-11-18: then, only when GitHub or Notion is listed, who also needs Piper
+    // removed in their own settings (from the one map; GitHub per its leg).
+    const listedNotes = {};
+    connected.forEach(i => {
+      const w = disconnectWordsByCard[i.name];
+      if (w && w.all_note) listedNotes[i.display_name] = w.all_note;
+    });
+    const listedClosing = closingLine(listedNotes);
     const ok = await Dialog.confirm({
       title: 'Disconnect all integrations?',
-      message: `I'll disconnect these:\n${names}\n\nYou can connect them again anytime.`,
+      message: `I'll disconnect these:\n${names}\n\n${listedClosing ? `${listedClosing}\n\n` : ''}You can connect them again anytime.`,
       confirmText: 'Disconnect all'
     });
     if (!ok) return;
@@ -1223,48 +1217,59 @@
   }
 
   async function performDisconnectAll(btn, connected) {
-    // Disconnect each integration sequentially
-    let successCount = 0;
-    let failedNames = [];
+    // CXO and Arch 2026-11-18: each card's route answers with an outcome code (cleared,
+    // revoke_failed, incomplete); the count and the lines key on it, never on words. A
+    // card counts as disconnected for cleared and revoke_failed.
+    let disconnected = 0;
+    let signedOut = false;
+    const lines = [];
+    const clearedNotes = {};
+    const incompleteLine = (name) => (DISCONNECT_ALL.incomplete || '').replace('{service}', name);
 
     for (const integration of connected) {
       try {
         const response = await fetch(`/api/v1/settings/integrations/${integration.name}/disconnect`, {
           method: 'POST'
         });
-        if (response.status === 401) break; // #2067: signed out; stop, change nothing more
+        if (response.status === 401) { signedOut = true; break; } // #2067: stop, change nothing more
+        const data = await response.json().catch(() => ({}));
 
-        if (response.ok) {
-          const data = await response.json();
-          if (data.success) {
-            successCount++;
+        if (response.ok && data.success) {
+          disconnected++;
+          if (data.outcome === 'revoke_failed') {
+            lines.push(data.all_line);
           } else {
-            failedNames.push(integration.display_name);
+            const w = disconnectWordsByCard[integration.name];
+            if (w && w.all_note) clearedNotes[integration.display_name] = w.all_note;
           }
         } else {
-          failedNames.push(integration.display_name);
+          lines.push(data.all_line || incompleteLine(integration.display_name));
+          if (data.outcome === 'incomplete') {
+            couldNotCheckLine[integration.name] = parseApiDetail(data.detail, 'Disconnect failed');
+          }
         }
       } catch (error) {
         console.error(`Failed to disconnect ${integration.name}:`, error);
-        failedNames.push(integration.display_name);
+        lines.push(incompleteLine(integration.display_name));
       }
     }
 
-    // Show result
-    const total = connected.length;
-    if (successCount === total) {
-      Toast.show('success', 'All Disconnected', `${successCount} of ${total} integrations disconnected`);
-    } else if (successCount > 0) {
-      Toast.show('warning', 'Partial Disconnect', `${successCount} of ${total} disconnected. Failed: ${failedNames.join(', ')}`);
-    } else {
-      Toast.show('error', 'Disconnect Failed', `Failed to disconnect any integrations`);
-    }
-
-    // Reset button and reload UI
     if (btn) {
       btn.classList.remove('disconnecting');
       btn.textContent = 'Disconnect All';
       // Button will be disabled by renderIntegrations if no connections remain
+    }
+
+    if (!signedOut) {
+      const total = connected.length;
+      const count = `${disconnected} of ${total} disconnected.`;
+      const closing = closingLine(clearedNotes);
+      if (disconnected === total && lines.length === 0 && !closing) {
+        Toast.show('success', 'All Disconnected', count);
+      } else {
+        // CXO: a dialog with OK, not a toast that times out, so "it stays valid" isn't lost.
+        await Dialog.alert({ title: count, message: [...lines, closing].filter(Boolean).join('\n\n') });
+      }
     }
 
     // Reload to update UI state

@@ -298,7 +298,7 @@ def test_the_connector_stand_in_refuses_any_other_address():
 @needs_node
 def test_every_connected_card_and_disconnect_all_show_a_dialog_and_cancel_sends_nothing(text):
     section = text[text.index("# Before a disconnect") :]
-    connected = section[: section.index("## Dialogs: Nothing connected")]
+    connected = _section(text, "dialogs-connected")
     for card in cards.CARDS:
         assert f"### Disconnect on {card} (`" in connected
     assert connected.count("- Title: **") == len(cards.CARDS) + 1  # each card, then All
@@ -321,16 +321,82 @@ def test_every_confirmed_disconnect_has_a_section_and_no_row_is_a_harness_error(
     for key, *_ in cards.disconnect_clicks():
         assert f"State key: `{key}`" in section
     # A page script that can't find a shared helper throws into the toast; that is the
-    # harness, not the app (parseApiDetail was missing once, 2026-11-18).
-    assert "is not defined" not in section and "No toast." not in section
+    # harness, not the app (parseApiDetail was missing once, 2026-11-18). Every press ends
+    # in a toast, or in Disconnect All's dialog (CXO 2026-11-18 D).
+    assert "is not defined" not in section
+    assert section.count("- No toast.") == section.count("- No toast.\n- A dialog:")
+    # Arch 2026-11-18: the raised clear's text reaches no toast, dialog or card.
+    assert cards.SAMPLE_ERROR not in section
 
 
 @needs_node
 def test_a_cleared_disconnect_redraws_the_card_not_connected(text):
+    """CXO 2026-11-18 C: a cleared card's toast is its words from the one map, in warning
+    style where something stays valid at the provider (the GitHub token, Notion)."""
+    from services.connectors.disconnect_words import disconnect_words
+
+    legs = {"github": "token"}
     for card in cards.CARDS:
         row = _section(text, f"disconnect-{card}-cleared")
-        assert "- Toast (success): **Disconnected**." in row
+        words = disconnect_words(card, legs.get(card))
+        kind = "warning" if words.stays else "success"
+        assert f"- Toast ({kind}): **Disconnected**. {words.cleared}" in row
         assert row.rstrip().endswith("- Not connected")
+    for leg in ("app", "oauth", "unknown"):
+        row = _section(text, f"disconnect-github-{leg}-cleared")
+        words = disconnect_words("github", leg)
+        kind = "warning" if words.stays else "success"
+        assert f"- Toast ({kind}): **Disconnected**. {words.cleared}" in row
+
+
+@needs_node
+def test_a_failed_revoke_is_a_warning_and_names_a_place_a_person_can_find(text):
+    for card in ("slack", "calendar", "github"):
+        row = _section(text, f"disconnect-{card}-revoke-failed")
+        assert "- Toast (warning): **Disconnected**." in row
+    assert "remove Piper in your Google account's settings." in _section(
+        text, "disconnect-calendar-revoke-failed"
+    )
+
+
+@needs_node
+def test_an_incomplete_disconnect_holds_its_line_on_the_still_connected_card(text):
+    from web.api.routes.settings_integrations import DISCONNECT_INCOMPLETE_LINE
+
+    for card, name in (("slack", "Slack"), ("calendar", "Google Calendar")):
+        for outcome in ("incomplete", "raised"):
+            row = _section(text, f"disconnect-{card}-{outcome}")
+            after = row.split(f"- {card} after the redraw:")[1]
+            assert "  - Connected\n" in after
+            assert DISCONNECT_INCOMPLETE_LINE.format(service=name) in after
+            assert "Not checked yet" not in after
+
+
+@needs_node
+def test_disconnect_all_keeps_each_cards_own_outcome_in_a_dialog(text):
+    """CXO 2026-11-18 D: anything but "all cleared, nothing stays" is a dialog with OK, the
+    count as its heading, one line per card with something to say, then the closing line."""
+    from services.connectors.disconnect_words import (
+        all_incomplete_line,
+        all_revoke_failed_line,
+    )
+
+    row = _section(text, "disconnect-all-mixed")
+    assert "- No toast.\n- A dialog:" in row
+    assert "  - Title: **3 of 4 disconnected.**" in row
+    assert f"    > {all_revoke_failed_line('Slack')}" in row
+    assert f"    > {all_incomplete_line('Google Calendar')}" in row
+    assert "    > GitHub and Notion also need you to remove Piper in their own settings." in row
+    assert "  - Buttons: OK (only)" in row
+    quiet = _section(text, "disconnect-all-cleared-nothing-stays")
+    assert "- Toast (success): **All Disconnected**. 3 of 3 disconnected." in quiet
+    assert "A dialog" not in quiet
+
+
+@needs_node
+def test_nothing_connected_keeps_its_title_case_title(text):
+    row = _section(text, "dialogs-nothing")
+    assert "- Toast (info): **Nothing to Do**. Nothing is connected." in row
 
 
 def test_the_disconnect_stand_in_replaces_only_the_clearing_call():
@@ -347,14 +413,57 @@ def test_the_disconnect_stand_in_replaces_only_the_clearing_call():
 def test_each_dialog_names_its_card_as_the_card_draws_it(text):
     """CXO 2026-11-18: the dialog's name is the card's own drawn name, not one built from
     the id; and no dialog says "integration" except the Disconnect All title."""
-    row = _section(text, "dialogs-connected")
-    for block in row.split("### Disconnect on ")[1:]:
-        card = block.split(" ", 1)[0]
-        drawn = _section(text, "connected-untested").split(f"### {card}\n", 1)[1].split("\n- ")[2]
-        assert f"- Title: **Disconnect {drawn}?**" in block, (card, drawn)
-        assert f"  > I'll disconnect {drawn}. You can connect it again anytime." in block
+    from services.connectors.disconnect_words import disconnect_words
+
+    pages = {
+        "dialogs-connected": "token",
+        "dialogs-github-app": "app",
+        "dialogs-github-classic": "oauth",
+        "dialogs-github-unknown": "unknown",
+    }
+    for key, leg in pages.items():
+        row = _section(text, key)
+        for block in row.split("### Disconnect on ")[1:-1]:
+            card = block.split(" ", 1)[0]
+            drawn = (
+                _section(text, "connected-untested").split(f"### {card}\n", 1)[1].split("\n- ")[2]
+            )
+            assert f"- Title: **Disconnect {drawn}?**" in block, (card, drawn)
+            # CXO 2026-11-18 B: the message is the card's own sentence from the one map.
+            dialog = disconnect_words(card, leg if card == "github" else None).dialog
+            assert f"  > {dialog}" in block, (key, card)
     dialogs = text[text.index("# Before a disconnect") : text.index("# After a confirmed")]
     lines = [ln for ln in dialogs.splitlines() if ln.startswith(("- Title", "  >"))]
-    assert [ln for ln in lines if "integration" in ln] == [
+    # "integration" only in the All title and in Notion's own sentence (CXO's words: a
+    # Notion key lives in a Notion "integration").
+    assert {ln for ln in lines if "integration" in ln and "Notion" not in ln} == {
         "- Title: **Disconnect all integrations?**"
-    ]
+    }
+
+
+@needs_node
+@pytest.mark.parametrize(
+    "key,closing",
+    [
+        ("dialogs-connected", "GitHub and Notion also need you to remove Piper in their own settings."),
+        ("dialogs-github-app", "GitHub and Notion also need you to remove Piper in their own settings."),
+        ("dialogs-github-classic", "Notion also needs you to remove Piper in its settings."),
+        (
+            "dialogs-github-unknown",
+            "Notion also needs you to remove Piper in its settings, and GitHub may too if you "
+            "connected it with the app or a token.",
+        ),
+        ("dialogs-github-classic-no-notion", None),
+        (
+            "dialogs-github-unknown-no-notion",
+            "GitHub may need you to remove Piper in its settings if you connected it with the "
+            "app or a token.",
+        ),
+    ],
+)  # fmt: skip
+def test_disconnect_all_names_who_else_needs_piper_removed(text, key, closing):
+    all_block = _section(text, key).split("### Disconnect All", 1)[1]
+    if closing is None:
+        assert "remove Piper" not in all_block
+    else:
+        assert f"  > {closing}\n  >\n  > You can connect them again anytime." in all_block

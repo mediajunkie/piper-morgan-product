@@ -136,7 +136,9 @@ def test_served_json_unchecked_calendar_is_not_counted_healthy(client):
             integrations, "_get_integration_config_status", new=AsyncMock(return_value="configured")
         ),
         patch.object(integrations, "_get_test_result_store", return_value=store),
-        patch.object(integrations, "_github_card", new=AsyncMock(return_value=None)),
+        patch.object(
+            integrations, "_github_card_and_leg", new=AsyncMock(return_value=(None, "token"))
+        ),
     ):
         r = client.get(HEALTH)
     assert r.status_code == 200, r.text
