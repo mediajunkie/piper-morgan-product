@@ -89,12 +89,46 @@ class ConnectionTestResponse(BaseModel):
     # recorded). The page keeps that Test's line on the card until the next Test of that
     # card or a page load; no server state holds it. Clients key on this, never on copy.
     check_ran: bool = True
+    # CXO 2026-11-18 (Test All): False when nothing is connected for this card, so there
+    # was nothing to test. Test All's count leaves such a card out. Keyed on, never copy.
+    connected: bool = True
 
 
 # CXO 2026-11-17 (#2402): the one sentence for a token Slack's auth.test refuses. The
 # Test's result at the click (status line and toast) and the card afterwards both say
 # it, from this constant; the action is in the sentence, so there is no separate fix
 # line. Slack's own error word goes to the log only.
+# CXO 2026-11-18 (the card-state file's Notion, Slack and Calendar Tests): one sentence per
+# fact, at the click and on the card, and no code word on screen. The ``_test_*`` checks
+# record these as the error (the card's line) and the registry gives them at the click.
+NOTION_KEY_REFUSED_LINE = (
+    "Notion didn't accept your key. It may have expired or been revoked. "
+    "Add a new one in Settings, under Integrations."
+)
+CALENDAR_REVOKED_LINE = "Google Calendar no longer accepts your connection."
+CALENDAR_NO_SCOPE_LINE = (
+    "Google refused the calendar read: the connection doesn't include calendar access. "
+    "Disconnect, connect again, and approve calendar access."
+)
+CALENDAR_API_OFF_LINE = (
+    "Google refused the calendar read: the Calendar service isn't switched on for this app "
+    "yet. That's a setup step on our side. Reconnecting won't help."
+)
+CALENDAR_UNCLASSIFIED_LINE = (
+    "Google refused the calendar read, and I couldn't tell why. "
+    "Reconnecting may help. If it doesn't, tell us."
+)
+CALENDAR_NOT_FOUND_LINE = "Google couldn't find your calendar. Reconnect and try again."
+
+
+def _not_connected(display_name: str, button: str) -> Dict[str, str]:
+    """CXO 2026-11-18: GitHub's shape, with the label the card's own settings page shows."""
+    return {
+        "message": f"{display_name} isn't connected for your account.",
+        "fix": f"In Settings → Integrations → {display_name}, {button}",
+    }
+
+
 SLACK_TOKEN_REFUSED_LINE = (
     "Slack didn't accept your token. It may have expired or been revoked. "
     "Add a new one in Settings, under Integrations."
@@ -107,10 +141,9 @@ INTEGRATION_REGISTRY = {
         "icon": "📝",
         "configure_url": "/settings/integrations/notion",  # Issue #540: Dedicated settings page
         "errors": {
-            "api_key_invalid": {
-                "message": "Invalid Notion API key",
-                "fix": "Check your Notion integration token in Settings → Integrations → Notion",
-            },
+            # CXO 2026-11-18: the action is in the sentence, so no separate fix line.
+            "api_key_invalid": {"message": NOTION_KEY_REFUSED_LINE},
+            "not_configured": _not_connected("Notion", "Connect"),
             "connection_failed": {
                 "message": "Cannot connect to Notion API",
                 "fix": "Check your internet connection and Notion service status",
@@ -131,6 +164,7 @@ INTEGRATION_REGISTRY = {
                 "fix": "Re-authorize Slack in Settings → Integrations → Slack",
             },
             "token_invalid": {"message": SLACK_TOKEN_REFUSED_LINE},
+            "not_configured": _not_connected("Slack", "Add to Slack"),
             "scope_missing": {
                 "message": "Missing required Slack permissions",
                 "fix": "Re-authorize with updated permissions",
@@ -185,6 +219,20 @@ INTEGRATION_REGISTRY = {
                 "message": "Calendar MCP server not running",
                 "fix": "Start the Google Calendar MCP server",
             },
+            "not_configured": _not_connected("Google Calendar", "Connect with Google"),
+            "token_invalid": {
+                "message": CALENDAR_REVOKED_LINE,
+                "fix": "In Settings → Integrations → Google Calendar, Reconnect",
+            },
+            # A 401 on the read after a working refresh: the same fact as a revoked grant.
+            "unauthorized": {
+                "message": CALENDAR_REVOKED_LINE,
+                "fix": "In Settings → Integrations → Google Calendar, Reconnect",
+            },
+            "insufficient_scope": {"message": CALENDAR_NO_SCOPE_LINE},
+            "api_not_enabled": {"message": CALENDAR_API_OFF_LINE},
+            "error": {"message": CALENDAR_UNCLASSIFIED_LINE},
+            "not_found": {"message": CALENDAR_NOT_FOUND_LINE},
         },
     },
 }
@@ -240,6 +288,11 @@ def _get_test_result_store() -> PrincipalTestResultStore:
     integration name alone, so one account's Test showed on every account's card.
     """
     return get_test_result_store()
+
+
+#: The Test result kinds that mean nothing is connected for this card (GitHub's resolver
+#: says ``connect_required``; the other checks say ``not_configured``).
+_NOTHING_CONNECTED = ("not_configured", "connect_required")
 
 
 def _get_error_guidance(integration: str, error_type: str) -> tuple[str, Optional[str]]:
@@ -422,6 +475,7 @@ async def check_integration_connection(
                 latency_ms=round(latency_ms, 2),
                 error=result.get("error"),
                 fix_suggestion=fix,
+                connected=result.get("error_type") not in _NOTHING_CONNECTED,
             )
 
     except Exception as e:
@@ -674,7 +728,8 @@ async def _check_integration_health(
                 name=integration_id,
                 display_name=metadata["display_name"],
                 status="not_configured",
-                status_message="Not configured",
+                # CXO 2026-11-18: one chip on every card ("Not configured" read as a setup step).
+                status_message=_GITHUB_CARD_NOT_CONFIGURED,
                 configure_url=metadata.get("configure_url"),
                 can_test=False,
             )
@@ -788,7 +843,7 @@ async def _test_notion(user_id: Optional[str] = None) -> Dict[str, Any]:
                 if response.status in (401, 403):
                     return {
                         "success": False,
-                        "error": "API key invalid or expired",
+                        "error": NOTION_KEY_REFUSED_LINE,
                         "error_type": "api_key_invalid",
                     }
                 # #2151 (#2125 shape): a 5xx or rate limit is a check that couldn't run,
@@ -973,7 +1028,7 @@ async def _test_calendar(user_id: Optional[str] = None) -> Dict[str, Any]:
                 }
             return {
                 "success": False,
-                "error": "Token expired or revoked. Please reconnect.",
+                "error": CALENDAR_REVOKED_LINE,
                 "error_type": "token_invalid",
             }
 
@@ -985,20 +1040,14 @@ async def _test_calendar(user_id: Optional[str] = None) -> Dict[str, Any]:
         if read_error == "insufficient_scope":
             return {
                 "success": False,
-                "error": (
-                    "Google refused the calendar read: the connection doesn't include "
-                    "calendar access. Disconnect, connect again, and approve calendar access."
-                ),
+                "error": CALENDAR_NO_SCOPE_LINE,
                 "error_type": "insufficient_scope",
             }
         if read_error == "api_not_enabled":
             # CXO's words (2026-10-21 10:21).
             return {
                 "success": False,
-                "error": (
-                    "Google refused the calendar read: the Calendar service isn't switched on "
-                    "for this app yet. That's a setup step on our side. Reconnecting won't help."
-                ),
+                "error": CALENDAR_API_OFF_LINE,
                 "error_type": "api_not_enabled",
             }
         if read_error == "error":
@@ -1006,16 +1055,16 @@ async def _test_calendar(user_id: Optional[str] = None) -> Dict[str, Any]:
             # reconnecting fixes it; the cause may be ours.
             return {
                 "success": False,
-                "error": (
-                    "Google refused the calendar read, and I couldn't tell why. "
-                    "Reconnecting may help. If it doesn't, tell us."
-                ),
+                "error": CALENDAR_UNCLASSIFIED_LINE,
                 "error_type": "error",
             }
         if read_error is not None:
+            # CXO 2026-11-18: no code word on screen. Each class the classifier can name
+            # has its sentence; one it can't is the unclassified line.
+            line = {"unauthorized": CALENDAR_REVOKED_LINE, "not_found": CALENDAR_NOT_FOUND_LINE}
             return {
                 "success": False,
-                "error": f"Google refused the calendar read ({read_error}). Reconnect and try again.",
+                "error": line.get(read_error, CALENDAR_UNCLASSIFIED_LINE),
                 "error_type": read_error,
             }
         return {"success": True}

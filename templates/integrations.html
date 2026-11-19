@@ -998,12 +998,20 @@
         statusEl.classList.toggle('warning', stale);
       }
 
-      // Count successes
-      const successCount = results.filter(r => r.success).length;
-      const allPassed = successCount === results.length;
-      Toast.show(allPassed ? 'success' : 'warning',
-        allPassed ? 'All Tests Passed' : 'Some Tests Failed',
-        `${successCount} of ${results.length} connections successful`);
+      // CXO 2026-11-18: a card with nothing connected wasn't tested, so it is not a
+      // failure. Count connected cards only, keyed on the route's flag, never its words.
+      const tested = results.filter(r => r.connected !== false);
+      const notConnected = results.length - tested.length;
+      const successCount = tested.filter(r => r.success).length;
+      if (tested.length === 0) {
+        Toast.show('info', 'Nothing to test yet', 'Connect an integration first.');
+      } else {
+        const allPassed = successCount === tested.length;
+        Toast.show(allPassed ? 'success' : 'warning',
+          allPassed ? 'All Tests Passed' : 'Some Tests Failed',
+          `${successCount} of ${tested.length} connections successful` +
+            (notConnected ? `, ${notConnected} not connected` : ''));
+      }
 
       // Reload overall status
       loadIntegrationsHealth();

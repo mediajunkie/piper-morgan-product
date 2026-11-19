@@ -86,6 +86,9 @@ class FakeProxy:
     def stop(self):
         self.stopped = True
 
+    def alive(self):
+        return self.started and not self.stopped
+
 
 def ok_http(method, url, form=None, bearer=None):
     if url.endswith("/health"):
@@ -97,7 +100,7 @@ def ok_http(method, url, form=None, bearer=None):
     return 404, {}
 
 
-def drill(fly, request=ok_http, keep=False, confirm=None, out=None):
+def drill(fly, request=ok_http, keep=False, confirm=None, out=None, free=lambda: True):
     clock = iter(range(0, 10_000, 5))
     return d.Drill(
         org="personal",
@@ -111,6 +114,7 @@ def drill(fly, request=ok_http, keep=False, confirm=None, out=None):
         clock=lambda: next(clock),
         out=out or (lambda line: None),
         stamp=STAMP,
+        free=free,
     )
 
 
@@ -291,3 +295,133 @@ def test_image_ref(shown, ref):
 def test_a_value_with_white_space_is_refused_before_it_is_set():
     with pytest.raises(d.Stop):
         d.secrets_stdin({"ENCRYPTION_MASTER_KEY": "two words"})
+
+
+# --- the reads of 11-18: HOST, CIO, Arch ------------------------------------------------
+
+
+def test_the_block_holds_no_email_address():
+    """HOST: whoami prints the account's email; the block goes on a public issue."""
+    fly = Fly()
+    _, printed = run(drill(fly))
+    block = printed[printed.index(d.BLOCK_START) : printed.index(d.BLOCK_END)]
+    import re
+
+    assert not re.search(r"[\w.+-]+@[\w-]+\.[\w.]+", block)  # no email address
+    assert "xian@example" not in block and "fly signed in: yes" in block
+
+
+@pytest.mark.parametrize("where", ["machine run redis", "health"])
+def test_an_interrupt_mid_run_still_destroys_everything_and_stops_the_proxy(where):
+    """CIO, rule 3: a hang-up or kill takes the Ctrl-C path; the cleanup still runs."""
+    FakeProxy.instances.clear()
+
+    class Interrupting(Fly):
+        def __call__(self, argv, stdin=None):
+            if where in " ".join(argv):
+                self.calls.append((argv, stdin))
+                raise KeyboardInterrupt
+            return super().__call__(argv, stdin)
+
+    def request(method, url, form=None, bearer=None):
+        if where == "health" and url.endswith("/health"):
+            raise KeyboardInterrupt
+        return ok_http(method, url, form, bearer)
+
+    fly = Interrupting()
+    code, printed = run(drill(fly, request=request))
+    assert code == 1 and "STOPPED: interrupted" in printed
+    assert not fly.apps - {"piper-morgan"}
+    assert all(p.stopped for p in FakeProxy.instances)
+    assert "If this stops, destroy these by hand" in printed
+
+
+def test_a_taken_port_stops_before_the_password_is_sent():
+    sent = []
+
+    def request(method, url, form=None, bearer=None):
+        sent.append(form)
+        return ok_http(method, url, form, bearer)
+
+    fly = Fly()
+    code, printed = run(drill(fly, request=request, free=lambda: False))
+    assert "is in use" in printed and code == 1
+    assert not any(f and R_PASSWORD in f.values() for f in sent)
+    assert not fly.apps - {"piper-morgan"}
+
+
+def test_a_dead_proxy_gets_no_password():
+    class DeadProxy(FakeProxy):
+        def alive(self):
+            return False
+
+    sent = []
+
+    def request(method, url, form=None, bearer=None):
+        sent.append(form)
+        return ok_http(method, url, form, bearer)
+
+    fly = Fly()
+    dr = drill(fly, request=request)
+    dr.proxy_factory = DeadProxy
+    code, printed = run(dr)
+    assert "R's password was not sent" in printed
+    assert not any(f and R_PASSWORD in f.values() for f in sent)
+
+
+def test_a_failed_create_that_printed_the_password_keeps_it_out_of_the_block():
+    """CIO: hold the password before the exit code is read."""
+
+    class Leaky(Fly):
+        def __call__(self, argv, stdin=None):
+            if argv[:3] == ["fly", "postgres", "create"]:
+                self.calls.append((argv, stdin))
+                self.apps.add(argv[argv.index("--name") + 1])
+                return 1, f"  Password: {DB_PASSWORD}\npostgres://postgres:{DB_PASSWORD}@x\n"
+            return super().__call__(argv, stdin)
+
+    fly = Leaky()
+    code, printed = run(drill(fly))
+    assert DB_PASSWORD not in printed and "[hidden]" in printed and code == 1
+    assert not fly.apps - {"piper-morgan"}
+
+
+def test_one_apps_cleanup_failure_does_not_stop_the_others():
+    class Broken(Fly):
+        def __call__(self, argv, stdin=None):
+            if argv[:3] == ["fly", "volumes", "list"] and argv[4] == f"{APP}-db":
+                raise OSError("broken pipe")
+            return super().__call__(argv, stdin)
+
+    fly = Broken()
+    code, printed = run(drill(fly, request=lambda *a: (0, {})))
+    assert f"destroy {APP}-db: stopped (OSError)" in printed
+    assert f"destroy {APP}-redis: exit 0" in printed and f"destroy {APP}: exit 0" in printed
+
+
+def test_nothing_without_the_drill_prefix_is_ever_destroyed():
+    fly = Fly()
+    dr = drill(fly)
+    dr.attempted = ["piper-morgan"]
+    dr.cleanup()
+    assert not [a for a, _ in fly.calls if a[:3] == ["fly", "apps", "destroy"]]
+
+
+def test_the_allowlist_and_env_carry_arch_s_closed_comment():
+    source = (Path(d.__file__)).read_text()
+    assert "allowlist is CLOSED" in source and "GITHUB_APP_" in source
+    assert "PIPER_SLACK_INBOUND_ENABLED" in source
+
+
+def test_printing_survives_a_closed_terminal(monkeypatch):
+    def broken(*a, **k):
+        raise OSError("EIO")
+
+    monkeypatch.setattr("builtins.print", broken)
+    d.safe_print("still going")  # must not raise
+
+
+def test_the_decrypt_script_and_the_drill_agree_on_the_prefix():
+    import verify_stored_credential_decrypt as v
+
+    assert v.DRILL_APP_PREFIX == d.PREFIX and d.names(STAMP)["app"].startswith(d.PREFIX)

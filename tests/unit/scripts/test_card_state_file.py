@@ -230,7 +230,57 @@ def test_test_all_shows_one_toast_and_every_cards_line(text):
     assert "- Toast (success): **All Tests Passed**. 4 of 4 connections successful" in row
     for card in cards.CARDS:
         assert f"### {card}" in row
-    assert "**Some Tests Failed**. 1 of 4" in _section(text, "test-all-mixed")
+    # CXO 2026-11-18: a card with nothing connected wasn't tested, so it isn't counted.
+    mixed = _section(text, "test-all-mixed")
+    assert "**Some Tests Failed**. 1 of 3 connections successful, 1 not connected" in mixed
+    nothing = _section(text, "test-all-nothing")
+    assert "- Toast (info): **Nothing to test yet**. Connect an integration first." in nothing
+    assert "Some Tests Failed" not in nothing
+
+
+# CXO 2026-11-18: no code word on screen, at the click or on a card. The list is the codes
+# the Test checks and the registry can produce, not a regex of words.
+CODES = sorted(
+    {"not_configured", "token_invalid", "api_key_invalid", "connect_required", "check_failed"}
+    | {outcome for outcomes in cards._CONNECTOR_OUTCOMES.values() for outcome, _ in outcomes}
+    - {"ok", "raised", "no_answer", "refused", "store_failed", "not_connected", "revoked", "error"}
+)
+
+
+@needs_node
+def test_no_code_word_reaches_a_click_or_a_card(text):
+    pressed = text[text.index("# After pressing Test: the Notion") :]
+    lines = [ln for ln in pressed.splitlines() if ln.startswith(("- ", "  - "))]
+    for line in lines:
+        assert "Error:" not in line, line
+        for code in CODES:
+            assert code not in line, (code, line)
+
+
+# CXO 2026-11-18: the fact the click names is on the redrawn card, in the same words.
+CONNECTOR_FACTS = {
+    "test-notion-refused": "Notion didn't accept your key.",
+    "test-calendar-revoked": "Google Calendar no longer accepts your connection.",
+    "test-calendar-insufficient-scope": "the connection doesn't include calendar access.",
+    "test-calendar-api-not-enabled": "the Calendar service isn't switched on for this app yet.",
+    "test-calendar-error": "Google refused the calendar read, and I couldn't tell why.",
+    "test-calendar-not-found": "Google couldn't find your calendar. Reconnect and try again.",
+    "test-notion-not-connected": "Not connected",
+    "test-slack-not-connected": "Not connected",
+    "test-calendar-not-connected": "Not connected",
+}
+
+
+@needs_node
+@pytest.mark.parametrize("key,fact", sorted(CONNECTOR_FACTS.items()))
+def test_a_connector_click_and_its_redrawn_card_share_the_fact(text, key, fact):
+    start = text.index(f"State key: `{key}`")
+    ends = [text.find(h, start) for h in ("\n### ", "\n## ", "\n# ")]
+    row = text[start : min([e for e in ends if e != -1] or [len(text)])]
+    at, after = row.split("- The card after the page redraws it:")
+    assert fact in after
+    if fact != "Not connected":
+        assert "- At the click, the card's line: " in at and fact in at
 
 
 def test_the_connector_stand_in_refuses_any_other_address():

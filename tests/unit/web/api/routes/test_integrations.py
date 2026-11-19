@@ -257,8 +257,11 @@ class TestSingleIntegrationTest:
 
             assert response.success is False
             assert response.integration == "notion"
-            assert response.message is not None
-            assert response.fix_suggestion is not None
+            # CXO 2026-11-18: one sentence with its action in it, as Slack's; no fix line.
+            from web.api.routes.integrations import NOTION_KEY_REFUSED_LINE
+
+            assert response.message == NOTION_KEY_REFUSED_LINE
+            assert response.fix_suggestion is None
 
     @pytest.mark.asyncio
     async def test_connection_exception_handled_gracefully(self):
@@ -665,7 +668,8 @@ class TestCalendarIntegration:
 
             assert result["success"] is False
             assert result["error_type"] == "token_invalid"
-            assert "expired" in result["error"].lower() or "revoked" in result["error"].lower()
+            # CXO 2026-11-18: the revoked fact in the GitHub sentence's words.
+            assert result["error"] == "Google Calendar no longer accepts your connection."
 
     @pytest.mark.asyncio
     async def test_calendar_google_unavailable_is_a_check_that_couldnt_run(self):

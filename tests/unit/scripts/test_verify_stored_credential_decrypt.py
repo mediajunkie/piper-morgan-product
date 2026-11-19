@@ -109,6 +109,7 @@ def test_own_database_is_refused_outside_the_drill_copy(capsys, monkeypatch):
 @pytest.mark.parametrize("value", ["", "1", "true", "YES"])
 def test_only_the_exact_drill_value_unlocks_it(capsys, monkeypatch, value):
     monkeypatch.setenv("DATABASE_URL", LIVE)
+    monkeypatch.setenv("FLY_APP_NAME", "pm-restore-drill-20261120-1400")
     monkeypatch.setenv(v.DRILL_COPY_ENV, value)
     with patch.object(v, "one_encrypted_row", side_effect=AssertionError("must not be read")):
         assert v.main(["--own-database-in-drill-copy"]) == v.EXIT_SAME_HOST_AS_LIVE
@@ -117,6 +118,7 @@ def test_only_the_exact_drill_value_unlocks_it(capsys, monkeypatch, value):
 def test_inside_the_drill_copy_it_reads_its_own_database(capsys, monkeypatch):
     monkeypatch.setenv("DATABASE_URL", LIVE)
     monkeypatch.setenv(v.DRILL_COPY_ENV, "yes")
+    monkeypatch.setenv("FLY_APP_NAME", "pm-restore-drill-20261120-1400")
     seen = []
     with patch.object(v, "one_encrypted_row", side_effect=lambda url: seen.append(url)):
         code = v.main(["--own-database-in-drill-copy"])
@@ -127,3 +129,25 @@ def test_inside_the_drill_copy_it_reads_its_own_database(capsys, monkeypatch):
 def test_the_two_ways_cannot_be_given_together():
     with pytest.raises(SystemExit):
         v.main(["--own-database-in-drill-copy", "--database-url", "postgres://u:p@h/db"])
+
+
+@pytest.mark.parametrize(
+    "app,flag",
+    [
+        ("piper-morgan", "yes"),  # the variable copied onto beta
+        ("piper-morgan-staging", "yes"),
+        ("", "yes"),  # not on Fly at all
+        ("pm-restore-drill-20261120-1400", None),  # the right app without the variable
+    ],
+)
+def test_the_flag_needs_both_the_variable_and_the_drill_app_name(capsys, monkeypatch, app, flag):
+    """Arch 11-18: the variable alone can be copied; Fly sets FLY_APP_NAME itself."""
+    monkeypatch.setenv("DATABASE_URL", LIVE)
+    monkeypatch.setenv("FLY_APP_NAME", app)
+    if flag is None:
+        monkeypatch.delenv(v.DRILL_COPY_ENV, raising=False)
+    else:
+        monkeypatch.setenv(v.DRILL_COPY_ENV, flag)
+    with patch.object(v, "one_encrypted_row", side_effect=AssertionError("must not be read")):
+        assert v.main(["--own-database-in-drill-copy"]) == v.EXIT_SAME_HOST_AS_LIVE
+    assert capsys.readouterr().out == "fail:5\n"

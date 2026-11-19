@@ -37,8 +37,13 @@ What it does:
 Not verified from a seat (no seat runs ``fly`` against the org): the ``fly image show``
 JSON shape, that a flex cluster made from a snapshot takes the new superuser password the
 create prints, that the copy reaches its database at ``<name>.flycast:5432`` and Redis at
-``<name>.internal:6379``, and that beta's image boots with no ChromaDB or GitHub MCP. Each
-shows up as a stopped step with its reason, and the copy is destroyed.
+``<name>.internal:6379``, that secrets staged on an app with no machine reach the machine
+made after them, and that beta's image boots with no ChromaDB or GitHub MCP. Each shows up
+as a stopped step with its reason, and the copy is destroyed.
+
+Every path includes the window closing and a kill (section 10 rule 3, CIO 11-18): SIGHUP and
+SIGTERM raise the same interrupt Ctrl-C does, so the cleanup runs, and printing survives a
+closed terminal. Once the cleanup starts, a second hang-up or kill is ignored.
 
 Concept: docs/internal/operations/restore-drill-2157-lead-half-fly-lines-DRAFT-2026-11-04.md
 """
@@ -51,6 +56,8 @@ import json
 import os
 import re
 import secrets
+import signal
+import socket
 import subprocess
 import sys
 import time
@@ -74,6 +81,8 @@ NO_TERMINAL = (
 DRILL_COPY_ENV = "PIPER_RESTORE_DRILL_COPY"  # the decrypt script's drill-copy switch
 PROOF_2 = "python /app/scripts/verify_stored_credential_decrypt.py --own-database-in-drill-copy"
 REDIS_IMAGE = "redis:7.2-alpine"
+#: Every app this script makes starts with this; nothing else is ever destroyed (HOST).
+PREFIX = "pm-restore-drill-"
 _PASSWORD = re.compile(r"^\s*Password:\s*(\S+)\s*$", re.MULTILINE)
 _NO_SPACE = re.compile(r"^\S+$")
 
@@ -142,6 +151,9 @@ class Proxy:
             env=dict(os.environ, FLY_NO_UPDATE_CHECK="1"),
         )
 
+    def alive(self) -> bool:
+        return self.proc is not None and self.proc.poll() is None
+
     def stop(self) -> None:
         if self.proc is not None and self.proc.poll() is None:
             self.proc.terminate()
@@ -150,6 +162,41 @@ class Proxy:
             except subprocess.TimeoutExpired:
                 self.proc.kill()
         self.proc = None
+
+
+def port_free(port: int = LOCAL_PORT) -> bool:
+    """True when nothing listens on the proxy's local port (CIO: R's password goes only to
+    the proxy this run started, never to a listener that was already there)."""
+    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as probe:
+        try:
+            probe.bind(("127.0.0.1", port))
+        except OSError:
+            return False
+    return True
+
+
+def safe_print(line: str) -> None:
+    """Printing that survives a closed terminal, so a hang-up can't stop the cleanup."""
+    try:
+        print(line, flush=True)
+    except (OSError, ValueError):
+        pass
+
+
+def _interrupt(signum, frame):
+    raise KeyboardInterrupt
+
+
+def interrupt_on_hangup() -> None:
+    """SIGHUP and SIGTERM take the Ctrl-C path, so the ``finally`` runs (CIO 11-18)."""
+    for sig in (signal.SIGHUP, signal.SIGTERM):
+        signal.signal(sig, _interrupt)
+
+
+def ignore_hangups() -> None:
+    """Once the cleanup has started, a hang-up or kill must not cut it short."""
+    for sig in (signal.SIGHUP, signal.SIGTERM):
+        signal.signal(sig, signal.SIG_IGN)
 
 
 def scrub(text: str, held: List[str]) -> str:
@@ -161,7 +208,7 @@ def scrub(text: str, held: List[str]) -> str:
 
 def names(stamp: str) -> Dict[str, str]:
     """The copy's three apps and its network, all new, all named for this run."""
-    base = f"pm-restore-drill-{stamp}"
+    base = f"{PREFIX}{stamp}"
     return {"app": base, "db": f"{base}-db", "redis": f"{base}-redis", "network": base}
 
 
@@ -221,13 +268,16 @@ class Drill:
         confirm: Callable[[str], str] = input,
         sleep: Callable[[float], None] = time.sleep,
         clock: Callable[[], float] = time.monotonic,
-        out: Callable[[str], None] = print,
+        out: Callable[[str], None] = safe_print,
         stamp: Optional[str] = None,
+        free: Callable[[], bool] = port_free,
+        shield: Callable[[], None] = lambda: None,
     ) -> None:
         self.org, self.region, self.keep = org, region, keep
         self.runner, self.request, self.proxy_factory = runner, request, proxy_factory
         self.values, self.confirm = values, confirm
         self.sleep, self.clock, self.out = sleep, clock, out
+        self.free, self.shield = free, shield
         self.n = names(stamp or datetime.now(timezone.utc).strftime("%Y%m%d-%H%M"))
         self.held: List[str] = []
         self.lines: List[str] = []
@@ -261,8 +311,9 @@ class Drill:
 
     # --- step 1: reads that change nothing ------------------------------------------
     def preflight(self) -> Dict[str, str]:
-        who = self.must(["fly", "auth", "whoami"], "fly auth whoami").strip().splitlines()
-        self.note(f"fly signed in as: {who[-1] if who else '(unknown)'}")
+        # HOST: whoami prints an email address; the block goes on a public issue.
+        self.must(["fly", "auth", "whoami"], "fly auth whoami")
+        self.note(f"fly signed in: yes; org {self.org}")
         vols = self.json_of(["fly", "volumes", "list", "-a", SOURCE_DB, "--json"], "volumes")
         if not isinstance(vols, list) or len(vols) != 1:
             raise Stop(f"{SOURCE_DB} has {len(vols) if isinstance(vols, list) else '?'} volumes")
@@ -294,18 +345,24 @@ class Drill:
     def create(self, src: Dict[str, str], key: str) -> None:
         n, org, region = self.n, self.org, self.region
         self.attempted.append(n["db"])
-        made = self.must(
+        # CIO: hold the password before reading the exit code; a create that fails after
+        # printing it must not put it in the block.
+        code, made = self.runner(
             ["fly", "postgres", "create", "--name", n["db"], "--org", org, "--region", region,
              "--network", n["network"], "--snapshot-id", src["snapshot"],
              "--initial-cluster-size", "1", "--vm-size", "shared-cpu-1x",
              "--volume-size", src["size"]],
-            "postgres create from the snapshot",
+            None,
         )  # fmt: skip
         found = _PASSWORD.search(made)
+        if found:
+            self.held.append(found.group(1))
+        if code != 0:
+            tail = scrub(made, self.held).strip().splitlines()[-1:] or ["(no output)"]
+            raise Stop(f"postgres create from the snapshot failed (exit {code}): {tail[0][:200]}")
         if not found:
             raise Stop("the create printed no superuser password; the copy can't be reached")
         db_password = found.group(1)
-        self.held.append(db_password)
         self.note(f"created {n['db']} from {src['snapshot']} on network {n['network']}")
 
         self.attempted.append(n["redis"])
@@ -328,6 +385,12 @@ class Drill:
         )
         jwt = secrets.token_urlsafe(48)
         self.held.append(jwt)
+        # Arch 11-18: this allowlist is CLOSED. The copy holds everyone's tokens and the key
+        # that decrypts them; it is safe to boot only because nothing here lets it act for a
+        # real person. A GITHUB_APP_* value would switch on the GitHub App refresh job, which
+        # spends people's refresh tokens and leaves production's stored pairs dead; a SLACK_*
+        # value would let it take production's Slack events. Adding any secret needs an Arch
+        # ruling first.
         allow = {
             "DATABASE_URL": (
                 f"postgres://postgres:{db_password}@{n['db']}.flycast:5432/piper_morgan"
@@ -345,6 +408,8 @@ class Drill:
             stdin=secrets_stdin(allow),
         )
         self.note("copy secrets set (names only): " + ", ".join(allow))
+        # Closed too (Arch 11-18): PIPER_SLACK_INBOUND_ENABLED, or any variable that turns on
+        # a job acting outside the copy, needs an Arch ruling first.
         env = {
             "PIPER_ENVIRONMENT": "production",
             "PIPER_HOST": "0.0.0.0",  # noqa: S104 - inside the copy's machine
@@ -365,6 +430,10 @@ class Drill:
     # --- the proofs ------------------------------------------------------------------
     def proof_1(self, who: str, password: str, started: float, wait_s: float = 600) -> None:
         base = f"http://127.0.0.1:{LOCAL_PORT}"
+        if not self.free():
+            raise Stop(
+                f"local port {LOCAL_PORT} is in use; R's password goes only to this run's proxy"
+            )
         self.proxy = self.proxy_factory(self.n["app"])
         self.proxy.start()
         deadline = self.clock() + wait_s
@@ -377,6 +446,9 @@ class Drill:
         if status != 200:
             self.passed["1"] = False
             raise Stop(f"the copy's /health didn't answer 200 within {wait_s:.0f} s")
+        if not self.proxy.alive():
+            self.passed["1"] = False
+            raise Stop("the proxy is not running; R's password was not sent")
         status, body = self.request(
             "POST", f"{base}/api/v1/auth/login", {"username": who, "password": password}, None
         )
@@ -400,26 +472,26 @@ class Drill:
 
     # --- proof 5: always ---------------------------------------------------------------
     def cleanup(self) -> None:
+        self.shield()
         if self.proxy is not None:
             self.proxy.stop()
         made = list(dict.fromkeys(self.attempted))
         if not made:
             return
+        # HOST: on screen before any destroy, in case this is cut short.
+        self.out(f"Cleaning up. If this stops, destroy these by hand: {', '.join(made)}")
         if self.keep:
             self.note("--keep: NOT destroyed. Destroy by hand today: " + ", ".join(made))
             self.out(f"REMINDER: {', '.join(made)} hold a copy of everyone's data.")
             return
         for app in made:
-            code, output = self.call(["fly", "volumes", "list", "-a", app, "--json"])
-            vols = _loads(output) if code == 0 else []
-            count = 0
-            for vol in vols if isinstance(vols, list) else []:
-                c, o = self.call(["fly", "volumes", "snapshots", "list", vol.get("id", ""),
-                                  "-a", app, "--json"])  # fmt: skip
-                listed = _loads(o) if c == 0 else []
-                count += len(listed) if isinstance(listed, list) else 0
-            code, _ = self.call(["fly", "apps", "destroy", app, "--yes"])
-            self.note(f"destroy {app}: exit {code}; its volume snapshots before: {count}")
+            if not app.startswith(PREFIX):  # HOST: never point --yes at another app
+                self.note(f"NOT destroyed (not a drill name): {app}")
+                continue
+            try:  # CIO: one app's failure must not leave the others standing
+                self._destroy(app)
+            except Exception as e:  # noqa: BLE001 - note it and go on to the next app
+                self.note(f"destroy {app}: stopped ({type(e).__name__}); destroy it by hand")
         code, output = self.call(["fly", "apps", "list", "--json"])
         listed = _loads(output) if code == 0 else None
         if not isinstance(listed, list):
@@ -433,6 +505,18 @@ class Drill:
             if not left
             else "PROOF 5 FAIL: still listed: " + ", ".join(left)
         )
+
+    def _destroy(self, app: str) -> None:
+        code, output = self.call(["fly", "volumes", "list", "-a", app, "--json"])
+        vols = _loads(output) if code == 0 else []
+        count = 0
+        for vol in vols if isinstance(vols, list) else []:
+            c, o = self.call(["fly", "volumes", "snapshots", "list", vol.get("id", ""),
+                              "-a", app, "--json"])  # fmt: skip
+            listed = _loads(o) if c == 0 else []
+            count += len(listed) if isinstance(listed, list) else 0
+        code, _ = self.call(["fly", "apps", "destroy", app, "--yes"])
+        self.note(f"destroy {app}: exit {code}; its volume snapshots before: {count}")
 
     def run_all(self) -> None:
         src = self.preflight()
@@ -490,7 +574,9 @@ def main(
     if not terminal():
         print(NO_TERMINAL)
         return 2
-    d = drill or Drill(org=ns.org, region=ns.region, keep=ns.keep)
+    d = drill or Drill(org=ns.org, region=ns.region, keep=ns.keep, shield=ignore_hangups)
+    if drill is None:
+        interrupt_on_hangup()
     code = 0
     try:
         d.run_all()
