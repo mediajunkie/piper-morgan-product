@@ -2201,8 +2201,14 @@ def _action_sentences(groups: dict, *, empty: bool) -> list[str]:
         tail = "pull your work in" if empty else f"pull {pronoun} in"
         out.append(f"Connect {pronoun} in Settings and I'll {tail}.")
     if groups["stale"]:
-        pronoun = "them" if len(groups["stale"]) > 1 else "it"
-        out.append(f"Reconnect {pronoun} in Settings and I'll pick back up.")
+        # CXO 2026-11-18: one connector's own step (a key or token is added, not
+        # reconnected); two or more share "Reconnect them", true for every mix.
+        if len(groups["stale"]) > 1:
+            out.append("Reconnect them in Settings and I'll pick back up.")
+        else:
+            from services.mcp.consumer.connector import stale_step  # stdlib-only module
+
+            out.append(f"{stale_step(groups['stale'][0])} and I'll pick back up.")
     if groups["misconfigured"]:
         out.append("That's on our side to fix.")
     return out

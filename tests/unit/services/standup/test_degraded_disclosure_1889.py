@@ -455,31 +455,96 @@ def _stale(*names):
 
 
 @pytest.mark.parametrize(
-    "names,clause",
+    "names,clause,step",
     [
-        (("Notion",), "Notion didn't accept your key"),
-        (("Slack",), "Slack didn't accept your token"),
-        (("Google Calendar",), "Google Calendar no longer accepts your connection"),
-        (("GitHub", "Notion"), "GitHub and Notion no longer accept your connections"),
+        (("Notion",), "Notion didn't accept your key", "Add a new key in Settings"),
+        (("Slack",), "Slack didn't accept your token", "Add a new token in Settings"),
+        (
+            ("Google Calendar",),
+            "Google Calendar no longer accepts your connection",
+            "Reconnect it in Settings",
+        ),
+        (
+            ("GitHub", "Notion"),
+            "GitHub and Notion no longer accept your connections",
+            "Reconnect them in Settings",
+        ),
         (
             ("GitHub", "Notion", "Slack"),
             "GitHub, Notion, and Slack no longer accept your connections",
+            "Reconnect them in Settings",
         ),
     ],
 )
-def test_the_stale_clause_and_one_next_step_at_the_end(names, clause):
+def test_the_stale_clause_and_one_next_step_at_the_end(names, clause, step):
+    """CXO 2026-11-18: one connector, its own step (a key or token is added, not
+    reconnected); two or more, "Reconnect them" for any mix."""
     from services.domain.models import _reason_sentence
 
-    pronoun = "them" if len(names) > 1 else "it"
     assert _reason_sentence(_stale(*names), empty=False) == (
-        f"{clause}, so what's below is incomplete. "
-        f"Reconnect {pronoun} in Settings and I'll pick back up."
+        f"{clause}, so what's below is incomplete. {step} and I'll pick back up."
     )
+
+
+@pytest.mark.parametrize(
+    "connector,line",
+    [
+        ("GitHub", "GitHub no longer accepts your connection. Reconnect it in Settings"),
+        ("Notion", "Notion didn't accept your key. Add a new key in Settings"),
+        ("Slack", "Slack didn't accept your token. Add a new token in Settings"),
+        (
+            "Google Calendar",
+            "Google Calendar no longer accepts your connection. Reconnect it in Settings",
+        ),
+    ],
+)
+def test_the_nudge_says_the_connectors_fact_and_its_own_step(connector, line):
+    from services.intent_service.degradation_copy import degrade_nudge
+    from services.mcp.consumer.connector import DegradationReason
+
+    assert degrade_nudge(DegradationReason.STALE_TOKEN, connector) == (
+        f"{line} and I'll pick back up."
+    )
+
+
+def test_every_registry_connector_has_its_own_sentence_and_step():
+    """Arch 11-18: the fallback must not hide drift. A renamed connector fails here instead
+    of silently getting different words in chat than on its card."""
+    from services.mcp.consumer.connector import STALE_FACTS
+    from web.api.routes.integrations import INTEGRATION_REGISTRY
+
+    names = {meta["display_name"] for meta in INTEGRATION_REGISTRY.values()}
+    assert names <= set(STALE_FACTS), names - set(STALE_FACTS)
+
+
+@pytest.mark.parametrize(
+    "module,cls,name",
+    [
+        ("services.mcp.consumer.github_adapter", "GitHubMCPSpatialAdapter", "GitHub"),
+        ("services.mcp.consumer.notion_adapter", "NotionMCPAdapter", "Notion"),
+        ("services.mcp.consumer.slack_adapter", "SlackMCPAdapter", "Slack"),
+        (
+            "services.mcp.consumer.google_calendar_adapter",
+            "GoogleCalendarMCPAdapter",
+            "Google Calendar",
+        ),
+    ],
+)
+def test_each_adapters_stale_degrade_is_its_registry_sentence(module, cls, name):
+    """Arch 11-18: every adapter's STALE_TOKEN entry equals stale_fact(<display name>)."""
+    import asyncio
+    import importlib
+
+    from services.mcp.consumer.connector import DegradationReason, stale_fact
+
+    adapter_cls = getattr(importlib.import_module(module), cls)
+    reply = asyncio.run(adapter_cls.degrade(None, DegradationReason.STALE_TOKEN))
+    assert reply.user_message == stale_fact(name)
 
 
 def test_the_single_clause_is_the_cards_own_sentence():
     """Arch: one place for each connector's sentence; the card and the chat read it."""
-    from services.mcp.consumer.connector import STALE_FACTS
+    from services.mcp.consumer.connector import stale_fact
     from web.api.routes.integrations import (
         CALENDAR_REVOKED_LINE,
         GITHUB_CARD_RECONNECT_DETAIL,
@@ -487,7 +552,7 @@ def test_the_single_clause_is_the_cards_own_sentence():
         SLACK_TOKEN_REFUSED_LINE,
     )
 
-    assert GITHUB_CARD_RECONNECT_DETAIL == STALE_FACTS["GitHub"]
-    assert CALENDAR_REVOKED_LINE == STALE_FACTS["Google Calendar"]
-    assert NOTION_KEY_REFUSED_LINE.startswith(STALE_FACTS["Notion"])
-    assert SLACK_TOKEN_REFUSED_LINE.startswith(STALE_FACTS["Slack"])
+    assert GITHUB_CARD_RECONNECT_DETAIL == stale_fact("GitHub")
+    assert CALENDAR_REVOKED_LINE == stale_fact("Google Calendar")
+    assert NOTION_KEY_REFUSED_LINE.startswith(stale_fact("Notion"))
+    assert SLACK_TOKEN_REFUSED_LINE.startswith(stale_fact("Slack"))
