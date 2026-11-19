@@ -152,3 +152,19 @@ def test_briefing_attribution_ahead_of_the_clock_only_warns():
 
 def test_a_refused_heading_is_reported_once():
     assert levels({LOG: ["## 16:2x wake"]}) == ["REFUSED"]
+
+
+def test_a_refusal_is_recorded_under_the_git_common_dir(tmp_path, monkeypatch):
+    import subprocess
+
+    subprocess.run(["git", "init", "-q", str(tmp_path)], check=True)
+    monkeypatch.chdir(tmp_path)
+    sc.record_refusal([("REFUSED", LOG, "x"), ("WARN", sc.BRIEFING, "y")], NOW)
+    text = (tmp_path / ".git" / "piper-stamp-refusals.log").read_text()
+    assert "refused=1" in text and f"files={LOG}" in text and text.startswith("ts=2026-10-16T16:20")
+
+
+def test_recording_never_raises_outside_a_repo(tmp_path, monkeypatch):
+    monkeypatch.chdir(tmp_path)
+    sc.record_refusal([("REFUSED", LOG, "x")], NOW)
+    assert list(tmp_path.iterdir()) == []
