@@ -467,3 +467,28 @@ def test_disconnect_all_names_who_else_needs_piper_removed(text, key, closing):
         assert "remove Piper" not in all_block
     else:
         assert f"  > {closing}\n  >\n  > You can connect them again anytime." in all_block
+
+
+@needs_node
+@pytest.mark.parametrize(
+    "dialog_page,cleared_row",
+    [
+        ("dialogs-github-app-and-token", "disconnect-github-app-token-cleared"),
+        ("dialogs-github-classic-and-token", "disconnect-github-classic-token-cleared"),
+        ("dialogs-github-app-token-read-failed", "disconnect-github-app-read-failed-cleared"),
+    ],
+)
+def test_a_grant_plus_a_token_or_a_failed_read_shows_the_unknown_words(
+    text, dialog_page, cleared_row
+):
+    """Arch 01M7T6ZN3C, CXO 01M7T7ZHQ7: two legs at once, or a presence read that failed,
+    is the unknown leg: its dialog, its warning toast and its All closing line."""
+    from services.connectors.disconnect_words import MAY, PLAIN, all_closing_line, disconnect_words
+
+    unknown = disconnect_words("github", "unknown")
+    page = _section(text, dialog_page)
+    github = page.split("### Disconnect on github", 1)[1].split("### ", 1)[0]
+    assert f"  > {unknown.dialog}" in github
+    closing = all_closing_line({"Notion": PLAIN, "GitHub": MAY})
+    assert f"  > {closing}" in page.split("### Disconnect All", 1)[1]
+    assert f"- Toast (warning): **Disconnected**. {unknown.cleared}" in _section(text, cleared_row)

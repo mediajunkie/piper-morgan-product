@@ -123,7 +123,8 @@ class Scenario:
     tests: Dict[str, str] = field(default_factory=dict)
     # Whether Piper also holds the person's own GitHub token beside a grant (Arch 01M7T6ZN3C:
     # a grant plus a token is two legs, so a disconnect's leg is unknown)
-    token_held: bool = False
+    # ``"read_failed"``: the presence read itself fails (the real read runs, its store raises)
+    token_held: Any = False
 
 
 def _all(state: str) -> Dict[str, str]:
@@ -635,7 +636,16 @@ def run_routes(user_id: str, scenario: Scenario, test: Optional[str] = None) -> 
         async def token_held(*args, **kwargs):
             return scenario.token_held
 
-        stack.enter_context(patch(f"{_ROUTES}._github_token_held", new=token_held))
+        if scenario.token_held == "read_failed":
+            # The real presence read runs; its first store read raises.
+            stack.enter_context(
+                patch(
+                    "services.infrastructure.keychain_service.KeychainService.aread_secret",
+                    side_effect=RuntimeError("the store didn't answer"),
+                )
+            )
+        else:
+            stack.enter_context(patch(f"{_ROUTES}._github_token_held", new=token_held))
         # The route turns a failure into a "couldn't check" card, so a state that reached
         # for the network would draw the wrong words quietly. Refuse and stop instead.
         reached: List[str] = []
@@ -1231,6 +1241,20 @@ def dialog_pages() -> List[Scenario]:
             token_held=True,
         ),
         Scenario(
+            "dialogs-github-classic-and-token",
+            "Every card connected, GitHub with a classic sign-in and a saved token too",
+            generic=_all("connected"),
+            github="oauth_classic",
+            token_held=True,
+        ),
+        Scenario(
+            "dialogs-github-app-token-read-failed",
+            "Every card connected, GitHub through the app; whether a token is saved couldn't be read",
+            generic=_all("connected"),
+            github="app",
+            token_held="read_failed",
+        ),
+        Scenario(
             "dialogs-github-classic",
             "Every card connected, GitHub with a classic sign-in",
             generic=_all("connected"),
@@ -1335,6 +1359,22 @@ def disconnect_clicks() -> List[Tuple[str, str, str, Dict[str, str], str]]:
             key = f"disconnect-github-{leg}-{outcome.replace('_', '-')}"
             title = f"github ({leg} leg): " + dict(_DISCONNECT_OUTCOMES)[outcome]
             out.append((key, title, "github", {"github": outcome}, _GITHUB_BEFORE[leg]))
+    # Arch 01M7T6ZN3C, CXO 01M7T7ZHQ7: a grant plus a saved token, and a failed presence read.
+    for before, label in (
+        ("app+token", "the app and a saved token"),
+        ("oauth_classic+token", "a classic sign-in and a saved token"),
+        ("app+read_failed", "the app; whether a token is saved couldn't be read"),
+    ):
+        slug = before.replace("oauth_classic", "classic").replace("+", "-").replace("_", "-")
+        out.append(
+            (
+                f"disconnect-github-{slug}-cleared",
+                f"github ({label}): Every copy is gone",
+                "github",
+                {"github": "cleared"},
+                before,
+            )
+        )
     out += [
         (
             "disconnect-all-cleared",
@@ -1420,11 +1460,14 @@ def _confirmed_rows(user_id: str) -> List[str]:
     for key, title, press, outcomes, github_before in disconnect_clicks():
         # The page lists what it draws as connected: a card the run doesn't press is off.
         listed = set(outcomes) if press == "*" else set(CARDS)
+        github_state, _, held = github_before.partition("+")
+        token_held: Any = {"token": True, "read_failed": "read_failed"}.get(held, False)
         before = Scenario(
             "disconnect-before",
             "",
             generic={c: ("connected" if c in listed else "not_configured") for c in CARDS},
-            github=github_before if "github" in listed else "nothing",
+            github=github_state if "github" in listed else "nothing",
+            token_held=token_held,
         )
         replies = run_disconnect(user_id, outcomes)
         gone = {c for c, r in replies.items() if r["status"] == 200}
@@ -1435,7 +1478,7 @@ def _confirmed_rows(user_id: str) -> List[str]:
             key,
             title,
             generic=after_generic,
-            github="nothing" if "github" in gone or "github" not in listed else github_before,
+            github="nothing" if "github" in gone or "github" not in listed else github_state,
         )
         payload_before = health_payload(user_id, before)
         payload_after = health_payload(user_id, after)

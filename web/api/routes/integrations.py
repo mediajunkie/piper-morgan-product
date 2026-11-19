@@ -601,18 +601,27 @@ async def _github_token_held(user_id: str) -> bool:
     try:
         import uuid
 
+        from sqlalchemy import select
+
+        from services.database.models import UserAPIKey
         from services.database.session_factory import AsyncSessionFactory
         from services.infrastructure.keychain_service import KeychainService, SecretProvenance
-        from services.security.user_api_key_service import UserAPIKeyService
 
         keychain = KeychainService()
         for provider in ("github_token", "github"):
             read = await keychain.aread_secret(provider, user_id)
             if read.provenance is not SecretProvenance.VERIFIED_ABSENT:
                 return True
+        # The at-rest row (#1982): its id only, never the secret.
         async with AsyncSessionFactory.session_scope() as session:
-            keys = await UserAPIKeyService().list_user_keys(session, uuid.UUID(str(user_id)))
-        return any(key.get("provider") == "github" for key in keys)
+            row = await session.execute(
+                select(UserAPIKey.id).where(
+                    UserAPIKey.user_id == uuid.UUID(str(user_id)),
+                    UserAPIKey.provider == "github",
+                    UserAPIKey.is_active.is_(True),
+                )
+            )
+            return row.first() is not None
     except Exception as e:  # silent-ok: logged; the leg reads "unknown", the card still draws
         logger.warning("github_token_presence_read_failed", error_class=type(e).__name__)
         return True
