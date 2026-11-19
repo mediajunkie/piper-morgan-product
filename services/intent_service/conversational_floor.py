@@ -32,9 +32,11 @@ from services.intent_service.capability_answer import (
     compose_capability_reply,
     is_capability_turn,
 )
+from services.intent_service.conduct_layer import CONDUCT_LAYER
 from services.intent_service.floor_listed_records import listed_records_event
 from services.intent_service.scope_guard import apply_scope_guard
 from services.intent_service.unarmed_offer import detect_offer_questions, enforce_armed_offers
+from services.llm.cacheable_prompt import CacheablePrompt
 from services.llm.clients import AllProvidersFailed
 from services.llm.request_key import LLMKeyRequiredError
 from services.ui_messages.user_friendly_errors import QUOTA_PATTERN as _QUOTA_PATTERN
@@ -1017,7 +1019,8 @@ class ConversationalFloor:
         self._system_prompt_base = system_prompt_base
 
     async def _get_system_prompt(self, ctx: FloorContext) -> str:
-        """Build the full system prompt: base identity + floor addendum + warmth.
+        """Build the full system prompt: base identity + floor addendum + conduct
+        layer (#2354) + capability manifest, then warmth after the cache breakpoint.
 
         In denial mode (#992 ETHICS-ACTIVATE Phase B), swap the main addendum
         for FLOOR_DENIAL_ADDENDUM so Piper composes the decline in voice rather
@@ -1057,7 +1060,12 @@ class ConversationalFloor:
             except Exception as e:  # silent-ok: manifest failure must never take down the floor; logged loudly because a silent absence would recreate the deny-wired-capabilities gap (#1517)
                 logger.warning("floor_capability_manifest_error", error=str(e))
 
-        return f"{base}\n\n{addendum}{manifest}{warmth}"
+        # #2354 (Arch, issuecomment-6990069114): the conduct layer sits after the
+        # addendum (the denial addendum too: rule 9 is about declining) and before
+        # the manifest. #2145 / Arch 11-13: everything before the warmth line is
+        # fixed for this person, so it ends in a cache breakpoint; warmth varies.
+        prefix = f"{base}\n\n{addendum}\n\n{CONDUCT_LAYER}{manifest}"
+        return CacheablePrompt(prefix, warmth)
 
     # Issue #911: Categories intentionally routed to floor with context.
     # These should NOT get the "no handler available" note — the floor IS the handler.
