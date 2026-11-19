@@ -791,11 +791,8 @@ const Toast = { show(kind, title, message) { toasts.push({ kind, title, message 
 const dialogs = [];
 // Every dialog is answered Cancel: nothing is disconnected.
 const Dialog = { confirm: async (config) => { dialogs.push(config); return false; } };
-// Disconnect All reads the drawn cards; as in a browser, a card without a status dot (one
-// not offered in this beta) has none.
-const pageAll = document.querySelectorAll;
-document.querySelectorAll = (sel) => {
-  if (sel !== '.integration-card') return pageAll(sel);
+// The drawn cards, read from the list the page wrote, as a browser's DOM would hold them.
+const drawnCards = () => {
   const html = (elements['integrations-list'] || { innerHTML: '' }).innerHTML;
   return html.split('id="card-').slice(1).map((chunk) => {
     const name = chunk.slice(0, chunk.indexOf('"'));
@@ -807,6 +804,11 @@ document.querySelectorAll = (sel) => {
       querySelector: (q) => (q === '.status-dot' ? dot : q === 'h3' ? { textContent: h3 } : null) };
   });
 };
+const pageAll = document.querySelectorAll;
+document.querySelectorAll = (sel) => (sel === '.integration-card' ? drawnCards() : pageAll(sel));
+const pageById = document.getElementById;
+document.getElementById = (id) =>
+  (id.startsWith('card-') ? drawnCards().find((c) => c.id === id) || null : pageById(id));
 """
 
 _DIALOG_RUN = r"""
@@ -838,9 +840,8 @@ const Toast = { show(kind, title, message) { toasts.push({ kind, title, message 
 const dialogs = [];
 const Dialog = { confirm: async (config) => { dialogs.push(config); return true; } };
 console.error = () => {};
-const pageAll2 = document.querySelectorAll;
-document.querySelectorAll = (sel) => {
-  if (sel !== '.integration-card') return pageAll2(sel);
+// The drawn cards, read from the list the page wrote, as a browser's DOM would hold them.
+const drawnCards = () => {
   const html = (elements['integrations-list'] || { innerHTML: '' }).innerHTML;
   return html.split('id="card-').slice(1).map((chunk) => {
     const name = chunk.slice(0, chunk.indexOf('"'));
@@ -852,6 +853,11 @@ document.querySelectorAll = (sel) => {
       querySelector: (q) => (q === '.status-dot' ? dot : q === 'h3' ? { textContent: h3 } : null) };
   });
 };
+const pageAll = document.querySelectorAll;
+document.querySelectorAll = (sel) => (sel === '.integration-card' ? drawnCards() : pageAll(sel));
+const pageById = document.getElementById;
+document.getElementById = (id) =>
+  (id.startsWith('card-') ? drawnCards().find((c) => c.id === id) || null : pageById(id));
 let drawnOnce = false;
 const pageFetch2 = fetch;
 fetch = async (url, options) => {

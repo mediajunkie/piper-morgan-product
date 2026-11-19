@@ -1093,41 +1093,41 @@ State key: `dialogs-connected`
 
 - Title: **Disconnect Notion?**
 - Message:
-  > I'll disconnect your Notion integration. You can set it up again anytime.
+  > I'll disconnect Notion. You can connect it again anytime.
 - Buttons: Disconnect (confirm), Cancel
 
 ### Disconnect on slack (`disconnectIntegration('slack')`)
 
 - Title: **Disconnect Slack?**
 - Message:
-  > I'll disconnect your Slack integration. You can set it up again anytime.
+  > I'll disconnect Slack. You can connect it again anytime.
 - Buttons: Disconnect (confirm), Cancel
 
 ### Disconnect on github (`disconnectAPIKeyIntegration('github')`)
 
-- Title: **Disconnect Github?**
+- Title: **Disconnect GitHub?**
 - Message:
-  > I'll disconnect your Github integration. You can set it up again anytime.
+  > I'll disconnect GitHub. You can connect it again anytime.
 - Buttons: Disconnect (confirm), Cancel
 
 ### Disconnect on calendar (`disconnectIntegration('calendar')`)
 
-- Title: **Disconnect Calendar?**
+- Title: **Disconnect Google Calendar?**
 - Message:
-  > I'll disconnect your Calendar integration. You can set it up again anytime.
+  > I'll disconnect Google Calendar. You can connect it again anytime.
 - Buttons: Disconnect (confirm), Cancel
 
 ### Disconnect All
 
 - Title: **Disconnect all integrations?**
 - Message:
-  > I'll disconnect these integrations:
+  > I'll disconnect these:
   > • Notion
   > • Slack
   > • GitHub
   > • Google Calendar
   >
-  > You can set them up again anytime.
+  > You can connect them again anytime.
 - Buttons: Disconnect all (confirm), Cancel
 
 Sent to a disconnect route after Cancel: nothing
@@ -1138,7 +1138,7 @@ State key: `dialogs-nothing`
 
 ### Disconnect All
 
-- Toast (info): **Nothing to Do**. No integrations to disconnect
+- Toast (info): **Nothing to do**. Nothing is connected.
 
 Sent to a disconnect route after Cancel: nothing
 

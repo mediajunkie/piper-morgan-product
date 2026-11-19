@@ -341,3 +341,20 @@ def test_the_disconnect_stand_in_replaces_only_the_clearing_call():
 
     assert replies["slack"]["status"] == 503
     assert replies["slack"]["body"]["detail"] == DISCONNECT_INCOMPLETE_LINE.format(service="Slack")
+
+
+@needs_node
+def test_each_dialog_names_its_card_as_the_card_draws_it(text):
+    """CXO 2026-11-18: the dialog's name is the card's own drawn name, not one built from
+    the id; and no dialog says "integration" except the Disconnect All title."""
+    row = _section(text, "dialogs-connected")
+    for block in row.split("### Disconnect on ")[1:]:
+        card = block.split(" ", 1)[0]
+        drawn = _section(text, "connected-untested").split(f"### {card}\n", 1)[1].split("\n- ")[2]
+        assert f"- Title: **Disconnect {drawn}?**" in block, (card, drawn)
+        assert f"  > I'll disconnect {drawn}. You can connect it again anytime." in block
+    dialogs = text[text.index("# Before a disconnect") : text.index("# After a confirmed")]
+    lines = [ln for ln in dialogs.splitlines() if ln.startswith(("- Title", "  >"))]
+    assert [ln for ln in lines if "integration" in ln] == [
+        "- Title: **Disconnect all integrations?**"
+    ]
