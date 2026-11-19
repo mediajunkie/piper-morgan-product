@@ -1071,13 +1071,23 @@
     }
   }
 
+  // CXO 2026-11-18: a dialog names the card as the card itself is drawn (its <h3>, from the
+  // route's display_name), so "GitHub" and "Google Calendar" read right. The id is only a
+  // fallback for a card that isn't on the page.
+  function cardDisplayName(integrationName) {
+    const card = document.getElementById(`card-${integrationName}`);
+    const drawn = card && card.querySelector('h3');
+    return (drawn && drawn.textContent.trim()) || integrationName;
+  }
+
   async function disconnectIntegration(integrationName) {
     const btn = document.getElementById(`disconnect-btn-${integrationName}`);
-    const displayName = integrationName.charAt(0).toUpperCase() + integrationName.slice(1);
+    // CXO 2026-11-18: the name the card draws (its own field), never one built from the id.
+    const displayName = cardDisplayName(integrationName);
 
     const ok = await Dialog.confirm({
       title: `Disconnect ${displayName}?`,
-      message: `I'll disconnect your ${displayName} integration. You can set it up again anytime.`,
+      message: `I'll disconnect ${displayName}. You can connect it again anytime.`,
       confirmText: 'Disconnect'
     });
     if (!ok) return;
@@ -1124,11 +1134,12 @@
   // Disconnect API key integration (Issue #540: Notion, GitHub, etc.)
   async function disconnectAPIKeyIntegration(integrationName) {
     const btn = document.getElementById(`disconnect-btn-${integrationName}`);
-    const displayName = integrationName.charAt(0).toUpperCase() + integrationName.slice(1);
+    // CXO 2026-11-18: the name the card draws (its own field), never one built from the id.
+    const displayName = cardDisplayName(integrationName);
 
     const ok = await Dialog.confirm({
       title: `Disconnect ${displayName}?`,
-      message: `I'll disconnect your ${displayName} integration. You can set it up again anytime.`,
+      message: `I'll disconnect ${displayName}. You can connect it again anytime.`,
       confirmText: 'Disconnect'
     });
     if (!ok) return;
@@ -1189,7 +1200,7 @@
     });
 
     if (connected.length === 0) {
-      Toast.show('info', 'Nothing to Do', 'No integrations to disconnect');
+      Toast.show('info', 'Nothing to do', 'Nothing is connected.');
       return;
     }
 
@@ -1197,7 +1208,7 @@
     const names = connected.map(i => `• ${i.display_name}`).join('\n');
     const ok = await Dialog.confirm({
       title: 'Disconnect all integrations?',
-      message: `I'll disconnect these integrations:\n${names}\n\nYou can set them up again anytime.`,
+      message: `I'll disconnect these:\n${names}\n\nYou can connect them again anytime.`,
       confirmText: 'Disconnect all'
     });
     if (!ok) return;
