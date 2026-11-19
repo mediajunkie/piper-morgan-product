@@ -2177,9 +2177,15 @@ def _clauses(groups: dict) -> list[str]:
         verb = "aren't" if len(groups["connect"]) > 1 else "isn't"
         out.append(f"{oxford_join(groups['connect'])} {verb} connected yet")
     if groups["stale"]:
-        many = len(groups["stale"]) > 1
-        noun, verb = ("connections", "need") if many else ("connection", "needs")
-        out.append(f"your {oxford_join(groups['stale'])} {noun} {verb} re-authorizing")
+        # CXO 2026-11-18: one connector says its own card sentence; two or more share one
+        # clause. The split is on the count; the next step comes once, at the end
+        # (_action_sentences).
+        if len(groups["stale"]) > 1:
+            out.append(f"{oxford_join(groups['stale'])} no longer accept your connections")
+        else:
+            from services.mcp.consumer.connector import stale_fact  # stdlib-only module
+
+            out.append(stale_fact(groups["stale"][0]).rstrip("."))
     if groups["misconfigured"]:
         verb = "aren't" if len(groups["misconfigured"]) > 1 else "isn't"
         out.append(
@@ -2195,8 +2201,14 @@ def _action_sentences(groups: dict, *, empty: bool) -> list[str]:
         tail = "pull your work in" if empty else f"pull {pronoun} in"
         out.append(f"Connect {pronoun} in Settings and I'll {tail}.")
     if groups["stale"]:
-        pronoun = "them" if len(groups["stale"]) > 1 else "it"
-        out.append(f"Reconnect {pronoun} in Settings and I'll pick back up.")
+        # CXO 2026-11-18: one connector's own step (a key or token is added, not
+        # reconnected); two or more share "Reconnect them", true for every mix.
+        if len(groups["stale"]) > 1:
+            out.append("Reconnect them in Settings and I'll pick back up.")
+        else:
+            from services.mcp.consumer.connector import stale_step  # stdlib-only module
+
+            out.append(f"{stale_step(groups['stale'][0])} and I'll pick back up.")
     if groups["misconfigured"]:
         out.append("That's on our side to fix.")
     return out

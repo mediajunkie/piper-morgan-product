@@ -51,6 +51,7 @@ from .connector import (
     ResolveMiss,
     ResolveResult,
     ResourceQuery,
+    stale_fact,
 )
 
 logger = logging.getLogger(__name__)
@@ -991,7 +992,7 @@ class NotionMCPAdapter(BaseSpatialAdapter):
             DegradationReason.CONNECT_REQUIRED: "Connect Notion to continue.",
             DegradationReason.RESOURCE_NOT_FOUND: "That Notion resource wasn't found.",
             DegradationReason.UNREACHABLE: "Notion is unreachable right now.",
-            DegradationReason.STALE_TOKEN: "Your Notion connection needs re-authorizing.",
+            DegradationReason.STALE_TOKEN: stale_fact("Notion"),
         }
         return DegradationResponse(
             reason=reason, user_message=messages.get(reason, "The Notion connector is degraded.")
