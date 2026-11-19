@@ -28,8 +28,9 @@ there, on the process's own database:
     fly ssh console -a <copy app> -C "python /app/scripts/verify_stored_credential_decrypt.py \
         --own-database-in-drill-copy"
 
-That flag works only where ``PIPER_RESTORE_DRILL_COPY`` is ``yes``, a variable only the drill
-script sets, on the copy app; anywhere else it prints ``fail:5`` as before.
+That flag works only where ``PIPER_RESTORE_DRILL_COPY`` is ``yes`` (set only by the drill
+script, on the copy) AND Fly's own ``FLY_APP_NAME`` starts with ``pm-restore-drill-`` (Arch,
+11-18); anywhere else it prints ``fail:5`` as before.
 
 Concept: docs/internal/operations/restore-drill-2157-lead-half-fly-lines-DRAFT-2026-11-04.md
 """
@@ -50,6 +51,9 @@ EXIT_SAME_HOST_AS_LIVE = 5  # the URL names the process's own live database, not
 #: Set only on the restore drill's copy app (``scripts/restore_drill_2157.py``), never on a
 #: deployment: there the process's own database IS the copy.
 DRILL_COPY_ENV = "PIPER_RESTORE_DRILL_COPY"
+#: Arch 11-18: the variable alone can be copied anywhere; Fly sets FLY_APP_NAME itself, and
+#: only the drill's own app has a name that starts with this.
+DRILL_APP_PREFIX = "pm-restore-drill-"
 
 
 def _host(url: str) -> str:
@@ -122,7 +126,10 @@ def main(argv=None) -> int:
     ns = parser.parse_args(argv)
     live = os.environ.get("DATABASE_URL")
     if ns.own_database_in_drill_copy:
-        if os.environ.get(DRILL_COPY_ENV) != "yes" or not live:
+        in_copy = os.environ.get(DRILL_COPY_ENV) == "yes" and os.environ.get(
+            "FLY_APP_NAME", ""
+        ).startswith(DRILL_APP_PREFIX)
+        if not in_copy or not live:
             print(word(EXIT_SAME_HOST_AS_LIVE))
             return EXIT_SAME_HOST_AS_LIVE
         url = live
