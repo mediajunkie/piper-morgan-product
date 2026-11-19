@@ -19,6 +19,7 @@ from services.integrations.principal_test_results import (
     PrincipalTestResultStore,
     get_test_result_store,
 )
+from services.mcp.consumer.connector import stale_fact
 
 logger = structlog.get_logger()
 
@@ -102,10 +103,10 @@ class ConnectionTestResponse(BaseModel):
 # fact, at the click and on the card, and no code word on screen. The ``_test_*`` checks
 # record these as the error (the card's line) and the registry gives them at the click.
 NOTION_KEY_REFUSED_LINE = (
-    "Notion didn't accept your key. It may have expired or been revoked. "
+    f"{stale_fact('Notion')} It may have expired or been revoked. "
     "Add a new one in Settings, under Integrations."
 )
-CALENDAR_REVOKED_LINE = "Google Calendar no longer accepts your connection."
+CALENDAR_REVOKED_LINE = stale_fact("Google Calendar")
 CALENDAR_NO_SCOPE_LINE = (
     "Google refused the calendar read: the connection doesn't include calendar access. "
     "Disconnect, connect again, and approve calendar access."
@@ -130,7 +131,7 @@ def _not_connected(display_name: str, button: str) -> Dict[str, str]:
 
 
 SLACK_TOKEN_REFUSED_LINE = (
-    "Slack didn't accept your token. It may have expired or been revoked. "
+    f"{stale_fact('Slack')} It may have expired or been revoked. "
     "Add a new one in Settings, under Integrations."
 )
 
@@ -535,7 +536,7 @@ _GITHUB_CARD_CONNECTED_AS_ONLY = "Connected as {login}."
 _GITHUB_CARD_PAT_TITLE = "Connected via your personal token"
 # CXO 2026-11-18 (the card-state file's Test pairs): one fact, one name. The stale grant
 # is "GitHub no longer accepts your connection." at the click, on the card and in chat.
-GITHUB_CARD_RECONNECT_DETAIL = "GitHub no longer accepts your connection."
+GITHUB_CARD_RECONNECT_DETAIL = stale_fact("GitHub")
 _GITHUB_CARD_PAT_DETAIL = "GitHub no longer accepts your connection, so I'm not using it right now."
 # The own-token card after a passing Test names the leg the Test named (CXO 2026-11-18).
 _GITHUB_CARD_PAT_HEALTHY = "Connected via your personal token."

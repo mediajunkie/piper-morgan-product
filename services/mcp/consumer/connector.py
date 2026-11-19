@@ -34,6 +34,22 @@ class ConnectorStatusState(enum.Enum):
     STALE = "stale"  # bound, but the token needs refresh
 
 
+#: CXO 2026-11-18: each connector's one sentence for a grant it no longer accepts, keyed by
+#: display name. The card, the Test, the adapter's degrade and the chat copy all read it
+#: here, so a person sees the same words everywhere (Arch: one place, no second copy).
+STALE_FACTS = {
+    "GitHub": "GitHub no longer accepts your connection.",
+    "Google Calendar": "Google Calendar no longer accepts your connection.",
+    "Notion": "Notion didn't accept your key.",
+    "Slack": "Slack didn't accept your token.",
+}
+
+
+def stale_fact(connector: str) -> str:
+    """That connector's sentence; a connector without one gets the generic form."""
+    return STALE_FACTS.get(connector, f"{connector} no longer accepts your connection.")
+
+
 class DegradationReason(enum.Enum):
     """Why a connector can't serve a request (drives honest degradation)."""
 

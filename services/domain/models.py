@@ -2177,9 +2177,15 @@ def _clauses(groups: dict) -> list[str]:
         verb = "aren't" if len(groups["connect"]) > 1 else "isn't"
         out.append(f"{oxford_join(groups['connect'])} {verb} connected yet")
     if groups["stale"]:
-        many = len(groups["stale"]) > 1
-        noun, verb = ("connections", "need") if many else ("connection", "needs")
-        out.append(f"your {oxford_join(groups['stale'])} {noun} {verb} re-authorizing")
+        # CXO 2026-11-18: one connector says its own card sentence; two or more share one
+        # clause. The split is on the count; the next step comes once, at the end
+        # (_action_sentences).
+        if len(groups["stale"]) > 1:
+            out.append(f"{oxford_join(groups['stale'])} no longer accept your connections")
+        else:
+            from services.mcp.consumer.connector import stale_fact  # stdlib-only module
+
+            out.append(stale_fact(groups["stale"][0]).rstrip("."))
     if groups["misconfigured"]:
         verb = "aren't" if len(groups["misconfigured"]) > 1 else "isn't"
         out.append(

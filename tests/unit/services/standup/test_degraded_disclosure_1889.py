@@ -330,9 +330,10 @@ PER_REASON = {
         "Connect it in Settings and I'll pull your work in.",
     ),
     "stale_token": (
-        "Your GitHub connection needs re-authorizing, so what's below is incomplete. "
+        # CXO 2026-11-18: the connector's own card sentence; "re-authorizing" retired.
+        "GitHub no longer accepts your connection, so what's below is incomplete. "
         "Reconnect it in Settings and I'll pick back up.",
-        "Your GitHub connection needs re-authorizing, so I can't put together a standup. "
+        "GitHub no longer accepts your connection, so I can't put together a standup. "
         "Reconnect it in Settings and I'll pick back up.",
     ),
     "misconfigured": (
@@ -371,7 +372,7 @@ def test_format_stems_per_reason():
     d = _d("stale_token")
     assert degraded_disclosure([GH], "slack", details=d) == "_" + PER_REASON["stale_token"][0] + "_"
     assert degraded_disclosure([GH], "markdown", details=d) == (
-        "Note: your GitHub connection needs re-authorizing, so what's below is incomplete. "
+        "Note: GitHub no longer accepts your connection, so what's below is incomplete. "
         "Reconnect it in Settings and I'll pick back up."
     )
     # A proper noun is never lower-cased.
@@ -402,7 +403,7 @@ def test_mixed_reasons_one_sentence_unreachable_first():
         ),
         (
             "stale_token",
-            "Your GitHub connection needs re-authorizing.",
+            "GitHub no longer accepts your connection.",
             "An empty Radar doesn't mean all clear. Reconnect it in Settings and I'll pick back up.",
         ),
         (
@@ -444,3 +445,49 @@ def test_mixed_radar_card_drops_the_ambiguous_sentence():
     title, sub = degraded_radar_card(details)
     assert title == "I couldn't reach your calendar just now, and GitHub isn't connected yet."
     assert sub == "An empty Radar doesn't mean all clear. Connect it in Settings."
+
+
+# --- CXO 2026-11-18: one stale connector says its card sentence; two or more share one ---
+
+
+def _stale(*names):
+    return [{"label": n, "reason": "stale_token", "connector": n} for n in names]
+
+
+@pytest.mark.parametrize(
+    "names,clause",
+    [
+        (("Notion",), "Notion didn't accept your key"),
+        (("Slack",), "Slack didn't accept your token"),
+        (("Google Calendar",), "Google Calendar no longer accepts your connection"),
+        (("GitHub", "Notion"), "GitHub and Notion no longer accept your connections"),
+        (
+            ("GitHub", "Notion", "Slack"),
+            "GitHub, Notion, and Slack no longer accept your connections",
+        ),
+    ],
+)
+def test_the_stale_clause_and_one_next_step_at_the_end(names, clause):
+    from services.domain.models import _reason_sentence
+
+    pronoun = "them" if len(names) > 1 else "it"
+    assert _reason_sentence(_stale(*names), empty=False) == (
+        f"{clause}, so what's below is incomplete. "
+        f"Reconnect {pronoun} in Settings and I'll pick back up."
+    )
+
+
+def test_the_single_clause_is_the_cards_own_sentence():
+    """Arch: one place for each connector's sentence; the card and the chat read it."""
+    from services.mcp.consumer.connector import STALE_FACTS
+    from web.api.routes.integrations import (
+        CALENDAR_REVOKED_LINE,
+        GITHUB_CARD_RECONNECT_DETAIL,
+        NOTION_KEY_REFUSED_LINE,
+        SLACK_TOKEN_REFUSED_LINE,
+    )
+
+    assert GITHUB_CARD_RECONNECT_DETAIL == STALE_FACTS["GitHub"]
+    assert CALENDAR_REVOKED_LINE == STALE_FACTS["Google Calendar"]
+    assert NOTION_KEY_REFUSED_LINE.startswith(STALE_FACTS["Notion"])
+    assert SLACK_TOKEN_REFUSED_LINE.startswith(STALE_FACTS["Slack"])
