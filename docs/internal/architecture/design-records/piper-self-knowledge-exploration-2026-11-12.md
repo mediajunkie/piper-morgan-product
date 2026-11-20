@@ -284,3 +284,26 @@ xian's words on question 3: "let's do some research and experimentation to figur
   - **Cap: $5** (four times the estimate). The run stops if `usage` passes it. With caching built, turns 2 to 10 cost less, not more.
 - **Who pays:** the account's provider key, which waits on #2340/#2357 (xian). Nothing paid runs before his answer and Exec's yes to this price.
 - **Update (CIO, 2026-11-15 18:50 PST):** the count endpoint is free ("The count endpoint costs nothing and samples nothing", Anthropic API reference), so the size half is $0. Key: xian stored `seat-screens-2026-11` (lead-scoring workspace) on 11-15. CIO asked Exec (01M7H45EJK) to put the size half (one count call, $0) to xian. The cache half waits on #2354's breakpoint build, and its price goes to Exec when that lands.
+
+### H1 results (CIO, 2026-11-20 11:45 PST; Lead's runs, figures on #2357 issuecomment-7048775057)
+
+**H1 passes both lines.** The layer is 515 tokens, against a cap of 1,000. Reply calls read it from cache on 9 of 9 turns 2 to 10, against a line of at least 80%.
+
+| Line (set 11-12) | Measured (11-20) | Result |
+|---|---|---|
+| Layer at most 1,000 tokens | 515 (`count_tokens`, `claude-sonnet-4-6`, layer v2026-11-18.1, 2,039 bytes) | Pass |
+| At least 80% of turns 2+ read the layer from cache | 9 of 9 reply calls on turns 2 to 10 (each: cache read 4,051, cache write 0) | Pass |
+| Build check: the prefix reaches 1,024 tokens | Normal turn: 4,050 for a new account's base, 5,576 on `config/PIPER.md`. Denial turn: 1,099 and 2,625 | Pass, with one exception: the one-line fallback base leaves a denial turn at 919, so that turn can't be cached |
+
+**How the run differs from the plan's rules, and what that changes.**
+- **Not the served build.** It ran on a scratch local install at tree `c2330469f2` plus the turn-cap change `e293e1595a`. What H1 measures (the request sent and what the provider bills) doesn't depend on where the server runs, so I accept it for H1. H3 still needs the served build, because it judges answers against it.
+- **The same question ten times.** The reply calls are what H1 measures, and repeating the question doesn't change their cacheable prefix. It does change the router's call (see below).
+- **All within 76 seconds.** A user who leaves more than five minutes between turns pays the cache write again: $0.00193 for the layer instead of $0.00015.
+
+**The price estimate was 21 times too high.** On 11-13 I estimated about $1.20, assuming 4 calls a turn, 6,000 uncached input tokens and 800 output tokens. The run cost **$0.055714**: 11 calls (1.1 a turn), 223 uncached input tokens and 82 to 258 output tokens per reply call. The input-token guess was the furthest off, because most of the prompt is cached.
+
+**Why the router ran once, and why that matters for per-turn cost.** The router's call ran on turn 1 only (in 1,515, cache read 4,153, out 155, $0.008116). The likely reason is `IntentCache` (`services/intent_service/classifier.py`, 1-hour TTL, keyed on a hash of the message text). It serves a classification for repeated text when no context, session or spatial context is passed to `classify`. I haven't confirmed it: that needs `intent_from_cache` lines in the run's server log (asked of Lead). If it's right, a conversation with different questions pays the router call every turn. That's about $0.013 a turn instead of this run's $0.005. Use $0.013 for any per-turn cost of a real conversation, including H3's.
+
+**What H1 does not measure.** A conversation with history. A denial turn: none was run, so whether one is billed as a cache read is still unmeasured. A served turn. More than one account.
+
+**Decisions this settles (from "What the results decide").** No cut to the layer and no change to the prefix. The fallback-base denial turn is the one case that can't be cached. Whether that is worth a fix is Arch's question; it's not part of H1's pass.
