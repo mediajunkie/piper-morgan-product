@@ -1,5 +1,5 @@
 ---
-last_updated: 2026-11-18 21:28 PST (STOP)
+last_updated: 2026-11-19 21:29 PST (STOP)
 currency_claim: rewritten at substantive-change boundaries, verified at every START
 max_age_days: 4
 ---
@@ -26,6 +26,13 @@ context-floor directive that duplicating it here is exactly the accretion to cut
 
 ## IN FLIGHT — current state only
 
+**11-19 state (STOP):** main 12/12 green; inbox empty; beta serves `f34fe7bef5` since 08:44 (two promotions today: `1cebb644f8` at 07:03, then `f34fe7bef5`). Both promotions ran the conduct-layer size step by path: 2039 bytes, about 679 tokens, under the 1,000 cap (OK). That first gated promotion was checked by hand, so the item is closed. Now served: 2354, the card copy items 1-6, the 2157 drill and its fixes (`b01aab9059`), and the whole disconnect unit. Model Opus 5.5.
+- **Rulings today (decisions.log):**
+  - `a5b416413c` conforms: no exception text from any of the four disconnect routes, and an outcome code on every reply.
+  - The disconnect unit `7d88a343e4` conforms, with one condition: a grant plus a saved token is the `unknown` leg. Built as `8b4423e059` and `f34fe7bef5`, which conform; `_github_token_held` reads the three copies the disconnect deletes, and any read that fails counts as held. I accepted the decrypt inside `aread_secret` (it's the disconnect's own read-back, and the value never leaves the function); no issue was filed.
+- **Waiting on others:** Web's signed-in disconnect pass, then CXO's served read. The 2157 drill now waits only on xian's sitting, through Exec (HOST holds the sitting page).
+- **Lesson (11-19):** a "leg" taken from the serving credential alone misses a second credential at rest. When words claim what stays after a delete, key them on the delete's own inventory.
+
 **11-18 state (STOP):** main 12/12 green; inbox empty; beta still serves `3b6676d352` (since 11:40; CONFORMS). On main, not promoted: 2354 (`88e25efef7`), the size step (`f8ed6c03b4`), the 2157 drill and its fixes (`88cbb35e1f`, `b01aab9059`), card items 1-5 (`7b10771945`) and item 6 (`2a70c1a466`). Model Opus 5.5. Every ruling is in decisions.log.
 - **Clock rule (live 752547e88e):** run `TZ=America/Los_Angeles date` before every stamp and write headings through `scripts/log-entry.sh`. Today: seven guessed times corrected in the morning, and a 16:40 stamp fixed before commit.
 - **Rulings today, built and conforming:**
@@ -38,7 +45,7 @@ context-floor directive that duplicating it here is exactly the accretion to cut
   - 2157 drill: conforms. The copy's allowlist is CLOSED (adding `GITHUB_APP_*` or `SLACK_*` would act on real accounts); proof 2 also requires the `pm-restore-drill-` FLY_APP_NAME prefix.
   - Item 6: the `STALE_FACTS` map is the one place, with a drift test against the registry.
   - Disconnect routes: no exception text in a response; a raise returns the incomplete line; Disconnect All keys on a per-card outcome code; the GitHub leg comes from the resolver; the stays-valid sentences live in one map; the unknown-leg sentence must be true for all three legs.
-- **Mine to read when built (Lead):** the disconnect build (outcome code, `leg`, stays-valid map, no exception text); 2390, 2391, 2384, 2393, 2399; the count-only route (waits on placement).
+- **Mine to read when built (Lead):** 2390, 2391, 2384, 2393, 2399; the count-only route (waits on placement).
 - **Waits on Step A (Fri 11-20):**
   - 2354's real token count and H1's cache-hit run (report the denial-turn prefix separately);
   - the 2405 page and the GitHub card on beta;
@@ -47,7 +54,7 @@ context-floor directive that duplicating it here is exactly the accretion to cut
   - the first paid call under the cap;
   - 2406 (rule 7 screen);
   - CXO's served stale-token read.
-- **Waits on xian:** the 2157 drill run (needs a promotion carrying `b01aab9059`; HOST gives the command); 2403 row 4 (a person's clean-shell check); Steps C, D and F0; the Platform org for linked billing (needs an ADR when decided).
+- **Waits on xian:** the 2157 drill run (`b01aab9059` is served since 11-19; HOST gives the command); 2403 row 4 (a person's clean-shell check); Steps C, D and F0; the Platform org for linked billing (needs an ADR when decided).
 - **Hook blocking decision** with Lead: about 11-23.
 - **Lessons (11-18):**
   1. A condition naming a command must be run as written, in the target environment: `-m` imports the package.
