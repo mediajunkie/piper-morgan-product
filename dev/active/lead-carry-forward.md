@@ -1,5 +1,22 @@
 # Lead carry-forward — Opus 5.5 seat since 2026-11-17 21:30 (xian moved the session off Fable 5.2 at the week's Fable limit, until it resets); Fable 5.2 from 2026-11-10 ~17:25 to then; Model A worktree ~/Development/piper-morgan-worktrees/lead
 
+## IN-DAY 2026-11-20 12:35 (supersedes every earlier block where they differ)
+
+- **Model: Fable 5.2 again** since 08:56. **Step A is done** (the seat key; `check-env` passes without a restart: 106 chars, sha256 b5d48364). Paid runs go under their rules: PLANNED line to Exec first, COST after. Key on the command line as `ANTHROPIC_API_KEY="$PIPER_SEAT_ANTHROPIC_KEY" env -u ANTHROPIC_BASE_URL -u ANTHROPIC_AUTH_TOKEN -u ANTHROPIC_CUSTOM_HEADERS PYTHON_DOTENV_DISABLED=1 PIPER_CREDENTIAL_STORE=db POSTGRES_PORT=5433 …`. **Paid today: $5.752078.**
+- **Closed today:** 2404, 2405 (real-key guide run passed). **H1 passes** (layer 515 tokens; 10 of 10 reply calls cache reads); CIO wrote it up.
+- **NEXT BUILD, at this session's next compaction: 2297 attach, handler-only** (Arch 01M7X8HRFP; PPM's rows 16 and 17 on the issue).
+  - From `lead/pathb-armb-candidate` (`../lead-armb`, `6a9250e6d1`): take `af8b363d99` (handler side), the attach parts of `ea51470ae8`, and `2c6a123d7d`. Leave out `6a9250e6d1` (catalog) and everything for `list_project_todos`.
+  - Pin: the router's catalog text and one rendered request equal main's by sha256; `create_todo` stays "Create-todo".
+  - A project name with no exact stored match (case-insensitive) gets a question. CXO owes that question's words (asked, 01M7XAF89R).
+  - Full suite (CI's command) before the push; Arch reads the diff and the pin before it lands.
+- **2301 read candidate:** waits on CXO's one catalog line. Bar: Arch's comment on 2301 (20:00Z 11-20): the 28 phrases plus two rows ×6, corpus ×1 on main, control, candidate; about $4; price to Exec first. Harness notes: copy main's `router_batch.py` and `dev_key_binding.py` into the candidate tree uncommitted, and restore them after (`cmp` first, then `git checkout HEAD -- … # diff-reviewed`). The arm B files are in `dev/2026/11/20/armb-screen/` (`analyze.py` does the comparison).
+- **2406:** the edit is built, uncommitted, in `../lead-2406` on `lead/2406-bases` (seven `PIPER.md` bullets out; `BEHAVIOR_GUIDELINES_LINES` one constant; new `test_base_prompts_2406.py`). One test row fails on `PIPER.md`'s "When Queries Are Ambiguous" section. **Waiting on:** CXO's word on that section's four bullets (01M7XA1BDM), and Arch's answer on what rule 7 counts (01M7X9WQR2): `router_batch.py` renders the inversion router, which never takes the base; the call that changes is the LLM classifier, so a new render mode is needed.
+- **2364:** step 1 HELD. Two-arm runs FAIL line 3 (`p-2` C 0 of 5, S 5 of 5; `p-3` C 2 of 5, S 4 of 5). Candidate on origin as `lead/2364-step1-r1120` (`2ff345ee61`). CXO words a v0.3 after two reads; Arch to say whether I may make them (01M7XA9DHQ). **#2408 filed** (`p-3` schema validation failure). Still owed before any merge: the OpenAI run or the beta key read (xian's).
+- **Seat check:** `web-seed-1386` has a live Calendar connection; HOST and CIO are on it. Web's signed-in disconnect pass (01M7TB53RR) and CXO's served read wait on that.
+- **Main CI:** Documentation Link Checker red at 61 against 60 (told CIO and Docs).
+- Beta serves `f34fe7bef5`; nothing on main for the served path beyond it.
+- Stale docstring to fix with the next change to `settings_integrations.py`: `disconnect_calendar` says it doesn't revoke at Google; it does.
+
 ## DAY-END 2026-11-19 21:50
 
 - Beta serves `f34fe7bef5`. Main has no served-path change beyond it, and is 12 of 12 green.
