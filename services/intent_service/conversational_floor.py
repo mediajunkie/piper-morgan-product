@@ -1040,7 +1040,10 @@ class ConversationalFloor:
                 from services.database.session_factory import AsyncSessionFactory
 
                 async with AsyncSessionFactory.session_scope() as session:
-                    base = await personalization_service.resolve_system_prompt(ctx.user_id, session)
+                    # #2406: the reply's base (CXO's behavior lines), not the classifier's.
+                    base = await personalization_service.resolve_system_prompt(
+                        ctx.user_id, session, for_reply=True
+                    )
             except Exception:
                 base = "You are Piper Morgan, an AI product management assistant."
 
