@@ -1,5 +1,21 @@
 # Lead carry-forward — Opus 5.5 seat since 2026-11-17 21:30 (xian moved the session off Fable 5.2 at the week's Fable limit, until it resets); Fable 5.2 from 2026-11-10 ~17:25 to then; Model A worktree ~/Development/piper-morgan-worktrees/lead
 
+## IN-DAY 2026-11-20 12:44 (supersedes the 12:31 block where they differ)
+
+- **Every word and bar is now in. Read these mails whole before building** (`scripts/mail4.py read <id>`):
+  - **Arch 01M7XAKMFYPTHQKCEDJP825BF6:** 2406 re-ruled for the classifier, and yes to the 2364 reads (done).
+  - **CXO 01M7XAV6XHNMN5CTYRC9XYFX9C:** 2406's last section (all four bullets and the heading go; no full stop on the name line); Path B's can't-find-project lines (five cases, attach and read); the new `list_project_todos` catalog line for 2301.
+- **2406, in `../lead-2406` on `lead/2406-bases` (uncommitted):** the edit is complete (seven bullets and the "When Queries Are Ambiguous" section out of `PIPER.md`; `BEHAVIOR_GUIDELINES_LINES`; tests, 42 pass with the 1678 and 2354 files). **Still to build, per Arch:**
+  1. Row L: no run. A test that the router's rendered request doesn't depend on the base; and quote the sha256 of the whole corpus render from main's tree and the candidate's (must be equal).
+  2. A classifier render mode in `scripts/router_batch.py`: exactly the request `IntentClassifier._classify_with_reasoning` sends (`classifier.py` ~808 to 855: base as system, `INTENT_CLASSIFICATION_PROMPT` as user with the cacheable static head, task type `intent_classification`, JSON response format). Each side prints the sha256 of its system prompt. `_BATCH_USD_PER_MTOK` needs a `claude-sonnet-4-6` row (batch is half of $3 / $15).
+  3. Parse: the counted outcome is (category, action if it is a registered operation, else `unregistered`), after the same verb-to-legacy-action step the classifier applies.
+  4. The phrase set: the 90 corpus rows main's router answered `NONE` or `CLARIFY` in `dev/2026/11/20/armb-screen/report-corpus-main.md`. Extract mechanically and commit the list before the run.
+  5. Pass 1: the 90 once each on base A (`PIPER.md`) and base B (neutral default), for main, a main control and the candidate, one batch, 540 requests. Pass 2: rows whose outcome differs from main on either base, ×6, main and candidate. Bar: the 10-30 three clauses on the counted outcome; more than 15 of 90 differing beyond the control's rate on either base is NO-GO without pass 2. Price from the dry run to Exec first.
+- **2364:** the diagnostic reads are done and reported (issuecomment-7050153884). `p-2` under v0.2 is `professional` at 0.82, under the enforcer's 0.85 `BLOCK_THRESHOLD` (my earlier "detector says none" was wrong, corrected). `p-3` is `reasoning` at 511 characters over the 500 limit. **#2408's fix waits on Arch's final word** (his conditional ruling: truncate and keep in the validator, marked truncated; decision fields strict). Asked in 01M7XB64R9.
+- **2297 attach build:** still deferred to the next compaction; CXO's lines for it are in her mail above.
+- **2301 read candidate:** CXO's line is in. Build: main plus that one catalog line and the read handler from `../lead-armb` (`4c47b29226` and the 2301 parts of later commits), `create_todo` untouched. Show Arch a one-request diff, price to Exec, run on the bar in Arch's 20:00Z comment on 2301. It shares the handler work with 2297, so it follows that build.
+- **Paid today: $5.804078.**
+
 ## IN-DAY 2026-11-20 12:31 (supersedes every earlier block where they differ)
 
 - **Model: Fable 5.2 again** since 08:56. **Step A is done** (the seat key; `check-env` passes without a restart: 106 chars, sha256 b5d48364). Paid runs go under their rules: PLANNED line to Exec first, COST after. Key on the command line as `ANTHROPIC_API_KEY="$PIPER_SEAT_ANTHROPIC_KEY" env -u ANTHROPIC_BASE_URL -u ANTHROPIC_AUTH_TOKEN -u ANTHROPIC_CUSTOM_HEADERS PYTHON_DOTENV_DISABLED=1 PIPER_CREDENTIAL_STORE=db POSTGRES_PORT=5433 …`. **Paid today: $5.752078.**
