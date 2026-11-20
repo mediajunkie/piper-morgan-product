@@ -85,8 +85,15 @@ class TestResolveSystemPrompt:
             result = await service.resolve_system_prompt(_OTHER_USER_ID, mock_session)
 
             assert result == "formatted: this user's content"
+            # #2406: a caller that doesn't ask for the reply's lines (the classifier)
+            # gets the classifier's frozen behavior lines.
+            from services.configuration.piper_config_loader import (
+                CLASSIFIER_BEHAVIOR_GUIDELINES_LINES,
+            )
+
             mock_loader._format_system_prompt.assert_called_once_with(
-                {"User Context": "this user's own content"}
+                {"User Context": "this user's own content"},
+                CLASSIFIER_BEHAVIOR_GUIDELINES_LINES,
             )
             # Never touched PM's raw system prompt for this distinct principal.
             mock_loader.get_system_prompt.assert_not_called()
