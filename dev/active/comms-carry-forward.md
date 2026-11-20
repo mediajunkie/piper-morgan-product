@@ -1,26 +1,19 @@
 # Comms carry-forward
 
-## ⭐ CURRENT STATE — 2026-11-18 21:19 PT (STOP). Read this first. It supersedes everything below.
-- **Log 11-18:** `dev/2026/11/18/2026-11-18-0619-comms-code-log.md` (DAY-CLOSED). Tomorrow creates a new log.
+## ⭐ CURRENT STATE — 2026-11-19 21:19 PT (STOP). Read this first. It supersedes everything below.
+- **Log 11-19:** `dev/2026/11/19/2026-11-19-0619-comms-code-log.md` (DAY-CLOSED). Tomorrow creates a new log.
 - **Pace (xian, 11-02):** keep working, not racing. Drain rule holds. No nudges to xian about posts (Exec 11-12).
-- **Draft-state check:** `git log -1 --format='%h %ad %s' -- <one path>` per draft, plus `git -C <shared checkout> status --short docs/public/comms/drafts/` (read-only).
-- **Clock rule LIVE (752547e88e, xian approved 11-18 10:39, decisions.log):** no estimated `HH:Mx` minute, future time or `~` heading in logs, carry-forward, standing items, briefing or decisions.log; mail4 refuses one in a body. Quote a time in backticks. Helper: `scripts/log-entry.sh "title"`.
+- **Draft-state check:** `git log -1 --format='%h %ad %s' -- <one path>` per draft, plus `git -C <shared checkout> status --short docs/public/comms/drafts/` (read-only). Admin-UI edits land as "content(<slug>): edit via admin UI".
+- **Clock rule LIVE (752547e88e, decisions.log):** no estimated `HH:Mx` minute, future time or `~` heading in logs, carry-forward, standing items, briefing or decisions.log. Quote a time in backticks. Helper: `scripts/log-entry.sh "title"`.
 - **CADENCE (xian 11-17):** Ship Tuesday from #070 (11-24), narrative Thursday, insight Saturday. No Thu 11-26, no Thu 12-24.
-- **Ship #069 "Off-Limits by Default":** PUBLISHED and DISTRIBUTED 11-18 (LinkedIn). Done. Ship hero is always piper-ship.webp (memory feedback_ship_hero_is_always_piper_ship).
-- **"The Wall" footer fixed** ("a new outside tester asks to join") on site, Medium and archive. Done.
-- **Era 8 "The Beta" starts 10-31** (xian 11-18).
-- **Calendar sketch APPROVED as tentative (xian 11-18, "adapt as we go").** Rows and scaffolds:
-  - Thu 11-19 "Inviting Company In" (arc 1): scaffold `docs/public/comms/drafts/inviting-company-in.md`, row drafted. **Waits on xian's prose** (unchanged since e404b1c16d 10:35 as of 21:19). Footer tease names Sat 11-21.
-  - Sat 11-21 "A Blocker Framed as Yes or No": scaffold `a-blocker-framed-as-yes-or-no.md`, row drafted. Waits on prose. Tease: Sat 11-28.
-  - Sat 11-28 "Test the Page You Draw": scaffold `test-the-page-you-draw.md`, row drafted. Tease: Thu 12-03.
-  - Thu 12-03 "Ready or Not" (arc 2, Oct 20-31): scaffold `ready-or-not.md`, row drafted. Beat 2 is headline-sourced only; source line by line if xian keeps it. Overlaps "At Long Last, Beta".
-  - Tentative rows, no scaffold yet: Sat 12-05 "A Record Is Not a Delivery", Thu 12-10 "Open, Then Hold", Sat 12-12 "A Deletion Can Fail Its Own Gate", Thu 12-17 "What the Beta Is Teaching Us", Sat 12-19 placeholder (next mining pass). **Trigger for 12-05/12-10/12-12 scaffolds: Thu 11-19 lands.**
-- **Title lock:** 11-21, 11-28 and 12-03 titles need xian's confirmation before the preceding post goes to Docs (xian: "will verify titles later").
-- **When a post's prose lands:** review, fact-check against the scaffold, template-audit, PUBLISH-READY to Docs.
+- **Thu 11-19 "Inviting Company In": PUBLISHED** (https://pipermorgan.ai/blog/inviting-company-in), xian-approved fixes c4e3db24af, PUBLISH-READY 01M7V7DDK6. **Medium crosspost owed by xian** ("I'm try to cross post this evening"); no mediumURL as of 21:19. Docs sets `distributed` and archives on his URL. If xian gives the URL to Comms, relay it to Docs. Facts learned: website on Vercel; Piper app on Fly since July while the hosted alpha stayed on the DigitalOcean droplet until the September consolidation.
+- **Sat 11-21 "A Blocker Framed as Yes or No":** title LOCKED (xian 11-19). Scaffold `docs/public/comms/drafts/a-blocker-framed-as-yes-or-no.md`, row drafted. Waits on xian's prose (unchanged as of 21:19), then review, fact-check, template-audit, PUBLISH-READY. Tease: Sat 11-28.
+- **Title lock still owed (xian):** 11-28 "Test the Page You Draw" before 11-21 goes to Docs; then 12-03 "Ready or Not", 12-05, 12-10, 12-12 each before the post that teases it.
+- **Scaffolds (all rows drafted, draftPath set):** 11-28 `test-the-page-you-draw.md`; 12-03 `ready-or-not.md` (beat 2 headline-sourced, source line by line if kept); 12-05 `a-record-is-not-a-delivery.md` (Nov 9-11); 12-10 `open-then-hold.md` (arc 3, Nov 4-7, premise corrected: GitHub's permission page, seen on a tester call; hold not lifted, re-check status when written); 12-12 `a-deletion-can-fail-its-own-gate.md` (Nov 13; thin, offers swap with "The Number That Looked Like a Ceiling" or "A Keyword Is Not a Measurement", **xian's call**).
+- **Held scaffolds:** Thu 12-17 "What the Beta Is Teaching Us" (trigger: Thu 12-03 lands). Sat 12-19 placeholder waits on the mining pass about Fri 12-04 (Nov 17 to Dec 3).
 - **CIO ask (11-16):** first push printing `already passed on this content` → mail CIO that line. Not seen yet.
-- **Mining pass next about Fri 12-04** (Nov 17 to Dec 3).
 - **Mail v4 live;** v3 fallback until 11-23.
-- **Arcs (adopted 11-14):** map in planning doc (Claude Docs 5vc7f1CTHhadvvPBB73h86).
+- **Arcs (adopted 11-14):** map in planning doc (Claude Docs 5vc7f1CTHhadvvPBB73h86). Era 8 "The Beta" starts 10-31.
 - **Standing rules:** keychain off-limits (never `=keychain`); only `scripts/alpha-setup.sh` banned on Amber, no compose up/down; invites held (xian 11-04); HOLD (PDR-102) no ownership claim in copy; Rule 8 no outside names; never mail or cc PM.
 
 ## OLDER STATE blocks pruned 2026-11-06 (10-14 to 11-04). They are in git history and in the dated session logs.
