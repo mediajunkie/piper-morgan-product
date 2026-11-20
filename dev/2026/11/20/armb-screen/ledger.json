@@ -1,0 +1,10 @@
+{
+  "entries": [
+    {
+      "batch": "msgbatch_01GaQoAW71Sj4rB1ndbPwgec",
+      "requests": 2226,
+      "ceiling_usd": 6.7948,
+      "actual_usd": 4.0448
+    }
+  ]
+}
