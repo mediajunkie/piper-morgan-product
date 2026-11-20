@@ -855,7 +855,7 @@ Brake FIRED (second slip = #1965 admission, found and ledgered 10-09). Memo to E
 ## Now (rewritten at the 11-19 21:33 STOP, written 21:35; carry into Fri 11-20)
 
 - **Invite hold, PDR-008.** Re-verified 11-19 21:33 with `gh issue view`: #2261, #2282 and #2342 are OPEN. The lift-readiness memo to Exec waits on #2342's served rows, #2261's close and #2282. It is the week's goal 1, which xian said yes to.
-- **xian's Amber Terminal steps (A, C, D, F0) may start Fri 11-20** at the earliest; nothing has started as of 11-19 21:33 (Exec 01M7P7NMPD). Until then: no paid runs, no signed-in beta reads, no seat browser, no seat-github-1. When Exec mails "Step A started", nobody runs `scripts/sync-pm-local.sh` until "done" or "stopped".
+- **Step A DONE 11-20** (Exec 01M7X608BS, `11:12`): Lead's key stored (106 chars, sha256 b5d48364, mode 0600; reads a, b, c all refused). Sync hold lifted. Paid runs wait on Lead's restart and `check-env` line to Exec. Next in xian's sitting: Step C (Web's sign-in permissions); D and F0 not started.
 - **ADR-084** steps file: `docs/internal/operations/adr-084-one-time-steps.md`. Step B is done. Organisation limit $250; seat bounds $150 and $40. Nothing is routed to xian's screen.
 - **Beta serves `f34fe7bef5` (built 11-19 08:17; PPM /health 09:33: disconnect line, the grant-plus-token unknown leg, 2407).** Before it `3b6676d352` since 11-18 11:36 (CXO's GitHub card wording, 0b1c352c0b). Before it: `58b19c7f3a` from 08:51 (2405, 2403), and `d678b0af26` from 11-17 11:31 (2401, 2402). None of these has been read signed in. Still serving at 11-19 21:33.
 - **Waiting, each with its blocker:**
