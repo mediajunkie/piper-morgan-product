@@ -413,7 +413,9 @@ def disconnect(account: str, connector: str, send: Transport = http_transport) -
         outcome = body.get("outcome") if isinstance(body, dict) else None
         if outcome not in _DISCONNECT_OUTCOMES:
             raise Refused("the disconnect reply could not be read")
-        before = f"disconnected (outcome {outcome})"
+        # HOST 01M7XAG08P: revoke_failed must not read as complete success.
+        tail = "; a grant may remain listed at Google" if outcome == "revoke_failed" else ""
+        before = f"disconnected (outcome {outcome}{tail})"
 
     check_holds_nothing_real(account, cookies, send)
     return f"{account}: {connector} {before}; the holds-nothing checks now pass"

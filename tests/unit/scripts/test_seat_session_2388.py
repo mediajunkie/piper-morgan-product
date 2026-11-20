@@ -948,3 +948,12 @@ def test_main_disconnect_prints_one_line_and_places_nothing(ss, shared, monkeypa
     assert code == 0
     assert out.strip().endswith("the holds-nothing checks now pass")
     assert placed == []
+
+
+def test_revoke_failed_says_a_grant_may_remain(ss, shared):
+    reply = ss.Reply(200, json.dumps({"success": True, "outcome": "revoke_failed"}).encode())
+    line = ss.disconnect(ACCOUNT, "calendar", CalendarHost(ss, disconnect_reply=reply))
+    assert line == (
+        f"{ACCOUNT}: calendar disconnected (outcome revoke_failed; a grant may remain listed "
+        "at Google); the holds-nothing checks now pass"
+    )
