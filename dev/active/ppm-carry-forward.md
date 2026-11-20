@@ -816,7 +816,7 @@ Brake FIRED (second slip = #1965 admission, found and ledgered 10-09). Memo to E
   - Standing word: a promote-gate edit that only makes it stricter goes ahead on Arch's written approval, and xian is informed.
   - Spend asks inside the caps are short; the caps are unchanged.
 
-## Now (rewritten at the 11-18 21:33 STOP, written 21:35; carry into Thu 11-19)
+## Superseded Now block (11-18 21:33 STOP, with 11-19 updates; replaced 11-19 21:35)
 
 - **Invite hold, PDR-008.** Re-verified 11-18 21:33 with `gh issue view`: #2261, #2282 and #2342 are OPEN. The lift-readiness memo to Exec waits on #2342's served rows, #2261's close and #2282. It is the week's goal 1, which xian said yes to.
 - **xian's Amber Terminal steps (A, C, D, F0) wait until Fri 11-20** at the earliest (Exec 01M7P7NMPD). Until then: no paid runs, no signed-in beta reads, no seat browser, no seat-github-1. When Exec mails "Step A started", nobody runs `scripts/sync-pm-local.sh` until "done" or "stopped".
@@ -836,6 +836,42 @@ Brake FIRED (second slip = #1965 admission, found and ledgered 10-09). Memo to E
   - 2399 (H), and the served reads of 2375, 2374 and 2376: waiting on 2388, 2400 and 2381.
 - **Self-knowledge:** xian approved the nine rules (#2354) and the seven procedures list (#2358) on 11-18. Arch ruled 12:04 that 2354 needs no rule-7 run if the layer goes only in the floor's reply prompt, so it can land before Friday with no spend; Lead builds it in a fresh session. 2358 builds in PPM's 11-13 order. The practice scope was ruled deliberate on 11-18 ("yes, no changes needed now"), and practice.md is approved.
 - **Production 329** (11-19 09:33: 2407 closed 07:43, served on f34fe7bef5; map v173). Before: **330** (`gh` 11-18 21:35 = Total), map **v172**, 0 unmilestoned, 0 Production closes on 11-18. Placed 11-18: 2405 (D, beside 2386), 2406 (E, beside 2354), 2407 (H, beside 2399; Arch's degrade_nudge GitHub default, not urgent).
+- **OWED rows:**
+  - 2364-known-limit: trigger is 2388's first real run.
+  - 2364-untested-provider-row: trigger is the 2390 route.
+  - 2364-selfhost-wording: trigger is the ethics flip being served.
+  - tier1-approval-batch (b-wont-do, d-known-limits): trigger is xian's quoted yes, then Docs sets `approved`.
+  - rule7-key-ask, path-b-quote, notion-offer-ask: unchanged.
+  - 2358-procedure-texts: discharged 11-18.
+- **Parked, one trigger: linked billing.** No issue until xian decides Piper gets a Claude Platform organisation of its own (CIO 01M7QR37EN, PPM 01M7QRA3EC). If yes, file it in Production for hosted Piper only.
+- **Genuine xian decisions:** E5 naming for #2380; #2344; the possible "Safe Storage" keychain item.
+- **Rules carried:**
+  - The clock rule is live (752547e88e): no estimated minute in logs, carry-forward, briefing, decisions.log or v4 mail. Stamp with `date` or `scripts/log-entry.sh`; a quoted time goes in backticks.
+  - Push the branch you have checked out. Mail CIO the `gates already passed` line the first time a push of mine takes that path (not yet seen).
+  - The staged-credential scan has no skip, and its baseline is empty.
+  - No compose up or down on Amber; `PIPER_CREDENTIAL_STORE=db`; a classifier refusal is final.
+  - A promote-gate edit that only makes the gate stricter goes ahead on Arch's written approval, and xian is informed. Spend asks inside the caps are short.
+
+## Now (rewritten at the 11-19 21:33 STOP, written 21:35; carry into Fri 11-20)
+
+- **Invite hold, PDR-008.** Re-verified 11-19 21:33 with `gh issue view`: #2261, #2282 and #2342 are OPEN. The lift-readiness memo to Exec waits on #2342's served rows, #2261's close and #2282. It is the week's goal 1, which xian said yes to.
+- **xian's Amber Terminal steps (A, C, D, F0) may start Fri 11-20** at the earliest; nothing has started as of 11-19 21:33 (Exec 01M7P7NMPD). Until then: no paid runs, no signed-in beta reads, no seat browser, no seat-github-1. When Exec mails "Step A started", nobody runs `scripts/sync-pm-local.sh` until "done" or "stopped".
+- **ADR-084** steps file: `docs/internal/operations/adr-084-one-time-steps.md`. Step B is done. Organisation limit $250; seat bounds $150 and $40. Nothing is routed to xian's screen.
+- **Beta serves `f34fe7bef5` (built 11-19 08:17; PPM /health 09:33: disconnect line, the grant-plus-token unknown leg, 2407).** Before it `3b6676d352` since 11-18 11:36 (CXO's GitHub card wording, 0b1c352c0b). Before it: `58b19c7f3a` from 08:51 (2405, 2403), and `d678b0af26` from 11-17 11:31 (2401, 2402). None of these has been read signed in. Still serving at 11-19 21:33.
+- **Waiting, each with its blocker:**
+  - Step D: the signed-in reads of 2379, 2401 and 2402, and 2400 row 1 (the seat browser), then the `.mcp.json` switch.
+  - Step A:
+    - 2383 row 3;
+    - 2404's real run, after HOST, Arch and CIO read it;
+    - 2405's real-key guide check, which is 2351's acceptance line;
+    - 2406, the PIPER.md overlap, a rule-7 paid run;
+    - the H1 cache measurement for 2354.
+  - Step F: 2389 rows 3 to 5, with CIO's ACCOUNTS row. HOST's exception diffs and Step C: 2388's first run.
+  - 2386's guide row: Docs, with 2404 as its driver. #2363 row 3: a promotion from a merge head. 2382 row 4: 2384.
+  - 2403 row 4 is a person's check (a clean-shell server start and alembic). The other three rows conform (Arch 08:21).
+  - 2399 (H), and the served reads of 2375, 2374 and 2376: waiting on 2388, 2400 and 2381.
+- **Self-knowledge:** xian approved the nine rules (#2354) and the seven procedures list (#2358) on 11-18. Arch ruled 12:04 that 2354 needs no rule-7 run if the layer goes only in the floor's reply prompt, so it can land before Friday with no spend; Lead builds it in a fresh session. 2358 builds in PPM's 11-13 order. The practice scope was ruled deliberate on 11-18 ("yes, no changes needed now"), and practice.md is approved.
+- **Production 329** (`gh` 11-19 21:33 = Total; no closes after 07:43, 0 unmilestoned; 11-19 09:33: 2407 closed 07:43, served on f34fe7bef5; map v173). Before: **330** (`gh` 11-18 21:35 = Total), map **v172**, 0 unmilestoned, 0 Production closes on 11-18. Placed 11-18: 2405 (D, beside 2386), 2406 (E, beside 2354), 2407 (H, beside 2399; Arch's degrade_nudge GitHub default, not urgent).
 - **OWED rows:**
   - 2364-known-limit: trigger is 2388's first real run.
   - 2364-untested-provider-row: trigger is the 2390 route.
