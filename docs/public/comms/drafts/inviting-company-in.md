@@ -8,35 +8,33 @@ caption: ''
 
 *September 19 – October 7, 2026*
 
-So far, I've done almost all the testing for Piper Morgan. We started the alpha last year 
+So far, I've done almost all the testing for Piper Morgan. We started the alpha last year but to participate, folks had to clone my project repo and run the software on their local machine. Earlier this year I decided we need to offer a hosted version and we set that up and reinvited the alpha testers in July.
 
-1. **Before you let someone in, you find out what "in" means.** The build, the hosting and the sign-up path were all older or more broken than anyone knew.
-2. **The first stranger kept being you.** What mattered surfaced through your own use, or through an agent's test account.
-3. **The door is a decision, not a deploy.** Holding, lifting and shipping with known issues were product judgments, not green checks.
+As we approached beta, a reader of this series raised their hand in comments and asked to join the alpha. I knew we were getting close to beta but not there yet and I was inclined to hold off, and wrote to my head of sapient trust agent (HOST) "I want to sort out the underlying issues before sending out the invitation. Too much unfinished business is piling up, chasing newer things." 
 
-## Beats, in order (facts verified, source in brackets)
+# The stale hosted alpha
 
-**1. Sep 19: hold the door.**
-- A search of your Gmail shows hosted-alpha invites going out since July, on a stale template. Lead can't confirm which version alpha runs.
-- You hold a new outside tester's invite: "I want to sort out the underlying issues before sending out the invitation. Too much unfinished business is piling up, chasing newer things." [HOST 09-19 l.469-471]
-- That evening Lead reads the server: alpha is running a July 16 build.
+That evening my lead developer agent (Lead) checked the hosted server and reported it still running a July 16 build. The next day we pushed a fresh build and I started testing it myself but asking anyone new to try it.
 
-**2. Sep 20: you are the first user.**
-- A new build goes out.
-- Your first real session on alpha, at 12:38 PM: you ask Piper to change yesterday's standup, and it replies "I've updated your standup:" over the unchanged draft. [issue 1836]
-- HOST lifts the hold only after Lead walks the whole sign-up path with a real key.
+Piper was still struggling with reporting accurately on its own behavior. I asked Piper to make changes to a standup report it had generated for me, and they replied "I've updated your standup:" and then repeated the same draft, unchanged. Disappointing!
 
-**3. Sep 21-22: the invite goes out, and alpha moves.**
-- The invite goes out with a dead code. A corrected one follows that evening.
-- You approve the move to Fly, and it happens Sep 22. You, asked about the old data: "There is nothing irreplaceable for me on Fly, only test data so far." [decisions.log l.1991]
+I decided that it would be OK to invite the newest volunteer in with a clear description of the current state of the software and its known problems.
 
-**4. Sep 24: an agent signs up like a newcomer.**
-- Web redeems an invite the way a newcomer would. Setup fails, telling a hosted user to run Docker. "Both known entry paths lead to the identical dead end." [Web 09-24 l.15-16]
-- Fixed the same day.
+Then we sent out an invitation with a dead code. We realized the mistake and sent a fresh one the following evening.
 
-**5. Sep 25: what can a user do today? (optional)**
-- Your question for the Ship: "what can a user or alpha tester do today that they couldn't on September 18" [omnibus 09-25 l.65].
-- Four agents answered plainly: "no product change this window" [omnibus 09-25 l.250].
+# Consolidating on Fly
+
+For a while I had been hosting the [Piper Morgan website](pipermorgan.ai) using Fly.io, but when we started the hosted alpha we ran it on a droplet from Digital Ocean. I asked if we could move the alpha to Fly to simplify both the processes and my billing. 
+
+We then had the web design agent (Web) sign up like a newcomer, redeeming a freshly minted invitation code. The process failed with an inappropriate error message telling the user to run Docker, something that only makes sense for self-hosted. Setup faild and Web reported that "both known entry paths lead to the identical dead end."
+
+Around this time I started asking each week what a user (or alpha tester) could do this week that they could not the week before, as way of gauging progress and whether the team was working on the right things. That week, ending September 25, the report was "no product change this window."
+
+# Sorting out the details
+
+This end-to-end review of the new user signup process revealed a few things I needed to rule on.
+
+* Because the product runs on a "bring your own key" model" and does not resell tokens (a dying business anyhow)
 
 **6. Oct 5-7: the door rules, then the button.**
 - Oct 5: bring-your-own-key ruled. Piper covers no one's LLM cost, "nominally a $0 budget stack" [decisions.log l.2373]. Beta starts when the MVP milestone closes.
