@@ -520,12 +520,14 @@ def cmd_stats(a):
     return 0
 
 
-def main():
+def build_parser():
     p = argparse.ArgumentParser(description=__doc__.split("\n")[0])
     sub = p.add_subparsers(dest="cmd", required=True)
     s = sub.add_parser("send")
-    s.add_argument("--to", nargs="+", required=True)
-    s.add_argument("--cc", nargs="*")
+    # extend, not store: `--cc lead --cc host` means both. Before 2026-11-20 the second --cc
+    # silently replaced the first and a recipient was dropped (HOST's Step A reply).
+    s.add_argument("--to", nargs="+", required=True, action="extend")
+    s.add_argument("--cc", nargs="*", action="extend")
     s.add_argument("--type", choices=TYPES, required=True)
     s.add_argument("--subject", required=True)
     s.add_argument("--due")
@@ -549,7 +551,11 @@ def main():
     c.add_argument("--canary", action="store_true")
     c.add_argument("--as", dest="as_role")
     sub.add_parser("stats")
-    a = p.parse_args()
+    return p
+
+
+def main():
+    a = build_parser().parse_args()
     try:
         return {
             "send": cmd_send,
