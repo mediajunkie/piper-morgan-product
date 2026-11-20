@@ -121,7 +121,7 @@ def test_ceiling_counts_text_at_three_chars_a_token_and_all_of_max_tokens():
 def test_a_dated_model_id_takes_its_family_price_and_an_unknown_model_is_refused():
     assert rb.ceiling_usd([_req(model="claude-haiku-4-5-20251001")]) == rb.ceiling_usd([_req()])
     with pytest.raises(rb.CapRefused, match="no batch price recorded"):
-        rb.ceiling_usd([_req(model="claude-sonnet-4-6")])
+        rb.ceiling_usd([_req(model="claude-opus-9-9")])
     # A longer family name must not borrow a shorter one's price.
     with pytest.raises(rb.CapRefused):
         rb.ceiling_usd([_req(model="claude-haiku-4-50")])
@@ -327,3 +327,79 @@ def test_parse_arg_counts_each_value_and_the_replies_without_it(tmp_path):
         '| add milk to my list | `create_todo` ×3 | 0.90–0.90 | "my list" ×2, (none) ×1 '
         '| "milk" ×3 |'
     ) in report
+
+
+# --- the classifier's request (#2406, Arch 2026-11-20) --------------------------------
+
+
+def _render_classifier(tmp_path, base, phrases=("what should I do about this bug",)):
+    out = tmp_path / f"c-{base}.jsonl"
+    rb._render_classifier(
+        SimpleNamespace(
+            label=f"c-{base}",
+            samples=2,
+            base=base,
+            phrase=list(phrases),
+            phrase_file=None,
+            out=str(out),
+        )
+    )
+    return [json.loads(line) for line in out.read_text().splitlines()]
+
+
+@pytest.mark.parametrize("base", ["piper_md", "neutral"])
+def test_render_classifier_builds_the_request_the_classifier_sends(tmp_path, base, capsys):
+    from services.intent_service.classifier import _CLASSIFICATION_PROMPT_STATIC_HEAD
+    from services.llm.config import MODEL_CONFIGS
+
+    reqs = _render_classifier(tmp_path, base)
+    assert [r["custom_id"] for r in reqs] == [f"c-{base}-0-1", f"c-{base}-0-2"]
+    params = reqs[0]["params"]
+    task = MODEL_CONFIGS["intent_classification"]
+    assert params["max_tokens"] == task["max_tokens"]
+    assert params["system"] == rb._classifier_base(base)
+    head, tail = params["messages"][0]["content"]
+    assert head["text"] == _CLASSIFICATION_PROMPT_STATIC_HEAD
+    assert head["cache_control"] == {"type": "ephemeral"}
+    assert "what should I do about this bug" in tail["text"] and "cache_control" not in tail
+    assert "system prompt sha256" in capsys.readouterr().out
+
+
+def test_the_two_bases_are_different_system_prompts():
+    assert rb._classifier_base("piper_md") != rb._classifier_base("neutral")
+    assert "SYSTEM IDENTITY" in rb._classifier_base("piper_md")
+    assert "USER CONTEXT" in rb._classifier_base("neutral")
+
+
+def test_parse_classifier_counts_the_routing_outcome_not_the_raw_action(tmp_path):
+    reqs = tmp_path / "reqs.jsonl"
+    rows = [
+        ("x-0-1", "show my todos", {"category": "QUERY", "action": "list_todos_query"}),
+        ("x-0-2", "show my todos", {"category": "QUERY", "action": "show_the_todo_list_please"}),
+        ("x-1-1", "hello", {"category": "CONVERSATION", "action": "greet_user_warmly"}),
+        ("x-1-2", "hello", None),
+    ]
+    reqs.write_text(
+        "".join(json.dumps({"custom_id": c, "phrase": p, "params": {}}) + "\n" for c, p, _ in rows)
+    )
+    results = tmp_path / "results.jsonl"
+    results.write_text(
+        "".join(
+            json.dumps(
+                {
+                    "custom_id": c,
+                    "type": "succeeded",
+                    "model": "claude-sonnet-4-6",
+                    "text": "here you go: " + json.dumps(reply) if reply else "no json here",
+                }
+            )
+            + "\n"
+            for c, _, reply in rows
+        )
+    )
+    out = tmp_path / "report.md"
+    rb._parse_classifier(SimpleNamespace(requests=str(reqs), results=str(results), out=str(out)))
+    report = out.read_text()
+    assert "| show my todos | `query/list_todos_query` ×1, `query/unregistered` ×1 |" in report
+    assert "| hello | `conversation/unregistered` ×1, `UNPARSED` ×1 |" in report
+    assert "1 ERROR or UNPARSED" in report
