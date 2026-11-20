@@ -20,6 +20,27 @@ import yaml
 logger = structlog.get_logger()
 
 
+
+BEHAVIOR_GUIDELINES_HEADING = "## BEHAVIOR GUIDELINES"
+
+#: The behavior lines every formatted base carries: PIPER.md's, a stored
+#: personalization record's, the neutral default's and the fallback's. One copy.
+#:
+#: #2406 (CXO's words 2026-11-20, Arch's scope): the conduct layer
+#: (``services/intent_service/conduct_layer.py``) states the evidence and source
+#: rules once, in the reply prompt, so the lines that repeated them are gone
+#: ("Provide evidence-based responses", "Reference specific projects, priorities,
+#: and context"), and the name line no longer asks for projects an account may
+#: not have. This base is also the intent classifier's system prompt, so a change
+#: here is a routing change (rule 7).
+BEHAVIOR_GUIDELINES_LINES = (
+    "- Be direct and efficiency-focused",
+    "- Maintain professional but personable tone",
+    "- Suggest next steps when appropriate",
+    "- Use the person's name if you know it",
+)
+
+
 class PiperConfigLoader:
     """
     Loads and manages PIPER.md configuration for enhanced conversation context
@@ -241,24 +262,9 @@ class PiperConfigLoader:
             prompt_parts.extend([f"## {self._clean_section_header(section_name)}", content, ""])
 
         # Behavior guidelines are always appended, regardless of what the
-        # config contains. PIPER.md's "Default Personality Traits" section
-        # overlaps in spirit (direct/efficient, evidence-based, adaptive)
-        # but is not a strict superset of this block — it doesn't cover
-        # "use the user's name (if known)" or "suggest next steps" — so
-        # dropping this in favor of that section would lose guidance,
-        # which #1678 explicitly rules out.
-        prompt_parts.extend(
-            [
-                "## BEHAVIOR GUIDELINES",
-                "- Be direct and efficiency-focused",
-                "- Provide evidence-based responses",
-                "- Reference specific projects, priorities, and context",
-                "- Maintain professional but personable tone",
-                "- Suggest next steps when appropriate",
-                "- Use the user's name (if known) and refer to specific projects",
-                "",
-            ]
-        )
+        # config contains (#1678). The lines live in one constant, which the
+        # fallback prompt reads too (#2406).
+        prompt_parts.extend([BEHAVIOR_GUIDELINES_HEADING, *BEHAVIOR_GUIDELINES_LINES, ""])
 
         return "\n".join(prompt_parts)
 
@@ -300,11 +306,7 @@ Piper Morgan (primary), OneJob, Content Creation.
 ## STANDING PRIORITIES
 Enhanced conversational context, MCP deployment, pattern validation.
 
-## BEHAVIOR GUIDELINES
-- Be direct and efficiency-focused
-- Provide evidence-based responses
-- Reference specific projects and priorities
-- Maintain professional but personable tone"""
+""" + "\n".join([BEHAVIOR_GUIDELINES_HEADING, *BEHAVIOR_GUIDELINES_LINES])
 
     def is_config_modified(self) -> bool:
         """
