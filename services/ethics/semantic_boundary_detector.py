@@ -30,7 +30,7 @@ import logging
 from collections import OrderedDict
 from typing import Any, Dict, Literal, Optional
 
-from pydantic import BaseModel, ConfigDict, Field, ValidationError
+from pydantic import BaseModel, ConfigDict, Field, ValidationError, model_validator
 
 from services.utils.utterance_log import utterance_preview
 
@@ -71,6 +71,12 @@ CategoryLiteral = Literal[
 ]
 
 
+#: The longest ``reasoning`` kept. A longer one is cut, never refused (#2408).
+REASONING_MAX_CHARS = 500
+#: What a cut ``reasoning`` ends in, so a reader can tell it was cut.
+REASONING_TRUNCATED_MARK = " [truncated]"
+
+
 class SemanticDetectorOutput(BaseModel):
     """Structured output from the semantic boundary detector LLM call.
 
@@ -85,8 +91,28 @@ class SemanticDetectorOutput(BaseModel):
     violation_detected: bool
     category: CategoryLiteral
     confidence: float = Field(ge=0.0, le=1.0)
-    reasoning: str = Field(max_length=500)
+    reasoning: str = Field(max_length=REASONING_MAX_CHARS)
     redirect_hint: Optional[str] = None
+
+    @model_validator(mode="before")
+    @classmethod
+    def _keep_a_reading_whose_reasoning_runs_long(cls, data: Any) -> Any:
+        """#2408 (Arch 2026-11-20): an over-long ``reasoning`` is cut to the limit and
+        kept, ending in ``REASONING_TRUNCATED_MARK``. It is free text the decision never
+        reads (the enforcer only copies it into the explanation and the audit data), so
+        it must not void a reading. ``violation_detected``, ``category`` and
+        ``confidence`` are validated as strictly as before."""
+        if isinstance(data, dict):
+            reasoning = data.get("reasoning")
+            if isinstance(reasoning, str) and len(reasoning) > REASONING_MAX_CHARS:
+                keep = REASONING_MAX_CHARS - len(REASONING_TRUNCATED_MARK)
+                logger.info(
+                    "semantic_detector_reasoning_truncated: %d characters cut to %d",
+                    len(reasoning),
+                    REASONING_MAX_CHARS,
+                )
+                data = {**data, "reasoning": reasoning[:keep] + REASONING_TRUNCATED_MARK}
+        return data
 
 
 # ---------------------------------------------------------------------------
@@ -608,8 +634,14 @@ class SemanticBoundaryDetector:
         try:
             return SemanticDetectorOutput.model_validate(payload)
         except ValidationError as exc:
+            # #2408: the reason is in the message itself, so any log format shows it.
+            # Field names and error types only: never the payload's values.
             logger.warning(
-                "semantic_detector_schema_validation_failure",
+                "semantic_detector_schema_validation_failure: %s",
+                "; ".join(
+                    f"{'.'.join(str(part) for part in err['loc']) or '(root)'}: {err['type']}"
+                    for err in exc.errors()
+                ),
                 extra={"error": str(exc), "payload": payload},
             )
             return REFUSAL_FALLBACK

@@ -118,16 +118,90 @@ def test_schema_rejects_out_of_range_confidence():
         )
 
 
-def test_schema_caps_reasoning_length():
-    too_long = "x" * 501
-    with pytest.raises(ValidationError):
-        SemanticDetectorOutput(
-            violation_detected=False,
-            category="none",
-            confidence=0.0,
-            reasoning=too_long,
-            redirect_hint=None,
-        )
+def test_an_over_long_reasoning_is_cut_and_kept_not_refused():
+    """#2408 (Arch 2026-11-20): free text the decision never reads must not void a
+    reading. Before this, a 511-character reasoning threw away a 0.91 decline."""
+    from services.ethics.semantic_boundary_detector import (
+        REASONING_MAX_CHARS,
+        REASONING_TRUNCATED_MARK,
+    )
+
+    out = SemanticDetectorOutput(
+        violation_detected=True,
+        category="data_privacy",
+        confidence=0.91,
+        reasoning="x" * 511,
+        redirect_hint="talk to HR",
+    )
+    assert len(out.reasoning) == REASONING_MAX_CHARS
+    assert out.reasoning.endswith(REASONING_TRUNCATED_MARK)
+    assert (out.violation_detected, out.category, out.confidence) == (True, "data_privacy", 0.91)
+
+
+def test_a_reasoning_at_the_limit_is_left_alone():
+    out = SemanticDetectorOutput(
+        violation_detected=False, category="none", confidence=0.0, reasoning="x" * 500
+    )
+    assert out.reasoning == "x" * 500
+
+
+def test_a_511_character_reply_parses_to_a_reading_not_the_fallback():
+    """The case from the 2026-11-20 runs: the reply is a reading, with its decision
+    fields as sent."""
+    from services.ethics.semantic_boundary_detector import (
+        SemanticBoundaryDetector,
+        is_unavailable,
+    )
+
+    raw = json.dumps(
+        {
+            "violation_detected": True,
+            "category": "data_privacy",
+            "confidence": 0.91,
+            "reasoning": "r" * 511,
+            "redirect_hint": "a formal channel",
+        }
+    )
+    out = SemanticBoundaryDetector._parse_response(raw)
+    assert not is_unavailable(out)
+    assert (out.violation_detected, out.category, out.confidence) == (True, "data_privacy", 0.91)
+    assert out.redirect_hint == "a formal channel"
+
+
+@pytest.mark.parametrize(
+    "bad",
+    [
+        {"category": "not_a_category"},
+        {"confidence": 1.5},
+        {"violation_detected": "perhaps"},
+        {"surprise": "an extra field"},
+    ],
+)
+def test_a_long_reasoning_does_not_excuse_a_bad_decision_field(bad, caplog):
+    """The decision fields stay strict: with a bad one, the reading is unavailable
+    whether or not the reasoning was cut, and the log line names the field."""
+    from services.ethics.semantic_boundary_detector import (
+        SemanticBoundaryDetector,
+        is_unavailable,
+    )
+
+    payload = {
+        "violation_detected": True,
+        "category": "data_privacy",
+        "confidence": 0.91,
+        "reasoning": "r" * 511,
+        "redirect_hint": None,
+        **bad,
+    }
+    with caplog.at_level("WARNING"):
+        out = SemanticBoundaryDetector._parse_response(json.dumps(payload))
+    assert is_unavailable(out)
+    field = next(iter(bad))
+    assert any(
+        "semantic_detector_schema_validation_failure" in r.getMessage() and field in r.getMessage()
+        for r in caplog.records
+    )
+    assert all("r" * 50 not in r.getMessage() for r in caplog.records)
 
 
 # ---------------------------------------------------------------------------
