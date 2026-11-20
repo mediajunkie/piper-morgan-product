@@ -132,3 +132,41 @@ def test_the_reply_prompt_states_each_rule_once(name, denial):
         assert line not in prompt, line
     for marker in RULE_MARKERS:
         assert marker not in base.lower(), marker
+
+
+# ── row L: the live inversion router's request never takes the base (Arch 11-20) ──
+
+
+def _router_request(phrase: str) -> str:
+    from services.intent_service.inversion_router import (
+        _SYSTEM_PROMPT,
+        build_routing_prompt,
+        derive_routing_grammar,
+    )
+
+    return _SYSTEM_PROMPT + "\x00" + build_routing_prompt(phrase, derive_routing_grammar(), None)
+
+
+def test_the_router_request_is_the_same_whatever_the_base_says(monkeypatch):
+    """No run for row L: its request is built from a constant system prompt and the
+    catalog. Changing every base to something else leaves it byte-identical. (The whole
+    corpus render from main's tree and this one has the same sha256; issue 2406.)"""
+    import hashlib
+
+    phrase = "what should I do about this bug"
+    before = hashlib.sha256(_router_request(phrase).encode()).hexdigest()
+    monkeypatch.setattr(PiperConfigLoader, "get_system_prompt", lambda self: "A DIFFERENT BASE")
+    monkeypatch.setattr(
+        PiperConfigLoader, "_format_system_prompt", lambda self, config: "A DIFFERENT BASE"
+    )
+    monkeypatch.setattr(
+        PiperConfigLoader, "_get_default_system_prompt", lambda self: "A DIFFERENT BASE"
+    )
+    after = hashlib.sha256(_router_request(phrase).encode()).hexdigest()
+    assert before == after
+
+
+def test_the_router_module_reads_no_base():
+    source = (REPO / "services" / "intent_service" / "inversion_router.py").read_text()
+    for name in ["piper_config_loader", "personalization_service", "resolve_system_prompt"]:
+        assert name not in source, name

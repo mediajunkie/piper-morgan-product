@@ -20,7 +20,6 @@ import yaml
 logger = structlog.get_logger()
 
 
-
 BEHAVIOR_GUIDELINES_HEADING = "## BEHAVIOR GUIDELINES"
 
 #: The behavior lines every formatted base carries: PIPER.md's, a stored
