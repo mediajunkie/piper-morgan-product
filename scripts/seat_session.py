@@ -90,8 +90,11 @@ ACCOUNTS: Dict[str, Account] = {
         # by the record (unverified on the console). The bound is that workspace's $40
         # monthly limit, xian's setting; it is a seat workspace for keys stored on seat
         # accounts (ADR-084 D2; HOST 01M7JT4WFC, Arch 01M7JV4RQX). This row only stops the
-        # helper refusing the account. A seat's chat turns on the key wait on xian's two
-        # answers through Exec. If the console shows another workspace, this comes out.
+        # helper refusing the account. xian answered both questions on 11-17 (decisions.log
+        # 13:36 to 14:04): nothing of his uses the workspace, and seats may spend through the
+        # key up to its $40 limit. So a seat may take chat turns on it within D2's terms,
+        # logging its planned turns before a sitting (Exec 01M7XNQ0MJ). If the console shows
+        # another workspace, this comes out.
         provider_keys=frozenset({"anthropic"}),
     ),
     # The second seat account (issue 2389; name agreed by HOST and Lead, 11-16). It holds
