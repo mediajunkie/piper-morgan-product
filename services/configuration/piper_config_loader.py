@@ -22,17 +22,34 @@ logger = structlog.get_logger()
 
 BEHAVIOR_GUIDELINES_HEADING = "## BEHAVIOR GUIDELINES"
 
-#: The behavior lines every formatted base carries: PIPER.md's, a stored
-#: personalization record's, the neutral default's and the fallback's. One copy.
-#:
-#: #2406 (CXO's words 2026-11-20, Arch's scope): the conduct layer
-#: (``services/intent_service/conduct_layer.py``) states the evidence and source
-#: rules once, in the reply prompt, so the lines that repeated them are gone
-#: ("Provide evidence-based responses", "Reference specific projects, priorities,
-#: and context"), and the name line no longer asks for projects an account may
-#: not have. This base is also the intent classifier's system prompt, so a change
-#: here is a routing change (rule 7).
-BEHAVIOR_GUIDELINES_LINES = (
+#: #2406 (Arch 2026-11-20, mails 01M7XDBPT0 and 01M7XDJEAB). A formatted base is the
+#: system prompt of two different calls: the intent classifier's and the reply's.
+#: The classifier's routing moves when its system prompt changes at all (17 of 21
+#: re-screened rows moved on the 2026-11-20 screen), so its lines are frozen here,
+#: byte for byte, and pinned by sha256 in the tests. Changing them is a routing
+#: change under rule 7 (issue 2410).
+CLASSIFIER_BEHAVIOR_GUIDELINES_LINES: Tuple[str, ...] = (
+    "- Be direct and efficiency-focused",
+    "- Provide evidence-based responses",
+    "- Reference specific projects, priorities, and context",
+    "- Maintain professional but personable tone",
+    "- Suggest next steps when appropriate",
+    "- Use the user's name (if known) and refer to specific projects",
+)
+
+#: The fallback prompt's lines on the classifier's side, frozen the same way.
+CLASSIFIER_FALLBACK_BEHAVIOR_GUIDELINES_LINES: Tuple[str, ...] = (
+    "- Be direct and efficiency-focused",
+    "- Provide evidence-based responses",
+    "- Reference specific projects and priorities",
+    "- Maintain professional but personable tone",
+)
+
+#: The reply's lines (CXO's words, 2026-11-20). The conduct layer
+#: (``services/intent_service/conduct_layer.py``) states the evidence and source rules
+#: once in the reply prompt, so the lines that repeated them are gone, and the name
+#: line no longer asks for projects an account may not have.
+REPLY_BEHAVIOR_GUIDELINES_LINES: Tuple[str, ...] = (
     "- Be direct and efficiency-focused",
     "- Maintain professional but personable tone",
     "- Suggest next steps when appropriate",
@@ -128,16 +145,20 @@ class PiperConfigLoader:
             logger.error("Error loading PIPER.md configuration", error=str(e))
             return self._get_default_config()
 
-    def get_system_prompt(self) -> str:
+    def get_system_prompt(self, *, for_reply: bool = False) -> str:
         """
         Convert PIPER.md configuration to system prompt format
+
+        ``for_reply`` (#2406) reaches only the fallback used when PIPER.md doesn't
+        load. PIPER.md's own base is one text for both calls and is unchanged in
+        #2406 (Arch 2026-11-20: no second copy of the file; its bullets wait on #2410).
 
         Returns:
             Formatted system prompt string
         """
         config = self.load_config()
         if not config:
-            return self._get_default_system_prompt()
+            return self._get_default_system_prompt(for_reply=for_reply)
 
         try:
             system_prompt = self._format_system_prompt(config)
@@ -145,7 +166,7 @@ class PiperConfigLoader:
             return system_prompt
         except Exception as e:
             logger.error("Error formatting system prompt", error=str(e))
-            return self._get_default_system_prompt()
+            return self._get_default_system_prompt(for_reply=for_reply)
 
     def _parse_piper_md(self) -> Optional[Dict[str, str]]:
         """
@@ -219,7 +240,11 @@ class PiperConfigLoader:
         cleaned = re.sub(r"^[^\w(]+", "", section_name).strip()
         return (cleaned or section_name).upper()
 
-    def _format_system_prompt(self, config: Dict[str, str]) -> str:
+    def _format_system_prompt(
+        self,
+        config: Dict[str, str],
+        behavior_lines: Tuple[str, ...] = CLASSIFIER_BEHAVIOR_GUIDELINES_LINES,
+    ) -> str:
         """
         Format configuration into system prompt
 
@@ -261,9 +286,13 @@ class PiperConfigLoader:
             prompt_parts.extend([f"## {self._clean_section_header(section_name)}", content, ""])
 
         # Behavior guidelines are always appended, regardless of what the
-        # config contains (#1678). The lines live in one constant, which the
-        # fallback prompt reads too (#2406).
-        prompt_parts.extend([BEHAVIOR_GUIDELINES_HEADING, *BEHAVIOR_GUIDELINES_LINES, ""])
+        # config contains. PIPER.md's "Default Personality Traits" section
+        # overlaps in spirit (direct/efficient, evidence-based, adaptive)
+        # but is not a strict superset of this block — it doesn't cover
+        # "use the user's name (if known)" or "suggest next steps" — so
+        # dropping this in favor of that section would lose guidance,
+        # which #1678 explicitly rules out.
+        prompt_parts.extend([BEHAVIOR_GUIDELINES_HEADING, *behavior_lines, ""])
 
         return "\n".join(prompt_parts)
 
@@ -283,7 +312,7 @@ class PiperConfigLoader:
             "Knowledge Sources": "Pattern index, architecture guides, session logs",
         }
 
-    def _get_default_system_prompt(self) -> str:
+    def _get_default_system_prompt(self, *, for_reply: bool = False) -> str:
         """
         Get default system prompt when configuration is not available
 
@@ -305,7 +334,16 @@ Piper Morgan (primary), OneJob, Content Creation.
 ## STANDING PRIORITIES
 Enhanced conversational context, MCP deployment, pattern validation.
 
-""" + "\n".join([BEHAVIOR_GUIDELINES_HEADING, *BEHAVIOR_GUIDELINES_LINES])
+""" + "\n".join(
+            [
+                BEHAVIOR_GUIDELINES_HEADING,
+                *(
+                    REPLY_BEHAVIOR_GUIDELINES_LINES
+                    if for_reply
+                    else CLASSIFIER_FALLBACK_BEHAVIOR_GUIDELINES_LINES
+                ),
+            ]
+        )
 
     def is_config_modified(self) -> bool:
         """

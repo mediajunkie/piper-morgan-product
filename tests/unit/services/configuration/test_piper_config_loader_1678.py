@@ -116,9 +116,11 @@ def test_render_pin_exact_prompt_shape():
         "\n"
         "## BEHAVIOR GUIDELINES\n"
         "- Be direct and efficiency-focused\n"
+        "- Provide evidence-based responses\n"
+        "- Reference specific projects, priorities, and context\n"
         "- Maintain professional but personable tone\n"
         "- Suggest next steps when appropriate\n"
-        "- Use the person's name if you know it\n"
+        "- Use the user's name (if known) and refer to specific projects\n"
     )
     assert prompt == expected
 
@@ -135,14 +137,14 @@ def test_render_pin_empty_config_still_carries_behavior_guidelines():
     assert "You are Piper Morgan" in prompt
 
 
-def test_neutral_default_context_render_is_pinned_byte_for_byte():
+def test_neutral_default_context_render_is_byte_identical_to_legacy_output():
     """`personalization_service.NEUTRAL_DEFAULT_CONTEXT` is keyed with the
     SAME two names ("User Context", "Standing Priorities") the pre-#1678
     hardcoded formatter special-cased — its comment says so explicitly
     ("SAME section names PiperConfigLoader._format_system_prompt() already
-    parses"). The render of this exact dict is pinned byte for byte, so
-    every seeded neutral-default persona's system prompt changes only on
-    purpose. #2406 changed the behavior block (CXO's words, 2026-11-20)."""
+    parses"). The generic renderer must keep producing byte-identical
+    output for this exact dict, or every seeded neutral-default persona's
+    system prompt silently changes shape."""
     from services.configuration.personalization_service import NEUTRAL_DEFAULT_CONTEXT
 
     loader = PiperConfigLoader(config_path="config/PIPER.md")
@@ -160,9 +162,11 @@ def test_neutral_default_context_render_is_pinned_byte_for_byte():
         "\n"
         "## BEHAVIOR GUIDELINES\n"
         "- Be direct and efficiency-focused\n"
+        "- Provide evidence-based responses\n"
+        "- Reference specific projects, priorities, and context\n"
         "- Maintain professional but personable tone\n"
         "- Suggest next steps when appropriate\n"
-        "- Use the person's name if you know it\n"
+        "- Use the user's name (if known) and refer to specific projects\n"
     )
     assert prompt == expected
 

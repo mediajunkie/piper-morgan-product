@@ -109,25 +109,37 @@ class PersonalizationService:
     """ADR-075 D4 principal-resolution + neutral-degradation for the
     system-prompt personalization path."""
 
-    async def resolve_system_prompt(self, user_id: Optional[str], session) -> str:
+    async def resolve_system_prompt(
+        self, user_id: Optional[str], session, *, for_reply: bool = False
+    ) -> str:
         """The system prompt for this principal — PM's file, the principal's
         own personalization record, or the seeded neutral default. Never
         raises; every failure path degrades to the existing file-based
         behavior (D3's no-regression guarantee doubles as the fail-closed
         default here, since the file behavior is what every caller already
         depended on before Component B existed).
+
+        ``for_reply`` (#2406, Arch 2026-11-20): the conversational floor passes True
+        and gets the reply's behavior lines on a stored or seeded base and on the
+        fallback. Every other caller (the classifier, through the standalone form)
+        gets the classifier's frozen lines, so routing can't move. PM's file is one
+        text for both.
         """
-        from services.configuration.piper_config_loader import piper_config_loader
+        from services.configuration.piper_config_loader import (
+            CLASSIFIER_BEHAVIOR_GUIDELINES_LINES,
+            REPLY_BEHAVIOR_GUIDELINES_LINES,
+            piper_config_loader,
+        )
 
         principal = _as_uuid_or_none(user_id)
         if principal is None:
             # No resolved principal (ambient/legacy/local-dev call) — D3.
-            return piper_config_loader.get_system_prompt()
+            return piper_config_loader.get_system_prompt(for_reply=for_reply)
 
         pm_owner_id = await _resolve_pm_owner_id_safe(session)
         if pm_owner_id is not None and pm_owner_id == principal:
             # PM's own request — D3 no-regression, serve the file directly.
-            return piper_config_loader.get_system_prompt()
+            return piper_config_loader.get_system_prompt(for_reply=for_reply)
 
         try:
             repo = PersonalizationContextRepository(session)
@@ -135,15 +147,21 @@ class PersonalizationService:
             if row is None:
                 # Shouldn't happen (principal is already a valid UUID at this
                 # point), but degrade gracefully rather than crash if it does.
-                return piper_config_loader.get_system_prompt()
-            return piper_config_loader._format_system_prompt(dict(row.context))
+                return piper_config_loader.get_system_prompt(for_reply=for_reply)
+            # #2406: the reply gets CXO's behavior lines; the classifier's stay frozen.
+            return piper_config_loader._format_system_prompt(
+                dict(row.context),
+                REPLY_BEHAVIOR_GUIDELINES_LINES
+                if for_reply
+                else CLASSIFIER_BEHAVIOR_GUIDELINES_LINES,
+            )
         except Exception as e:
             logger.warning(
                 "personalization_context_resolution_failed",
                 user_id=str(principal),
                 error=str(e),
             )
-            return piper_config_loader.get_system_prompt()
+            return piper_config_loader.get_system_prompt(for_reply=for_reply)
 
     async def is_seeded_default(self, user_id: Optional[str], session) -> bool:
         """True if this principal is currently running on the lazy-seeded
@@ -177,7 +195,7 @@ class PersonalizationService:
         from services.database.session_factory import AsyncSessionFactory
 
         async with AsyncSessionFactory.session_scope() as session:
-            return await self.resolve_system_prompt(user_id, session)
+            return await self.resolve_system_prompt(user_id, session, for_reply=False)
 
     async def maybe_consume_first_response_notice(self, user_id: Optional[str]) -> Optional[str]:
         """ADR-075 OQ-3 (CXO UX direction): if this principal is on the seeded
