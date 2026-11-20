@@ -2,7 +2,7 @@
 
 **For**: someone outside the team who wants Piper to run on their own machine, so their notes and projects never sit on a hosted server.
 **Time**: about 30 minutes.
-**Status**: DRAFT 2026-11-12. Steps 1 to 9 follow the tested list in `docs/internal/operations/canonical-ops-recipes.md` section 13. Items marked **(not yet run)** have not been checked from a clean clone. On 2026-11-16 Docs ran steps 1, 2, 3 (the three named services), 4 and 8 from a fresh clone with its own database and ports, and typed no key. On 2026-11-18 Lead's driver (`scripts/guide_keyed_steps_run.py`, issue 2404) ran steps 6, 7, 8 and 9 against a scratch database on a running local Postgres, with a stand-in model and a key seeded by the driver through the call step 5 makes. It checked HTTP replies and page text, with no browser clicks. Step 5 is not run by a seat, because it needs a person at a terminal. The chat check first failed on that path: Piper answered that it needed a key of your own (issue 2405). The fix is on main on 2026-11-18 (the first account on a local install gets the saved key as its own), and the driver's next stub run no longer hits that refusal. The stand-in model's reply still comes back as an error line, so the chat check can only be shown passing with a real key. A run with a real provider key waits on Step A, planned for Friday 2026-11-20. Docs will remove each marker as it is verified.
+**Status**: DRAFT 2026-11-12. Steps 1 to 9 follow the tested list in `docs/internal/operations/canonical-ops-recipes.md` section 13. Items marked **(not yet run)** have not been checked from a clean clone. On 2026-11-16 Docs ran steps 1, 2, 3 (the three named services), 4 and 8 from a fresh clone with its own database and ports, and typed no key. On 2026-11-18 Lead's driver (`scripts/guide_keyed_steps_run.py`, issue 2404) ran steps 6, 7, 8 and 9 against a scratch database on a running local Postgres, with a stand-in model and a key seeded by the driver through the call step 5 makes. It checked HTTP replies and page text, with no browser clicks. Step 5 is not run by a seat, because it needs a person at a terminal. The chat check first failed on that path: Piper answered that it needed a key of your own (issue 2405). The fix is on main on 2026-11-18 (the first account on a local install gets the saved key as its own), and the driver's next stub run no longer hits that refusal. On 2026-11-20 at 11:26 PT the same driver ran steps 6, 7, 8 and 9 and the chat check with a real provider key (tree `b30f7387c7`, issue 2404). A seat ran them against a scratch database on a running local Postgres, with the key seeded by the driver through the call step 5 makes. The chat check got a real reply with no error in one turn. Not covered: a browser, step 5 typed by a person, and a machine that has never run Piper. Docs will remove each remaining marker as it is verified.
 
 ## What you need
 
@@ -55,7 +55,7 @@
 
 ## Check it works
 
-Ask Piper a short question in the chat. **(not yet run with a real key: on 2026-11-18 the driver's stand-in run got past the "Piper runs on an LLM key of your own" refusal (issue 2405, fixed), but the stand-in model cannot give a real answer)** If it answers, the key and the install are good.
+Ask Piper a short question in the chat. **(checked 2026-11-20 by a seat with a real key through the chat's own call: a short reply came back with no error. Not checked in a browser)** If it answers, the key and the install are good.
 
 ## What your install offers
 
