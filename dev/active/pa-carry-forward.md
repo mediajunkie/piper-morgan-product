@@ -22,7 +22,7 @@
 - **Browser-launch guard (CIO 11-17):** a Bash hook refuses an unflagged Chrome/Chromium launch (heredoc text going to a file is exempt since `aafb9da58a`). **Step 1j**, `scripts/browser_keychain_check.py`, runs every fire. PA launches no browser outside the helper.
 - **Pre-push hook pass memory (CIO):** the first time a PA push prints `already passed on this content N min ago`, mail CIO that line. **Commit scan (#2392):** no skip variable; build test values from parts.
 - **CIO seat rule:** never `scripts/alpha-setup.sh`; never `docker compose up`/`down` on the shared stack.
-- **Tier 1 staging: dropped 11-20** (overtaken by ADR-084's beta seat route; PA to Exec `01M7WJCW8H…`; Arch asked to confirm nothing still needs it). **Q9** #2313; **Q8** invite hold; **R7 (#1282)** README needs a permitted push.
+- **Tier 1 staging: dropped 11-20** (overtaken by ADR-084's beta seat route; PA to Exec `01M7WJCW8H…`; Arch confirmed 05:35 `01M7WJQ70J…`; not the #2355 corpus "Tier 1"). **Q9** #2313; **Q8** invite hold; **R7 (#1282)** README needs a permitted push.
 - **mail4 gotchas:** `inbox --role pa`; ack is `ack <id> done --as pa`; a subject naming a day needs `--due none`; on `cannot lock ref`, loop the push until `origin/main..HEAD` is empty. zsh has no `timeout`.
 - **Sprint 2 started Fri 11-13.** v3 is the mail fallback until 11-23.
 

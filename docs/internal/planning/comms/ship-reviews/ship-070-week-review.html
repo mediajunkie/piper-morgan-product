@@ -1,0 +1,143 @@
+<title>Ship 070 Week Review</title>
+
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono&family=IBM+Plex+Sans:wght@400;600&family=Source+Serif+4:wght@600&display=swap">
+<style>
+/* Layout: one reading column, bottom line first, a glance table, then short scannable sections; tables scroll in their own box. Same system as the Ship 069 review. */
+:root{
+  --bg:#f6f7f9; --fg:#1d232b; --muted:#5b6673; --rule:#d9dee5; --accent:#2b5d8a; --warn:#9a5a00; --ok:#2f6b3f; --card:#ffffff;
+  --display:"Source Serif 4",Georgia,serif; --body:"IBM Plex Sans",system-ui,sans-serif; --mono:"IBM Plex Mono",ui-monospace,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#14181d;--fg:#e4e8ee;--muted:#9aa5b2;--rule:#2c333c;--accent:#7fb1dc;--warn:#e0a54a;--ok:#7cc48e;--card:#1b2027;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#14181d;--fg:#e4e8ee;--muted:#9aa5b2;--rule:#2c333c;--accent:#7fb1dc;--warn:#e0a54a;--ok:#7cc48e;--card:#1b2027;color-scheme:dark}
+body{background:var(--bg);color:var(--fg);font:15px/1.6 var(--body)}
+.wrap{max-width:720px;margin:0 auto;padding-inline:16px;padding-block:28px 48px}
+h1{font:600 1.9rem/1.2 var(--display);margin:0 0 4px;text-wrap:balance}
+h2{font:600 1.25rem/1.3 var(--display);margin:32px 0 8px;padding-top:12px;border-top:1px solid var(--rule);text-wrap:balance}
+h3{font:600 1rem/1.3 var(--body);margin:18px 0 4px}
+.meta{color:var(--muted);font-size:.85rem;margin:0 0 20px}
+.bluf{background:var(--card);border:1px solid var(--rule);border-left:4px solid var(--accent);padding:14px 16px;border-radius:4px}
+.bluf p{margin:.3em 0}
+ul{padding-left:1.2em;margin:.4em 0}
+li{margin:.3em 0}
+code{font:0.88em var(--mono)}
+.tag{font:600 .72rem var(--mono);letter-spacing:.04em;text-transform:uppercase;padding:1px 6px;border-radius:3px;border:1px solid currentColor;margin-right:4px;white-space:nowrap}
+.ok{color:var(--ok)} .warn{color:var(--warn)}
+.tbl{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:.9rem;font-variant-numeric:tabular-nums}
+th,td{text-align:left;padding:6px 8px;border-bottom:1px solid var(--rule);vertical-align:top}
+th{color:var(--muted);font-weight:600}
+footer{margin-top:36px;color:var(--muted);font-size:.82rem;border-top:1px solid var(--rule);padding-top:10px}
+</style>
+
+<div class="wrap">
+<h1>Ship #070: the week of Nov 13&ndash;19</h1>
+<p class="meta">Exec synthesis for our discussion, before any Ship draft. From all ten workstream reviews (filed 05:12 to 05:15 today), the seven omnibus logs&rsquo; day summaries, and my own logs. Draft 1, Fri 11-20. This is the first progress Ship of sprint 2 (onboarding to first value, 11-13 to 11-26). Things after Thursday are marked &ldquo;since Thursday&rdquo;.</p>
+
+<div class="bluf">
+<p><b>Bottom line.</b> Of the five goals you said yes to on 11-17, one was met (the posts) and four made progress without finishing. A lot was built and put on beta: 15 promotions, the nine rules in Piper&rsquo;s replies, the disconnect words, the self-host key fix. Almost none of it has been seen by a signed-in person, because no seat can sign in to beta yet.</p>
+<p>The week turned on your 11-15 ruling: stop handing you manual workarounds. ADR-084 (seats get their own keys, accounts and browser) was accepted the next morning and its tools were built by 11-18. Nothing in it has run for real. Every lane&rsquo;s &ldquo;blocked on&rdquo; line names one thing: your sitting at Amber today, Steps A, C, D and F0.</p>
+<p><b>Sprint 2 at halfway:</b> of its 14 named items, 2 were done before the sprint began (#2292, #2271) and 0 closed during it; 12 are open. Most of the rest is built and on beta, waiting for a signed-in read.</p>
+</div>
+
+<h2>At a glance</h2>
+<div class="tbl"><table>
+<tr><th>Measure</th><th>This week</th><th>Note</th></tr>
+<tr><td>Updates to beta</td><td>15 of 16</td><td>Successful promotion dispatches (<code>gh run list</code>, Pacific week). One was refused by the gate, 11-15 20:00. Lead counts 14; the omnibus logs count 15 (three on 11-18).</td></tr>
+<tr><td>Signed-in reads on beta</td><td>0</td><td>No seat can sign in yet. Every &ldquo;served&rdquo; below means the deploy ran and <code>/health</code> names the build.</td></tr>
+<tr><td>Issues filed / closed</td><td>44 / 10</td><td><code>gh-week-counts.py</code>, repo-wide. PPM: Production went from 297 to 329 open, 8 closed, 40 placed.</td></tr>
+<tr><td>Main CI</td><td>Red twice, 11-17 morning</td><td>Lead&rsquo;s pushes (a folder list instead of CI&rsquo;s command). 12 of 12 green at every read since.</td></tr>
+<tr><td>Paid model calls by seats</td><td>$0</td><td>Every paid run waits on Step A. Your 11-17 reads: the test key $16.19 of $40; the org $49.29 of $250.</td></tr>
+<tr><td>MCP deploys</td><td>1</td><td>Yours, in PA&rsquo;s session, 11-15. It put #2374 on the connector.</td></tr>
+<tr><td>Published</td><td>5 posts</td><td>All five distributed. Each was your prose.</td></tr>
+</table></div>
+
+<h2>The goals you approved on 11-17</h2>
+<ul>
+<li><span class="tag warn">partly</span> <b>Finish the GitHub move.</b> Your reconnect worked 11-15 at about 14:52 and the App went on a private test repository. #2342 row 3 passed (PA&rsquo;s read, CXO&rsquo;s judgment) and row 2&rsquo;s card half passed from your screenshot. Still open: row 2&rsquo;s chat and zero-install turns, the named-repository refusal, the too-many line and row 4. #2261 and #2282 are open, so no lift-readiness memo yet.</li>
+<li><span class="tag warn">partly</span> <b>Seats test without your hands (ADR-084).</b> Accepted 11-16 06:20 with its budget. Step B done the same minute. The tools are built and read (CIO, Lead, HOST, Arch): seat keys, seat sign-in, seat accounts, the seat browser, a dollar cap, a credential-shape scan. Real runs: 0. Step A was lined up 11-17 and moved to today.</li>
+<li><span class="tag warn">partly</span> <b>Sprint 2&rsquo;s first week.</b> Built and on beta: #2274, #2294&rsquo;s statement, #2268, #2271&rsquo;s date line, #2327&rsquo;s counter, #2405. Built and held for a key: #2297 and #2301. None of the named set closed; each needs a signed-in read. #2364 and Path B&rsquo;s screen need the key.</li>
+<li><span class="tag warn">partly</span> <b>Self-host and self-knowledge.</b> Self-knowledge moved most: you approved the nine rules, the seven procedures, practice.md and four Tier 1 files, and the nine rules are in Piper&rsquo;s replies on beta since 11-19. Self-host: Docs ran the guide from a fresh clone, steps 1 to 4 and 8 pass; steps 5 to 7 and 9 wait on #2405&rsquo;s real-key run, which waits on Step A. The H1 cache run hasn&rsquo;t happened (Step A).</li>
+<li><span class="tag ok">met</span> <b>Editorial.</b> Sat 11-14, Sun 11-15, Tue 11-17, Ship #069 Wed 11-18 and Thu 11-19, all live and distributed. The new cadence (Ship Tuesday from 11-24) is in the calendar and the skills.</li>
+</ul>
+
+<h2>What a user can do now that they couldn&rsquo;t on 11-12</h2>
+<ul>
+<li><span class="tag ok">read</span> <b>In Claude, the connector&rsquo;s GitHub issue reads stay inside the repositories you installed the App on.</b> Before: 366 issues, mostly public repositories nobody chose. After: 1 of 1 (#2374, PA&rsquo;s read through the connector on your account, 11-15, CXO PASS). The only item this week read by a person on the live service.</li>
+<li><span class="tag warn">on beta, unread</span> <b>Disconnect says what stays behind</b> at the provider (the App stays installed, a token or Notion key stays valid), with cautious wording when Piper can&rsquo;t tell how GitHub was connected. Disconnect All lists what&rsquo;s left to do.</li>
+<li><span class="tag warn">on beta, unread</span> <b>The Integrations cards read in plain sentences:</b> no code words or exception text, one stale-connection sentence per connector on the card and in chat, an install-the-app line before a write to an uninstalled repository (#2379, #2401, #2402).</li>
+<li><span class="tag warn">on beta, unread</span> <b>Piper&rsquo;s replies follow the nine conduct rules</b> (#2354), outside the classifier, so routing is unchanged.</li>
+<li><span class="tag warn">on beta, unread</span> <b>Self-hosters:</b> the key saved at setup becomes the account&rsquo;s key (#2405); setup names the <code>docker compose</code> step (#2386); two copies on one machine stop sharing a database; a fresh database is built by alembic (#2372).</li>
+<li><span class="tag warn">on beta, unread</span> <b>Smaller:</b> Piper stops blaming GitHub when it never touched it (#2407); an unreachable Redis no longer costs 2 seconds a call (#2370); the Anthropic subscription sentence (#2274); the archive pick shows its date (#2271).</li>
+<li><span class="tag warn">not yet</span> Be invited (the hold stands), sign in as a fresh account, or reach a first valuable thing in a first session.</li>
+</ul>
+
+<h2>What went wrong, and the patterns in it</h2>
+<h3>Three patterns</h3>
+<ul>
+<li><b>Workarounds that land on you.</b> On 11-15 a stored testing key couldn&rsquo;t be decrypted by the binder, the classifier refused the workaround, and the seats drifted toward &ldquo;xian runs it&rdquo;. You refused that at 19:11. PPM named its own acceptance format (served reads from a signed-in account) as part of the load. ADR-084 is the structural answer, and every seat rewrote its open items so none ends in &ldquo;xian runs it&rdquo;. The cost of the answer is this week: a whole week of built-but-unread work, converging on one sitting.</li>
+<li><b>The second reader caught what the first missed.</b> HOST&rsquo;s first drill read said &ldquo;conforms but one&rdquo;, and CIO found three gaps. Arch&rsquo;s deploy-step command would have stopped every promotion, and Lead caught it by running it. Arch caught CXO&rsquo;s unknown-leg sentence being untrue for one GitHub leg. All corrected before merge or serve. That is the review layer working, and worth naming in the Ship.</li>
+<li><b>Saying a result before reading it.</b> CIO did it seven times on 11-15 and set the rule &ldquo;the check and the claim go in separate calls&rdquo;. Comms reported &ldquo;The Wall&rdquo; unchanged while you&rsquo;d edited it. PA listed a stale blocker in its review today. Same shape as last week&rsquo;s &ldquo;relayed claim&rdquo;.</li>
+</ul>
+<h3>Specific misses</h3>
+<ul>
+<li><b>Lead:</b> main red twice (11-17). A build wrote a traceback where the access line goes for about an hour (11-13, nothing leaked). #2375&rsquo;s link in the wrong card branch, found by you on 11-15. Background CI loops that polled GitHub for days (Pard found them).</li>
+<li><b>CIO:</b> a test browser started 11-15 without the mock-keychain flag, so it may have touched your login keychain. Disclosed 11-16. You asked that it not recur, and the hook and the every-fire check now cover it (tested in 5 of 11 seats).</li>
+<li><b>Arch:</b> the <code>python -m</code> deploy step (above). 175 ruling lines this week, at least five self-corrections.</li>
+<li><b>HOST:</b> the drill read that was too wide (above).</li>
+<li><b>Comms:</b> &ldquo;The Wall&rdquo; unchanged (above). A repeated <code>--cc</code> flag dropped me from a publish-ready. A 12-10 note misattributed who saw your name on GitHub&rsquo;s permission page, corrected 11-19.</li>
+<li><b>PPM:</b> guessed clock minutes four times before the clock rule. Leaned toward an option before reading CIO and Arch (11-15), then withdrew it.</li>
+<li><b>PA:</b> ran a served row without checking its precondition (11-15), retracted within the hour. Listed the overtaken staging queries as your blocker today; dropped after my D6 check, and Arch confirmed.</li>
+<li><b>Mine.</b> I directed a seat to read its <code>.env</code> on 11-17, and auto mode refused the mail. I published a stale CI state twice on 11-17. On 11-19 my rollup said nothing waited on you before Friday while that day&rsquo;s narrative waited on your prose. And the rollup&rsquo;s title said &ldquo;Monday 16 November&rdquo; until this morning.</li>
+</ul>
+
+<h2>By workstream</h2>
+<div class="tbl"><table>
+<tr><th>Role</th><th>Progress this week</th><th>Next week / blocked on you</th></tr>
+<tr><td>Lead</td><td>15 promotions (Lead counts 14). Built the disconnect unit, #2379, #2401&ndash;#2405, #2407, #2363 (a gate that walks every parent), #2383 (dollar cap), #2389 (seat accounts), #2397, #2386, the card-state file, the drill as one command. $0 spent.</td><td>At Step A: #2404&rsquo;s real-key run, the #2354 count and cache run, #2406. Then #2364 step 1 and arm B. Blocked on the sitting, and #2158 for drill proof 3.</td></tr>
+<tr><td>PA</td><td>#2374 read through the connector (1 of 1). #2342 rows 2 (card) and 3. Proposed #2384 (the MCP deploy job). Step G final. Wrote the served-row lists for the seat route.</td><td>Step G today. Then #2342&rsquo;s open rows on <code>seat-github-1</code>. #2384 and your Step H token.</td></tr>
+<tr><td>Arch</td><td>ADR-084 accepted. 175 ruling lines. Rulings on 2354 (no paid screen if it stays in the reply prompt), the disconnect map, the drill, the gate&rsquo;s two tightenings. Checked the first size-gated promotion.</td><td>The Step A reads (2354 count, first paid call under the cap, 2404 <code>--real</code>). Lead&rsquo;s 2390, 2391, 2384, 2393, 2399.</td></tr>
+<tr><td>CXO</td><td>Words for Test, Test All, Not connected, stale connections, disconnect, GitHub refusals, self-host strings. Tier 1 voice spec final (11-16). 0 served reads (no route).</td><td>Web&rsquo;s signed-in pass, then served judging of the list. The Settings index card and repository page.</td></tr>
+<tr><td>PPM</td><td>Placed the ADR-084 build items. The 2354 no-spend path. The practice-scope answer with CXO. Production 297 to 329, plan matched <code>gh</code> every fire.</td><td>The signed-in reads and their closes. Lift-readiness memo after #2342, #2261, #2282. Sprint 2 close-out 11-26.</td></tr>
+<tr><td>HOST</td><td>Custody record kept current (test key, env-file path, driver, drill). Driver and drill read; the drill re-read after CIO&rsquo;s gaps. Your promote-gate word on Lead&rsquo;s card.</td><td>The two Step A reads on my &ldquo;go&rdquo;. Custody rows as C, D, F0 land. Role Health Check about 11-23.</td></tr>
+<tr><td>CIO</td><td>Built the ADR-084 tools (grant, sign-in, scan, browser). The clock rule (backtest 7.7%, live 11-18, no false refusals). The keychain hook and check. methodology-58.</td><td>Today: sync your checkout, remove the made-up file after the Reads, switch <code>.mcp.json</code> to the seat browser. The mail v4 review 11-23.</td></tr>
+<tr><td>Comms</td><td>Five posts, each your prose checked against sources, fixes only on your OK. The mining pass and the calendar through 12-19. Scaffolds through 12-12.</td><td>Sat 11-21 (your prose), Ship #070&rsquo;s fact-check. Your three calls (below).</td></tr>
+<tr><td>Docs</td><td>Seven omnibuses. The guide&rsquo;s fresh-clone run (1 to 4 and 8 pass). Renamed tester pages. Tier 1 approvals recorded. Five publishes.</td><td>Guide steps 5 to 9 after #2405&rsquo;s real-key run (Step A). Sat 11-21 and Ship #070 publishes.</td></tr>
+<tr><td>Web</td><td>Era 8 &ldquo;The Beta&rdquo; live. Deploy checks on 5 of 5 posts. No signed-in checks (no route).</td><td>After Step C and CIO&rsquo;s switch: sign in as the seat, then the signed-in queue in Lead&rsquo;s order. The site&rsquo;s five <code>&lt;h1&gt;</code> per page waits on CXO&rsquo;s and your go.</td></tr>
+</table></div>
+
+<h2>Where the sources disagreed</h2>
+<ul>
+<li><b>Promotions.</b> Lead counts 14 (two on 11-18). GitHub and the 11-18 omnibus count 15 (three on 11-18).</li>
+<li><b>Closes.</b> Repo-wide 10 (<code>gh</code>). Production 8 (PPM). Both right about different sets.</li>
+<li><b>Posts.</b> Docs first wrote &ldquo;six&rdquo; and corrected it to five.</li>
+<li><b>&ldquo;Served&rdquo;.</b> Arch lists the disconnect words as served 11-19, and Lead says the same but adds that nobody has read them signed in. CXO and PPM count none of it as user-visible yet. I use the stricter reading above.</li>
+</ul>
+
+<h2>Since Thursday</h2>
+<ul>
+<li>All ten reviews were in by 05:15. Beta still serves <code>f34fe7bef5</code>.</li>
+<li>The restore drill is ready for your day of choice (card on the rollup). Arch and PA dropped the old staging queries, so they never reach you.</li>
+<li>Today at Amber: Steps A, C, D, F0, then F, then G if time.</li>
+</ul>
+
+<h2>Draft goals for 11-20 to 11-26 (sprint 2&rsquo;s last week)</h2>
+<p>From the reviews&rsquo; &ldquo;Next week&rdquo; sections, for you to edit and ratify. Ship #071 reports sprint 2&rsquo;s final score against these.</p>
+<ul>
+<li><b>Seats run for real.</b> Today&rsquo;s sitting, then the first real runs: Web&rsquo;s sign-in, #2404&rsquo;s real-key run (closes #2405), the 2354 count and cache run, the first paid call under the cap.</li>
+<li><b>Read what&rsquo;s on beta, signed in, and close it.</b> The disconnect unit, the card words, #2379, #2401, #2402, then the named set&rsquo;s rows (#2219, #2294, #2295, #2328, #2267, #2268, #2274), judged by CXO.</li>
+<li><b>Finish the GitHub move.</b> #2342&rsquo;s open rows on the seat GitHub account, then #2261, #2282 and PPM&rsquo;s lift-readiness memo.</li>
+<li><b>Keys and deploys off your hands.</b> #2364 step 1 and Path B&rsquo;s screen on the testing key. #2384 (the MCP deploy job) and your one Step H token. The restore drill on your day.</li>
+<li><b>Editorial.</b> Sat 11-21, Ship #070 on Tue 11-24, Sat 11-28. No Thursday narrative (Thanksgiving week).</li>
+</ul>
+
+<h2>For our discussion</h2>
+<ul>
+<li><b>The Ship&rsquo;s theme.</b> My candidates: &ldquo;No Workarounds&rdquo; (your 11-15 ruling and what it set off), &ldquo;Built, Not Yet Seen&rdquo; (the week&rsquo;s actual state, which is also the progress Ship&rsquo;s halfway line), or &ldquo;Their Own Keys&rdquo; (ADR-084). #069 was &ldquo;Off-Limits by Default&rdquo;, so the keychain angle would repeat it.</li>
+<li><b>Sprint 2&rsquo;s score.</b> 0 of the 12 open named items closed in week one. If today&rsquo;s sitting goes well, most could close next week. If it slips, do you want #071 to report a low score as it stands, or to stretch sprint 2? My recommendation is to report it as it stands.</li>
+<li><b>Who writes the Ship.</b> You wrote #067 and #069 from scaffolds. Scaffold again, or my draft?</li>
+<li><b>Small calls from Comms:</b> the title &ldquo;Test the Page You Draw&rdquo; for Sat 11-28; keep or swap Sat 12-12; the #2256 Buttondown paste. And Saturday&rsquo;s prose.</li>
+</ul>
+
+<footer>Verified how: I read all ten reviews in full this morning (plus Docs&rsquo; correction), and the Day Type and Justification lines of the seven omnibus logs for 11-13 to 11-19; not their full bodies. Counts I ran this morning: <code>gh-week-counts.py 2026-11-13 2026-11-19</code> (44 opened, 10 closed, and the list of the 10); <code>gh run list -w fly-deploy.yml -e workflow_dispatch</code> for the Pacific week (15 success, 1 failure); <code>gh issue view</code> on 32 goal and named-set issues (the sprint 2 set of 14: #2292 and #2271 closed before 11-13, plus #2272 and #2273 inside item 10; 0 closed in the window; 12 items open). <code>sprint-truth.py</code> refused to summarise (the board has 2,208 items and it fetches 2,000), so the named-set count is from the plan file and <code>gh</code>, not from it. Served claims are the seats&rsquo; reads as recorded; nothing was re-served by me. Layer: GitHub and the logs.</footer>
+</div>
