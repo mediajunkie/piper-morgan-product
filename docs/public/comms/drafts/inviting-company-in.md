@@ -1,6 +1,6 @@
 ---
 image: ''
-alt: ''
+alt: 'A nervous host welcomes a smiling guest carrying flowers into a cozy living room, while a translucent AI helper pauses beside a half-painted wall.'
 caption: ''
 ---
 
