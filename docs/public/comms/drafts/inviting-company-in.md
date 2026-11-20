@@ -44,22 +44,9 @@ Once we sorted this all out I approved sending the invitation and we also add a 
 
 Once again, I braced myself for incoming feedback. It's amazing how valuable it is and how I still cringe about putting something that isn't "ready" in front of people I want to respect me. Then again, if I was afraid of criticism, I'd never ship anything at all.
 
-## Careful with these (accuracy)
-
-- **Not the first outside tester.** You had been sending hosted-alpha invites since July 12, and one outside person had already signed up on Sep 2. So say "a new outside tester", never "the first". (The Wall's live footer says "our first outside tester". That's my error, and fixing it is your call.)
-- No names, emails or invite codes of any outside person. The logs carry some. Keep them out.
-- Issue 1836 gives 12:38 PM. A later omnibus time is wrong.
-- The old droplet's shutdown date isn't confirmed. Leave it out.
-- Overlap: "The Server Has No Key" told Sep 12-15, and "Don't Overpromise" covered part of the known-issues idea. Tell this arc's side: who gets in, and when.
-- This is the first arc post, so it covers three weeks, not a day-by-day. Choose beats. Beat 5 is the easiest to cut.
-
-## Your angle, maybe
-
-- A product isn't real until someone who isn't you tries it. Here, though, the first someone kept turning out to be you, or an agent pretending.
-- Holding an invite is a product decision. Lifting it needed evidence (a walked sign-up path), not a feeling.
 
 ---
 
-*Next on Building Piper Morgan: [TEASE: Sat 11-21 "A Blocker Framed as Yes or No" (your yes to the sketch, 11-18; confirm the title). Its episode: a three-day blocker framed as a yes/no on reading a file, your "not assign me manual tasks" on Nov 15, and the design that followed.]*
+*Next on Building Piper Morgan "A Blocker Framed as Yes or No," in which I have to give my agent team some straight talk about how much work they've been assigning me.
 
-*[Reader question, yours to write. A start: "Who was the first stranger to use your product, and were they really a stranger?"]*
+*Do you feel that same mixture of thrill and dread when asking people to review your work?*
