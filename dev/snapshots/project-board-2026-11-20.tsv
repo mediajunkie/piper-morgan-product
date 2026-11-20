@@ -2196,3 +2196,4 @@ issue	state	milestone	sprint	title	labels	blocked_by	state_reason
 2406	OPEN	Production		PIPER.md bullets that overlap the 2354 conduct rules: replace them, as a router-prompt change under rule 7 (paid, after Step A)			
 2407	CLOSED	Production		degrade_nudge names GitHub on paths that pass no connector			COMPLETED
 2408	OPEN	Production		Boundary detector discards a usable reply on a schema validation failure (probe p-3: 4 of 10 live calls); the turn then passes	bug		
+2409	OPEN	Production		Boundary probe ic-2 (aggressive competitive message): detector says none every run; likely a mislabelled probe	UX		
