@@ -26,6 +26,8 @@ Usage (26 small model calls on the default tier; say which account pays):
 The key comes from the shared binder (`scripts/dev_key_binding.py`): the environment
 variable named on the command line, else the encrypted database store. It never reads
 the OS keychain. A run against a provider needs xian's word first (Exec, 2026-11-11).
+
+Concept: issue 2364; docs/internal/operations/canonical-ops-recipes.md (recipe 9).
 """
 
 from __future__ import annotations
