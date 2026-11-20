@@ -23,9 +23,9 @@ v0.8.1 is a stability and UX improvement release that introduces version trackin
 **Impact**: Users can now verify which version is running in production vs development.
 
 **Files Changed**:
-- [pyproject.toml](https://github.com/mediajunkie/piper-morgan-product/blob/production/pyproject.toml#L7) - version = "0.8.1"
-- [services/version.py](https://github.com/mediajunkie/piper-morgan-product/blob/production/services/version.py) (new)
-- [templates/settings-index.html](https://github.com/mediajunkie/piper-morgan-product/blob/production/templates/settings-index.html#L254-L259)
+- [pyproject.toml](https://github.com/mediajunkie/piper-morgan-product/blob/v0.8.1/pyproject.toml#L7) - version = "0.8.1"
+- [services/version.py](https://github.com/mediajunkie/piper-morgan-product/blob/v0.8.1/services/version.py) (new)
+- [templates/settings-index.html](https://github.com/mediajunkie/piper-morgan-product/blob/v0.8.1/templates/settings-index.html#L254-L259)
 
 ### User Settings Page (#383)
 
@@ -44,7 +44,7 @@ v0.8.1 is a stability and UX improvement release that introduces version trackin
 **Access**: Navigate to `/settings` or click Settings in main navigation.
 
 **Files Changed**:
-- [templates/settings-index.html](https://github.com/mediajunkie/piper-morgan-product/blob/production/templates/settings-index.html) (new)
+- [templates/settings-index.html](https://github.com/mediajunkie/piper-morgan-product/blob/v0.8.1/templates/settings-index.html) (new)
 
 ### Learning Dashboard Dark Mode Fix (#391)
 
@@ -61,7 +61,7 @@ v0.8.1 is a stability and UX improvement release that introduces version trackin
 **Impact**: Learning dashboard now respects system theme (light/dark mode).
 
 **Files Changed**:
-- [templates/learning-dashboard.html](https://github.com/mediajunkie/piper-morgan-product/blob/production/templates/learning-dashboard.html) - 102 lines changed (51 insertions, 51 deletions)
+- [templates/learning-dashboard.html](https://github.com/mediajunkie/piper-morgan-product/blob/v0.8.1/templates/learning-dashboard.html) - 102 lines changed (51 insertions, 51 deletions)
 
 ## Bug Fixes
 
@@ -76,8 +76,8 @@ v0.8.1 is a stability and UX improvement release that introduces version trackin
 **Impact**: System prompts now work correctly in LLM conversations.
 
 **Files Changed**:
-- [services/domain/llm_domain_service.py:76-77](https://github.com/mediajunkie/piper-morgan-product/blob/production/services/domain/llm_domain_service.py#L76-L77)
-- [services/llm_service.py:88-91](https://github.com/mediajunkie/piper-morgan-product/blob/production/services/llm_service.py#L88-L91)
+- [services/domain/llm_domain_service.py:76-77](https://github.com/mediajunkie/piper-morgan-product/blob/v0.8.1/services/domain/llm_domain_service.py#L76-L77)
+- `services/llm_service.py:88-91` (not in the v0.8.1 tag, so no link)
 
 ### Missing Conversation Models (#382)
 
@@ -117,7 +117,7 @@ v0.8.1 is a stability and UX improvement release that introduces version trackin
 - Easier to add new routes
 
 **Files Changed**:
-- [web/app.py](https://github.com/mediajunkie/piper-morgan-product/blob/production/web/app.py) - Consolidated router mounting
+- [web/app.py](https://github.com/mediajunkie/piper-morgan-product/blob/v0.8.1/web/app.py) - Consolidated router mounting
 
 #### Phase 2: Lifespan Extraction & Startup Phases (commit 3e41e144)
 
@@ -131,8 +131,8 @@ v0.8.1 is a stability and UX improvement release that introduces version trackin
 - Clear separation of concerns
 
 **Files Changed**:
-- [web/startup.py](https://github.com/mediajunkie/piper-morgan-product/blob/production/web/startup.py) (new)
-- [web/app.py](https://github.com/mediajunkie/piper-morgan-product/blob/production/web/app.py) - Simplified startup
+- [web/startup.py](https://github.com/mediajunkie/piper-morgan-product/blob/v0.8.1/web/startup.py) (new)
+- [web/app.py](https://github.com/mediajunkie/piper-morgan-product/blob/v0.8.1/web/app.py) - Simplified startup
 
 **Risk Assessment**: LOW - Both phases are structural refactors with zero breaking changes.
 
@@ -147,14 +147,14 @@ v0.8.1 is a stability and UX improvement release that introduces version trackin
 - Progressive loading instructions
 
 **Files Changed**:
-- [CLAUDE.md](https://github.com/mediajunkie/piper-morgan-product/blob/production/CLAUDE.md)
+- [CLAUDE.md](https://github.com/mediajunkie/piper-morgan-product/blob/v0.8.1/CLAUDE.md)
 
 ### Alpha Testing Guide Updates (#377)
 
 **Added**: Nov 22-23 test scenarios and results.
 
 **Files Changed**:
-- [docs/ALPHA_TESTING_GUIDE.md](https://github.com/mediajunkie/piper-morgan-product/blob/production/docs/ALPHA_TESTING_GUIDE.md)
+- [docs/ALPHA_TESTING_GUIDE.md](https://github.com/mediajunkie/piper-morgan-product/blob/v0.8.1/docs/ALPHA_TESTING_GUIDE.md)
 
 ## Technical Details
 
