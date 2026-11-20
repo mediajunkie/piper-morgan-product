@@ -1,10 +1,12 @@
 ---
-last_updated: 2026-11-18
+last_updated: 2026-11-19
 currency_claim: per-stop
 max_age_days: 1
 ---
 
 # HOST carry-forward
+
+**11-19 21:26 STOP (current; older blocks below)**: Beta serves 1cebb644f8 (own /health read; b01aab9059 is an ancestor); mailed Exec cc Lead, CIO that the drill sitting page is ready for xian. Quiet otherwise. Open: Step A Reads Friday 11-20 on Exec's "go" (Lead's settings.local.json by full path, then CIO's cio/.env; reply "refused"/"not refused", nothing from the file); first --check web waits on xian Steps C, D; custody rows as steps land; hook untested in six seats; ops_reader route diffs (#2390, #2391); Role Health Check ~11-23; Agent 360 v0.6 ~12-04.
 
 **11-18 21:26 STOP (current; 11-17 block below is older)**: Done 11-18: 2404 driver custody read (conforms, two asks met at 9344bd3c51); #2157 restore-drill read (my first read too wide; CIO's three findings owned; re-read at b01aab9059 conforms; CIO and Arch closed too); xian's drill page `docs/internal/operations/restore-drill-2157-xian-sitting.md` written (hung-destroy line added); clock rule live; xian's three words in the custody table; linked billing parked. Still open: drill goes to xian via Exec only after a promotion carries b01aab9059 (I check beta's served commit first); Step A Reads Friday 11-20 on Exec's "go"; first --check web waits on xian Steps C, D; hook untested in six seats; ops_reader route diffs (#2390, #2391); Pard push-check hook reinstall; Role Health Check ~11-23; Agent 360 v0.6 ~12-04. Offered Arch a read of where the 2405 saved key lands if it crosses stores.
 
