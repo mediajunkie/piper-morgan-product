@@ -420,9 +420,16 @@ def _launcher(tmp_path, seat, conf_text):
 
 def test_a_seat_without_a_row_starts_what_mcp_json_started_before(tmp_path):
     code, lines, err = _launcher(tmp_path, "cio", "web 9333\n")
-    current = json.loads((ROOT / ".mcp.json").read_text())["mcpServers"]["chrome-devtools"]
-    if current["command"] == "npx":  # until .mcp.json is switched to the launcher
-        assert [line for line in lines if line] == ["npx", *current["args"]]
+    # The exact command .mcp.json ran before it called the launcher (switched 2026-11-20).
+    before = [
+        "npx",
+        "chrome-devtools-mcp@1.10.1",
+        "--executablePath=/Users/xian/.claude-pm/chrome-for-testing.app/Contents/MacOS/"
+        "Google Chrome for Testing",
+        "--isolated",
+        "--viewport=1280x720",
+    ]
+    assert [line for line in lines if line] == before
     assert code == 0 and "--isolated" in lines and err == ""
     assert not any(line.startswith("--browserUrl") for line in lines)
 
@@ -527,3 +534,10 @@ def test_the_launcher_attaches_only_on_the_helpers_plain_yes(
     else:
         assert "--isolated" in lines and not any(l.startswith("--browserUrl") for l in lines)
         assert "not attaching for 'web'" in done.stderr
+
+
+def test_mcp_json_calls_the_launcher():
+    """ADR-084 one-time steps, item 5 (CIO, 2026-11-20): every seat's browser tool starts
+    through the launcher, which decides attach or throwaway."""
+    current = json.loads((ROOT / ".mcp.json").read_text())["mcpServers"]["chrome-devtools"]
+    assert current == {"command": "bash", "args": ["scripts/seat-browser-mcp.sh"]}

@@ -1,5 +1,18 @@
 # Lead carry-forward — Opus 5.5 seat since 2026-11-17 21:30 (xian moved the session off Fable 5.2 at the week's Fable limit, until it resets); Fable 5.2 from 2026-11-10 ~17:25 to then; Model A worktree ~/Development/piper-morgan-worktrees/lead
 
+## IN-DAY 2026-11-20 14:11 (supersedes today's earlier blocks where they differ)
+
+- **In flight when written:** (1) Tests run 44823990374 on `c9097d5091` (staging's commit, which has the #2408 fix). When it's green, redo the pre-checks and **promote under the standing grant** (window to 21:00); then close #2408 and mail Web and Exec. Pre-checks read at 14:10: no alembic change, no hold file, beta quiet, Health Watch green, no deploy running, only `services/ethics/semantic_boundary_detector.py` changed since beta. (2) CI's full suite on `../lead-2406` (`lead/2406-bases`, `0ad977685c`), output in the scratchpad as `full-2406.out` and `.gate`.
+- **2406 (option 2 by base, Arch 01M7XDBPT0, 01M7XDJEAB):** built and committed locally; 8,485 pass in the configuration and intent-service folders. **Next:** read the full suite's result, push the branch to origin, send Arch the diff (he reads before it lands), then land on main with the push loop. `config/PIPER.md` is unchanged in this unit; issue 2410 is the decoupling. The earlier candidate (`0a9ae6f747`, the classifier-moving edit) is NO-GO and stays only as history on origin's `lead/2406-bases`; a plain push of the rebuilt branch will be refused there, so push it under a new name.
+- **2364:** rerun PASS on all five lines (issuecomment-7051793087). Candidate: origin `lead/2364-step1-r1120b` at `d02a24120b`. **Not merged:** the OpenAI run or the beta key read plus a known-limits row is xian's (Exec has it); then Arch's word. At the merge: rebase, full suite, close-issue flow rows.
+- **#2408:** on main `041cf5db16`, all boxes checked, open until served.
+- **Path B:**
+  - **2297 attach, handler-only: STILL TO BUILD** (deferred to a compaction; the session has not compacted since 05:12). Rules: Arch 01M7X8HRFP (split), 01M7XBJ38R (the match is a lookup: exact ignoring case; else strip one trailing word `project` and accept a single exact match; else ask; four named tests); CXO 01M7XAV6XH (the five can't-find lines) and 01M7XC6TNR (the confirm `I've added '{text}' to {project}.` already names the stored project); PPM's rows 16 and 17 on the issue. Catalog pinned to main's by sha256.
+  - **2301 read candidate:** CXO's line is in 01M7XAV6XH; Arch says it's a valid candidate (01M7XB212Y) and wants the one-request diff before pricing. Bar: his 20:00Z comment on 2301 (the 28 phrases plus two rows). Builds after 2297, since it shares the handler.
+- **Seat:** Web's session is saved and placed; CIO switched `.mcp.json` (`e64b545076`). Web's signed-in disconnect pass (01M7TB53RR) is unblocked once Web restarts; CXO's served read follows.
+- **Small owed items:** a free `--stub --turns 3` guide run that keeps its log, to confirm `intent_from_cache` for CIO (low priority); the stale docstring on `disconnect_calendar`; after 2406 lands, one `count_tokens` on the fallback base's denial prefix (Arch 01M7X8C88C).
+- **Paid today: $10.118778.** Every run was priced to Exec first and each was under $10.
+
 ## IN-DAY 2026-11-20 12:44 (supersedes the 12:31 block where they differ)
 
 - **Every word and bar is now in. Read these mails whole before building** (`scripts/mail4.py read <id>`):
