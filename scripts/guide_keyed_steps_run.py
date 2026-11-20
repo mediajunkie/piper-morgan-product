@@ -102,7 +102,10 @@ ROLE_PREFIX = "piper_guide_app_"
 KEY_VAR = "PIPER_SEAT_ANTHROPIC_KEY"
 PROVIDER = "anthropic"
 CHAT_QUESTION = "What can you help me with?"  # Docs's proposal (issue 2404, 6967308743)
-MAX_TURNS = 2
+#: The most chat turns one run sends. 10 since 2026-11-20: issue 2357's H1 asks for a
+#: 10-turn session to count cache reads. At about $0.04 a turn uncached that is under
+#: $0.50 a run, inside ADR-084's $10-a-run rule.
+MAX_TURNS = 10
 
 # Never passed to a process this run starts. The seat's key variables first: the server
 # must find the key only where step 5 would have put it.
