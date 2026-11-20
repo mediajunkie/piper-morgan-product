@@ -783,3 +783,57 @@ def test_the_line_shows_http_against_https(sr):
     assert (
         sr.host_and_path("https://beta.example.invalid/cb#f") == "https://beta.example.invalid/cb"
     )
+
+
+# 11-20 (Exec 01M7X7QX7P): the connection refusal names the row, in fixed words only.
+@pytest.mark.parametrize(
+    "row, words",
+    [
+        (
+            {"status": "degraded", "can_test": True, "action": "reconnect"},
+            "github: degraded/True/reconnect",
+        ),
+        ({"status": "connected", "can_test": True, "action": None}, "github: connected/True/none"),
+        ({"status": "failed", "can_test": True}, "github: failed/True/none"),
+        (
+            {"status": "degraded", "can_test": 0, "action": "reconnect"},
+            "github: degraded/missing/reconnect",
+        ),
+    ],
+)
+def test_the_connection_refusal_names_the_row(ss, shared, row, words):
+    host = StubHost(ss, **_health(ss, **row))
+    with pytest.raises(ss.Refused) as e:
+        ss.run(ACCOUNT, host)
+    assert str(e.value) == f"the account has a connection ({words})"
+
+
+def test_server_text_outside_the_lists_prints_as_other(ss, shared):
+    odd = "zz-" + PASSWORD
+    rows = [{"name": odd, "status": odd, "can_test": True, "action": odd}]
+    host = StubHost(
+        ss,
+        **{
+            "/api/v1/integrations/health": ss.Reply(
+                200, json.dumps({"integrations": rows}).encode()
+            )
+        },
+    )
+    with pytest.raises(ss.Refused) as e:
+        ss.run(ACCOUNT, host)
+    assert str(e.value) == "the account has a connection (other: other/True/other)"
+    assert "zz-" not in str(e.value)
+
+
+def test_a_slack_row_is_named(ss, shared):
+    rows = [{"name": "slack", "status": "healthy", "can_test": True, "action": None}]
+    host = StubHost(
+        ss,
+        **{
+            "/api/v1/integrations/health": ss.Reply(
+                200, json.dumps({"integrations": rows}).encode()
+            )
+        },
+    )
+    with pytest.raises(ss.Refused, match=r"has a connection \(slack: healthy/True/none\)"):
+        ss.run(ACCOUNT, host)
