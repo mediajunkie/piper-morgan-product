@@ -1,0 +1,96 @@
+## base A: 10 rows
+FAIL | delete that reminder
+     main: execution/delete_reminder ×6
+     cand: execution/delete_todo ×4, execution/delete_reminder ×2
+     clause 1: main 6/6 on execution/delete_reminder, candidate 2/6
+     clause 3: new outcome execution/delete_todo 4/6
+FAIL | delete a reminder
+     main: execution/delete_reminder ×6
+     cand: execution/delete_todo ×3, execution/delete_reminder ×3
+     clause 1: main 6/6 on execution/delete_reminder, candidate 3/6
+     clause 3: new outcome execution/delete_todo 3/6
+FAIL | use the interview from now on
+     main: execution/unregistered ×6
+     cand: conversation/unregistered ×6
+     clause 1: main 6/6 on execution/unregistered, candidate 0/6
+     clause 3: new outcome conversation/unregistered 6/6
+FAIL | does my calendar overlap with hers
+     main: temporal/unregistered ×6
+     cand: temporal/unregistered ×4, temporal/meeting_time ×2
+     clause 1: main 6/6 on temporal/unregistered, candidate 4/6
+pass | any upcoming milestones for this project
+     main: temporal/unregistered ×4, temporal/meeting_time ×2
+     cand: temporal/unregistered ×3, temporal/meeting_time ×3
+FAIL | link my repository to the project
+     main: execution/link_repository ×6
+     cand: execution/link_repository ×4, execution/link_repository_to_project ×2
+     clause 1: main 6/6 on execution/link_repository, candidate 4/6
+FAIL | which repo connected to this project should i check
+     main: query/unregistered ×6
+     cand: guidance/unregistered ×6
+     clause 1: main 6/6 on query/unregistered, candidate 0/6
+     clause 3: new outcome guidance/unregistered 6/6
+FAIL | Can we just mark done here?
+     main: conversation/unregistered ×4, execution/complete_todo ×2
+     cand: execution/complete_todo ×6
+     clause 2: main 4/6 on conversation/unregistered, candidate 0/6
+FAIL | Show me that issue.
+     main: query/unregistered ×3, query/get_issue ×3
+     cand: query/get_issue ×6
+     clause 2: main 3/6 on query/unregistered, candidate 0/6
+FAIL | make clear mark them done
+     main: query/set_clear_preference_done ×5, execution/complete_todo ×1
+     cand: execution/complete_todo ×6
+     clause 1: main 5/6 on query/set_clear_preference_done, candidate 0/6
+
+## base B: 11 rows
+pass | look at this project/repository. Give me quick feedback and then help me to move forward.
+     main: analysis/analyze_repository ×5, analysis/analyze_document ×1
+     cand: analysis/analyze_repository ×5, analysis/analyze_document ×1
+FAIL | end standup
+     main: status/complete_todo ×6
+     cand: execution/complete_todo ×6
+     clause 1: main 6/6 on status/complete_todo, candidate 0/6
+     clause 3: new outcome execution/complete_todo 6/6
+FAIL | Create a doc from this conversation
+     main: execution/unregistered ×6
+     cand: synthesis/unregistered ×3, execution/unregistered ×3
+     clause 1: main 6/6 on execution/unregistered, candidate 3/6
+     clause 3: new outcome synthesis/unregistered 3/6
+FAIL | show all events
+     main: query/unregistered ×6
+     cand: temporal/unregistered ×6
+     clause 1: main 6/6 on query/unregistered, candidate 0/6
+     clause 3: new outcome temporal/unregistered 6/6
+FAIL | what issues are assigned to me?
+     main: status/unregistered ×6
+     cand: query/list_assigned_issues ×6
+     clause 1: main 6/6 on status/unregistered, candidate 0/6
+     clause 3: new outcome query/list_assigned_issues 6/6
+FAIL | can you summarize my current work
+     main: synthesis/unregistered ×6
+     cand: status/show_standup ×5, synthesis/unregistered ×1
+     clause 1: main 6/6 on synthesis/unregistered, candidate 1/6
+     clause 3: new outcome status/show_standup 5/6
+FAIL | I need help understanding something
+     main: conversation/unregistered ×4, guidance/unregistered ×2
+     cand: guidance/unregistered ×6
+     clause 2: main 4/6 on conversation/unregistered, candidate 0/6
+pass | what's in the way of finishing this
+     main: status/unregistered ×6
+     cand: status/unregistered ×6
+FAIL | can you run an impact analysis on this change
+     main: analysis/analyze_document ×6
+     cand: analysis/unregistered ×6
+     clause 1: main 6/6 on analysis/analyze_document, candidate 0/6
+     clause 3: new outcome analysis/unregistered 6/6
+FAIL | make clear mark them done
+     main: query/set_clear_preference_done ×6
+     cand: execution/complete_todo ×4, query/set_clear_preference_done ×2
+     clause 1: main 6/6 on query/set_clear_preference_done, candidate 2/6
+     clause 3: new outcome execution/complete_todo 4/6
+pass | forget my take care of preference
+     main: query/forget_clear_preference ×5, query/forget_take_care_of_preference ×1
+     cand: query/forget_clear_preference ×6
+
+rows failing: 17
