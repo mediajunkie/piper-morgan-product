@@ -1,0 +1,16 @@
+{
+  "entries": [
+    {
+      "batch": "msgbatch_01N3vPbk6jo9jNyJe5xLuyME",
+      "requests": 540,
+      "ceiling_usd": 7.3563,
+      "actual_usd": 1.9791
+    },
+    {
+      "batch": "msgbatch_01YFsgdsvBCxhmnu9t8nDUkK",
+      "requests": 252,
+      "ceiling_usd": 3.4058,
+      "actual_usd": 0.9261
+    }
+  ]
+}

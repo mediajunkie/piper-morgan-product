@@ -112,10 +112,172 @@ def _render(args) -> None:
     print(f"rendered {len(args.phrase) * args.samples} requests -> {args.out}")
 
 
+def _classifier_base(which: str) -> str:
+    """The classifier's system prompt for one of the two bases (#2406, Arch 2026-11-20):
+    ``piper_md`` is what xian's account and no-account calls get; ``neutral`` is what
+    every other account gets (the seeded neutral default)."""
+    from services.configuration.piper_config_loader import PiperConfigLoader
+
+    loader = PiperConfigLoader(config_path=str(ROOT / "config" / "PIPER.md"))
+    if which == "piper_md":
+        return loader.get_system_prompt()
+    from services.configuration.personalization_service import NEUTRAL_DEFAULT_CONTEXT
+
+    return loader._format_system_prompt(dict(NEUTRAL_DEFAULT_CONTEXT))
+
+
+def _render_classifier(args) -> None:
+    """Render the request ``IntentClassifier._classify_with_reasoning`` sends on
+    Anthropic for a message with no context: the base as the system prompt, the
+    classification prompt as the user turn (its static head cacheable, #2145), the
+    ``intent_classification`` task's model and settings. The live inversion router's
+    request never takes the base, so a base change is screened here (#2406)."""
+    import hashlib
+
+    from services.intent_service.action_registry import Verb
+    from services.intent_service.classifier import _CLASSIFICATION_PROMPT_STATIC_HEAD
+    from services.intent_service.prompts import INTENT_CLASSIFICATION_PROMPT
+    from services.llm.cacheable_prompt import (
+        CacheablePrompt,
+        anthropic_system_content,
+        anthropic_user_content,
+    )
+    from services.llm.clients import _build_temperature_kwarg
+    from services.llm.config import (
+        MODEL_CONFIGS,
+        LLMProvider,
+        resolve_model,
+        resolve_model_alias,
+    )
+
+    task_type = "intent_classification"
+    task = MODEL_CONFIGS[task_type]
+    model_id = resolve_model(LLMProvider.ANTHROPIC, task_type).value
+    system = _classifier_base(args.base)
+    phrases = list(args.phrase)
+    if args.phrase_file:
+        phrases += [
+            line for line in Path(args.phrase_file).read_text().splitlines() if line.strip()
+        ]
+    head = _CLASSIFICATION_PROMPT_STATIC_HEAD
+    with open(args.out, "w") as f:
+        for i, phrase in enumerate(phrases):
+            full = INTENT_CLASSIFICATION_PROMPT.format(
+                user_message=phrase,
+                context_info="",
+                file_context="",
+                spatial_context="",
+                verb_vocab=", ".join(v.value for v in Verb),
+            )
+            prompt = CacheablePrompt(head, full[len(head) :]) if full.startswith(head) else full
+            for n in range(1, args.samples + 1):
+                params = {
+                    "model": resolve_model_alias(model_id),
+                    "max_tokens": task["max_tokens"],
+                    **_build_temperature_kwarg(model_id, task["temperature"]),
+                    "messages": [{"role": "user", "content": anthropic_user_content(prompt)}],
+                    "system": anthropic_system_content(system),
+                }
+                cid = f"{args.label}-{i}-{n}"
+                f.write(json.dumps({"custom_id": cid, "phrase": phrase, "params": params}) + "\n")
+    digest = hashlib.sha256(system.encode("utf-8")).hexdigest()
+    print(
+        f"rendered {len(phrases) * args.samples} classifier requests -> {args.out}; "
+        f"base {args.base}, system prompt sha256 {digest} ({len(system)} chars), model {model_id}"
+    )
+
+
+def _parse_classifier(args) -> None:
+    """Score classifier replies by the routing outcome (Arch 2026-11-20): the category,
+    and the action when it is a registered operation, else ``unregistered``. The action
+    goes through the classifier's own verb-to-legacy-action step first."""
+    import re
+
+    from services.intent_service.action_registry import Verb, verb_sourcetype_to_legacy_action
+    from services.intent_service.workflow_dispatcher import get_action_workflows
+    from services.intent_service.workflow_entries import register_default_workflows
+
+    register_default_workflows()
+    registered = set(get_action_workflows())
+    reqs = {}
+    for line in Path(args.requests).read_text().splitlines():
+        r = json.loads(line)
+        reqs[r["custom_id"]] = r
+    label = next(iter(reqs)).rsplit("-", 2)[0]
+    results = {}
+    for line in Path(args.results).read_text().splitlines():
+        r = json.loads(line)
+        if r["custom_id"] in reqs:
+            results[r["custom_id"]] = r
+    by_phrase: dict = defaultdict(list)
+    served: Counter = Counter()
+    errors = 0
+    for cid, req in reqs.items():
+        res = results.get(cid)
+        outcome, raw_action = "ERROR", None
+        if res is not None and res["type"] == "succeeded":
+            served[f"anthropic:{res.get('model')}"] += 1
+            match = re.search(r"\{[^{}]*(?:\{[^{}]*\}[^{}]*)*\}", res["text"], re.DOTALL)
+            try:
+                parsed = json.loads(match.group(0)) if match else None
+            except ValueError:
+                parsed = None
+            if not isinstance(parsed, dict) or "action" not in parsed:
+                outcome = "UNPARSED"
+            else:
+                raw_action = action = str(parsed["action"])
+                source_type = parsed.get("source_type")
+                if isinstance(source_type, str):
+                    source_type = source_type.strip()
+                    if source_type.lower() in ("", "null", "none", "n/a"):
+                        source_type = None
+                else:
+                    source_type = None
+                verb_str = parsed.get("verb")
+                if verb_str:
+                    try:
+                        verb = Verb(str(verb_str).strip().lower())
+                    except ValueError:
+                        verb = None
+                    if verb is not None:
+                        action = verb_sourcetype_to_legacy_action(verb, source_type) or action
+                category = str(parsed.get("category", "?")).lower()
+                outcome = f"{category}/{action if action in registered else 'unregistered'}"
+        if outcome in ("ERROR", "UNPARSED"):
+            errors += 1
+        by_phrase[req["phrase"]].append((outcome, raw_action))
+    lines = [
+        f"# Classifier batch — {label}",
+        "",
+        f"Parsed {datetime.now(timezone.utc).strftime('%Y-%m-%d %H:%MZ')} · {len(reqs)} requests · "
+        f"{errors} ERROR or UNPARSED · served: "
+        + ", ".join(f"{k} ({v}/{len(reqs)})" for k, v in served.items()),
+        "",
+        "| phrase | outcome (count) | raw action (count) |",
+        "|---|---|---|",
+    ]
+    for phrase, got in by_phrase.items():
+        outcomes = Counter(o for o, _ in got)
+        raws = Counter(str(a) for _, a in got)
+        lines.append(
+            f"| {phrase} | "
+            + ", ".join(f"`{o}` ×{c}" for o, c in outcomes.most_common())
+            + " | "
+            + ", ".join(f"{a} ×{c}" for a, c in raws.most_common())
+            + " |"
+        )
+    Path(args.out).write_text("\n".join(lines) + "\n")
+    print(f"wrote {args.out}")
+
+
 # Batch prices in USD per million tokens (input, output): half the standard price.
 # claude-haiku-4-5 is $1 / $5 standard (services/llm/config.py). A model with no row
 # here is refused: add its row with the source of the price.
-_BATCH_USD_PER_MTOK = {"claude-haiku-4-5": (0.50, 2.50)}
+_BATCH_USD_PER_MTOK = {
+    "claude-haiku-4-5": (0.50, 2.50),
+    # $3 / $15 standard (services/llm/spend_cap.py); the classifier's model (#2406).
+    "claude-sonnet-4-6": (1.50, 7.50),
+}
 # Characters per token used for the ceiling. Lower than the router prompt measures,
 # so the ceiling overstates the input side.
 _CEILING_CHARS_PER_TOKEN = 3.0
@@ -483,11 +645,29 @@ def main() -> int:
         default=[],
         help="add a column with the router's args[NAME] on each reply (repeatable)",
     )
+    rc = sub.add_parser("render-classifier")
+    rc.add_argument("--label", required=True)
+    rc.add_argument("--samples", type=int, default=1)
+    rc.add_argument(
+        "--base",
+        required=True,
+        choices=["piper_md", "neutral"],
+        help="which system prompt base: config/PIPER.md, or the neutral default",
+    )
+    rc.add_argument("--phrase", action="append", default=[])
+    rc.add_argument("--phrase-file", default=None, help="one phrase per line")
+    rc.add_argument("--out", required=True)
+    pc = sub.add_parser("parse-classifier")
+    pc.add_argument("--requests", required=True)
+    pc.add_argument("--results", required=True)
+    pc.add_argument("--out", required=True)
     a = ap.parse_args()
     {
         "render": _render,
         "submit": _submit,
         "parse": _parse,
+        "render-classifier": _render_classifier,
+        "parse-classifier": _parse_classifier,
     }[a.cmd](a)
     return 0
 
