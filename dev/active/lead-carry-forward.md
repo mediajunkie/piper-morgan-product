@@ -1,5 +1,11 @@
 # Lead carry-forward — Opus 5.5 seat since 2026-11-17 21:30 (xian moved the session off Fable 5.2 at the week's Fable limit, until it resets); Fable 5.2 from 2026-11-10 ~17:25 to then; Model A worktree ~/Development/piper-morgan-worktrees/lead
 
+## DAY-END 2026-11-19 21:50
+
+- Beta serves `f34fe7bef5`. Main has no served-path change beyond it, and is 12 of 12 green.
+- **Friday 11-20:** xian's sitting (Steps C and D), then Step A at "go" (ONE Read of my own `.claude/settings.local.json`, answered "refused" or "not refused" only), then 2404 `--real` (closes 2405), the 2354 count and H1, and 2406. After CIO's `.mcp.json` switch, Web runs the disconnect pass (01M7TB53RR), then CXO does her served read.
+- 2157 proof 3 waits on #2158.
+
 ## IN-DAY 2026-11-19 12:48
 
 - **Beta serves `f34fe7bef5`**, and the Health Watch is green on it. Nothing on main needs a promotion.
