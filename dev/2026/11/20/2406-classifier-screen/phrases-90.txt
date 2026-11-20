@@ -1,0 +1,90 @@
+can you clarify what you meant?
+add a repo to my portfolio
+look at this project/repository. Give me quick feedback and then help me to move forward.
+can you show me issues from just one milestone?
+MVP
+delete that reminder
+delete a reminder
+finish the second one
+update my project name to Atlas
+show me all project plans
+Yes please
+end standup
+remind me
+use the interview from now on
+Create a doc from this conversation
+I could use some guidance on this
+do you have a recommendation
+what's your advice here
+advise me on this decision
+this is top priority for the team
+this is the highest priority item
+mark this as priority one
+list priorities for the team
+not sure what to do about this
+time spent in meetings is high lately
+recurring meetings keep piling up
+check my calendar for conflicts
+is my calendar showing any conflict
+does my calendar overlap with hers
+is there a conflict on my calendar
+find time for a 1:1 with sarah
+find some time for a sync
+schedule a quick call
+book a slot with the team
+show the team calendar
+show the team schedule
+schedule check for today
+show all events
+what happened in the meeting yesterday
+when was the last time I worked on this
+how long have I been working on this
+close the completed issue
+please close this issue
+reopen the old issue
+re-open the old issue
+what issues are assigned to me?
+when's the milestone deadline
+any upcoming milestones for this project
+what's my current project
+can you summarize my current work
+what's the progress on this
+what's the task status
+what are my assignments
+show me my current assignments
+what's assigned to me
+I need help understanding something
+what's the main obstacle here
+what's in the way of finishing this
+can you run an impact analysis on this change
+our history together has been good
+search history for that conversation topic
+what we discussed yesterday was helpful
+link my repository to the project
+connect my repository to the project
+add octocat/hello-world to the project
+please unlink my repository from this project
+please remove my repository from this project
+which repo connected to this project should i check
+Where did you get that from?
+How did you know about that?
+Why is that on your list?
+Based on what?
+What's that based on?
+find project deadline
+edit the meeting notes document
+change the spec doc
+add to the notes document new items
+append to the log doc
+update project plan with new deadline
+edit the report with corrections
+modify the onboarding checklist with the new steps
+Can we just mark done here?
+Actually, change the title to 'Implement full-text search across nav and global search bar'
+Also we should call it out in the release notes
+Show me that issue.
+Find time for a 1:1 with the team lead
+What does this document say?
+make clear mark them done
+forget my take care of preference
+make take care of mean mark it done
