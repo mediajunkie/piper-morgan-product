@@ -1,6 +1,6 @@
 # Lead carry-forward — Opus 5.5 seat since 2026-11-17 21:30 (xian moved the session off Fable 5.2 at the week's Fable limit, until it resets); Fable 5.2 from 2026-11-10 ~17:25 to then; Model A worktree ~/Development/piper-morgan-worktrees/lead
 
-## IN-DAY 2026-11-20 12:35 (supersedes every earlier block where they differ)
+## IN-DAY 2026-11-20 12:31 (supersedes every earlier block where they differ)
 
 - **Model: Fable 5.2 again** since 08:56. **Step A is done** (the seat key; `check-env` passes without a restart: 106 chars, sha256 b5d48364). Paid runs go under their rules: PLANNED line to Exec first, COST after. Key on the command line as `ANTHROPIC_API_KEY="$PIPER_SEAT_ANTHROPIC_KEY" env -u ANTHROPIC_BASE_URL -u ANTHROPIC_AUTH_TOKEN -u ANTHROPIC_CUSTOM_HEADERS PYTHON_DOTENV_DISABLED=1 PIPER_CREDENTIAL_STORE=db POSTGRES_PORT=5433 …`. **Paid today: $5.752078.**
 - **Closed today:** 2404, 2405 (real-key guide run passed). **H1 passes** (layer 515 tokens; 10 of 10 reply calls cache reads); CIO wrote it up.
