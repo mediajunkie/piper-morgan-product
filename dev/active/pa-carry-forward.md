@@ -22,7 +22,7 @@
 - **Browser-launch guard (CIO 11-17):** a Bash hook refuses an unflagged Chrome/Chromium launch (heredoc text going to a file is exempt since `aafb9da58a`). **Step 1j**, `scripts/browser_keychain_check.py`, runs every fire. PA launches no browser outside the helper.
 - **Pre-push hook pass memory (CIO):** the first time a PA push prints `already passed on this content N min ago`, mail CIO that line. **Commit scan (#2392):** no skip variable; build test values from parts.
 - **CIO seat rule:** never `scripts/alpha-setup.sh`; never `docker compose up`/`down` on the shared stack.
-- **Tier 1 staging:** waits on xian's five staging queries (Arch `01M7BXGYZD…`). **Q9** #2313; **Q8** invite hold; **R7 (#1282)** README needs a permitted push.
+- **Tier 1 staging: dropped 11-20** (overtaken by ADR-084's beta seat route; PA to Exec `01M7WJCW8H…`; Arch asked to confirm nothing still needs it). **Q9** #2313; **Q8** invite hold; **R7 (#1282)** README needs a permitted push.
 - **mail4 gotchas:** `inbox --role pa`; ack is `ack <id> done --as pa`; a subject naming a day needs `--due none`; on `cannot lock ref`, loop the push until `origin/main..HEAD` is empty. zsh has no `timeout`.
 - **Sprint 2 started Fri 11-13.** v3 is the mail fallback until 11-23.
 
@@ -33,7 +33,7 @@
 - 🔒 **#2242 removal check**, since 11-03: Exec agreed 11-16 (`01M7KN3SAN…`). It is now Step G part 3 on `seat-github-1`. Arch said it conforms with two additions, and HOST asked two small things; all four are in `50ebf686e0`; Arch's final read (11-16 18:47): conforms. It runs in xian's Step G sitting; no separate card. The MCP test-plan card was cut as overtaken.
 - 🔒 **#2238 Notion**, since 11-01: xian puts a throwaway Notion key on staging.
 - 🔒 **#2288 served row**, since 11-05: xian's word that Web may use an untouched dead-grant test account.
-- 🔒 **ADR-084 one-time rows**, since 11-15 19:11; xian said yes 11-16 06:20. Remaining PM-hand rows: Steps A, C, D, F0 (his Friday 11-20 sitting on Amber), the #2384 deploy token (Step H, after the job is built), Step G for PA's seat connector (after F0/F). Separately, tier 1 needs xian's five staging queries (Arch `01M7BXGYZDJDA660J2AEM13MCG`).
+- 🔒 **ADR-084 one-time rows**, since 11-15 19:11; xian said yes 11-16 06:20. Remaining PM-hand rows: Steps A, C, D, F0 (his Friday 11-20 sitting on Amber), the #2384 deploy token (Step H, after the job is built), Step G for PA's seat connector (after F0/F).
 - **Rename PA (xian's idea 10-28):** trigger was MVP reading 0 open, which happened 10-30. Raised to Exec 11-06 (late). xian's call; no work blocked.
 
 ## Cadence

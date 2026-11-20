@@ -233,6 +233,7 @@ Request additional detail for:
 - **Sprint position**: `docs/briefing/BRIEFING-CURRENT-STATE.md`
 - **Team methodology**: `docs/internal/development/methodology-core/` (esp. `methodology-00-EXCELLENCE-FLYWHEEL.md` v2.0)
 - **Active issues**: GitHub issues (use `gh issue list`)
+- **GitHub criteria line (the third work queue)**: `gh issue list --repo mediajunkie/piper-morgan-product --search "label:awaiting-decision" --state open`, once per fire. An issue there not yet on the rollup or in the log is new work: check whether the team can answer it, route it to its owner if so, otherwise put it on the rollup for xian (and check it against the ADR-084 D6 line). An empty result means no issue is labelled as waiting on a decision. (Added 2026-11-20 on CIO's 1715 fold check.)
 - **Roadmap**: `docs/internal/planning/roadmap/roadmap.md` (its version is in its first line)
 - **Vision**: `docs/internal/planning/current/vision.md` (its version is in its first line)
 - **Strategic context**: `docs/briefing/BRIEFING-CURRENT-STATE.md`
