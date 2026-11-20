@@ -1,0 +1,11 @@
+look at this project/repository. Give me quick feedback and then help me to move forward.
+end standup
+Create a doc from this conversation
+show all events
+what issues are assigned to me?
+can you summarize my current work
+I need help understanding something
+what's in the way of finishing this
+can you run an impact analysis on this change
+make clear mark them done
+forget my take care of preference

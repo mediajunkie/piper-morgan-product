@@ -1,0 +1,37 @@
+## base A: 90 rows
+main against control differ: 0
+main against candidate differ: 10 (of which on an outcome the control didn't produce either: 10)
+beyond the control's rate: 10
+  'delete that reminder': main execution/delete_reminder | control execution/delete_reminder | cand execution/delete_todo   raw: delete_reminder ×1 -> delete_reminder ×1
+  'delete a reminder': main execution/delete_reminder | control execution/delete_reminder | cand execution/delete_todo   raw: delete_reminder ×1 -> delete_reminder ×1
+  'use the interview from now on': main execution/unregistered | control execution/unregistered | cand conversation/unregistered   raw: set_active_document ×1 -> clarification_needed ×1
+  'does my calendar overlap with hers': main temporal/unregistered | control temporal/unregistered | cand temporal/meeting_time   raw: calendar_overlap_check ×1 -> meeting_time ×1
+  'any upcoming milestones for this project': main temporal/unregistered | control temporal/unregistered | cand temporal/meeting_time   raw: get_milestones ×1 -> meeting_time ×1
+  'link my repository to the project': main execution/link_repository | control execution/link_repository | cand execution/link_repository_to_project   raw: link_repository ×1 -> link_repository_to_project ×1
+  'which repo connected to this project should i check': main query/unregistered | control query/unregistered | cand guidance/unregistered   raw: get_connected_repo ×1 -> provide_guidance ×1
+  'Can we just mark done here?': main conversation/unregistered | control conversation/unregistered | cand execution/complete_todo   raw: clarification_needed ×1 -> mark_done ×1
+  'Show me that issue.': main query/unregistered | control query/unregistered | cand query/get_issue   raw: get_github_issue ×1 -> get_issue ×1
+  'make clear mark them done': main query/set_clear_preference_done | control query/set_clear_preference_done | cand execution/complete_todo   raw: set_clear_preference_done ×1 -> mark_done ×1
+floor rows:
+rows with an ERROR or UNPARSED on any side: 0 []
+
+## base B: 90 rows
+main against control differ: 2
+main against candidate differ: 11 (of which on an outcome the control didn't produce either: 9)
+beyond the control's rate: 9
+  'look at this project/repository. Give me quick feedback and then help me to move forward.': main analysis/analyze_repository | control analysis/analyze_repository | cand analysis/analyze_document   raw: analyze_repository ×1 -> analyze_document ×1
+  'end standup': main status/complete_todo | control status/complete_todo | cand execution/complete_todo   raw: end_standup ×1 -> end_standup ×1
+  'Create a doc from this conversation': main execution/unregistered | control execution/unregistered | cand synthesis/unregistered   raw: create_document ×1 -> create_document_from_conversation ×1
+  'show all events': main query/unregistered | control query/unregistered | cand temporal/unregistered   raw: list_events ×1 -> list_events ×1
+  'what issues are assigned to me?': main status/unregistered | control status/unregistered | cand query/list_assigned_issues   raw: get_assigned_issues ×1 -> list_assigned_issues ×1
+  'can you summarize my current work': main synthesis/unregistered | control synthesis/unregistered | cand status/show_standup   raw: summarize_current_work ×1 -> show_standup ×1
+  'I need help understanding something': main conversation/unregistered | control conversation/unregistered | cand guidance/unregistered   raw: clarification_needed ×1 -> provide_guidance ×1
+  "what's in the way of finishing this": main status/get_project_status | control status/unregistered | cand status/unregistered   raw: get_project_status ×1 -> get_blockers ×1
+  'can you run an impact analysis on this change': main analysis/analyze_document | control analysis/analyze_document | cand analysis/unregistered   raw: analyze_document ×1 -> analyze_impact ×1
+  'make clear mark them done': main query/set_clear_preference_done | control query/set_clear_preference_done | cand execution/complete_todo   raw: set_clear_preference_done ×1 -> mark_done ×1
+  'forget my take care of preference': main query/forget_take_care_of_preference | control query/forget_clear_preference | cand query/forget_clear_preference   raw: forget_take_care_of_preference ×1 -> forget_clear_preference ×1
+floor rows:
+  "what's in the way of finishing this": main status/get_project_status | control status/unregistered
+  'forget my take care of preference': main query/forget_take_care_of_preference | control query/forget_clear_preference
+rows with an ERROR or UNPARSED on any side: 0 []
+
