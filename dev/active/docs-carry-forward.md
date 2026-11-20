@@ -1,8 +1,15 @@
 # Docs Carry-Forward
 
-**Updated**: 2026-11-18 22:12. Older state lives in the session logs (`dev/2026/{10,11}/*/*docs-code-log.md`), not here. `gh`: prefix `GODEBUG=netdns=go` if bare `gh` hangs.
+**Updated**: 2026-11-19 22:12. Older state lives in the session logs (`dev/2026/{10,11}/*/*docs-code-log.md`), not here. `gh`: prefix `GODEBUG=netdns=go` if bare `gh` hangs.
 
-## NOW (11-18 22:12)
+## NOW (11-19 22:12)
+- **11-19 done:** 11-18 omnibus landed (verified). "Inviting Company In" published and distributed (Medium only, draft archived). CI 12 of 12 green, mail 0 unacked.
+- **Blockers:** Step A is xian's, Fri 11-20 at Amber (I relay his WAITING line to Exec, never touch the key). Guide served read of steps 5 to 9 and the chat check waits on 2405 promotion (Lead, no announcement seen); then remove "(not yet run)" markers only as verified and tell CIO the day it ran. Second-copy PIPER_STACK lines in step 3 unrun.
+- **Owed 11-20 04:12 START:** the 11-19 omnibus (Sonnet subagent, 11-18 omnibus as model, then verify) and Step 1d. Calendar: Sat 11-21 "A Blocker Framed as Yes or No" is `drafted` (insight slot per validator; check the row's category against the weekday before --category, Pre-flight 3); Ship #070 Tue 11-24 is `planned` (Ships on Tuesday from 11-24). Each publishes only on a Comms PUBLISH-READY. Syndication: insight LinkedIn + Medium, narrative Medium only, Ship LinkedIn only. CIO's hook ask: mail the `gates already passed` line on the first push taking the remembered-pass path.
+- **Held:** b-wont-do, d-known-limits, b-github-access (#2342), glossary re-verify about 11-30, #2249, monthly audit Dec 7.
+- **Mistakes to not repeat:** mail before the push it describes; guessed times (use scripts/log-entry.sh); website blog-metadata.csv has mixed CRLF/LF, edit it bytewise never through csv.writer (publish-post.js is safe); "done" is a zsh keyword (do not `ack ... done` inside a for loop); no `timeout` on macOS; format .py with scripts/ensure-ruff.sh before pushing.
+
+## (earlier) NOW (11-18 22:12)
 - **11-18 done:** 11-17 omnibus landed, Step 1d sent. Guide status/check wording matches Lead's 2404 driver and the 2405 fix. Practice scope recorded. The Wall footer fixed live. Era 8 "The Beta" live (Web); Ship #069 published (the-beta), image piper-ship.webp, LinkedIn in, row distributed, draft archived. CI 12 of 12 green, mail 0 unacked.
 - **Blockers:** Step A is xian's, Fri 11-20 at Amber (I relay his WAITING line to Exec, never touch the key). Guide served read of steps 5 to 9 and the chat check waits on 2405 promotion (Lead); then remove "(not yet run)" markers only as verified and tell CIO the day it ran. Consider a guide line for a second account on one install. Second-copy PIPER_STACK lines in step 3 unrun.
 - **Owed 11-19 04:12 START:** the 11-18 omnibus (Sonnet subagent, 11-17 omnibus as model, then verify) and Step 1d. Calendar: Thu 11-19 "Inviting Company In" publishes only on a Comms PUBLISH-READY (building, Medium only). From Tue 11-24 Ships go Tuesday (validator gated 11-20). CIO's hook ask: mail the `gates already passed` line on the first push taking the remembered-pass path.
