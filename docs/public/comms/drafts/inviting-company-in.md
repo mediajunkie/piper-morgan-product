@@ -8,13 +8,7 @@ caption: ''
 
 *September 19 – October 7, 2026*
 
-<!--
-SCAFFOLD, not a draft ("AI prompts human"). Comms supplies the shape, the verified facts and the quotes. You write the prose. Everything below the title and dateline is notes for you. Delete it as your prose replaces it.
-Slot: Thu 2026-11-19 (building). Arc 1 of the narrative arcs (adopted 11-14). Title yours (11-17); working title was "Letting a Stranger In".
-Sources: arcs planning doc "Arc 1 sourced" (a Sonnet subagent read the Sep 19 to Oct 9 omnibus logs; Comms re-opened every quote at source on 11-14, and re-checked three on 11-17).
--->
-
-## The arc in one line (pick a through-line, or write your own)
+So far, I've done almost all the testing for Piper Morgan. We started the alpha last year 
 
 1. **Before you let someone in, you find out what "in" means.** The build, the hosting and the sign-up path were all older or more broken than anyone knew.
 2. **The first stranger kept being you.** What mattered surfaced through your own use, or through an agent's test account.
