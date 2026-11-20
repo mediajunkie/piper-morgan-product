@@ -90,7 +90,7 @@ jobs:
       - name: Broken-link ratchet gate (#1593)
         if: always()
         run: |
-          CEILING=60
+          CEILING=50
           UNMEASURED=0
           COUNT=$(grep -oE '🚫 Errors\.+[0-9]+' link-checker-results.md | grep -oE '[0-9]+$' || echo "")
           if [ -z "$COUNT" ]; then
