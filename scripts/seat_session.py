@@ -101,7 +101,35 @@ PASSWORD_KEYS = ("password", "pass")
 
 
 class Refused(Exception):
-    """A fixed reason. Its text is safe to print: it never carries server data."""
+    """A fixed reason. Its text is safe to print: it never carries server text. The one
+    addition is the connection refusal's row, spelled only in words from the fixed lists
+    below (``_row_words``); anything else prints as ``other``."""
+
+
+# The words the health route can emit (web/api/routes/integrations.py, read 11-20 with Lead's
+# list in 01M7X815YJ). A refusal names the row in these words so the owner can tell which
+# connection without anyone reading beta as the account (Exec 01M7X7QX7P, 11-20). A value
+# outside a list prints "other", so no server string reaches the screen.
+_KNOWN_INTEGRATIONS = frozenset({"github", "slack", "calendar", "notion"})
+_KNOWN_STATUSES = frozenset(
+    {"not_configured", "degraded", "connected", "healthy", "failed", "unhealthy", "unknown"}
+)
+_KNOWN_ACTIONS = frozenset({"reconnect", "test_only"})
+
+
+def _row_words(name: object, shown: Tuple[object, object, object]) -> str:
+    """``github: degraded/True/reconnect``, from fixed words only."""
+    status, can_test, action = shown
+
+    def pick(value: object, known: FrozenSet[str]) -> str:
+        return value if isinstance(value, str) and value in known else "other"
+
+    test_word = "True" if can_test is True else "False" if can_test is False else "missing"
+    action_word = "none" if action is None else pick(action, _KNOWN_ACTIONS)
+    return (
+        f"{pick(name, _KNOWN_INTEGRATIONS)}: {pick(status, _KNOWN_STATUSES)}/{test_word}/"
+        f"{action_word}"
+    )
 
 
 @dataclass(frozen=True)
@@ -273,7 +301,7 @@ def check_holds_nothing_real(
             shown[0] == status and shown[1] is can_test and shown[2] == action
             for status, can_test, action in permitted
         ):
-            raise Refused("the account has a connection")
+            raise Refused(f"the account has a connection ({_row_words(name, shown)})")
 
     connectors = get("/api/v1/settings/mcp-connections")
     if connectors.status != 200:
