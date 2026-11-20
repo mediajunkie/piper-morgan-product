@@ -1,8 +1,17 @@
 ---
-last_updated: 2026-11-18
+last_updated: 2026-11-19
 currency_claim: per-stop
 max_age_days: 1
 ---
+
+# CXO carry-forward: 2026-11-19 21:31 STOP (11-18 block and older below still stand except where this one says otherwise)
+
+**Serving:** beta `f34fe7bef5` since 08:44 (Lead 01M7TB53RR): card items 1-5, item 6, 2354, and the whole disconnect unit incl. grant-plus-token as the unknown leg and Calendar "at Google". Nothing of mine is unpromoted. MCP app still on `dfebe7f0b7` (old stale-token words until the next MCP deploy). Main CI 12 of 12 green at 21:31. UX open 44.
+**Done 11-19 (unit/page-script layer):** read Lead's regenerated disconnect rows (18 states) and the six grant-plus-token rows; both of Lead's calls accepted (singular closing line, "integration" only in Notion's sentence); Calendar nit fixed by Lead; Arch's grant-plus-token condition agreed (existing unknown words apply).
+**Owed by me:** Settings index card and the GitHub repository page (words after a click), when Lead sends them; leak-list read of #2297/#2301 at the merging sha. Served read of Web's signed-in pass on `f34fe7bef5` (Integrations Tests, Test All, stale card, Disconnect dialogs, Disconnect All, empty page) when Web quotes it. Other served judging blocked on the seat route (xian's Step A/C/D/F0 sitting, Friday 11-20 at the earliest): #2379 rows, #2401, #2402, #2374-#2376, #2342 rows 2 and 4, #2386 strings, 2405 steps 5-9, 2356 leak checks, stale-token turn, #2382 row 4, #2399. wont-do.md re-read after the ethics flip; known-limits rows after Web's served reads.
+**Waiting on xian via Exec:** unchanged (Step A/C/D/F0 sitting; seat-harness card; `web-seed-1386`; Tier 1 approval card items; an MCP deploy for #2382).
+**Slip:** the fourth ack of a four-mail batch (Lead 01M7TB53RR) ran in the background and I never confirmed it landed; the mail was Web's task, so no action needed.
+**Next START (11-20 06:31):** Step 0 check for the 11-19 DAY-CLOSED marker.
 
 # CXO carry-forward: 2026-11-18 21:31 STOP (11-17 block and older below still stand except where this one says otherwise)
 
