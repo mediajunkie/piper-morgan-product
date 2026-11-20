@@ -1,0 +1,28 @@
+T1|add a todo to my Mobile Redesign project: interview five current users
+T2|add 'draft the launch email' to the Launch project
+T3|put a todo in Mobile Redesign to book the usability lab
+T4|what's in my Mobile Redesign project?
+T5|show me the todos in the Launch project
+T6|what's left to do in Mobile Redesign
+T7|which todos are under Website Refresh?
+T8|add 'order the banner' under Website Refresh
+M1|add a todo to email the Launch team about pricing
+M2|remind me to review the Mobile Redesign mockups
+C1|add a todo to review the Q3 roadmap
+C2|add a todo to web test one
+C3|add a todo: call the dentist
+D1|add milk to my shopping list
+D2|add 'renew passport' to my personal list
+D3|put 'send invoice' on my list for tomorrow
+D4|add a todo to my work list: update the roadmap
+E1|add a todo to the Mobile Redesign project to fix the nav
+E2|add 'fix the nav' to my Mobile Redesign project list
+N1|show my todos
+N2|any update on my todos
+N3|how is the Mobile Redesign project going?
+N4|list my projects
+N5|show me my portfolio
+S1|add octocat/hello-world to the project
+S2|link repo octocat/hello-world to Mobile Redesign
+S3|archive project Mobile Redesign
+S4|what did we make earlier
