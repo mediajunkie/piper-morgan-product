@@ -8,7 +8,7 @@ Names, dates and caps only. No value, length or id of any credential is written 
 | Key `lead-scoring-2026-10` | disabled, not deleted | 2026-11-16 | Exec (xian: "revoked (disabled, actually)") | xian: nothing he runs personally uses it. A disabled key cannot spend; only xian can re-enable. Arch ruled 2026-11-16: disabled is enough, deletion not required. |
 | Key `seat-screens-2026-11` | the one live key in `lead-scoring` | 2026-11-16 | Exec | Not yet in any seat's file. Step A puts it in Lead's settings file. |
 | Operations reader flag on `web-seed-1386` | set | 2026-11-16 | Exec, from xian's screenshot | Set by xian on beta's Account flags page. The page cannot make an account admin. Seat check of a counter read waits on `seat_session.py` (#2388). |
-| Step A: Lead's seat key file | pending | | | Gate: three logged Read refusals before the key prompt. HOST's two Reads owed. |
+| Step A: Lead's seat key file | read tests: HOST b refused, c refused (2026-11-20, 09:59 by `date`, after Exec's go); Lead's own Read (a) and the key prompt follow | 2026-11-20 | HOST (two Reads); Exec ran the order | Gate: three logged Read refusals before the key prompt. HOST's two are logged; a is Lead's. Lead's earlier not-refused Read (before xian's command ran) was not a test. Each Read was one tool call, nothing from either file. |
 | Seat accounts (two) and test GitHub machine account | pending | | | Step F; second seat account waits on #2389 and xian naming the email. HOST reads what each holds before first use. |
 | MCP deploy token | pending | | | Step H; waits on #2384. Expiry and name go here when chosen, no value. |
 | Seat browser LaunchAgent and debug-port bound | pending | | | HOST reads Pard's plist and wrapper before xian loads it. |
