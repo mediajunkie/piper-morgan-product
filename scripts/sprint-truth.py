@@ -26,6 +26,7 @@ USAGE
     python3 scripts/sprint-truth.py                 # MVP milestone (the beta gate)
     python3 scripts/sprint-truth.py --milestone Production
     python3 scripts/sprint-truth.py --list          # itemize the not-Done work
+    python3 scripts/sprint-truth.py --limit 3000    # first pull's cap (a capped pull retries once anyway)
 
 Paste the output into any completeness claim. A claim without it is a claim without a
 denominator.
@@ -54,13 +55,13 @@ GLOSS = {
 }
 
 
-def fetch(limit=2000):
-    """Fetch the board, honoring query-github-board rule 1: reconcile totalCount vs fetched.
+DEFAULT_LIMIT = 2000
+# Headroom on the refetch, so items added between the two pulls still fit under the cap.
+REFETCH_MARGIN = 200
 
-    A truncated pull MAY NOT be summarized — that is the 2026-07-18 incident (a 1280-item
-    board silently truncated at --limit 1200 produced a confident '27 of 28 closed' to PM
-    that missed 8 open issues, including the sprint's own close-out gate).
-    """
+
+def _pull(limit):
+    """One `gh project item-list` call; returns (items, totalCount). Exits on any failure."""
     cmd = [
         "gh",
         "project",
@@ -74,7 +75,7 @@ def fetch(limit=2000):
         "json",
     ]
     try:
-        out = subprocess.run(cmd, capture_output=True, text=True, timeout=120)
+        out = subprocess.run(cmd, capture_output=True, text=True, timeout=180)
     except Exception as exc:  # pragma: no cover
         sys.exit(f"FAILED to query the board: {exc}\nThis check measured NOTHING.")
     if out.returncode != 0:
@@ -86,14 +87,34 @@ def fetch(limit=2000):
     items = data.get("items", [])
     if not items:
         sys.exit("Board returned ZERO items. That is a query failure, not an empty sprint.")
-
-    # ---- query-github-board rule 1: the truncation reconciliation ----
     total = data.get("totalCount")
     if total is None:
         sys.exit(
             "Payload carries no totalCount — cannot prove the pull was complete. "
             "REFUSING to summarize. (query-github-board rule 1)"
         )
+    return items, total
+
+
+def fetch(limit=DEFAULT_LIMIT):
+    """Fetch the board, honoring query-github-board rule 1: reconcile totalCount vs fetched.
+
+    A truncated pull MAY NOT be summarized — that is the 2026-07-18 incident (a 1280-item
+    board silently truncated at --limit 1200 produced a confident '27 of 28 closed' to PM
+    that missed 8 open issues, including the sprint's own close-out gate).
+
+    When the first pull is capped (the board grew past the limit: 2,208 items on 2026-11-20,
+    Exec's report), it pulls ONCE more with the limit raised to the reported total plus a
+    margin. The reconciliation below still has the last word: any mismatch after that is
+    refused, never summarized.
+    """
+    items, total = _pull(limit)
+    if len(items) < total and len(items) >= limit:
+        raised = total + REFETCH_MARGIN
+        print(f"[board has {total} items, over the {limit} cap; pulling again at {raised}]")
+        items, total = _pull(raised)
+
+    # ---- query-github-board rule 1: the truncation reconciliation ----
     if len(items) != total:
         sys.exit(
             f"TRUNCATED PULL: fetched {len(items)} of {total}. "
@@ -353,6 +374,13 @@ def main():
     ap.add_argument("--milestone", default="MVP")
     ap.add_argument("--list", action="store_true", help="itemize the not-Done work")
     ap.add_argument(
+        "--limit",
+        type=int,
+        default=DEFAULT_LIMIT,
+        help="first pull's item cap (default %(default)s); a capped pull is retried once "
+        "at the board's reported total",
+    )
+    ap.add_argument(
         "--no-snapshot",
         action="store_true",
         help="read the last snapshot and report the delta, but do NOT overwrite it "
@@ -360,7 +388,7 @@ def main():
     )
     args = ap.parse_args()
 
-    items = fetch()
+    items = fetch(args.limit)
     scoped = [i for i in items if milestone_of(i) == args.milestone]
     if not scoped:
         sys.exit(
