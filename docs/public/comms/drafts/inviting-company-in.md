@@ -34,7 +34,7 @@ Around this time I started asking each week what a user (or alpha tester) could 
 
 This end-to-end review of the new user signup process revealed a few things I needed to rule on.
 
-* Because the product runs on a "bring your own key" model" and does not resell tokens (a dying business anyhow)
+* Because the product runs on a "bring your own key" model" and does not resell tokens (a dying business anyhow, what with Claude's new "linked billing")
 
 **6. Oct 5-7: the door rules, then the button.**
 - Oct 5: bring-your-own-key ruled. Piper covers no one's LLM cost, "nominally a $0 budget stack" [decisions.log l.2373]. Beta starts when the MVP milestone closes.
