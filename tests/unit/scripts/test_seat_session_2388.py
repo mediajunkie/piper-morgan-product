@@ -837,3 +837,114 @@ def test_a_slack_row_is_named(ss, shared):
     )
     with pytest.raises(ss.Refused, match=r"has a connection \(slack: healthy/True/none\)"):
         ss.run(ACCOUNT, host)
+
+
+# 11-20 (Exec 01M7X9RFAM): one-shot disconnect of a connector the account must not hold.
+DISCONNECT = "/api/v1/settings/integrations/calendar/disconnect"
+
+
+def _health_with(ss, calendar_row):
+    rows = [{"name": n, "status": "not_configured"} for n in ("notion", "slack", "github")]
+    rows.append({"name": "calendar", **calendar_row})
+    return ss.Reply(200, json.dumps({"integrations": rows}).encode())
+
+
+class CalendarHost(StubHost):
+    """Shows a live Calendar row until the disconnect route is called (unless ``sticky``)."""
+
+    def __init__(self, ss, disconnect_reply=None, sticky=False, **over):
+        super().__init__(ss, **over)
+        self.live = _health_with(ss, {"status": "connected", "can_test": True, "action": None})
+        self.gone = _health_with(ss, {"status": "not_configured"})
+        self.cleared = False
+        self.sticky = sticky
+        self.disconnect_reply = disconnect_reply or ss.Reply(
+            200, json.dumps({"success": True, "outcome": "cleared", "message": "x"}).encode()
+        )
+
+    def __call__(self, method, path, data, headers):
+        self.calls.append((method, path, data, dict(headers)))
+        if path == DISCONNECT:
+            assert method == "POST"
+            self.cleared = not self.sticky
+            return self.disconnect_reply
+        if path == "/api/v1/integrations/health":
+            return self.gone if self.cleared else self.live
+        return self.replies[path.split("?")[0]]
+
+
+def _posts(host):
+    return [c[1] for c in host.calls if c[0] == "POST"]
+
+
+def test_disconnect_clears_rechecks_and_saves_nothing(ss, shared):
+    host = CalendarHost(ss)
+    line = ss.disconnect(ACCOUNT, "calendar", host)
+    assert line == (
+        f"{ACCOUNT}: calendar disconnected (outcome cleared); the holds-nothing checks now pass"
+    )
+    assert _posts(host) == ["/api/v1/auth/login", DISCONNECT]
+    post = next(c for c in host.calls if c[1] == DISCONNECT)
+    assert f"auth_token={ACCESS}" in post[3]["Cookie"]
+    assert not (shared / f"{ACCOUNT}.session-token.json").exists()
+    for secret in SECRETS:
+        assert secret not in line
+
+
+def test_disconnect_when_not_connected_posts_nothing(ss, shared):
+    host = CalendarHost(ss)
+    host.cleared = True
+    line = ss.disconnect(ACCOUNT, "calendar", host)
+    assert line == f"{ACCOUNT}: calendar was not connected; the holds-nothing checks now pass"
+    assert _posts(host) == ["/api/v1/auth/login"]
+
+
+def test_disconnect_incomplete_refuses_and_skips_the_recheck(ss, shared):
+    host = CalendarHost(ss, disconnect_reply=ss.Reply(503, b""))
+    with pytest.raises(ss.Refused, match=r"calendar disconnect did not complete"):
+        ss.disconnect(ACCOUNT, "calendar", host)
+    assert "/api/v1/keys/list" not in [c[1] for c in host.calls]
+
+
+def test_disconnect_reply_outside_the_list_never_prints(ss, shared):
+    odd = json.dumps({"outcome": "zz-" + PASSWORD}).encode()
+    host = CalendarHost(ss, disconnect_reply=ss.Reply(200, odd))
+    with pytest.raises(ss.Refused) as e:
+        ss.disconnect(ACCOUNT, "calendar", host)
+    assert str(e.value) == "the disconnect reply could not be read"
+
+
+def test_a_route_that_says_cleared_but_leaves_the_row_still_refuses(ss, shared):
+    host = CalendarHost(ss, sticky=True)
+    with pytest.raises(ss.Refused) as e:
+        ss.disconnect(ACCOUNT, "calendar", host)
+    assert str(e.value) == "the account has a connection (calendar: connected/True/none)"
+
+
+def test_disconnect_refuses_an_admin_before_any_post(ss, shared):
+    host = CalendarHost(ss, **{"/api/v1/admin/account-flags": ss.Reply(200, b"{}")})
+    with pytest.raises(ss.Refused, match="is an admin"):
+        ss.disconnect(ACCOUNT, "calendar", host)
+    assert _posts(host) == ["/api/v1/auth/login"]
+
+
+def test_disconnect_list_is_closed(ss, shared):
+    assert ss.DISCONNECTABLE == ("calendar",)
+    with pytest.raises(ss.Refused, match="not on the disconnect list"):
+        ss.disconnect(ACCOUNT, "slack", CalendarHost(ss))
+    with pytest.raises(ss.Refused, match="not on the list"):
+        ss.disconnect("someone-else", "calendar", CalendarHost(ss))
+    with pytest.raises(SystemExit):
+        ss.main(["--account", ACCOUNT, "--disconnect", "github"])
+
+
+def test_main_disconnect_prints_one_line_and_places_nothing(ss, shared, monkeypatch, capsys):
+    host = CalendarHost(ss)
+    monkeypatch.setattr(ss, "http_transport", host)
+    monkeypatch.setattr(ss.disconnect, "__defaults__", (host,))
+    placed = []
+    monkeypatch.setattr(ss, "place_in_seat_browser", lambda a: placed.append(a) or 0)
+    code, out = _run_main(ss, ["--account", ACCOUNT, "--disconnect", "calendar"], capsys)
+    assert code == 0
+    assert out.strip().endswith("the holds-nothing checks now pass")
+    assert placed == []

@@ -22,6 +22,9 @@ HOST's bounds, all enforced here:
 
 Usage:
     scripts/seat_session.py --account web-seed-1386
+    scripts/seat_session.py --account web-seed-1386 --disconnect calendar
+        (clears that connector through the app's own route, re-runs bound 2, saves nothing;
+        its own exact allow, added by xian; see ``disconnect``)
 
 In a seat that has a seat browser (issue 2400) it then prints a second line,
 ``<account> placed in seat browser <seat>, expires <time>``; see ``place_in_seat_browser``.
@@ -359,6 +362,63 @@ def save_session(account: str, cookies: Mapping[str, Tuple[str, Optional[int]]],
     return expires
 
 
+# One-shot disconnect (Exec 01M7X9RFAM, 11-20; HOST reads it, condition 4). A connector the
+# account must not hold is cleared through the app's own route, so no person signs in as a
+# seat account to click (ADR-084 D6). A closed list of connectors; this mode never saves or
+# places a session, and it prints only fixed words.
+DISCONNECTABLE: Tuple[str, ...] = ("calendar",)
+_DISCONNECT_OUTCOMES = frozenset({"cleared", "revoke_failed"})
+
+
+def disconnect(account: str, connector: str, send: Transport = http_transport) -> str:
+    """Sign in, confirm the account and that it is not an admin, clear ``connector`` through
+    its disconnect route if the health check shows it, then run bound 2 in full. Returns a
+    fixed-word line. Refuses as ``run`` does; never saves a session."""
+    if account not in ACCOUNTS:
+        raise Refused("that account is not on the list")
+    if connector not in DISCONNECTABLE:
+        raise Refused("that connector is not on the disconnect list")
+    user, password = read_credentials(shared_dir() / ACCOUNTS[account].credential_file)
+    cookies = sign_in(account, user, password, send)
+    header = {"Cookie": "; ".join(f"{name}={value}" for name, (value, _) in cookies.items())}
+
+    me = send("GET", "/api/v1/auth/me", None, header)
+    if me.status != 200 or _json(me).get("username") != account:
+        raise Refused("the session is not the named account")
+    admin = send(
+        "GET",
+        "/api/v1/admin/account-flags?" + urllib.parse.urlencode({"username": account}),
+        None,
+        header,
+    )
+    if admin.status == 200:
+        raise Refused("the account is an admin")
+    if admin.status != 403:
+        raise Refused("the admin check could not be read")
+
+    health = send("GET", "/api/v1/integrations/health", None, header)
+    rows = _json(health).get("integrations") if health.status == 200 else None
+    if not isinstance(rows, list):
+        raise Refused("the connection check could not be read")
+    states = [r.get("status") for r in rows if isinstance(r, dict) and r.get("name") == connector]
+    if states == ["not_configured"]:
+        before = "was not connected"
+    elif len(states) != 1:
+        raise Refused("the connection check could not be read")
+    else:
+        reply = send("POST", f"/api/v1/settings/integrations/{connector}/disconnect", b"", header)
+        if reply.status == 503:  # the route's "incomplete" answer; the transport drops its body
+            raise Refused(f"the {connector} disconnect did not complete (outcome incomplete)")
+        body = _json(reply) if reply.status == 200 else {}
+        outcome = body.get("outcome") if isinstance(body, dict) else None
+        if outcome not in _DISCONNECT_OUTCOMES:
+            raise Refused("the disconnect reply could not be read")
+        before = f"disconnected (outcome {outcome})"
+
+    check_holds_nothing_real(account, cookies, send)
+    return f"{account}: {connector} {before}; the holds-nothing checks now pass"
+
+
 def run(account: str, send: Transport = http_transport, now: Optional[float] = None) -> str:
     if account not in ACCOUNTS:
         raise Refused("that account is not on the list")
@@ -409,7 +469,22 @@ def main(argv=None) -> int:
         description="Sign a seeded test account in to beta and save its session."
     )
     parser.add_argument("--account", required=True)
+    parser.add_argument(
+        "--disconnect",
+        choices=DISCONNECTABLE,
+        help="clear this connector on the account through the app's route, re-check, save nothing",
+    )
     args = parser.parse_args(argv)
+    if args.disconnect:
+        try:
+            print(disconnect(args.account, args.disconnect))
+        except Refused as refusal:
+            print(f"seat_session: refused: {refusal}", file=sys.stderr)
+            return 2
+        except Exception as error:  # never print an exception's own text
+            print(f"seat_session: refused: unexpected {type(error).__name__}", file=sys.stderr)
+            return 3
+        return 0
     try:
         print(run(args.account))
     except Refused as refusal:
