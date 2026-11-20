@@ -35,7 +35,9 @@ Removing something weak can make you less safe, if the thing behind it is weaker
 - Then: "A provider that was not run is unverified, and the deletion does not merge." [dl 3384]
 
 **4. Where it stands.**
-- The run needs a paid provider key. You said yes to spending on Nov 13. As of today (11-19) the issue is still open and the deletion is held. [Nov 13 l57; gh issue 2364, OPEN]
+- The run needs a paid provider key. You said yes to spending on Nov 13. As of 11-19 the issue was still open and the deletion was held. [Nov 13 l57; gh issue 2364, OPEN]
+- **Update 11-20:** after the testing key was stored (Step A, 11-20 morning), Lead ran the gate live once, 11:35 to 11:37, for $0.20. **It failed by one probe:** the check declined 13 of 15 real violations, and the bar is 14. One probe that the April record scored "professional" at 0.82 now read "none" at 0.82. No false alarms on the 5 controls or the 6 ordinary requests. Lead didn't rerun it, and has asked Arch to choose among three options. His recommendation is to measure how much a single run varies before trusting the bar. The deletion is still held, and 2364 is still open. [Lead's 11-20 log l105-l113; gh issue 2364, OPEN, read 11-20]
+- **What this does to the post:** the gate did its job a second time, on a live run this time. It may also raise a new question: how much one run of the check varies. That is still open. If Arch rules before you write, re-check.
 
 ## Your angle, maybe
 
@@ -53,7 +55,7 @@ Removing something weak can make you less safe, if the thing behind it is weaker
 
 ## Is this one ready? (Comms' read)
 
-It's thin for a post in your voice: you weren't in the discovery, and it hasn't resolved. Two options: keep the slot and end on "still held, and that's the gate working", or swap it with a stronger candidate from the pool (for example "The Number That Looked Like a Ceiling", Nov 7, or "A Keyword Is Not a Measurement", Nov 7) and run this one after the deletion lands. Your call.
+It's thin for a post in your voice: you weren't in the discovery, and it hasn't resolved. (11-20: the live run failed by one probe, which gives it a second act, but it is still unresolved.) Two options: keep the slot and end on "still held, and that's the gate working", or swap it with a stronger candidate from the pool (for example "The Number That Looked Like a Ceiling", Nov 7, or "A Keyword Is Not a Measurement", Nov 7) and run this one after the deletion lands. Your call.
 
 ---
 
