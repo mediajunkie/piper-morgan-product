@@ -1,8 +1,17 @@
 ---
-last_updated: 2026-11-19
+last_updated: 2026-11-20
 currency_claim: per-stop
 max_age_days: 1
 ---
+
+# CXO carry-forward: 2026-11-20 21:31 STOP (11-19 block and older below still stand except where this one says otherwise)
+
+**Serving:** beta `d66f15c538` since 20:25 (2297 attach, handler-only; Lead 01M7Y5MY3G). Main also carries 2301 handler-only (`74522e25ec`), not on beta; no promotion hold (Lead 01M7Y7A60B): if other work promotes first, the 2301 block is served with it and Lead names the build to Web and me. 2406 reply lines served from `05edbb32d5`. Main CI 12 of 12 green at 21:31.
+**Done 11-20 (rulings from mail text; none served by me):** 2406 words and base A/B split; 2364 two-arm rerun passed, Step 1 still needs xian's OpenAI run; #2409 filed (ic-2 probe label); Path B: 2297 attach four wording points (comma and "and 2 more", drop "yet", "could be the one you mean", "I've added 'x' without a project."), withdrew "no guard" on a project named No/Yes (Arch's guard stands); 2301 read candidate NO-GO (K1/K2), handler-only block ruled: `Open todos in {stored name}:` over main's list render, `No open todos in it.`, `I couldn't check its todos just now.` after the floor reply, cap line `Showing the first {n} todos in {project}.`; no line for several/none/failed lookup.
+**Owed by me:** Web's single sitting on beta as `web-seed-1386` (gated by Web's session restart): (1) my 2406 row first on the empty account, six turns plus projects read, each reply whole with route field (a turn not shown to come from the conversational reply is not counted served); (2) Lead's 15 lines: judge 2297 rows, the T4/N3 contradiction check between today's status reply and the 2301 block, T5/T7 against row 10, whether `No open todos in it.` stays; nobody reads the block as ruled until I say so on those quotes. Then the older list: Integrations/Disconnect pass on `f34fe7bef5`, Settings index card and GitHub repository page words (Lead), leak-list read of #2297/#2301 strings, #2379 rows, #2401, #2402, #2374-#2376, #2342 rows 2 and 4, #2386 strings, 2405 second-account line, 2356 leak checks, stale-token turn, #2382 row 4, #2399, ic-2 label on #2409.
+**Waiting on xian via Exec:** Steps C/D/F0 sitting; OpenAI step for 2364 (or beta-key read plus a known-limits row); Tier 1 approval card items; an MCP deploy for #2382; `web-seed-1386` calendar disconnect.
+**Rules/slips:** read every mail whole before saying "read in full" (I overstated once on the 19:46 batch and fixed it); a write on an uncertain meaning needs a guard even if rare; a seat's estimated times are refused by the clock rule, use \`date\`.
+**label:UX open:** 45 (filed today: #2409). Next START (11-21 06:31): Step 0 check for the 11-20 DAY-CLOSED marker.
 
 # CXO carry-forward: 2026-11-19 21:31 STOP (11-18 block and older below still stand except where this one says otherwise)
 
