@@ -511,9 +511,10 @@ async def handle_todo_project_pick_turn(
     else:
         if len(text.split()) > _MAX_ANSWER_WORDS:
             return None
-        idx = _ordinal_index(text, len(ids))
-        if idx is None:
+        position = _ordinal_index(text, len(ids))
+        if position is None:
             return None
+        idx = position
     from services.intent.intent_service import _coerce_todo_principal
 
     todo_user = _coerce_todo_principal(user_id)
