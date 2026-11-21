@@ -2102,6 +2102,7 @@ class TodoIntentHandlers:
         original_message: str,
         project: Optional[Any] = None,
         priority: Optional[str] = None,
+        reply: Optional[Any] = None,
     ) -> str:
         """#2094: one todo per router-named title; the reply names every one.
 
@@ -2109,7 +2110,8 @@ class TodoIntentHandlers:
         row is parked for the #2095 ledger (a list; the observer writes one
         row per element). A failure after some writes says what was saved.
         ``project`` (#2297): a resolved ``ProjectRef``; every row is written
-        with its id and the reply names the project."""
+        with its id and the reply names the project. ``reply`` (#2297): the
+        success line for the rows written, given their stored titles."""
         from services.consciousness.todo_consciousness import format_todos_created_conscious
 
         if priority is None:
@@ -2149,9 +2151,8 @@ class TodoIntentHandlers:
             from services.intent_service.todo_project_attach import render_attached
 
             return render_attached([t.text for t in created], project.name)
-        if len(created) == 1:
-            # One bound title (#2297's "without a project" yes): the single line.
-            return format_todo_created_conscious(created[0])
+        if reply is not None:
+            return str(reply([t.text for t in created]))
         return format_todos_created_conscious(created)
 
     async def create_titles_without_project(
@@ -2159,8 +2160,10 @@ class TodoIntentHandlers:
     ) -> str:
         """#2297 (CXO 11-20): the yes to "Want it added without a project?" writes
         the titles bound at ask time, with no project. No extraction."""
+        from services.intent_service.todo_project_attach import render_without_project
+
         return await self._create_todos_from_items(
-            list(titles), session_id, user_id, "", priority=priority
+            list(titles), session_id, user_id, "", priority=priority, reply=render_without_project
         )
 
     async def create_titles_in_project(

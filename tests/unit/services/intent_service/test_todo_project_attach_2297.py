@@ -183,7 +183,7 @@ class TestPickShowsWhatItWrites:
     async def test_question_and_reask_carry_every_stored_title(self, titles, shown):
         record = attach.build_pick_offer(USER, self._matches(), titles, "medium", "m")
         assert record["question"] == (
-            "I found more than one project with that name: 1. Launch (created 3 Nov) "
+            "I found more than one project that could be the one you mean: 1. Launch (created 3 Nov) "
             f"2. launch (created 9 Nov). Which one should I add {shown} to? Say the number."
         )
         for title in record["pending_action"]["titles"]:
@@ -391,7 +391,7 @@ class TestNoMatch:
         result = await _run(_intent(args={"text": TITLE, "project": "Mobile Redesign"}), svc)
         assert result.message == (
             "I can't find a project called \"Mobile Redesign\", so I haven't added the todo yet. "
-            "Your projects: Alpha, Beta, Gamma, Delta, Epsilon …and 2 more. "
+            "Your projects: Alpha, Beta, Gamma, Delta, Epsilon, and 2 more. "
             "Tell me the name and I'll check."
         )
         payload = svc.workflow_offer_service.set_pending_offer.call_args.args[1]["pending_action"]
@@ -409,7 +409,7 @@ class TestNoMatch:
         result = await _run(_intent(args={"text": TITLE, "project": "Mobile Redesign"}), svc)
         assert svc.todo_handlers._calls == []
         assert result.message == (
-            "I can't find a project called \"Mobile Redesign\", so I haven't added the todo yet."
+            "I can't find a project called \"Mobile Redesign\", so I haven't added the todo."
         )
         assert "?" not in result.message and result.requires_clarification is not True
 
@@ -437,6 +437,46 @@ class TestNoMatch:
         turn = await attach.handle_todo_project_pick_turn(self._pending(), answer, "s1", USER, svc)
         assert turn is None and svc.todo_handlers._calls == []
 
+    async def test_no_bound_and_the_answer_no_writes_nothing(self, projects):
+        """Arch 11-20 (01M7Y1J7KG): a project stored as "No" never turns a decline
+        into a write. The turn goes to the generic seam, which declines."""
+        projects[USER] = [_project("p1", "No"), _project("p2", "Launch")]
+        svc = _service()
+        pending = self._pending(names=("No", "Launch"))
+        for answer in ("no", "No", "no thanks", "never mind"):
+            turn = await attach.handle_todo_project_pick_turn(pending, answer, "s1", USER, svc)
+            assert turn is None, answer
+        assert svc.todo_handlers._calls == []
+        assert pending["decline_message"] == (
+            "Okay, I haven't added anything. Nothing has been changed."
+        )
+
+    async def test_no_project_still_reaches_the_project_named_no(self, projects):
+        projects[USER] = [_project("p1", "No"), _project("p2", "Launch")]
+        svc = _service()
+        pending = self._pending(names=("No", "Launch"))
+        turn = await attach.handle_todo_project_pick_turn(pending, "No project", "s1", USER, svc)
+        assert [c["project_id"] for c in svc.todo_handlers._calls] == ["p1"]
+        assert turn["message"] == "I've added 'interview five current users' to No."
+
+    async def test_yes_bound_and_the_answer_yes_reasks_and_writes_nothing(self, projects):
+        projects[USER] = [_project("p1", "Yes"), _project("p2", "Launch")]
+        svc = _service()
+        pending = self._pending(names=("Yes", "Launch"))
+        turn = await attach.handle_todo_project_pick_turn(pending, "yes", "s1", USER, svc)
+        assert turn is None and svc.todo_handlers._calls == []
+        # The generic seam's accept lands on the registered re-ask.
+        out = await attach.run_clarify_todo_project_pick_workflow(
+            "s1", USER, {"pending_action": pending["pending_action"], "intent_service": svc}
+        )
+        assert out["message"] == pending["question"] and svc.todo_handlers._calls == []
+
+    def test_the_guard_reads_the_two_shared_readers_and_no_word_list(self):
+        import inspect
+
+        source = inspect.getsource(attach.handle_todo_project_pick_turn)
+        assert "is_bare_decline(text)" in source and "matches_accept_vocabulary(text)" in source
+
     async def test_a_name_two_bound_projects_share_asks_the_numbered_pick(self, projects):
         projects[USER] = [_project("p1", "Launch"), _project("p2", "launch")]
         svc = _service()
@@ -445,7 +485,7 @@ class TestNoMatch:
         assert svc.todo_handlers._calls == []
         assert turn["requires_clarification"] is True
         assert turn["message"] == (
-            "I found more than one project with that name: 1. Launch 2. launch. "
+            "I found more than one project that could be the one you mean: 1. Launch 2. launch. "
             "Which one should I add 'interview five current users' to? Say the number."
         )
         record = svc.workflow_offer_service.set_pending_offer.call_args.args[1]
@@ -509,7 +549,10 @@ class TestNoProjects:
         svc = _service(store=False)
         result = await _run(_intent(args={"text": TITLE, "project": "Mobile Redesign"}), svc)
         assert svc.todo_handlers._calls == []
-        assert result.message == NO_PROJECTS.replace(" Want it added without a project?", "")
+        assert result.message == (
+            "I can't find a project called \"Mobile Redesign\", and I don't see any projects "
+            "on your account, so I haven't added the todo."
+        )
 
     def _payload(self, titles=(TITLE,), user=USER):
         record = attach.build_no_projects_offer(user, "Mobile Redesign", list(titles), "high", MSG)
@@ -523,7 +566,8 @@ class TestNoProjects:
         call = svc.todo_handlers._calls[0]
         assert call["text"] == TITLE and call["priority"] == "high"
         assert "project_id" not in call
-        assert TITLE in out["message"] and "Mobile Redesign" not in out["message"]
+        # CXO 11-20 (01M7Y1GWGE): the reply says the fact the yes named.
+        assert out["message"] == "I've added 'interview five current users' without a project."
         assert out["requires_clarification"] is False
 
     async def test_yes_writes_every_bound_title(self):
@@ -533,7 +577,7 @@ class TestNoProjects:
         )
         assert [c["text"] for c in svc.todo_handlers._calls] == ["a b", "c d"]
         assert all("project_id" not in c for c in svc.todo_handlers._calls)
-        assert "'a b' and 'c d'" in out["message"]
+        assert out["message"] == "I've added 2 todos without a project: 'a b' and 'c d'."
 
     async def test_another_principals_yes_writes_nothing(self):
         svc = _service()
@@ -586,7 +630,7 @@ class TestSeveralMatches:
         result = await _run(_intent(args={"text": TITLE, "project": "Mobile Redesign"}), svc)
         assert svc.todo_handlers._calls == []
         assert result.message == (
-            "I found more than one project with that name: 1. Mobile Redesign "
+            "I found more than one project that could be the one you mean: 1. Mobile Redesign "
             "2. mobile redesign. Which one should I add 'interview five current users' to? "
             "Say the number."
         )
@@ -666,7 +710,9 @@ class TestSeveralMatches:
         out = await attach.run_clarify_todo_project_pick_workflow(
             "s1", USER, {"pending_action": payload, "intent_service": svc}
         )
-        assert out["message"].startswith("I found more than one project with that name: 1. Mobile")
+        assert out["message"].startswith(
+            "I found more than one project that could be the one you mean: 1. Mobile"
+        )
         record = svc.workflow_offer_service.set_pending_offer.call_args.args[1]
         assert record["pending_action"]["pick_ids"] == ["p1", "p2"]
         assert record["pending_action"]["titles"] == [TITLE]

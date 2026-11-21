@@ -74,7 +74,7 @@ NOT_FOUND_QUESTION = (
 # question. The record is armed the same way, with EVERY project bound.
 NOT_FOUND_MANY_LINE = (
     "I can't find a project called \"{name}\", so I haven't added the todo yet. "
-    "Your projects: {listed} …and {more} more. Tell me the name and I'll check."
+    "Your projects: {listed}, and {more} more. Tell me the name and I'll check."
 )
 MAX_LISTED = 5
 NO_PROJECTS_QUESTION = (
@@ -86,22 +86,27 @@ RESOLVE_FAILED_LINE = (
     "I couldn't check your projects just now, so I haven't added the todo. "
     "Try again in a moment."
 )
-# NOT YET RULED by CXO (in the build report): no store to hold the question, so
-# no question is asked. Each is CXO's own line up to its first full stop.
-NOT_FOUND_UNARMED_LINE = (
-    "I can't find a project called \"{name}\", so I haven't added the todo yet."
-)
+# CXO 11-20 (01M7Y1GWGE): no store to hold the question, so no question is asked
+# and nothing follows; no "yet", which would promise an add that won't happen.
+NOT_FOUND_UNARMED_LINE = "I can't find a project called \"{name}\", so I haven't added the todo."
 NO_PROJECTS_UNARMED_LINE = (
     "I can't find a project called \"{name}\", and I don't see any projects on your "
-    "account, so I haven't added the todo yet."
+    "account, so I haven't added the todo."
 )
+# CXO 11-20 (01M7Y1GWGE): after a yes to "Want it added without a project?", the
+# reply says the fact the yes named. The several-title form is shaped on
+# ATTACHED_SEVERAL_LINE and NOT YET RULED.
+ADDED_WITHOUT_PROJECT_LINE = "I've added '{text}' without a project."
+ADDED_SEVERAL_WITHOUT_PROJECT_LINE = "I've added {count} todos without a project: {names}."
 # Named *_QUESTION: rendered only by build_pick_offer / the re-ask landing, which
 # store it as the record's ``question`` and arm the record (the #1766 rule).
 # CXO 11-14 (pick-question mail, verbatim) on Arch's ruling 2 (11-14): the question
 # shows the bound title(s) exactly as stored, so the number names both the project
-# and a write the person has seen, and is the consent.
+# and a write the person has seen, and is the consent. CXO 11-20 (01M7Y1GWGE): the
+# first clause is true both for same-named projects and for "Launch project"
+# typed with "Launch" and "launch" stored.
 SEVERAL_QUESTION = (
-    "I found more than one project with that name: {listed}. "
+    "I found more than one project that could be the one you mean: {listed}. "
     "Which one should I add {titles} to? Say the number."
 )
 # CXO 11-14 (PASS): several titles into one project; the decline of the pick (the
@@ -286,6 +291,12 @@ def render_attached(titles: List[str], project_name: str, priority: Optional[str
     )
 
 
+def render_without_project(titles: List[str]) -> str:
+    if len(titles) == 1:
+        return ADDED_WITHOUT_PROJECT_LINE.format(text=titles[0])
+    return ADDED_SEVERAL_WITHOUT_PROJECT_LINE.format(count=len(titles), names=_quoted(titles))
+
+
 def render_several(labels: List[str], titles: Optional[List[str]] = None) -> str:
     """The pick question. ``labels`` are the numbered lines as shown (name, with
     the stored created date when there is one). ``titles`` are the bound titles,
@@ -296,7 +307,7 @@ def render_several(labels: List[str], titles: Optional[List[str]] = None) -> str
 
 def render_not_found(name: str, labels: List[str]) -> str:
     """CXO 11-20: the question that names what exists. Up to five are listed with
-    the question; past five, the first five and the "…and N more" tail."""
+    the question; past five, the first five and the "and N more" tail."""
     if len(labels) > MAX_LISTED:
         return NOT_FOUND_MANY_LINE.format(
             name=name, listed=", ".join(labels[:MAX_LISTED]), more=len(labels) - MAX_LISTED
@@ -460,6 +471,17 @@ async def handle_todo_project_pick_turn(
         return None
     if payload.get("answer") == ANSWER_NAME:
         # The not-found question: the answer is one of the names bound at ask time.
+        # Arch 11-20 (01M7Y1J7KG): this branch writes with no confirm first, so an
+        # answer the shared yes/no readers recognise is never read as a name. A
+        # project stored as "No" must not turn a decline into a write. The generic
+        # seam then declines or re-asks; "No project" still reaches that project.
+        from services.intent_service.soft_invocation import (
+            is_bare_decline,
+            matches_accept_vocabulary,
+        )
+
+        if is_bare_decline(text) or matches_accept_vocabulary(text):
+            return None
         names = [str(n) for n in payload.get("pick_names") or []]
         positions = _named_positions(names, text) if len(names) == len(ids) else []
         if not positions:
