@@ -53,7 +53,9 @@ async def status_todos_block(
     intent: Any, session_id: Optional[str], user_id: Optional[str], todo_handlers: Any
 ) -> str:
     """The text to put after the floor's status reply, or "" when nothing is
-    added. Never raises for a failed read: the status reply must stand."""
+    added. It never raises (Arch 11-20, 01M7Y4QVSY): this read was added on top
+    of a reply the floor has already given, so no error in it may take that reply
+    away. Any error is logged with its stack, and what the person is told is true."""
     if getattr(intent, "action", None) != STATUS_OP:
         return ""
     from services.intent.intent_service import _coerce_todo_principal
@@ -65,6 +67,11 @@ async def status_todos_block(
         resolution = await _attach.resolve(intent, todo_user)
     except (SQLAlchemyError, OSError) as e:
         logger.error("project_status_todos_project_read_failed", error=str(e))
+        return ""
+    except (
+        Exception
+    ):  # silent-ok: Arch 11-20 (01M7Y4QVSY); stack logged, nothing added, the status reply stands
+        logger.exception("project_status_todos_project_read_failed")
         return ""
     if resolution is None or resolution.one is None:
         logger.info(
@@ -78,4 +85,9 @@ async def status_todos_block(
         return str(await todo_handlers.project_status_todos(session_id, todo_user, project))
     except (SQLAlchemyError, OSError) as e:
         logger.error("project_status_todos_todo_read_failed", error=str(e))
+        return TODOS_READ_FAILED_LINE
+    except (
+        Exception
+    ):  # silent-ok: Arch 11-20 (01M7Y4QVSY); stack logged, CXO's couldn't-check line is said
+        logger.exception("project_status_todos_todo_read_failed")
         return TODOS_READ_FAILED_LINE

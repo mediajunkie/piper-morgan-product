@@ -210,6 +210,40 @@ class TestNothingIsAdded:
             assert "?" not in line
 
 
+class TestTheBlockCannotFailTheStatusReply:
+    """Arch 11-20 (01M7Y4QVSY): an error outside the two expected ones must not
+    escape; the floor's reply has already been given."""
+
+    async def test_an_unexpected_error_in_the_project_read_adds_nothing(self, monkeypatch):
+        monkeypatch.setattr(attach, "_active_projects", AsyncMock(side_effect=RuntimeError("x")))
+        h = _handlers({})
+        assert await _block(_intent(args={"project": "Mobile Redesign"}), h) == ""
+        assert h._calls == []
+
+    async def test_an_unexpected_error_in_the_todo_read_says_cxos_line(self, projects):
+        projects[USER] = [_project("p1", "Mobile Redesign")]
+        h = _handlers(fail=RuntimeError("x"))
+        block = await _block(_intent(args={"project": "Mobile Redesign"}), h)
+        assert block == "I couldn't check its todos just now."
+        h._remember_todo_list_lines.assert_not_called()
+
+    async def test_an_unexpected_error_in_the_render_says_cxos_line(self, projects, monkeypatch):
+        projects[USER] = [_project("p1", "Mobile Redesign")]
+        h = _handlers({"p1": [_todo("a", "x")]})
+        h._remember_todo_list_lines = MagicMock(side_effect=TypeError("renamed field"))
+        block = await _block(_intent(args={"project": "Mobile Redesign"}), h)
+        assert block == "I couldn't check its todos just now."
+
+    def test_the_status_reply_stands_with_the_right_tail(self):
+        """The call site joins the block to the floor's message and has no path
+        that drops ``response.message``."""
+        source = (REPO / "services" / "intent" / "intent_service.py").read_text()
+        start = source.index("_todos_block = await status_todos_block(")
+        tail = source[start : source.index("return IntentProcessingResult(", start)]
+        assert "_status_message = _milestone_prefix + response.message" in tail
+        assert "raise" not in tail
+
+
 class TestTheMainListIsUnchanged:
     def test_its_header_is_what_it_was(self):
         todos = [_todo("a", "x"), _todo("b", "y")]
