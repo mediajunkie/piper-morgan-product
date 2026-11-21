@@ -6,7 +6,7 @@
 
 - He starts when he chooses. Step A's command prints `WAITING FOR READ TESTS on seat lead` and waits as long as needed.
 - He (or Docs) gives Exec that line. Exec mails "Step A started". From that mail until Exec's "done" or "stopped", no seat runs `scripts/sync-pm-local.sh`, Lead finishes the tool call in hand, goes idle and says "ready", and Exec mails "go" for the three Reads (Exec, 2026-11-17 18:02: the hold starts at his line, not before).
-- Steps C and D are pastes with no wait. After Step D, CIO switches the browser tool to the launcher and Web runs its checks. Step F0 is Lead's.
+- Steps C and D are pastes with no wait. After Step D, CIO switches the browser tool to the launcher and Web runs its checks. Step F0 is Lead's (done 2026-11-20 18:36 PT).
 - Before Friday a seat fast-forwards his checkout (`scripts/sync-pm-local.sh`), so every script named here is the one on main.
 
 The ADR: `docs/internal/architecture/adrs/adr-084-seat-resources-are-separate-granted-once-and-bounded.md`. Row numbers below are the ADR's ("What xian does, once"). The order here is by what each step unblocks.
@@ -229,7 +229,7 @@ scripts/seat_settings_grant.py add-key --seat lead --name PIPER_SEAT_OPENAI_KEY
 
 ## Step F0 (before Step F's connect): create the second seat account on beta
 
-**Owner: Lead.** **Status: READY (2026-11-16, CIO's edit on Lead's three conditions).** `scripts/seat_account_create.py` is on main (issue 2389). The three things it waited on are done: HOST read the script whole at 72afafe37c against the five conditions below and said they are met; `seat-github-1` is on the account list in `scripts/seat_session.py` (dd97e4ba56, a diff HOST read); and the exact-command allow is written below, in the same batch as Step C's. A real creation is 0 of 1: the first run is the test.
+**Owner: Lead.** **Status: DONE 2026-11-20 18:36 PT** (Lead 01M7XZCRV7: `seat-github-1 created`, exit 0, the bare command). Two things it hit, both fixed: the script was committed without its execute bit (Lead set 100755 at 18:33, blob unchanged; `tests/unit/scripts/test_allow_named_scripts_executable.py` now fails on any allow-named script that isn't executable), and a first try inside a compound line was refused before anything ran. **An exact allow matches only the command run alone:** don't chain it after `date`, `git` or anything else. Previously READY (2026-11-16, CIO's edit on Lead's three conditions). `scripts/seat_account_create.py` is on main (issue 2389). The three things it waited on are done: HOST read the script whole at 72afafe37c against the five conditions below and said they are met; `seat-github-1` is on the account list in `scripts/seat_session.py` (dd97e4ba56, a diff HOST read); and the exact-command allow is written below, in the same batch as Step C's. A real creation is 0 of 1: the first run is the test.
 
 **How `web-seed-1386` was actually made (the record, 2026-10-20 omnibus, 18:44 to 18:49):** xian minted beta invite codes himself and stored them in files; Web then signed the account up through beta's own setup page in its browser, with one of those codes, and wrote the account's file under `~/.piper-shared`. No seed command and no database insert. That path can't be repeated as it was: a seat now reads neither an invite file nor a password file, which is the rule ADR-084 keeps.
 
