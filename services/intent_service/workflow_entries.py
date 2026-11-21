@@ -12,6 +12,7 @@ No switch statements. No modifying intent_service.py.
 from typing import Any, Dict, Optional
 
 import structlog
+from sqlalchemy.exc import SQLAlchemyError
 
 from services.intent_service import todo_project_attach as _attach
 from services.intent_service import workflow_dispatcher as _workflow_dispatcher
@@ -784,18 +785,25 @@ async def run_create_todo_workflow(
                 intent_data={"category": category, "action": intent.action},
             )
     else:
-        resolution = await _attach.resolve(intent, todo_user_id)
-        if resolution is not None and not resolution.matches:
+        try:
+            resolution = await _attach.resolve(intent, todo_user_id)
+        except (SQLAlchemyError, OSError) as e:
+            # The project read failed BEFORE any write, so the outcome is known
+            # (CXO 11-20): say nothing was added. Never attach, and never fall
+            # back to a plain todo the person didn't ask for.
+            logger.error("todo_project_resolve_failed", error=str(e))
             return IntentProcessingResult(
                 success=True,
-                message=_attach.NOT_FOUND_LINE.format(name=resolution.name),
+                message=_attach.RESOLVE_FAILED_LINE,
                 intent_data={
                     "category": category,
                     "action": intent.action,
-                    "project_not_found": True,
+                    "project_lookup_failed": True,
                 },
             )
         if resolution is not None and resolution.one is None:
+            # Not exactly one project: nothing is written, and the person is asked
+            # (Arch 11-20). Which question depends on what is known.
             handlers = intent_service.todo_handlers
             original = intent.original_message or (intent.context or {}).get("original_message", "")
             titles = handlers.resolve_create_titles(intent, original)
@@ -807,27 +815,36 @@ async def run_create_todo_workflow(
                     ),
                     intent_data={"category": category, "action": intent.action},
                 )
-            record = _attach.build_pick_offer(
-                str(user_id) if user_id else None,
-                resolution.matches,
-                titles,
-                handlers._extract_priority(original),
-                original,
-            )
-            if not _attach.arm_pick(intent_service, record, session_id, user_id):
-                # No store to hold the pick: say so rather than ask a question
-                # nothing can answer. Nothing is written.
-                return IntentProcessingResult(
-                    success=True,
-                    message=_attach.NOT_ARMED_LINE,
-                    intent_data={"category": category, "action": intent.action},
+            principal = str(user_id) if user_id else None
+            priority = handlers._extract_priority(original)
+            data = {"category": category, "action": intent.action}
+            if resolution.matches:
+                record = _attach.build_pick_offer(
+                    principal, resolution.matches, titles, priority, original
                 )
+                unarmed = _attach.NOT_ARMED_LINE
+            elif resolution.projects:
+                record = _attach.build_not_found_offer(
+                    principal, resolution.name, resolution.projects, titles, priority, original
+                )
+                unarmed = _attach.NOT_FOUND_UNARMED_LINE.format(name=resolution.name)
+                data["project_not_found"] = True
+            else:
+                record = _attach.build_no_projects_offer(
+                    principal, resolution.name, titles, priority, original
+                )
+                unarmed = _attach.NO_PROJECTS_UNARMED_LINE.format(name=resolution.name)
+                data["project_not_found"] = True
+            if not _attach.arm_pick(intent_service, record, session_id, user_id):
+                # No store to hold the question: say so rather than ask a question
+                # nothing can answer. Nothing is written.
+                return IntentProcessingResult(success=True, message=unarmed, intent_data=data)
             return IntentProcessingResult(
                 success=True,
                 message=record["question"],
                 intent_data={
-                    "category": category,
-                    "action": _attach.TODO_PROJECT_PICK_WORKFLOW,
+                    **data,
+                    "action": record["workflow_type"],
                     _attach.PICK_PENDING_FLAG: True,
                 },
                 requires_clarification=True,
@@ -4089,6 +4106,18 @@ def register_default_workflows() -> None:
             entry_point=_attach.run_clarify_todo_project_pick_workflow,
             effect=EffectClass.READ,
             description="Re-ask the #2297 which-project pick of a todo create on a bare affirmative",
+            requires_context=["pending_action", "intent_service"],
+        ),
+        # #2297 (CXO 11-20): the "yes" to "Want it added without a project?", asked
+        # when the router named a project and the account has none. Offer-acceptance
+        # ONLY (action_triggered=False: the classifier and rail can never emit it).
+        # effect: WRITE (the titles bound at ask time, with no project; delete_todo
+        # is its inverse). outwardness: PRIVATE.
+        _attach.TODO_NO_PROJECT_WORKFLOW: WorkflowEntry(
+            entry_point=_attach.run_create_todo_without_project_workflow,
+            effect=EffectClass.WRITE,
+            outwardness=Outwardness.PRIVATE,
+            description="Add the bound todo without a project from an accepted offer (#2297)",
             requires_context=["pending_action", "intent_service"],
         ),
         # #2271: generic-accept landing for the archive several-match pick

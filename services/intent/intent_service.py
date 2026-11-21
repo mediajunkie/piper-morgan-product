@@ -3384,6 +3384,9 @@ class IntentService:
                         "project_archive_confirm_question": "project_archive_confirm_question_released",
                         # #2297: a released which-project pick; nothing added.
                         "todo_project_pick_question": "todo_project_pick_question_released",
+                        "todo_no_project_confirm_question": (
+                            "todo_no_project_confirm_question_released"
+                        ),
                         # #2308: a released which-repository question; nothing linked.
                         "link_repo_repository_question": "link_repo_repository_question_released",
                         # #2035: an ignored yes/no add-project offer is

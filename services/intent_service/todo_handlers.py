@@ -2149,7 +2149,19 @@ class TodoIntentHandlers:
             from services.intent_service.todo_project_attach import render_attached
 
             return render_attached([t.text for t in created], project.name)
+        if len(created) == 1:
+            # One bound title (#2297's "without a project" yes): the single line.
+            return format_todo_created_conscious(created[0])
         return format_todos_created_conscious(created)
+
+    async def create_titles_without_project(
+        self, titles: List[str], session_id: str, user_id: UUID, priority: str
+    ) -> str:
+        """#2297 (CXO 11-20): the yes to "Want it added without a project?" writes
+        the titles bound at ask time, with no project. No extraction."""
+        return await self._create_todos_from_items(
+            list(titles), session_id, user_id, "", priority=priority
+        )
 
     async def create_titles_in_project(
         self, titles: List[str], session_id: str, user_id: UUID, priority: str, project: Any

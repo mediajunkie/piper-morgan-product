@@ -30,6 +30,7 @@ from dataclasses import dataclass
 from typing import Any, Awaitable, Callable, Dict, Optional
 
 import structlog
+from sqlalchemy.exc import SQLAlchemyError
 
 logger = structlog.get_logger(__name__)
 
@@ -196,7 +197,11 @@ async def create_todo_write_ask(request: WriteAskRequest) -> WriteAsk:
 
             todo_user = _coerce_todo_principal(request.principal)
             if todo_user:
-                resolution = await _attach.resolve(intent, todo_user)
+                try:
+                    resolution = await _attach.resolve(intent, todo_user)
+                except (SQLAlchemyError, OSError):
+                    # The op reads again and says the couldn't-check line itself.
+                    return WriteAsk(passthrough=True)
         project = resolution.one if resolution is not None else None
         if project is None:
             return WriteAsk(passthrough=True)
