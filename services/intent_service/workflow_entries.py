@@ -12,7 +12,9 @@ No switch statements. No modifying intent_service.py.
 from typing import Any, Dict, Optional
 
 import structlog
+from sqlalchemy.exc import SQLAlchemyError
 
+from services.intent_service import todo_project_attach as _attach
 from services.intent_service import workflow_dispatcher as _workflow_dispatcher
 from services.intent_service import write_confirm_words as _words
 from services.intent_service.add_project_clarify import (
@@ -768,8 +770,90 @@ async def run_create_todo_workflow(
             error_type="AuthenticationRequired",
         )
 
+    # #2297 (Arch 11-06 11:13 (A)): the router's `project` arg, resolved against
+    # the person's own active projects by exact name. No arg: unchanged below.
+    project = None
+    bound_project_id = _words.bound_write_values(intent, "create_todo").get("project_id")
+    if bound_project_id:
+        # A confirmed "Add "x" to <project>?": the id bound at ask time, re-checked
+        # against this turn's principal. No second resolution by name.
+        project = await _attach._owned_active_project(str(bound_project_id), str(todo_user_id))
+        if project is None:
+            return IntentProcessingResult(
+                success=True,
+                message=_attach.PROJECT_GONE_LINE,
+                intent_data={"category": category, "action": intent.action},
+            )
+    else:
+        try:
+            resolution = await _attach.resolve(intent, todo_user_id)
+        except (SQLAlchemyError, OSError) as e:
+            # The project read failed BEFORE any write, so the outcome is known
+            # (CXO 11-20): say nothing was added. Never attach, and never fall
+            # back to a plain todo the person didn't ask for.
+            logger.error("todo_project_resolve_failed", error=str(e))
+            return IntentProcessingResult(
+                success=True,
+                message=_attach.RESOLVE_FAILED_LINE,
+                intent_data={
+                    "category": category,
+                    "action": intent.action,
+                    "project_lookup_failed": True,
+                },
+            )
+        if resolution is not None and resolution.one is None:
+            # Not exactly one project: nothing is written, and the person is asked
+            # (Arch 11-20). Which question depends on what is known.
+            handlers = intent_service.todo_handlers
+            original = intent.original_message or (intent.context or {}).get("original_message", "")
+            titles = handlers.resolve_create_titles(intent, original)
+            if not titles:
+                return IntentProcessingResult(
+                    success=True,
+                    message=await handlers.handle_create_todo(
+                        intent, session_id, user_id=todo_user_id
+                    ),
+                    intent_data={"category": category, "action": intent.action},
+                )
+            principal = str(user_id) if user_id else None
+            priority = handlers._extract_priority(original)
+            data = {"category": category, "action": intent.action}
+            if resolution.matches:
+                record = _attach.build_pick_offer(
+                    principal, resolution.matches, titles, priority, original
+                )
+                unarmed = _attach.NOT_ARMED_LINE
+            elif resolution.projects:
+                record = _attach.build_not_found_offer(
+                    principal, resolution.name, resolution.projects, titles, priority, original
+                )
+                unarmed = _attach.NOT_FOUND_UNARMED_LINE.format(name=resolution.name)
+                data["project_not_found"] = True
+            else:
+                record = _attach.build_no_projects_offer(
+                    principal, resolution.name, titles, priority, original
+                )
+                unarmed = _attach.NO_PROJECTS_UNARMED_LINE.format(name=resolution.name)
+                data["project_not_found"] = True
+            if not _attach.arm_pick(intent_service, record, session_id, user_id):
+                # No store to hold the question: say so rather than ask a question
+                # nothing can answer. Nothing is written.
+                return IntentProcessingResult(success=True, message=unarmed, intent_data=data)
+            return IntentProcessingResult(
+                success=True,
+                message=record["question"],
+                intent_data={
+                    **data,
+                    "action": record["workflow_type"],
+                    _attach.PICK_PENDING_FLAG: True,
+                },
+                requires_clarification=True,
+            )
+        if resolution is not None:
+            project = resolution.one
+
     message = await intent_service.todo_handlers.handle_create_todo(
-        intent, session_id, user_id=todo_user_id
+        intent, session_id, user_id=todo_user_id, project=project
     )
     # Issue #748: Don't return workflow_id for synchronous operations
     return IntentProcessingResult(
@@ -4012,6 +4096,28 @@ def register_default_workflows() -> None:
             entry_point=run_clarify_milestone_pick_workflow,
             effect=EffectClass.READ,
             description="Re-ask the #2184 which-milestone pick on a bare affirmative",
+            requires_context=["pending_action", "intent_service"],
+        ),
+        # #2297: generic-accept landing for the which-project pick of a todo
+        # create (todo_project_attach). effect: READ — a bare "yes" re-asks and
+        # re-arms the same bound projects and titles; the bound number writes at
+        # the pop seam. action_triggered=False (the #1987 precedent).
+        _attach.TODO_PROJECT_PICK_WORKFLOW: WorkflowEntry(
+            entry_point=_attach.run_clarify_todo_project_pick_workflow,
+            effect=EffectClass.READ,
+            description="Re-ask the #2297 which-project pick of a todo create on a bare affirmative",
+            requires_context=["pending_action", "intent_service"],
+        ),
+        # #2297 (CXO 11-20): the "yes" to "Want it added without a project?", asked
+        # when the router named a project and the account has none. Offer-acceptance
+        # ONLY (action_triggered=False: the classifier and rail can never emit it).
+        # effect: WRITE (the titles bound at ask time, with no project; delete_todo
+        # is its inverse). outwardness: PRIVATE.
+        _attach.TODO_NO_PROJECT_WORKFLOW: WorkflowEntry(
+            entry_point=_attach.run_create_todo_without_project_workflow,
+            effect=EffectClass.WRITE,
+            outwardness=Outwardness.PRIVATE,
+            description="Add the bound todo without a project from an accepted offer (#2297)",
             requires_context=["pending_action", "intent_service"],
         ),
         # #2271: generic-accept landing for the archive several-match pick
