@@ -293,20 +293,24 @@ jobs:
       # origin/main without the file is "no hold". No override input: clearing a hold is removing
       # the file, a commit anyone can see. (10-23 09:21: a promotion went into #2085 test 2's
       # hold, which then existed only in mail.)
-      - name: No hold may be on (ops/alpha-hold.md on origin/main)
+      - name: No hold may be on (ops/alpha-hold.md or ops/promote-hold.md on origin/main)
         run: |
           git fetch --no-tags --quiet origin main || true
           if ! git rev-parse --verify --quiet origin/main >/dev/null; then
             echo "::error::Could not resolve origin/main, so the hold file could not be read. Refusing (fail closed)."
             exit 1
           fi
-          if git cat-file -e origin/main:ops/alpha-hold.md 2>/dev/null; then
-            echo "::error::A hold is on: ops/alpha-hold.md exists on origin/main. Promotion refused. Its holder removes it when the hold clears."
-            echo "----- ops/alpha-hold.md (origin/main) -----"
-            git show origin/main:ops/alpha-hold.md
-            exit 1
-          fi
-          echo "No hold: origin/main $(git rev-parse --short=10 origin/main) has no ops/alpha-hold.md"
+          # CIO 11-20 (Lead's ask): ops/promote-hold.md holds promotions ONLY. The health watch
+          # reads alpha-hold.md alone, so a promote-only hold leaves #2146's database recovery on.
+          for f in ops/alpha-hold.md ops/promote-hold.md; do
+            if git cat-file -e "origin/main:$f" 2>/dev/null; then
+              echo "::error::A hold is on: $f exists on origin/main. Promotion refused. Its holder removes it when the hold clears."
+              echo "----- $f (origin/main) -----"
+              git show "origin/main:$f"
+              exit 1
+            fi
+          done
+          echo "No hold: origin/main $(git rev-parse --short=10 origin/main) has neither ops/alpha-hold.md nor ops/promote-hold.md"
 
       # Pinned to the commit behind release 1.5 (Arch review, 2026-09-29). Both jobs that load this
       # action also hold a deploy token, and @master is whatever that repo's tip happens to be on

@@ -2,7 +2,9 @@
 
 **`alpha-hold.md` (absent by default): an alpha promotion hold.** While this file exists on `main`, `fly-deploy.yml`'s promote job refuses, and prints the file. **It also stops automatic database recovery (#2146):** the health watch won't dispatch the restarter while a hold is on, and comments on the alert issue instead, so a deliberate stop (an attended test, maintenance) isn't undone. (CIO's proposal and Arch's conditions, 2026-10-23, after a promotion went into an attended test's hold that existed only in mail.)
 
-- **To call a hold:** commit `ops/alpha-hold.md` to `main` with four lines:
+**`promote-hold.md` (absent by default): a promotion-only hold.** While this file exists on `main`, the same promote step refuses, in the same way. The health watch never reads it, so beta's automatic database recovery stays on. Use it for a hold that only needs promotions stopped (a wording or review hold that may run overnight). Use `alpha-hold.md` when a deliberate stop must not be undone. Same four lines, same clearing rule. (CIO, 2026-11-20, on Lead's ask.)
+
+- **To call a hold:** commit `ops/alpha-hold.md` (or `ops/promote-hold.md`) to `main` with four lines:
   - who holds it, as a `Held by:` line (the watch names the holder from it, else from the first line);
   - why;
   - the condition that clears it;
