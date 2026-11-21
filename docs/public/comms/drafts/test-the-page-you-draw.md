@@ -10,7 +10,7 @@ caption: ''
 
 <!--
 SCAFFOLD, not a draft ("AI prompts human"). Comms supplies the shape, the verified facts and the quotes. You write the prose. Everything below the title and dateline is notes for you. Delete it as your prose replaces it.
-Slot: Sat 2026-11-28 (insight, tentative per your 11-18 yes to the sketch). Title is the mining pass's working title: confirm or retitle before Sat 11-21's footer teases it.
+Slot: Sat 2026-11-28 (insight, tentative per your 11-18 yes to the sketch). Title is a placeholder. You said on 11-20 it sounds awkward and you'll come up with a new one. Comms won't propose one unless you ask. It's needed before Sat 11-21's footer teases it.
 Sources: the mining pass Nov 6-16 (11-17). Comms re-opened every quote below at source on 11-18. Files are docs/omnibus-logs/2026-11-DD-omnibus-log.md, cited "Nov DD lNN".
 -->
 
