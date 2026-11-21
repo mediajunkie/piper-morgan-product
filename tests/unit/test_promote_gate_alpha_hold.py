@@ -3,7 +3,9 @@
 Runs the step's own bash against a throwaway git repo with an ``origin``:
 (a) the hold on main → refused, the file printed;
 (b) the hold on main, the checkout on another branch → still refused (read from origin/main);
-(c) no hold → proceeds; (d) origin/main unresolvable → refused (fail closed).
+(c) no hold → proceeds; (d) origin/main unresolvable → refused (fail closed);
+(e) ops/promote-hold.md (promote-only, CIO 11-20) → refused the same way, and the health watch
+never reads it, so automatic database recovery stays on.
 """
 
 import subprocess
@@ -12,7 +14,7 @@ from pathlib import Path
 import yaml
 
 WORKFLOW = Path(__file__).resolve().parents[2] / ".github" / "workflows" / "fly-deploy.yml"
-STEP = "No hold may be on (ops/alpha-hold.md on origin/main)"
+STEP = "No hold may be on (ops/alpha-hold.md or ops/promote-hold.md on origin/main)"
 
 
 def _step():
@@ -34,7 +36,9 @@ def _git(cwd, *args):
     subprocess.run(["git", *args], cwd=cwd, check=True, capture_output=True)
 
 
-def _run_step(tmp_path, *, hold_on_main, checkout_branch="main", break_origin=False):
+def _run_step(
+    tmp_path, *, hold_on_main, checkout_branch="main", break_origin=False, hold_file="alpha-hold.md"
+):
     origin = tmp_path / "origin"
     origin.mkdir()
     _git(origin, "init", "-q", "-b", "main")
@@ -46,8 +50,8 @@ def _run_step(tmp_path, *, hold_on_main, checkout_branch="main", break_origin=Fa
     _git(origin, "branch", "other")
     if hold_on_main:
         (origin / "ops").mkdir()
-        (origin / "ops" / "alpha-hold.md").write_text("held by: PA\nwhy: test 2\n")
-        _git(origin, "add", "ops/alpha-hold.md")
+        (origin / "ops" / hold_file).write_text("held by: PA\nwhy: test 2\n")
+        _git(origin, "add", f"ops/{hold_file}")
         _git(origin, "commit", "-q", "-m", "hold")
     work = tmp_path / "work"
     _git(tmp_path, "clone", "-q", "-b", checkout_branch, str(origin), str(work))
@@ -82,3 +86,16 @@ def test_an_unresolvable_origin_main_refuses(tmp_path):
     r = _run_step(tmp_path, hold_on_main=False, break_origin=True)
     assert r.returncode == 1
     assert "fail closed" in r.stdout
+
+
+def test_a_promote_only_hold_refuses_and_prints_the_holder(tmp_path):
+    r = _run_step(tmp_path, hold_on_main=True, hold_file="promote-hold.md")
+    assert r.returncode == 1
+    assert "ops/promote-hold.md exists" in r.stdout and "held by: PA" in r.stdout
+
+
+def test_the_health_watch_never_reads_the_promote_only_hold():
+    watch = WORKFLOW.parent / "alpha-health-watch.yml"
+    text = watch.read_text()
+    assert "ops/alpha-hold.md" in text
+    assert "promote-hold" not in text
