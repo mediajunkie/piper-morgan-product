@@ -852,7 +852,7 @@ Brake FIRED (second slip = #1965 admission, found and ledgered 10-09). Memo to E
   - No compose up or down on Amber; `PIPER_CREDENTIAL_STORE=db`; a classifier refusal is final.
   - A promote-gate edit that only makes the gate stricter goes ahead on Arch's written approval, and xian is informed. Spend asks inside the caps are short.
 
-## Now (rewritten at the 11-19 21:33 STOP, written 21:35; carry into Fri 11-20)
+## Superseded (was Now from the 11-19 21:33 STOP; replaced at the 11-20 21:33 STOP)
 
 - **Invite hold, PDR-008.** Re-verified 11-19 21:33 with `gh issue view`: #2261, #2282 and #2342 are OPEN. The lift-readiness memo to Exec waits on #2342's served rows, #2261's close and #2282. It is the week's goal 1, which xian said yes to.
 - **Step A DONE 11-20** (Exec 01M7X608BS, `11:12`): Lead's key stored (106 chars, sha256 b5d48364, mode 0600; reads a, b, c all refused). Sync hold lifted. Paid runs wait on Lead's restart and `check-env` line to Exec. Next in xian's sitting: Step C (Web's sign-in permissions); D and F0 not started.
@@ -888,3 +888,39 @@ Brake FIRED (second slip = #1965 admission, found and ledgered 10-09). Memo to E
   - The staged-credential scan has no skip, and its baseline is empty.
   - No compose up or down on Amber; `PIPER_CREDENTIAL_STORE=db`; a classifier refusal is final.
   - A promote-gate edit that only makes the gate stricter goes ahead on Arch's written approval, and xian is informed. Spend asks inside the caps are short.
+
+## Now (rewritten at the 11-20 21:33 STOP, written 21:34; carry into Sat 11-21)
+
+- **Invite hold, PDR-008.** Re-verified 11-20 21:33: #2261, #2282 and #2342 are OPEN. The lift-readiness memo to Exec waits on #2342's served rows, #2261's close and #2282.
+- **ADR-084:** Step A done 11-20 (`11:12`). Next in xian's sitting is Step C; D and F0 not started. Steps file: `docs/internal/operations/adr-084-one-time-steps.md`. Organisation limit $250; seat bounds $150 and $40.
+- **Beta serves `d66f15c538`** (promoted `20:25`, run 44865799133; healthy at 21:33). It carries 2406 (`0ad977685c`), 2408 and 2297's attach. 2301's handler-only block (`74522e25ec`) is on main, not served. CXO lifted the promotion hold (01M7Y733SH): it may serve early, but it isn't "ruled" until she says so on Web's quotes.
+- **Web's sitting, as web-seed-1386** (Lead 01M7Y5MY3G, order per Lead 01M7Y6728V and CXO 01M7Y6MDYA):
+  1. CXO's 2406 row on the empty account: six turns plus the projects read, each quoted whole with its route field.
+  2. Lead's 15 lines: 2297 rows B to D, and CXO's T4, N3, T5 and T7 quotes for 2301.
+  Gate: Web's session restart. On the quotes, PPM ticks:
+  - 2297 row 15 (the served quote);
+  - 2406's served row (after CXO's judgment);
+  - 2301 rows 9 to 11 and its served row (after CXO's contradiction check and the 2301 promotion).
+- **Path B, sprint 2 item 12:** 2297 is served and waits only on its quote. 2301 is built handler-only after two catalog wordings failed rule 7 (arm B, and CXO's line at $4.07). Six unit rows are met on main. T5 and T7 are held to row 10.
+- **2406 and 2410:** 2406 waits only on the served row. 2410 (V) holds base A's remainder: the seven overlap bullets, the four rule-4 bullets, "When Queries Are Ambiguous", and the fallback's invented CURRENT FOCUS, PROJECT PORTFOLIO and STANDING PRIORITIES. CXO's words are recorded there. Noted, not a row: base B's "You're speaking with a product manager".
+- **Sprint 2 closes Thu 11-26 as planned** (xian 18:12, 01M7XY16WB). #071 reports the score as it stands, and missed items go to the retro. The line is in the sprint 2 plan.
+- **Waiting, each with its blocker:**
+  - Step D: the signed-in reads of 2379, 2401, 2402 and 2400 row 1.
+  - Step F: 2389 rows 3 to 5. HOST's diffs and Step C: 2388's first run.
+  - Lead: 2383 row 3; 2354 H1; 2364's close (rerun evidence on the issue).
+  - 2351's clean-machine line needs a never-run machine and a reader. 2403 row 4 is a person's check. #2363 row 3 needs a merge-head promotion. 2382 row 4 waits on 2384.
+- **Production 329** (`gh` 11-20 21:33 = Total; 0 unmilestoned; map v177; no closes after 2408 at `14:38`).
+- **OWED rows:**
+  - 2364-known-limit: 2388's first real run.
+  - 2364-untested-provider-row: the 2390 route.
+  - 2364-selfhost-wording: the ethics flip served.
+  - tier1-approval-batch: xian's quoted yes, then Docs.
+  - rule7-key-ask, path-b-quote, notion-offer-ask: unchanged.
+  - sprint-3-plan: draft on the current score at the 11-25 START and revise at the 11-26 close. Dates are xian's.
+- **Parked, one trigger: linked billing.** Waits on xian deciding whether Piper gets its own Claude Platform organisation.
+- **Genuine xian decisions:** E5 naming for #2380; #2344; the possible "Safe Storage" keychain item.
+- **Rules carried:**
+  - Clock rule: stamp with `date` or `scripts/log-entry.sh`, and put a quoted time in backticks. A hand-typed heading was refused once today, at 15:10.
+  - mail4 reads can run past 120 s tonight; run them in the background.
+  - Edit only the last occurrence in this file (`rindex`).
+  - The staged scan has no skip. No compose on Amber. `PIPER_CREDENTIAL_STORE=db`. A classifier refusal is final.
