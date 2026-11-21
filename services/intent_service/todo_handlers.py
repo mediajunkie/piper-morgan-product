@@ -2748,6 +2748,33 @@ class TodoIntentHandlers:
                 selector_task.cancel()
             raise
 
+    async def project_status_todos(self, session_id: str, user_id: UUID, project: Any) -> str:
+        """#2301 (handler-only; Arch and CXO 11-20): the open todos of ONE project
+        (a ``ProjectRef``, the person's own, by id) for the status reply. The main
+        list's own render under CXO's header; the shown lines are recorded as the
+        last numbered list, so "complete the first one" binds to what was shown.
+        A failed read RAISES: the caller says CXO's couldn't-check line."""
+        from services.consciousness.todo_consciousness import format_todo_list_grouped
+        from services.intent_service.project_status_todos import (
+            CAP_LINE,
+            NO_OPEN_TODOS_LINE,
+            OPEN_TODOS_HEADER,
+        )
+
+        todos = await self.todo_service.list_todos(
+            user_id=user_id, include_completed=False, project_id=str(project.id)
+        )
+        logger.info("Project status todos retrieved", user_id=user_id, count=len(todos))
+        if not todos:
+            return NO_OPEN_TODOS_LINE
+        reply = format_todo_list_grouped(
+            todos, header=OPEN_TODOS_HEADER.format(project=project.name)
+        )
+        self._remember_todo_list_lines(session_id, user_id, todos)
+        if bool(getattr(todos, "capped", False)):
+            reply = f"{reply}\n\n" + CAP_LINE.format(count=len(todos), project=project.name)
+        return reply
+
     async def _resolve_list_selection(self, message: str, user_id: Any):
         """#2219 / #2295: the op-local selector call (``todo_select_resolve``). Its own
         failures are outcome ``failed`` (today's list); this guards the client's build."""
