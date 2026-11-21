@@ -34,7 +34,7 @@
 - `../lead-armb` (`lead/pathb-armb-candidate`): the 11-14 held build, superseded by the two landings.
 - `../lead-gate-2364` (`lead/2364-step1`): live, waits on the merge above.
 
-**Small, with the next change to each file:** the stale docstring on `disconnect_calendar` (it does revoke at Google); the stale comment in `scripts/seat_session.py` (the `web-seed-1386` turns don't wait on xian).
+**Small items:** both comment fixes landed 11-21 (`disconnect_calendar`, the classifier cache note); the `seat_session.py` comment was already current. None left.
 
 ## IN-DAY 2026-11-20 14:11 (supersedes today's earlier blocks where they differ)
 
