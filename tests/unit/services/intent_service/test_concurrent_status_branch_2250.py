@@ -7,6 +7,7 @@ No wording gate: the task starts on the router's pick (STATUS, get_project_statu
 from __future__ import annotations
 
 import asyncio
+from datetime import datetime, timedelta, timezone
 from types import SimpleNamespace
 from typing import Any, Dict, List
 from unittest.mock import AsyncMock, MagicMock, patch
@@ -27,18 +28,23 @@ GATHER = "services.intent_service.context_assembler.ContextAssembler.gather_cont
 _USER = "22502250-2250-4250-8250-000000002250"
 FLOOR_TEXT = "FLOOR: the project as a whole."
 ASK = "what's the progress on the MVP milestone?"
+# The due dates are set from the clock: a fixed date made these tests fail from the day
+# after it (2026-11-21), when the renderer began adding "(overdue by 1 day)".
+_MVP_DUE = (datetime.now(timezone.utc) + timedelta(days=30)).date().isoformat()
+_PRODUCTION_DUE = (datetime.now(timezone.utc) + timedelta(days=60)).date().isoformat()
+
 READ: List[Dict[str, Any]] = [
     {
         "title": "MVP",
         "state": "open",
-        "due_on": "2026-11-20T00:00:00Z",
+        "due_on": f"{_MVP_DUE}T00:00:00Z",
         "open_issues": 4,
         "closed_issues": 6,
     },
     {
         "title": "Production",
         "state": "open",
-        "due_on": "2026-12-15T00:00:00Z",
+        "due_on": f"{_PRODUCTION_DUE}T00:00:00Z",
         "open_issues": 9,
         "closed_issues": 1,
     },
@@ -137,7 +143,7 @@ class TestConcurrentStatusBranch:
         # The pick discards the gather: no floor call, no floor text in the reply.
         respond.assert_not_awaited()
         assert res.message.startswith(
-            "**MVP**: 6 of 10 issues closed, 4 still open. Due 2026-11-20."
+            f"**MVP**: 6 of 10 issues closed, 4 still open. Due {_MVP_DUE}."
         )
         assert FLOOR_TEXT not in res.message
 

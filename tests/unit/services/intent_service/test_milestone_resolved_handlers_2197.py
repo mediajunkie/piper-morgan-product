@@ -8,6 +8,7 @@ a stub router; the floor's model and context assembly are AsyncMocks that record
 
 from __future__ import annotations
 
+from datetime import datetime, timedelta, timezone
 from types import SimpleNamespace
 from typing import Any, Dict, List
 from unittest.mock import AsyncMock, MagicMock, patch
@@ -34,18 +35,23 @@ _REPO = "mediajunkie/piper-morgan-product"
 FLOOR_TEXT = "FLOOR: the project as a whole."
 ASK = "what's the progress on the MVP milestone?"
 
+# The due dates are set from the clock: a fixed date made these tests fail from the day
+# after it (2026-11-21), when the renderer began adding "(overdue by 1 day)".
+_MVP_DUE = (datetime.now(timezone.utc) + timedelta(days=30)).date().isoformat()
+_PRODUCTION_DUE = (datetime.now(timezone.utc) + timedelta(days=60)).date().isoformat()
+
 READ: List[Dict[str, Any]] = [
     {
         "title": "MVP",
         "state": "open",
-        "due_on": "2026-11-20T00:00:00Z",
+        "due_on": f"{_MVP_DUE}T00:00:00Z",
         "open_issues": 4,
         "closed_issues": 6,
     },
     {
         "title": "Production",
         "state": "open",
-        "due_on": "2026-12-15T00:00:00Z",
+        "due_on": f"{_PRODUCTION_DUE}T00:00:00Z",
         "open_issues": 9,
         "closed_issues": 1,
     },
@@ -140,7 +146,7 @@ class TestStatusBranch:
         res, _ = await _status(service, router, llm)
         # CXO's pins: title and counts from the read; no model text; due date part exactly.
         assert res.message == (
-            "**MVP**: 6 of 10 issues closed, 4 still open. Due 2026-11-20.\n\n"
+            f"**MVP**: 6 of 10 issues closed, 4 still open. Due {_MVP_DUE}.\n\n"
             "Want to see the open issues?"
         )
         assert "INVENTED" not in res.message and "2026-11-19" not in res.message
@@ -168,7 +174,10 @@ class TestStatusBranch:
 
     async def test_picked_with_no_repo_renders_without_offer_or_arm(self, service, floor):
         res, _ = await _status(service, _router(repo=None), FakeLLM('{"indices": [1]}'))
-        assert res.message == "**Production**: 1 of 10 issues closed, 9 still open. Due 2026-12-15."
+        assert (
+            res.message
+            == f"**Production**: 1 of 10 issues closed, 9 still open. Due {_PRODUCTION_DUE}."
+        )
         assert mr.OPEN_ISSUES_OFFER_QUESTION not in res.message
         assert service.workflow_offer_service.slot is None
 
@@ -317,7 +326,7 @@ class TestListBranch:
             "what's the next milestone?",
         )
         assert res.message == (
-            "**MVP**: 6 of 10 issues closed, 4 still open. Due 2026-11-20.\n\nWant to see the open issues?"
+            f"**MVP**: 6 of 10 issues closed, 4 still open. Due {_MVP_DUE}.\n\nWant to see the open issues?"
         )
         assert res.intent_data["action"] == "list_milestones_query"
         assert service.workflow_offer_service.slot["pending_action"]["pick_titles"] == ["MVP"]
@@ -327,7 +336,7 @@ class TestListBranch:
             service, _router(read=OPEN_READ), FakeLLM('{"indices": [1]}'), "when's Production due"
         )
         assert res.message.startswith(
-            "**Production**: 1 of 10 issues closed, 9 still open. Due 2026-12-15."
+            f"**Production**: 1 of 10 issues closed, 9 still open. Due {_PRODUCTION_DUE}."
         )
 
     @pytest.mark.parametrize(

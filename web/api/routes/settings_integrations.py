@@ -1706,8 +1706,8 @@ async def disconnect_calendar(
     """
     Disconnect Google Calendar integration.
 
-    Removes stored refresh token from keychain.
-    Note: Does not revoke tokens on Google's side.
+    Clears the stored refresh token and revokes the grant at Google (the #542 fix,
+    in `disconnect_connector`). A failed revoke is reported, not hidden.
     Issue #839: Use user-scoped keychain key
     #1334-P2: clearing delegated to the uniform `disconnect_connector` helper.
     """
