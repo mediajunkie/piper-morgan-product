@@ -6,6 +6,7 @@
 
 - **Main focus:** onboarding to first value (xian, 11-04).
 - **Ships:** #070 (11-13 to 11-19) reports progress, and #071 (11-20 to 11-26) reports the final score.
+- **The close doesn't move** (xian 11-20 18:12, via Exec 01M7XY16WB; decisions.log): the sprint closes Thu 11-26 as planned, and #071 reports the score as it stands. An item not done by then isn't stretched in: it goes to the retro and to the next sprint's plan as information. In his words: "Missed goals are not a shame but rather useful information to retro and feed into our sprint-planning acuity." Item 12 (Path B) is the one most at risk (PPM to Exec, 01M7X8K5VZ).
 
 ## The goal and its final score
 

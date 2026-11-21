@@ -879,6 +879,7 @@ Brake FIRED (second slip = #1965 admission, found and ledgered 10-09). Memo to E
   - tier1-approval-batch (b-wont-do, d-known-limits): trigger is xian's quoted yes, then Docs sets `approved`.
   - rule7-key-ask, path-b-quote, notion-offer-ask: unchanged.
   - 2358-procedure-texts: discharged 11-18.
+  - sprint-3-plan (added 11-20 after Exec 01M7XY16WB): the next sprint's proposal, built from sprint 2's score as it stands at the 11-26 close, with missed items as retro information (xian: sprints don't stretch). Trigger: the score is final at the 11-26 close; draft on the current score at the 11-25 START so it's ready to revise on 11-26. Dates are xian's; PPM proposes no slip.
 - **Parked, one trigger: linked billing.** No issue until xian decides Piper gets a Claude Platform organisation of its own (CIO 01M7QR37EN, PPM 01M7QRA3EC). If yes, file it in Production for hosted Piper only.
 - **Genuine xian decisions:** E5 naming for #2380; #2344; the possible "Safe Storage" keychain item.
 - **Rules carried:**
