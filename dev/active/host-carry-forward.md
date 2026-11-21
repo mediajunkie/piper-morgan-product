@@ -1,10 +1,12 @@
 ---
-last_updated: 2026-11-19
+last_updated: 2026-11-20
 currency_claim: per-stop
 max_age_days: 1
 ---
 
 # HOST carry-forward
+
+**11-20 21:26 STOP (current; older blocks below)**: Done 11-20: Step A key stored (Reads refused three times first; fingerprint b5d48364, Lead's `check-env` passed); Step C three allows in Web's settings (25 to 28); Calendar grant on `web-seed-1386` disconnected via the fixed helper, outcome `cleared`, table did not widen; Step D seat browser loaded (port 9333) and `.mcp.json` switched (`e64b545076`); Step F0 ran, `seat-github-1 created` (+x landed, blob unchanged, custody row written); condition 4 does not cover comment-only or mode-only changes (rulings sent); staging deploy red cleared itself (second time on that machine), Arch says `piper_data` holds uploads only, no destroy without the staging-rows read or xian's written OK. Drill sitting page ready since 11-19; workstream-070 review sent. Open: first sign-in of `seat-github-1` through the helper (Lead or Web); custody rows for F.4/F.5/G parts 1 to 3 (xian's sitting reports via Exec); Web's item 4 seat check (signed-in name, dummy-file Read refusal) after restart; xian's answer on which Google account the Calendar grant was on; first paid runs by Lead; Step E OpenAI half; first seat commit refusal from the #2392 hook. Owed: `ops_reader` route diffs (#2390, #2391) before main; Pard's reinstall of the push-check hook; Role Health Check ~11-23; Agent 360 v0.6 ~12-04; hook test in six untested seats (5 of 11 done).
 
 **11-19 21:26 STOP (current; older blocks below)**: Beta serves 1cebb644f8 (own /health read; b01aab9059 is an ancestor); mailed Exec cc Lead, CIO that the drill sitting page is ready for xian. Quiet otherwise. Open: Step A Reads Friday 11-20 on Exec's "go" (Lead's settings.local.json by full path, then CIO's cio/.env; reply "refused"/"not refused", nothing from the file); first --check web waits on xian Steps C, D; custody rows as steps land; hook untested in six seats; ops_reader route diffs (#2390, #2391); Role Health Check ~11-23; Agent 360 v0.6 ~12-04.
 
