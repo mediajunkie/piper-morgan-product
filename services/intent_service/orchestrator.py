@@ -532,6 +532,7 @@ def _intent_topic_label(intent: Intent) -> Optional[str]:
         "get_identity": "that",
         "get_capabilities": "that",
         "list_todos_query": "your todos",
+        "list_project_todos": "your todos",
         "github_query": "GitHub",
         "productivity_query": "productivity",
         "get_current_time": "the time",

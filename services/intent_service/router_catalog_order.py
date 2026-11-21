@@ -98,6 +98,8 @@ CATALOG_ORDER_LEDGER: tuple[str, ...] = (
     "get_top_priority",
     "manage_portfolio",
     "manage_repos",
+    # #2301 (appended 2026-11-14; lands only with arm B's rule-7 screen).
+    "list_project_todos",
 )
 
 

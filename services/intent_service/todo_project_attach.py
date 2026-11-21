@@ -29,6 +29,14 @@ Arch's ruling (decisions.log 2026-11-06 11:13, (A)) and CXO's words (11-06 11:14
 - A todo is never attached to a fuzzy guess, and a project is never created here.
 
 No ``project`` arg: this module returns ``None`` and create_todo is unchanged.
+
+#2301 (Arch 11-06 13:34: "a project-scoped todo read reached through its own
+catalog line"; split from the attach as its own rule-7 candidate, Arch 11-20): the
+``list_project_todos`` op looks its ``project`` arg up the same way and shows that
+one project's open todos. One: the list (CXO's header). No arg: a statement.
+Several: the same armed numbered pick with ``purpose`` "read", whose number shows
+the bound project's todos. None: CXO's 11-20 read lines, the question armed and
+answered by a listed name. Nothing is written by any of it.
 """
 
 from __future__ import annotations
@@ -110,6 +118,38 @@ SEVERAL_QUESTION = (
 ATTACHED_PRIORITY_LINE = "I've added '{text}' to {project}, at {priority} priority."
 ATTACHED_SEVERAL_LINE = "I've added {count} todos to {project}: {names}."
 PICK_DECLINE_LINE = "Okay, I haven't added anything. Nothing has been changed."
+# #2301. CXO 11-06 11:14 (verbatim): the empty project. The header for a project
+# with todos is format_todo_list_grouped(owner=...).
+PROJECT_EMPTY_LINE = "{project} has no todos yet."
+# CXO 11-14 (read-lines mail, PASS): no project named, and the several-match pick.
+READ_NO_NAME_LINE = 'I\'m not sure which project you mean. Say its name, or say "show my projects".'
+READ_SEVERAL_QUESTION = (
+    "I found more than one project with that name: {listed}. "
+    "Which one do you mean? Say the number."
+)
+# CXO 11-20 (mail 01M7XAV6XH, verbatim): the read's can't-find lines. The attach
+# lines without the clause about the todo.
+READ_NOT_FOUND_QUESTION = (
+    'I can\'t find a project called "{name}". Your projects: {listed}. Which one did you mean?'
+)
+READ_NOT_FOUND_MANY_LINE = (
+    'I can\'t find a project called "{name}". '
+    "Your projects: {listed} …and {more} more. Tell me the name and I'll check."
+)
+READ_NO_PROJECTS_LINE = (
+    "I can't find a project called \"{name}\", and I don't see any projects on your account."
+)
+READ_RESOLVE_FAILED_LINE = "I couldn't check your projects just now. Try again in a moment."
+# NOT YET RULED by CXO: no store to hold the read's question, so none is asked.
+READ_NOT_FOUND_UNARMED_LINE = 'I can\'t find a project called "{name}".'
+# CXO 11-14 (read-lines mail): a read changes nothing, so the decline says what
+# won't happen; the not-armed read line parallels the create side's.
+READ_PICK_DECLINE_LINE = "Okay, I won't list anything."
+READ_NOT_ARMED_LINE = "I found more than one project with that name, so I haven't listed anything."
+READ_PROJECT_GONE_LINE = "I couldn't find that project anymore."
+LIST_PROJECT_TODOS_OP = "list_project_todos"
+PURPOSE_ADD = "add"
+PURPOSE_READ = "read"
 PRINCIPAL_MISMATCH_LINE = "Let's hold off on that — nothing has been changed."
 # CXO 11-14 (settled): no rename path exists today (Arch, from source) and the
 # names differ at most in case, so the line stops here.
@@ -286,22 +326,33 @@ def render_attached(titles: List[str], project_name: str, priority: Optional[str
     )
 
 
-def render_several(labels: List[str], titles: Optional[List[str]] = None) -> str:
+def render_several(
+    labels: List[str], titles: Optional[List[str]] = None, purpose: str = PURPOSE_ADD
+) -> str:
     """The pick question. ``labels`` are the numbered lines as shown (name, with
-    the stored created date when there is one). ``titles`` are the bound titles,
-    shown exactly as stored (Arch 11-14 ruling 2)."""
+    the stored created date when there is one). For an add, ``titles`` are the
+    bound titles, shown exactly as stored (Arch 11-14 ruling 2)."""
     listed = " ".join(f"{i}. {n}" for i, n in enumerate(labels, 1))
+    if purpose == PURPOSE_READ:
+        return READ_SEVERAL_QUESTION.format(listed=listed)
     return SEVERAL_QUESTION.format(listed=listed, titles=_quoted(list(titles or [])))
 
 
-def render_not_found(name: str, labels: List[str]) -> str:
+def render_not_found(name: str, labels: List[str], purpose: str = PURPOSE_ADD) -> str:
     """CXO 11-20: the question that names what exists. Up to five are listed with
     the question; past five, the first five and the "…and N more" tail."""
+    reading = purpose == PURPOSE_READ
     if len(labels) > MAX_LISTED:
-        return NOT_FOUND_MANY_LINE.format(
+        many = READ_NOT_FOUND_MANY_LINE if reading else NOT_FOUND_MANY_LINE
+        return many.format(
             name=name, listed=", ".join(labels[:MAX_LISTED]), more=len(labels) - MAX_LISTED
         )
-    return NOT_FOUND_QUESTION.format(name=name, listed=", ".join(labels))
+    question = READ_NOT_FOUND_QUESTION if reading else NOT_FOUND_QUESTION
+    return question.format(name=name, listed=", ".join(labels))
+
+
+def _decline_line(purpose: str) -> str:
+    return READ_PICK_DECLINE_LINE if purpose == PURPOSE_READ else PICK_DECLINE_LINE
 
 
 def _pick_record(
@@ -312,6 +363,7 @@ def _pick_record(
     titles: List[str],
     priority: str,
     original_message: str,
+    purpose: str = PURPOSE_ADD,
 ) -> Dict[str, Any]:
     names = [m.name for m in projects]
     return {
@@ -331,10 +383,15 @@ def _pick_record(
             "question": question,
             "titles": list(titles),
             "priority": priority,
+            "purpose": purpose,
             "original_message": original_message,
-            "summary": "pick which project to add the todo to",
+            "summary": (
+                "pick which project to show"
+                if purpose == PURPOSE_READ
+                else "pick which project to add the todo to"
+            ),
         },
-        "decline_message": PICK_DECLINE_LINE,
+        "decline_message": _decline_line(purpose),
     }
 
 
@@ -344,13 +401,15 @@ def build_pick_offer(
     titles: List[str],
     priority: str,
     original_message: str,
+    purpose: str = PURPOSE_ADD,
 ) -> Dict[str, Any]:
     """The #846 record for SEVERAL matches: the matched projects (ids and names in
     the order the question numbers them) and the todo titles, all bound at ask
-    time. Answered by number."""
-    question = render_several([m.label for m in matches], titles)
+    time. Answered by number. ``purpose`` "read" (#2301) carries no titles: the
+    number shows the project."""
+    question = render_several([m.label for m in matches], titles, purpose)
     return _pick_record(
-        question, ANSWER_NUMBER, principal, matches, titles, priority, original_message
+        question, ANSWER_NUMBER, principal, matches, titles, priority, original_message, purpose
     )
 
 
@@ -361,13 +420,14 @@ def build_not_found_offer(
     titles: List[str],
     priority: str,
     original_message: str,
+    purpose: str = PURPOSE_ADD,
 ) -> Dict[str, Any]:
     """The #846 record for NO match on an account that has projects: EVERY active
     project (not only the five listed) and the todo titles, bound at ask time.
     Answered by a listed name, looked up as the first name was."""
-    question = render_not_found(name, [m.name for m in projects])
+    question = render_not_found(name, [m.name for m in projects], purpose)
     return _pick_record(
-        question, ANSWER_NAME, principal, projects, titles, priority, original_message
+        question, ANSWER_NAME, principal, projects, titles, priority, original_message, purpose
     )
 
 
@@ -456,7 +516,8 @@ async def handle_todo_project_pick_turn(
         }
     ids = [str(i) for i in payload.get("pick_ids") or []]
     titles = [str(t) for t in payload.get("titles") or [] if str(t).strip()]
-    if not ids or not titles:
+    reading = payload.get("purpose") == PURPOSE_READ
+    if not ids or (not titles and not reading):
         return None
     if payload.get("answer") == ANSWER_NAME:
         # The not-found question: the answer is one of the names bound at ask time.
@@ -477,9 +538,13 @@ async def handle_todo_project_pick_turn(
                 titles,
                 str(payload.get("priority") or "medium"),
                 str(payload.get("original_message") or ""),
+                purpose=PURPOSE_READ if reading else PURPOSE_ADD,
             )
             if not arm_pick(intent_service, record, session_id, user_id):
-                return {"message": NOT_ARMED_LINE, "intent_data": intent_data}
+                return {
+                    "message": READ_NOT_ARMED_LINE if reading else NOT_ARMED_LINE,
+                    "intent_data": intent_data,
+                }
             return {
                 "message": record["question"],
                 "intent_data": {**intent_data, PICK_PENDING_FLAG: True},
@@ -499,8 +564,16 @@ async def handle_todo_project_pick_turn(
         return {"message": PRINCIPAL_MISMATCH_LINE, "intent_data": intent_data}
     project = await _owned_active_project(ids[idx], str(todo_user))
     if project is None:
-        return {"message": PROJECT_GONE_LINE, "intent_data": intent_data}
-    logger.info("todo_project_pick_bound", session_id=session_id, position=idx + 1)
+        return {
+            "message": READ_PROJECT_GONE_LINE if reading else PROJECT_GONE_LINE,
+            "intent_data": intent_data,
+        }
+    logger.info("todo_project_pick_bound", session_id=session_id, position=idx + 1, reading=reading)
+    if reading:
+        reply = await intent_service.todo_handlers.handle_list_project_todos(
+            session_id, todo_user, project
+        )
+        return {"message": reply, "intent_data": {**intent_data, "action": LIST_PROJECT_TODOS_OP}}
     reply = await intent_service.todo_handlers.create_titles_in_project(
         titles, session_id, todo_user, str(payload.get("priority") or "medium"), project
     )
@@ -525,15 +598,17 @@ async def run_clarify_todo_project_pick_workflow(
             has_intent_service=intent_service is not None,
         )
         return None
+    purpose = str(payload.get("purpose") or PURPOSE_ADD)
     question = str(payload.get("question") or "") or render_several(
         [str(n) for n in payload.get("pick_labels") or payload.get("pick_names") or []],
         [str(t) for t in payload.get("titles") or []],
+        purpose,
     )
     record = {
         "workflow_type": TODO_PROJECT_PICK_WORKFLOW,
         "question": question,
         "pending_action": dict(payload),
-        "decline_message": PICK_DECLINE_LINE,
+        "decline_message": _decline_line(purpose),
     }
     intent_service.workflow_offer_service.set_pending_offer(session_id, record, user_id=user_id)
     return {

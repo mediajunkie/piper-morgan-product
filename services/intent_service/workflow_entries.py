@@ -867,6 +867,104 @@ async def run_create_todo_workflow(
     )
 
 
+async def run_list_project_todos_workflow(
+    session_id: str,
+    user_id: Optional[str] = None,
+    context: Optional[Dict[str, Any]] = None,
+) -> Any:
+    """#2301 (Arch 11-06 13:34): one project's open todos, through the op's own
+    catalog line. The router names the project (``project`` arg); code looks it up
+    among the person's own active projects (todo_project_attach.lookup: exact,
+    then one trailing "project" removed) and never guesses. No arg is a statement;
+    several is the armed numbered pick; none is CXO's 11-20 question, armed and
+    answered by a listed name (purpose "read"). effect: READ. Nothing is written;
+    the shown lines are recorded on the session as the main list records its own."""
+    from services.intent.intent_service import (
+        IntentProcessingResult,
+        _coerce_todo_principal,
+    )
+
+    ctx = context or {}
+    intent_service = ctx.get("intent_service")
+    intent = ctx.get("intent")
+    if intent_service is None or intent is None:
+        logger.error(
+            "list_project_todos_workflow_missing_context",
+            has_intent_service=intent_service is not None,
+            has_intent=intent is not None,
+        )
+        return None
+    category = intent.category.value if intent.category else "query"
+    data = {"category": category, "action": _attach.LIST_PROJECT_TODOS_OP}
+    todo_user_id = _coerce_todo_principal(user_id)
+    if not todo_user_id:
+        return IntentProcessingResult(
+            success=False,
+            message="I need you to be logged in to see your todos. Please log in and try again.",
+            intent_data=data,
+            error="User not authenticated",
+            error_type="AuthenticationRequired",
+        )
+    try:
+        resolution = await _attach.resolve(intent, todo_user_id)
+    except (SQLAlchemyError, OSError) as e:
+        # CXO 11-20: the project lookup failed, so neither "can't find" nor "no
+        # projects" is known. The todo read's own failure still raises to the rail.
+        logger.error("list_project_todos_resolve_failed", error=str(e))
+        return IntentProcessingResult(
+            success=True,
+            message=_attach.READ_RESOLVE_FAILED_LINE,
+            intent_data={**data, "project_lookup_failed": True},
+        )
+    if resolution is None:
+        return IntentProcessingResult(
+            success=True, message=_attach.READ_NO_NAME_LINE, intent_data=data
+        )
+    if resolution.one is None:
+        if not resolution.matches and not resolution.projects:
+            return IntentProcessingResult(
+                success=True,
+                message=_attach.READ_NO_PROJECTS_LINE.format(name=resolution.name),
+                intent_data={**data, "project_not_found": True},
+            )
+        principal = str(user_id) if user_id else None
+        original = intent.original_message or (intent.context or {}).get("original_message", "")
+        if resolution.matches:
+            record = _attach.build_pick_offer(
+                principal, resolution.matches, [], "medium", original, purpose=_attach.PURPOSE_READ
+            )
+            unarmed = _attach.READ_NOT_ARMED_LINE
+        else:
+            record = _attach.build_not_found_offer(
+                principal,
+                resolution.name,
+                resolution.projects,
+                [],
+                "medium",
+                original,
+                purpose=_attach.PURPOSE_READ,
+            )
+            unarmed = _attach.READ_NOT_FOUND_UNARMED_LINE.format(name=resolution.name)
+            data = {**data, "project_not_found": True}
+        if not _attach.arm_pick(intent_service, record, session_id, user_id):
+            # Arch 11-14: say what is true, ask nothing.
+            return IntentProcessingResult(success=True, message=unarmed, intent_data=data)
+        return IntentProcessingResult(
+            success=True,
+            message=record["question"],
+            intent_data={
+                **data,
+                "action": _attach.TODO_PROJECT_PICK_WORKFLOW,
+                _attach.PICK_PENDING_FLAG: True,
+            },
+            requires_clarification=True,
+        )
+    message = await intent_service.todo_handlers.handle_list_project_todos(
+        session_id, todo_user_id, resolution.one
+    )
+    return IntentProcessingResult(success=True, message=message, intent_data=data)
+
+
 async def run_delete_todo_workflow(
     session_id: str,
     user_id: Optional[str] = None,
@@ -3475,6 +3573,33 @@ def register_default_workflows() -> None:
         write_ask=_words.create_todo_write_ask,  # #2304
         flip_write_allowlist_key="create_todo",
     )
+    # #2301 (Arch 11-06 13:34): one project's todos, through its own catalog
+    # line. effect: READ. run_list_project_todos_workflow looks the router's
+    # `project` arg up among the person's own active projects and lists that
+    # project's open todos (TodoManagementService.list_todos, a SELECT); the only
+    # thing it stores is the session's last-numbered-list record and, when it has
+    # to ask which project, the #846 pick record. flip_group: read_status, the
+    # group the main todo list read (list_todos_query) holds. The description
+    # below IS router catalog text (rule 7): it lands only on its own screen,
+    # against Arch's 2026-11-20 20:00Z bar on issue 2301.
+    list_project_todos_entry = WorkflowEntry(
+        entry_point=run_list_project_todos_workflow,
+        effect=EffectClass.READ,
+        # CXO's line, 11-20 (mail 01M7XAV6XH), verbatim. It says what the op is
+        # NOT for, because the 11-14 wording pulled "list my projects" and the
+        # sprint-tasks row on arm B's screen.
+        description=(
+            "List the open todos in ONE project, only when the person names that "
+            'project ("what\'s in my Mobile Redesign project?"); put its name in '
+            "args as project, in their words. Not for listing their projects (use "
+            "list_projects), not for all todos (use list_todos_query), not for how "
+            "a project is going (use get_project_status), and not for a sprint or "
+            "other work that isn't a named project."
+        ),
+        requires_context=["intent", "intent_service"],
+        action_triggered=True,
+        flip_group="read_status",
+    )
 
     # #1666: delete_todo onto the rail — the consent-gate coverage gap Arch
     # found during the #1663 investigation. Unregistered, delete_todo never
@@ -4336,6 +4461,8 @@ def register_default_workflows() -> None:
         # Canonical key first: wired_chat_actions() names each unique entry
         # by its first-registered key.
         "create_todo": create_todo_entry,
+        # #2301: the project-scoped todo read (no aliases).
+        "list_project_todos": list_project_todos_entry,
         "add_todo": create_todo_entry,
         "new_todo": create_todo_entry,
         # #1666: delete_todo + its ActionMapper raw-emission aliases

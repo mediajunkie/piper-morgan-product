@@ -539,6 +539,13 @@ FORCE: Dict[str, Force] = {
     ),
     "list_projects": Force(one("db"), "list my projects"),
     "list_todos_query": Force(one("db"), "show my todos"),
+    # #2301: the project read (the person's active projects) is the first database
+    # read; it raises and the rail says the couldn't-check line.
+    "list_project_todos": Force(
+        one("db"),
+        "what's in my Mobile Redesign project?",
+        context={"inversion_args": {"project": "Mobile Redesign"}},
+    ),
     "list_reminders_query": Force(
         one("db"), "what reminders do I have?", absence=("there are none",)
     ),
