@@ -57,6 +57,6 @@ When the only way past a design problem is a task handed to the human, the desig
 
 ---
 
-*Next on Building Piper Morgan: [TEASE: the next non-Ship post. On the calendar today that is Sat 11-28 "Test the Page You Draw" (tentative; no narrative Thanksgiving week). It needs your final title before this goes to Docs.]*
+*Next on Building Piper Morgan: [TEASE: the next non-Ship post. On the calendar today that is Sat 11-28, working title "Test the Page You Draw" (you said 11-20 you will retitle it; no narrative Thanksgiving week). It needs your new title before this goes to Docs.]*
 
 *[Reader question, yours to write. A start: "What's the blocker on your team that always ends up on the same person's desk?"]*
