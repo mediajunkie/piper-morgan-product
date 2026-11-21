@@ -359,11 +359,14 @@ class TestRegistry:
         entry = get_action_workflows()["list_project_todos"]
         assert entry.effect is EffectClass.READ
         assert entry.flip_group == "read_status"
+        # CXO 11-20 (01M7XAV6XH), verbatim.
         assert entry.description == (
-            "List the open todos in ONE project the person names (\"what's in my Mobile "
-            "Redesign project?\"); put that project's name in args as project, in their "
-            "words. For all todos use list_todos_query; for how a project is going use "
-            "get_project_status. (#2301)"
+            "List the open todos in ONE project, only when the person names that project "
+            '("what\'s in my Mobile Redesign project?"); put its name in args as project, in '
+            "their words. Not for listing their projects (use list_projects), not for all "
+            "todos (use list_todos_query), not for how a project is going (use "
+            "get_project_status), and not for a sprint or other work that isn't a named "
+            "project."
         )
         assert ACTION_REGISTRY[("QUERY", "list_project_todos")] is ActionDisposition.WORKFLOW
         # Append-only ledger: a new op goes at the END and moves no other line.

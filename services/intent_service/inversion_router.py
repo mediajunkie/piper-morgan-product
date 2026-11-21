@@ -444,7 +444,10 @@ def build_routing_prompt(
     ]
     for op in grammar.operations:
         entry = f"- {op.name}: {op.description}"
-        if op.example:
+        # #2301 (CXO 11-20): a description that already quotes its own example
+        # does not repeat it. Today that is list_project_todos alone; every other
+        # line renders as it did (pinned by the one-request diff against main).
+        if op.example and op.example.casefold() not in op.description.casefold():
             entry += f' (e.g. "{op.example}")'
         lines.append(entry)
     lines.append(f"- {NONE_ROUTE}: no catalog operation applies")

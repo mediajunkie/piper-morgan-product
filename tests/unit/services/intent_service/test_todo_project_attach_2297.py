@@ -786,7 +786,9 @@ class TestRegistry:
         prompt = build_routing_prompt(LAUNCH_MSG, grammar, None)
         request = _SYSTEM_PROMPT + "\x00" + prompt
         assert hashlib.sha256(request.encode("utf-8")).hexdigest() == (
-            "0cbc4772d8cf2831a692c6239801a788034853fec897f9099aedb0c93b7a84ac"
+            # 2301 CANDIDATE ONLY: main's 0cbc4772d8cf… plus CXO's one list_project_todos
+            # line. It lands only if the rule-7 screen passes Arch's bar on issue 2301.
+            "1955c259c055d570f469ecd9f2ba3507e1d0b1493291d371e09cabc1ff79d40e"
         )
 
     def test_create_todos_router_description_is_unchanged(self):
