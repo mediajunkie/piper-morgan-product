@@ -21684,9 +21684,22 @@ Add any additional information here.
         except Exception:
             pass  # Best-effort instrumentation + provenance
 
+        # #2301 (handler-only; Arch 11-20): a status ask that names exactly one
+        # of the person's projects also shows that project's open todos, by code,
+        # AFTER the floor's reply. The floor never receives the list. This is the
+        # floor path only: a resolved #2197 milestone returned above.
+        _todos_block = ""
+        if intent.category is IntentCategory.STATUS and intent.action == "get_project_status":
+            from services.intent_service.project_status_todos import status_todos_block
+
+            _todos_block = await status_todos_block(intent, session_id, user_id, self.todo_handlers)
+        _status_message = _milestone_prefix + response.message
+        if _todos_block:
+            _status_message = f"{_status_message}\n\n{_todos_block}"
+
         return IntentProcessingResult(
             success=True,
-            message=_milestone_prefix + response.message,
+            message=_status_message,
             intent_data={
                 "category": category,
                 "action": intent.action,
