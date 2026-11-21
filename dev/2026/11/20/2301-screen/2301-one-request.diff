@@ -1,0 +1,2 @@
+87a88
+> - list_project_todos: List the open todos in ONE project, only when the person names that project ("what's in my Mobile Redesign project?"); put its name in args as project, in their words. Not for listing their projects (use list_projects), not for all todos (use list_todos_query), not for how a project is going (use get_project_status), and not for a sprint or other work that isn't a named project.
