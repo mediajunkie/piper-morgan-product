@@ -1,16 +1,18 @@
 # Comms carry-forward
 
-## ⭐ CURRENT STATE — 2026-11-19 21:19 PT (STOP). Read this first. It supersedes everything below.
-- **Log 11-19:** `dev/2026/11/19/2026-11-19-0619-comms-code-log.md` (DAY-CLOSED). Tomorrow creates a new log.
+## ⭐ CURRENT STATE — 2026-11-20 21:19 PT (STOP). Read this first. It supersedes everything below.
+- **Log 11-20:** `dev/2026/11/20/2026-11-20-0512-comms-code-log.md` (DAY-CLOSED). Tomorrow creates a new log.
 - **Pace (xian, 11-02):** keep working, not racing. Drain rule holds. No nudges to xian about posts (Exec 11-12).
 - **Draft-state check:** `git log -1 --format='%h %ad %s' -- <one path>` per draft, plus `git -C <shared checkout> status --short docs/public/comms/drafts/` (read-only). Admin-UI edits land as "content(<slug>): edit via admin UI".
 - **Clock rule LIVE (752547e88e, decisions.log):** no estimated `HH:Mx` minute, future time or `~` heading in logs, carry-forward, standing items, briefing or decisions.log. Quote a time in backticks. Helper: `scripts/log-entry.sh "title"`.
 - **CADENCE (xian 11-17):** Ship Tuesday from #070 (11-24), narrative Thursday, insight Saturday. No Thu 11-26, no Thu 12-24.
-- **Thu 11-19 "Inviting Company In": PUBLISHED** (https://pipermorgan.ai/blog/inviting-company-in), xian-approved fixes c4e3db24af, PUBLISH-READY 01M7V7DDK6. **Medium crosspost owed by xian** ("I'm try to cross post this evening"); no mediumURL as of 21:19. Docs sets `distributed` and archives on his URL. If xian gives the URL to Comms, relay it to Docs. Facts learned: website on Vercel; Piper app on Fly since July while the hosted alpha stayed on the DigitalOcean droplet until the September consolidation.
+- **Thu 11-19 "Inviting Company In": DISTRIBUTED** (Medium https://medium.com/building-piper-morgan/inviting-company-in-f3551cc3b6be). Done.
 - **Sat 11-21 "A Blocker Framed as Yes or No":** title LOCKED (xian 11-19). Scaffold `docs/public/comms/drafts/a-blocker-framed-as-yes-or-no.md`, row drafted. Waits on xian's prose (unchanged as of 21:19), then review, fact-check, template-audit, PUBLISH-READY. Tease: Sat 11-28.
-- **Title lock still owed (xian):** 11-28 "Test the Page You Draw" before 11-21 goes to Docs; then 12-03 "Ready or Not", 12-05, 12-10, 12-12 each before the post that teases it.
+- **Sat 11-28 title OPEN (xian 11-20 18:12 via Exec 01M7XY16WB):** "Test the Page You Draw sounds awkward and I will need to come up with a new title." He supplies it; **Comms proposes none unless asked**. Needed before 11-21 goes to Docs. Further title locks owed: then 12-03 "Ready or Not", 12-05, 12-10, 12-12 each before the post that teases it.
 - **Scaffolds (all rows drafted, draftPath set):** 11-28 `test-the-page-you-draw.md`; 12-03 `ready-or-not.md` (beat 2 headline-sourced, source line by line if kept); 12-05 `a-record-is-not-a-delivery.md` (Nov 9-11); 12-10 `open-then-hold.md` (arc 3, Nov 4-7, premise corrected: GitHub's permission page, seen on a tester call; hold not lifted, re-check status when written); 12-12 `a-deletion-can-fail-its-own-gate.md` (Nov 13; thin, offers swap with "The Number That Looked Like a Ceiling" or "A Keyword Is Not a Measurement", **xian's call**).
 - **Held scaffolds:** Thu 12-17 "What the Beta Is Teaching Us" (trigger: Thu 12-03 lands). Sat 12-19 placeholder waits on the mining pass about Fri 12-04 (Nov 17 to Dec 3).
+- **Ship #070 "No Workarounds" (xian 11-20):** Exec writes an outline scaffold (sections plus bare facts, include generously). Exec sends it to Comms for the fact-check after xian reads the week review. Comms' workstream review filed 11-20 05:14 (01M7WHGS2E).
+- **12-12 update 11-20:** the 2364 live gate run failed by one probe (13 of 15 against a bar of 14); deletion still held, Lead asked Arch for a choice. Added to the scaffold. Related new issue 2409 (probe ic-2 likely mislabelled).
 - **CIO ask (11-16):** first push printing `already passed on this content` → mail CIO that line. Not seen yet.
 - **Mail v4 live;** v3 fallback until 11-23.
 - **Arcs (adopted 11-14):** map in planning doc (Claude Docs 5vc7f1CTHhadvvPBB73h86). Era 8 "The Beta" starts 10-31.
