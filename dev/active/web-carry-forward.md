@@ -1,5 +1,7 @@
 # Web carry-forward — 2026-10-26 (active)
 
+**ORDER CONFIRMED (Lead 01M7Y6728V, CXO 01M7Y6MDYA):** CXO's 2406 row first (projects read, then six turns, each reply whole with its route field; a turn not shown to come from the conversational reply is not counted), then Lead's 15 lines. Beta stays on d66f15c538 for the sitting (2301 not promoted until CXO rules on lines 11 and 12). Quote /health at the start of the sitting.
+
 **2026-11-20 20:34 ADDITION (Lead 01M7Y5MY3G, served pass on beta d66f15c538, 2297):** SECOND sitting, AFTER CXO's empty-account 2406 row (Lead's setup creates projects Mobile Redesign and Launch, which would break CXO's turn 6). 15 exact lines in one fresh conversation (A setup 1-3, B 4-5, C 6-9, D 10, E 11-15), each reply quoted whole with its route field, `/health` build quoted at the start; optional: `add project launch` lowercase then `add a task to Launch: draft the brief`. Full text in mail 01M7Y5MY3G. Ordering note sent to Lead, cc CXO and Exec.
 
 **CXO addendum 01M7XQGAX8 (2406 row is now SIX turns):** after turns 1 to 3, add 4 `How do you usually handle a stakeholder who keeps changing the requirements late?`, 5 `I'm new to product management. What's a good habit to build in my first month?`, 6 `What do you know about my team?` (turn 6 tests the base: with nothing on file, naming anyone or any project fails). Quote every reply whole plus its intent/route field if present. If no turn is shown to come from the conversational reply, say so; CXO won't count the row as served. Planned turns: 6.
