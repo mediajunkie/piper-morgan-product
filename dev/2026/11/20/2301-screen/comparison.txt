@@ -1,0 +1,170 @@
+## TABLE (main | candidate)
+T1 | add a todo to my Mobile Redesign project: interview five current users
+   main: create_todo ×6 | project: "Mobile Redesign" ×6 | text: "interview five current users" ×6
+   cand: create_todo ×6 | project: "Mobile Redesign" ×6 | text: "interview five current users" ×6
+T2 | add 'draft the launch email' to the Launch project
+   main: create_todo ×6 | project: "Launch project" ×6 | text: "draft the launch email" ×6
+   cand: create_todo ×6 | project: "Launch project" ×3, "Launch" ×3 | text: "draft the launch email" ×6
+T3 | put a todo in Mobile Redesign to book the usability lab
+   main: create_todo ×6 | project: "Mobile Redesign" ×6 | text: "book the usability lab" ×6
+   cand: create_todo ×6 | project: "Mobile Redesign" ×6 | text: "book the usability lab" ×6
+T4 | what's in my Mobile Redesign project?
+   main: get_project_status ×6 | project: "Mobile Redesign" ×4, (none) ×2 | text: (none) ×6
+   cand: list_project_todos ×6 | project: "Mobile Redesign" ×6 | text: (none) ×6
+T5 | show me the todos in the Launch project
+   main: CLARIFY ×6 | project: (none) ×6 | text: (none) ×6
+   cand: list_project_todos ×6 | project: "Launch" ×6 | text: (none) ×6
+T6 | what's left to do in Mobile Redesign
+   main: get_project_status ×6 | project: "Mobile Redesign" ×6 | text: (none) ×6
+   cand: list_project_todos ×6 | project: "Mobile Redesign" ×6 | text: (none) ×6
+T7 | which todos are under Website Refresh?
+   main: NONE ×6 | project: (none) ×6 | text: (none) ×6
+   cand: list_project_todos ×6 | project: "Website Refresh" ×6 | text: (none) ×6
+T8 | add 'order the banner' under Website Refresh
+   main: create_todo ×6 | project: "Website Refresh" ×6 | text: "order the banner" ×6
+   cand: create_todo ×6 | project: "Website Refresh" ×6 | text: "order the banner" ×6
+M1 | add a todo to email the Launch team about pricing
+   main: create_todo ×6 | project: (none) ×6 | text: (none) ×6
+   cand: create_todo ×6 | project: (none) ×6 | text: "email the Launch team about pricing" ×5, (none) ×1
+M2 | remind me to review the Mobile Redesign mockups
+   main: create_reminder ×6 | project: (none) ×6 | text: (none) ×6
+   cand: create_reminder ×6 | project: (none) ×6 | text: (none) ×6
+C1 | add a todo to review the Q3 roadmap
+   main: create_todo ×6 | project: (none) ×6 | text: (none) ×6
+   cand: create_todo ×6 | project: (none) ×6 | text: (none) ×6
+C2 | add a todo to web test one
+   main: create_todo ×6 | project: (none) ×6 | text: "web test one" ×6
+   cand: create_todo ×6 | project: (none) ×6 | text: "web test one" ×6
+C3 | add a todo: call the dentist
+   main: create_todo ×6 | project: (none) ×6 | text: "call the dentist" ×6
+   cand: create_todo ×6 | project: (none) ×6 | text: "call the dentist" ×6
+D1 | add milk to my shopping list
+   main: NONE ×6 | project: (none) ×6 | text: (none) ×6
+   cand: NONE ×6 | project: (none) ×6 | text: (none) ×6
+D2 | add 'renew passport' to my personal list
+   main: create_todo ×6 | project: (none) ×6 | text: "renew passport" ×6
+   cand: create_todo ×6 | project: (none) ×6 | text: "renew passport" ×6
+D3 | put 'send invoice' on my list for tomorrow
+   main: create_todo ×6 | project: (none) ×6 | text: "send invoice" ×6
+   cand: create_todo ×6 | project: (none) ×6 | text: "send invoice" ×6
+D4 | add a todo to my work list: update the roadmap
+   main: create_todo ×6 | project: (none) ×6 | text: "update the roadmap" ×6
+   cand: create_todo ×6 | project: (none) ×6 | text: "update the roadmap" ×6
+E1 | add a todo to the Mobile Redesign project to fix the nav
+   main: create_todo ×6 | project: "Mobile Redesign" ×6 | text: "fix the nav" ×6
+   cand: create_todo ×6 | project: "Mobile Redesign" ×6 | text: "fix the nav" ×6
+E2 | add 'fix the nav' to my Mobile Redesign project list
+   main: create_todo ×6 | project: "Mobile Redesign" ×6 | text: "fix the nav" ×6
+   cand: create_todo ×6 | project: "Mobile Redesign" ×6 | text: "fix the nav" ×6
+N1 | show my todos
+   main: list_todos_query ×6 | project: (none) ×6 | text: (none) ×6
+   cand: list_todos_query ×6 | project: (none) ×6 | text: (none) ×6
+N2 | any update on my todos
+   main: list_todos_query ×6 | project: (none) ×6 | text: (none) ×6
+   cand: list_todos_query ×6 | project: (none) ×6 | text: (none) ×6
+N3 | how is the Mobile Redesign project going?
+   main: get_project_status ×6 | project: "Mobile Redesign" ×6 | text: (none) ×6
+   cand: get_project_status ×6 | project: "Mobile Redesign" ×6 | text: (none) ×6
+N4 | list my projects
+   main: list_projects ×6 | project: (none) ×6 | text: (none) ×6
+   cand: list_projects ×6 | project: (none) ×6 | text: (none) ×6
+N5 | show me my portfolio
+   main: manage_portfolio ×6 | project: (none) ×6 | text: (none) ×6
+   cand: manage_portfolio ×6 | project: (none) ×6 | text: (none) ×6
+S1 | add octocat/hello-world to the project
+   main: CLARIFY ×6 | project: (none) ×6 | text: (none) ×6
+   cand: CLARIFY ×6 | project: (none) ×6 | text: (none) ×6
+S2 | link repo octocat/hello-world to Mobile Redesign
+   main: link_repo ×6 | project: "Mobile Redesign" ×6 | text: (none) ×6
+   cand: link_repo ×6 | project: "Mobile Redesign" ×6 | text: (none) ×6
+S3 | archive project Mobile Redesign
+   main: archive_project ×6 | project: (none) ×6 | text: (none) ×6
+   cand: archive_project ×6 | project: "Mobile Redesign" ×6 | text: (none) ×6
+S4 | what did we make earlier
+   main: session_activity_query ×6 | project: (none) ×6 | text: (none) ×6
+   cand: session_activity_query ×6 | project: (none) ×6 | text: (none) ×6
+K1 | what are the key tasks for this sprint
+   main: get_contextual_guidance ×6 | project: (none) ×6 | text: (none) ×6
+   cand: list_project_todos ×6 | project: "this sprint" ×6 | text: (none) ×6
+K2 | what's the progress on the MVP milestone?
+   main: get_project_status ×6 | project: (none) ×6 | text: (none) ×6
+   cand: analyze_blockers ×6 | project: (none) ×6 | text: (none) ×6
+
+## CLAUSE 1 and 2 (every row except the read targets; K1 and K2 are in the table)
+  T1: create_todo main 6/6 cand 6/6 need 5; new label >=3: none  ok
+  T2: create_todo main 6/6 cand 6/6 need 5; new label >=3: none  ok
+  T3: create_todo main 6/6 cand 6/6 need 5; new label >=3: none  ok
+  T8: create_todo main 6/6 cand 6/6 need 5; new label >=3: none  ok
+  M1: create_todo main 6/6 cand 6/6 need 5; new label >=3: none  ok
+  M2: create_reminder main 6/6 cand 6/6 need 5; new label >=3: none  ok
+  C1: create_todo main 6/6 cand 6/6 need 5; new label >=3: none  ok
+  C2: create_todo main 6/6 cand 6/6 need 5; new label >=3: none  ok
+  C3: create_todo main 6/6 cand 6/6 need 5; new label >=3: none  ok
+  D1: NONE main 6/6 cand 6/6 need 5; new label >=3: none  ok
+  D2: create_todo main 6/6 cand 6/6 need 5; new label >=3: none  ok
+  D3: create_todo main 6/6 cand 6/6 need 5; new label >=3: none  ok
+  D4: create_todo main 6/6 cand 6/6 need 5; new label >=3: none  ok
+  E1: create_todo main 6/6 cand 6/6 need 5; new label >=3: none  ok
+  E2: create_todo main 6/6 cand 6/6 need 5; new label >=3: none  ok
+  N1: list_todos_query main 6/6 cand 6/6 need 5; new label >=3: none  ok
+  N2: list_todos_query main 6/6 cand 6/6 need 5; new label >=3: none  ok
+  N3: get_project_status main 6/6 cand 6/6 need 5; new label >=3: none  ok
+  N4: list_projects main 6/6 cand 6/6 need 5; new label >=3: none  ok
+  N5: manage_portfolio main 6/6 cand 6/6 need 5; new label >=3: none  ok
+  S1: CLARIFY main 6/6 cand 6/6 need 5; new label >=3: none  ok
+  S2: link_repo main 6/6 cand 6/6 need 5; new label >=3: none  ok
+  S3: archive_project main 6/6 cand 6/6 need 5; new label >=3: none  ok
+  S4: session_activity_query main 6/6 cand 6/6 need 5; new label >=3: none  ok
+  K1: get_contextual_guidance main 6/6 cand 0/6 need 5; new label >=3: {'list_project_todos': 6}  FAIL
+  K2: get_project_status main 6/6 cand 0/6 need 5; new label >=3: {'analyze_blockers': 6}  FAIL
+
+## CLAUSE 3 (no dropped todo)
+  C1: text kept main 0/6 cand 0/6  ok
+  C2: text kept main 6/6 cand 6/6  ok
+  C3: text kept main 6/6 cand 6/6  ok
+  D2: cand project (none) ×6  ok
+  D4: cand project (none) ×6  ok
+
+## CLAUSE 4 (the read targets)
+  T4: list_project_todos 6/6, project named 6/6; main: get_project_status ×6
+  T5: list_project_todos 6/6, project named 6/6; main: CLARIFY ×6
+  T6: list_project_todos 6/6, project named 6/6; main: get_project_status ×6
+  T7: list_project_todos 6/6, project named 6/6; main: NONE ×6
+
+## CLAUSE 5 (corpus) 630 630 630
+main against control differ: 2
+candidate on a label neither main nor control produced: 27
+  "what's the next milestone?": main list_milestones | control list_milestones | cand NONE
+  "what's the progress on the MVP milestone?": main get_project_status | control get_project_status | cand analyze_blockers
+  'status of the Fast Follow milestone': main review_issue | control review_issue | cand analyze_blockers
+  "I'm done with the first and the third": main complete_todo | control complete_todo | cand CLARIFY
+  'update my project name to Atlas': main CLARIFY | control CLARIFY | cand update_document
+  'Create a doc from this conversation': main CLARIFY | control CLARIFY | cand NONE
+  'I need to remember to submit my timesheet': main create_todo | control create_todo | cand create_reminder
+  'just getting started here': main greeting | control greeting | cand NONE
+  'what are the key tasks for this sprint': main get_contextual_guidance | control get_contextual_guidance | cand NONE
+  'how much time do I spend sitting in meetings': main meeting_time | control meeting_time | cand week_calendar
+  'show all events': main CLARIFY | control CLARIFY | cand week_calendar
+  'list all pull requests from this sprint': main list_prs | control list_prs | cand CLARIFY
+  'what is my most important work today': main attention_query | control attention_query | cand get_top_priority
+  'show the current status': main get_project_status | control get_project_status | cand CLARIFY
+  "tasks I'm actively working on": main list_todos_query | control list_todos_query | cand attention_query
+  'I need help understanding something': main CLARIFY | control CLARIFY | cand NONE
+  "I'd like a risk assessment for this project": main analyze_blockers | control analyze_blockers | cand CLARIFY
+  'can I see the conversation log': main get_memory | control get_memory | cand NONE
+  'please disconnect my repository from this project': main unlink_repo | control unlink_repo | cand CLARIFY
+  'can you show project repositories for this account': main list_repos | control list_repos | cand CLARIFY
+  'list my archived projects and summarize my current work': main PLAN[list_archived_projects→get_project_status] | control PLAN[list_archived_projects→get_project_status] | cand PLAN[list_archived_projects→session_activity_query]
+  'Where did you get that from?': main CLARIFY | control CLARIFY | cand NONE
+  'How did you know about that?': main CLARIFY | control CLARIFY | cand explain_trust
+  'put the old project away': main archive_project | control archive_project | cand CLARIFY
+  'unarchive the old project': main restore_project | control restore_project | cand CLARIFY
+  'modify the status document': main update_document | control update_document | cand CLARIFY
+  'Update issue #123': main update_issue | control update_issue | cand CLARIFY
+candidate differs from main (any): 27
+candidate corpus rows on list_project_todos: []
+
+## VERDICT
+NO-GO
+  - clause 1: K1 get_contextual_guidance main 6/6, cand 0/6 (need 5); new {'list_project_todos': 6}
+  - clause 1: K2 get_project_status main 6/6, cand 0/6 (need 5); new {'analyze_blockers': 6}

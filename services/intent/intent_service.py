@@ -1428,6 +1428,8 @@ class IntentService:
             "project_archive_pick_pending",
             # #2294: the one-turn marker after the no-reminders statement.
             "no_targets_marker_pending",
+            # #2297: the armed which-project pick of a todo create.
+            "todo_project_pick_pending",
             # #1651: the standup's bound overdue-todo offer must survive
             # this turn (armed on the rail-dispatched get_standup path).
             "standup_todo_offer_pending",
@@ -2680,6 +2682,28 @@ class IntentService:
                             intent_data=_pap_turn["intent_data"],
                             requires_clarification=False,
                         )
+                # #2297: a pending WHICH-PROJECT pick of a todo create (armed when
+                # several of the person's projects share the router-named name)
+                # binds a short numbered answer to the project id bound at ask time
+                # and writes the titles bound with it. Returning None falls through
+                # exactly as the archive pick does.
+                elif _vi_payload.get("kind") == "todo_project_pick_question":
+                    from services.intent_service import todo_project_attach as _tpa
+
+                    _tpa_turn = await _tpa.handle_todo_project_pick_turn(
+                        pending_offer,
+                        message,
+                        session_id=session_id,
+                        user_id=user_id,
+                        intent_service=self,
+                    )
+                    if _tpa_turn is not None:
+                        return IntentProcessingResult(
+                            success=True,
+                            message=_tpa_turn["message"],
+                            intent_data=_tpa_turn["intent_data"],
+                            requires_clarification=False,
+                        )
                 # #2308 (link_repo slice): a pending WHICH-REPOSITORY question (armed
                 # by link_repo's held write ask for a found project) binds an
                 # owner/name answer, read with the handler's own parse, and arms the
@@ -3358,6 +3382,11 @@ class IntentService:
                         # #2271: a released archive pick; nothing archived.
                         "project_archive_pick_question": "project_archive_pick_question_released",
                         "project_archive_confirm_question": "project_archive_confirm_question_released",
+                        # #2297: a released which-project pick; nothing added.
+                        "todo_project_pick_question": "todo_project_pick_question_released",
+                        "todo_no_project_confirm_question": (
+                            "todo_no_project_confirm_question_released"
+                        ),
                         # #2308: a released which-repository question; nothing linked.
                         "link_repo_repository_question": "link_repo_repository_question_released",
                         # #2035: an ignored yes/no add-project offer is
@@ -21655,9 +21684,22 @@ Add any additional information here.
         except Exception:
             pass  # Best-effort instrumentation + provenance
 
+        # #2301 (handler-only; Arch 11-20): a status ask that names exactly one
+        # of the person's projects also shows that project's open todos, by code,
+        # AFTER the floor's reply. The floor never receives the list. This is the
+        # floor path only: a resolved #2197 milestone returned above.
+        _todos_block = ""
+        if intent.category is IntentCategory.STATUS and intent.action == "get_project_status":
+            from services.intent_service.project_status_todos import status_todos_block
+
+            _todos_block = await status_todos_block(intent, session_id, user_id, self.todo_handlers)
+        _status_message = _milestone_prefix + response.message
+        if _todos_block:
+            _status_message = f"{_status_message}\n\n{_todos_block}"
+
         return IntentProcessingResult(
             success=True,
-            message=_milestone_prefix + response.message,
+            message=_status_message,
             intent_data={
                 "category": category,
                 "action": intent.action,
