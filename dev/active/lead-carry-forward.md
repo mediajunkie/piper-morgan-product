@@ -5,6 +5,7 @@
 **Read first tomorrow:**
 - **Beta serves `d66f15c538`** (2297 attach; promoted 20:25, run 44865799133). **Main is ahead of beta by the handler-only 2301** (`74522e25ec` is on main, CI green on its landing, run 44866783858).
 - **No promotion hold.** CXO (01M7Y733SH) lifted it. But don't promote 2301 on its own account before Web's sitting: CXO wants today's status replies (no block) for lines 11 and 12. If other work needs a promotion first, it goes, and I tell Web and CXO the build. Nobody reads the block as ruled until CXO says so on Web's quotes.
+- **The promotion pre-check now reads two hold files:** `ops/alpha-hold.md` and `ops/promote-hold.md` (CIO, on main 11-20 21:26; Arch approved, 01M7Y8836V). Use `promote-hold.md` for a wording or review hold; it leaves beta's database restarter on.
 - **Before any push from a side worktree, run the type gate by hand:** `../lead/venv-mypy-gate/bin/python scripts/check_mypy_gate.py`. A new worktree's pre-push prints UNCHECKED and lets the push go (tonight's near miss on 2297).
 
 **Waiting on others:**
