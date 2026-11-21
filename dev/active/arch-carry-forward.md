@@ -1,5 +1,5 @@
 ---
-last_updated: 2026-11-19 21:29 PST (STOP)
+last_updated: 2026-11-20 21:27 PST (STOP)
 currency_claim: rewritten at substantive-change boundaries, verified at every START
 max_age_days: 4
 ---
@@ -25,6 +25,14 @@ context-floor directive that duplicating it here is exactly the accretion to cut
 | GitHub criteria line | `gh issue list --repo mediajunkie/piper-morgan-product --label architecture --state open` — the third work-queue source (PM v1.33). Open each issue, don't write a row from the list. Report drained as "mail (N) + standing-items (N) + label:architecture (M)." |
 
 ## IN FLIGHT — current state only
+
+**11-20 state (STOP):** main is 12/12 green and the inbox is empty. Beta has served `d66f15c538` since 20:25 (2297 attach is served). On main but not promoted: 2301 handler-only (`093b2a90aa` and `991f209e8b`), and CIO's promote-hold file (`0bfeebc8de`, which I approved as stricter-only at 21:11 and reported to Exec). Model Opus 5.5. Every ruling is in decisions.log.
+- **2364 (ethics gate):** the rerun PASSED ($1.40). Step 1 (`lead/2364-step1-r1120b`, `d02a24120b`) waits on xian's OpenAI run, or on a beta key read plus a known-limits row. After that I read the final rebased diff, and the default flip goes in its own commit. Option (b), the ambiguous tier with its hint fed to the reply, comes after step 1 is served, as its own ruling and screen.
+- **2406:** served since `15:43` (option 2, split by base). CXO's served read goes through Web. 2410 (classifier prompt = persona base) waits on PPM's placement, then my ruling.
+- **2297:** served. Web's sitting (Lead 01M7Y5MY3G) covers its row. The No/Yes guard is verified on main.
+- **2301:** the catalog line is dead: two NO-GOs, and the bar ends the wording. The handler-only version, a todos block after the get_project_status reply under conditions 1-6 (decisions.log 19:39/19:49/20:09/20:38), is on main and conforms. CXO's final words wait on Web's T4, N3, T5 and T7 quotes. Lead won't promote 2301 on its own before that sitting. CXO said early serve with another promotion is acceptable.
+- **Waiting on others:** Web's sittings (CXO's 2406 row first, then Lead's 15 lines); the served disconnect read (Web, then CXO); the 2157 drill (xian); 2403 row 4 (a person's clean-shell check); the hook decision with Lead (about 11-23).
+- **Lessons (11-20):** (1) My 11:50 2406 bar was set on the router harness, which never takes the persona base; Lead caught it. Check which prompt a screen actually sends before setting a bar on it. (2) At 19:46 I adopted a wording illustration as the format and had to correct it at 19:49. Before turning a CXO example into a rule, ask whether it's the rule. (3) A read added on top of a reply must not be able to take the reply away: catch everything in the add-on and log it.
 
 **11-19 state (STOP):** main 12/12 green; inbox empty; beta serves `f34fe7bef5` since 08:44 (two promotions today: `1cebb644f8` at 07:03, then `f34fe7bef5`). Both promotions ran the conduct-layer size step by path: 2039 bytes, about 679 tokens, under the 1,000 cap (OK). That first gated promotion was checked by hand, so the item is closed. Now served: 2354, the card copy items 1-6, the 2157 drill and its fixes (`b01aab9059`), and the whole disconnect unit. Model Opus 5.5.
 - **Rulings today (decisions.log):**
