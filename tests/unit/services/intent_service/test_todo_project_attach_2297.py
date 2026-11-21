@@ -331,6 +331,32 @@ class TestLookup:
         assert [r.id for r in attach.lookup(stored, "Launch")] == ["p1"]
 
 
+class TestAListNameIsNotAProject:
+    """PPM's row (11-20): 'add renew passport to my personal list' attaches to no
+    project. Main's router sends no ``project`` for that phrase (arm B screen, row
+    D2: `(none)` 6 of 6 on main), and this unit leaves the router's request
+    unchanged. If a ``project`` ever did arrive for a list name, it is looked up
+    like any other name and never guessed into a project."""
+
+    LIST_MSG = "add renew passport to my personal list"
+
+    async def test_with_no_project_arg_it_is_a_plain_todo(self, monkeypatch):
+        monkeypatch.setattr(attach, "_active_projects", AsyncMock(side_effect=AssertionError))
+        svc = _service()
+        await _run(_intent(self.LIST_MSG, {"text": "renew passport"}), svc)
+        assert [c["text"] for c in svc.todo_handlers._calls] == ["renew passport"]
+        assert "project_id" not in svc.todo_handlers._calls[0]
+
+    async def test_a_list_name_sent_as_a_project_attaches_to_nothing(self, projects):
+        projects[USER] = [_project("p1", "Personal finance"), _project("p2", "Launch")]
+        svc = _service()
+        result = await _run(
+            _intent(self.LIST_MSG, {"text": "renew passport", "project": "personal"}), svc
+        )
+        assert svc.todo_handlers._calls == []
+        assert result.message.startswith('I can\'t find a project called "personal"')
+
+
 NOT_FOUND = (
     "I can't find a project called \"Mobile Redesign\", so I haven't added the todo yet. "
     "Your projects: Mobile Redesign v2, Launch. Which one did you mean?"
