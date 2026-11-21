@@ -11,7 +11,7 @@ caption: ''
 <!--
 SCAFFOLD, not a draft ("AI prompts human"). Comms supplies the shape, the verified facts and the quotes. You write the prose. Everything below the title and dateline is notes for you. Delete it as your prose replaces it.
 Slot: Thu 2026-12-03 (building, arc 2; tentative per your 11-18 yes to the sketch). Title is the arc's working title: confirm or retitle before Sat 11-28's footer teases it.
-Sources: a Sonnet subagent read the Oct 20 to 31 omnibus logs (themes in full for Oct 20, 29, 30, 31; headlines for Oct 21 to 28) and every xian line in decisions.log for the window, 11-18. Comms re-opened 10 of its quotes at source: 9 matched at the stated line, and the tenth (the 14:52 build choice) is cited below at its decisions.log line instead. "(log)" marks a decisions.log line where an agent records your words, not always verbatim.
+Sources: a Sonnet subagent read the Oct 20 to 31 omnibus logs (themes in full for Oct 20, 29, 30, 31; headlines for Oct 21 to 28) and every xian line in decisions.log for the window, 11-18. Comms re-opened 10 of its quotes at source: 9 matched at the stated line, and the tenth (the 14:52 build choice) is cited below at its decisions.log line instead. Beat 2 re-sourced 11-21 from the Oct 21 to 23 omnibus logs and each issue's title. "(log)" marks a decisions.log line where an agent records your words, not always verbatim.
 -->
 
 ## The arc in one line (pick a through-line, or write your own)
@@ -27,7 +27,13 @@ Sources: a Sonnet subagent read the Oct 20 to 31 omnibus logs (themes in full fo
 - Same day you added an issue to the must-close list: "Yes, let's add #2105 to the must close." [decisions.log l2675]
 
 **2. Oct 21 to 23: what earns a place on the gate.**
-- What got added were false empties and wrong answers about the user's own data, plus "the database dies and nobody is there to restart it". The gate grew for honesty defects, not polish. [subagent's read of Oct 21 to 23; headlines only]
+- What you admitted to the gate in those three days (sourced 11-21, omnibus plus each issue's title):
+  - Oct 21, 15:01: the production database died inside a running machine and nothing restarted it or raised an alert for over four hours. You admitted it as a must-close, with an outside restarter. [Oct 21 l11, l112-113; issue title]
+  - Oct 22, around 12:20: GitHub queries that reported success when they had failed, with tests that asserted the false success, and "this week" reads that said 0 issues closed when the repo showed 19. [Oct 22 l165; issue titles]
+  - Oct 22, 16:20: asks about "this document" with no document in the chat were answered with repository metrics. [Oct 22 l165, l273-274; issue title]
+  - Oct 23: a GitHub answer that put the user's calendar events under their repo, and a calendar connect that said "Calendar Connected" when the user had left Google's calendar box unticked. [Oct 23 l313-314; issue titles]
+- Every addition was either the product telling the user something false about their own work or account, or the database outage. The one must-close there for another reason was the missing in-app feedback path, which was already on the gate and wasn't one of these admissions. [Oct 21 l11, l259-260]
+- The gate went from 9 open on the morning of Oct 21 to 3 open and no must-close on the evening of Oct 23. [Oct 21 l257; Oct 23 l13]
 - Your alpha-stage controls principle, Oct 23: "I'm the only human dedicated to this project. It's one thing to design an eventual plan suitable for a product in production with user numbers in the two to three digits or higher, but to require that now, in alpha, with only me here is a recipe for work stoppage." [decisions.log l2758 (log, Exec 10-23 11:14)]
 
 **3. Oct 28: a miss you found yourself.**
@@ -56,7 +62,6 @@ Sources: a Sonnet subagent read the Oct 20 to 31 omnibus logs (themes in full fo
 - **Go time:** relayed 17:03, and a later omnibus line has 17:51. Say "that afternoon".
 - **"Beta opens Oct 31":** the letters went out by early afternoon, before the first 0.9.0.0 build was served and before the tag (22:01, after a regression held it). You signed up for the beta yourself on Oct 30.
 - **Alpha vs beta invitations:** the overdue alpha invitations went out Oct 26. The beta ones are what waited.
-- Beat 2's Oct 21 to 23 summary comes from headlines, not a full read. I'll source it line by line if you keep it.
 - No outside names. The Oct 30 conference talk is yours. Name no one from it.
 
 ---
