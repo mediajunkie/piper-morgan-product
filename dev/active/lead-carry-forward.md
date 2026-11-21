@@ -1,5 +1,11 @@
 # Lead carry-forward — Fable 5.2 seat again since 2026-11-20 08:56 (Opus 5.5 from 2026-11-17 21:30 until then); Model A worktree ~/Development/piper-morgan-worktrees/lead
 
+## START 2026-11-21 06:51 (re-verified; the DAY-END 11-20 block below still holds)
+
+- Checked this morning: beta `d66f15c538` healthy and quiet; staging `84ab007a84`; main CI 12 of 12 green; no hold file in `ops/`; no served-path change on main since 2301's landing; inbox empty; no new sprint issue since 2410.
+- Every wait below was re-read against GitHub and mail: 2297, 2301, 2406, 2364 and 2389 are open; 2404, 2405 and 2408 are closed. None has moved overnight. All still wait on Web's sitting or on xian's OpenAI run (Exec has it; gated since 11-20, under a day).
+- 2389's real run is now recorded on the issue (issuecomment-7064413698); its open boxes are HOST's, CIO's and PPM's.
+
 ## DAY-END 2026-11-20 20:56 (supersedes today's earlier blocks where they differ)
 
 **Read first tomorrow:**
