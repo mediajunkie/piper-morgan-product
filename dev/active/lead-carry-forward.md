@@ -1,4 +1,33 @@
-# Lead carry-forward — Opus 5.5 seat since 2026-11-17 21:30 (xian moved the session off Fable 5.2 at the week's Fable limit, until it resets); Fable 5.2 from 2026-11-10 ~17:25 to then; Model A worktree ~/Development/piper-morgan-worktrees/lead
+# Lead carry-forward — Fable 5.2 seat again since 2026-11-20 08:56 (Opus 5.5 from 2026-11-17 21:30 until then); Model A worktree ~/Development/piper-morgan-worktrees/lead
+
+## DAY-END 2026-11-20 20:56 (supersedes today's earlier blocks where they differ)
+
+**Read first tomorrow:**
+- **Beta serves `d66f15c538`** (2297 attach; promoted 20:25, run 44865799133). **Main is ahead of beta by the handler-only 2301** (`74522e25ec` is on main, CI green on its landing, run 44866783858).
+- **No promotion hold.** CXO (01M7Y733SH) lifted it. But don't promote 2301 on its own account before Web's sitting: CXO wants today's status replies (no block) for lines 11 and 12. If other work needs a promotion first, it goes, and I tell Web and CXO the build. Nobody reads the block as ruled until CXO says so on Web's quotes.
+- **Before any push from a side worktree, run the type gate by hand:** `../lead/venv-mypy-gate/bin/python scripts/check_mypy_gate.py`. A new worktree's pre-push prints UNCHECKED and lets the push go (tonight's near miss on 2297).
+
+**Waiting on others:**
+- **Web's sitting on `web-seed-1386`** (waits on Web's session restart): CXO's 2406 row first (the account must be empty), then my 15 lines (01M7Y5MY3G) for 2297's served row and CXO's quotes for 2301. Then: CXO rules the 2301 block; I promote; 2297 and 2301 get their served rows; 2406 closes with `close-issue-properly`.
+- **2364 step 1 merge:** xian's OpenAI run or the beta `user_api_keys` read plus a known-limits row (Exec has it). Then Arch reads the final rebased diff (`lead/2364-step1-r1120b` at `d02a24120b` or later), full suite, and the default flip follows in its own commit once served.
+- **Web's signed-in Disconnect pass** (01M7TB53RR), then CXO's served read.
+- **2157 proof 3** waits on #2158.
+
+**Done today (all in the log, `dev/2026/11/20/2026-11-20-0513-lead-code-log.md`):**
+- Step A (the seat key); Step F0 (`seat-github-1 created`, not signed in or checked by me).
+- 2404 and 2405 closed; H1 passed; #2408 filed, fixed, served, closed; 2406 built, landed and served (one row open).
+- 2364: gate rerun PASS on Arch's five lines; step 1 not merged.
+- Path B: arm B NO-GO ($4.04); **2297 built handler-only, landed and served**; the 2301 catalog candidate NO-GO ($4.07; K1 and K2 failed 6 of 6); **2301 rebuilt handler-only on `get_project_status` and landed**.
+- Promotions: `c9097d5091` 14:37, `05edbb32d5` 15:43, `d66f15c538` 20:25.
+- **Paid today: $14.193578**, every run under $10, each with PLANNED before and COST after to Exec.
+
+**Parked branches and worktrees (none needed for the above; candidates for cleanup once 2301 is served):**
+- `../lead-2297` (`lead/2297-attach`, landed), `../lead-2301h` (`lead/2301-status-todos`, landed), `../lead-2406` (landed).
+- `../lead-2301` (`lead/2301-read`): the NO-GO catalog candidate. Keep until Arch says the catalog route is closed for good.
+- `../lead-armb` (`lead/pathb-armb-candidate`): the 11-14 held build, superseded by the two landings.
+- `../lead-gate-2364` (`lead/2364-step1`): live, waits on the merge above.
+
+**Small, with the next change to each file:** the stale docstring on `disconnect_calendar` (it does revoke at Google); the stale comment in `scripts/seat_session.py` (the `web-seed-1386` turns don't wait on xian).
 
 ## IN-DAY 2026-11-20 14:11 (supersedes today's earlier blocks where they differ)
 
