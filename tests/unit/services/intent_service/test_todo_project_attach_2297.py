@@ -768,7 +768,8 @@ class TestRegistry:
         prompt and its whole user prompt (the catalog is inside it) for one
         phrase, hashed at main `a537dae663` before this change. A different hash
         means the router's input moved: that is a rule-7 change and needs its
-        screen, never an edit to this constant."""
+        screen. This constant moves only in the commit that lands a screened
+        change, never to make this test pass."""
         import hashlib
 
         from services.intent_service.inversion_router import (
