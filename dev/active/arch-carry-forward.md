@@ -1,5 +1,5 @@
 ---
-last_updated: 2026-11-20 21:27 PST (STOP)
+last_updated: 2026-11-21 06:29 PST (START, verified: 11-20 STOP block current)
 currency_claim: rewritten at substantive-change boundaries, verified at every START
 max_age_days: 4
 ---
