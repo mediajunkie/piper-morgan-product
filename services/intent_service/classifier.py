@@ -817,7 +817,7 @@ class IntentClassifier:
             verb_vocab=", ".join(v.value for v in Verb),
         )
         # #2145: everything before the user's message is identical on every call
-        # (with the system prompt, ~4.2k tokens: over Haiku 4.5's cache minimum),
+        # (with the system prompt, ~4.2k tokens: over Sonnet 4.6's 1,024-token cache minimum),
         # so it is marked cacheable. The text sent is unchanged.
         static_head = _CLASSIFICATION_PROMPT_STATIC_HEAD
         prompt = (
