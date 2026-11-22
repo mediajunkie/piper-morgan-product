@@ -109,15 +109,15 @@ pattern_config:
 
 ### Complements
 
-- [Pattern-XXX: Related Pattern](pattern-xxx-related.md) - How they work together
+- Pattern-XXX: Related Pattern (`pattern-xxx-related.md`) - How they work together
 
 ### Alternatives
 
-- [Pattern-YYY: Alternative Pattern](pattern-yyy-alternative.md) - When to choose one over the other
+- Pattern-YYY: Alternative Pattern (`pattern-yyy-alternative.md`) - When to choose one over the other
 
 ### Dependencies
 
-- [Pattern-ZZZ: Required Pattern](pattern-zzz-required.md) - Patterns this one depends on
+- Pattern-ZZZ: Required Pattern (`pattern-zzz-required.md`) - Patterns this one depends on
 
 ## Migration Notes
 

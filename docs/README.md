@@ -59,10 +59,10 @@ ChromaDB (port 8000) — vector search
 LLM: user-keyed — Anthropic Claude and/or OpenAI (every call bills the acting user's own key)
 ```
 
-**Key docs** (working corpus — on GitHub, not this site):
-- [Architecture Decision Records](https://github.com/mediajunkie/piper-morgan-product/tree/main/docs/internal/architecture/adrs) — every architectural decision with rationale
-- [Patterns catalog](https://github.com/mediajunkie/piper-morgan-product/tree/main/docs/internal/architecture/patterns) — reusable implementation patterns
-- [BRIEFING-CURRENT-STATE.md](https://github.com/mediajunkie/piper-morgan-product/blob/main/docs/briefing/BRIEFING-CURRENT-STATE.md) — live sprint status (agents: read this first)
+**Key docs**:
+- [Architecture Decision Records](internal/architecture/adrs/adr-index.md) — every architectural decision with rationale
+- [Patterns catalog](internal/architecture/patterns/README.md) — reusable implementation patterns
+- [BRIEFING-CURRENT-STATE.md](https://github.com/mediajunkie/piper-morgan-product/blob/main/docs/briefing/BRIEFING-CURRENT-STATE.md) — live sprint status (on GitHub, not this site; agents: read this first)
 
 ---
 
@@ -91,12 +91,13 @@ python main.py   # server at localhost:8001
 
 ## Where things live
 
-The working corpus lives in [the repository](https://github.com/mediajunkie/piper-morgan-product) — this site serves the visitor-facing documentation; everything below is one click away on GitHub:
+The architecture decisions and the patterns catalog are pages on this site. The rest of the working corpus lives in [the repository](https://github.com/mediajunkie/piper-morgan-product), one click away on GitHub:
 
 | What | Where |
 |---|---|
 | Agent briefings + role assignments | `docs/briefing/` |
-| Architecture decisions (ADRs) | `docs/internal/architecture/adrs/` |
+| Architecture decisions (ADRs) | [On this site](internal/architecture/adrs/adr-index.md) |
+| Patterns catalog | [On this site](internal/architecture/patterns/README.md) |
 | Product decisions (PDRs) | `docs/internal/product/pdr/` |
 | Methodology + process docs | `docs/internal/development/methodology-core/` |
 | Active session logs | `dev/YYYY/MM/DD/` |

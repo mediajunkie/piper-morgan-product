@@ -578,10 +578,10 @@ python main.py
 
 - **[Plugin Development Guide](guides/plugin-development-guide.md)** - Detailed plugin creation tutorial
 - **[Intent Classification Guide](guides/intent-classification-guide.md)** - Intent system deep dive
-- **[Architecture Decisions](internal/architecture/adrs/)** - Design rationale
-- **[Domain Models Reference](internal/architecture/current/models/)** - Complete model documentation
-- **[CLAUDE.md](../CLAUDE.md)** - Agent development guidelines
+- **[Architecture Decisions](internal/architecture/adrs/adr-index.md)** - Design rationale
+- **[Domain Models Reference](https://github.com/mediajunkie/piper-morgan-product/tree/main/docs/internal/architecture/current/models)** - Complete model documentation
+- **[CLAUDE.md](https://github.com/mediajunkie/piper-morgan-product/blob/main/CLAUDE.md)** - Agent development guidelines
 
 ---
 
-**Need Help?** Check the [main README](README.md) for support options or consult the [NAVIGATION guide](NAVIGATION.md) to find relevant documentation.
+**Need Help?** Check the [main README](README.md) for support options or consult the [NAVIGATION guide](https://github.com/mediajunkie/piper-morgan-product/blob/main/docs/NAVIGATION.md) to find relevant documentation.
