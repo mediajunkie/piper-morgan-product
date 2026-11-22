@@ -298,7 +298,10 @@ class TestNoCatalogChange:
         workflow_entries.register_default_workflows()
         grammar = derive_routing_grammar()
         assert "list_project_todos" not in grammar.names()
-        assert "list_project_todos" not in get_registered_workflows()
+        # #2413 (Arch 11-22, 01M82907VE): registered as a router-hidden READ entry,
+        # still absent from the router's grammar.
+        assert "list_project_todos" in get_registered_workflows()
+        assert get_registered_workflows()["list_project_todos"].router_visible is False
         assert "list_project_todos" not in CATALOG_ORDER_LEDGER
         assert not [k for k in ACTION_REGISTRY if k[1] == "list_project_todos"]
         assert not [k for k in ACTION_EXAMPLES if k[1] == "list_project_todos"]
