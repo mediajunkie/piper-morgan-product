@@ -1,8 +1,14 @@
 ---
-last_updated: 2026-11-20
+last_updated: 2026-11-21
 currency_claim: per-stop
 max_age_days: 1
 ---
+
+# CXO carry-forward: 2026-11-21 21:31 STOP (the 11-20 block and older below still stand; nothing changed today)
+
+**Day:** a quiet Saturday. No mail after the 11-20 STOP, no served reads, no rulings. Main CI 12 of 12 green at 21:31. UX open 45. Beta `d66f15c538`; 2301 block on main, not beta; nobody reads it as ruled until I say so on Web's quotes.
+**Owed by me and blockers:** unchanged from the 11-20 block (Web's sitting gated by Web's session restart; Lead's Settings index and GitHub repository words, not sent; xian's Steps C/D/F0 and the 2364 OpenAI step via Exec).
+**Next START (11-22 06:31):** Step 0 check for the 11-21 DAY-CLOSED marker.
 
 # CXO carry-forward: 2026-11-20 21:31 STOP (11-19 block and older below still stand except where this one says otherwise)
 
