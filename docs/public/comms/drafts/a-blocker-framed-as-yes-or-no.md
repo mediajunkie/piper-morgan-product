@@ -1,6 +1,6 @@
 ---
 image: 'a-blocker-framed-as-yes-or-no-the-last-box-across-the-gap.jpg'
-alt: ''
+alt: ' A worker reaches for the first box in a backed-up conveyor line while three translucent agents wait with tools at their stations beyond a narrow gap.'
 caption: ''
 ---
 
