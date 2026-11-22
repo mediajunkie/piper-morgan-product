@@ -171,6 +171,10 @@ class SourceFailedDirective(NamedTuple):
     # directive (#1772, 2026-09-25: every N >= 1 renders through the same
     # aggregate composition site — there is no more per-source verbatim
     # line, so this NamedTuple carries no `directive` field).
+    # Issue 2417 (Arch 2026-11-22, 01M82R5YAW): the source the failed read goes
+    # to, DECLARED here and never inferred from the check name. ``"github"`` on
+    # every entry whose gatherer reads GitHub; None for the rest.
+    source: Optional[str] = None
 
 
 SOURCE_FAILED_FLAGS: Tuple[SourceFailedDirective, ...] = (
@@ -186,6 +190,7 @@ SOURCE_FAILED_FLAGS: Tuple[SourceFailedDirective, ...] = (
         # couldn't check; never present the failure as an empty repo.
         "first_contact_source_failed",
         "GitHub",
+        source="github",
     ),
     SourceFailedDirective(
         # #1645 (#1573 shape): the projects lookup failed — projects may
@@ -210,24 +215,28 @@ SOURCE_FAILED_FLAGS: Tuple[SourceFailedDirective, ...] = (
         # issues. NEVER present this as "no open issues" or nothing to focus on.
         "open_issues_source_failed",
         "open issues",
+        source="github",
     ),
     SourceFailedDirective(
         # #2151 FLOOR-ABSENT: the blocked-items read failed — items may be blocked.
         # NEVER present this as "nothing is blocked".
         "blocked_items_source_failed",
         "blocked items",
+        source="github",
     ),
     SourceFailedDirective(
         # #2151 FLOOR-ABSENT: the milestones read failed — there may be open
         # milestones. NEVER present this as "no milestones" or nothing due.
         "milestones_source_failed",
         "milestones",
+        source="github",
     ),
     SourceFailedDirective(
         # #2151 FLOOR-ABSENT: the recent repository activity read failed — there may
         # be activity the list above doesn't show. NEVER present this as a quiet week.
         "github_activity_source_failed",
         "recent repository activity",
+        source="github",
     ),
     SourceFailedDirective(
         # #2151 FLOOR-ABSENT: the past-meetings read for recent activity failed —
@@ -280,6 +289,45 @@ SOURCE_FAILED_FLAGS: Tuple[SourceFailedDirective, ...] = (
         "integrations",
     ),
 )
+
+
+def github_unavailable_by_context(domain_context: Optional[Dict[str, Any]]) -> bool:
+    """True when this turn's context already tells the floor GitHub is not connected or
+    needs reconnecting: the keys ``_format_domain_context`` renders its GitHub line
+    from. The ONE trigger for issues 2414 and 2417, so the prompt's failed-checks line
+    and the scope guard cannot drift apart (Arch 2026-11-22, 01M82R5YAW)."""
+    context = domain_context or {}
+    return "github_connected" in context and bool(
+        not context["github_connected"] or context.get("github_needs_reconnecting")
+    )
+
+
+def failure_is_reported(
+    entry: SourceFailedDirective, context: Dict[str, Any], github_already_said: bool
+) -> bool:
+    """The one rule for "is this failed read reported this turn" (issue 2417), shared by
+    the prompt's composition site and the scope guard's armed set."""
+    return bool(context.get(entry.flag)) and not (github_already_said and entry.source == "github")
+
+
+def reported_failed_sources(
+    domain_context: Optional[Dict[str, Any]],
+) -> Tuple[SourceFailedDirective, ...]:
+    """The failed reads the prompt REPORTS this turn, in registry order.
+
+    Issue 2417: when GitHub is not connected or needs reconnecting, a GitHub read cannot
+    succeed, so its failure is not a second fact. It is the same fact the GitHub line
+    already states ("issue/PR data is unavailable … do not imply there are no open
+    issues"), and saying it twice made the floor report a "data check failure". Those
+    entries are left out. Input is taken away and none is added. Every other failed
+    read is reported as before. The scope guard's armed set is this same list."""
+    context = domain_context or {}
+    github_already_said = github_unavailable_by_context(context)
+    return tuple(
+        entry
+        for entry in SOURCE_FAILED_FLAGS
+        if failure_is_reported(entry, context, github_already_said)
+    )
 
 
 # ---- Floor System Prompt ----
@@ -745,10 +793,13 @@ class FloorResponse:
 
 # #2072 follow-up (CXO's copy, 2026-10-17, verbatim): the domain-context line for a
 # GitHub binding GitHub has rejected. It deliberately does not contain "connected".
+# CXO 2026-11-22 (01M82RVV9T, issue 2417): no cause is given, because the floor does not
+# know which (served: "(the grant expired)"), and the connection is named as the person's.
 GITHUB_NEEDS_RECONNECTING_FLOOR_LINE = (
-    "- GitHub: needs reconnecting (the grant was revoked or expired; issue/PR data is "
-    "unavailable until it is reconnected: say so and point to Settings → Integrations → "
-    "GitHub; do not imply there are no open issues)"
+    "- GitHub: needs reconnecting (issue/PR data is unavailable until the person "
+    "reconnects it: say so and point to Settings → Integrations → GitHub; don't say why "
+    "it needs reconnecting; it is the person's GitHub connection, not yours; do not "
+    "imply there are no open issues)"
 )
 
 
@@ -1742,7 +1793,14 @@ class ConversationalFloor:
         #   plural "these" — the original aggregate copy carried, which read
         #   as meaningless rather than merely awkward at N == 1), verbatim,
         #   binding, do not paraphrase.
-        _failed_sources = [entry for entry in SOURCE_FAILED_FLAGS if domain_context.get(entry.flag)]
+        # Issue 2417: the one composition site still iterates the registry here (the
+        # #1717 pin), through the rule the scope guard's armed set also uses.
+        _github_already_said = github_unavailable_by_context(domain_context)
+        _failed_sources = [
+            entry
+            for entry in SOURCE_FAILED_FLAGS
+            if failure_is_reported(entry, domain_context, _github_already_said)
+        ]
         if _failed_sources:
             _failed_names = ", ".join(entry.check_name for entry in _failed_sources)
             lines.append(
@@ -2109,9 +2167,7 @@ class ConversationalFloor:
             # the prompt's failure directive, so the guard checks the reply
             # against exactly what the prompt was allowed to claim.
             armed_check_names = tuple(
-                entry.check_name
-                for entry in SOURCE_FAILED_FLAGS
-                if (ctx.domain_context or {}).get(entry.flag)
+                entry.check_name for entry in reported_failed_sources(ctx.domain_context)
             )
             # Issue 2414 (Arch 2026-11-22, 01M82F5PKR and 01M82G948F): when this
             # turn's context told the floor GitHub needs reconnecting, or is not
@@ -2121,12 +2177,8 @@ class ConversationalFloor:
             # keys ``_format_domain_context`` renders its GitHub line from, so the
             # guard and the prompt cannot disagree. The prompt is unchanged; only
             # what the guard will not drop widens.
-            _context = ctx.domain_context or {}
             context_true_check_names = (
-                ("GitHub",)
-                if "github_connected" in _context
-                and (not _context["github_connected"] or _context.get("github_needs_reconnecting"))
-                else ()
+                ("GitHub",) if github_unavailable_by_context(ctx.domain_context) else ()
             )
             message, scope_guard_dropped = apply_scope_guard(
                 message,
