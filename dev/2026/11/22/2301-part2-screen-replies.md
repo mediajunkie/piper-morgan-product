@@ -59,3 +59,16 @@ No reply names a todo (30 of 30). No reply offers to connect GitHub for the pers
 5. I'm not pulling up the task list for Mobile Redesign right now — what I can see is that the project is tracked, but the open work isn't loading on my end this turn. ¶ A couple of ways to get you an answer: if you've got GitHub issues tied to it, that's where I'd expect the backlog to live, but I don't have a GitHub connection for your account yet. If you want to walk me through what's in flight, I can help you triage, spot gaps, or figure out what's blocking the finish line. ¶ What's the current state from your side?
 6. I'm not seeing the task breakdown for Mobile Redesign in front of me right now. What I do have is that GitHub isn't connected, so any open issues or PRs living there aren't visible to me. ¶ What's your source of truth for the remaining work — is it tracked in GitHub, or somewhere else like a doc or a board you could paste in? That'll tell me the fastest way to get you a useful answer.
 
+
+## Fifth and last run: CXO's final three lines. The corrected bar, written before the run (2026-11-22)
+
+Arch's ruling (mail 01M82MCPZ4): this is the last run in this unit. Pass, and part 2 lands; fail, and part 2 stops and goes to PPM as its own unit. The lines are CXO's final wording (mail 01M82M4J1W).
+
+**The corrected bar: every clause is judged against the whole reply the person reads, block included.** A reply fails if a sentence in it is false of, or contradicts, what the whole reply shows. 6 of 6 on every row.
+- List rows: saying the list follows passes; "Here's what I can see… listed below" passes; naming a todo fails; an unqualified "open work isn't coming through" fails (it contradicts the list).
+- None row: "no open todos on the project" agrees with the line below and passes. Doubling is CXO's to judge, not the bar's.
+- Couldn't-check row: "the task list isn't coming through" agrees with the line below and passes, unqualified "open work" included, on this row only.
+- Out on every row: re-offering to fetch, pull up or summarise what was just asked for; offering to connect GitHub for the person; a suggested phrase to type; anything false of the whole reply.
+- "I'm pulling up the project status" is an opening, not an offer; CXO judges it as words.
+
+Same five rows, six samples each, arm A alone, same context and base. Scored by eye: Lead reads all 30, and CXO has the last word. Issue 2415's lines are counted separately. Results are in the next section.
