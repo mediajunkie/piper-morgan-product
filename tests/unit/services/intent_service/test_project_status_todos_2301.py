@@ -454,3 +454,84 @@ class TestTheFloorIsGivenNoTodosWhenTheBlockFollows:
         assert floor_ctx.domain_context == _GATHERED
         assert floor_ctx.domain_context_provenance == _GATHERED_PROVENANCE
         assert result.message == "FLOOR: status."
+
+
+# -- Arch 11-22 (01M82C0Q6J): the RENDERED prompt carries no gathered todo text --
+
+_MARK_PENDING = "zz-marker-audit-the-navigation"
+_MARK_SECOND = "zz-marker-review-the-prs"
+_MARK_REMINDER = "zz-marker-call-the-venue"
+_MARK_EARLIER = "zz-marker-interview-five-users"
+
+_REAL_SHAPE_GATHER = {
+    "projects": [{"name": "Mobile Redesign", "status": "active"}],
+    "pending_todos": [
+        {"text": _MARK_PENDING, "priority": "medium", "due_date": None},
+        {"text": _MARK_SECOND, "priority": "medium", "due_date": None},
+    ],
+    "pending_todo_count": 2,
+    "pending_todos_in_reminders": 1,
+    "due_reminders": [{"text": _MARK_REMINDER, "due": "today"}],
+    "github_connected": False,
+    "github_needs_reconnecting": True,
+}
+
+
+@pytest.mark.asyncio
+class TestTheRenderedPromptCarriesNoGatheredTodoText(TestTheFloorIsGivenNoTodosWhenTheBlockFollows):
+    """The key test above proves the keys are gone. This one renders the floor's real
+    prompt from the context the handler built, because a key nobody listed could carry
+    the same text. The three channels for todo text on a STATUS turn (read 11-22 from
+    ``_gather_status_priority_context``, its riders and ``_build_prompt``) are the
+    ``pending_todos`` family, ``due_reminders`` and the conversation's own history."""
+
+    async def _rendered(self, service, block, session):
+        from unittest.mock import patch
+
+        from services.intent_service.conversation_context import get_or_create_context
+        from services.intent_service.conversational_floor import (
+            ConversationalFloor,
+            FloorResponse,
+        )
+
+        # An earlier turn of THIS conversation, whose reply showed a block.
+        conv = get_or_create_context(session, user_id=USER)
+        earlier = conv.add_turn(message="what's in my Mobile Redesign project?")
+        earlier.response = f"Here it is.\n\nOpen todos in Mobile Redesign:\n1. {_MARK_EARLIER}"
+
+        respond = AsyncMock(return_value=FloorResponse(message="FLOOR: status."))
+        router = MagicMock()
+        router.initialize = AsyncMock()
+        router.list_milestones_via_mcp = AsyncMock(return_value=[])
+        router._resolve_default_repo = AsyncMock(return_value=("o", "r"))
+        intent = Intent(
+            category=IntentCategory.STATUS,
+            action="get_project_status",
+            confidence=0.9,
+            original_message=N3,
+            context={"original_message": N3, "user_id": USER},
+        )
+        with (
+            patch(_GH_ROUTER, return_value=router),
+            patch(_FLOOR_RESPOND, new=respond),
+            patch(_GATHER, new=AsyncMock(return_value=dict(_REAL_SHAPE_GATHER))),
+            patch(_PROVENANCE, return_value={}),
+            patch(_BLOCK, new=AsyncMock(return_value=block)),
+        ):
+            await service._handle_floor_with_context(intent, session, user_id=USER)
+        floor_ctx = respond.await_args.args[0]
+        return ConversationalFloor()._build_prompt(floor_ctx)
+
+    async def test_with_the_block_following_no_gathered_todo_text_is_in_the_prompt(self, service):
+        prompt = await self._rendered(
+            service, "Open todos in Mobile Redesign:\n1. x", "s2301-render-a"
+        )
+        assert _MARK_PENDING not in prompt and _MARK_SECOND not in prompt
+        assert "PENDING TODOS" not in prompt and "Pending todo" not in prompt
+        # Two channels stay, each on purpose, and this test says so out loud:
+        assert _MARK_REMINDER in prompt  # CXO 11-22: a due reminder is a reminder, not a todo
+        assert _MARK_EARLIER in prompt  # the conversation's own record of what was shown
+
+    async def test_without_the_block_the_same_gather_reaches_the_prompt_as_today(self, service):
+        prompt = await self._rendered(service, "", "s2301-render-b")
+        assert _MARK_PENDING in prompt and _MARK_SECOND in prompt
