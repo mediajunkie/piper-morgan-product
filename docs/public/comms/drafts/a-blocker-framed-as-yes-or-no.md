@@ -16,15 +16,11 @@ Earlier this month I checked in with the project to see what needed me and found
 
 By the time I responded to this request, a few days, later, PA offered me three potential methods for resolving their impasse. I replied  "Happy to do whatever is easiest. Overall better if we find ways where I don't block this sort of thing."  The team scrambled to follow this direction. The easiest option was a stopgap at best (letting an agent read the password file), so my chief architect agent (Arch) overruled this in favor of a more proper permanent fix: We would set up a browser profile for the agents that I would sign into once and the agents could then reuse. 
 
-, and turned down the stopgap of .
-
-[Comms' answer to your question, delete when your prose replaces it: the question went FROM "may PA read this credential file, yes or no?" (it sat that way for three days, Nov 10 to 13) TO "how does an agent stay signed in without needing you each time?" Your 17:41 message ("Overall better if we find ways where I don't block this sort of thing") opened the second question, and Arch's design answer came at 17:53, about 15 minutes. The answer was the browser profile you sign into once, which agents reuse, so they hold a session and never the password. Caution: approved that day, not run that day. Nothing ran on Nov 13.]
- The omnibus heading: "A three-day credential blocker was reframed in about 15 minutes and still ended the day unrun." [Nov 13 l61]
-- PA's own read of why it took three days: the blocker "sat as a yes/no on reading a file because that's how it was first framed." [Nov 13 l61]
+For the record, even though the agents reframed the original permission request quickly, in about 15 minutes, my own attention had drifted away by then so I failed to set up the browser profile as requested that day, that agent's task remained block, and the item sat in my attention queue waiting for my next opportunity.
 
 # Hot potato
 
-Two days later a paid test run was blocked before it made a single call: the key was stored, but the agents' tooling couldn't unlock it. Four of my agents discussed the problem and converged on their preferred solution. They wanted met to run a couple of commands in my terminal. This was passed along to Exec, who concurred.
+Two days later a paid test run was blocked before it made a single call: the key was stored, but the agents' tooling couldn't unlock it. Four of my agents discussed the problem and converged on their preferred solution. They wanted me to run a couple of commands in my terminal. This was passed along to Exec, who concurred.
 
 As I was once again starting to feel relegated to a role as assistant to my assistants (what Cory Doctorow has taken to call "[reverse centaurs](https://us.macmillan.com/books/9780374621568/thereversecentaursguidetolifeafterai/)"), I pushed back on this, writing "We need to solve that problem, not assign me manual tasks as a workaround for a poorly conceived solution." Also: it "keeps becoming my problem to manually navigate", and "Until we solve that the entire project is hobbling itself". 
 
@@ -36,7 +32,7 @@ At the end of a week, that particular task remained blocked. The agents had done
 
 # Redesigning the bottleneck
 
-I file all of this under a broader category of reframing. I put a lot of trust in my own laziness, or if I want to be more charitable toward myself, my impatience with boring repetitive rote work. I'll do busy work and simple tasks when I need to, as anyone does, but I don't love it, and I get frustrated quickly if it seems pointless. The whole promise of computerization, let alome AI, is to automate what is repeatable and spare ourselves the drudgery so we can focus on things only we can uniquely do. Every time the agent team converges on a solution like "give it to the human to do," the plumbing is backing up, as far as I'm concerned.
+I file all of this under a broader category of reframing. I put a lot of trust in my own laziness, or if I want to be more charitable toward myself, my impatience with boring repetitive rote work. I'll do busy work and simple tasks when I need to, as anyone does, but I don't love it, and I get frustrated quickly if it seems pointless. The whole promise of computerization, let alone AI, is to automate what is repeatable and spare ourselves the drudgery so we can focus on things only we can uniquely do. Every time the agent team converges on a solution like "give it to the human to do," the plumbing is backing up, as far as I'm concerned.
 
 Speaking up about it pushed my agent team to redesign their workflow. It doesn't take me out the loop (hardly!) but it guards against simply piling busy work into my queue as a shortcut or easy answer.
 
