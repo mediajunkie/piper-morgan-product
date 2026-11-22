@@ -1,6 +1,6 @@
 # Exec carry-forward
 
-**Rewritten 2026-11-20 22:03 PST at STOP.** Model: Opus 5.5. History: `git log -p -- dev/active/exec-carry-forward.md`. Last session log: `dev/2026/11/20/2026-11-20-0514-exec-code-log.md` (closed). Start a new log on 11-21.
+**Rewritten 2026-11-21 22:03 PST at STOP.** Model: Opus 5.5. History: `git log -p -- dev/active/exec-carry-forward.md`. Last session log: `dev/2026/11/21/2026-11-21-0601-exec-code-log.md` (closed). Start a new log on 11-22.
 
 **STATE: LIVE on LaunchAgent** `com.xian.pm-exec-cycle`, firing at :01 on hours 6, 10, 14, 18 and 22. Empty CronList is normal. Liveness is Pard's.
 
@@ -9,7 +9,7 @@
 **Clock rule live:** no estimated minutes (`HH:Mx`) in commits or mail; quote others' in backticks. Headings with `scripts/log-entry.sh "title"`. zsh: never `echo =====` (`=cmd` expansion).
 
 ## Rollup
-v1094, `719UZ4h1NELjEwWZbDCceT`. Source `dev/active/exec-attention-rollup-current.html`. Python replace plus assert; bump the stamp from a `date` call. Sweep "today" phrasing at START (11-21): the top card says "Today, Friday 11-20, at Amber"; Step F0 card; Ship #070 line.
+v1095, `719UZ4h1NELjEwWZbDCceT`. Source `dev/active/exec-attention-rollup-current.html`. Python replace plus assert; bump the stamp from a `date` call. Top card rewritten Sat 11-21 06:03 (F.2 next). At START 11-22: retitle the h1 to Sunday and change "Today's insight" (Sat 11-21) to say it missed its slot unless his prose arrived.
 
 ## ADR-084 sitting (steps file `docs/internal/operations/adr-084-one-time-steps.md`)
 - **Done 11-20:** A (key 106 chars, sha256 b5d48364), C (Web's allows), D (seat browser :9333), **F0** (invite file by xian; Lead's allow at 27; `seat-github-1 created` 18:36; the script's missing +x fixed by Lead, CIO added a test), **F.1** (machine account `atswimtwobirds`, public by design).
@@ -21,7 +21,7 @@ v1094, `719UZ4h1NELjEwWZbDCceT`. Source `dev/active/exec-attention-rollup-curren
 - **Ship #070 "No Workarounds"** (his 18:12 rulings, relayed 01M7XY16WB, three decisions.log lines). An outline scaffold by Exec, bare facts under each heading, err on including. **Discussed marker held until he says he's read the review** (https://claude.ai/artifact/4Pgs8DrAXpyB2P9o6BvRRn) and ratifies or edits next week's goals. Then add `<!-- discussed: DATE -->`, run the draft-weekly-ship skill, scaffold, Comms fact-check. Publish Tue 11-24.
 - **Sprints don't stretch** (his ruling): sprint 2 closes 11-26; #071 reports the score as it stands. My forecast to him: seats and self-host goals on track, GitHub move at risk, named items partial. PPM: 2301's read half misses 11-26.
 - **Sat 11-28 title:** his to replace ("Test the Page You Draw" is out). Comms holds it open.
-- **Sat 11-21 insight:** check with Comms at START whether his prose is in.
+- **Sat 11-21 insight** "A Blocker Framed as Yes or No": still `drafted` at 22:01 Sat, no prose from xian; the slot passed. Ask Comms at START 11-22 whether it rides Sunday or moves; ask xian only if Comms can't place it.
 - **Restore drill 2157:** his choice of day (rollup card).
 
 ## In motion
@@ -32,8 +32,8 @@ v1094, `719UZ4h1NELjEwWZbDCceT`. Source `dev/active/exec-attention-rollup-curren
 - **Seat spend 11-20:** Lead's paid today $14.19 (no run over $10). Arch's 2364 arms plus Lead's screens all under xian's 11-13 yes.
 - Main 12 of 12 green at 22:01.
 
-## Closes at 22:01 on 11-20
-Closed: Comms, CXO, HOST, PPM, Web, Lead, PA, Arch. Open: Docs, CIO (their STOPs may still run). Check at START and nudge if Docs's Step 1d hasn't.
+## Closes at 22:01 on 11-21
+Closed: Web, Comms, HOST, Arch, CXO, PPM, Lead, PA. Open: Docs, CIO (their STOPs may still run). Check at START; Docs's Step 1d nudges.
 
 ## Standing word
 Promote gate: "Yes, changes that only make the check stricter can go ahead with Arch's approval, although I should still be informed." I tell him the same hour.

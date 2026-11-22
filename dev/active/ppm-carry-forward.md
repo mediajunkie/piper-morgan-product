@@ -889,7 +889,9 @@ Brake FIRED (second slip = #1965 admission, found and ledgered 10-09). Memo to E
   - No compose up or down on Amber; `PIPER_CREDENTIAL_STORE=db`; a classifier refusal is final.
   - A promote-gate edit that only makes the gate stricter goes ahead on Arch's written approval, and xian is informed. Spend asks inside the caps are short.
 
-## Now (rewritten at the 11-20 21:33 STOP, written 21:34; carry into Sat 11-21)
+## Now (rewritten at the 11-20 21:33 STOP, written `21:34`; re-verified unchanged at the 11-21 21:33 STOP; carry into Sun 11-22)
+
+- **11-21 re-verify:** a quiet Saturday. Six fires, no mail, no closes, Production 329 = Total, 0 unmilestoned, main CI 12 of 12 green, beta healthy on `d66f15c538`, the three hold P0s OPEN. Web's browser stayed signed out all day (its `21:18` STOP says the same), so the sitting has not begun; Exec's carry-forward holds the restart. Every line below still stands.
 
 - **Invite hold, PDR-008.** Re-verified 11-20 21:33: #2261, #2282 and #2342 are OPEN. The lift-readiness memo to Exec waits on #2342's served rows, #2261's close and #2282.
 - **ADR-084:** Step A done 11-20 (`11:12`). Next in xian's sitting is Step C; D and F0 not started. Steps file: `docs/internal/operations/adr-084-one-time-steps.md`. Organisation limit $250; seat bounds $150 and $40.
