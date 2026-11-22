@@ -26,11 +26,9 @@ By the time I responded to this request, a few days, later, PA offered me three 
 
 Two days later when a test run was blocked by [Comms: does paid run stopped at zero calls mean the credit balance for that key was $0? please unpack]. Four of my agents discussed the problem and converged on their preferred solution. They wanted met to run a couple of commands in my terminal. This was passed along to Exec, who concurred.
 
-As I was once again starting to feel relegated to a role as assistant to my assistants (what Cory Doctorow has taken to call "reverse centaurs")
+As I was once again starting to feel relegated to a role as assistant to my assistants (what Cory Doctorow has taken to call "[reverse centaurs](https://us.macmillan.com/books/9780374621568/thereversecentaursguidetolifeafterai/)"), I pushed back on this, writing "We need to solve that problem, not assign me manual tasks as a workaround for a poorly conceived solution." Also: it "keeps becoming my problem to manually navigate", and "Until we solve that the entire project is hobbling itself". 
 
-- A paid run stopped at 0 calls. Lead, Arch, CIO and PPM converged in about seven minutes on option (a): you run both commands in Terminal. Exec recommended (a) too. [Nov 15 l60]
-- Your answer at 19:11: "We need to solve that problem, not assign me manual tasks as a workaround for a poorly conceived solution." Also: it "keeps becoming my problem to manually navigate", and "Until we solve that the entire project is hobbling itself". [Nov 15 l60]
-- Exec withdrew (a), asked each seat for the one thing in its lane that most lands on you, and wrote a "seat resources" proposal. Arch wrote ADR-084 that evening. [Nov 15 l60]
+Exec took the reins and asked each agent "seat" on the team to report back with the one thing in its lane that most often lands on you, then took this feedback and wrote a proposal that became ADR-084 that evening. [Nov 15 l60]
 
 **4. The fix starts to grow the same way.**
 - "The first step grew from one paste to four in two hours." Exec: each addition was sound, and the sum was the pattern you refused. Exec asked for one command, and CIO delivered it by 23:20. [Nov 15 l112]
