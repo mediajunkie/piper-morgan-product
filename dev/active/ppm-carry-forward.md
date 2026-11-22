@@ -912,7 +912,7 @@ Brake FIRED (second slip = #1965 admission, found and ledgered 10-09). Memo to E
   - Step F: 2389 rows 3 to 5. HOST's diffs and Step C: 2388's first run.
   - Lead: 2383 row 3; 2354 H1; 2364's close (rerun evidence on the issue).
   - 2351's clean-machine line needs a never-run machine and a reader. 2403 row 4 is a person's check. #2363 row 3 needs a merge-head promotion. 2382 row 4 waits on 2384.
-- **Production 335** (11-22 `14:21`: #2411-#2416 placed in V; `gh` = Total; 0 unmilestoned; map v181). 2301 part 2 stopped (CXO's verdict 01M82NBZQE); its offer row is #2416. On main, not served: part 1, #2413 (`48b5d621e2`), #2414 (`e11ecac1e2`), #2411's sentences (`5399367737`, `eb9069da03`). Each served row waits on the next promotion and a Web run. 2297 row 16 met served 11-22; 2297 open on rows 22 (#2411) and 18 (#2412). 2301's block words pass (CXO); its served row waits on floor parts 1 and 2.
+- **Production 335** (11-22 `14:21`: #2411-#2416 placed in V; `gh` = Total; 0 unmilestoned; map v181). 2301 part 2 stopped (CXO's verdict 01M82NBZQE); its offer row is #2416. **Beta serves `a805384f7e` since 11-22 `14:37`:** part 1, #2413, #2414, #2411's four replies. The served rows wait on Web's 13 lines (Lead 01M82PH9N4) and CXO's read. 2297 row 16 met served 11-22; 2297 open on rows 22 (#2411) and 18 (#2412). 2301's block words pass (CXO); its served row waits on floor parts 1 and 2.
 - **OWED rows:**
   - 2364-known-limit: 2388's first real run.
   - 2364-untested-provider-row: the 2390 route.
