@@ -18,8 +18,12 @@ exclude:
   # Working corpus (deliberate exclusion, CIO-ratified 2026-08-12)
   # internal/ is excluded child by child, NOT wholesale, so that the ADRs and the patterns catalog
   # build as site pages (xian, 2026-11-22: "part 1 please"; narrows the 2026-08-12 scoping).
-  # Everything else under internal/ stays working corpus. A NEW directory under internal/ or
-  # internal/architecture/ is PUBLIC BY DEFAULT until added here: review it when one appears.
+  # Everything else under internal/ stays working corpus. An allow-list (exclude internal, include the
+  # two folders back) does not work: Jekyll skips an excluded parent whole (tested 2026-11-22).
+  # So a CI test fails closed instead: tests/unit/scripts/test_site_internal_children_reviewed.py
+  # fails when a new tracked file or folder directly under internal/ or internal/architecture/ is
+  # not listed here. Add one exclude line in the same commit, with NO trailing slash (the test
+  # matches exact strings).
   - internal/README.md
   - internal/audits
   - internal/design
