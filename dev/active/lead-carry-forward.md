@@ -1,5 +1,14 @@
 # Lead carry-forward — Fable 5.2 seat again since 2026-11-20 08:56 (Opus 5.5 from 2026-11-17 21:30 until then); Model A worktree ~/Development/piper-morgan-worktrees/lead
 
+## MIDDAY 2026-11-22 12:48 (supersedes the START block's waits; read this first)
+
+- **Beta serves `f3a5a3cb3e`** (promoted 11:04, run 45058325280): 2301's block. **Main is ahead by** 2301 part 1 (`36b8cb411d`), its rendered-prompt test (`f7aefe550f`), 2411 row 1 (`5399367737`), the seat change (`ca594c14d9`). Promote when CI's Tests is green on the newest of them (pre-check list as always).
+- **Side worktrees and branches, all mine:** `../lead-seat` on `lead/2414-guard-reconnect` (guard change, full suite running at 12:46; land as ONE commit, clean tree, so the hook's remembered pass holds); `../lead-2413` on `lead/2413-project-todos-read` (agent's build plus my ceiling edit, uncommitted edits to the ratchet and one comment; needs CXO's four lines 01M82CP8XD, a decisions.log entry citing Arch 01M82F5PKR, one rebased commit, the full suite); `../lead-2301floor` on `lead/2301-floor-part2` (CXO's line built; NOT passed, Arch's amended bar 01M82FP62E; waits on CXO's rewording, then arm A alone); `../lead-2411` free.
+- **Waiting on others:** CXO (2413's four lines; part 2's reworded line; 2411's never-connected and could-not-check replies 01M82EEX9J); Arch (the shape for a right drop in 2414 and the never-connected neighbour, 01M82FJRVD; the rule-7 bar for 2411's router candidate); xian through Exec (the mint for `seat-tester-1`, the console check, the `--save-key` allow; Step E for 2364, which now also holds 2412 and 2297's list-name row).
+- **After the allow exists:** create step for `seat-tester-1`, then `scripts/seat_session.py --account seat-tester-1 --save-key anthropic`; the output line goes to HOST. A remove mode is wanted by HOST as a diff first.
+- **Paid 11-22 so far: $0.6129.** Scratch scripts and outputs are in the session scratchpad (`m2411`, `r2414`, `p2`).
+- Pushing code: one commit, clean tree. A full-suite run used to leave an untracked report that broke the remembered pass; it is ignored now.
+
 ## START 2026-11-22 06:49 (re-verified; the DAY-END 11-21 block below still holds)
 
 - Checked this morning: beta `d66f15c538` healthy and quiet; staging `e8d0387f6f`; main CI 12 of 12 green; no hold file; no served-path change on main since `f68c5995fd`; inbox empty; no issue after 2410. 2297, 2301, 2406, 2364, 2389 and 2158 are all open.
