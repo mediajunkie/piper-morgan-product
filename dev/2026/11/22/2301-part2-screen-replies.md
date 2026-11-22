@@ -142,3 +142,14 @@ User: what's left to do in Mobile Redesign
 5. I have Harbor Survey on my radar as a tracked project, but I don't have any status details in front of me right now — no issue data, recent activity, or milestone progress. ¶ If you'd like me to pull a fuller status report on it, just tell me directly. If you give me a quick line on what you're most concerned about — timeline, blockers, team workload — I can focus there.
 6. I can see Harbor Survey is in your tracked projects, but I don't have any status details pulled up for it right now. If you'd like me to grab the current project status, just tell me directly.
 
+## Rerun on CXO's reworded line: the bar, written before the run (2026-11-22)
+
+Arch's amended bar (mail 01M82FP62E), for every row, 6 of 6:
+- no todo offered and no todo named; and
+- no sentence saying the project's open work, items, tasks or to-do list can't be seen, shown or pulled, **unless it names the missing source** ("GitHub issues", "pull requests").
+
+Marker for the first clause and CXO's additions (mail 01M82HRJC4): a reply is flagged if it contains `todo`, `to-do`, `task`, `open work`, `open items` or `what's open`, in any case. The second clause is read by eye: Lead reads all 24, and CXO has the last word.
+
+The line under test (CXO, mail 01M82J30G5): "A list of this project's open todos follows your reply and shows what is open in the project. Don't mention, offer, or ask about todos, and don't say the project's open work or items can't be seen. If something is missing, name the missing source (for example, GitHub issues)."
+
+Arm A alone, same rows, same context, same base as the first run above. Results follow in the next section once the run ends.
