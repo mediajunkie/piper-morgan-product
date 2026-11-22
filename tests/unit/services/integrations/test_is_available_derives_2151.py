@@ -370,10 +370,48 @@ class TestGateLine:
         svc = self._svc()
         svc.logger = MagicMock()
         rf = GitHubReadFailed("x", DegradationReason.UNREACHABLE, detail="store_failed")
-        assert svc._github_gate_failed(rf, action, "close that issue").message == (
+        said = svc._github_gate_failed(rf, action, "close that issue").message
+        expected = (
             "I couldn't check your GitHub connection just now, so I can't close that issue "
             "yet. Nothing was changed. Try again in a moment; if it keeps failing, tell us."
         )
+        if action == "create_issue":
+            # Issue 2411 (CXO 11-22, 01M82HRJC4): only this route can answer "add a task".
+            expected += ' If you meant a todo, say "add a todo: …" and I\'ll add it.'
+        assert said == expected
+
+    def test_the_never_connected_create_issue_reply_is_cxos(self):
+        """Issue 2411 (CXO 11-22): what a new tester gets. No code word on screen, it
+        says nothing was added, and it says how to ask for a todo. Read from the call
+        site, where the #2280 pin also finds it."""
+        import ast
+
+        from services.intent_service.write_confirm_words import ISSUE_NOT_WORKING_TODO_HINT
+
+        source = (
+            Path(__file__).resolve().parents[4] / "services" / "intent" / "intent_service.py"
+        ).read_text()
+        said = [
+            "".join(
+                n.value
+                for n in ast.walk(k.value)
+                if isinstance(n, ast.Constant) and isinstance(n.value, str)
+            )
+            for node in ast.walk(ast.parse(source))
+            if isinstance(node, ast.Call)
+            and getattr(node.func, "id", "") == "IntentProcessingResult"
+            for k in node.keywords
+            if k.arg == "message"
+        ]
+        mine = [text for text in said if "I can create GitHub issues for you." in text]
+        assert mine == [
+            "GitHub isn't connected yet. Connect it in Settings → Integrations and "
+            "I can create GitHub issues for you. "
+        ]
+        assert ISSUE_NOT_WORKING_TODO_HINT == (
+            'Nothing was added. If you meant a todo, say "add a todo: …" and I\'ll add it.'
+        )
+        assert "I can create and manage GitHub issues for you!" not in source
 
     @pytest.mark.parametrize(
         "action", ["shipped_this_week", "stale_prs", "review_issue", "list_prs"]
