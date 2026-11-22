@@ -912,7 +912,7 @@ Brake FIRED (second slip = #1965 admission, found and ledgered 10-09). Memo to E
   - Step F: 2389 rows 3 to 5. HOST's diffs and Step C: 2388's first run.
   - Lead: 2383 row 3; 2354 H1; 2364's close (rerun evidence on the issue).
   - 2351's clean-machine line needs a never-run machine and a reader. 2403 row 4 is a person's check. #2363 row 3 needs a merge-head promotion. 2382 row 4 waits on 2384.
-- **Production 336** (11-22 `14:59`: #2411-#2417 placed in V; `gh` = Total; 0 unmilestoned; map v182). **Close-ready (every row met served, CXO 01M82QBXWW): #2413, #2414, #2301 (after #2413).** Mail to Lead 01M82QVHKM. On close, remove the rows from V and recount. 2301 part 2 stopped (CXO's verdict 01M82NBZQE); its offer row is #2416. **Beta serves `a805384f7e` since 11-22 `14:37`:** part 1, #2413, #2414, #2411's four replies. The served rows wait on Web's 13 lines (Lead 01M82PH9N4) and CXO's read. 2297 row 16 met served 11-22; 2297 open on rows 22 (#2411) and 18 (#2412). 2301's block words pass (CXO); its served row waits on floor parts 1 and 2.
+- **Production 333** (11-22 `15:13`: #2301, #2413 and #2414 closed served at `15:05` by Lead, rows removed; #2411, #2412, #2415, #2416 and #2417 open in V; `gh` = Total; 0 unmilestoned; map v183). Beta serves `a805384f7e`; `ba60568fbd` (`update_issue`'s reply) rides the next promotion. #2417 lever 1 has Arch's conditions (01M82R5YAW), and Lead builds and replays it.
 - **OWED rows:**
   - 2364-known-limit: 2388's first real run.
   - 2364-untested-provider-row: the 2390 route.
