@@ -2091,7 +2091,7 @@ issue	state	milestone	sprint	title	labels	blocked_by	state_reason
 2298	CLOSED	Production		Chat never attaches a task to a project, so Path B's 'a project with tasks in it' can't be reached	enhancement		NOT_PLANNED
 2299	OPEN	Production		Making a project in chat: the name is captured as 'for it here', and 'Call it X' misroutes to a document update offer	bug		
 2300	OPEN	Production		Adding a todo acts at once on one turn and asks to confirm on the next, for the same kind of ask	bug		
-2301	OPEN	Production		'What's in my <project>?' fails twice, reads the project name as a milestone, and re-offers wording that fails again	bug		
+2301	CLOSED	Production		'What's in my <project>?' fails twice, reads the project name as a milestone, and re-offers wording that fails again	bug		COMPLETED
 2297	OPEN	Production		[UX] 'Add a task to <project>' makes a plain todo, and the project never shows it (Path B preview, 11-06)	UX		
 2302	CLOSED	Production		'What changed this week?' says 7 tasks created and names 3, with no word that the list is shortened	bug		COMPLETED
 2303	OPEN	Production		Make archive_project live in chat (a write flip on xian's secret), so the hide literal can be deleted against a live op	enhancement		
@@ -2200,8 +2200,8 @@ issue	state	milestone	sprint	title	labels	blocked_by	state_reason
 2410	OPEN	Production		The LLM classifier's system prompt is the persona base, so any persona edit (PIPER.md, the behavior block) moves routing	architecture		
 2411	OPEN	Production		UX: 'add a task to my <project> project' routes to create_issue and tells the person to reconnect GitHub	UX		
 2412	OPEN	Production		UX: a plain personal todo ('add renew passport to my personal list') is declined as outside professional scope	UX		
-2413	OPEN	Production		UX: 'show me the todos in the Launch project' replies 'Did you mean one of those' with nothing listed	UX		
-2414	OPEN	Production		UX: two status replies on beta open mid-thought ('Also, …', 'To get a real picture, …')	UX		
+2413	CLOSED	Production		UX: 'show me the todos in the Launch project' replies 'Did you mean one of those' with nothing listed	UX		COMPLETED
+2414	CLOSED	Production		UX: two status replies on beta open mid-thought ('Also, …', 'To get a real picture, …')	UX		COMPLETED
 2415	OPEN	Production		On a status ask with no project detail, the floor tells the person to ask for the status they just asked for (and sometimes says 'Nothing has been done yet')	UX		
 2416	OPEN	Production		UX: 'how is X going?' above a project's todo list: the floor promises or re-offers a status (split from 2301 part 2)	UX		
 2417	OPEN	Production		UX: status reply says the reads 'came back empty due to a data check failure' and 'the grant expired'	UX		
