@@ -3,7 +3,7 @@
 ## START 2026-11-22 06:49 (re-verified; the DAY-END 11-21 block below still holds)
 
 - Checked this morning: beta `d66f15c538` healthy and quiet; staging `e8d0387f6f`; main CI 12 of 12 green; no hold file; no served-path change on main since `f68c5995fd`; inbox empty; no issue after 2410. 2297, 2301, 2406, 2364, 2389 and 2158 are all open.
-- Web's restart is Pard's to do (`seat-restart.sh`); CIO asked Pard at 06:56 on 11-22 (mediajunkie `5b7f59ddcc`). xian only if Pard's dry run refuses. My mail 01M81VPY13 raised it.
+- Web's session is back since 07:06 on 11-22 (Pard restarted the seat), signed in as `web-seed-1386` until 07:06 PT on 11-23. The sitting is under way: step 4, CXO's 2406 row, then my 15 lines. Results come by mail.
 - Briefing's beta line refreshed to `d66f15c538`.
 
 ## DAY-END 2026-11-21 21:47 (a day with no movement on any wait; the blocks below still hold)
