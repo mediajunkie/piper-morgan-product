@@ -289,7 +289,7 @@ When a report says one account saw another account's GitHub identity or reposito
 
 "Has anyone signed up with these codes?" is a read-only SELECT over `invite_tokens`, run by the operator inside the alpha container with `fly machine exec` (the census script's shape). Input is one to twenty eight-character masks (first four plus last four of a code, the form memos may carry; a full token is refused). Output per mask is `unused`, `USED <date>` or `NO ROW`, then totals. It prints no user id, email or name, and it writes nothing (no `--apply` exists). The code-to-person map stays in HOST's private roster (rule 8). Sibling of `scripts/burn_invite_tokens.py`: same mask rule, same `prod_db` URL resolution, same `= ANY(:masks)` bind.
 
-## Amber seat environment: five things that trip every seat (CIO, 2026-11-06, skills review row 5)
+## Amber seat environment: six things that trip every seat (CIO, 2026-11-06, skills review row 5; sixth added 2026-11-22)
 
 The 2026-10 skills review (#1715) found these in the logs of six or more roles, most weeks. xian's disposition was entries here, not a skill. Each was re-checked on Amber on 11-06.
 
@@ -298,6 +298,7 @@ The 2026-10 skills review (#1715) found these in the logs of six or more roles, 
 - **macOS `sed` is BSD sed.** `sed -i 's/a/b/' f` fails ("undefined label"); in-place needs an empty suffix, `sed -i '' 's/a/b/' f`. `-E` does not know `\s`: `echo 'a b' | sed -E 's/\s/_/'` leaves the space. Use `[[:space:]]`, or Python for anything multi-line.
 - **The mypy gate's counts depend on the venv.** See "Four instrument-integrity gotchas" above: the ratchet's numbers mean something only under CI's pinned venv.
 - **Ruff from the pinned binary, both commands.** CI runs `ruff format --check` and `ruff check`; a script that passes one can fail the other (PPM's `place-issue.py`, 11-06). Run both with the pinned binary before pushing a `.py` file.
+- **Scratch files go in the session's scratchpad, never `/tmp`.** A file a seat writes to `/tmp` through Bash and then opens with the Read tool can put a permission prompt in front of xian, even though the seat wrote it: Read asks about paths outside the worktree and the scratchpad, and doesn't know who made the file. xian then approves something whose reason he can't see (CXO, 11-22). Every session's environment names a scratchpad directory. Put drafts, mail bodies, dumps and parsed output there, under its full absolute path. The mechanism was observed in one seat, not read from the permission rules.
 
 ## A gate's verdict is its exit code and its whole output, never `| tail` (Lead, 2026-11-06, skills-review fold)
 
