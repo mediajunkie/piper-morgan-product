@@ -1,5 +1,16 @@
 # Lead carry-forward — Fable 5.2 seat again since 2026-11-20 08:56 (Opus 5.5 from 2026-11-17 21:30 until then); Model A worktree ~/Development/piper-morgan-worktrees/lead
 
+## AFTERNOON 2026-11-22 15:48 (supersedes the MIDDAY block below; read this first)
+
+- **Beta serves `a805384f7e`** (promoted 14:37, run 45078547386): 2301 part 1, 2414, 2413, 2411's four `create_issue` replies, the seat helper. Web's 13 served lines read clean (01M82Q1BKT; CXO 01M82QBXWW). **Closed today: 2413, 2414, 2301.**
+- **On main, not served:** `ba60568fbd` (`update_issue`'s reply) and `1d9aea2914` (2417: GitHub-derived failed checks left out when GitHub is unavailable; CXO's reconnect line). A small follow-up (the integrations list's reconnect line) is committed on `lead/2417-siblings` at `acbca65249`, full suite running, lands on a clean gate. Promote after it lands and CI's Tests is green; then ask Web for 2417's served row (her line 1 of Web's pass on `a805384f7e` is the one to repeat: `how is the Mobile Redesign project going?`).
+- **Parked, not for main:** `lead/2301-floor-part2-parked` at `2b4d7996e2` (issue 2416; five screens, every reply in `dev/2026/11/22/2301-part2-screen-replies.md`).
+- **Waiting on others:** CXO (the never-connected line: leave it, or a smaller change, 01M82T2FE2); Arch (the rule-7 bar for 2411's router candidate; that is 2411 row 2 and 2297 row 22); xian through Exec (mint for `seat-tester-1`, console check of the key's workspace, the `--save-key` allow; Step E for 2364, which holds 2412 and 2297 row 18).
+- **When the allow exists:** `scripts/seat_account_create.py --account seat-tester-1`, then `scripts/seat_session.py --account seat-tester-1 --save-key anthropic`; the output line goes to HOST. The remove mode is wanted by HOST as a diff first; not built.
+- **Open and mine to move:** 2411, 2417 (served row), 2416, 2415, 2412, 2297, 2406 (the fresh-account row), 2364.
+- **Rules I relearned today:** one full suite at a time (two share the test database and throw stray failures); a code push is one commit from a clean tree; helper diffs go to HOST before main; a named-files run is not the full suite (two pins caught me: the #2280 site count and the #1717 composition site).
+- **Paid 11-22: $1.2325.**
+
 ## MIDDAY 2026-11-22 12:48 (supersedes the START block's waits; read this first)
 
 - **Beta serves `f3a5a3cb3e`** (promoted 11:04, run 45058325280): 2301's block. **Main is ahead by** 2301 part 1 (`36b8cb411d`), its rendered-prompt test (`f7aefe550f`), 2411 row 1 (`5399367737`), the seat change (`ca594c14d9`). Promote when CI's Tests is green on the newest of them (pre-check list as always).
