@@ -413,6 +413,18 @@ class TestGateLine:
         )
         assert "I can create and manage GitHub issues for you!" not in source
 
+    def test_no_chat_reply_shows_the_token_variable(self):
+        """CXO 11-22 (01M82NBZQE): ``update_issue``'s never-connected reply lost the same
+        code word. No not-connected reply in the service names it now."""
+        source = (
+            Path(__file__).resolve().parents[4] / "services" / "intent" / "intent_service.py"
+        ).read_text()
+        assert "set GITHUB_TOKEN for local use" not in source
+        assert (
+            '"GitHub isn\'t connected yet. Connect it in Settings → "\n'
+            '                    "Integrations and I can manage GitHub issues for you."'
+        ) in source
+
     @pytest.mark.parametrize(
         "action", ["shipped_this_week", "stale_prs", "review_issue", "list_prs"]
     )

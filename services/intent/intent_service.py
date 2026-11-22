@@ -14919,10 +14919,10 @@ class IntentService:
         if not _github_available:
             return IntentProcessingResult(
                 success=False,  # #2280: not connected, so not performed
+                # CXO 11-22 (01M82NBZQE): no code word on a person's screen.
                 message=(
                     "GitHub isn't connected yet. Connect it in Settings → "
-                    "Integrations (or set GITHUB_TOKEN for local use), and "
-                    "I can manage GitHub issues for you!"
+                    "Integrations and I can manage GitHub issues for you."
                 ),
                 intent_data={
                     NOT_PERFORMED_KEY: NotPerformed.NOT_CONNECTED,  # #2280
