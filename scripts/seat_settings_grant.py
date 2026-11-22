@@ -24,9 +24,11 @@ and adds a Read deny for the file to itself, so the seat's Read tool can't open 
 refused before anything real is in it. The deny is honoured for a file inside the seat's own
 worktree (tested 2026-11-15 with a dummy ``.env`` against the fleet's ``Read(**/.env)``); the same
 form did NOT stop a Read of a file outside the worktree, so it does not protect one seat's file
-from another seat. ``fleet-deny`` adds two home-path denies to the settings file all PM seats
-share, to close that. Their pattern form is untested until the first sitting, which is why both
-are tested by a Read before any key exists.
+from another seat. ``fleet-deny`` adds home-path denies to the settings file all PM seats
+share, to close that: the two worktree paths (form tested at Step A, 2026-11-20, three Reads refused)
+and, since 2026-11-22, the ``~/.piper-shared`` credential, token and secret names (form untested in
+the shared file until a seat's Read of a file inside a browser profile folder is refused). Running it
+again adds only the rules not yet there; the ``.before-fleet-deny`` copy stays the first one.
 
 A seat checks that the key reached its session with no file read at all:
 
@@ -62,9 +64,20 @@ SHARED_SETTINGS = Path.home() / ".claude-pm" / "settings.json"
 # file every PM seat shares, so no seat's Read tool opens another seat's settings file or .env
 # (Arch's ruling, 2026-11-15). A deny stops the Read tool; a file read by a command a seat runs is
 # still the classifier's to judge.
+# The ~/.piper-shared names below were each seat's own deny until 2026-11-22, when Web's seat read a
+# file inside its own browser profile folder (`seat-browser-credential-profile-web`) and was not
+# refused, while CIO's seat was refused on the same file. A deny that lives only in a seat's own
+# git-ignored settings is missing from any seat nobody set it in. Here they cover every PM seat.
+# They match a file or a folder by name, and the `/**` forms cover what is inside a matched folder.
 FLEET_DENIES = (
     "Read(~/Development/piper-morgan-worktrees/*/.claude/settings.local.json)",
     "Read(~/Development/piper-morgan-worktrees/*/.env)",
+    "Read(~/.piper-shared/*credential*)",
+    "Read(~/.piper-shared/*credential*/**)",
+    "Read(~/.piper-shared/*token*)",
+    "Read(~/.piper-shared/*token*/**)",
+    "Read(~/.piper-shared/*secret*)",
+    "Read(~/.piper-shared/*secret*/**)",
 )
 NAME_RE = re.compile(r"^PIPER_SEAT_[A-Z0-9_]+$")
 SEAT_RE = re.compile(r"^[a-z][a-z0-9-]*$")
@@ -302,7 +315,8 @@ def main(argv: list[str] | None = None) -> int:
             f"added {len(added)} deny rule(s); {len(FLEET_DENIES) - len(added)} were already there. No allow, env or other rule was changed."
         )
         print(
-            "Next: one seat tries to Read ANOTHER seat's settings file by its full path. It should be refused."
+            "Next: one seat tries to Read ANOTHER seat's settings file by its full path, and Web tries to Read"
+            " a file inside ~/.piper-shared/seat-browser-credential-profile-web. Both should be refused."
         )
         return 0
 
