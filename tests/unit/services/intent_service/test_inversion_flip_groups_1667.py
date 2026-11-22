@@ -340,7 +340,15 @@ class TestFlipGroupDeclaration:
         # compare_documents (#2132 option (b), 2026-10-23): router-hidden by
         # construction (router_visible=False), so it can never hold a flip group.
         # analyze_repository (#2270, Arch 2026-11-07 20:14): router-hidden the same way.
-        expected_ungrouped = {"clear_todos", "compare_documents", "analyze_repository"}
+        # list_project_todos / list_todos_by_project (#2413, Arch 2026-11-22 10:41):
+        # router-hidden the same way (one entry, both classifier names).
+        expected_ungrouped = {
+            "clear_todos",
+            "compare_documents",
+            "analyze_repository",
+            "list_project_todos",
+            "list_todos_by_project",
+        }
         ungrouped_reads = {
             k for k, e in rail.items() if e.effect == EffectClass.READ and e.flip_group is None
         }
@@ -638,7 +646,14 @@ class TestLiveConsultSurfaces:
         # compare_documents (#2132 option (b), 2026-10-23): router-hidden by
         # construction (router_visible=False), so it can never hold a flip group.
         # analyze_repository (#2270, Arch 2026-11-07 20:14): router-hidden the same way.
-        expected_ungrouped = {"clear_todos", "compare_documents", "analyze_repository"}
+        # list_project_todos / list_todos_by_project (#2413, Arch 2026-11-22 10:41): the same.
+        expected_ungrouped = {
+            "clear_todos",
+            "compare_documents",
+            "analyze_repository",
+            "list_project_todos",
+            "list_todos_by_project",
+        }
         ungrouped = {k for k, e in read_keys.items() if e.flip_group is None}
         assert ungrouped == expected_ungrouped, (
             f"{len(ungrouped)}/{len(read_keys)} READ keys ungrouped, expected only "
@@ -940,12 +955,15 @@ class TestFlipCoverageAudit:
         ]
         # compare_documents: router-hidden (#2132 option (b)), so never flip-grouped.
         # analyze_repository: router-hidden too (#2270, Arch 2026-11-07 20:14).
+        # list_project_todos / list_todos_by_project: router-hidden too (#2413, Arch 11-22).
         assert unassigned == [
             "clear_todos",
             "compare_documents",
             "analyze_repository",
+            "list_project_todos",
+            "list_todos_by_project",
         ], f"expected only clear_todos, compare_documents, analyze_repository: {unassigned}"
-        assert "UNASSIGNED — the 3 READ keys NO WAVE CAN FLIP, by name" in report
+        assert "UNASSIGNED — the 5 READ keys NO WAVE CAN FLIP, by name" in report
         for op in unassigned:
             assert op in report, f"unassigned op {op} missing from --audit output"
 

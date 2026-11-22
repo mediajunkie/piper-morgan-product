@@ -558,6 +558,12 @@ FORCE: Dict[str, Force] = {
         one("db"), "summarize roadmap.pdf", absence=("don't see any uploaded",)
     ),
     "compare_documents": Force(one("db"), "compare roadmap.pdf and plan.pdf"),
+    # #2413: the person's active projects (PortfolioService over the database).
+    "list_project_todos": Force(
+        one("db"),
+        "show me the todos in the Launch project",
+        absence=("don't see any projects",),
+    ),
     # ── Notion ──
     "update_document": Force(
         one("notion"),
