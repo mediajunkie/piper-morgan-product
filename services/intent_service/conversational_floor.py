@@ -2004,9 +2004,10 @@ class ConversationalFloor:
 
                 if needs_reconnect:
                     # Never says "connected" (CXO, 2026-10-17): see the GitHub line above.
+                    # CXO 2026-11-22 (01M82SPNM3, issue 2417): no cause here either.
                     lines.append(
-                        "- Needs reconnecting (the grant was revoked or expired; reconnect "
-                        "in Settings → Integrations): " + ", ".join(needs_reconnect)
+                        "- Needs reconnecting (reconnect in Settings → Integrations): "
+                        + ", ".join(needs_reconnect)
                     )
                 if not_connected:
                     lines.append(
