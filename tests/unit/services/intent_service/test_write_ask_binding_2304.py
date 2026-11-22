@@ -242,7 +242,10 @@ async def test_create_issue_creates_the_title_in_the_repo_it_showed(boundary):
             'create an issue titled "Other thing" in foo/bar',
             "s-2304-bind-create-issue",
         )
-    assert shown == 'Create an issue titled "Login bug" in acme/web? (yes/no)'
+    assert shown == (
+        'Create an issue titled "Login bug" in acme/web? (yes/no)'
+        " If you meant a todo for your list, say no and ask again with the word todo."
+    )
     kwargs = created.await_args.kwargs
     assert (kwargs["title"], kwargs["owner"], kwargs["repo_name"]) == ("Login bug", "acme", "web")
 
