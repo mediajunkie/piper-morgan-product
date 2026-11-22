@@ -14,6 +14,7 @@ from typing import Any, Dict, Optional
 import structlog
 from sqlalchemy.exc import SQLAlchemyError
 
+from services.intent_service import project_todos_read as _ptr
 from services.intent_service import todo_project_attach as _attach
 from services.intent_service import workflow_dispatcher as _workflow_dispatcher
 from services.intent_service import write_confirm_words as _words
@@ -3802,6 +3803,26 @@ def register_default_workflows() -> None:
         router_visible=False,
     )
 
+    # #2413 (Arch 2026-11-22 10:41, 01M82907VE and 01M82A8RX0): "show me the todos in the
+    # Launch project". The legacy classifier emits list_project_todos or
+    # list_todos_by_project; before this entry neither was registered and the turn
+    # floored. No model supplies the project, so the handler asks which one (armed,
+    # every active project bound) and never reads a name from the words.
+    # effect: READ — the person's active projects, then one project's open todos
+    # through 2301's render (todo_handlers.project_status_todos); nothing is written.
+    # outwardness: PRIVATE — rendered to the asking user in their own chat.
+    # Router-hidden (the #2132 (b) mechanism): the derived router grammar skips it, so
+    # the router's request is unchanged (pinned in test_project_todos_read_2413.py).
+    project_todos_read_entry = WorkflowEntry(
+        entry_point=_ptr.run_list_project_todos_workflow,
+        effect=EffectClass.READ,
+        outwardness=Outwardness.PRIVATE,
+        description="Show the open todos of one of the user's projects, asking which project",
+        requires_context=["intent", "intent_service"],
+        action_triggered=True,
+        router_visible=False,
+    )
+
     # #2270 (Arch 20:14, CXO 20:1x): "look at this repository, give me feedback". The
     # legacy classifier emits analyze_repository; before this entry no rail key caught
     # it and it floored over the gathered baseline (read / ask / document reply, and a
@@ -4106,6 +4127,16 @@ def register_default_workflows() -> None:
             entry_point=_attach.run_clarify_todo_project_pick_workflow,
             effect=EffectClass.READ,
             description="Re-ask the #2297 which-project pick of a todo create on a bare affirmative",
+            requires_context=["pending_action", "intent_service"],
+        ),
+        # #2413: generic-accept landing for the which-project's-todos question
+        # (project_todos_read). effect: READ — a bare "yes" re-asks and re-arms the
+        # same bound projects; a listed name shows its todos at the pop seam.
+        # action_triggered=False (the #1987 precedent).
+        _ptr.PROJECT_TODOS_PICK_WORKFLOW: WorkflowEntry(
+            entry_point=_ptr.run_clarify_project_todos_pick_workflow,
+            effect=EffectClass.READ,
+            description="Re-ask the #2413 which-project's-todos question on a bare affirmative",
             requires_context=["pending_action", "intent_service"],
         ),
         # #2297 (CXO 11-20): the "yes" to "Want it added without a project?", asked
@@ -4424,6 +4455,9 @@ def register_default_workflows() -> None:
         "summarize_uploaded_file": summarize_document_entry,
         "compare_documents": compare_documents_entry,
         "analyze_repository": analyze_repository_entry,
+        # #2413: both classifier names, one hidden READ entry.
+        "list_project_todos": project_todos_read_entry,
+        "list_todos_by_project": project_todos_read_entry,
     }
 
     # #1124 step 3 cohort 2: GitHub read-query cohort — one shared entry point per

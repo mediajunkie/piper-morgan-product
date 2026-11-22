@@ -594,6 +594,22 @@ surfaces:
     ("the first N; there may be more"). A default the person didn't name is announced by a
     code-rendered first line. A failed, unlisted word/word asks, never falls to the default.
 
+- id: list_project_todos
+  kind: rail
+  effect: READ
+  reads: the user's active projects (asks which one), then the answered project's open todos (2301's render)
+  handler: services/intent_service/project_todos_read.py:run_list_project_todos_workflow
+  states: {verified: distinct, failed: distinct, narrowed: n/a, not_performed: distinct, substituted: n/a}
+  texts:
+    verified: NO_PROJECTS_LINE "I don't see any projects on your account, so there are no project todos to show."
+    failed: PROJECTS_READ_FAILED_LINE "I couldn't check your projects just now."
+    not_performed: "the armed which-project question (every active project bound); NOT_ARMED_LINE with no store"
+  verdict: green
+  notes: >-
+    #2413 (Arch 2026-11-22 10:41). Router-hidden entry for the classifier's
+    list_project_todos and list_todos_by_project. The name is never read from the words;
+    the answer turn shows 2301's block, or TODOS_READ_FAILED_LINE on a failed todo read.
+
 - id: compare_documents
   kind: rail
   effect: READ
