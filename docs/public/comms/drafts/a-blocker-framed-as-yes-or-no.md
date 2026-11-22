@@ -8,28 +8,26 @@ caption: ''
 
 *November 10–16, 2026*
 
-<!--
-SCAFFOLD, not a draft ("AI prompts human"). Comms supplies the shape, the verified facts and the quotes. You write the prose. Everything below the title and dateline is notes for you. Delete it as your prose replaces it.
-Slot: Sun 2026-11-22 (insight, moved from Sat 11-21 at your request, 11-22). Title LOCKED (you, 11-19), and Thu 11-19's published footer already teases it.
-Sources: the mining pass Nov 6-16 (a Sonnet subagent read 11 of 11 omnibus logs on 11-17). Comms re-opened every quote below at source on 11-18. Files are docs/omnibus-logs/2026-11-DD-omnibus-log.md, cited "Nov DD lNN".
--->
+As I get more comfortable letting my agents run autonomously for long intervals between check-ins, I find that my role as the bottleneck remains central, and my desire to sort out "smart bottleneck" cases where I really am needed from "dumb bottleneck" cases where I hold up the whole show until I do some mindless task, likewise remains as of yet not fully satisfied.
 
-## The principle (one line, yours to word)
+# Gridlock
 
-When the only way past a design problem is a task handed to the human, the design is the fault. And the way a blocker is first asked shapes the answers it gets.
+Earlier this month I checked in with the project to see what needed me and found that several agents were blocked waiting for permission or decisions from me. For example, my prototypical assistant agent (Piper Alpha) was blocked from logging into a test account on the Piper Morgan beta by the classifier Claude uses to prevent risky agent behavior in auto mode (a false negative, from my point of view). Piper Alpha (PA) relayed the permission request to my chief of staff agent (Exec) for my attention.
 
-## The episode, in order (facts verified)
+By the time I responded to this request, a few days, later, PA offered me three potential methods for resolving their impasse. I replied  "Happy to do whatever is easiest. Overall better if we find ways where I don't block this sort of thing."  The team scrambled to follow this direction. 
 
-**1. Nov 10: one credential read stops the checking lane.**
-- PA's 0 of 4 served runs at 18:22: its driver failed on the test account's credential file before login, and the classifier refused listing the file's field names. PA stopped and sent the permission question to Exec. [Nov 10 l46]
-- Nov 11: the same block for a second day. The pronoun-todo check stayed at 0 of 5 runs. "Web, CXO, Arch, Lead and Exec each end fires with #2328 waiting on that decision." [Nov 11 l67]
+[Comms: help me unpack the sense of this sentence. "ruled a durable route" does not make sense. Is the idea that Arch prevented PA's proposed solution for reasons?:] My chief architect agent (Arch) ruled a durable route (a signed-in browser profile) and refused an allow rule for a credential file.
 
-**2. Nov 13: you ask the better question, and it is answered in minutes.**
-- PA's 13:36 decision request listed three ways out. At 17:41 you said: "Happy to do whatever is easiest. Overall better if we find ways where I don't block this sort of thing." [Nov 13 l61]
-- At 17:53 Arch ruled a durable route (a signed-in browser profile) and refused an allow rule for a credential file. The omnibus heading: "A three-day credential blocker was reframed in about 15 minutes and still ended the day unrun." [Nov 13 l61]
+[for the reader I need more of the sense of what was reframed. it went from a yes/no to what exactly?]
+ The omnibus heading: "A three-day credential blocker was reframed in about 15 minutes and still ended the day unrun." [Nov 13 l61]
 - PA's own read of why it took three days: the blocker "sat as a yes/no on reading a file because that's how it was first framed." [Nov 13 l61]
 
-**3. Nov 15: the team converges on handing it back to you, and you refuse.**
+# Hot potato
+
+Two days later when a test run was blocked by [Comms: does paid run stopped at zero calls mean the credit balance for that key was $0? please unpack]. Four of my agents discussed the problem and converged on their preferred solution. They wanted met to run a couple of commands in my terminal. This was passed along to Exec, who concurred.
+
+As I was once again starting to feel relegated to a role as assistant to my assistants (what Cory Doctorow has taken to call "reverse centaurs")
+
 - A paid run stopped at 0 calls. Lead, Arch, CIO and PPM converged in about seven minutes on option (a): you run both commands in Terminal. Exec recommended (a) too. [Nov 15 l60]
 - Your answer at 19:11: "We need to solve that problem, not assign me manual tasks as a workaround for a poorly conceived solution." Also: it "keeps becoming my problem to manually navigate", and "Until we solve that the entire project is hobbling itself". [Nov 15 l60]
 - Exec withdrew (a), asked each seat for the one thing in its lane that most lands on you, and wrote a "seat resources" proposal. Arch wrote ADR-084 that evening. [Nov 15 l60]
