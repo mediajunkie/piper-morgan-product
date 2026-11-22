@@ -3,7 +3,7 @@
 ## START 2026-11-22 06:49 (re-verified; the DAY-END 11-21 block below still holds)
 
 - Checked this morning: beta `d66f15c538` healthy and quiet; staging `e8d0387f6f`; main CI 12 of 12 green; no hold file; no served-path change on main since `f68c5995fd`; inbox empty; no issue after 2410. 2297, 2301, 2406, 2364, 2389 and 2158 are all open.
-- Web's 06:20 entry: still no restart. Mailed Exec (01M81VPY13, cc Web and CIO) asking who performs the restart and whether it is on xian's card; Exec's morning waiting list did not name it.
+- Web's restart is Pard's to do (`seat-restart.sh`); CIO asked Pard at 06:56 on 11-22 (mediajunkie `5b7f59ddcc`). xian only if Pard's dry run refuses. My mail 01M81VPY13 raised it.
 - Briefing's beta line refreshed to `d66f15c538`.
 
 ## DAY-END 2026-11-21 21:47 (a day with no movement on any wait; the blocks below still hold)
