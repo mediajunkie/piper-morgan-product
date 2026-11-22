@@ -347,7 +347,7 @@ Sizes are counts, not effort. Nothing here is estimated. We'll discover more alo
 | #2057 | Surface 1 claims 'how do I archive my project Foo?' as PORTFOLIO/manage_portfolio, and the legacy branch ar… | — |
 | #2133 | "Create issues from this meeting's action items" gets a single-subject prompt: #886's batch decline is stra… | — |
 | #2145 | Router and classifier calls send the full ~3.3k-token catalog uncached: enable Anthropic prompt caching on … | — |
-| #2149 | Router catalog size: single op or example additions move unrelated rows; decide a catalog shape before more… | — |
+| #2149 | Router catalog size: single op or example additions move unrelated rows; decide a catalog shape before more… (11-22: the named exit for the router-hidden ceiling, raised to 4 for #2413 with no fifth until this is decided, Arch 01M82F5PKR; acceptance added by PPM; proposed for sprint 3 at the 11-25 draft) | — |
 | #2410 | The LLM classifier's system prompt is the persona base, so any persona edit (PIPER.md, the behavior block) moves routing (11-20, Arch from 2406's classifier screen: 17 of 21 rows failed on an unrelated edit; rule 7, paid; lifts 2406's base-A limit; placed by PPM beside #2149, the same brittleness class) | — |
 | #1011 | ARCH-DESIGN: Slash-command dispatch precedence — post-MVP design decision needed; closed 11-02 by PPM on Arch's ruling (decisions.log 10:52): slash commands go in the CommandRegistry after the permission gates; nothing owed until the first new one
 | #2155 | UX: "What's on my agenda?" with no calendar answers about meeting-time analysis (placed 10-24) | — |

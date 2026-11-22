@@ -919,7 +919,7 @@ Brake FIRED (second slip = #1965 admission, found and ledgered 10-09). Memo to E
   - 2364-selfhost-wording: the ethics flip served.
   - tier1-approval-batch: xian's quoted yes, then Docs.
   - rule7-key-ask, path-b-quote, notion-offer-ask: unchanged.
-  - sprint-3-plan: draft on the current score at the 11-25 START and revise at the 11-26 close. Dates are xian's.
+  - sprint-3-plan: draft on the current score at the 11-25 START and revise at the 11-26 close. Propose #2149 in it (the router-hidden ceiling's exit; Arch 01M82F5PKR: no fifth hidden entry until it's decided). Dates are xian's.
 - **Parked, one trigger: linked billing.** Waits on xian deciding whether Piper gets its own Claude Platform organisation.
 - **Genuine xian decisions:** E5 naming for #2380; #2344; the possible "Safe Storage" keychain item.
 - **Rules carried:**
