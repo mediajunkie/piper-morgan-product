@@ -264,6 +264,30 @@ def build_fallback_sentence(armed_check_names: Sequence[str]) -> str:
     return f"I couldn't check {joined} this turn."
 
 
+# Issue 2414 (Arch 2026-11-22, 01M82G948F; CXO's outcome 01M82D106Z): when the guard
+# drops a reply's OPENING sentence, what is left can begin on a connective that pointed
+# at it ("Also, your GitHub…"). A closed list, removed with its comma, and the next
+# word capitalised. This edits form, never meaning. A dangling clause that is not a
+# connective ("You can fix that in Settings…") is not something code can tell, and is
+# left for served reads.
+LEADING_CONNECTIVES: Tuple[str, ...] = ("Also", "And", "But", "So", "Plus", "That said")
+
+
+def _without_leading_connective(text: str) -> str:
+    """Plain string checks, no pattern: the word must be whole (followed by a comma or
+    a space), and something must be left after it."""
+    for word in LEADING_CONNECTIVES:
+        if not text.startswith(word):
+            continue
+        rest = text[len(word) :]
+        if not rest or rest[0] not in ", ":
+            continue
+        rest = rest.lstrip(",").lstrip()
+        if rest:
+            return rest[:1].upper() + rest[1:]
+    return text
+
+
 def apply_scope_guard(
     text: str,
     armed_check_names: Sequence[str],
@@ -271,6 +295,7 @@ def apply_scope_guard(
     session_id: Optional[str] = None,
     user_id: Optional[str] = None,
     intent_category: Optional[str] = None,
+    context_true_check_names: Sequence[str] = (),
 ) -> Tuple[str, int]:
     """The #1772 post-compose scope guard.
 
@@ -287,6 +312,13 @@ def apply_scope_guard(
             check_names, in registry order (empty => no scan at all, zero
             cost — #1772 AC).
 
+        context_true_check_names: check_names for sources the turn's own
+            context told the floor are unavailable for a reason that is not
+            a failed read (issue 2414, Arch 2026-11-22: GitHub needing
+            reconnecting). A sentence about such a source is true, so it is
+            never dropped. This only takes drops away: it starts no scan on
+            its own and is never named in the fallback sentence.
+
     Returns:
         (filtered_text, dropped_sentence_count)
     """
@@ -295,9 +327,12 @@ def apply_scope_guard(
         return text, 0
     if not text:
         return text, 0
+    licensed_set = armed_set | frozenset(context_true_check_names)
 
     dropped_count = 0
     unarmed_named: List[str] = []
+    seen_first_sentence = False
+    opening_dropped = False
 
     paragraphs = _PARAGRAPH_SPLIT_RE.split(text)
     kept_paragraphs: List[str] = []
@@ -307,7 +342,10 @@ def apply_scope_guard(
         for sentence in sentences:
             if not sentence.strip():
                 continue
-            drop, unarmed = _sentence_verdict(sentence, armed_set)
+            drop, unarmed = _sentence_verdict(sentence, licensed_set)
+            if not seen_first_sentence:
+                seen_first_sentence = True
+                opening_dropped = drop
             if drop:
                 dropped_count += 1
                 unarmed_named.extend(unarmed)
@@ -323,6 +361,8 @@ def apply_scope_guard(
 
     if _is_fragment(filtered):
         filtered = build_fallback_sentence(armed_check_names)
+    elif opening_dropped:
+        filtered = _without_leading_connective(filtered)
 
     logger.warning(
         "floor_scope_guard_dropped",
