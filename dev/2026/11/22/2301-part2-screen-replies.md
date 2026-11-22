@@ -67,3 +67,13 @@ The three lines sent to the floor in this run:
 5. I'm not pulling up the todo list for Mobile Redesign right now. If you'd like me to try again, or can you paste what you're tracking and we can work from there, ask me directly.
 6. I wasn't able to pull up the Mobile Redesign task list just now. If you'd like me to try again, ask me directly. ¶ If you can give me a quick rundown of where things stand, I can help you triage what's left, spot any gaps, or figure out what needs to move before you can ship.
 
+
+## Fourth run: CXO's three lines. The bar, written before the run (2026-11-22)
+
+The lines under test are CXO's (mail 01M82KEMW7), one per kind of block. Same five rows as the third run, six samples each, arm A alone, same context and base.
+
+Bar, 6 of 6 on every row. Arch's (mail 01M82K1G7T): no todo named; nothing that contradicts the kind of block that follows; no claim that the floor sees the todos; no unqualified "can't see its open work". CXO's additions (same mail as her lines): no offer to fetch, show or pull up the todos or the status again ("Let me pull that up" counts, since the floor pulls nothing); no offer to connect GitHub for the person. On the none and couldn't-check rows, no mention of todos or open work and nothing said to follow.
+
+Not in this bar: issue 2415's "say get status for …" and "Nothing has been done yet", which are counted separately.
+
+Scored by eye: Lead reads all 30, and CXO has the last word. Results are in the next section.
