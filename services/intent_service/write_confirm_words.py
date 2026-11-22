@@ -359,9 +359,8 @@ async def _app_not_on_repository(request: WriteAskRequest, repository: str) -> O
 #: replies say how to get one. The sentences key on the route (``create_issue``), not on
 #: the person's words, and each is true whichever thing was meant.
 ISSUE_ASK_TODO_HINT = "If you meant a todo for your list, say no and ask again with the word todo."
-ISSUE_NOT_WORKING_TODO_HINT = (
-    'Nothing was added. If you meant a todo, say "add a todo: …" and I\'ll add it.'
-)
+ISSUE_TODO_HINT = 'If you meant a todo, say "add a todo: …" and I\'ll add it.'
+ISSUE_NOT_WORKING_TODO_HINT = f"Nothing was added. {ISSUE_TODO_HINT}"
 
 
 async def create_issue_write_ask(request: WriteAskRequest) -> WriteAsk:
