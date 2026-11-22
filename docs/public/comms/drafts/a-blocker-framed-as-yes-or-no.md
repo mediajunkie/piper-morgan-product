@@ -1,5 +1,5 @@
 ---
-image: ''
+image: 'a-blocker-framed-as-yes-or-no-the-last-box-across-the-gap.jpg'
 alt: ''
 caption: ''
 ---
