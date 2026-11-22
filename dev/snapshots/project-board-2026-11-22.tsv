@@ -2202,3 +2202,4 @@ issue	state	milestone	sprint	title	labels	blocked_by	state_reason
 2412	OPEN	Production		UX: a plain personal todo ('add renew passport to my personal list') is declined as outside professional scope	UX		
 2413	OPEN	Production		UX: 'show me the todos in the Launch project' replies 'Did you mean one of those' with nothing listed	UX		
 2414	OPEN	Production		UX: two status replies on beta open mid-thought ('Also, …', 'To get a real picture, …')	UX		
+2415	OPEN	Production		On a status ask with no project detail, the floor tells the person to ask for the status they just asked for (and sometimes says 'Nothing has been done yet')	UX		
