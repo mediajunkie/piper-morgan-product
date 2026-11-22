@@ -1,5 +1,14 @@
 # Lead carry-forward — Fable 5.2 seat again since 2026-11-20 08:56 (Opus 5.5 from 2026-11-17 21:30 until then); Model A worktree ~/Development/piper-morgan-worktrees/lead
 
+## DAY-END 2026-11-21 21:47 (a day with no movement on any wait; the blocks below still hold)
+
+**Read first tomorrow:**
+- **Beta serves `d66f15c538`**, healthy. **Main is ahead of beta by the handler-only 2301** (`74522e25ec`) and by today's test-only and comment-only push (`f68c5995fd`: clock-relative due dates in two test files, two corrected comments). Main CI 12 of 12 green at 21:47. No hold file in `ops/`.
+- **Web's session did not restart on 11-21** (Web's STOP entry, 21:19), so the sitting on `web-seed-1386` has not happened. That account's saved session expired at 13:26 PT on 11-21; Web's log carries the helper re-run before step 4.
+- **Waits, unchanged, each with its blocker:** Web's sitting, then CXO's 2301 wording, 2301's promotion, the served rows for 2297 and 2301, and the 2406 close (Web's session restart); the 2364 step 1 merge (Step E, xian's OpenAI run, with Exec); Web's signed-in Disconnect pass (Web's restart); 2157 proof 3 (#2158, open).
+- **Paid on 11-21: $0.** No promotion on 11-21. Inbox empty at close; no issue filed after 2410.
+- Do not promote 2301 on its own account before the sitting.
+
 ## START 2026-11-21 06:51 (re-verified; the DAY-END 11-20 block below still holds)
 
 - Checked this morning: beta `d66f15c538` healthy and quiet; staging `84ab007a84`; main CI 12 of 12 green; no hold file in `ops/`; no served-path change on main since 2301's landing; inbox empty; no new sprint issue since 2410.
