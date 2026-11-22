@@ -16,15 +16,15 @@ Earlier this month I checked in with the project to see what needed me and found
 
 By the time I responded to this request, a few days, later, PA offered me three potential methods for resolving their impasse. I replied  "Happy to do whatever is easiest. Overall better if we find ways where I don't block this sort of thing."  The team scrambled to follow this direction. 
 
-[Comms: help me unpack the sense of this sentence. "ruled a durable route" does not make sense. Is the idea that Arch prevented PA's proposed solution for reasons?:] My chief architect agent (Arch) ruled a durable route (a signed-in browser profile) and refused an allow rule for a credential file.
+My chief architect agent (Arch) chose a permanent fix, a browser profile I would sign into once and the agents could then reuse, and turned down the stopgap of letting an agent read the password file.
 
-[for the reader I need more of the sense of what was reframed. it went from a yes/no to what exactly?]
+[Comms' answer to your question, delete when your prose replaces it: the question went FROM "may PA read this credential file, yes or no?" (it sat that way for three days, Nov 10 to 13) TO "how does an agent stay signed in without needing you each time?" Your 17:41 message ("Overall better if we find ways where I don't block this sort of thing") opened the second question, and Arch's design answer came at 17:53, about 15 minutes. The answer was the browser profile you sign into once, which agents reuse, so they hold a session and never the password. Caution: approved that day, not run that day. Nothing ran on Nov 13.]
  The omnibus heading: "A three-day credential blocker was reframed in about 15 minutes and still ended the day unrun." [Nov 13 l61]
 - PA's own read of why it took three days: the blocker "sat as a yes/no on reading a file because that's how it was first framed." [Nov 13 l61]
 
 # Hot potato
 
-Two days later when a test run was blocked by [Comms: does paid run stopped at zero calls mean the credit balance for that key was $0? please unpack]. Four of my agents discussed the problem and converged on their preferred solution. They wanted met to run a couple of commands in my terminal. This was passed along to Exec, who concurred.
+Two days later a paid test run was blocked before it made a single call: the key was stored, but the agents' tooling couldn't unlock it. Four of my agents discussed the problem and converged on their preferred solution. They wanted met to run a couple of commands in my terminal. This was passed along to Exec, who concurred.
 
 As I was once again starting to feel relegated to a role as assistant to my assistants (what Cory Doctorow has taken to call "[reverse centaurs](https://us.macmillan.com/books/9780374621568/thereversecentaursguidetolifeafterai/)"), I pushed back on this, writing "We need to solve that problem, not assign me manual tasks as a workaround for a poorly conceived solution." Also: it "keeps becoming my problem to manually navigate", and "Until we solve that the entire project is hobbling itself". 
 
