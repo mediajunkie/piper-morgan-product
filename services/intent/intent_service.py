@@ -2704,6 +2704,28 @@ class IntentService:
                             intent_data=_tpa_turn["intent_data"],
                             requires_clarification=False,
                         )
+                # #2413: a pending WHICH-PROJECT'S-TODOS question (armed by the
+                # list_project_todos read) binds a listed name, or a number on the
+                # several-share-a-name question, to the project id bound at ask time
+                # and shows its open todos. Nothing is written. Returning None falls
+                # through exactly as the 2297 pick does.
+                elif _vi_payload.get("kind") == "project_todos_pick_question":
+                    from services.intent_service import project_todos_read as _ptr
+
+                    _ptr_turn = await _ptr.handle_project_todos_pick_turn(
+                        pending_offer,
+                        message,
+                        session_id=session_id,
+                        user_id=user_id,
+                        intent_service=self,
+                    )
+                    if _ptr_turn is not None:
+                        return IntentProcessingResult(
+                            success=True,
+                            message=_ptr_turn["message"],
+                            intent_data=_ptr_turn["intent_data"],
+                            requires_clarification=_ptr_turn.get("requires_clarification", False),
+                        )
                 # #2308 (link_repo slice): a pending WHICH-REPOSITORY question (armed
                 # by link_repo's held write ask for a found project) binds an
                 # owner/name answer, read with the handler's own parse, and arms the
@@ -3387,6 +3409,8 @@ class IntentService:
                         "todo_no_project_confirm_question": (
                             "todo_no_project_confirm_question_released"
                         ),
+                        # #2413: a released which-project's-todos question; nothing shown.
+                        "project_todos_pick_question": "project_todos_pick_question_released",
                         # #2308: a released which-repository question; nothing linked.
                         "link_repo_repository_question": "link_repo_repository_question_released",
                         # #2035: an ignored yes/no add-project offer is

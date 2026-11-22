@@ -1,9 +1,19 @@
-"""#2132 option (b), Arch condition 3: router-hidden rail entries are a ratchet, ceiling 2.
+"""#2132 option (b), Arch condition 3: router-hidden rail entries are a ratchet, ceiling 4.
 
 Ceiling 1 (compare_documents, 10-23); raised to 2 by Arch's ruling 2026-11-07 20:26 for
 analyze_repository (#2270), and to 3 by his 2026-11-08 07:53 for
-change_remembered_preference (#955), with the same named exit. **3 is the last raise**
-(Arch 07:53): a fourth hidden entry needs #2149 to move, or the live-set route.
+change_remembered_preference (#955), with the same named exit. He called 3 the last
+raise: a fourth hidden entry needed #2149 to move, or the live-set route.
+
+**Raised to 4 by Arch's own amendment of that cap, 2026-11-22 12:29 (mail 01M82F5PKR),
+for list_project_todos (issue 2413).** His reasons: both named exits are closed for
+this op. The live-set route was measured closed (two catalog wordings for this read
+failed rule 7 on 11-20), and #2149 is open and unplaced. Holding the cap would have
+left a served reply that names a list it never showed. Conditions: #2149 is the exit
+(the entry turns visible behind a fresh rule-7 screen or retires, and the ceiling
+comes down); a landing pin goes through ``router_none_stands`` with the two served
+phrasings (``test_project_todos_read_2413.py``). **There is no fifth**: a fifth needs
+#2149 decided, with no exception, including from Arch.
 
 A ``router_visible=False`` entry is reachable only through the legacy classifier.
 That is a bounded exception with a named exit (#2149, catalog size), never a
@@ -21,13 +31,16 @@ from services.intent_service.workflow_entries import register_default_workflows
 
 # Arch 2026-11-07 20:26 (#2270): raised to 2 for analyze_repository, the same exit
 # (#2149); its landing pin is test_analyze_repository_2270.py's router-none test.
-# Arch 2026-11-08 07:53 (#955): raised to 3, the last raise; landing pin in
+# Arch 2026-11-08 07:53 (#955): raised to 3; landing pin in
 # test_change_remembered_preference_955.py.
-ROUTER_HIDDEN_CEILING = 3
+# Arch 2026-11-22 12:29 (issue 2413, mail 01M82F5PKR): raised to 4 by his amendment of
+# his own cap; no fifth. Landing pin in test_project_todos_read_2413.py.
+ROUTER_HIDDEN_CEILING = 4
 EXPECTED_ROUTER_HIDDEN = {
     "compare_documents",
     "analyze_repository",
     "change_remembered_preference",
+    "list_project_todos",
 }
 
 
