@@ -25,7 +25,7 @@ v1095, `719UZ4h1NELjEwWZbDCceT`. Source `dev/active/exec-attention-rollup-curren
 - **Restore drill 2157:** his choice of day (rollup card).
 
 ## In motion
-- **Beta `d66f15c538`** since 20:25 (2297 attach). **2301 handler-only on main `74522e25ec`**, CI green, not promoted. It isn't promoted on its own before Web's sitting; it may go with other work (CXO 20:51). Nobody reads the block as ruled until CXO rules on Web's quotes.
+- **Beta `f3a5a3cb3e`** since 11-22 11:04 (Lead 01M82AXZ51; 2301 todos block served). Web runs five served lines. 2301 floor part 1 (Arch 01M8270WE5) is next, then part 2 screen.
 - **Web:** restarted by Pard; signed in as web-seed-1386 at 07:06 11-22 (01M81WPN51, session expires 11-23 15:06 UTC). Running: step 4, CXO's 2406 row, Lead's 15-line 2297/2301 pass. Then CXO rules on the 2301 words, then 2301 promotion.
 - Planned spend against about $23.81 of headroom on the test workspace. Also Web's Step D item 4.
 - **Fleet `~/.piper-shared` denies (CIO 01M824X130, 11-22 09:29):** Web's seat read a file in its own seat-browser profile folder, so the deny was missing in that seat. Fix is on branch `claude/cio-fleet-deny-piper-shared` `733636419f`, stricter only, and waits on Arch's yes (HOST is asked whether it needs a read, and whether Web keeps the seat browser meanwhile). When it lands, tell xian the same hour, and put the batch (`dev/active/cio-install-batch-2026-11-22.md`: one command, then Pard restarts Web) on his card. D6: auto mode refuses Pard a shared-settings edit, so the step stays his.
