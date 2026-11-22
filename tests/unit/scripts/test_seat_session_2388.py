@@ -494,7 +494,7 @@ def test_the_key_exception_names_its_workspace_and_cap(ss):
 
 
 def test_the_second_account_is_listed_and_holds_nothing(ss):
-    assert sorted(ss.ACCOUNTS) == ["seat-github-1", "web-seed-1386"]
+    assert sorted(ss.ACCOUNTS) == ["seat-github-1", "seat-tester-1", "web-seed-1386"]
     second = ss.ACCOUNTS["seat-github-1"]
     assert second.credential_file == "seat-github-1-credentials.txt"
     assert not second.integrations and not second.provider_keys and second.connectors is False
@@ -1004,3 +1004,207 @@ def test_a_token_that_outlives_the_cookie_or_the_cap_changes_nothing(ss, shared)
 )
 def test_an_unreadable_token_falls_back_to_the_cookie_and_the_cap(ss, value):
     assert ss.token_expiry(value) is None
+
+
+# --- seat-tester-1 and --save-key anthropic (HOST 01M827TK7G, Arch 01M828NS6F, 11-22) ---
+
+TESTER = "seat-tester-1"
+TESTER_CRED = "seat-tester-1-credentials.txt"
+KEY_FILE = "web-credential-anthropic-test-2026-10-15.txt"
+# Key-shaped, built at run time so no key-shaped literal sits in the repo; it opens nothing.
+FAKE_KEY = "sk-" + "ant-" + "made-up-0123456789-abcdefghij"
+SAVE_SECRETS = SECRETS + (FAKE_KEY,)
+
+
+def test_the_third_account_may_hold_an_anthropic_key_and_nothing_else(ss):
+    third = ss.ACCOUNTS[TESTER]
+    assert third.credential_file == TESTER_CRED and "credential" in third.credential_file
+    assert third.provider_keys == frozenset({"anthropic"})
+    assert not third.integrations and third.connectors is False
+    assert not ss.ACCOUNTS["seat-github-1"].provider_keys  # the GitHub seat stays bare
+
+
+def test_the_key_list_is_one_provider_and_one_file_under_the_fleet_deny(ss):
+    assert dict(ss.SAVABLE_KEYS) == {"anthropic": KEY_FILE}
+    assert "credential" in KEY_FILE
+
+
+@pytest.fixture
+def tester(ss, shared):
+    cred = shared / TESTER_CRED
+    cred.write_text(f"username: {TESTER}\npassword: {PASSWORD}\n")
+    cred.chmod(0o600)
+    key = shared / KEY_FILE
+    key.write_text(f"# the test workspace's spare key\nANTHROPIC_API_KEY={FAKE_KEY}\n")
+    key.chmod(0o600)
+    return shared
+
+
+class KeyHost(StubHost):
+    """Beta for a new account: no key until the store call, then one Anthropic key. The
+    store's reply body echoes the key, to prove nothing from a body is ever printed."""
+
+    def __init__(self, ss, store_status=201, lands=True, **over):
+        super().__init__(ss, **over)
+        self.ss, self.store_status, self.lands, self.stored = ss, store_status, lands, False
+        self.replies["/api/v1/auth/me"] = ss.Reply(200, json.dumps({"username": TESTER}).encode())
+
+    def __call__(self, method, path, data, headers):
+        self.calls.append((method, path, data, dict(headers)))
+        bare = path.split("?")[0]
+        if bare == "/api/v1/keys/store":
+            if 200 <= self.store_status < 300 and self.lands:
+                self.stored = True
+            return self.ss.Reply(self.store_status, f"echo {FAKE_KEY}".encode())
+        if bare == "/api/v1/keys/list" and self.stored:
+            return self.ss.Reply(200, json.dumps([{"provider": "anthropic"}]).encode())
+        return self.replies[bare]
+
+
+def test_save_key_sends_the_files_key_once_and_prints_fixed_words(ss, tester):
+    host = KeyHost(ss)
+    line = ss.save_key(TESTER, "anthropic", host)
+    assert line == f"{TESTER}: key saved; key on file: yes"
+    stores = [c for c in host.calls if c[1] == "/api/v1/keys/store"]
+    assert len(stores) == 1
+    method, _, data, headers = stores[0]
+    assert method == "POST" and headers["Content-Type"] == "application/json"
+    assert json.loads(data) == {"provider": "anthropic", "api_key": FAKE_KEY, "validate": True}
+    # the key is in that one body and nowhere else: no path, no header, no other body
+    for _, path, other_data, other_headers in host.calls:
+        assert FAKE_KEY not in path and FAKE_KEY not in json.dumps(other_headers)
+        if path != "/api/v1/keys/store":
+            assert other_data is None or FAKE_KEY.encode() not in other_data
+    assert not (tester / f"{TESTER}.session-token.json").exists()  # saves no session
+
+
+def test_save_key_runs_bound_2_before_and_after_the_store(ss, tester):
+    host = KeyHost(ss)
+    ss.save_key(TESTER, "anthropic", host)
+    paths = [c[1].split("?")[0] for c in host.calls]
+    store = paths.index("/api/v1/keys/store")
+    for check in ("/api/v1/admin/account-flags", "/api/v1/integrations/health"):
+        positions = [i for i, p in enumerate(paths) if p == check]
+        assert len(positions) == 2 and positions[0] < store < positions[1], check
+
+
+def test_save_key_refuses_when_a_key_is_already_there_and_sends_nothing(ss, tester):
+    host = KeyHost(ss)
+    host.stored = True
+    with pytest.raises(ss.Refused, match="already has a key"):
+        ss.save_key(TESTER, "anthropic", host)
+    assert not [c for c in host.calls if c[1] == "/api/v1/keys/store"]
+
+
+@pytest.mark.parametrize(
+    "account, provider, reason",
+    [
+        ("xian", "anthropic", "not on the list"),
+        (TESTER, "openai", "not on the key list"),
+        ("seat-github-1", "anthropic", "may not hold"),
+    ],
+)
+def test_save_key_refuses_off_the_lists_before_any_file_or_call(
+    ss, tester, account, provider, reason
+):
+    host = KeyHost(ss)
+    with pytest.raises(ss.Refused, match=reason):
+        ss.save_key(account, provider, host)
+    assert host.calls == []
+
+
+def test_save_key_refuses_an_account_with_something_real_on_it(ss, tester):
+    host = KeyHost(ss, **{"/api/v1/admin/account-flags": None})
+    host.replies["/api/v1/admin/account-flags"] = ss.Reply(200, b"{}")
+    with pytest.raises(ss.Refused, match="is an admin"):
+        ss.save_key(TESTER, "anthropic", host)
+    assert not [c for c in host.calls if c[1] == "/api/v1/keys/store"]
+
+
+@pytest.mark.parametrize("status, word", [(400, "4xx"), (401, "4xx"), (500, "5xx"), (302, "3xx")])
+def test_a_refused_store_prints_the_status_class_only(ss, tester, capsys, status, word):
+    host = KeyHost(ss, store_status=status)
+    ss.save_key.__defaults__ = (host,)
+    code, text = _run_main(ss, ["--account", TESTER, "--save-key", "anthropic"], capsys)
+    assert code == 2
+    assert f"refused: the key save was not accepted (status {word})" in text
+    for secret in SAVE_SECRETS:
+        assert secret not in text
+
+
+def test_an_accepted_store_with_no_key_on_file_refuses(ss, tester):
+    with pytest.raises(ss.Refused, match="no key is on file"):
+        ss.save_key(TESTER, "anthropic", KeyHost(ss, lands=False))
+
+
+def test_save_key_through_main_prints_one_line_and_no_secret(ss, tester, capsys):
+    ss.save_key.__defaults__ = (KeyHost(ss),)
+    code, text = _run_main(ss, ["--account", TESTER, "--save-key", "anthropic"], capsys)
+    assert code == 0
+    assert text.strip() == f"{TESTER}: key saved; key on file: yes"
+    for secret in SAVE_SECRETS:
+        assert secret not in text
+
+
+def test_save_key_unexpected_error_prints_class_name_only(ss, tester, capsys):
+    def boom(method, path, data, headers):
+        raise RuntimeError(f"leaky {FAKE_KEY} {PASSWORD}")
+
+    ss.save_key.__defaults__ = (boom,)
+    code, text = _run_main(ss, ["--account", TESTER, "--save-key", "anthropic"], capsys)
+    assert code == 3 and "unexpected RuntimeError" in text
+    for secret in SAVE_SECRETS:
+        assert secret not in text
+
+
+def test_main_takes_one_mode_and_only_listed_providers(ss, tester, capsys):
+    code, text = _run_main(
+        ss, ["--account", ACCOUNT, "--save-key", "anthropic", "--disconnect", "calendar"], capsys
+    )
+    assert code == 2 and "one mode at a time" in text
+    with pytest.raises(SystemExit):
+        ss.main(["--account", TESTER, "--save-key", "openai"])
+    with pytest.raises(SystemExit):  # the key is never an argument
+        ss.main(["--account", TESTER, "--save-key", "anthropic", "--key", FAKE_KEY])
+
+
+def _key_file_cases():
+    two = f"{FAKE_KEY}\n{FAKE_KEY}x\n"
+    return [
+        ("others can read it", lambda p: (p.write_text(FAKE_KEY), p.chmod(0o644)), "not mode 0600"),
+        ("empty", lambda p: (p.write_text(""), p.chmod(0o600)), "exactly one key"),
+        ("two keys", lambda p: (p.write_text(two), p.chmod(0o600)), "exactly one key"),
+        ("no key shape", lambda p: (p.write_text("hello"), p.chmod(0o600)), "exactly one key"),
+        ("missing", lambda p: p.unlink(), "not readable"),
+    ]
+
+
+@pytest.mark.parametrize("name, spoil, reason", _key_file_cases(), ids=lambda v: str(v)[:20])
+def test_save_key_refuses_a_key_file_it_should_not_trust(ss, tester, capsys, name, spoil, reason):
+    spoil(tester / KEY_FILE)
+    host = KeyHost(ss)
+    ss.save_key.__defaults__ = (host,)
+    code, text = _run_main(ss, ["--account", TESTER, "--save-key", "anthropic"], capsys)
+    assert code == 2 and reason in text
+    assert host.calls == []
+    assert FAKE_KEY not in text
+
+
+def test_save_key_refuses_a_link_in_place_of_the_key_file(ss, tester):
+    real = tester / "elsewhere.txt"
+    real.write_text(FAKE_KEY)
+    real.chmod(0o600)
+    (tester / KEY_FILE).unlink()
+    (tester / KEY_FILE).symlink_to(real)
+    with pytest.raises(ss.Refused, match="not a regular file"):
+        ss.save_key(TESTER, "anthropic", KeyHost(ss))
+
+
+def test_the_same_key_written_twice_is_one_key(ss, tester):
+    (tester / KEY_FILE).write_text(f"key: {FAKE_KEY}\n# again: {FAKE_KEY}\n")
+    assert ss.read_key_file(tester / KEY_FILE) == FAKE_KEY
+
+
+def test_the_docstring_says_thirty_minutes(ss):
+    source = (ROOT / "scripts" / "seat_session.py").read_text()
+    assert "30 minutes" in source and "24 hours at most" not in source
