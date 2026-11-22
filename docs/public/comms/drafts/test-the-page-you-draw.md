@@ -10,7 +10,7 @@ caption: ''
 
 <!--
 SCAFFOLD, not a draft ("AI prompts human"). Comms supplies the shape, the verified facts and the quotes. You write the prose. Everything below the title and dateline is notes for you. Delete it as your prose replaces it.
-Slot: Sat 2026-11-28 (insight, tentative per your 11-18 yes to the sketch). Title is a placeholder. You said on 11-20 it sounds awkward and you'll come up with a new one. Comms won't propose one unless you ask. It's needed before Sat 11-21's footer teases it.
+Slot: moved 11-22 to Sat 2026-12-19 (insight), because Sat 11-21's post moved into 11-28. If 11-21's post runs Sun 11-22 instead, this stays on 11-28. Title is a placeholder. You said on 11-20 it sounds awkward and you'll come up with a new one. Comms won't propose one unless you ask. It's needed before Thu 12-17's footer teases it.
 Sources: the mining pass Nov 6-16 (11-17). Comms re-opened every quote below at source on 11-18. Files are docs/omnibus-logs/2026-11-DD-omnibus-log.md, cited "Nov DD lNN".
 -->
 
@@ -48,6 +48,6 @@ A test that checks the code is not a test of what the person sees. Tests pass in
 
 ---
 
-*Next on Building Piper Morgan: [TEASE: Thu 12-03 "Ready or Not" (tentative, arc 2: the release decision, late October). Needs your final title before this goes to Docs.]*
+*Next on Building Piper Morgan: [TEASE: the next non-Ship post after Sat 12-19. Nothing is on the calendar after 12-19 yet.]*
 
 *[Reader question, yours to write. A start: "When your tests last passed, what were they actually looking at?"]*

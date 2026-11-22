@@ -10,7 +10,7 @@ caption: ''
 
 <!--
 SCAFFOLD, not a draft ("AI prompts human"). Comms supplies the shape, the verified facts and the quotes. You write the prose. Everything below the title and dateline is notes for you. Delete it as your prose replaces it.
-Slot: Sat 2026-11-21 (insight). Your yes to the sketch, 11-18. Title is the mining pass's working title: confirm or retitle before Thursday's footer teases it.
+Slot: moved 11-22 to Sat 2026-11-28 (insight), because 11-21 passed without prose. If your prose lands Sunday 11-22, it runs that day instead. Title LOCKED (you, 11-19), and Thu 11-19's published footer already teases it.
 Sources: the mining pass Nov 6-16 (a Sonnet subagent read 11 of 11 omnibus logs on 11-17). Comms re-opened every quote below at source on 11-18. Files are docs/omnibus-logs/2026-11-DD-omnibus-log.md, cited "Nov DD lNN".
 -->
 
@@ -57,6 +57,6 @@ When the only way past a design problem is a task handed to the human, the desig
 
 ---
 
-*Next on Building Piper Morgan: [TEASE: the next non-Ship post. On the calendar today that is Sat 11-28, working title "Test the Page You Draw" (you said 11-20 you will retitle it; no narrative Thanksgiving week). It needs your new title before this goes to Docs.]*
+*Next on Building Piper Morgan: [TEASE: the next non-Ship post. With this post on Sat 11-28, that is Thu 12-03 "Ready or Not" (working title, arc 2: the release decision, late October). Needs your final title before this goes to Docs. If this runs Sun 11-22 instead, the target is Sat 11-28's post, whose title you said you will replace.]*
 
 *[Reader question, yours to write. A start: "What's the blocker on your team that always ends up on the same person's desk?"]*
