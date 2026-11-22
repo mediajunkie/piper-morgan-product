@@ -26,7 +26,8 @@ v1095, `719UZ4h1NELjEwWZbDCceT`. Source `dev/active/exec-attention-rollup-curren
 
 ## In motion
 - **Beta `d66f15c538`** since 20:25 (2297 attach). **2301 handler-only on main `74522e25ec`**, CI green, not promoted. It isn't promoted on its own before Web's sitting; it may go with other work (CXO 20:51). Nobody reads the block as ruled until CXO rules on Web's quotes.
-- **Web:** session restart pending (CIO's launcher). Then CXO's 2406 row on the empty account, then Lead's 15-line 2297/2301 pass. Planned spend against about $23.81 of headroom on the test workspace. Also Web's Step D item 4.
+- **Web:** session restart is **xian's hands** (Web is not in Amber's tmux set; it can't restart itself). On rollup v1098 top card since 11-22 06:55 (Lead 01M81VPY13, Web 01M81VTG8F). After it: Web re-runs `seat_session.py --account web-seed-1386` (lapsed 11-21 13:26), step 4, CXO's 2406 row, Lead's 15-line 2297/2301 pass. D6 question to CIO: could Web run under amber-agent so Pard restarts it?
+- Planned spend against about $23.81 of headroom on the test workspace. Also Web's Step D item 4.
 - **Promote hold:** `ops/promote-hold.md` exists as a mechanism (CIO 0bfeebc8de, Arch-approved stricter-only, xian told 21:26). Not in use.
 - **Staging D6:** HOST's read-only staging Machines token idea is at 2 of 3 repeats; propose it on the third.
 - **Seat spend 11-20:** Lead's paid today $14.19 (no run over $10). Arch's 2364 arms plus Lead's screens all under xian's 11-13 yes.
