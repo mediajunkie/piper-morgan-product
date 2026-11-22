@@ -28,7 +28,8 @@ from another seat. ``fleet-deny`` adds home-path denies to the settings file all
 share, to close that: the two worktree paths (form tested at Step A, 2026-11-20, three Reads refused)
 and, since 2026-11-22, the ``~/.piper-shared`` credential, token and secret names (form untested in
 the shared file until a seat's Read of a file inside a browser profile folder is refused). Running it
-again adds only the rules not yet there; the ``.before-fleet-deny`` copy stays the first one.
+again adds only the rules not yet there, keeps the first ``.before-fleet-deny`` copy, and writes a
+copy of its own (``.before-fleet-deny.<YYYYMMDD-HHMMSS>``), so the undo it prints reverts that run only.
 
 A seat checks that the key reached its session with no file read at all:
 
@@ -54,6 +55,7 @@ import shutil
 import stat
 import sys
 import tempfile
+import time
 from pathlib import Path
 
 WORKTREES = Path.home() / "Development" / "piper-morgan-worktrees"
@@ -127,21 +129,34 @@ def save(path: Path, data: dict, mode: int = stat.S_IRUSR | stat.S_IWUSR) -> Non
 
 def fleet_deny(path: Path) -> list[str]:
     """Add the home-path denies to the shared settings file. Additive: nothing else is changed."""
+    return fleet_deny_run(path)[0]
+
+
+def fleet_deny_run(path: Path) -> tuple[list[str], Path | None]:
+    """``fleet_deny``, also returning the copy that undoes this run alone (None when nothing was added)."""
     if not path.exists():
         raise SystemExit(f"{path} does not exist; nothing was changed")
     data = load(path)
     deny = data.setdefault("permissions", {}).setdefault("deny", [])
     added = [rule for rule in FLEET_DENIES if rule not in deny]
+    backup = None
     if added:
         # Arch, 2026-11-15: this rewrites the one file every seat's session depends on, so keep the
         # file as it was beside it. The undo is then one `mv`. An earlier copy is never overwritten:
-        # the first one is the true "before".
+        # the first one is the true "before". Arch, 2026-11-22: a later run keeps its own copy too,
+        # so the undo it prints reverts that run only, not Step A's denies or edits made since.
         backup = path.with_name(path.name + ".before-fleet-deny")
-        if not backup.exists():
-            shutil.copy2(path, backup)
+        if backup.exists():
+            stamp = time.strftime("%Y%m%d-%H%M%S")
+            backup = path.with_name(f"{path.name}.before-fleet-deny.{stamp}")
+            n = 1
+            while backup.exists():
+                n += 1
+                backup = path.with_name(f"{path.name}.before-fleet-deny.{stamp}-{n}")
+        shutil.copy2(path, backup)
         deny.extend(added)
         save(path, data, mode=stat.S_IMODE(path.stat().st_mode))  # the shared file keeps its mode
-    return added
+    return added, backup
 
 
 def add_key(data: dict, name: str, value: str) -> dict:
@@ -215,8 +230,7 @@ def grant_key(seat: str, name: str, root: Path, shared: Path) -> int:
     load(path)  # refuse a broken seat file before touching the shared one
 
     print("1 of 4. The shared settings file (every PM seat reads it).")
-    added = fleet_deny(shared)
-    backup = shared.with_name(shared.name + ".before-fleet-deny")
+    added, backup = fleet_deny_run(shared)
     print(
         f"   added {len(added)} Read deny rule(s); {len(FLEET_DENIES) - len(added)} were already there."
     )
@@ -303,13 +317,10 @@ def main(argv: list[str] | None = None) -> int:
         return grant_key(args.seat, args.name, args.root, args.shared_settings)
 
     if args.cmd == "fleet-deny":
-        added = fleet_deny(args.shared_settings)
+        added, backup = fleet_deny_run(args.shared_settings)
         print(f"shared settings: {args.shared_settings}")
         if added:
-            backup = args.shared_settings.with_name(
-                args.shared_settings.name + ".before-fleet-deny"
-            )
-            print(f"the file as it was is kept at: {backup}")
+            print(f"the file as it was before this run is kept at: {backup}")
             print(f"to undo: mv '{backup}' '{args.shared_settings}'")
         print(
             f"added {len(added)} deny rule(s); {len(FLEET_DENIES) - len(added)} were already there. No allow, env or other rule was changed."

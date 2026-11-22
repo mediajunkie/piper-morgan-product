@@ -444,3 +444,22 @@ def test_fleet_denies_cover_a_browser_profile_folder_and_its_contents():
     for name in ("token", "secret"):
         assert f"Read(~/.piper-shared/*{name}*)" in mod.FLEET_DENIES
         assert f"Read(~/.piper-shared/*{name}*/**)" in mod.FLEET_DENIES
+
+
+def test_a_rerun_prints_an_undo_that_reverts_only_that_run(tmp_path, capsys):
+    """Arch, 2026-11-22: after Step A, the printed mv must not drop Step A's two denies."""
+    mod = _load()
+    shared = tmp_path / "settings.json"
+    step_a = list(mod.FLEET_DENIES[:2])
+    after_step_a = json.dumps({"permissions": {"deny": step_a}}, indent=2) + "\n"
+    shared.write_text(after_step_a)
+    first = tmp_path / "settings.json.before-fleet-deny"
+    first.write_text("the copy from Step A\n")
+    assert mod.main(["fleet-deny", "--shared-settings", str(shared)]) == 0
+    out = capsys.readouterr().out
+    undo = [line for line in out.splitlines() if line.startswith("to undo: mv ")]
+    assert len(undo) == 1
+    named = Path(undo[0].split("'")[1])
+    assert named != first and named.name.startswith("settings.json.before-fleet-deny.")
+    assert json.loads(named.read_text())["permissions"]["deny"] == step_a
+    assert first.read_text() == "the copy from Step A\n"
