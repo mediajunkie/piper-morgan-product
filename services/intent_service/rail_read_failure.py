@@ -73,6 +73,9 @@ RAIL_READ_SOURCES: Dict[str, Tuple[str, str]] = {
     "list_labels": ("your GitHub labels", "which labels there are"),
     "list_milestones": ("your GitHub milestones", "which ones are open"),
     "list_projects": ("your projects", "which projects you have"),
+    # #2413: PROVISIONAL (not CXO-worded for this entry; list_projects' pair reused).
+    # Said only when the handler RAISES past its own caught project-read failure.
+    "list_project_todos": ("your projects", "which projects you have"),
     "list_prs": ("your GitHub pull requests", "which ones are open"),
     "list_releases": ("your GitHub releases", "what the latest release is"),
     "list_reminders_query": ("your reminders", "what is coming up"),
