@@ -78,6 +78,25 @@ def without_todo_keys(context: Dict[str, _V]) -> Dict[str, _V]:
     return {key: value for key, value in context.items() if key not in FLOOR_TODO_KEYS}
 
 
+#: #2301 part 2 (Arch 11-22, 01M82K1G7T): the floor is told which KIND of block code will
+#: put under its reply, never the contents, so anything it says about what follows can be
+#: true. The three kinds are the three things ``status_todos_block`` can return.
+KIND_LIST = "list"
+KIND_NONE = "none"
+KIND_COULD_NOT_CHECK = "could_not_check"
+
+
+def block_kind(block: str) -> Optional[str]:
+    """Which kind of block this is, or None when there is no block."""
+    if not block:
+        return None
+    if block == NO_OPEN_TODOS_LINE:
+        return KIND_NONE
+    if block == TODOS_READ_FAILED_LINE:
+        return KIND_COULD_NOT_CHECK
+    return KIND_LIST
+
+
 async def status_todos_block(
     intent: Any, session_id: Optional[str], user_id: Optional[str], todo_handlers: Any
 ) -> str:

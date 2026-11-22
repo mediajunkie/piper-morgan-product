@@ -21620,13 +21620,16 @@ Add any additional information here.
         # them (Web's served line 12, 11-22). Keys are removed, never emptied:
         # an empty list reads to the floor as "zero pending items".
         _todos_block = ""
+        _todos_block_kind: Optional[str] = None
         if intent.category is IntentCategory.STATUS and intent.action == "get_project_status":
             from services.intent_service.project_status_todos import (
+                block_kind,
                 status_todos_block,
                 without_todo_keys,
             )
 
             _todos_block = await status_todos_block(intent, session_id, user_id, self.todo_handlers)
+            _todos_block_kind = block_kind(_todos_block)
             if _todos_block:
                 domain_context = without_todo_keys(domain_context)
                 if domain_context_provenance is not None:
@@ -21651,6 +21654,8 @@ Add any additional information here.
             # into FloorResponse.provenance (which we'll then write to the
             # turn_provenance sidecar below).
             domain_context_provenance=domain_context_provenance,
+            # #2301 part 2: tell the floor which kind of block follows (never the block).
+            todos_block_kind=_todos_block_kind,
             # #1855: ask-only-when-armed at the floor's output seam.
             armed_offer=self._armed_offer_signal(session_id, user_id, intent),
             # #1855 layer 2: arm what the floor binds.

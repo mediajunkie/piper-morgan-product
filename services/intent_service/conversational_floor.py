@@ -44,6 +44,37 @@ from services.ui_messages.user_friendly_errors import classify_llm_error_text
 
 logger = structlog.get_logger()
 
+#: #2301 part 2 (Arch 11-22, 01M82K1G7T): said to the floor only when code will put a
+#: block under its reply, one line per KIND of block, so what the floor says about what
+#: follows can be true. The floor is never given the block. An instruction, not a
+#: constraint: the constraint is part 1 (the floor is given no todos on these turns).
+#: The keys are the kinds the status path's block builder returns. WORDS: all three are
+#: CXO's final wording (01M82M4J1W, 11-22).
+TODOS_BLOCK_FOLLOWS_LINES = {
+    "list": (
+        "A list of this project's open todos follows your reply. Say only that the list "
+        "follows; don't describe what you can or can't see of the todos. Don't name any "
+        "todo, and don't offer to fetch, show or pull up the todos or the status again. If "
+        "something is missing, name the missing source (for example, GitHub issues). Don't "
+        "offer to connect GitHub for them; they do that in Settings → Integrations. Don't "
+        "suggest a phrase for them to type."
+    ),
+    "none": (
+        "A line saying this project has no open todos follows your reply. Leave that to "
+        "the line that follows: don't mention todos or open work, and don't say anything "
+        "follows. Don't offer to fetch or show them. If something is missing, name the "
+        "missing source (for example, GitHub issues). Don't offer to connect GitHub for "
+        "them. Don't suggest a phrase for them to type."
+    ),
+    "could_not_check": (
+        "A line saying this project's todos couldn't be checked follows your reply. Leave "
+        "that to the line that follows: don't mention todos or open work, and don't say a "
+        "list follows. Don't offer to fetch or show them. If something is missing, name "
+        "the missing source (for example, GitHub issues). Don't offer to connect GitHub "
+        "for them. Don't suggest a phrase for them to type."
+    ),
+}
+
 
 # ---- #1570: internal-scaffolding strip (renderer-side class kill) ----
 #
@@ -647,6 +678,13 @@ class FloorContext:
     denial_category: Optional[str] = None  # BoundaryType value (audit-only)
     redirect_context: Optional[str] = None  # Neutral hint from BoundaryEnforcer
 
+    # #2301 part 2 (Arch 01M8270WE5, CXO 01M827H0J0, 11-22): code is about to put a
+    # list of ONE project's open todos under this reply. The floor is never given the
+    # block; it is only told which KIND follows (a list, a no-open-todos line, or a
+    # couldn't-check line; Arch 01M82K1G7T), so what it says about what follows can be
+    # true. None (the default) changes nothing.
+    todos_block_kind: Optional[str] = None
+
     # #1855: which rail (if any) armed an offer for THIS turn, as the caller
     # read it — "workflow_offer" (#846 store), "last_offer" (#852/#1529 rail),
     # "interview_offer" (#1837's flag class), or None.
@@ -1132,6 +1170,10 @@ class ConversationalFloor:
                 f"to something you can do (create issues, manage todos, check project "
                 f"status, draft plans), offer it as part of your response.]"
             )
+
+        follows = TODOS_BLOCK_FOLLOWS_LINES.get(ctx.todos_block_kind or "")
+        if follows and not ctx.denial_mode:
+            parts.append(f"\n[Context: {follows}]")
 
         return "\n".join(parts)
 
