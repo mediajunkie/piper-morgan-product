@@ -10595,6 +10595,13 @@ class IntentService:
                 "Your GitHub connection isn't working anymore. Reconnect it in Settings → "
                 f"Integrations, and I can {verb}."
             )
+            if action == "create_issue":
+                # Issue 2411 (CXO 11-22): this reply can answer "add a task to …".
+                from services.intent_service.write_confirm_words import (
+                    ISSUE_NOT_WORKING_TODO_HINT,
+                )
+
+                message = f"{message} {ISSUE_NOT_WORKING_TODO_HINT}"
         else:
             # CXO 10-24 17:39: the house tail; a write gate also says nothing was changed,
             # which holds because every gate runs before any write starts.

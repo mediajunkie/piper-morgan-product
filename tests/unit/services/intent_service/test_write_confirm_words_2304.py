@@ -129,14 +129,16 @@ async def _ask(action, message="", *, session_id=None, service=None, **context):
             "create_issue",
             'create an issue titled "Login bug" in acme/web',
             {},
-            'Create an issue titled "Login bug" in acme/web? (yes/no)',
+            'Create an issue titled "Login bug" in acme/web? (yes/no)'
+            " If you meant a todo for your list, say no and ask again with the word todo.",
             'create an issue titled "Login bug" in acme/web',
         ),
         (
             "create_issue",
             "file it",
             {"title": "Login bug", "repository": "acme/web"},
-            'Create an issue titled "Login bug" in acme/web? (yes/no)',
+            'Create an issue titled "Login bug" in acme/web? (yes/no)'
+            " If you meant a todo for your list, say no and ask again with the word todo.",
             'create an issue titled "Login bug" in acme/web',
         ),
         (
