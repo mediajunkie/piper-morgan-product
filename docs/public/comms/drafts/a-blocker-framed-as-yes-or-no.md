@@ -4,7 +4,7 @@ alt: ' A worker reaches for the first box in a backed-up conveyor line while thr
 caption: '"You only have to do this once for every box!"'
 ---
 
-# A Blocker Framed as Yes or No
+# Do I Hafta?
 
 *November 10–16, 2026*
 
