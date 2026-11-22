@@ -184,7 +184,7 @@ def test_prepare_adds_the_deny_and_the_mode_with_no_key(seat, capsys):
     assert json.loads(path.read_text())["permissions"]["deny"].count(mod.SELF_DENY) == 1
 
 
-def test_fleet_deny_adds_two_rules_and_changes_nothing_else(tmp_path, capsys):
+def test_fleet_deny_adds_its_rules_and_changes_nothing_else(tmp_path, capsys):
     mod = _load()
     shared = tmp_path / "settings.json"
     before = {
@@ -200,7 +200,7 @@ def test_fleet_deny_adds_two_rules_and_changes_nothing_else(tmp_path, capsys):
     assert after["permissions"]["allow"] == ["Bash(x)"] and after["env"] == before["env"]
     assert after["cleanupPeriodDays"] == 3650
     assert stat.S_IMODE(shared.stat().st_mode) == 0o644  # the shared file keeps its mode
-    assert "added 2 deny rule(s)" in capsys.readouterr().out
+    assert f"added {len(mod.FLEET_DENIES)} deny rule(s)" in capsys.readouterr().out
     # a second run adds nothing and keeps existing denies
     assert mod.main(["fleet-deny", "--shared-settings", str(shared)]) == 0
     assert json.loads(shared.read_text())["permissions"]["deny"] == list(mod.FLEET_DENIES)
@@ -420,3 +420,46 @@ def test_every_add_allow_line_in_the_steps_file_is_accepted_as_written(tmp_path)
         assert rule in json.loads(path.read_text())["permissions"]["allow"]
         script = rule[len("Bash(") :].split()[0]
         assert (ROOT / script).is_file(), script
+
+
+def test_fleet_deny_rerun_adds_only_the_piper_shared_rules_and_keeps_the_first_copy(tmp_path):
+    """2026-11-22: a shared file already holding Step A's two denies gains only the new ones."""
+    mod = _load()
+    shared = tmp_path / "settings.json"
+    step_a = list(mod.FLEET_DENIES[:2])
+    shared.write_text(json.dumps({"permissions": {"deny": step_a}}, indent=2) + "\n")
+    backup = tmp_path / "settings.json.before-fleet-deny"
+    backup.write_text("first copy\n")
+    assert mod.main(["fleet-deny", "--shared-settings", str(shared)]) == 0
+    deny = json.loads(shared.read_text())["permissions"]["deny"]
+    assert deny == list(mod.FLEET_DENIES)
+    assert backup.read_text() == "first copy\n"
+
+
+def test_fleet_denies_cover_a_browser_profile_folder_and_its_contents():
+    """The deny that Web's seat lacked: a file inside seat-browser-credential-profile-<seat>."""
+    mod = _load()
+    assert "Read(~/.piper-shared/*credential*)" in mod.FLEET_DENIES
+    assert "Read(~/.piper-shared/*credential*/**)" in mod.FLEET_DENIES
+    for name in ("token", "secret"):
+        assert f"Read(~/.piper-shared/*{name}*)" in mod.FLEET_DENIES
+        assert f"Read(~/.piper-shared/*{name}*/**)" in mod.FLEET_DENIES
+
+
+def test_a_rerun_prints_an_undo_that_reverts_only_that_run(tmp_path, capsys):
+    """Arch, 2026-11-22: after Step A, the printed mv must not drop Step A's two denies."""
+    mod = _load()
+    shared = tmp_path / "settings.json"
+    step_a = list(mod.FLEET_DENIES[:2])
+    after_step_a = json.dumps({"permissions": {"deny": step_a}}, indent=2) + "\n"
+    shared.write_text(after_step_a)
+    first = tmp_path / "settings.json.before-fleet-deny"
+    first.write_text("the copy from Step A\n")
+    assert mod.main(["fleet-deny", "--shared-settings", str(shared)]) == 0
+    out = capsys.readouterr().out
+    undo = [line for line in out.splitlines() if line.startswith("to undo: mv ")]
+    assert len(undo) == 1
+    named = Path(undo[0].split("'")[1])
+    assert named != first and named.name.startswith("settings.json.before-fleet-deny.")
+    assert json.loads(named.read_text())["permissions"]["deny"] == step_a
+    assert first.read_text() == "the copy from Step A\n"
