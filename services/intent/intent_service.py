@@ -10595,6 +10595,13 @@ class IntentService:
                 "Your GitHub connection isn't working anymore. Reconnect it in Settings → "
                 f"Integrations, and I can {verb}."
             )
+            if action == "create_issue":
+                # Issue 2411 (CXO 11-22): this reply can answer "add a task to …".
+                from services.intent_service.write_confirm_words import (
+                    ISSUE_NOT_WORKING_TODO_HINT,
+                )
+
+                message = f"{message} {ISSUE_NOT_WORKING_TODO_HINT}"
         else:
             # CXO 10-24 17:39: the house tail; a write gate also says nothing was changed,
             # which holds because every gate runs before any write starts.
@@ -21601,6 +21608,30 @@ Add any additional information here.
             domain_context = dict(domain_context) if domain_context else {}
             domain_context["guided_flow_escape"] = _flow_escape
 
+        # #2301 (handler-only; Arch 11-20): a status ask that names exactly one
+        # of the person's projects also shows that project's open todos, by code,
+        # under the floor's reply. The floor never receives the list. This is the
+        # floor path only: a resolved #2197 milestone returned above.
+        #
+        # Arch 11-22 (01M8270WE5), CXO agreed (01M827H0J0): the block is resolved
+        # BEFORE the floor is called, and when it is non-empty the person's todo
+        # keys are taken out of what the floor is given. With none to name, the
+        # floor cannot guess at "relevant" todos above a list that contradicts
+        # them (Web's served line 12, 11-22). Keys are removed, never emptied:
+        # an empty list reads to the floor as "zero pending items".
+        _todos_block = ""
+        if intent.category is IntentCategory.STATUS and intent.action == "get_project_status":
+            from services.intent_service.project_status_todos import (
+                status_todos_block,
+                without_todo_keys,
+            )
+
+            _todos_block = await status_todos_block(intent, session_id, user_id, self.todo_handlers)
+            if _todos_block:
+                domain_context = without_todo_keys(domain_context)
+                if domain_context_provenance is not None:
+                    domain_context_provenance = without_todo_keys(domain_context_provenance)
+
         # Gather conversation history (#1122: shared builder, excludes in-flight turn)
         history = build_recent_history(session_id, user_id)
 
@@ -21684,15 +21715,7 @@ Add any additional information here.
         except Exception:
             pass  # Best-effort instrumentation + provenance
 
-        # #2301 (handler-only; Arch 11-20): a status ask that names exactly one
-        # of the person's projects also shows that project's open todos, by code,
-        # AFTER the floor's reply. The floor never receives the list. This is the
-        # floor path only: a resolved #2197 milestone returned above.
-        _todos_block = ""
-        if intent.category is IntentCategory.STATUS and intent.action == "get_project_status":
-            from services.intent_service.project_status_todos import status_todos_block
-
-            _todos_block = await status_todos_block(intent, session_id, user_id, self.todo_handlers)
+        # #2301: the block goes AFTER the floor's reply, joined by code.
         _status_message = _milestone_prefix + response.message
         if _todos_block:
             _status_message = f"{_status_message}\n\n{_todos_block}"

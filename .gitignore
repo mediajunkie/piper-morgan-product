@@ -207,3 +207,8 @@ dev/state/probe-userpromptsubmit-*.log
 # Runtime upload storage (services/file_context/storage.py: UPLOAD_DIR defaults to ./uploads).
 # Test runs write real files here; 46 of them were committed by accident (2026-09-24 cleanup).
 uploads/
+
+# Written by tests/e2e/test_canonical_conversations.py on every full-suite run (#1676). Untracked,
+# it made the pre-push hook refuse to remember a pass (clean tree needed), so code pushes lost
+# the race to log pushes (Lead, 2026-11-22).
+dev/active/canonical-retest-serving-llm.json

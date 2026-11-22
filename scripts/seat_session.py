@@ -3,8 +3,9 @@
 
 A seat holds a session, never a password. This helper reads the account's credential
 file itself, signs in, checks that the account holds nothing real, and saves the
-access cookie (24 hours at most) in one file under ``~/.piper-shared``. It prints the account name and
-the session's expiry, and nothing else. ``scripts/seat_read.py`` reads the saved
+access cookie in one file under ``~/.piper-shared``. A session lasts 30 minutes, the
+access token's life (the refresh cookie is never kept), so a longer sitting re-runs the
+helper. It prints the account name and the session's expiry, and nothing else. ``scripts/seat_read.py`` reads the saved
 session; no seat does.
 
 HOST's bounds, all enforced here:
@@ -25,6 +26,9 @@ Usage:
     scripts/seat_session.py --account web-seed-1386 --disconnect calendar
         (clears that connector through the app's own route, re-runs bound 2, saves nothing;
         its own exact allow, added by xian; see ``disconnect``)
+    scripts/seat_session.py --account seat-tester-1 --save-key anthropic
+        (saves the test workspace's key on that account through the app's own route, once;
+        prints no value; its own exact allow, added by xian; see ``save_key``)
 
 In a seat that has a seat browser (issue 2400) it then prints a second line,
 ``<account> placed in seat browser <seat>, expires <time>``; see ``place_in_seat_browser``.
@@ -38,6 +42,7 @@ import argparse
 import base64
 import json
 import os
+import re
 import stat
 import sys
 import tempfile
@@ -101,6 +106,16 @@ ACCOUNTS: Dict[str, Account] = {
     # The second seat account (issue 2389; name agreed by HOST and Lead, 11-16). It holds
     # nothing until its own exceptions are added as diffs HOST reads.
     "seat-github-1": Account(credential_file="seat-github-1-credentials.txt"),
+    # The third seat account (HOST 01M827TK7G and 01M828H4AT, CIO 01M82852KZ, 11-22): an
+    # account shaped like a new tester's, for served rows that need nothing on file (2406's
+    # row first). It may hold an Anthropic key from the `piper-morgan-test` workspace and
+    # nothing else: no GitHub, no other provider, no connector. It shares that workspace's
+    # $40 monthly limit with `web-seed-1386` (Arch 01M828NS6F, condition 5), so one
+    # account's sitting can stop the other's.
+    "seat-tester-1": Account(
+        credential_file="seat-tester-1-credentials.txt",
+        provider_keys=frozenset({"anthropic"}),
+    ),
 }
 
 USER_KEYS = ("username", "user", "email", "login")
@@ -451,6 +466,98 @@ def disconnect(account: str, connector: str, send: Transport = http_transport) -
     return f"{account}: {connector} {before}; the holds-nothing checks now pass"
 
 
+# One-shot key save (HOST 01M827TK7G, Arch 01M828NS6F on ADR-084 D2, 11-22). A seat account
+# that is to answer chat turns needs a model key, and no person should paste one (D6). The
+# helper reads ONE fixed key file itself and sends it to the app's own key-save route as the
+# account, so no seat ever holds the value: it is never in a command, an argument, an
+# environment variable or any output. The file is the `piper-morgan-test` workspace's spare
+# key by Web's record; xian confirms that on his console before the first chat turn (Arch's
+# condition 1). A closed list: one provider, one file. This mode never saves a session.
+SAVABLE_KEYS: Mapping[str, str] = {"anthropic": "web-credential-anthropic-test-2026-10-15.txt"}
+# A standard API key only (Arch 01M82BT11P): the looser ``sk-ant-`` would also match an
+# admin key, an organisation-level credential that must never be sent to beta as a
+# user's key. Any ``sk-ant-`` value that is not an API key refuses the file.
+_KEY_SHAPE = re.compile(r"sk-ant-api[A-Za-z0-9_\-]{20,}")
+_ANY_ANTHROPIC_SHAPE = re.compile(r"sk-ant-[A-Za-z0-9_\-]{8,}")
+
+
+def read_key_file(path: Path) -> str:
+    """The one Anthropic key in the file. Refuses anything but a regular file, mode 0600,
+    owned by this user, holding exactly one key-shaped value. The file's layout is not
+    assumed (a bare key or a ``name: value`` line both work); nothing from it is printed."""
+    try:
+        info = os.lstat(path)
+        if not stat.S_ISREG(info.st_mode):
+            raise Refused("the key file is not a regular file")
+        if stat.S_IMODE(info.st_mode) & 0o077:
+            raise Refused("the key file is not mode 0600")
+        if info.st_uid != os.getuid():
+            raise Refused("the key file is not owned by this user")
+        text = path.read_text(encoding="utf-8")
+    except (OSError, UnicodeDecodeError):
+        raise Refused("the key file is not readable") from None
+    found = set(_KEY_SHAPE.findall(text))
+    if set(_ANY_ANTHROPIC_SHAPE.findall(text)) - found:
+        raise Refused("the key file holds a value that is not a standard API key")
+    if len(found) != 1:
+        raise Refused("the key file does not hold exactly one key")
+    return found.pop()
+
+
+def _key_rows(provider: str, header: Mapping[str, str], send: Transport) -> list:
+    keys = send("GET", "/api/v1/keys/list?active_only=false", None, header)
+    listed = _json(keys) if keys.status == 200 else None
+    if not isinstance(listed, list):
+        raise Refused("the provider-key check could not be read")
+    return [row for row in listed if isinstance(row, dict) and row.get("provider") == provider]
+
+
+class KeyNotValidated(Refused):
+    """The key was stored but the provider did not accept it. Its own exit code, so
+    nobody books a sitting on a dead key."""
+
+
+def save_key(account: str, provider: str, send: Transport = http_transport) -> str:
+    """Sign in, run bound 2, refuse if the account already has a key for ``provider``, send
+    the fixed file's key to ``POST /api/v1/keys/store`` as the account, read back that a key
+    is on file, and run bound 2 again. Returns a fixed-word line. From the host's replies
+    only a status class is ever printed. Refuses as ``run`` does; never saves a session.
+
+    ``validated: no`` (exit 5) means the key is stored but the provider did not accept it.
+    A second run then refuses, because a key is on file. Recovery is a remove mode through
+    the app's own delete route, which is not built here: it is a separate diff HOST reads."""
+    if account not in ACCOUNTS:
+        raise Refused("that account is not on the list")
+    if provider not in SAVABLE_KEYS:
+        raise Refused("that provider is not on the key list")
+    if provider not in ACCOUNTS[account].provider_keys:
+        raise Refused("that account may not hold that provider's key")
+    key = read_key_file(shared_dir() / SAVABLE_KEYS[provider])
+    user, password = read_credentials(shared_dir() / ACCOUNTS[account].credential_file)
+    cookies = sign_in(account, user, password, send)
+    header = {"Cookie": "; ".join(f"{name}={value}" for name, (value, _) in cookies.items())}
+
+    check_holds_nothing_real(account, cookies, send)
+    if _key_rows(provider, header, send):  # a second run must not replace a key silently
+        raise Refused("the account already has a key for that provider")
+
+    body = json.dumps({"provider": provider, "api_key": key, "validate": True}).encode()
+    reply = send("POST", "/api/v1/keys/store", body, {**header, "Content-Type": "application/json"})
+    if not 200 <= reply.status < 300:
+        raise Refused(f"the key save was not accepted (status {reply.status // 100}xx)")
+
+    rows = _key_rows(provider, header, send)
+    if not rows:
+        raise Refused("the key save was accepted but no key is on file")
+    check_holds_nothing_real(account, cookies, send)
+    # The store route keeps a key the provider refused and still answers 2xx (#485), so
+    # "on file" alone can be true for a dead key (Arch 01M82BT11P, HOST 01M82C816F). Only
+    # the list row's boolean is read; ``True`` and nothing else counts as validated.
+    if not all(row.get("is_validated") is True for row in rows):
+        raise KeyNotValidated(f"{account}: key saved; key on file: yes; validated: no")
+    return f"{account}: key saved; key on file: yes; validated: yes"
+
+
 def run(account: str, send: Transport = http_transport, now: Optional[float] = None) -> str:
     if account not in ACCOUNTS:
         raise Refused("that account is not on the list")
@@ -506,7 +613,28 @@ def main(argv=None) -> int:
         choices=DISCONNECTABLE,
         help="clear this connector on the account through the app's route, re-check, save nothing",
     )
+    parser.add_argument(
+        "--save-key",
+        choices=tuple(SAVABLE_KEYS),
+        help="save the test workspace's key for this provider on the account, once; saves no session",
+    )
     args = parser.parse_args(argv)
+    if args.disconnect and args.save_key:
+        print("seat_session: refused: one mode at a time", file=sys.stderr)
+        return 2
+    if args.save_key:
+        try:
+            print(save_key(args.account, args.save_key))
+        except KeyNotValidated as outcome:  # fixed words, on stdout like a result
+            print(outcome)
+            return 5
+        except Refused as refusal:
+            print(f"seat_session: refused: {refusal}", file=sys.stderr)
+            return 2
+        except Exception as error:  # never print an exception's own text
+            print(f"seat_session: refused: unexpected {type(error).__name__}", file=sys.stderr)
+            return 3
+        return 0
     if args.disconnect:
         try:
             print(disconnect(args.account, args.disconnect))

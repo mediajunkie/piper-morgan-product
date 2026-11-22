@@ -15,7 +15,10 @@ Redesign", so the read hangs off that op:
    project read: today's reply, nothing added and no question (a status read asks
    nothing new). A failed project read is logged under its own event.
 3. The block is code's, never the floor's: the floor does not receive the list.
-   It goes after the floor's reply, under CXO's header, in the main list's own
+   It is resolved before the floor is called and, when it is non-empty, the
+   person's todo keys are taken out of the floor's context (Arch 11-22,
+   01M8270WE5: the floor then has no todo to guess at). It goes after the
+   floor's reply, under CXO's header, in the main list's own
    render (grouping, chips, numbering, cap line), and its lines are recorded as
    the last numbered list, so "complete the first one" binds to what was shown.
    A failed todo read says CXO's line; a partial list is never shown.
@@ -31,7 +34,7 @@ shows what was matched.
 
 from __future__ import annotations
 
-from typing import Any, Optional
+from typing import Any, Dict, Optional, TypeVar
 
 import structlog
 from sqlalchemy.exc import SQLAlchemyError
@@ -42,11 +45,37 @@ logger = structlog.get_logger(__name__)
 
 STATUS_OP = "get_project_status"
 
+_V = TypeVar("_V")
+
 OPEN_TODOS_HEADER = "Open todos in {project}:"
 # CXO may drop this once today's status reply has been quoted (01M7Y3EYRS).
 NO_OPEN_TODOS_LINE = "No open todos in it."
 TODOS_READ_FAILED_LINE = "I couldn't check its todos just now."
 CAP_LINE = "Showing the first {count} todos in {project}."
+
+
+#: What the floor is given about the person's todos on a status turn (the STATUS
+#: gather's keys, ``context_assembler.py``). When the block follows the floor's reply,
+#: these are taken out of the floor's context, so the floor has no todo to name (Arch
+#: 11-22, 01M8270WE5; the two ``*_source_failed`` keys go too, or the floor would say it
+#: could not check todos above a list that shows them). Due reminders stay (CXO 11-22).
+FLOOR_TODO_KEYS = (
+    "pending_todos",
+    "completed_todos",
+    "pending_todo_count",
+    "pending_todos_in_reminders",
+    "pending_todos_source_failed",
+    "completed_todos_source_failed",
+)
+
+
+def without_todo_keys(context: Dict[str, _V]) -> Dict[str, _V]:
+    """A copy of a floor context (or its provenance map) with the todo keys REMOVED.
+
+    Removed, never emptied: an empty ``pending_todos`` reads to the floor as a verified
+    "zero pending items" (#1544), which would contradict the block. A missing key means
+    "not gathered", and the floor says nothing about todos."""
+    return {key: value for key, value in context.items() if key not in FLOOR_TODO_KEYS}
 
 
 async def status_todos_block(
