@@ -1,5 +1,11 @@
 # Lead carry-forward — Fable 5.2 seat again since 2026-11-20 08:56 (Opus 5.5 from 2026-11-17 21:30 until then); Model A worktree ~/Development/piper-morgan-worktrees/lead
 
+## START 2026-11-22 06:49 (re-verified; the DAY-END 11-21 block below still holds)
+
+- Checked this morning: beta `d66f15c538` healthy and quiet; staging `e8d0387f6f`; main CI 12 of 12 green; no hold file; no served-path change on main since `f68c5995fd`; inbox empty; no issue after 2410. 2297, 2301, 2406, 2364, 2389 and 2158 are all open.
+- Web's 06:20 entry: still no restart. Mailed Exec (01M81VPY13, cc Web and CIO) asking who performs the restart and whether it is on xian's card; Exec's morning waiting list did not name it.
+- Briefing's beta line refreshed to `d66f15c538`.
+
 ## DAY-END 2026-11-21 21:47 (a day with no movement on any wait; the blocks below still hold)
 
 **Read first tomorrow:**
