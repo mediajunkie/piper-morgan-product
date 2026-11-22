@@ -38,11 +38,11 @@ At the end of a week, that particular task remained blocked. The agents had done
 
 I file all of this under a broader category of reframing. I put a lot of trust in my own laziness, or if I want to be more charitable toward myself, my impatience with boring repetitive rote work. I'll do busy work and simple tasks when I need to, as anyone does, but I don't love it, and I get frustrated quickly if it seems pointless. The whole promise of computerization, let alome AI, is to automate what is repeatable and spare ourselves the drudgery so we can focus on things only we can uniquely do. Every time the agent team converges on a solution like "give it to the human to do," the plumbing is backing up, as far as I'm concerned.
 
-Speaking up about it pushed my agent team to redesign their workflow. It doesn't take me out the loop (hardly!) but it guards against simply piling busy work into my queue as a shorcut or easy answer.
+Speaking up about it pushed my agent team to redesign their workflow. It doesn't take me out the loop (hardly!) but it guards against simply piling busy work into my queue as a shortcut or easy answer.
 
 
 ---
 
-*Next on Building Piper Morgan: [TEASE: the next non-Ship post, Sat 11-28. Its working title is "Test the Page You Draw", which you said on 11-20 you will replace. It needs your new title before this goes to Docs.]*
+*Next on Building Piper Morgan, "Mark One Eyeball," in which a bare link stuck into an admin page suffices for automated tests but fails for my using my own eyes.]*
 
-*[Reader question, yours to write. A start: "What's the blocker on your team that always ends up on the same person's desk?"]*
+*Delegation is a real art and one of the signs you aren't doing it well is when every question lands on your desk. How d you empower your team to take initiative while ensuring they still bring the the tough calls to you as needed?*
