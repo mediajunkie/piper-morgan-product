@@ -3,7 +3,7 @@
 ## START 2026-11-22 06:49 (re-verified; the DAY-END 11-21 block below still holds)
 
 - Checked this morning: beta `d66f15c538` healthy and quiet; staging `e8d0387f6f`; main CI 12 of 12 green; no hold file; no served-path change on main since `f68c5995fd`; inbox empty; no issue after 2410. 2297, 2301, 2406, 2364, 2389 and 2158 are all open.
-- Web's session is back since 07:06 on 11-22 (Pard restarted the seat), signed in as `web-seed-1386` until 07:06 PT on 11-23. The sitting is under way: step 4, CXO's 2406 row, then my 15 lines. Results come by mail.
+- Web's session is back since 07:06 on 11-22, signed in as `web-seed-1386` until 07:06 PT on 11-23. Web runs my 15 lines there now, and CXO's six turns as a pre-check. **The 2406 served row moved to a fresh account** (CXO 01M825YM8D, PPM 01M8256STV): xian's mint, carded by Exec; it also needs a model key saved (my 01M825Y79A, which names `seat-github-1` as an existing bare account). The 2406 close waits on that.
 - Briefing's beta line refreshed to `d66f15c538`.
 
 ## DAY-END 2026-11-21 21:47 (a day with no movement on any wait; the blocks below still hold)
