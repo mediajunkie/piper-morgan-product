@@ -2113,12 +2113,28 @@ class ConversationalFloor:
                 for entry in SOURCE_FAILED_FLAGS
                 if (ctx.domain_context or {}).get(entry.flag)
             )
+            # Issue 2414 (Arch 2026-11-22, 01M82F5PKR and 01M82G948F): when this
+            # turn's context told the floor GitHub needs reconnecting, or is not
+            # connected, "GitHub needs reconnecting, so issue and PR data is
+            # unavailable" is TRUE, and dropping it removed the one sentence that
+            # says how to fix things (replay: 9 of 12 replies). Read from the same
+            # keys ``_format_domain_context`` renders its GitHub line from, so the
+            # guard and the prompt cannot disagree. The prompt is unchanged; only
+            # what the guard will not drop widens.
+            _context = ctx.domain_context or {}
+            context_true_check_names = (
+                ("GitHub",)
+                if "github_connected" in _context
+                and (not _context["github_connected"] or _context.get("github_needs_reconnecting"))
+                else ()
+            )
             message, scope_guard_dropped = apply_scope_guard(
                 message,
                 armed_check_names,
                 session_id=ctx.session_id,
                 user_id=ctx.user_id,
                 intent_category=ctx.intent_category,
+                context_true_check_names=context_true_check_names,
             )
 
             logger.info(
