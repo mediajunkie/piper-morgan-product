@@ -474,7 +474,11 @@ def disconnect(account: str, connector: str, send: Transport = http_transport) -
 # key by Web's record; xian confirms that on his console before the first chat turn (Arch's
 # condition 1). A closed list: one provider, one file. This mode never saves a session.
 SAVABLE_KEYS: Mapping[str, str] = {"anthropic": "web-credential-anthropic-test-2026-10-15.txt"}
-_KEY_SHAPE = re.compile(r"sk-ant-[A-Za-z0-9_\-]{20,}")
+# A standard API key only (Arch 01M82BT11P): the looser ``sk-ant-`` would also match an
+# admin key, an organisation-level credential that must never be sent to beta as a
+# user's key. Any ``sk-ant-`` value that is not an API key refuses the file.
+_KEY_SHAPE = re.compile(r"sk-ant-api[A-Za-z0-9_\-]{20,}")
+_ANY_ANTHROPIC_SHAPE = re.compile(r"sk-ant-[A-Za-z0-9_\-]{8,}")
 
 
 def read_key_file(path: Path) -> str:
@@ -493,24 +497,35 @@ def read_key_file(path: Path) -> str:
     except (OSError, UnicodeDecodeError):
         raise Refused("the key file is not readable") from None
     found = set(_KEY_SHAPE.findall(text))
+    if set(_ANY_ANTHROPIC_SHAPE.findall(text)) - found:
+        raise Refused("the key file holds a value that is not a standard API key")
     if len(found) != 1:
         raise Refused("the key file does not hold exactly one key")
     return found.pop()
 
 
-def _key_on_file(provider: str, header: Mapping[str, str], send: Transport) -> bool:
+def _key_rows(provider: str, header: Mapping[str, str], send: Transport) -> list:
     keys = send("GET", "/api/v1/keys/list?active_only=false", None, header)
     listed = _json(keys) if keys.status == 200 else None
     if not isinstance(listed, list):
         raise Refused("the provider-key check could not be read")
-    return any(isinstance(row, dict) and row.get("provider") == provider for row in listed)
+    return [row for row in listed if isinstance(row, dict) and row.get("provider") == provider]
+
+
+class KeyNotValidated(Refused):
+    """The key was stored but the provider did not accept it. Its own exit code, so
+    nobody books a sitting on a dead key."""
 
 
 def save_key(account: str, provider: str, send: Transport = http_transport) -> str:
     """Sign in, run bound 2, refuse if the account already has a key for ``provider``, send
     the fixed file's key to ``POST /api/v1/keys/store`` as the account, read back that a key
     is on file, and run bound 2 again. Returns a fixed-word line. From the host's replies
-    only a status class is ever printed. Refuses as ``run`` does; never saves a session."""
+    only a status class is ever printed. Refuses as ``run`` does; never saves a session.
+
+    ``validated: no`` (exit 5) means the key is stored but the provider did not accept it.
+    A second run then refuses, because a key is on file. Recovery is a remove mode through
+    the app's own delete route, which is not built here: it is a separate diff HOST reads."""
     if account not in ACCOUNTS:
         raise Refused("that account is not on the list")
     if provider not in SAVABLE_KEYS:
@@ -523,7 +538,7 @@ def save_key(account: str, provider: str, send: Transport = http_transport) -> s
     header = {"Cookie": "; ".join(f"{name}={value}" for name, (value, _) in cookies.items())}
 
     check_holds_nothing_real(account, cookies, send)
-    if _key_on_file(provider, header, send):  # a second run must not replace a key silently
+    if _key_rows(provider, header, send):  # a second run must not replace a key silently
         raise Refused("the account already has a key for that provider")
 
     body = json.dumps({"provider": provider, "api_key": key, "validate": True}).encode()
@@ -531,10 +546,16 @@ def save_key(account: str, provider: str, send: Transport = http_transport) -> s
     if not 200 <= reply.status < 300:
         raise Refused(f"the key save was not accepted (status {reply.status // 100}xx)")
 
-    if not _key_on_file(provider, header, send):
+    rows = _key_rows(provider, header, send)
+    if not rows:
         raise Refused("the key save was accepted but no key is on file")
     check_holds_nothing_real(account, cookies, send)
-    return f"{account}: key saved; key on file: yes"
+    # The store route keeps a key the provider refused and still answers 2xx (#485), so
+    # "on file" alone can be true for a dead key (Arch 01M82BT11P, HOST 01M82C816F). Only
+    # the list row's boolean is read; ``True`` and nothing else counts as validated.
+    if not all(row.get("is_validated") is True for row in rows):
+        raise KeyNotValidated(f"{account}: key saved; key on file: yes; validated: no")
+    return f"{account}: key saved; key on file: yes; validated: yes"
 
 
 def run(account: str, send: Transport = http_transport, now: Optional[float] = None) -> str:
@@ -604,6 +625,9 @@ def main(argv=None) -> int:
     if args.save_key:
         try:
             print(save_key(args.account, args.save_key))
+        except KeyNotValidated as outcome:  # fixed words, on stdout like a result
+            print(outcome)
+            return 5
         except Refused as refusal:
             print(f"seat_session: refused: {refusal}", file=sys.stderr)
             return 2

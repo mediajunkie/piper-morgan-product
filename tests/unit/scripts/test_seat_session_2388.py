@@ -1012,7 +1012,8 @@ TESTER = "seat-tester-1"
 TESTER_CRED = "seat-tester-1-credentials.txt"
 KEY_FILE = "web-credential-anthropic-test-2026-10-15.txt"
 # Key-shaped, built at run time so no key-shaped literal sits in the repo; it opens nothing.
-FAKE_KEY = "sk-" + "ant-" + "made-up-0123456789-abcdefghij"
+FAKE_KEY = "sk-" + "ant-" + "api03-made-up-0123456789-abcdefghij"
+FAKE_ADMIN_KEY = "sk-" + "ant-" + "admin01-made-up-0123456789-abcdefghij"
 SAVE_SECRETS = SECRETS + (FAKE_KEY,)
 
 
@@ -1044,9 +1045,10 @@ class KeyHost(StubHost):
     """Beta for a new account: no key until the store call, then one Anthropic key. The
     store's reply body echoes the key, to prove nothing from a body is ever printed."""
 
-    def __init__(self, ss, store_status=201, lands=True, **over):
+    def __init__(self, ss, store_status=201, lands=True, validated=True, **over):
         super().__init__(ss, **over)
         self.ss, self.store_status, self.lands, self.stored = ss, store_status, lands, False
+        self.validated = validated
         self.replies["/api/v1/auth/me"] = ss.Reply(200, json.dumps({"username": TESTER}).encode())
 
     def __call__(self, method, path, data, headers):
@@ -1057,14 +1059,15 @@ class KeyHost(StubHost):
                 self.stored = True
             return self.ss.Reply(self.store_status, f"echo {FAKE_KEY}".encode())
         if bare == "/api/v1/keys/list" and self.stored:
-            return self.ss.Reply(200, json.dumps([{"provider": "anthropic"}]).encode())
+            row = {"provider": "anthropic", "is_validated": self.validated}
+            return self.ss.Reply(200, json.dumps([row]).encode())
         return self.replies[bare]
 
 
 def test_save_key_sends_the_files_key_once_and_prints_fixed_words(ss, tester):
     host = KeyHost(ss)
     line = ss.save_key(TESTER, "anthropic", host)
-    assert line == f"{TESTER}: key saved; key on file: yes"
+    assert line == f"{TESTER}: key saved; key on file: yes; validated: yes"
     stores = [c for c in host.calls if c[1] == "/api/v1/keys/store"]
     assert len(stores) == 1
     method, _, data, headers = stores[0]
@@ -1141,7 +1144,7 @@ def test_save_key_through_main_prints_one_line_and_no_secret(ss, tester, capsys)
     ss.save_key.__defaults__ = (KeyHost(ss),)
     code, text = _run_main(ss, ["--account", TESTER, "--save-key", "anthropic"], capsys)
     assert code == 0
-    assert text.strip() == f"{TESTER}: key saved; key on file: yes"
+    assert text.strip() == f"{TESTER}: key saved; key on file: yes; validated: yes"
     for secret in SAVE_SECRETS:
         assert secret not in text
 
@@ -1208,3 +1211,46 @@ def test_the_same_key_written_twice_is_one_key(ss, tester):
 def test_the_docstring_says_thirty_minutes(ss):
     source = (ROOT / "scripts" / "seat_session.py").read_text()
     assert "30 minutes" in source and "24 hours at most" not in source
+
+
+# --- Arch 01M82BT11P and HOST 01M82C816F (11-22): the validated word; API keys only ---
+
+
+@pytest.mark.parametrize("validated", [False, None, "true", 1])
+def test_a_key_the_provider_did_not_accept_says_validated_no_and_exits_5(
+    ss, tester, capsys, validated
+):
+    """The store keeps a refused key and still answers 2xx, so only the list row's
+    boolean ``True`` counts. Anything else is "no" and a non-zero exit."""
+    ss.save_key.__defaults__ = (KeyHost(ss, validated=validated),)
+    code, text = _run_main(ss, ["--account", TESTER, "--save-key", "anthropic"], capsys)
+    assert code == 5
+    assert text.strip() == f"{TESTER}: key saved; key on file: yes; validated: no"
+    for secret in SAVE_SECRETS:
+        assert secret not in text
+
+
+def test_a_second_run_after_validated_no_refuses_because_a_key_is_on_file(ss, tester):
+    host = KeyHost(ss, validated=False)
+    with pytest.raises(ss.KeyNotValidated):
+        ss.save_key(TESTER, "anthropic", host)
+    with pytest.raises(ss.Refused, match="already has a key"):
+        ss.save_key(TESTER, "anthropic", host)
+    assert len([c for c in host.calls if c[1] == "/api/v1/keys/store"]) == 1
+
+
+@pytest.mark.parametrize(
+    "content",
+    [
+        FAKE_ADMIN_KEY,
+        f"{FAKE_KEY}\n{FAKE_ADMIN_KEY}\n",
+        "sk-" + "ant-" + "oat01-made-up-0123456789",
+    ],
+    ids=["admin only", "api and admin", "another kind"],
+)
+def test_a_file_with_anything_but_a_standard_api_key_is_refused(ss, tester, content):
+    (tester / KEY_FILE).write_text(content)
+    host = KeyHost(ss)
+    with pytest.raises(ss.Refused, match="not a standard API key"):
+        ss.save_key(TESTER, "anthropic", host)
+    assert host.calls == []
