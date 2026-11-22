@@ -35,6 +35,7 @@ Concept: docs/internal/architecture/adrs/adr-084-seat-resources-are-separate-gra
 from __future__ import annotations
 
 import argparse
+import base64
 import json
 import os
 import stat
@@ -320,9 +321,31 @@ def check_holds_nothing_real(
         raise Refused("the account has a connector")
 
 
+def token_expiry(value: str) -> Optional[int]:
+    """The ``exp`` claim of an access token, or None when the value is not a readable JWT.
+
+    The cookie's Max-Age says how long the browser keeps the cookie; the host stops
+    accepting the token at its own ``exp``, which is much sooner (Web, 11-22: a session
+    printed as 24 hours lapsed inside one sitting). Only the number is read. The claim is
+    not verified here, because the host verifies it on every request.
+    """
+    parts = value.split(".")
+    if len(parts) != 3:
+        return None
+    try:
+        payload = json.loads(base64.urlsafe_b64decode(parts[1] + "=" * (-len(parts[1]) % 4)))
+        exp = payload.get("exp") if isinstance(payload, dict) else None
+    except Exception:
+        return None
+    if isinstance(exp, bool) or not isinstance(exp, (int, float)):
+        return None
+    return int(exp)
+
+
 def save_session(account: str, cookies: Mapping[str, Tuple[str, Optional[int]]], now: float) -> int:
     """Write the session as a browser storage state, mode 0600, atomically.
-    Returns the access cookie's expiry (epoch seconds)."""
+    Returns the access cookie's expiry (epoch seconds): the soonest of the cookie's
+    Max-Age, the token's own ``exp`` and the 24-hour cap."""
     domain = urllib.parse.urlparse(HOST).hostname
     rows = []
     for name, (value, max_age) in cookies.items():
@@ -332,11 +355,15 @@ def save_session(account: str, cookies: Mapping[str, Tuple[str, Optional[int]]],
                 "value": value,
                 "domain": domain,
                 "path": "/",
-                "expires": int(
-                    now
-                    + min(
-                        max_age if max_age is not None else MAX_SESSION_SECONDS, MAX_SESSION_SECONDS
-                    )
+                "expires": min(
+                    int(
+                        now
+                        + min(
+                            max_age if max_age is not None else MAX_SESSION_SECONDS,
+                            MAX_SESSION_SECONDS,
+                        )
+                    ),
+                    token_expiry(value) or sys.maxsize,
                 ),
                 "httpOnly": True,
                 "secure": True,
