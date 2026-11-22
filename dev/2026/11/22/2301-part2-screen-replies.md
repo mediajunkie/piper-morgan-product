@@ -203,3 +203,15 @@ What the marker flags is new: the floor now points at the list ("The open todos 
 5. I can see Harbor Survey is one of your tracked projects, but I'm not pulling up status details for it right now. Want to give me a quick rundown of where things stand, and I can help you think through next steps, blockers, or how to frame it for stakeholders? ¶ Also worth noting — GitHub isn't connected, so if the project's issues and PRs live there, I'm not seeing that side of things. Connecting it would give me a lot more to work with.
 6. I can see Harbor Survey is one of your tracked projects, but I'm working with limited visibility right now — GitHub isn't connected, so I can't pull in issues or PRs to give you a real status picture. ¶ What I can do: if you give me a quick rundown of where things stand, I can help you think through blockers, draft a stakeholder update, or figure out what needs attention. Or if you want the full picture from GitHub, connecting it would get me there — want to do that first?
 
+## Third run: one line per kind of block. The bar, written before the run (2026-11-22)
+
+Arch's ruling (mail 01M82K1G7T): code tells the floor which kind of block follows (a list, a no-open-todos line, a couldn't-check line), never its contents. Bar, 6 of 6 on every row:
+- no todo named;
+- no sentence that contradicts the kind of block that follows, including any "below / will show" claim on the none and couldn't-check rows;
+- no claim that the floor itself sees the todos;
+- no sentence saying the project's open work or items can't be seen unless it names the missing source.
+
+Pointing at a list that does follow is allowed, and so is offering work on it. Scored by eye: Lead reads all 30, and CXO has the last word. The lines under test are Lead's drafts (the list line is CXO's 01M82J30G5 with "don't mention todos" replaced by Arch's two prohibitions); CXO words the final three.
+
+Rows: N3, T4, T6 with a list following; N3 on a project where the no-open-todos line follows; T6 where the couldn't-check line follows. Arm A alone, same context and base as the earlier runs. Results are in the next section.
+
