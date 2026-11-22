@@ -353,6 +353,17 @@ async def _app_not_on_repository(request: WriteAskRequest, repository: str) -> O
     )
 
 
+#: Issue 2411 (CXO 11-22, 01M828X3K3; Arch 01M829EZE8). "add a task to …" can reach
+#: ``create_issue`` when the router declines to choose and the classifier calls a task a
+#: ticket (measured 11-22). Code never decides the person meant a todo, so both issue
+#: replies say how to get one. The sentences key on the route (``create_issue``), not on
+#: the person's words, and each is true whichever thing was meant.
+ISSUE_ASK_TODO_HINT = "If you meant a todo for your list, say no and ask again with the word todo."
+ISSUE_NOT_WORKING_TODO_HINT = (
+    'Nothing was added. If you meant a todo, say "add a todo: …" and I\'ll add it.'
+)
+
+
 async def create_issue_write_ask(request: WriteAskRequest) -> WriteAsk:
     """``Create an issue titled "x" in owner/repo?`` from the handler's own slots:
     the intent's ``title`` / ``repository``, else ``_slotfill_issue_request``. A repo
@@ -379,7 +390,10 @@ async def create_issue_write_ask(request: WriteAskRequest) -> WriteAsk:
     bind_write_values(intent, "create_issue", title=title, repository=repository)
     return WriteAsk(
         words=ConfirmWords(
-            question=f'Create an issue titled "{title}" in {repository}? (yes/no)',
+            question=(
+                f'Create an issue titled "{title}" in {repository}? (yes/no) '
+                f"{ISSUE_ASK_TODO_HINT}"
+            ),
             summary=f'create an issue titled "{title}" in {repository}',
         )
     )

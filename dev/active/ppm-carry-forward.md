@@ -912,14 +912,14 @@ Brake FIRED (second slip = #1965 admission, found and ledgered 10-09). Memo to E
   - Step F: 2389 rows 3 to 5. HOST's diffs and Step C: 2388's first run.
   - Lead: 2383 row 3; 2354 H1; 2364's close (rerun evidence on the issue).
   - 2351's clean-machine line needs a never-run machine and a reader. 2403 row 4 is a person's check. #2363 row 3 needs a merge-head promotion. 2382 row 4 waits on 2384.
-- **Production 333** (11-22 `11:39`: #2411-#2414 placed in V; `gh` = Total; 0 unmilestoned; map v179). 2297 row 16 met served 11-22; 2297 open on rows 22 (#2411) and 18 (#2412). 2301's block words pass (CXO); its served row waits on floor parts 1 and 2.
+- **Production 334** (11-22 `12:36`: #2411-#2415 placed in V; `gh` = Total; 0 unmilestoned; map v180). 2297 row 16 met served 11-22; 2297 open on rows 22 (#2411) and 18 (#2412). 2301's block words pass (CXO); its served row waits on floor parts 1 and 2.
 - **OWED rows:**
   - 2364-known-limit: 2388's first real run.
   - 2364-untested-provider-row: the 2390 route.
   - 2364-selfhost-wording: the ethics flip served.
   - tier1-approval-batch: xian's quoted yes, then Docs.
   - rule7-key-ask, path-b-quote, notion-offer-ask: unchanged.
-  - sprint-3-plan: draft on the current score at the 11-25 START and revise at the 11-26 close. Dates are xian's.
+  - sprint-3-plan: draft on the current score at the 11-25 START and revise at the 11-26 close. Propose #2149 in it (the router-hidden ceiling's exit; Arch 01M82F5PKR: no fifth hidden entry until it's decided). Dates are xian's.
 - **Parked, one trigger: linked billing.** Waits on xian deciding whether Piper gets its own Claude Platform organisation.
 - **Genuine xian decisions:** E5 naming for #2380; #2344; the possible "Safe Storage" keychain item.
 - **Rules carried:**

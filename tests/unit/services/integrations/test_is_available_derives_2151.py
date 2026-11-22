@@ -349,6 +349,20 @@ class TestGateLine:
             "Integrations, and I can close that issue."
         )
 
+    def test_stale_on_create_issue_also_says_how_to_get_a_todo(self):
+        """Issue 2411 (CXO 11-22): "add a task to …" can land here. The reply says
+        nothing was added and how to ask for a todo. Only this route gets it."""
+        svc = self._svc()
+        svc.logger = MagicMock()
+        rf = GitHubReadFailed("x", DegradationReason.STALE_TOKEN, detail="stale_token")
+        assert svc._github_gate_failed(rf, "create_issue", "create that issue").message == (
+            "Your GitHub connection isn't working anymore. Reconnect it in Settings → "
+            "Integrations, and I can create that issue. Nothing was added. If you meant a "
+            'todo, say "add a todo: …" and I\'ll add it.'
+        )
+        for other in ("close_issue", "reopen_issue", "comment_issue", "update_issue"):
+            assert "todo" not in svc._github_gate_failed(rf, other, "do that").message
+
     @pytest.mark.parametrize(
         "action", ["close_issue", "reopen_issue", "comment_issue", "create_issue", "update_issue"]
     )

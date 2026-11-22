@@ -255,13 +255,16 @@ class TestTheMainListIsUnchanged:
 class TestWhereTheBlockGoes:
     SOURCE = (REPO / "services" / "intent" / "intent_service.py").read_text()
 
-    def test_code_adds_it_after_the_floor_replied(self):
-        """Condition 3: the floor never receives the list. The block is built
-        after ``floor.respond`` returned and joined to its message by code."""
-        respond = self.SOURCE.index("response = await floor.respond(floor_ctx)")
+    def test_code_resolves_it_before_the_floor_and_joins_it_after(self):
+        """Condition 3, as Arch changed it on 11-22 (01M8270WE5): the block is
+        resolved before the floor is called (so the floor's todo keys can be taken
+        away when it follows), the floor still never receives the list, and code
+        joins the block to the floor's message afterwards."""
         block = self.SOURCE.index("_todos_block = await status_todos_block(")
+        removed = self.SOURCE.index("domain_context = without_todo_keys(domain_context)")
+        respond = self.SOURCE.index("response = await floor.respond(floor_ctx)", block)
         joined = self.SOURCE.index('_status_message = f"{_status_message}\\n\\n{_todos_block}"')
-        assert respond < block < joined
+        assert block < removed < respond < joined
         assert self.SOURCE.count("status_todos_block(") == 1
 
     def test_the_milestone_branch_returns_first(self):
@@ -312,3 +315,223 @@ class TestNoCatalogChange:
 
         workflow_entries.register_default_workflows()
         assert "get_project_status" in derive_routing_grammar().names()
+
+
+# -- Arch 11-22 (01M8270WE5): when the block follows, the floor is given no todos --
+
+_FLOOR_RESPOND = "services.intent_service.conversational_floor.ConversationalFloor.respond"
+_GATHER = "services.intent_service.context_assembler.ContextAssembler.gather_context"
+_PROVENANCE = "services.intent_service.context_assembler.ContextAssembler.get_last_provenance"
+_BLOCK = "services.intent_service.project_status_todos.status_todos_block"
+_GH_ROUTER = "services.integrations.github.github_integration_router.GitHubIntegrationRouter"
+
+_GATHERED = {
+    "projects": [{"name": "Mobile Redesign"}],
+    "pending_todos": [{"text": "audit the current navigation"}, {"text": "review prs"}],
+    "pending_todo_count": 2,
+    "pending_todos_in_reminders": 1,
+    "completed_todos": [{"text": "ship the survey"}],
+    "reminders": [{"text": "call the venue"}],
+    "active_milestones": [],
+}
+_GATHERED_PROVENANCE = {
+    "projects": {"source": "ProjectRepository"},
+    "pending_todos": {"source": "TodoManagementService", "filter": "open"},
+    "completed_todos": {"source": "TodoManagementService", "filter": "completed"},
+    "reminders": {"source": "TodoManagementService"},
+}
+
+
+class TestWithoutTodoKeys:
+    def test_the_keys_are_removed_not_emptied(self):
+        out = pst.without_todo_keys(dict(_GATHERED))
+        assert set(out) == {"projects", "reminders", "active_milestones"}
+        for key in pst.FLOOR_TODO_KEYS:
+            assert key not in out, key
+
+    def test_the_failed_read_markers_go_too(self):
+        out = pst.without_todo_keys(
+            {"pending_todos_source_failed": True, "completed_todos_source_failed": True, "x": 1}
+        )
+        assert out == {"x": 1}
+
+    def test_it_copies_and_leaves_the_gathered_dict_alone(self):
+        gathered = dict(_GATHERED)
+        pst.without_todo_keys(gathered)
+        assert gathered == _GATHERED
+
+    def test_an_empty_context_stays_empty(self):
+        assert pst.without_todo_keys({}) == {}
+
+    def test_the_key_list_is_the_floors_todo_keys(self):
+        """Every todo key the floor reads from a STATUS gather is on the list. The two
+        ``*_source_failed`` names come from the floor's own directives."""
+        floor = (REPO / "services" / "intent_service" / "conversational_floor.py").read_text()
+        assembler = (REPO / "services" / "intent_service" / "context_assembler.py").read_text()
+        for key in pst.FLOOR_TODO_KEYS:
+            assert f'"{key}"' in floor or f'"{key}"' in assembler, key
+        assert "reminders" not in pst.FLOOR_TODO_KEYS  # CXO 11-22: due reminders stay
+
+
+@pytest.mark.asyncio
+class TestTheFloorIsGivenNoTodosWhenTheBlockFollows:
+    @pytest.fixture
+    def service(self):
+        from unittest.mock import patch
+
+        from services.intent.intent_service import IntentService
+
+        with patch("services.intent.intent_service.LearningHandler"):
+            with patch("services.intent.intent_service.ConversationKnowledgeGraphIntegration"):
+                svc = IntentService()
+        svc.workflow_offer_service = MagicMock()
+        svc.workflow_offer_service.peek_pending_offer = MagicMock(return_value=None)
+        llm = MagicMock()
+
+        async def complete(**kwargs):
+            if "served" in kwargs:
+                kwargs["served"]["usage"] = {"input_tokens": 1, "output_tokens": 1}
+            return '{"index": null}'
+
+        llm.complete = complete
+        svc.llm_client = llm
+        return svc
+
+    async def _turn(self, service, block, message=N3):
+        from unittest.mock import patch
+
+        from services.intent_service.conversational_floor import FloorResponse
+
+        respond = AsyncMock(return_value=FloorResponse(message="FLOOR: status."))
+        router = MagicMock()
+        router.initialize = AsyncMock()
+        router.list_milestones_via_mcp = AsyncMock(return_value=[])
+        router._resolve_default_repo = AsyncMock(return_value=("o", "r"))
+        intent = Intent(
+            category=IntentCategory.STATUS,
+            action="get_project_status",
+            confidence=0.9,
+            original_message=message,
+            context={"original_message": message, "user_id": USER},
+        )
+        with (
+            patch(_GH_ROUTER, return_value=router),
+            patch(_FLOOR_RESPOND, new=respond),
+            patch(_GATHER, new=AsyncMock(return_value=dict(_GATHERED))),
+            patch(_PROVENANCE, return_value=dict(_GATHERED_PROVENANCE)),
+            patch(_BLOCK, new=AsyncMock(return_value=block)) as block_mock,
+        ):
+            result = await service._handle_floor_with_context(intent, "s2301", user_id=USER)
+        respond.assert_awaited_once()
+        return result, respond.await_args.args[0], block_mock
+
+    async def test_one_project_the_floor_gets_no_todo_key_and_the_block_is_under_its_reply(
+        self, service
+    ):
+        block = "Open todos in Mobile Redesign:\n1. interview five current users"
+        result, floor_ctx, block_mock = await self._turn(service, block)
+        block_mock.assert_awaited_once()
+        for key in pst.FLOOR_TODO_KEYS:
+            assert key not in floor_ctx.domain_context, key
+        assert floor_ctx.domain_context["projects"] == _GATHERED["projects"]
+        assert floor_ctx.domain_context["reminders"] == _GATHERED["reminders"]
+        assert "pending_todos" not in floor_ctx.domain_context_provenance
+        assert "completed_todos" not in floor_ctx.domain_context_provenance
+        assert "reminders" in floor_ctx.domain_context_provenance
+        assert result.message == f"FLOOR: status.\n\n{block}"
+        assert "pending_todos" not in result.intent_data["context_keys"]
+
+    async def test_a_failed_todo_read_also_takes_the_keys_away(self, service):
+        """The block is then CXO's couldn't-check line; a floor that still held the
+        person's whole list could name todos above it."""
+        result, floor_ctx, _ = await self._turn(service, pst.TODOS_READ_FAILED_LINE)
+        assert "pending_todos" not in floor_ctx.domain_context
+        assert result.message.endswith(pst.TODOS_READ_FAILED_LINE)
+
+    async def test_no_single_project_changes_nothing(self, service):
+        """Arch: a status turn with no block keeps today's context, key for key."""
+        result, floor_ctx, _ = await self._turn(service, "")
+        assert floor_ctx.domain_context == _GATHERED
+        assert floor_ctx.domain_context_provenance == _GATHERED_PROVENANCE
+        assert result.message == "FLOOR: status."
+
+
+# -- Arch 11-22 (01M82C0Q6J): the RENDERED prompt carries no gathered todo text --
+
+_MARK_PENDING = "zz-marker-audit-the-navigation"
+_MARK_SECOND = "zz-marker-review-the-prs"
+_MARK_REMINDER = "zz-marker-call-the-venue"
+_MARK_EARLIER = "zz-marker-interview-five-users"
+
+_REAL_SHAPE_GATHER = {
+    "projects": [{"name": "Mobile Redesign", "status": "active"}],
+    "pending_todos": [
+        {"text": _MARK_PENDING, "priority": "medium", "due_date": None},
+        {"text": _MARK_SECOND, "priority": "medium", "due_date": None},
+    ],
+    "pending_todo_count": 2,
+    "pending_todos_in_reminders": 1,
+    "due_reminders": [{"text": _MARK_REMINDER, "due": "today"}],
+    "github_connected": False,
+    "github_needs_reconnecting": True,
+}
+
+
+@pytest.mark.asyncio
+class TestTheRenderedPromptCarriesNoGatheredTodoText(TestTheFloorIsGivenNoTodosWhenTheBlockFollows):
+    """The key test above proves the keys are gone. This one renders the floor's real
+    prompt from the context the handler built, because a key nobody listed could carry
+    the same text. The three channels for todo text on a STATUS turn (read 11-22 from
+    ``_gather_status_priority_context``, its riders and ``_build_prompt``) are the
+    ``pending_todos`` family, ``due_reminders`` and the conversation's own history."""
+
+    async def _rendered(self, service, block, session):
+        from unittest.mock import patch
+
+        from services.intent_service.conversation_context import get_or_create_context
+        from services.intent_service.conversational_floor import (
+            ConversationalFloor,
+            FloorResponse,
+        )
+
+        # An earlier turn of THIS conversation, whose reply showed a block.
+        conv = get_or_create_context(session, user_id=USER)
+        earlier = conv.add_turn(message="what's in my Mobile Redesign project?")
+        earlier.response = f"Here it is.\n\nOpen todos in Mobile Redesign:\n1. {_MARK_EARLIER}"
+
+        respond = AsyncMock(return_value=FloorResponse(message="FLOOR: status."))
+        router = MagicMock()
+        router.initialize = AsyncMock()
+        router.list_milestones_via_mcp = AsyncMock(return_value=[])
+        router._resolve_default_repo = AsyncMock(return_value=("o", "r"))
+        intent = Intent(
+            category=IntentCategory.STATUS,
+            action="get_project_status",
+            confidence=0.9,
+            original_message=N3,
+            context={"original_message": N3, "user_id": USER},
+        )
+        with (
+            patch(_GH_ROUTER, return_value=router),
+            patch(_FLOOR_RESPOND, new=respond),
+            patch(_GATHER, new=AsyncMock(return_value=dict(_REAL_SHAPE_GATHER))),
+            patch(_PROVENANCE, return_value={}),
+            patch(_BLOCK, new=AsyncMock(return_value=block)),
+        ):
+            await service._handle_floor_with_context(intent, session, user_id=USER)
+        floor_ctx = respond.await_args.args[0]
+        return ConversationalFloor()._build_prompt(floor_ctx)
+
+    async def test_with_the_block_following_no_gathered_todo_text_is_in_the_prompt(self, service):
+        prompt = await self._rendered(
+            service, "Open todos in Mobile Redesign:\n1. x", "s2301-render-a"
+        )
+        assert _MARK_PENDING not in prompt and _MARK_SECOND not in prompt
+        assert "PENDING TODOS" not in prompt and "Pending todo" not in prompt
+        # Two channels stay, each on purpose, and this test says so out loud:
+        assert _MARK_REMINDER in prompt  # CXO 11-22: a due reminder is a reminder, not a todo
+        assert _MARK_EARLIER in prompt  # the conversation's own record of what was shown
+
+    async def test_without_the_block_the_same_gather_reaches_the_prompt_as_today(self, service):
+        prompt = await self._rendered(service, "", "s2301-render-b")
+        assert _MARK_PENDING in prompt and _MARK_SECOND in prompt
