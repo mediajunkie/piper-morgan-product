@@ -10634,6 +10634,11 @@ class IntentService:
                 f"I couldn't check your GitHub connection just now, so I can't {verb} yet."
                 f"{changed} Try again in a moment; if it keeps failing, tell us."
             )
+            if action == "create_issue":
+                # Issue 2411 (CXO 11-22, 01M82HRJC4): the same last sentence here.
+                from services.intent_service.write_confirm_words import ISSUE_TODO_HINT
+
+                message = f"{message} {ISSUE_TODO_HINT}"
         self.logger.warning(
             "github_gate_failed", action=action, reason=rf.reason_code, detail=rf.detail
         )
@@ -14052,12 +14057,19 @@ class IntentService:
         except GitHubReadFailed as _gate_failed:
             return self._github_gate_failed(_gate_failed, "create_issue", "create that issue")
         if not _github_available:
+            from services.intent_service.write_confirm_words import (
+                ISSUE_NOT_WORKING_TODO_HINT,
+            )
+
             return IntentProcessingResult(
                 success=False,  # #2280: not connected, so not performed
+                # Issue 2411 (CXO 11-22, 01M82HRJC4): what a new tester gets. No code
+                # word on screen; it says nothing was added and how to ask for a todo.
+                # The words stay a literal here: the #2280 pin finds not-connected
+                # replies by their text at the call site.
                 message=(
-                    "GitHub isn't connected yet. Connect it in Settings → "
-                    "Integrations (or set GITHUB_TOKEN for local use), and "
-                    "I can create and manage GitHub issues for you!"
+                    "GitHub isn't connected yet. Connect it in Settings → Integrations and "
+                    f"I can create GitHub issues for you. {ISSUE_NOT_WORKING_TODO_HINT}"
                 ),
                 intent_data={
                     NOT_PERFORMED_KEY: NotPerformed.NOT_CONNECTED,  # #2280
