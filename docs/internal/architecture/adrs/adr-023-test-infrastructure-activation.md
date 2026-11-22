@@ -62,9 +62,9 @@ Implement smart test execution with 4 execution modes (smoke, fast, full, covera
 - **Excellence Flywheel Methodology**: Now fully operational with systematic verification
 
 ## References
-- [Test Infrastructure Guide](../../development/active/pending-review/TEST-GUIDE.md)
-- [Excellence Flywheel Methodology](../../development/methodology-core/methodology-00-EXCELLENCE-FLYWHEEL.md)
-- [Smart Test Execution Script](../../../../scripts/run_tests.sh)
+- [Test Infrastructure Guide](https://github.com/mediajunkie/piper-morgan-product/blob/main/docs/internal/development/active/pending-review/TEST-GUIDE.md)
+- [Excellence Flywheel Methodology](https://github.com/mediajunkie/piper-morgan-product/blob/main/docs/internal/development/methodology-core/methodology-00-EXCELLENCE-FLYWHEEL.md)
+- [Smart Test Execution Script](https://github.com/mediajunkie/piper-morgan-product/blob/main/scripts/run_tests.sh)
 
 ---
 
