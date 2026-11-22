@@ -494,7 +494,7 @@ Pattern selection should be reviewed during:
 
 ### Documentation
 
-- [Spatial Intelligence Competitive Advantage](../current/spatial-intelligence-competitive-advantage.md) - Strategic overview
+- [Spatial Intelligence Competitive Advantage](https://github.com/mediajunkie/piper-morgan-product/blob/main/docs/internal/architecture/current/spatial-intelligence-competitive-advantage.md) - Strategic overview
 - [Pattern-022: MCP Spatial Intelligence Integration](../patterns/pattern-022-mcp-spatial-intelligence-integration.md) - Integration pattern
 
 ### Source Code

@@ -167,7 +167,7 @@ Run so far (CIO, 2026-11-16 18:55 PT, a scratch test browser on a throwaway fold
 
 **What the seat browser may hold, and how it is revoked (HOST, 2026-11-16):**
 - It holds a seeded account's session and nothing else. No other sign-in is typed into it, and no Connect round trip with a real provider account is done in it: either would leave a real session in a profile that keeps cookies across restarts. Web's steps carry the same line.
-- To revoke, in this order: stop the browser, delete the profile folder, then delete the session file (`~/.piper-shared/web-seed-1386.session-token.json`). Deleting the folder alone is not enough while the browser runs, and while the session file exists the next `seat_session.py` run places the cookie again. The cookie also dies within 24 hours.
+- To revoke, in this order: stop the browser, delete the profile folder, then delete the session file (`~/.piper-shared/web-seed-1386.session-token.json`). Deleting the folder alone is not enough while the browser runs, and while the session file exists the next `seat_session.py` run places the cookie again. The session also dies on its own: beta's access token lasts 30 minutes (Web measured it 2026-11-22 from `seat_session.py`'s printed expiry after Lead's `ddf40fd739`; the 24 hours once written here was the cookie's Max-Age, not the token's). A sitting longer than that re-runs the helper.
 - Two residuals are stated in `seat_browser.py` and accepted by HOST and Arch: the debug port has no authentication, so any process of this user on Amber can reach it; and the listener is read before the socket is opened.
 
 The order of what it waits on:
