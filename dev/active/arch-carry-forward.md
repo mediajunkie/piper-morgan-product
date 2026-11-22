@@ -1,5 +1,5 @@
 ---
-last_updated: 2026-11-21 06:29 PST (START, verified: 11-20 STOP block current)
+last_updated: 2026-11-21 21:28 PST (STOP)
 currency_claim: rewritten at substantive-change boundaries, verified at every START
 max_age_days: 4
 ---
@@ -25,6 +25,8 @@ context-floor directive that duplicating it here is exactly the accretion to cut
 | GitHub criteria line | `gh issue list --repo mediajunkie/piper-morgan-product --label architecture --state open` — the third work-queue source (PM v1.33). Open each issue, don't write a row from the list. Report drained as "mail (N) + standing-items (N) + label:architecture (M)." |
 
 ## IN FLIGHT — current state only
+
+**11-21 state (STOP):** a quiet Saturday. No mail all day, main 12/12 green at every fire, beta still `d66f15c538`. One landing read: Lead's `59634e387e` (test fixtures take due dates from the clock; two comments, checked against source, no ruling). Every deferral below is unchanged and still blocked on the same party.
 
 **11-20 state (STOP):** main is 12/12 green and the inbox is empty. Beta has served `d66f15c538` since 20:25 (2297 attach is served). On main but not promoted: 2301 handler-only (`093b2a90aa` and `991f209e8b`), and CIO's promote-hold file (`0bfeebc8de`, which I approved as stricter-only at 21:11 and reported to Exec). Model Opus 5.5. Every ruling is in decisions.log.
 - **2364 (ethics gate):** the rerun PASSED ($1.40). Step 1 (`lead/2364-step1-r1120b`, `d02a24120b`) waits on xian's OpenAI run, or on a beta key read plus a known-limits row. After that I read the final rebased diff, and the default flip goes in its own commit. Option (b), the ambiguous tier with its hint fed to the reply, comes after step 1 is served, as its own ruling and screen.
