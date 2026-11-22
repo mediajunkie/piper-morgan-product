@@ -28,28 +28,18 @@ Two days later when a test run was blocked by [Comms: does paid run stopped at z
 
 As I was once again starting to feel relegated to a role as assistant to my assistants (what Cory Doctorow has taken to call "[reverse centaurs](https://us.macmillan.com/books/9780374621568/thereversecentaursguidetolifeafterai/)"), I pushed back on this, writing "We need to solve that problem, not assign me manual tasks as a workaround for a poorly conceived solution." Also: it "keeps becoming my problem to manually navigate", and "Until we solve that the entire project is hobbling itself". 
 
-Exec took the reins and asked each agent "seat" on the team to report back with the one thing in its lane that most often lands on you, then took this feedback and wrote a proposal that became ADR-084 that evening. [Nov 15 l60]
+Exec took the reins and asked each agent "seat" on the team to report back with the one thing in its lane that most often lands on you, then took this feedback and wrote a proposal that became [ADR-084](https://github.com/mediajunkie/piper-morgan-product/blob/main/docs/internal/architecture/adrs/adr-084-seat-resources-are-separate-granted-once-and-bounded.md) that evening. Exec also noticed that tasks were still piling up for me, noting "The first step grew from one paste to four in two hours," and asking my chief innovation officer agent (CIO) to refactor the next request for me back to one command. 
 
-**4. The fix starts to grow the same way.**
-- "The first step grew from one paste to four in two hours." Exec: each addition was sound, and the sum was the pattern you refused. Exec asked for one command, and CIO delivered it by 23:20. [Nov 15 l112]
+I approved the proposed ADR the next day, and also OK'd a budget cap of $10 for any agent to run tests without asking first, with a monthly cap of $150. (I felt OK doing this since my current plan provides $200 free credits a month.) 
 
-**5. Nov 16: yes, and the honest ending.**
-- You accepted ADR-084 at 06:20: "1. Yes to ADR-084 and budget". An agent may spend up to $10 a run without asking, $150 a month at most. [Nov 16 l54; ADR-084 status line]
-- The same day's omnibus: the steps that needed you "stayed unstarted at every later check", and no served row ran. [Nov 16 l6] Whether to end on that is your call. It keeps the post honest: the design is right, and it isn't finished.
+At the end of a week, that particular task remained blocked. The agents had done what I asked - provided me with as few steps as possible to unblock them - but in the meantime my attention had drifted away again, so they steps waited for me to cycle back once more.
 
-## Your angle, maybe
+# Redesigning the bottleneck
 
-- A yes/no question about a permission invites a yes/no answer. "How do we stop needing you for this?" got a design in fifteen minutes.
-- Agents converging fast on "the human does it" is not consensus. It's the cheapest path for everyone but the human.
-- Product-manager reach: any team that routes its blockers to the same one person has built that person into the design.
+I file all of this under a broader category of reframing. I put a lot of trust in my own laziness, or if I want to be more charitable toward myself, my impatience with boring repetitive rote work. I'll do busy work and simple tasks when I need to, as anyone does, but I don't love it, and I get frustrated quickly if it seems pointless. The whole promise of computerization, let alome AI, is to automate what is repeatable and spare ourselves the drudgery so we can focus on things only we can uniquely do. Every time the agent team converges on a solution like "give it to the human to do," the plumbing is backing up, as far as I'm concerned.
 
-## Careful with these (accuracy)
+Speaking up about it pushed my agent team to redesign their workflow. It doesn't take me out the loop (hardly!) but it guards against simply piling busy work into my queue as a shorcut or easy answer.
 
-- **Overlap:** Wed's Ship #069 "Off-Limits by Default" is about what agents may read. "Which Agent Did It?" (11-14) is about identity. This post is about the human as the bottleneck. Don't retell the keychain or the GitHub App.
-- No test account names, key names or credential details in prose. "a test account" and "a credential file" are enough.
-- Agents are "agents" or by role (PA, Arch, Exec), never "people" or "someone".
-- The $10 and $150 figures are the accepted ADR's. Leave them out if they distract.
-- Nov 13's fix was "approved as the durable route", not run that day. Don't say it worked on Nov 13.
 
 ---
 
