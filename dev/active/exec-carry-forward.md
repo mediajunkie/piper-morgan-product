@@ -21,7 +21,7 @@ v1095, `719UZ4h1NELjEwWZbDCceT`. Source `dev/active/exec-attention-rollup-curren
 - **Ship #070 "No Workarounds"** (his 18:12 rulings, relayed 01M7XY16WB, three decisions.log lines). An outline scaffold by Exec, bare facts under each heading, err on including. **Discussed marker held until he says he's read the review** (https://claude.ai/artifact/4Pgs8DrAXpyB2P9o6BvRRn) and ratifies or edits next week's goals. Then add `<!-- discussed: DATE -->`, run the draft-weekly-ship skill, scaffold, Comms fact-check. Publish Tue 11-24.
 - **Sprints don't stretch** (his ruling): sprint 2 closes 11-26; #071 reports the score as it stands. My forecast to him: seats and self-host goals on track, GitHub move at risk, named items partial. PPM: 2301's read half misses 11-26.
 - **Titles:** Sat 11-28 is "Mark One Eyeball" (locked by xian, 11-22).
-- **Insight "Do I Have To?"** (xian retitled 08:33; was "A Blocker Framed as Yes or No"): PUBLISH-READY to Docs 08:40 (01M82228TH), runs Sun 11-22. Docs fixes the "Inviting Company In" footer (01M821SZ50). xian updates Medium when he crossposts.
+- **"Do I Have To?"** live 11-22 (pipermorgan.ai/blog/do-i-have-to, Docs 01M822N36A). Owed by xian: LinkedIn and Medium crosspost (URLs to Docs), and the Medium "Inviting Company In" footer swap. On rollup v1103.
 - **Restore drill 2157:** his choice of day (rollup card).
 
 ## In motion
