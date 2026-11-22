@@ -957,3 +957,50 @@ def test_revoke_failed_says_a_grant_may_remain(ss, shared):
         f"{ACCOUNT}: calendar disconnected (outcome revoke_failed; a grant may remain listed "
         "at Google); the holds-nothing checks now pass"
     )
+
+
+# -- the printed expiry is the token's own, when that is sooner (Web's finding, 11-22) --
+
+
+def _jwt_shaped(claims) -> str:
+    """A three-part value with a readable payload, built at run time; it signs nothing."""
+    import base64
+
+    def part(obj) -> str:
+        return base64.urlsafe_b64encode(json.dumps(obj).encode()).decode().rstrip("=")
+
+    return ".".join([part({"alg": "none"}), part(claims), "sig"])
+
+
+def test_expiry_is_the_tokens_own_when_it_is_sooner_than_the_cookie(ss, shared, capsys):
+    now = 1_800_000_000
+    token = _jwt_shaped({"sub": "x", "exp": now + 1800})
+    host = StubHost(ss)
+    host.replies["/api/v1/auth/login"] = ss.Reply(
+        200, b"{}", (f"auth_token={token}; HttpOnly; Max-Age=86400; Path=/",)
+    )
+    line = ss.run(ACCOUNT, host, now=now)
+    state = json.loads((shared / f"{ACCOUNT}.session-token.json").read_text())
+    assert state["cookies"][0]["expires"] == now + 1800
+    assert line.endswith("2027-01-15T08:30:00Z")
+    assert token not in line
+
+
+def test_a_token_that_outlives_the_cookie_or_the_cap_changes_nothing(ss, shared):
+    now = 1_800_000_000
+    token = _jwt_shaped({"exp": now + 10 * 86400})
+    host = StubHost(ss)
+    host.replies["/api/v1/auth/login"] = ss.Reply(
+        200, b"{}", (f"auth_token={token}; HttpOnly; Max-Age=99999999; Path=/",)
+    )
+    ss.run(ACCOUNT, host, now=now)
+    state = json.loads((shared / f"{ACCOUNT}.session-token.json").read_text())
+    assert state["cookies"][0]["expires"] == now + 86400
+
+
+@pytest.mark.parametrize(
+    "value",
+    ["plain-value", "a.b", "a.!!!.c", "a.e30.c", "a.eyJleHAiOiAidG9tb3Jyb3cifQ.c", "a.WzFd.c"],
+)
+def test_an_unreadable_token_falls_back_to_the_cookie_and_the_cap(ss, value):
+    assert ss.token_expiry(value) is None
