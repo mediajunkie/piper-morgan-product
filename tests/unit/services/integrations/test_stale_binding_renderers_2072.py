@@ -33,12 +33,14 @@ from web.api.routes.settings_integrations import get_github_settings
 
 CONFIG_SVC = "services.integrations.github.config_service.GitHubConfigService"
 
-# CXO's copy (2026-10-17), pinned verbatim so the served acceptance (Web: "what's
+# CXO's copy (2026-10-17, reworded 2026-11-22 for issue 2417: no cause, the person's
+# connection), pinned verbatim so the served acceptance (Web: "what's
 # connected?" and a work-focus reply with the grant revoked) has a unit twin.
 STALE_FLOOR_LINE = (
-    "- GitHub: needs reconnecting (the grant was revoked or expired; issue/PR data is "
-    "unavailable until it is reconnected: say so and point to Settings → Integrations → "
-    "GitHub; do not imply there are no open issues)"
+    "- GitHub: needs reconnecting (issue/PR data is unavailable until the person "
+    "reconnects it: say so and point to Settings → Integrations → GitHub; don't say why "
+    "it needs reconnecting; it is the person's GitHub connection, not yours; do not "
+    "imply there are no open issues)"
 )
 STALE_GUIDANCE_GROUP = (
     "\n🟡 **Needs reconnecting:**\n  - GitHub\nReconnect it in Settings → Integrations → GitHub.\n"
