@@ -20,8 +20,8 @@ v1095, `719UZ4h1NELjEwWZbDCceT`. Source `dev/active/exec-attention-rollup-curren
 ## Waiting on xian, other
 - **Ship #070 "No Workarounds"** (his 18:12 rulings, relayed 01M7XY16WB, three decisions.log lines). An outline scaffold by Exec, bare facts under each heading, err on including. **Discussed marker held until he says he's read the review** (https://claude.ai/artifact/4Pgs8DrAXpyB2P9o6BvRRn) and ratifies or edits next week's goals. Then add `<!-- discussed: DATE -->`, run the draft-weekly-ship skill, scaffold, Comms fact-check. Publish Tue 11-24.
 - **Sprints don't stretch** (his ruling): sprint 2 closes 11-26; #071 reports the score as it stands. My forecast to him: seats and self-host goals on track, GitHub move at risk, named items partial. PPM: 2301's read half misses 11-26.
-- **Titles:** the post whose title xian ruled out ("Test the Page You Draw") moved to Sat 12-19, title still his. Thu 12-03 "Ready or Not" needs his yes or a new title before 11-28 (that footer teases it).
-- **Insight "A Blocker Framed as Yes or No"**: moved to Sat 11-28 by Comms (01M81SKDPJ), or Sun 11-22 if xian's prose lands today. Thu 11-19 footer promises it next.
+- **Titles:** Sat 11-28 needs xian's new title ("Test the Page You Draw" is out), and today's footer teases it, so it is needed before today's post goes to Docs.
+- **Insight "A Blocker Framed as Yes or No"**: runs Sun 11-22 (xian to Comms in session, relayed 01M81YG7MV); xian writing it; Comms review and audit, then PUBLISH-READY to Docs. Comms's 11-28 shuffle reverted.
 - **Restore drill 2157:** his choice of day (rollup card).
 
 ## In motion
