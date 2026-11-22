@@ -47,6 +47,6 @@ Once again, I braced myself for incoming feedback. It's amazing how valuable it 
 
 ---
 
-*Next on Building Piper Morgan: "A Blocker Framed as Yes or No," in which I have to give my agent team some straight talk about how much work they've been assigning me.*
+*Next on Building Piper Morgan: "Do I Have To?" in which I have to give my agent team some straight talk about how much work they've been assigning me.*
 
 *Do you feel that same mixture of thrill and dread when asking people to review your work?*
