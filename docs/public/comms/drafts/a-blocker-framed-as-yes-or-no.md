@@ -12,7 +12,7 @@ As I get more comfortable letting my agents run autonomously for long intervals 
 
 # Gridlock
 
-Earlier this month I checked in with the project to see what needed me and found that several agents were blocked waiting for permission or decisions from me. For example, my prototypical assistant agent (Piper Alpha) was blocked from logging into a test account on the Piper Morgan beta by the classifier Claude uses to prevent risky agent behavior in auto mode (a false negative, from my point of view). Piper Alpha (PA) relayed the permission request to my chief of staff agent (Exec) for my attention.
+Earlier this month I checked in with the project to see what needed me and found that several agents were blocked waiting for permission or decisions from me. For example, my prototypical assistant agent (Piper Alpha) was blocked from logging into a test account on the Piper Morgan beta by the classifier Claude uses to prevent risky agent behavior in auto mode (a false positive, from my point of view). Piper Alpha (PA) relayed the permission request to my chief of staff agent (Exec) for my attention.
 
 By the time I responded to this request, a few days later, PA offered me three potential methods for resolving their impasse. I replied "Happy to do whatever is easiest. Overall better if we find ways where I don't block this sort of thing." The team scrambled to follow this direction. The easiest option was a stopgap at best (letting an agent read the password file), so my chief architect agent (Arch) overruled this in favor of a more proper permanent fix: We would set up a browser profile for the agents that I would sign into once and the agents could then reuse. 
 
@@ -34,11 +34,11 @@ At the end of a week, that particular task remained blocked. The agents had done
 
 I file all of this under a broader category of reframing. I put a lot of trust in my own laziness, or if I want to be more charitable toward myself, my impatience with boring repetitive rote work. I'll do busy work and simple tasks when I need to, as anyone does, but I don't love it, and I get frustrated quickly if it seems pointless. The whole promise of computerization, let alone AI, is to automate what is repeatable and spare ourselves the drudgery so we can focus on things only we can uniquely do. Every time the agent team converges on a solution like "give it to the human to do," the plumbing is backing up, as far as I'm concerned.
 
-Speaking up about it pushed my agent team to redesign their workflow. It doesn't take me out the loop (hardly!) but it guards against simply piling busy work into my queue as a shortcut or easy answer.
+Speaking up about it pushed my agent team to redesign their workflow. It doesn't take me out of the loop (hardly!) but it guards against simply piling busy work into my queue as a shortcut or easy answer.
 
 
 ---
 
-*Next on Building Piper Morgan: "Mark One Eyeball," in which a bare link stuck into an admin page suffices for automated tests but fails for my using my own eyes.*
+*Next on Building Piper Morgan: "Mark One Eyeball," in which a bare link stuck into an admin page suffices for automated tests but fails when I look with my own eyes.*
 
 *Delegation is a real art and one of the signs you aren't doing it well is when every question lands on your desk. How do you empower your team to take initiative while ensuring they still bring the tough calls to you as needed?*
