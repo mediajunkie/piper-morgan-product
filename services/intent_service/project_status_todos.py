@@ -34,6 +34,7 @@ shows what was matched.
 
 from __future__ import annotations
 
+from dataclasses import dataclass
 from typing import Any, Dict, Optional, TypeVar
 
 import structlog
@@ -78,45 +79,66 @@ def without_todo_keys(context: Dict[str, _V]) -> Dict[str, _V]:
     return {key: value for key, value in context.items() if key not in FLOOR_TODO_KEYS}
 
 
+@dataclass(frozen=True)
+class StatusTodos:
+    """What ``status_todos_for_project`` found: the block (``""`` when nothing is added)
+    and, when a block is shown, the STORED name of the one project it is about (the
+    name its header shows). Issue 2415's all-code reply needs the name; the block's
+    callers need only ``block``."""
+
+    block: str = ""
+    project: Optional[str] = None
+
+
 async def status_todos_block(
     intent: Any, session_id: Optional[str], user_id: Optional[str], todo_handlers: Any
 ) -> str:
     """The text to put after the floor's status reply, or "" when nothing is
-    added. It never raises (Arch 11-20, 01M7Y4QVSY): this read was added on top
-    of a reply the floor has already given, so no error in it may take that reply
-    away. Any error is logged with its stack, and what the person is told is true."""
+    added (``status_todos_for_project`` without the project name)."""
+    return (await status_todos_for_project(intent, session_id, user_id, todo_handlers)).block
+
+
+async def status_todos_for_project(
+    intent: Any, session_id: Optional[str], user_id: Optional[str], todo_handlers: Any
+) -> StatusTodos:
+    """The block with the stored project name. It never raises (Arch 11-20,
+    01M7Y4QVSY): this read was added on top of a reply the floor has already given,
+    so no error in it may take that reply away. Any error is logged with its stack,
+    and what the person is told is true."""
     if getattr(intent, "action", None) != STATUS_OP:
-        return ""
+        return StatusTodos()
     from services.intent.intent_service import _coerce_todo_principal
 
     todo_user = _coerce_todo_principal(user_id)
     if not todo_user:
-        return ""
+        return StatusTodos()
     try:
         resolution = await _attach.resolve(intent, todo_user)
     except (SQLAlchemyError, OSError) as e:
         logger.error("project_status_todos_project_read_failed", error=str(e))
-        return ""
+        return StatusTodos()
     except (
         Exception
     ):  # silent-ok: Arch 11-20 (01M7Y4QVSY); stack logged, nothing added, the status reply stands
         logger.exception("project_status_todos_project_read_failed")
-        return ""
+        return StatusTodos()
     if resolution is None or resolution.one is None:
         logger.info(
             "project_status_todos_not_one_project",
             named=resolution is not None,
             matches=len(resolution.matches) if resolution is not None else 0,
         )
-        return ""
+        return StatusTodos()
     project = resolution.one
+    name = str(getattr(project, "name", "") or "") or None
     try:
-        return str(await todo_handlers.project_status_todos(session_id, todo_user, project))
+        block = str(await todo_handlers.project_status_todos(session_id, todo_user, project))
     except (SQLAlchemyError, OSError) as e:
         logger.error("project_status_todos_todo_read_failed", error=str(e))
-        return TODOS_READ_FAILED_LINE
+        block = TODOS_READ_FAILED_LINE
     except (
         Exception
     ):  # silent-ok: Arch 11-20 (01M7Y4QVSY); stack logged, CXO's couldn't-check line is said
         logger.exception("project_status_todos_todo_read_failed")
-        return TODOS_READ_FAILED_LINE
+        block = TODOS_READ_FAILED_LINE
+    return StatusTodos(block=block, project=name if block else None)

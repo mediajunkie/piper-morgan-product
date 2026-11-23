@@ -285,11 +285,14 @@ INTEGRATION_DISPLAY: Dict[str, str] = {
 #: every code-written sub-path reads it, so two lists cannot drift apart.
 SETTINGS_SUBPATH_PLACES = frozenset({"GitHub", "Google Calendar"})
 
+#: The Integrations page itself, the place every connector lives under.
+SETTINGS_INTEGRATIONS = "Settings → Integrations"
+
 
 def settings_place(display_name: str) -> str:
     """The house path to a connector's place in Settings: with the sub-path only when
     the name is on ``SETTINGS_SUBPATH_PLACES``."""
-    base = "Settings → Integrations"
+    base = SETTINGS_INTEGRATIONS
     return f"{base} → {display_name}" if display_name in SETTINGS_SUBPATH_PLACES else base
 
 
