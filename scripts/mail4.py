@@ -56,10 +56,16 @@ CROCKFORD = "0123456789ABCDEFGHJKMNPQRSTVWXYZ"
 # access that would remove it. A relay that reads as putting a step on him and has no such
 # line gets a warning. It is still sent: the words below are a guess at what a step looks like,
 # and Exec makes the real check.
+# Tightened 2026-11-23 (the v4 review, dev/2026/11/23/mail-v4-review-2026-11-23.md): on 65 relays
+# the old form fired 7 times, 3 rightly. It read any verb within 80 characters of "xian" ("xian's
+# 11-13 yes for 2364's runs", "xian's own edits", "his console screenshots") and missed "that step is
+# xian's". The verb must now follow "xian" (not "xian's") within three words.
 XIAN_STEP = re.compile(
-    r"\bxian\b[^.\n]{0,80}\b(?:runs?|pastes?|types?|clicks?|loads?|sets?|signs? in|creates?|"
-    r"edits?|installs?|rotates?)\b"
-    r"|\b(?:xian's|his) (?:hand|hands|paste|terminal|console)\b"
+    r"\bxian\b(?!')(?:\s+\S+){0,3}?\s+(?:runs?|pastes?|types?|clicks?|loads?|sets?|signs? in|"
+    r"creates?|edits?|installs?|rotates?|confirms?)\b"
+    r"|\b(?:xian's|his) (?:hand|hands|paste|terminal|console)\b(?! screenshot)"
+    r"|\b(?:step|item|run|paste|read) (?:is|stays|is still) (?:xian's|his)\b"
+    r"|\bneeds xian\b"
     r"|\bone paste\b",
     re.IGNORECASE,
 )
