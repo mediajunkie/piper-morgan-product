@@ -1508,6 +1508,24 @@ State key: `dialogs-github-unknown-no-notion`
 
 Sent to a disconnect route after Cancel: nothing
 
+## Dialogs: GitHub needs reconnecting and nothing else is connected; Slack and Notion not offered in this beta
+
+State key: `dialogs-github-needs-reconnecting-alone`
+
+### Disconnect All
+
+- Title: **Disconnect all integrations?**
+- Message:
+  > I'll disconnect these:
+  > • GitHub
+  >
+  > GitHub may need you to remove Piper in its settings if you connected it with the app or a token.
+  >
+  > You can connect them again anytime.
+- Buttons: Disconnect all (confirm), Cancel
+
+Sent to a disconnect route after Cancel: nothing
+
 ## Dialogs: Nothing connected
 
 State key: `dialogs-nothing`
