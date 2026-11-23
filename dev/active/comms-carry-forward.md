@@ -1,7 +1,8 @@
 # Comms carry-forward
 
-## ⭐ CURRENT STATE — 2026-11-21 21:19 PT (STOP). Read this first. It supersedes everything below.
-- **Log 11-21:** `dev/2026/11/21/2026-11-21-0619-comms-code-log.md` (DAY-CLOSED). Tomorrow creates a new log.
+## ⭐ CURRENT STATE — 2026-11-22 21:19 PT (STOP). Read this first. It supersedes everything below.
+- **Log 11-22:** `dev/2026/11/22/2026-11-22-0610-comms-code-log.md` (DAY-CLOSED). Tomorrow creates a new log.
+- **11-22 afternoon and evening:** quiet. No mail, no draft edits since 08:17, main green, 2364 still OPEN. Next owed: xian's 11-28 prose, his 12-03 title, Exec's Ship #070 outline (Ship publishes Tue 11-24).
 - **Pace (xian, 11-02):** keep working, not racing. Drain rule holds. No nudges to xian about posts (Exec 11-12).
 - **Draft-state check:** `git log -1 --format='%h %ad %s' -- <one path>` per draft, plus `git -C <shared checkout> status --short docs/public/comms/drafts/` (read-only). Admin-UI edits land as "content(<slug>): edit via admin UI".
 - **Clock rule LIVE (752547e88e, decisions.log):** no estimated `HH:Mx` minute, future time or `~` heading in logs, carry-forward, standing items, briefing or decisions.log. Quote a time in backticks. Helper: `scripts/log-entry.sh "title"`.
@@ -14,7 +15,7 @@
 - **Ship #070 "No Workarounds" (xian 11-20):** Exec writes an outline scaffold (sections plus bare facts, include generously). Exec sends it to Comms for the fact-check after xian reads the week review. Comms' workstream review filed 11-20 05:14 (01M7WHGS2E).
 - **12-12 update 11-20, corrected 11-21:** the 2364 live gate run failed by one probe in the morning. CXO found the probe band had drifted from its definition, Arch fixed the bar before the rerun (dl 3569), and the rerun PASSED at 14:13 (dl 3572). Merge still held on the second-provider item, which is xian's. Scaffold updated 11-21 (I had missed the PASS at the 11-20 STOP). Related new issue 2409 (probe ic-2 likely mislabelled).
 - **CIO ask (11-16):** first push printing `already passed on this content` → mail CIO that line. Not seen yet.
-- **Mail v4 live;** v3 fallback until 11-23.
+- **Mail v4 live;** v3 fallback ends 11-23 (tomorrow): from then, v4 only.
 - **Arcs (adopted 11-14):** map in planning doc (Claude Docs 5vc7f1CTHhadvvPBB73h86). Era 8 "The Beta" starts 10-31.
 - **Standing rules:** keychain off-limits (never `=keychain`); only `scripts/alpha-setup.sh` banned on Amber, no compose up/down; invites held (xian 11-04); HOLD (PDR-102) no ownership claim in copy; Rule 8 no outside names; never mail or cc PM.
 
