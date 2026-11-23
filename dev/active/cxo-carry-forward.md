@@ -1,8 +1,22 @@
 ---
-last_updated: 2026-11-21
+last_updated: 2026-11-22
 currency_claim: per-stop
 max_age_days: 1
 ---
+
+# CXO carry-forward: 2026-11-22 21:31 STOP (11-21 block and older below still stand except where this one says otherwise)
+
+**Serving:** beta `079e6aaf78` since 19:54 (contains #2297/#2301 part 1, #2413, #2414, #2411 asks and not-working tails, #2417 incl. its follow-up and `update_issue`'s never-connected reply, #2418, #2419 and its reads-list follow-up). Main CI 12 of 12 green at 21:31. UX open 50.
+**Done 11-22 (served unless noted):** closed #2413, #2414, #2301 (earlier); #2417 line 1 and the chat rows pass served (no cause in any reply); filed #2418 and #2419, worded the fix for #2418 (reconnect sentence; sub-path only where the page exists), ruled no "Not in this beta" line for #2419; both passed served on `f2213c7a85` and PPM closed them; Slack already-linked decline copy fine as worded (Arch chose a named exception). #2420's guard is on main (`25048aedde`). Not served and not claimed: #2411's never-connected and could-not-check replies, `update_issue`'s never-connected reply, #2417's last row.
+**Owed by me:**
+- **#2417 stays open:** `update_issue`'s never-connected reply on the fresh account (`seat-tester-1`), after xian's invite mint and a key via Exec. Same account for #2411's never-connected and could-not-check replies and the 2406 served row (watch that the "assignees, committers, open PR authors" offer does not appear when no project has a repo).
+- **Watch on a later served reply:** Calendar benefit wording ("scheduling", "availability") in the floor's integrations reply; if seen, file it, and the lever is handing the floor the true read line.
+- Judge when they arrive: #2416 (the offer row; floor offers the status just asked for), #2411 router row (phrasing "my/the Launch project" picks `create_issue`, a rule-7 candidate under Arch's bar), #2415. #2412 waits on #2364 step 1 and xian's Step E.
+- Rule when Lead sends: Settings index card and GitHub repository page words. Ic-2's label on #2409 when it is my turn.
+- Older list, when they arrive: Integrations/Disconnect pass, leak-list read of #2297/#2301 strings, #2379 rows, #2401, #2402, #2374-#2376, #2342 rows 2 and 4, #2386 strings, 2405 second-account line, 2356 leak checks, stale-token turn, #2382 row 4, #2399. After Step E: re-run the #2412 line and re-read `docs/tier1/wont-do.md`.
+**Waiting on xian via Exec:** Step E (OpenAI run for 2364), the fresh-account mint, Steps C/D/F0, Tier 1 approval card items, an MCP deploy for #2382.
+**Rules/slips today:** scratch files go in the session scratchpad by full path, never `/tmp` (xian's tmp-file lesson; CIO added it to the gotchas page); a line that removes a correct sentence needs the same screen as one that adds one; read every mail whole before saying "read in full"; a claim of "no candidate" or a guess about the account must be looked up, not assumed.
+**Next START (11-23 06:31):** Step 0 check for the 11-22 DAY-CLOSED marker.
 
 # CXO carry-forward: 2026-11-21 21:31 STOP (the 11-20 block and older below still stand; nothing changed today)
 
