@@ -1,5 +1,11 @@
 # Lead carry-forward — Fable 5.2 seat again since 2026-11-20 08:56 (Opus 5.5 from 2026-11-17 21:30 until then); Model A worktree ~/Development/piper-morgan-worktrees/lead
 
+## START 2026-11-23 06:46 (re-verified; the DAY-END 11-22 block below still holds)
+
+- Checked this morning: beta `079e6aaf78` healthy and quiet; staging `1972fd150b`; main CI 12 of 12 green; Health Watch green; no hold file; no served-path difference between beta and main; inbox read; no issue after 2417.
+- **New since DAY-END:** the pre-push hook refuses a single code commit that is not checked out (`15cb27a481`, Lead and Arch, decisions.log 11-23 06:34). **Not live until Pard refreshes the common-dir copy** (CIO asked Pard; I do not run the `cp`). My landing loop pushes HEAD, so it is unaffected.
+- Web's `web-seed-1386` session lapsed 07:06 PT today; Web re-runs the helper before any sitting.
+
 ## DAY-END 2026-11-22 21:46 (supersedes the AFTERNOON block below; read this first)
 
 - **Beta serves `079e6aaf78`** (promoted 19:54, run 45108430580), healthy. Nothing on main waits for a promotion except log and test-only commits (`25048aedde`, the sub-path guard). Main CI 12 of 12 green at 21:46. Inbox empty.
