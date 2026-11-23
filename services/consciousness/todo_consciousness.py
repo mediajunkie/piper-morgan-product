@@ -122,32 +122,18 @@ def format_completed_todos(done_todos: List[Todo]) -> str:
 
 
 def format_todo_created_conscious(todo: Todo) -> str:
+    """The confirmation for one todo added to no project: one sentence, with the title.
+
+    Issue 2427 (CXO 2026-11-23, 01M852NDAN): "I've added 'confirm the caterer' to your
+    list." It is the attach line's voice ("I've added 'book the venue' to Launch.").
+    Before this it was three sentences: the fact, the fact again with the title, and a
+    closing offer that nothing armed. A priority the person gave is still said, in the
+    same sentence.
     """
-    Format todo creation confirmation with consciousness.
-
-    Transforms from:
-        "✓ Added todo #a1b2c3d4: Review PR (priority: high)"
-
-    To:
-        "I've added that to your list. 'Review PR' is now tracked,
-         and I've marked it as high priority based on what you said.
-         Let me know if you want to adjust anything."
-    """
-    sections = []
-
-    # Identity statement with what was done
-    sections.append(f"I've added that to your list.")
-
-    # What was captured
     priority_note = ""
     if todo.priority != "medium":
         priority_note = f", and I've marked it as {todo.priority} priority"
-    sections.append(f"'{todo.text}' is now tracked{priority_note}.")
-
-    # Dialogue invitation
-    sections.append("Let me know if you want to adjust anything.")
-
-    return " ".join(sections)
+    return f"I've added '{todo.text}' to your list{priority_note}."
 
 
 def format_todo_completed_conscious(todo: Todo) -> str:
@@ -265,15 +251,14 @@ def _fix_mvc_gaps(narrative: str, mvc_result) -> str:
 def format_todos_created_conscious(todos: list) -> str:
     """#2094: several todos from one message, every one named.
 
-    "I've added 3 todos to your list: 'draft brief', 'book venue' and 'send invites'.
-    Let me know if you want to adjust anything."
+    "I've added 3 todos to your list: 'draft brief', 'book venue' and 'send invites'."
+
+    Issue 2427 (CXO 2026-11-23, 01M853ANMP): it ends there, as the one-todo line does.
+    The closing "Let me know if you want to adjust anything." offered what nothing armed.
     """
     names = [f"'{t.text}'" for t in todos]
     if len(names) == 1:
         joined = names[0]
     else:
         joined = ", ".join(names[:-1]) + " and " + names[-1]
-    return (
-        f"I've added {len(todos)} todos to your list: {joined}. "
-        "Let me know if you want to adjust anything."
-    )
+    return f"I've added {len(todos)} todos to your list: {joined}."
