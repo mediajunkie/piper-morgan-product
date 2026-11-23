@@ -1,5 +1,5 @@
 ---
-last_updated: 2026-11-22 06:29 PST (START, verified: 11-21 STOP line current)
+last_updated: 2026-11-22 21:28 PST (STOP)
 currency_claim: rewritten at substantive-change boundaries, verified at every START
 max_age_days: 4
 ---
@@ -25,6 +25,13 @@ context-floor directive that duplicating it here is exactly the accretion to cut
 | GitHub criteria line | `gh issue list --repo mediajunkie/piper-morgan-product --label architecture --state open` — the third work-queue source (PM v1.33). Open each issue, don't write a row from the list. Report drained as "mail (N) + standing-items (N) + label:architecture (M)." |
 
 ## IN FLIGHT — current state only
+
+**11-22 state (STOP):** main 12/12 green; inbox empty; beta serves `079e6aaf78` (promotions at 14:37 `a805384f7e`, 17:08 `948af3a198`, 19:08 `f2213c7a85`, 19:54 `079e6aaf78`). Model Opus 5.5. Every ruling is in decisions.log (11-22, 09:47 through 20:09).
+- **Closed and served today:** 2301 (part 1), 2413, 2414, 2418, 2419. 2301 part 2 moved to #2416. #2420 (the sub-path guard `25048aedde`) conforms; its last row is PPM's to close.
+- **2417:** line 1 and the follow-up row passed served (CXO). One row is left: `update_issue`'s never-connected reply. It needs the fresh account (`seat-tester-1`), which waits on xian's mint via Exec.
+- **Rulings to remember:** (1) A floor context must not carry a false fact. Filter by `offered_connectors()` in code, never with a prompt rule (2419 and its reads-list follow-up). (2) `SETTINGS_SUBPATH_PLACES` in `capability_legibility` is the one list of sub-path places. Literal sentences stay as they are, guarded, with one named exception (Slack's `ALREADY_LINKED_DECLINE`). (3) The `ROUTER_HIDDEN_CEILING` is 4, with no fifth (2413).
+- **Waiting on others:** 2411 rule-7 candidate for "my/the X project" (Lead builds; I set the bar); 2416 (PPM placed it below 2411; next lever is code writing the bridge); save-key allow (xian's console check via Exec); 2364 step 1 (xian's OpenAI run, which also unblocks 2412 and 2297's row 18); 2410 (PPM placement); 2157 drill (xian); 2403 row 4 (a person); the hook decision with Lead (about 11-23).
+- **Lessons (11-22):** (1) Before counting a served read toward a row, check which surface the commit changed (`git show --stat`). Web's settings-page read would have closed a chat-floor row. (2) Check a mail4 send's output for "sent". It exits 0 on a refusal. (3) Quote heredocs that carry backticks.
 
 **11-21 state (STOP):** a quiet Saturday. No mail all day, main 12/12 green at every fire, beta still `d66f15c538`. One landing read: Lead's `59634e387e` (test fixtures take due dates from the clock; two comments, checked against source, no ruling). Every deferral below is unchanged and still blocked on the same party.
 
