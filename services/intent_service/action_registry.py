@@ -379,7 +379,12 @@ ACTION_EXAMPLES: dict[tuple[str, str], str] = {
     ("QUERY", "list_reminders_query"): "What reminders do I have?",
     ("QUERY", "get_feature_info"): "Tell me more about the GitHub integration",
     ("EXECUTION", "complete_todo"): "Mark my first todo as done",
-    ("EXECUTION", "create_todo"): "Add a todo to review the Q3 roadmap",
+    # 2411 row 2 (rule-7 candidate, additive example; the description is unchanged): "add a
+    # task to my/the <project> project" drew CLARIFY (3 of 6 and 6 of 6 on 11-22) while the
+    # same ask with "todo", or without the word "project", drew create_todo 6 of 6.
+    ("EXECUTION", "create_todo"): (
+        "Add a todo to review the Q3 roadmap / " "Add a task to the Website project: draft the copy"
+    ),
     ("EXECUTION", "create_reminder"): "Remind me tomorrow at 9am to follow up with Sam",
     # The four below are mapper-path phrasings (probe-verified pre_classify → None):
     # this cohort is reached via LLM → ActionMapper, not the pre-classifier, so the
