@@ -107,9 +107,12 @@
 # - The pass file is in the git common folder, so every worktree shares it: a pass one seat
 #   records is honoured for another seat pushing the same content. That is sound, because the
 #   key is the content (Arch, Lead).
-# - A push of a commit that is not checked out is warned about and logged as
-#   outcome=not-checked-out. It is not blocked in this version; Lead and Arch decide that from
-#   a week's count.
+# - A push of ONE commit that is not checked out is refused before any check runs, and logged
+#   as outcome=not-checked-out-refused. Every check here reads the worktree, so a pass would be
+#   evidence about a different tree. Check the commit out and push again. Lead and Arch,
+#   2026-11-23, from a week's count (1 in about 640 pushes, no harm found; Arch 01M84D17T2).
+#   A push of several code commits at once is unchanged. The skips below are not a way round
+#   this refusal; they skip checks, and here no check can be trusted.
 
 # THE ARCHITECTURE CHECK (CIO, 2026-11-17, standing row 9v; ruled by Arch, mail 01M7NA9QHN).
 # On 11-17 a push that added a local `escapeHtml` to a template passed the gates and the smoke
@@ -239,9 +242,10 @@ key=""
 if [ "$push_count" -eq 1 ]; then
   key="$(pass_key "$push_sha")"
   if [ "$(git rev-parse HEAD 2>/dev/null)" != "$push_sha" ]; then
-    echo "⚠️  pre-push: the commit being pushed (${push_sha:0:10}) is not the one checked out. The checks below read the WORKTREE, not that commit; check it out and push again for a result that counts." >&2
-    printf 'ts=%s worktree=%s code_path=%s outcome=not-checked-out pushed=%s\n' \
+    echo "❌ pre-push: REFUSED. The commit being pushed (${push_sha:0:10}) is not the one checked out. The checks read the WORKTREE, not that commit, so no result here would count. Check it out and push again. Nothing was run." >&2
+    printf 'ts=%s worktree=%s code_path=%s outcome=not-checked-out-refused pushed=%s\n' \
       "$(date +%Y-%m-%dT%H:%M:%S%z)" "$top" "${gates_touched:-$touched}" "$push_sha" >> "$logfile" 2>/dev/null
+    exit 1
   fi
 fi
 
