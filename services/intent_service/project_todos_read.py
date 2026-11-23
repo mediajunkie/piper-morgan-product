@@ -5,8 +5,10 @@ Rulings (all 2026-11-22): Arch 01M82907VE and 01M82A8RX0, CXO 01M829VZ5X and
 
 The classifier emits ``list_project_todos`` or ``list_todos_by_project`` for these
 asks, and before this module neither name was registered, so the turn fell to the
-generic floor. No model supplies a project on these turns: the classifier's output has
-no project field, and the router answers CLARIFY or NONE with no ``project`` arg.
+generic floor. On those two hidden names no model supplies a project: the classifier's
+output has no project field, and the router (which never sees them) answers CLARIFY or
+NONE with no ``project`` arg. The router's own ``list_todos_query`` can carry a
+``project`` arg; section 5 (issue 2424) is the path that uses it.
 
 1. Both names are READ entries on the action rail with ``router_visible=False`` (the
    #2132 (b) precedent, ``compare_documents``). ``derive_routing_grammar`` skips hidden
@@ -38,6 +40,18 @@ no project field, and the router answers CLARIFY or NONE with no ``project`` arg
      answered by number, then the chosen project's todos.
 4. It is a read. Nothing is ever written, so there is no confirm step. 2297's lookup is
    shared; its lines are not (each one speaks of a todo write).
+5. Issue 2424 (Arch 01M84VG8MN, 2026-11-23), handler only: the router sends "can you
+   show me the tasks in the Launch project?" to ``list_todos_query`` with
+   ``project="Launch"``. On that action only (not ``list_completed_todos`` or
+   ``next_todo_query``, which share its rail entry), ``list_todos_for_router_project``
+   takes the project from the router's arg through 2297's ``resolve`` (the word-set
+   guard, then the lookup), the path 2301 uses; the person's words are never read for
+   a name. Exactly one match: that project's open todos by ``show_project_todos``
+   (2301's render, or the standalone no-open-todos line, or 2301's couldn't-check
+   line). Several matches, none, no projects, or a failed project read: what this
+   module's own entry says for that case (``ask_which_project`` or the could-not-check
+   line), with the projects already read. No arg, or one the guard refuses: ``None``,
+   and the caller gives today's full list unchanged. Nothing is written.
 """
 
 from __future__ import annotations
@@ -194,8 +208,26 @@ async def run_list_project_todos_workflow(
     try:
         projects = _attach._refs(await _attach._active_projects(str(todo_user)))
     except (SQLAlchemyError, OSError) as e:
-        logger.error("project_todos_read_projects_failed", error=str(e))
-        return _result(PROJECTS_READ_FAILED_LINE, {**data, "project_lookup_failed": True})
+        return projects_read_failed(e, data)
+    return ask_which_project(intent_service, session_id, user_id, projects, data)
+
+
+def projects_read_failed(error: BaseException, data: Dict[str, Any]) -> Any:
+    """The project read failed: the could-not-check line, and nothing else."""
+    logger.error("project_todos_read_projects_failed", error=str(error))
+    return _result(PROJECTS_READ_FAILED_LINE, {**data, "project_lookup_failed": True})
+
+
+def ask_which_project(
+    intent_service: Any,
+    session_id: Optional[str],
+    user_id: Optional[str],
+    projects: List[_attach.ProjectRef],
+    data: Dict[str, Any],
+) -> Any:
+    """With the person's active projects already read: the armed which-project
+    question (every project bound), the no-projects line, or, with nothing to arm it
+    on, no question."""
     if not projects:
         return _result(NO_PROJECTS_LINE, data)
     record = build_name_offer(str(user_id), projects)
@@ -209,7 +241,52 @@ async def run_list_project_todos_workflow(
     )
 
 
-async def _show_todos(
+# Issue 2424: the one router action whose ``project`` arg this module reads.
+LIST_TODOS_ACTION = "list_todos_query"
+
+
+async def list_todos_for_router_project(
+    session_id: str,
+    user_id: Optional[str] = None,
+    context: Optional[Dict[str, Any]] = None,
+) -> Any:
+    """Issue 2424 (Arch 01M84VG8MN): ``list_todos_query`` with a router ``project``
+    arg. Returns ``None`` when this path does not apply (another action, no arg, an
+    arg the word-set guard refuses, no principal or no service); the caller then gives
+    today's reply unchanged. Otherwise the reply for the resolved project. effect: READ."""
+    ctx = context or {}
+    intent = ctx.get("intent")
+    intent_service = ctx.get("intent_service")
+    if getattr(intent, "action", None) != LIST_TODOS_ACTION or intent_service is None:
+        return None
+    from services.intent.intent_service import _coerce_todo_principal
+
+    todo_user = _coerce_todo_principal(user_id)
+    if not todo_user:
+        # Today's path gives the rail's own logged-out reply.
+        return None
+    category = getattr(getattr(intent, "category", None), "value", None) or _CATEGORY
+    data: Dict[str, Any] = {"category": category, "action": LIST_TODOS_ACTION}
+    try:
+        resolution = await _attach.resolve(intent, todo_user)
+    except (SQLAlchemyError, OSError) as e:
+        return projects_read_failed(e, data)
+    if resolution is None:
+        return None
+    project = resolution.one
+    if project is None:
+        logger.info(
+            "list_todos_router_project_not_one",
+            matches=len(resolution.matches),
+            projects=len(resolution.projects),
+        )
+        return ask_which_project(intent_service, session_id, user_id, resolution.projects, data)
+    logger.info("list_todos_router_project_one")
+    reply = await show_project_todos(intent_service, session_id, todo_user, project)
+    return _result(reply, data)
+
+
+async def show_project_todos(
     intent_service: Any, session_id: Optional[str], todo_user: Any, project: Any
 ) -> str:
     """2301's render of one project's open todos (the header and list). A project with
@@ -313,7 +390,7 @@ async def handle_project_todos_pick_turn(
     if project is None:
         return {"message": PROJECT_GONE_READ_LINE, "intent_data": intent_data}
     logger.info("project_todos_pick_bound", session_id=session_id, position=idx + 1)
-    reply = await _show_todos(intent_service, session_id, todo_user, project)
+    reply = await show_project_todos(intent_service, session_id, todo_user, project)
     return {"message": reply, "intent_data": {**intent_data, "action": CLASSIFIER_ACTION_NAMES[0]}}
 
 

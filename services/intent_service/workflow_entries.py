@@ -716,6 +716,14 @@ async def run_todo_query_workflow(
             has_intent=intent is not None,
         )
         return None
+    # Issue 2424 (Arch 01M84VG8MN, 2026-11-23): on list_todos_query only, a router
+    # `project` arg that resolves is answered by 2413's read; None means it does not
+    # apply and the existing call below runs unchanged. Checked here rather than in a
+    # new entry point so every key keeps this function as its entry point (the router
+    # grammar collapses by entry object; the Phase-0 scorer compares entry points).
+    shown = await _ptr.list_todos_for_router_project(session_id, user_id, ctx)
+    if shown is not None:
+        return shown
     return await intent_service._handle_execution_intent(intent, None, session_id, user_id)
 
 
