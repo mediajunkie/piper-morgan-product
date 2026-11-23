@@ -3,7 +3,7 @@
 ## START 2026-11-23 06:46 (re-verified; the DAY-END 11-22 block below still holds)
 
 - Checked this morning: beta `079e6aaf78` healthy and quiet; staging `1972fd150b`; main CI 12 of 12 green; Health Watch green; no hold file; no served-path difference between beta and main; inbox read; no issue after 2417.
-- **New since DAY-END:** the pre-push hook refuses a single code commit that is not checked out (`15cb27a481`, Lead and Arch, decisions.log 11-23 06:34). **Not live until Pard refreshes the common-dir copy** (CIO asked Pard; I do not run the `cp`). My landing loop pushes HEAD, so it is unaffected.
+- **New since DAY-END:** the pre-push hook refuses a single code commit that is not checked out (`15cb27a481`, Lead and Arch, decisions.log 11-23 06:34). **Live since 06:51** (Pard's refresh; installed copy identical to main's at 07:03). Hook installs are Pard's hand, never mine or CIO's. My landing loop pushes HEAD, so it is unaffected.
 - Web's `web-seed-1386` session lapsed 07:06 PT today; Web re-runs the helper before any sitting.
 
 ## DAY-END 2026-11-22 21:46 (supersedes the AFTERNOON block below; read this first)
