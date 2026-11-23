@@ -100,6 +100,45 @@ class TestRouterTextGuard:
         )
         assert TodoIntentHandlers._router_todo_text(intent, "add a todo to web test one") == ""
 
+    @pytest.mark.parametrize(
+        "message",
+        [
+            "add a task: book the venue",
+            "add a task to my Launch project: book the venue",
+            "add a task to the Launch project: book the venue",
+            "add a todo to my Launch project: book the venue",
+        ],
+    )
+    def test_the_task_key_is_read_when_text_is_absent(self, message):
+        """2411: the router names the title ``task`` on "add a task …" (6 of 6 on
+        main's request, 11-23), and the regex fallback finds no title, or a wrong
+        one, in these."""
+        intent = _intent(message, args={"project": "Launch", "task": "book the venue"})
+        assert TodoIntentHandlers._router_todo_text(intent, message) == "book the venue"
+
+    @pytest.mark.parametrize("empty", ["", "   ", None, 7])
+    def test_task_is_read_when_text_is_empty_or_unsupported(self, empty):
+        message = "add a task: book the venue"
+        intent = _intent(message, args={"text": empty, "task": "book the venue"})
+        assert TodoIntentHandlers._router_todo_text(intent, message) == "book the venue"
+
+    def test_text_wins_over_task(self):
+        message = "add a task: book the venue today"
+        intent = _intent(message, args={"text": "book the venue", "task": "venue today"})
+        assert TodoIntentHandlers._router_todo_text(intent, message) == "book the venue"
+
+    def test_task_passes_the_same_honesty_guard(self):
+        message = "add a task: book the venue"
+        intent = _intent(message, args={"task": "book the venue (urgent)"})
+        assert TodoIntentHandlers._router_todo_text(intent, message) == ""
+
+    def test_no_other_key_is_read(self):
+        message = "add a task: book the venue"
+        for key in ("title", "todo", "name", "description"):
+            intent = _intent(message, args={key: "book the venue"})
+            assert TodoIntentHandlers._router_todo_text(intent, message) == ""
+        assert TodoIntentHandlers.ROUTER_TODO_TEXT_KEYS == ("text", "task")
+
     def test_words_the_user_did_not_say_are_refused(self):
         """The honesty guard: an LLM-written arg cannot put words in the title."""
         assert (
@@ -128,6 +167,15 @@ class TestRouterTextGuard:
 
 @pytest.mark.asyncio
 class TestHandlerConsumes:
+    async def test_router_task_is_the_stored_title(self, handlers):
+        """2411: the title the router named ``task`` is what is stored."""
+        message = "add a task to my Launch project: book the venue"
+        await handlers.handle_create_todo(
+            _intent(message, args={"task": "book the venue"}), "s-2411", UUID(_USER)
+        )
+        handlers.todo_service.create_todo.assert_awaited_once()
+        assert handlers.todo_service.create_todo.await_args.kwargs["text"] == "book the venue"
+
     async def test_router_text_is_the_stored_title(self, handlers):
         msg = await handlers.handle_create_todo(
             _intent("add a todo to web test one", text="web test one"), "s-1976", UUID(_USER)
