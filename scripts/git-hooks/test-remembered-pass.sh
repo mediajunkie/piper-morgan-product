@@ -111,13 +111,20 @@ out=$(git push origin HEAD:main 2>&1); rc2=$?
 if [ $rc1 -ne 0 ] && [ $rc2 -ne 0 ] && [ "$(gates_runs)" = $((g+2)) ]; then ok "T5 a failed gate blocks twice and is run twice"; else bad "T5 rc1=$rc1 rc2=$rc2 gates=$(gates_runs) g=$g"; fi
 git rm -q scripts/FAIL-GATE; git commit -qm "fix gate"; git push -q origin HEAD:main 2>/dev/null
 
-# T6: pushing a commit that is not checked out warns, and its pass is not recorded.
+# T6: pushing a commit that is not checked out is refused: nothing runs, nothing lands, it is logged
+# (Lead and Arch, 2026-11-23; a warning until then).
 git checkout -q -b side; echo f > tests/test_f.py; git add -A; git commit -qm side; SIDE=$(git rev-parse HEAD)
 git checkout -q main 2>/dev/null || git checkout -q -
-g=$(gates_runs)
+g=$(gates_runs); sm=$(smoke_runs); ar=$(arch_runs)
 out=$(git push origin "$SIDE:refs/heads/side" 2>&1); rc=$?
-out2=$(git push origin "$SIDE:refs/heads/side2" 2>&1)
-if printf '%s' "$out" | grep -q "is not the one checked out" && [ "$(gates_runs)" = $((g+2)) ]; then ok "T6 a commit that is not checked out: warned, never remembered"; else bad "T6 gates=$(gates_runs) g=$g: $out"; fi
+landed=$(git ls-remote origin refs/heads/side | wc -l | tr -d ' ')
+logged=$(grep -c "outcome=not-checked-out-refused pushed=$SIDE" "$(git rev-parse --git-common-dir)/piper-prepush-smoke.log" 2>/dev/null || echo 0)
+if [ $rc -ne 0 ] && printf '%s' "$out" | grep -q "is not the one checked out" && [ "$(gates_runs)" = "$g" ] && [ "$(smoke_runs)" = "$sm" ] && [ "$(arch_runs)" = "$ar" ] && [ "$landed" = 0 ] && [ "$logged" = 1 ]; then ok "T6 a commit that is not checked out: refused, nothing run, logged"; else bad "T6 rc=$rc gates=$(gates_runs) g=$g landed=$landed logged=$logged: $out"; fi
+# T6b: the same commit, checked out, goes through.
+git checkout -q side; g=$(gates_runs)
+out=$(git push origin HEAD:refs/heads/side 2>&1); rc=$?
+if [ $rc -eq 0 ] && [ "$(gates_runs)" = $((g+1)) ]; then ok "T6b the same commit checked out is pushed and checked"; else bad "T6b rc=$rc gates=$(gates_runs) g=$g: $out"; fi
+git checkout -q main 2>/dev/null || git checkout -q -
 
 # T7: a dirty tree is not recorded.
 git checkout -q side; echo g > tests/test_g.py; git add -A; git commit -qm side2
