@@ -1278,6 +1278,17 @@ def dialog_pages() -> List[Scenario]:
             generic={**_all("connected"), "notion": "not_configured"},
             github="leg_unknown",
         ),
+        # Read served on beta 2026-11-23 (Web, account web-seed-1386): the only dialog the
+        # page offers a tester whose GitHub sign-in has lapsed. The card itself has no
+        # Disconnect, so Disconnect All is the one way to GitHub's disconnect.
+        Scenario(
+            "dialogs-github-needs-reconnecting-alone",
+            "GitHub needs reconnecting and nothing else is connected; Slack and Notion not "
+            "offered in this beta",
+            generic={c: "not_configured" for c in CARDS if c != "github"},
+            github="stale_nothing",
+            offered=("github", "calendar"),
+        ),
         Scenario(
             "dialogs-nothing",
             "Nothing connected",
