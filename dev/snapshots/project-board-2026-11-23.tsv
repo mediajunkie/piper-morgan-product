@@ -2213,4 +2213,4 @@ issue	state	milestone	sprint	title	labels	blocked_by	state_reason
 2424	OPEN	Production		list_todos_query ignores the router's project arg: 'show me the tasks in the Launch project' would show every todo			
 2425	OPEN	Production		Router: 'add a task to my/the <project> project' reaches create_todo with the project arg (split from 2411 after the candidate's NO-GO)			
 2426	OPEN	Production		[UX] "Show me the todos in the Launch project" asks which project, after the person named it	UX		
-2427	OPEN	Production		[UX] Adding a todo with no project says it was added twice and ends on a generic offer (code-written, three sentences)	UX		
+2427	CLOSED	Production		[UX] Adding a todo with no project says it was added twice and ends on a generic offer (code-written, three sentences)	UX		COMPLETED
