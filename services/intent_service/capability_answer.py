@@ -89,6 +89,32 @@ def sanitize_opener(text: Optional[str]) -> Optional[str]:
     return opener
 
 
+NONE_CONNECTED_LINE = (
+    "None of your tools are connected yet, so I'm not reading from any of them. "
+    "You can connect GitHub or Google Calendar in Settings → Integrations."
+)
+
+
+# Display names with their own place under Settings → Integrations (Web, 11-22 17:23).
+SETTINGS_SUBPATH_NAMES = frozenset({"GitHub"})
+
+NOT_READING_ANY_LINE = "I'm not reading from any of your tools right now."
+
+
+def needs_reconnecting_sentence(names: List[str]) -> str:
+    """Issue 2418: the reconnect fact as one sentence to the person, with no cause
+    (issue 2417). CXO's words, 2026-11-22 (01M831QSW9)."""
+    if len(names) == 1:
+        # CXO 01M832BJE4, Arch 01M832SQEC: the sub-path only where Settings has that
+        # place. An explicit set, not derived from the display name.
+        where = "Settings → Integrations"
+        if names[0] in SETTINGS_SUBPATH_NAMES:
+            where += f" → {names[0]}"
+        return f"{names[0]} needs reconnecting. You can do that in {where}."
+    listed = ", ".join(names[:-1]) + " and " + names[-1]
+    return f"{listed} need reconnecting. You can do that in Settings → Integrations."
+
+
 def render_connection_lines(domain_context: Dict[str, Any]) -> List[str]:
     """Connection state from the canonical status service read, as code-rendered lines.
 
@@ -129,16 +155,15 @@ def render_connection_lines(domain_context: Dict[str, Any]) -> List[str]:
     if connected:
         lines.append("Connected, and what I read from each:")
         lines.extend(f"- {_disp(key)}: {chat_reads_line(key)}" for key in connected)
+    elif reconnect:
+        # Issue 2418 (CXO 01M831QSW9): "none ... yet" and its offer to connect GitHub
+        # are false for a person whose connection needs reconnecting.
+        lines.append(NOT_READING_ANY_LINE)
     else:
-        lines.append(
-            "None of your tools are connected yet, so I'm not reading from any of them. "
-            "You can connect GitHub or Google Calendar in Settings → Integrations."
-        )
+        lines.append(NONE_CONNECTED_LINE)
     if reconnect:
-        lines.append(
-            "Needs reconnecting (reconnect in Settings → Integrations): " + ", ".join(reconnect)
-        )
-    if absent and connected:
+        lines.append(needs_reconnecting_sentence(reconnect))
+    if absent and (connected or reconnect):
         lines.append(
             "Not connected, so I'm not using them (connect in Settings → Integrations): "
             + ", ".join(absent)

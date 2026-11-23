@@ -434,15 +434,17 @@ class TestFormatDomainContext:
         ctx = {
             "integrations": [
                 {"name": "github", "status": "active"},
+                {"name": "calendar", "status": "inactive"},
                 {"name": "slack", "status": "inactive"},
             ]
         }
         result = floor._format_domain_context(ctx)
         # #1547 (audit F2): BOTH directions render — connected AND not-connected
         # (the old render dropped inactive names, leaving the floor blind).
+        # Issue 2419: the not-connected direction names only what this host offers,
+        # so the pin uses Calendar; Slack is never called available on beta.
         assert "Connected integrations: GitHub" in result
-        assert "Not connected" in result
-        assert "Slack" in result
+        assert "- Not connected (available in Settings): Google Calendar\n" in result
 
     def test_format_trust_profile(self):
         floor = self._get_floor()
