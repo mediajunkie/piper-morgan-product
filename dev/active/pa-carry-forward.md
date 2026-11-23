@@ -25,7 +25,7 @@
 - **CIO seat rule:** never `scripts/alpha-setup.sh`; never `docker compose up`/`down` on the shared stack.
 - **Tier 1 staging: dropped 11-20** (overtaken by ADR-084's beta seat route; PA to Exec `01M7WJCW8H…`; Arch confirmed 05:35 `01M7WJQ70J…`; not the #2355 corpus "Tier 1"). **Q9** #2313; **Q8** invite hold; **R7 (#1282)** README needs a permitted push.
 - **mail4 gotchas:** `inbox --role pa`; ack is `ack <id> done --as pa`; a subject naming a day needs `--due none`; on `cannot lock ref`, loop the push until `origin/main..HEAD` is empty. zsh has no `timeout`.
-- **Sprint 2 started Fri 11-13.** v3 is the mail fallback until 11-23.
+- **Sprint 2 started Fri 11-13.** **v3 fallback ended 11-23** (CIO `01M84VRPAA…`, `1ae55d7048`): `mail-send.sh` refuses seat-to-seat memos; use `mail4.py send`. `mail-send.sh` stays for filing a v3 memo to `read/`, outside parties and Spec. If v4 itself is broken: `PIPER_V3_FALLBACK='<why>' scripts/mail-send.sh ...`, reason in the log.
 
 ## PM Attention
 

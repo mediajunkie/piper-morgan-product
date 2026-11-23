@@ -9,8 +9,10 @@
 # Rules:
 #   - Window: Fri → Thu, the week that closed before the most recent Friday (Pacific).
 #   - Ship number: #065 is the window 2026-10-09 → 10-15; +1 per week after.
-#   - Due: Friday, Saturday or Sunday (Pacific) and no kickoff for that Ship in mailboxes/exec/sent/.
-#     Mon–Thu it does nothing. Idempotent: a second run finds the sent file and exits.
+#   - Due: Friday, Saturday or Sunday (Pacific) and no kickoff for that Ship already sent: a v4 message
+#     from exec whose subject starts "Ship #NNN workstream review" (since 2026-11-23), or a v3 file in
+#     mailboxes/exec/sent/ (#065 to #070). Mon–Thu it does nothing. Idempotent: a second run finds it and exits.
+#   - Sends on mail v4 (scripts/mail4.py). v3 ended 2026-11-23 (CIO's v4 review, finding 2).
 #   - Sends to every leadership role. Exec adds the week's context by hand as a follow-up.
 #
 # Usage:
@@ -129,7 +131,19 @@ if [ "$MODE" = send ] && [ "$DOW" -eq 3 ]; then exit 0; fi
 git fetch -q origin main 2>/dev/null || true
 SENT_ORIGIN="$(git ls-tree --name-only origin/main mailboxes/exec/sent/ | grep -c -- "-ship-${SHIP}-workstream-review" || true)"
 SENT_LOCAL="$(find mailboxes/exec/sent -maxdepth 1 -name "*-ship-${SHIP}-workstream-review*" | wc -l | tr -d ' ')"
-if [ "${SENT_ORIGIN:-0}" -gt 0 ] || [ "${SENT_LOCAL:-0}" -gt 0 ]; then
+# v4: a message from exec in the mail clone whose subject starts with this Ship's kickoff subject.
+MAIL4_REPO="${PIPER_MAIL4_REPO:-$HOME/Development/piper-morgan-mail}"
+v4_kickoff_sent() {
+  [ -d "$MAIL4_REPO/.git" ] || { echo 0; return; }
+  git -C "$MAIL4_REPO" fetch -q origin main 2>/dev/null || true
+  local n=0 f
+  for f in $(git -C "$MAIL4_REPO" grep -l -F "subject: 'Ship #${SHIP} workstream review" origin/main -- messages 2>/dev/null || true); do
+    if git -C "$MAIL4_REPO" show "$f" 2>/dev/null | sed -n '1,8p' | grep -q '^from: exec$'; then n=$((n+1)); fi
+  done
+  echo "$n"
+}
+SENT_V4="$(v4_kickoff_sent)"
+if [ "${SENT_ORIGIN:-0}" -gt 0 ] || [ "${SENT_LOCAL:-0}" -gt 0 ] || [ "${SENT_V4:-0}" -gt 0 ]; then
   [ "$MODE" = dry ] && echo "ship-kickoff: #${SHIP} kickoff already sent; nothing to do"
   ship_status || echo "ship-status #${SHIP}: could not read the cycle's state; check by hand" >&2
   exit 0
@@ -142,19 +156,11 @@ fi
 
 NEXT_START="$FRIDAY"
 NEXT_END="$(python3 -c "import datetime as d;print((d.date.fromisoformat('$FRIDAY')+d.timedelta(days=6)).isoformat())")"
-NAME="kickoff-exec-to-leadership-ship-${SHIP}-workstream-review-${WSTART}-to-${WEND}-${FRIDAY}.md"
-NOW="$(TZ=America/Los_Angeles date '+%Y-%m-%d %H:%M')"
+
+SUBJECT="Ship #${SHIP} workstream review: window Fri ${WSTART} → Thu ${WEND}. Write it now, while the week is fresh. Task, owner: each of you for your own lane"
 
 write_body() {
 cat <<EOF
----
-from: exec
-to: ${ROLES// /, }
-reply-to: piper-morgan-product:mailboxes/exec/inbox/
-date: ${NOW} PT
-subject: "Ship #${SHIP} workstream review: window Fri ${WSTART} → Thu ${WEND}. Write it now, while the week is fresh. Task, owner: each of you for your own lane"
----
-
 # Ship #${SHIP}: workstream review request
 
 Sent automatically by \`scripts/ship-kickoff.sh\` on the first Exec fire after the window closed. Exec follows with the week's context.
@@ -194,23 +200,21 @@ EOF
 }
 
 if [ "$MODE" = dry ]; then
-  echo "ship-kickoff (dry run for ${TODAY}): would send ${NAME} to: ${ROLES}"
+  echo "ship-kickoff (dry run for ${TODAY}): would send on v4 to: ${ROLES}"
+  echo "subject: ${SUBJECT}"
   echo "----"
   write_body
   exit 0
 fi
 
-PATHS=("mailboxes/exec/sent/$NAME")
-write_body > "mailboxes/exec/sent/$NAME"
-for r in $ROLES; do
-  cp "mailboxes/exec/sent/$NAME" "mailboxes/$r/inbox/$NAME"
-  PATHS+=("mailboxes/$r/inbox/$NAME")
-done
-scripts/mail-send.sh "mail(exec): Ship #${SHIP} workstream kickoff (automatic)" "${PATHS[@]}"
-git fetch -q origin main
-if git ls-tree origin/main "mailboxes/lead/inbox/$NAME" | grep -q .; then
-  echo "ship-kickoff: #${SHIP} kickoff sent and landed (${#PATHS[@]} files)"
+BODY="$(mktemp "${TMPDIR:-/tmp}/ship-kickoff-${SHIP}.XXXXXX")"
+write_body > "$BODY"
+# shellcheck disable=SC2086  # ROLES is a space-separated list on purpose; --to takes several roles.
+python3 scripts/mail4.py send --as exec --to $ROLES --type task --due none --subject "$SUBJECT" --body-file "$BODY"
+rm -f "$BODY"
+if [ "$(v4_kickoff_sent)" -gt 0 ]; then
+  echo "ship-kickoff: #${SHIP} kickoff sent on v4 and on the mail repo's origin/main"
 else
-  echo "ship-kickoff: #${SHIP} kickoff NOT confirmed on origin/main — check by hand" >&2
+  echo "ship-kickoff: #${SHIP} kickoff NOT confirmed on the mail repo's origin/main — check by hand" >&2
   exit 1
 fi

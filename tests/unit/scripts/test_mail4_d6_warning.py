@@ -25,6 +25,10 @@ def mail4():
         "This stays his hand until the key exists.",
         "Xian runs `scripts/redis_password_rotate.py` once.",
         "The connect is xian's console.",
+        # the v4 review's misses and hits (2026-11-23)
+        "The OpenAI run or the beta key read. That step is xian's.",
+        "Exec (copied): that is the one step here that needs xian.",
+        "Before the first chat turn, xian confirms on his console that the key sits there.",
     ],
 )
 def test_a_relay_with_a_step_for_xian_and_no_standing_access_line_warns(mail4, body):
@@ -45,6 +49,14 @@ def test_a_relay_with_a_step_for_xian_and_no_standing_access_line_warns(mail4, b
         ),
         ("ruling-relay", "xian said yes to the ADR and the budget."),  # a ruling, no step
         ("ruling-relay", "Lead builds it; HOST reads it; no step for anyone else."),
+        # the v4 review's false hits (2026-11-23): a verb near xian is not a step on him
+        ("ruling-relay", "That comes under xian's 11-13 yes for 2364's runs."),
+        ("ruling-relay", "That includes xian's own edits to his PIPER.md context."),
+        ("ruling-relay", "Figures as Janus transcribed them from his console screenshots."),
+        (
+            "ruling-relay",
+            "xian said yes to the promote-gate change, and gave a standing word for edits.",
+        ),
         ("task", "xian pastes one line in Terminal."),  # only relays are checked
         ("fyi", "This stays his hand."),
     ],
