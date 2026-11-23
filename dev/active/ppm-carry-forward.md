@@ -949,7 +949,7 @@ Brake FIRED (second slip = #1965 admission, found and ledgered 10-09). Memo to E
   - rule7-key-ask, path-b-quote, notion-offer-ask: unchanged.
 - **Parked, one trigger: linked billing** (xian: does Piper get its own Claude Platform organisation).
 - **Genuine xian decisions:** E5 naming for #2380; #2344; the possible "Safe Storage" keychain item.
-- **Production 335** (11-23 `10:52`: #2424 placed in V below #2411; 334 at `10:19`: #2423; map v190; history in the plan's Total line). 2411's landing order (Arch 01M84VG8MN): `task` alias, then #2424, then the candidate.
+- **Production 336** (11-23 `11:17`: #2425 filed in V; map v191; history in the plan's Total line). 2411's candidate is NO-GO. Its routing half is #2425, a sprint 3 candidate with the lever Arch's. 2411 is left with one row (fresh-account reads). 2297's attach row is re-scoped to "add a todo to my Launch project"; Web was asked for it (01M84XKFEA). #2424 lands only on router evidence of the arg. The `task` alias is on main (`cc550eb92f`).
 - **2415 and 2416:** Arch ruled mechanism B (01M84SB40Q, addendum 01M84SMP0J): when the gather holds no content key, the reply is all code (CXO's GitHub line, then the block, no bridge). Lead builds. Both close on B. The connected case is #2423 (A, blocked on an App-connected account). 2411: Arch's bar is set (20 rows); Lead screens.
 - **Rules carried:**
   - Clock rule: stamp with `date` or `scripts/log-entry.sh`; never type the next minute (twice today: 18:40 and 19:38, both fixed). Quoted times in backticks.
