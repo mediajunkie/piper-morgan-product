@@ -2,8 +2,8 @@
 type: briefing
 title: BRIEFING-ESSENTIAL-PPM
 valid_from: "2026-01-09"
-last_updated: 2026-11-06
-last_verified: 2026-11-06
+last_updated: 2026-11-23
+last_verified: 2026-11-23
 ---
 
 # BRIEFING-ESSENTIAL-PPM
@@ -243,7 +243,7 @@ Before producing anything, work this checklist:
 | Operation | How |
 |-----------|-----|
 | Find/read documents | `Read`, `Grep`, `Glob` directly on filesystem (not project_knowledge_search) |
-| Send mail to other roles | Write the memo and copies under `mailboxes/`, then send with `scripts/mail-send.sh` (CLAUDE.md §Mail); never `git add` mailbox files |
+| Send mail to other roles | Mail v4: `scripts/mail4.py send --as ppm --to <roles> [--cc <roles>] --type <type> --due none --subject "..." --body-file <file>`; read with `mail4.py read ID`, ack with `mail4.py ack ID done --as ppm --note "..."`, check with `mail4.py inbox --role ppm`. `scripts/mail-send.sh` (v3) only for a party not on v4, saying why in the log (CLAUDE.md §Mail). Never `git add` mailbox files |
 | Read PDRs/ADRs | Direct `Read` on `docs/internal/product/pdr/` and `docs/internal/architecture/adrs/`; cross-reference verification trivial |
 | Read GitHub issue body | `gh issue view {number}` |
 | Read canonical retest scores | Read the dated reports `dev/YYYY/MM/DD/canonical-retest-*-report.md`, with the script and results CSV beside each. There is no scorer directory under `services/` (CIO's staleness re-runs, 10-13 and 10-27) |
