@@ -2211,3 +2211,5 @@ issue	state	milestone	sprint	title	labels	blocked_by	state_reason
 2422	OPEN	Ongoing		FLY-AUDIT: Weekly Docs Audit - 2026-11-23	documentation,fly-audit,maintenance,weekly-audit		
 2423	OPEN	Production		Status turn with GitHub content: the output seam's say-it-again rewrite on a block turn (connected case of 2415 and 2416; mechanism A, held)			
 2424	OPEN	Production		list_todos_query ignores the router's project arg: 'show me the tasks in the Launch project' would show every todo			
+2425	OPEN	Production		Router: 'add a task to my/the <project> project' reaches create_todo with the project arg (split from 2411 after the candidate's NO-GO)			
+2426	OPEN	Production		[UX] "Show me the todos in the Launch project" asks which project, after the person named it	UX		
