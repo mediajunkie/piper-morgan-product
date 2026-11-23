@@ -1,5 +1,15 @@
 # Lead carry-forward — Fable 5.2 seat again since 2026-11-20 08:56 (Opus 5.5 from 2026-11-17 21:30 until then); Model A worktree ~/Development/piper-morgan-worktrees/lead
 
+## DAY-END 2026-11-22 21:46 (supersedes the AFTERNOON block below; read this first)
+
+- **Beta serves `079e6aaf78`** (promoted 19:54, run 45108430580), healthy. Nothing on main waits for a promotion except log and test-only commits (`25048aedde`, the sub-path guard). Main CI 12 of 12 green at 21:46. Inbox empty.
+- **Closed 11-22:** 2301, 2413, 2414, 2418, 2419, 2420. **Open and mine:** 2417 (only `update_issue`'s never-connected reply, needs the fresh account), 2411 (row 2), 2416 (parked branch `lead/2301-floor-part2-parked` at `2b4d7996e2`), 2415, 2412, 2297 (rows 18, 22), 2406 (fresh-account row), 2364.
+- **Waits, each with its blocker:** `seat-tester-1` (xian's invite mint, console check of the key's workspace, the allow line; Exec's card; then `scripts/seat_account_create.py --account seat-tester-1` and `scripts/seat_session.py --account seat-tester-1 --save-key anthropic`, output line to HOST; HOST wants a remove mode as a diff first, not built); Arch's rule-7 bar (2411 row 2, 2297 row 22); Step E, xian's OpenAI key (2412, 2297 row 18, the 2364 step 1 merge); PPM's order (2416, 2415); Web's queue (2245's served read, the Disconnect pass); #2158 (2157 proof 3).
+- **CXO watches** served lines for "scheduling" or "availability" Calendar claims; if seen it is a new issue, and the lever is handing the floor the true read line.
+- **Rules from today:** land code only with the cherry-pick loop from a clean side tree (never a soft reset in a retry), and read `git show --stat HEAD` after; `pytest.ini` has `-x`, so a folder run's "1 failed" is the first failure, not the count (add `-o addopts="--import-mode=importlib" -rf`); one full suite at a time; a test-only edit to an older pin still gets the full suite; measure a route before telling Web what to expect.
+- **Side worktrees:** `lead-2411`, `lead-2413`, `lead-2418`, `lead-seat` are clean landing trees; `lead-gate-2364` is live (2364 step 1); the others hold untracked files or unlanded branches, untouched.
+- **Paid 11-22: $1.2987.** Web's `web-seed-1386` session lapses 07:06 PT on 11-23.
+
 ## AFTERNOON 2026-11-22 15:48 (supersedes the MIDDAY block below; read this first)
 
 - **Beta serves `a805384f7e`** (promoted 14:37, run 45078547386): 2301 part 1, 2414, 2413, 2411's four `create_issue` replies, the seat helper. Web's 13 served lines read clean (01M82Q1BKT; CXO 01M82QBXWW). **Closed today: 2413, 2414, 2301.**
