@@ -16,11 +16,13 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import Optional
 
+from services.intent_service.capability_legibility import settings_place
 from services.shared_types import TrustStage
 
 CALENDAR_SETTINGS_PATH = "/settings/integrations/calendar"
-# CXO 10-24 09:33: the house path in the copy, never the raw URL.
-CALENDAR_SETTINGS_PLACE = "Settings → Integrations → Google Calendar"
+# CXO 10-24 09:33: the house path in the copy, never the raw URL. Read from the one
+# list of sub-path places (Arch 01M8345420).
+CALENDAR_SETTINGS_PLACE = settings_place("Google Calendar")
 
 # Per #790 Q1 disposition (PM 2026-05-03): "approved as drafted"; one clause changed by
 # CXO 10-24 09:33 (the raw path to the house path).
