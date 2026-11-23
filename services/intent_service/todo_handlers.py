@@ -3234,6 +3234,9 @@ class TodoIntentHandlers:
     # plain whitespace ('add todo buy oat milk', unchanged).
     _TODO_SEP = r"(?:\s*[:\-–—]\s*|\s+)"
 
+    #: The router's arg keys for one todo's title, in the order they are read (2411).
+    ROUTER_TODO_TEXT_KEYS = ("text", "task")
+
     @staticmethod
     def _router_todo_text(intent: Intent, message: str) -> str:
         """#1976 (Web, alpha 4bd1a236e9: 'add a todo to web test one' stored
@@ -3244,11 +3247,24 @@ class TodoIntentHandlers:
         user's message (a word-SET check, no regex) — an LLM-written arg
         never puts words in the stored title the user did not say. Empty,
         absent, non-string or unsupported → "" and the caller falls back to
-        the regex extractor (the legacy path, byte-for-byte unchanged)."""
+        the regex extractor (the legacy path, byte-for-byte unchanged).
+
+        2411 (2026-11-23): the router also names this arg ``task`` when the
+        person says "task" ("add a task: book the venue" drew
+        ``{"task": "book the venue"}`` 6 of 6 on main's request), and the regex
+        fallback finds no title in those. ``task`` is read when ``text`` is
+        absent or empty, under the same guard. An arg-key alias, not a binder:
+        nothing here reads the person's words for meaning."""
         ctx = intent.context or {}
         args = ctx.get("inversion_args")
-        raw = args.get("text") if isinstance(args, dict) else None
-        if not isinstance(raw, str) or not raw.strip():
+        raw = None
+        if isinstance(args, dict):
+            for key in TodoIntentHandlers.ROUTER_TODO_TEXT_KEYS:
+                value = args.get(key)
+                if isinstance(value, str) and value.strip():
+                    raw = value
+                    break
+        if raw is None:
             return ""
         text = " ".join(raw.split())
         said = {w.strip(string.punctuation).lower() for w in (message or "").split()}
