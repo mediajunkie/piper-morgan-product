@@ -1,5 +1,12 @@
 # Lead carry-forward — Fable 5.2 seat again since 2026-11-20 08:56 (Opus 5.5 from 2026-11-17 21:30 until then); Model A worktree ~/Development/piper-morgan-worktrees/lead
 
+## MORNING 2026-11-23 09:46 (supersedes the waits in the blocks below; read this first)
+
+- **Three waits were mis-stated and are now moving.** 2411 row 2: candidate on `lead/2411-router-candidate` (`6874df924d`, worktree `../lead-2411`), Arch asked for the bar (01M84RV4TM, 16-row table, 288 requests, cap $1.50). When the bar comes: PLANNED to Exec, render three arms (main, main control, candidate) with `scripts/router_batch.py`, one batch, parse; on a pass, update the three sha256 pins (2297, 2301, 2413 tests), join the example into one string, full suite, land, promote, then Web's served line 5 (2411 row 3, 2297 row 22).
+- **2415 and 2416:** the say-it-again lines are the output seam's rewrites (`unarmed_offer.py`), 23 of 24 on main's arm. Arch asked to choose mechanism A or B (01M84RYRE6, corrected by 01M84S0P4V); CXO asked for bridge words. Build when both answer.
+- **At each START, for every deferral naming another seat, open the mail or issue it rests on.** These three sat a day on my own shorthand.
+- Still truly waiting on others: `seat-tester-1` (xian's steps, Exec's card) for 2417 and 2406; Step E for 2412, 2297 row 18, 2364; Web's queue (2245, Disconnect); #2158.
+
 ## START 2026-11-23 06:46 (re-verified; the DAY-END 11-22 block below still holds)
 
 - Checked this morning: beta `079e6aaf78` healthy and quiet; staging `1972fd150b`; main CI 12 of 12 green; Health Watch green; no hold file; no served-path difference between beta and main; inbox read; no issue after 2417.
