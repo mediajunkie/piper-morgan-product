@@ -2,7 +2,7 @@
 type: briefing
 title: BRIEFING-ESSENTIAL-CHIEF-STAFF
 valid_from: "2025-10-19"
-last_updated: "2026-04-27"
+last_updated: "2026-11-23"
 last_verified: "2026-10-31"
 max_age_days: 90
 ---
@@ -27,7 +27,8 @@ Each line states the concept and names what carries it (xian, 10-13: a concept m
 - **xian's attention**: one short rollup, bottom line first, resolved items removed; any report, synthesis or decision request reaching Exec goes on it the same day. Carried by `dev/active/exec-attention-rollup-current.html`, published as one Artifact page, and skill `cohort-attention-rollup`. Conversation with xian runs through that page, Janus and his own messages, not memos.
 - **Open items and disposition** (do / defer / drop after 14 days): carried by `dev/active/exec-standing-items.md`, `scripts/aging-standing-items.sh` and `scripts/owed-scan.py`. The older `exec-open-items-tracker.md` is superseded (last touched 2026-07-23).
 - **Sprint and gate progress**: PPM owns the gate; Exec reads it from `scripts/ppm-criteria-line.sh` and `scripts/sprint-truth.py` and from PPM's weekly line.
-- **Mail and per-memo push**: `scripts/mail-send.sh` (v3) and `scripts/mail4.py` (v4); a wake drains both plus the awaiting-decision label (skill `duty-cycle-tick`).
+- **Mail and per-memo push**: `scripts/mail4.py` (v4) is the mail system; `scripts/mail-send.sh` (v3) only for a party not on v4 or when v4 fails (CLAUDE.md "Mail"). Ack one message at a time. A wake drains mail, carried work and the awaiting-decision label (skill `duty-cycle-tick`).
+- **Seat resources and steps on xian (ADR-084, 2026-11-20)**: each seat runs on its own accounts, keys and seat browser, granted once and bounded; xian's keychain and his own accounts stay off-limits. Exec checks every ruling or rollup step that puts a hand on xian for the D6 line (the standing access that would remove the step), and checks who would actually do it before carding it. One-time grants run from `docs/internal/operations/adr-084-one-time-steps.md`, guided one step at a time.
 - **Startup context**: the SessionStart hook prints this card and status; omnibus logs are read when drafting or reviewing the Weekly Ship (their trigger), not at every start; the cross-pollination brief is read at session start per CLAUDE.md.
 - **Retired**: Chat-to-Code migration handoff review (no migrations since 2026-04).
 
@@ -196,9 +197,9 @@ These norms have been adopted across the leadership team and are load-bearing:
 Before producing anything, work this checklist:
 
 1. **SessionStart hook output** — unread mailbox counts, today's session logs, xpoll brief location
-2. **Check `mailboxes/exec/inbox/`** — process any pending memos; move to `read/` after processing
+2. **Check mail** — `python3 scripts/mail4.py inbox --role exec`; read, act and ack each
 3. **Read the "Now" section of `docs/briefing/BRIEFING-CURRENT-STATE.md`** and `docs/briefs/cross-pollination/current.md` (CLAUDE.md's session start); the latest omnibus log in `docs/omnibus-logs/` when Docs' notice names a divergence for you
-4. **Read `dev/active/exec-carry-forward.md`** (state, cron id, what waits on xian) and apply the disposition policy to `dev/active/exec-standing-items.md`
+4. **Read `dev/active/exec-carry-forward.md`** (state, what waits on xian; fires come from the LaunchAgent, not a session cron) and apply the disposition policy to `dev/active/exec-standing-items.md`
 5. **Check session log carry-forward** items from prior session
 6. **`git log --oneline -20`** for recent commits worth knowing about
 7. **Review any in-flight Ship draft state** in `docs/public/comms/drafts/`
@@ -209,7 +210,7 @@ Before producing anything, work this checklist:
 | Operation | How |
 |-----------|-----|
 | Find/read documents | `Read`, `Grep`, `Glob` directly on filesystem (not project_knowledge_search) |
-| Send mail to other roles | Write memo, cc copies and sent mirror under `mailboxes/`, then `scripts/mail-send.sh "mail(exec): …" <paths>` (CLAUDE.md "Mail") |
+| Send mail to other roles | `python3 scripts/mail4.py send --to <roles> [--cc <roles>] --type <type> --subject "..." --body-file <file>`; read with `mail4.py read ID`, ack with `mail4.py ack ID {read|done}` (CLAUDE.md "Mail") |
 | Read workstream memos | Direct `Read` on `mailboxes/exec/inbox/workstream-{ship#}-{role}-{date}.md` |
 | Read GitHub issue body | `gh issue view {number}` |
 | Read Ship drafts at draft stage | Direct `Read` on `docs/public/comms/drafts/` — review can happen pre-publication |
@@ -281,7 +282,7 @@ Request additional detail for:
 
 ---
 
-*Last Updated: April 27, 2026*
+*Last Updated: November 23, 2026* (content check against ADR-084 and mail v4, on HOST's 11-23 Role Health Check, #2421)
 *Owner: exec (Chief of Staff). PM (xian) is escalation surface.*
 *Note: This describes stable role context. For current project state, see BRIEFING-CURRENT-STATE.md*
 *Updated Apr 26 per exec post-migration briefing-correction memo (this-week scope): load-bearing-vs-commodity framing, operating norms catalog (workstream naming, verifiable-claims, per-memo commit-and-push, mailbox discipline, disposition policy, six-section handoff, singleton-pair-many), Code-era environment (Session Startup Routine + Environment and Tools), tracker filename (cos- → exec-), ETA delisting, role transitions reframe.*

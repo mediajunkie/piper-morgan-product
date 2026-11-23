@@ -2,9 +2,9 @@
 type: briefing
 title: BRIEFING-ESSENTIAL-CXO
 valid_from: "2026-01-22"
-last_updated: "2026-04-26"
-last_verified: "2026-11-02"
-verified_by: CXO 2026-11-02 — spot-check, not a bulk stamp (#2253). WHAT I CHECKED this fire:
+last_updated: "2026-11-23"
+last_verified: "2026-11-23"
+verified_by: CXO 2026-11-23 — mail startup, mail send, scratch and seat-resource lines changed to v4 and ADR-084 (#2421); the rest stands on the 2026-11-02 spot-check below. CXO 2026-11-02 — spot-check, not a bulk stamp (#2253). WHAT I CHECKED this fire:
   the Current Focus items against GitHub (#1386, #1818, #1823, #1837, #2018, #1595 are CLOSED,
   #1174 and #1270 are OPEN), and added the production-plan pointer block (pointer check, before
   and after). WHAT I DID NOT CHECK: the Colleague Test section and rubric roster (last checked
@@ -197,7 +197,7 @@ Mental models for consistent CXO decisions:
 Before producing anything, work this checklist:
 
 1. **SessionStart hook output** — unread mailbox counts, today's session logs, xpoll brief location
-2. **Check `mailboxes/cxo/inbox/`** — process any pending memos; move to `read/` after processing
+2. **Read mail on v4:** `python3 scripts/mail4.py inbox`, then `read <id>` for each, whole; `ack <id> done|read|declined` after acting. Never address PM; anything that needs PM goes to Exec. (`mailboxes/` is the v3 fallback only.)
 3. **Omnibus logs** (`docs/omnibus-logs/`): no longer a startup scan (retired 2026-10-13; Docs produces them and I read the relevant one when mail or a ruling points there)
 4. **Check `BRIEFING-CURRENT-STATE.md`** for sprint context (carried by: `.claude/hooks/session-start.sh` and CLAUDE.md "Session start" step 3)
 5. **Check today's session logs** in `dev/active/` and `dev/YYYY/MM/DD/` for in-flight Comms drafts and Lead Dev work — Comms drafts are now readable at draft stage, before publication
@@ -209,7 +209,9 @@ Before producing anything, work this checklist:
 | Operation | How |
 |-----------|-----|
 | Find/read documents | `Read`, `Grep`, `Glob` directly on filesystem (not project_knowledge_search) |
-| Send mail to other roles | Write directly to `mailboxes/[role]/inbox/` (not PM-mediated relay) |
+| Send mail to other roles | `python3 scripts/mail4.py send --to <roles> [--cc <roles>] --type <type> --subject "..." --body-file <file>` (not PM-mediated relay; mail that needs PM goes to Exec) |
+| Scratch files | The session scratchpad by full absolute path, never `/tmp` (a `/tmp` file the seat wrote itself prompts xian when read) |
+| Served reads, steps that land on xian | Seat accounts, keys and the seat browser are granted once and bounded (ADR-084, 2026-11-20); a fresh account needs xian's invite mint, asked through Exec. A ruling that puts a step on xian's hands names the standing access that would remove it (D6). |
 | Read GitHub issue body | `gh issue view {number}` |
 | Read prompt evolution | `git log services/intent_service/conversational_floor.py` |
 | Judge floor quality | Quote Web's served replies (through Lead) and read the source; the retired `canonical_retest_scorer/` directory no longer exists |
@@ -356,7 +358,7 @@ Request additional detail for:
 
 ---
 
-*Last Updated: April 26, 2026*
+*Last Updated: November 23, 2026* (mail and environment lines checked against ADR-084 and mail v4, on HOST's 11-23 Role Health Check, #2421)
 *Owner: PM (xian)*
 *Workstream: Product & Experience*
 *Refreshed by Docs based on CXO handoff memo (Mar 30); original draft by HOST (filed as HOSR at that time — role renamed Mar 30). Updated Apr 26 per CXO post-migration briefing-correction memo: full pass — priority/path updates, Code-era environment, M1→M2c context, CXO↔Comms↔Docs triangle, operational disciplines (ethics-decline voice / floor quality monitoring / verification-before-assertion / calibration through use), fabrication-probe companion to floor-first routing, "Express Investment" reframing for role-holder. Downstream sweep deferred to post-migration: CLAUDE.md role table (single comprehensive pass after Arch + Exec migrate), grep for `colleague-test.md` (development/ path) references in skills, canonical retest scorer rubric reference verification, PDR-004 references in other briefings.*
