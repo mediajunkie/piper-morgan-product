@@ -25,7 +25,7 @@ warning (live bug 2026-09-22 to 2026-09-23 13:22, since fixed and re-verified cl
 each issue before placing. State the denominator when reporting.
 
 
-**Last rewritten**: 2026-11-13 21:34 PT (21:33 STOP; the current block is at the bottom, "Now").
+**Last rewritten**: 2026-11-22 21:34 PT (21:33 STOP; the current block is at the bottom, "Now").
 
 **Mechanism state**: LaunchAgent cadence (`:33` past 6,9,12,15,18,21), `CronList` "No scheduled jobs" is normal, no cron ritual. `sprint-truth.py` reads `dev/state/sprint-truth-MVP.ppm.json`. No pytest/venv on this seat: handler tests are "unverified, not run".
 
@@ -889,7 +889,7 @@ Brake FIRED (second slip = #1965 admission, found and ledgered 10-09). Memo to E
   - No compose up or down on Amber; `PIPER_CREDENTIAL_STORE=db`; a classifier refusal is final.
   - A promote-gate edit that only makes the gate stricter goes ahead on Arch's written approval, and xian is informed. Spend asks inside the caps are short.
 
-## Now (rewritten at the 11-20 21:33 STOP, written `21:34`; re-verified unchanged at the 11-21 21:33 STOP; carry into Sun 11-22)
+## Superseded (was Now from the 11-20 21:33 STOP, with 11-21 and 11-22 updates; replaced at the 11-22 21:33 STOP)
 
 - **11-21 re-verify:** a quiet Saturday. Six fires, no mail, no closes, Production 329 = Total, 0 unmilestoned, main CI 12 of 12 green, beta healthy on `d66f15c538`, the three hold P0s OPEN. Web's browser stayed signed out all day (its `21:18` STOP says the same), so the sitting has not begun; Exec's carry-forward holds the restart. Every line below still stands.
 - **11-22 09:33:** Web's sitting began (Pard restarted the seat at `07:06`). It stopped at the 2406 projects read: web-seed-1386 holds 5 projects. PPM's row position to CXO, 01M8256STV: the row needs a fresh account; (a) and emptying 1386 don't meet it. CXO took (b) (01M825YM8D): the row runs on a fresh account (a new tester's, with only a key added; row 25 updated, PPM 01M826K0GK). The mint is on xian's card via Exec. Web ran the six turns on 1386 as CXO's pre-check (01M8262HER) and ran Lead's 15 lines (01M8268XD4). CXO's verdicts (01M826V5F1): 2297's one-match, no-match, pick and "no" rows pass; row 22 fails (#2411); row 18 not reached (#2412); T5 fails (#2413). PPM placed all three in Production V (332, map v178; mail 01M82775GM). 2301 closes only after #2413. Open with CXO, Lead and Arch: the floor contradiction on 2301's lines 11 and 12. Exec asked HOST and CIO whether `seat-github-1` takes the 2406 row (01M826RCSC). CIO and PPM say keep it bare and take a new mint; HOST decides, and `--save-key` waits on HOST's read. 2301 floor: two rows added (part 1 by code; part 2 CXO's line, measured on a 6-of-6 screen). Lead's measurement ($0.25): #2411 is the router's CLARIFY, then the classifier sends 'add a task' to an issue; #2413's invented names are stable. Both are Arch's to rule. **Beta serves `f3a5a3cb3e` since `11:04`** (2301's handler block; not floor part 1). 2301's served row and 2297 row 16's second half wait on Web's five lines (Lead 01M82AXZ51) and CXO's read. Acceptance set today on #2411 (CXO's sentences, a rule-7 router candidate, served line 5) and #2413 (the which-project ask accepted, CXO's words incl. read-worded no-match and several).
@@ -925,5 +925,34 @@ Brake FIRED (second slip = #1965 admission, found and ledgered 10-09). Memo to E
 - **Rules carried:**
   - Clock rule: stamp with `date` or `scripts/log-entry.sh`, and put a quoted time in backticks. A hand-typed heading was refused once today, at 15:10.
   - mail4 reads can run past 120 s tonight; run them in the background.
+  - Edit only the last occurrence in this file (`rindex`).
+  - The staged scan has no skip. No compose on Amber. `PIPER_CREDENTIAL_STORE=db`. A classifier refusal is final.
+
+## Now (rewritten at the 11-22 21:33 STOP, written `21:34`; carry into Mon 11-23)
+
+- **11-22 in one line:** Web's sitting ran. 2301, 2413 and 2414 closed served (Lead, `15:05`). #2418, #2419 and #2420 filed, built, served and closed by PPM. #2417 lever 1 served on `948af3a198`; one row left. Production 333 = Total, 0 unmilestoned, main CI 12 of 12 green, map v188.
+- **Beta serves `079e6aaf78`** (since `19:54`, run 45108430580; healthy at the STOP). It carries `346565cc30` (#2420: `SETTINGS_SUBPATH_PLACES`, the "What chat reads" filter) and #2420's guard `25048aedde` (test-only).
+- **Invite hold, PDR-008.** #2261, #2282 and #2342 OPEN at the STOP. The lift-readiness memo to Exec waits on #2342's served rows, #2261's close and #2282.
+- **Open in V, each with its blocker:**
+  - #2417: one row, `update_issue`'s never-connected reply, on seat-tester-1 (the fresh account). The mint needs xian's go-ahead via Exec. CXO judges and closes.
+  - #2411: the router row (rule 7, Arch), plus the never-connected and could-not-check replies on the fresh account.
+  - #2412: #2364 step 1.
+  - #2415, #2416: Arch, CXO and Lead.
+  - 2297 rows 22 (#2411) and 18 (#2412). 2406's served row: the fresh account (CXO's (b)).
+- **ADR-084:** Step A done 11-20. Steps C, D and F are xian's. Steps file: `docs/internal/operations/adr-084-one-time-steps.md`.
+- **Waiting on others:** Step D's signed-in reads (2379, 2401, 2402, 2400 row 1); Step F (2389 rows 3 to 5); Step C (2388's first run); Lead's 2383 row 3, 2354 H1 and 2364's close; #2245's served read; 2351's clean-machine line; 2403 row 4 (a person's check); #2363 row 3 (merge-head promotion); 2382 row 4 (2384).
+- **Sprint 2 closes Thu 11-26 as planned** (xian, 01M7XY16WB). Missed items go to the retro.
+- **OWED rows:**
+  - sprint-3-plan: draft on the current score at the 11-25 START, propose #2149 in it, revise at the 11-26 close. Dates are xian's.
+  - 2364-known-limit (2388's first run); 2364-untested-provider-row (the 2390 route); 2364-selfhost-wording (the ethics flip served).
+  - tier1-approval-batch: xian's quoted yes, then Docs.
+  - rule7-key-ask, path-b-quote, notion-offer-ask: unchanged.
+- **Parked, one trigger: linked billing** (xian: does Piper get its own Claude Platform organisation).
+- **Genuine xian decisions:** E5 naming for #2380; #2344; the possible "Safe Storage" keychain item.
+- **Production 333** (11-22 `20:11`; history in the plan's Total line).
+- **Rules carried:**
+  - Clock rule: stamp with `date` or `scripts/log-entry.sh`; never type the next minute (twice today: 18:40 and 19:38, both fixed). Quoted times in backticks.
+  - mail4 reads in a loop can run past 120 s; run them in the background. `timeout` isn't on macOS.
+  - Closes: tick the description first, then the comment, then close. I offered Lead to leave closes on Lead's units to Lead.
   - Edit only the last occurrence in this file (`rindex`).
   - The staged scan has no skip. No compose on Amber. `PIPER_CREDENTIAL_STORE=db`. A classifier refusal is final.
