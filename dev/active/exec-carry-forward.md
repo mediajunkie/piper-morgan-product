@@ -26,7 +26,7 @@ v1119, `719UZ4h1NELjEwWZbDCceT`. Source `dev/active/exec-attention-rollup-curren
 - Titles: Sat 11-28 is "Mark One Eyeball" (locked). Restore drill 2157: his choice of day. Later: #2387.
 
 ## In motion
-- **Beta `079e6aaf78`** since 11-22 19:54 (Lead 01M83922SA). Day's builds: `a805384f7e` (2301 part 1, 2413, 2414, 2411), `948af3a198` 17:08 (#2417 one cause), `f2213c7a85` 19:08 (#2418, #2419, both closed served by PPM 19:37), `079e6aaf78` (#2419 follow-up). #2420 guard on main `25048aedde`; PPM to close.
+- **Beta `d6ed62181a`** since 11-23 12:19 (Lead 01M8512DSM; #2415/#2416 all-code status reply, task alias; a 12:02 dispatch refused by the gate, Lead read the grant as covering the red it left). Before that `079e6aaf78` since 11-22 19:54 (Lead 01M83922SA). Day's builds: `a805384f7e` (2301 part 1, 2413, 2414, 2411), `948af3a198` 17:08 (#2417 one cause), `f2213c7a85` 19:08 (#2418, #2419, both closed served by PPM 19:37), `079e6aaf78` (#2419 follow-up). #2420 guard on main `25048aedde`; PPM to close.
 - **Open nearby:** #2417 (update_issue row, fresh account), #2416 (offers, parked), #2245 served read, 2301 part 2.
 - **Web:** signed in as web-seed-1386 (session expires 11-23 15:06 UTC).
 - **Seat spend 11-22:** Lead paid about $1.30; no run over $1. All under xian's 11-13 yes.
