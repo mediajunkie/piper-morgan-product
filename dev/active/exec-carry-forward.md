@@ -34,6 +34,7 @@ v1119, `719UZ4h1NELjEwWZbDCceT`. Source `dev/active/exec-attention-rollup-curren
 - **Promote hold:** `ops/promote-hold.md` mechanism exists, not in use.
 - **Staging D6:** HOST's read-only staging Machines token idea at 2 of 3 repeats.
 - Main 12 of 12 green at 22:01.
+- **Staging deploy blips:** release/VM start failures cleared by re-run on 11-10, 11-20, 11-23 (Lead 01M85C2R1S). A fourth = pattern; take it to xian (Fly hand is his).
 
 ## Closes at 22:01 on 11-22
 Closed: Comms, Web, HOST, Arch, CXO, PPM, Lead, PA. Open: Docs, CIO, prog (their STOPs may still run). Check at START.
