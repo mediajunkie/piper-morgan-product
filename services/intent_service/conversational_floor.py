@@ -2047,6 +2047,14 @@ class ConversationalFloor:
                     if not isinstance(i, dict) or not i.get("name"):
                         continue
                     key = str(i.get("name"))
+                    # Arch 01M8350YSD (issue 2419's class): no read line for a
+                    # connector this host doesn't offer, unless the person has a
+                    # binding to it (then they are still told the truth about it).
+                    if key not in _offered and i.get("status") not in (
+                        "active",
+                        "needs_reconnecting",
+                    ):
+                        continue
                     lines.append(f"  - {_disp(key)}: {chat_reads_line(key)}")
 
         if "trust_profile" in domain_context:

@@ -70,3 +70,42 @@ def test_staging_still_lists_notion(monkeypatch):
 def test_the_reconnect_line_is_untouched(monkeypatch):
     monkeypatch.delenv("FLY_APP_NAME", raising=False)
     assert "- Needs reconnecting (reconnect in Settings → Integrations): GitHub" in _block(WEB_SEED)
+
+
+def _reads_lines(block):
+    out, inside = [], False
+    for line in block.splitlines():
+        if line.startswith("- What chat reads from each integration:"):
+            inside = True
+        elif inside and line.startswith("  - "):
+            out.append(line)
+        elif inside:
+            break
+    return out
+
+
+def test_beta_reads_list_has_no_unoffered_connector(monkeypatch):
+    """Arch 01M8350YSD: "Notion: connects, ..." is false on a host that doesn't offer
+    Notion; the line is removed, not left for the model to leave unsaid."""
+    monkeypatch.delenv("FLY_APP_NAME", raising=False)
+    lines = _reads_lines(_block(WEB_SEED))
+    assert [line.split(":")[0].strip(" -") for line in lines] == ["GitHub", "Google Calendar"]
+
+
+def test_staging_reads_list_keeps_notion(monkeypatch):
+    monkeypatch.setenv("FLY_APP_NAME", STAGING_APP_NAME)
+    names = [line.split(":")[0].strip(" -") for line in _reads_lines(_block(WEB_SEED))]
+    assert names == ["GitHub", "Google Calendar", "Notion"]
+
+
+def test_an_existing_binding_to_an_unoffered_connector_keeps_its_read_line(monkeypatch):
+    monkeypatch.delenv("FLY_APP_NAME", raising=False)
+    block = _block(
+        [
+            {"name": "slack", "status": "active"},
+            {"name": "notion", "status": "needs_reconnecting"},
+            {"name": "github", "status": "inactive"},
+        ]
+    )
+    names = [line.split(":")[0].strip(" -") for line in _reads_lines(block)]
+    assert names == ["Slack", "Notion", "GitHub"]

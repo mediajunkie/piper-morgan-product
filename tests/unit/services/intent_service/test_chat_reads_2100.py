@@ -47,10 +47,19 @@ class TestDeclaration:
 
 
 class TestRendering:
-    def test_notion_renders_the_cannot_read_line_connected_or_not(self):
+    def test_notion_renders_the_cannot_read_line_connected_or_not(self, monkeypatch):
+        """Connected or not, where the host offers Notion (staging). On a host that
+        doesn't offer it (beta), only an existing binding keeps the line: "connects"
+        is false there (Arch 01M8350YSD, issue 2419's class)."""
+        from services.integrations.integration_status_service import STAGING_APP_NAME
+
+        line = "- Notion: connects, but chat can't read your Notion pages yet"
+        monkeypatch.setenv("FLY_APP_NAME", STAGING_APP_NAME)
         for status in ("active", "inactive"):
-            lines = _lines([{"name": "notion", "status": status}])
-            assert "- Notion: connects, but chat can't read your Notion pages yet" in lines
+            assert line in _lines([{"name": "notion", "status": status}])
+        monkeypatch.delenv("FLY_APP_NAME")
+        assert line in _lines([{"name": "notion", "status": "active"}])
+        assert line not in _lines([{"name": "notion", "status": "inactive"}])
 
     def test_github_renders_its_reads(self):
         lines = _lines([{"name": "github", "status": "active"}])

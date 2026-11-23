@@ -95,9 +95,6 @@ NONE_CONNECTED_LINE = (
 )
 
 
-# Display names with their own place under Settings → Integrations (Web, 11-22 17:23).
-SETTINGS_SUBPATH_NAMES = frozenset({"GitHub"})
-
 NOT_READING_ANY_LINE = "I'm not reading from any of your tools right now."
 
 
@@ -105,12 +102,11 @@ def needs_reconnecting_sentence(names: List[str]) -> str:
     """Issue 2418: the reconnect fact as one sentence to the person, with no cause
     (issue 2417). CXO's words, 2026-11-22 (01M831QSW9)."""
     if len(names) == 1:
-        # CXO 01M832BJE4, Arch 01M832SQEC: the sub-path only where Settings has that
-        # place. An explicit set, not derived from the display name.
-        where = "Settings → Integrations"
-        if names[0] in SETTINGS_SUBPATH_NAMES:
-            where += f" → {names[0]}"
-        return f"{names[0]} needs reconnecting. You can do that in {where}."
+        # CXO 01M832BJE4, Arch 01M8345420: the sub-path only where Settings has that
+        # place, read from the one list in capability_legibility.
+        from services.intent_service.capability_legibility import settings_place
+
+        return f"{names[0]} needs reconnecting. You can do that in {settings_place(names[0])}."
     listed = ", ".join(names[:-1]) + " and " + names[-1]
     return f"{listed} need reconnecting. You can do that in Settings → Integrations."
 

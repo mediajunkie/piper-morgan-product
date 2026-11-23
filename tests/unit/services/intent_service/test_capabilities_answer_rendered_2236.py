@@ -191,14 +191,35 @@ class TestConnectionState:
             "You can do that in Settings → Integrations.",
         ]
 
-    def test_single_non_github_name_ends_at_integrations_2418(self):
-        """CXO 01M832BJE4: no pointer to a Settings place that isn't confirmed to exist."""
-        lines = render_connection_lines(
-            {"integrations": [{"name": "calendar", "status": "needs_reconnecting"}]}
+    def test_single_name_sub_path_reads_the_one_list_2418(self):
+        """CXO 01M832BJE4, Arch 01M8345420: the "→ {name}" ending only for names on
+        ``SETTINGS_SUBPATH_PLACES``; any other single name ends at Integrations."""
+        from services.intent_service.capability_answer import needs_reconnecting_sentence
+        from services.intent_service.capability_legibility import SETTINGS_SUBPATH_PLACES
+
+        assert SETTINGS_SUBPATH_PLACES == frozenset({"GitHub", "Google Calendar"})
+        assert needs_reconnecting_sentence(["Google Calendar"]) == (
+            "Google Calendar needs reconnecting. "
+            "You can do that in Settings → Integrations → Google Calendar."
         )
-        assert lines[-1] == (
-            "Google Calendar needs reconnecting. You can do that in Settings → Integrations."
+        assert needs_reconnecting_sentence(["Slack"]) == (
+            "Slack needs reconnecting. You can do that in Settings → Integrations."
         )
+
+    def test_every_sub_path_place_is_an_offered_connectors_row(self):
+        """A pointer never names a place the Integrations page has no row for: the
+        list stays inside the connectors a host can offer, and the Calendar constant
+        reads from it."""
+        from services.integrations.integration_status_service import (
+            BETA_OFFERED_CONNECTORS,
+            STAGING_ONLY_OFFERED_CONNECTORS,
+        )
+        from services.intent_service.calendar_offer_policy import CALENDAR_SETTINGS_PLACE
+        from services.intent_service.capability_legibility import SETTINGS_SUBPATH_PLACES
+
+        rows = set(BETA_OFFERED_CONNECTORS.values()) | set(STAGING_ONLY_OFFERED_CONNECTORS.values())
+        assert SETTINGS_SUBPATH_PLACES <= rows
+        assert CALENDAR_SETTINGS_PLACE == "Settings → Integrations → Google Calendar"
 
     def test_none_connected_is_unchanged_2418(self):
         payload = [
