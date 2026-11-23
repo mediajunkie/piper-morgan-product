@@ -154,3 +154,27 @@ async def test_a_non_github_failure_still_arms_the_guard():
     )
     assert resp.scope_guard_dropped == 1
     assert "calendar" not in resp.message and "GitHub needs reconnecting" in resp.message
+
+
+# -- CXO 01M82SPNM3: no prompt line states a cause for reconnecting ----------------
+
+
+def test_the_never_connected_line_is_unchanged():
+    """CXO's reworded line for this case (01M82SPNM3) was measured and not landed: with
+    it, 0 of 6 replies said GitHub wasn't connected. The old line stays until she rules."""
+    assert "- GitHub: not connected (issue/PR data unavailable until connected)" in _block(
+        {"github_connected": False}
+    )
+
+
+def test_no_prompt_line_states_a_cause_for_reconnecting():
+    from pathlib import Path
+
+    source = (
+        Path(__file__).resolve().parents[4]
+        / "services"
+        / "intent_service"
+        / "conversational_floor.py"
+    ).read_text()
+    assert "the grant was revoked or expired" not in source
+    assert '"- Needs reconnecting (reconnect in Settings → Integrations): "' in source
