@@ -238,7 +238,7 @@ class TestTheBlockCannotFailTheStatusReply:
         """The call site joins the block to the floor's message and has no path
         that drops ``response.message``."""
         source = (REPO / "services" / "intent" / "intent_service.py").read_text()
-        start = source.index("_todos_block = await status_todos_block(")
+        start = source.index("_todos = await status_todos_for_project(")
         tail = source[start : source.index("return IntentProcessingResult(", start)]
         assert "_status_message = _milestone_prefix + response.message" in tail
         assert "raise" not in tail
@@ -260,19 +260,19 @@ class TestWhereTheBlockGoes:
         resolved before the floor is called (so the floor's todo keys can be taken
         away when it follows), the floor still never receives the list, and code
         joins the block to the floor's message afterwards."""
-        block = self.SOURCE.index("_todos_block = await status_todos_block(")
+        block = self.SOURCE.index("_todos = await status_todos_for_project(")
         removed = self.SOURCE.index("domain_context = without_todo_keys(domain_context)")
         respond = self.SOURCE.index("response = await floor.respond(floor_ctx)", block)
         joined = self.SOURCE.index('_status_message = f"{_status_message}\\n\\n{_todos_block}"')
         assert block < removed < respond < joined
-        assert self.SOURCE.count("status_todos_block(") == 1
+        assert self.SOURCE.count("status_todos_for_project(") == 1
 
     def test_the_milestone_branch_returns_first(self):
         """Condition 5: a resolved #2197 milestone returns before this branch."""
         milestone = self.SOURCE.index(
             "return _resolved_result", self.SOURCE.index("#2250: the milestone resolved")
         )
-        block = self.SOURCE.index("_todos_block = await status_todos_block(")
+        block = self.SOURCE.index("_todos = await status_todos_for_project(")
         assert milestone < block
 
     def test_the_floor_module_knows_nothing_of_it(self):
@@ -325,7 +325,8 @@ class TestNoCatalogChange:
 _FLOOR_RESPOND = "services.intent_service.conversational_floor.ConversationalFloor.respond"
 _GATHER = "services.intent_service.context_assembler.ContextAssembler.gather_context"
 _PROVENANCE = "services.intent_service.context_assembler.ContextAssembler.get_last_provenance"
-_BLOCK = "services.intent_service.project_status_todos.status_todos_block"
+# 2415: the call site reads the block with its stored project name.
+_BLOCK = "services.intent_service.project_status_todos.status_todos_for_project"
 _GH_ROUTER = "services.integrations.github.github_integration_router.GitHubIntegrationRouter"
 
 _GATHERED = {
@@ -376,6 +377,10 @@ class TestWithoutTodoKeys:
         assert "reminders" not in pst.FLOOR_TODO_KEYS  # CXO 11-22: due reminders stay
 
 
+def _found(block):
+    return pst.StatusTodos(block=block, project="Mobile Redesign" if block else None)
+
+
 @pytest.mark.asyncio
 class TestTheFloorIsGivenNoTodosWhenTheBlockFollows:
     @pytest.fixture
@@ -422,7 +427,7 @@ class TestTheFloorIsGivenNoTodosWhenTheBlockFollows:
             patch(_FLOOR_RESPOND, new=respond),
             patch(_GATHER, new=AsyncMock(return_value=dict(_GATHERED))),
             patch(_PROVENANCE, return_value=dict(_GATHERED_PROVENANCE)),
-            patch(_BLOCK, new=AsyncMock(return_value=block)) as block_mock,
+            patch(_BLOCK, new=AsyncMock(return_value=_found(block))) as block_mock,
         ):
             result = await service._handle_floor_with_context(intent, "s2301", user_id=USER)
         respond.assert_awaited_once()
@@ -519,7 +524,7 @@ class TestTheRenderedPromptCarriesNoGatheredTodoText(TestTheFloorIsGivenNoTodosW
             patch(_FLOOR_RESPOND, new=respond),
             patch(_GATHER, new=AsyncMock(return_value=dict(_REAL_SHAPE_GATHER))),
             patch(_PROVENANCE, return_value={}),
-            patch(_BLOCK, new=AsyncMock(return_value=block)),
+            patch(_BLOCK, new=AsyncMock(return_value=_found(block))),
         ):
             await service._handle_floor_with_context(intent, session, user_id=USER)
         floor_ctx = respond.await_args.args[0]

@@ -15,7 +15,7 @@
 - **Ship #070 "No Workarounds" (xian 11-20):** Exec writes an outline scaffold (sections plus bare facts, include generously). Exec sends it to Comms for the fact-check after xian reads the week review. Comms' workstream review filed 11-20 05:14 (01M7WHGS2E).
 - **12-12 update 11-20, corrected 11-21:** the 2364 live gate run failed by one probe in the morning. CXO found the probe band had drifted from its definition, Arch fixed the bar before the rerun (dl 3569), and the rerun PASSED at 14:13 (dl 3572). Merge still held on the second-provider item, which is xian's. Scaffold updated 11-21 (I had missed the PASS at the 11-20 STOP). Related new issue 2409 (probe ic-2 likely mislabelled).
 - **CIO ask (11-16):** first push printing `already passed on this content` → mail CIO that line. Not seen yet.
-- **Mail v4 live;** v3 fallback ends 11-23 (tomorrow): from then, v4 only.
+- **Mail v4 only (v3 fallback ended 11-23, CIO 1ae55d7048):** mail-send.sh refuses seat-to-seat memos. If v4 itself is broken: `PIPER_V3_FALLBACK=<why> scripts/mail-send.sh`, reason in the log.
 - **Arcs (adopted 11-14):** map in planning doc (Claude Docs 5vc7f1CTHhadvvPBB73h86). Era 8 "The Beta" starts 10-31.
 - **Standing rules:** keychain off-limits (never `=keychain`); only `scripts/alpha-setup.sh` banned on Amber, no compose up/down; invites held (xian 11-04); HOLD (PDR-102) no ownership claim in copy; Rule 8 no outside names; never mail or cc PM.
 
