@@ -211,15 +211,45 @@ def parse(text):
     return yaml.safe_load(head) or {}, body
 
 
+def show_many(tip, paths):
+    """Each path's text at tip, from one `git cat-file --batch` process ({path: text or None}).
+
+    Until 2026-11-23 all_messages ran one `git show` per message. At 2,145 messages that took 55 s
+    per `inbox` call, and Pard's mail-wake, which calls it once per seat, took about 17 minutes a
+    pass (Pard's memo, 11-23)."""
+    if not paths:
+        return {}
+    r = subprocess.run(
+        ["git", "-C", str(REPO), "cat-file", "--batch"],
+        input="".join(f"{tip}:{p}\n" for p in paths).encode(),
+        capture_output=True,
+    )
+    if r.returncode != 0:
+        raise RuntimeError(f"git cat-file --batch: {r.stderr.decode().strip()}")
+    out, data, pos = {}, r.stdout, 0
+    for p in paths:
+        nl = data.index(b"\n", pos)
+        header = data[pos:nl].split()
+        pos = nl + 1
+        if len(header) < 3 or header[1] == b"missing":
+            out[p] = None
+            continue
+        size = int(header[2])
+        out[p] = data[pos : pos + size].decode("utf-8", errors="replace")
+        pos += size + 1  # the content is followed by one newline
+    return out
+
+
 def all_messages(tip):
     out = []
-    for p in ls(tip, "messages"):
-        if p.endswith(".md"):
-            meta, body = parse(show(tip, p) or "")
-            if meta.get("id"):
-                meta["_path"] = p
-                meta["_body"] = body
-                out.append(meta)
+    paths = [p for p in ls(tip, "messages") if p.endswith(".md")]
+    texts = show_many(tip, paths)
+    for p in paths:
+        meta, body = parse(texts.get(p) or "")
+        if meta.get("id"):
+            meta["_path"] = p
+            meta["_body"] = body
+            out.append(meta)
     return out
 
 
@@ -366,7 +396,22 @@ def cmd_send(a):
 
 
 def cmd_inbox(a):
-    role = a.role or my_role()
+    roles = [r for r in (a.role or "").split(",") if r]
+    if len(roles) > 1:
+        if not a.ids:
+            print("inbox: several roles (--role a,b) need --ids", file=sys.stderr)
+            return 2
+        # One fetch and one read of every message for all the roles, so a watcher makes one call a
+        # pass, not one per seat (Pard's mail-wake, 11-23). Lines are "<role> <id>".
+        tip = fetch_tip()
+        msgs = all_messages(tip)
+        for r in roles:
+            ack = acks(tip, r)
+            for m in sorted(msgs, key=lambda m: m["sent_at"]):
+                if r in recipients(m) and m["id"] not in ack:
+                    print(f"{r} {m['id']}")
+        return 0
+    role = roles[0] if roles else my_role()
     tip = fetch_tip()
     msgs = all_messages(tip)
     mine = [m for m in msgs if role in recipients(m)]
@@ -543,7 +588,7 @@ def build_parser():
     s.add_argument("--no-ack", dest="requires_ack", action="store_false")
     s.add_argument("--as", dest="as_role")
     i = sub.add_parser("inbox")
-    i.add_argument("--role")
+    i.add_argument("--role", help="a role, or with --ids several: --role lead,arch,web")
     i.add_argument("--show", action="store_true")
     i.add_argument("--ids", action="store_true", help="unacknowledged IDs only (for watchers)")
     r = sub.add_parser("read")
