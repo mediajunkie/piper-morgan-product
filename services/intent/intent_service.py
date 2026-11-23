@@ -21658,15 +21658,29 @@ Add any additional information here.
         _todos_block = ""
         if intent.category is IntentCategory.STATUS and intent.action == "get_project_status":
             from services.intent_service.project_status_todos import (
-                status_todos_block,
+                status_todos_for_project,
                 without_todo_keys,
             )
+            from services.intent_service.status_all_code import status_all_code_result
 
-            _todos_block = await status_todos_block(intent, session_id, user_id, self.todo_handlers)
+            _todos = await status_todos_for_project(intent, session_id, user_id, self.todo_handlers)
+            _todos_block = _todos.block
             if _todos_block:
                 domain_context = without_todo_keys(domain_context)
                 if domain_context_provenance is not None:
                     domain_context_provenance = without_todo_keys(domain_context_provenance)
+                # 2415/2416 (Arch 11-23, 01M84SB40Q): with no content key left and a
+                # GitHub state code has words for, the reply is all code; no floor call.
+                _all_code = status_all_code_result(
+                    intent,
+                    category,
+                    _todos_block,
+                    _todos.project,
+                    domain_context,
+                    _milestone_prefix,
+                )
+                if _all_code is not None:
+                    return _all_code
 
         # Gather conversation history (#1122: shared builder, excludes in-flight turn)
         history = build_recent_history(session_id, user_id)

@@ -15,6 +15,8 @@ from __future__ import annotations
 
 from typing import Any, Dict, List, Optional
 
+from services.intent_service.capability_legibility import SETTINGS_INTEGRATIONS
+
 #: CXO's exact line (#2151 rule): a failed or untrustworthy status read states no
 #: connection facts at all, and is never rendered as "not connected".
 COULDNT_CHECK_LINE = "I couldn't check which tools you've connected just now."
@@ -109,6 +111,14 @@ def needs_reconnecting_sentence(names: List[str]) -> str:
         return f"{names[0]} needs reconnecting. You can do that in {settings_place(names[0])}."
     listed = ", ".join(names[:-1]) + " and " + names[-1]
     return f"{listed} need reconnecting. You can do that in Settings → Integrations."
+
+
+#: Issue 2415 (CXO 2026-11-22/23, 01M84S7E7T): GitHub never connected, as one fact and
+#: the one place to act. CXO's words name the Integrations page, not the GitHub
+#: sub-path, so this is built from the page constant ``settings_place`` itself uses.
+GITHUB_NOT_CONNECTED_SENTENCE = (
+    f"GitHub isn't connected. You can connect it in {SETTINGS_INTEGRATIONS}."
+)
 
 
 def render_connection_lines(domain_context: Dict[str, Any]) -> List[str]:
