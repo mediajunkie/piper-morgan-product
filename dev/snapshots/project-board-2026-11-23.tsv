@@ -2041,7 +2041,7 @@ issue	state	milestone	sprint	title	labels	blocked_by	state_reason
 1968	OPEN	Ongoing	FLYWHEEL - Process improvement	Agent 360 v0.5 tooling follow-ons for CIO: freeze-detect rc, heartbeat refusal text, TSV by-name helper, non-owner red-CI norm, Pacific-week gh helper	sapient-trust		
 2243	CLOSED	Production	PROD-TECHDEBT - General Cleanup	Five test files hardcode /Users/xian/Development/piper-morgan/ (a path that no longer exists); none is collected, so they are dead tests	maintenance		COMPLETED
 2244	OPEN	Production	PROD-TECHDEBT - General Cleanup	Document vector store is written inside the container (/app/data/chromadb), not on the /data volume: by the repo text it empties on every deploy	bug		
-2245	OPEN	Production	PROD-HONESTY - Failed Reads Say So	Capability reply suggests "connect my slack" and "connect my notion", which this beta refuses (#2236's list doesn't read BETA_OFFERED_CONNECTORS)	UX		
+2245	CLOSED	Production	PROD-HONESTY - Failed Reads Say So	Capability reply suggests "connect my slack" and "connect my notion", which this beta refuses (#2236's list doesn't read BETA_OFFERED_CONNECTORS)	UX		COMPLETED
 2246	OPEN	Production	PROD-DESIGN - Design, UX & Product Features	[UX] "How do I get help?" gets the capabilities list, with no way to reach a person	UX		
 2247	OPEN	Production		Slack as a source through Slack's hosted MCP: read, search and post as the asking user, on each user's own token (1.0 gate, xian 10-31)			
 2126	OPEN	Ongoing	PROD-TECHDEBT - General Cleanup	Order-dependent test: test_inversion_multi_intent_unit4_1595::TestDefaultEmpty::test_flag_on_but_no_sibling_routed_is_the_same_turn fails under the full unit run, passes alone			
@@ -2202,8 +2202,8 @@ issue	state	milestone	sprint	title	labels	blocked_by	state_reason
 2412	OPEN	Production		UX: a plain personal todo ('add renew passport to my personal list') is declined as outside professional scope	UX		
 2413	CLOSED	Production		UX: 'show me the todos in the Launch project' replies 'Did you mean one of those' with nothing listed	UX		COMPLETED
 2414	CLOSED	Production		UX: two status replies on beta open mid-thought ('Also, …', 'To get a real picture, …')	UX		COMPLETED
-2415	OPEN	Production		On a status ask with no project detail, the floor tells the person to ask for the status they just asked for (and sometimes says 'Nothing has been done yet')	UX		
-2416	OPEN	Production		UX: 'how is X going?' above a project's todo list: the floor promises or re-offers a status (split from 2301 part 2)	UX		
+2415	CLOSED	Production		On a status ask with no project detail, the floor tells the person to ask for the status they just asked for (and sometimes says 'Nothing has been done yet')	UX		COMPLETED
+2416	CLOSED	Production		UX: 'how is X going?' above a project's todo list: the floor promises or re-offers a status (split from 2301 part 2)	UX		COMPLETED
 2417	OPEN	Production		UX: status reply says the reads 'came back empty due to a data check failure' and 'the grant expired'	UX		
 2418	CLOSED	Production		[UX] "What integrations do I have?" says none of your tools are connected yet, then names GitHub as needing reconnecting	UX		COMPLETED
 2419	CLOSED	Production		[UX] "What integrations do I have connected?" calls Slack and Notion available and offers to set them up; this beta doesn't offer them	UX		COMPLETED
@@ -2213,3 +2213,4 @@ issue	state	milestone	sprint	title	labels	blocked_by	state_reason
 2424	OPEN	Production		list_todos_query ignores the router's project arg: 'show me the tasks in the Launch project' would show every todo			
 2425	OPEN	Production		Router: 'add a task to my/the <project> project' reaches create_todo with the project arg (split from 2411 after the candidate's NO-GO)			
 2426	OPEN	Production		[UX] "Show me the todos in the Launch project" asks which project, after the person named it	UX		
+2427	OPEN	Production		[UX] Adding a todo with no project says it was added twice and ends on a generic offer (code-written, three sentences)	UX		
