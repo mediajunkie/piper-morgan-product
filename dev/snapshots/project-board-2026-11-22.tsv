@@ -2207,4 +2207,4 @@ issue	state	milestone	sprint	title	labels	blocked_by	state_reason
 2417	OPEN	Production		UX: status reply says the reads 'came back empty due to a data check failure' and 'the grant expired'	UX		
 2418	OPEN	Production		[UX] "What integrations do I have?" says none of your tools are connected yet, then names GitHub as needing reconnecting	UX		
 2419	OPEN	Production		[UX] "What integrations do I have connected?" calls Slack and Notion available and offers to set them up; this beta doesn't offer them	UX		
-2420	OPEN	Production		Settings sub-path places: one list beside INTEGRATION_DISPLAY, read by SETTINGS_SUBPATH_NAMES and CALENDAR_SETTINGS_PLACE (2418 follow-up)	UX		
+2420	OPEN	Production		Integration follow-ups to 2418 and 2419: one list of Settings sub-path places; filter the floor's 'What chat reads' list through offered_connectors()	UX		
