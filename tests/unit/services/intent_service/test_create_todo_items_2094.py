@@ -97,9 +97,9 @@ class TestHandlerCreatesOnePerTitle:
             USER,
         )
         assert [t.text for t in h._created] == ["draft brief", "book venue", "send invites"]
+        # Issue 2427 (CXO 11-23): the reply ends with the fact; no closing offer.
         assert reply == (
-            "I've added 3 todos to your list: 'draft brief', 'book venue' and 'send invites'. "
-            "Let me know if you want to adjust anything."
+            "I've added 3 todos to your list: 'draft brief', 'book venue' and 'send invites'."
         )
         parked = get_or_create_context("sess-2094", user_id=USER).pending_created_activity
         assert [r["target_title"] for r in parked] == ["draft brief", "book venue", "send invites"]
