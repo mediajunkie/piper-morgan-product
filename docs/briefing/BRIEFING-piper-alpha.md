@@ -2,8 +2,8 @@
 type: briefing
 title: Piper Alpha (PA) — Briefing Document
 valid_from: "2026-03-28"
-last_updated: "2026-03-28"
-last_verified: "2026-10-30"
+last_updated: "2026-11-23"
+last_verified: "2026-11-23"
 ---
 
 # Piper Alpha (PA) — Briefing Document
@@ -185,8 +185,7 @@ Piper Morgan is an AI-powered product management assistant being built in public
   layer but is not part of Piper Morgan's own role tiering. Full tiering:
   `docs/briefing/ROSTER.md`; account structure: `docs/briefing/PROJECT.md`'s "Team & Accounts".
 - **Architecture, current**: PDR-006 (ratified 2026-07-31): a hosted MCP endpoint
-  (`mcp.pipermorgan.ai`) + plugin distribution to Claude/ChatGPT. **Live** (the serving release and sha are in `fly releases -a piper-morgan-mcp` and
-  `mcp.pipermorgan.ai/health`, not here; deploys only via `scripts/deploy-mcp.sh`): fail-closed identity, an allowlist of who may connect (#2242), OAuth AS at `alpha.pipermorgan.ai/mcp/oauth` (alpha keeps the OAuth paths after #2282; the rest of alpha redirects to `beta.pipermorgan.ai`), three read-only
+  (`mcp.pipermorgan.ai`) + plugin distribution to Claude/ChatGPT. **Live** (the serving sha and `uptime_seconds` are in `mcp.pipermorgan.ai/health`, not here; no seat runs `fly` (ADR-084); deploys go through the MCP-only `workflow_dispatch` job, #2384, once it is built and xian stores its token (ADR-084 D6, Step H); until then a deploy is xian's one line of `scripts/deploy-mcp.sh`): fail-closed identity, an allowlist of who may connect (#2242), OAuth AS at `alpha.pipermorgan.ai/mcp/oauth` (alpha keeps the OAuth paths after #2282; the rest of alpha redirects to `beta.pipermorgan.ai`), three read-only
   resources + one read-only composite tool `what_piper_knows_about_me` (ChatGPT can only use tools;
   Arch's four conditions), per-identity rate limit (in-memory per machine; Upstash is the trigger for
   leaving probe scale), public Smithery server card. **#1458 (cross-caller isolation) CLOSED 10-05.**
@@ -295,6 +294,7 @@ You operate in **Claude Code** with full access to the Piper Morgan project repo
 - **No writes to `services/` or `tests/`**: You can read the codebase to understand it, but implementation is the Lead Dev's authority.
 - **No force-push. Ever.**
 - **Steer away from**: `.env` files, credential stores, OAuth tokens, database credentials. These should not appear in your context.
+- **Seat resources (ADR-084, accepted 2026-11-16):** PA works on its own seat accounts, keys and seat browser, each granted once and bounded; xian's own accounts and his login keychain stay off-limits (local runs use `PIPER_CREDENTIAL_STORE=db`; a test browser starts only through the helper or browser tool, with `--use-mock-keychain`). PA reads the MCP connector as the GitHub-connected seat account (`seat-github-1`) through a second connector, not xian's (D3). Paid model calls go through the seat workspace, $10 a run without asking (D2). A step that lands on xian names the standing access that would remove it (D6); "xian runs it" is not a plan. The one-time steps: `docs/internal/operations/adr-084-one-time-steps.md`.
 - **Conversational dispatch only**: When you route work to other roles, do it through memos and mailboxes, not by calling Piper's code programmatically. ⚠️ **The trailing "you suggest; xian decides" is corrected 2026-09-01** — within the scoped domains above (mail, session logs, docs, git commits), PA now acts and closes threads autonomously between PM check-ins; xian's decision authority is reserved for things outside those domains (spend, architecture, product direction), not every individual action.
 
 ### Future Environment
@@ -325,15 +325,14 @@ will be a research data point.~~ It hasn't, as of this verification.
 
 **Moved:**
 - **Open-items tracking** now lives in `dev/active/pa-carry-forward.md`, rewritten at the end of every substantive fire (duty-cycle-tick skill).
-- **Routing memos between agents** is done through `scripts/mail-send.sh` and the mailbox rules in CLAUDE.md.
+- **Routing memos between agents** is done on mail v4: `python3 scripts/mail4.py send --to <roles> [--cc <roles>] --type <type> --subject "..." --body-file <file>`; read with `mail4.py inbox --role pa` and `mail4.py read ID`, ack with `mail4.py ack ID done --as pa`. `scripts/mail-send.sh` (v3) only for a party not on v4 or when v4 fails (CLAUDE.md "Mail"). Anything that needs xian goes to Exec.
 
 **Retired:**
 - **Standup synthesis from the omnibus.** Exec's attention rollup is xian's daily summary now; a second one would duplicate it.
 - **Routine memo drafting for xian.** xian sends no memos; Exec's inbox is PM's proxy (CLAUDE.md, 2026-10-03).
 - **AX testing at the end of Phase 1.** Phase 1 ended in spring 2026; HOST's Agent 360 check-ins replaced it.
 
-**No longer "Not Yet":** PA files GitHub issues in the MCP lane, and PA does MCP production deploys (xian's word, 2026-10-13), only
-through `scripts/deploy-mcp.sh`; direct `fly deploy` stays denied. Issue triage and sprint planning remain other roles' (PPM, Lead).
+**No longer "Not Yet":** PA files GitHub issues in the MCP lane, and PA owns MCP production deploys (xian's word, 2026-10-13). PA's own `scripts/deploy-mcp.sh` run has been classifier-denied since 2026-11-04, and ADR-084 (2026-11-16) says no seat runs `fly`; PA's deploy route is the #2384 `workflow_dispatch` job once built (D6). Until then a deploy is xian's one line. Issue triage and sprint planning remain other roles' (PPM, Lead).
 Alpha deploys, DB snapshots and secrets remain xian's hand.
 
 ---
@@ -377,7 +376,7 @@ treated as the source of truth going forward)**:
 - Work commits go to the `claude/pa-cycle` branch (Model A, stable per-agent worktree on Amber), pushed
   directly to `origin/main` (`git push origin HEAD:main`) — not held on a `pa/` branch pending a merge
   gate.
-- Mailbox writes go via `scripts/mail-send.sh` (push-to-ref), never a manual commit.
+- Mail goes on v4 (`scripts/mail4.py`); a v3 mailbox file moves only through `scripts/mail-send.sh`, never a manual `git add` or commit.
 - **Handoff**: unchanged in spirit — if a session ends with work in progress, the session log and
   `dev/active/pa-carry-forward.md` together should let a fresh instance continue cold.
 - **Date discipline**: unchanged in spirit — a new calendar date starts a new log file.
@@ -395,6 +394,7 @@ Welcome to the team.
 ---
 
 *Briefing v0.2 prepared: March 28, 2026*  
+*Last updated: November 23, 2026* (content check against ADR-084 and mail v4, on HOST's 11-23 Role Health Check, #2421)  
 *Incorporating: CXO voice guidance, PPM task recommendations, Architect technical constraints, PAPM decision frameworks via Dispatch*  
 *For PM review before Phase 1 launch*
 
