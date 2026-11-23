@@ -9,6 +9,7 @@ from services.intent_service.capability_answer import (
     COULDNT_CHECK_LINE,
     compose_capability_reply,
     render_capability_block,
+    render_connection_lines,
     sanitize_opener,
 )
 from services.intent_service.capability_legibility import (
@@ -133,8 +134,81 @@ class TestConnectionState:
 
     def test_needs_reconnecting_is_not_called_connected(self):
         block = render_capability_block(_ctx([{"name": "github", "status": "needs_reconnecting"}]))
-        assert "Needs reconnecting" in block and "GitHub" in block
+        assert "GitHub needs reconnecting" in block
         assert "Connected, and what I read" not in block
+
+    def test_only_reconnect_2418(self):
+        """Issue 2418 (Arch's mechanism; CXO's words 01M831QSW9): nothing active and
+        GitHub needing reconnecting never gets "none ... yet" or an offer to connect
+        GitHub, and the reconnect fact is one sentence, not a label."""
+        lines = render_connection_lines(
+            {"integrations": [{"name": "github", "status": "needs_reconnecting"}]}
+        )
+        assert lines == [
+            "I'm not reading from any of your tools right now.",
+            "GitHub needs reconnecting. You can do that in Settings → Integrations → GitHub.",
+        ]
+        text = "\n".join(lines)
+        for wrong in ("yet", "None of your tools are connected", "connect GitHub"):
+            assert wrong not in text
+        assert "Needs reconnecting (" not in text
+        for cause in ("grant", "authorization", "expired", "revoked", "failure"):
+            assert cause not in text
+
+    def test_reconnect_plus_absent_2418(self):
+        """web-seed-1386's state: reconnect sentence first, then the never-connected one."""
+        payload = [
+            {"name": "github", "status": "needs_reconnecting"},
+            {"name": "calendar", "status": "inactive"},
+        ]
+        assert render_connection_lines({"integrations": payload}) == [
+            "I'm not reading from any of your tools right now.",
+            "GitHub needs reconnecting. You can do that in Settings → Integrations → GitHub.",
+            "Not connected, so I'm not using them (connect in Settings → Integrations): "
+            "Google Calendar",
+        ]
+
+    def test_reconnect_plus_active_2418(self):
+        payload = [
+            {"name": "calendar", "status": "active"},
+            {"name": "github", "status": "needs_reconnecting"},
+        ]
+        lines = render_connection_lines({"integrations": payload})
+        assert lines[0] == "Connected, and what I read from each:"
+        assert lines[-1] == (
+            "GitHub needs reconnecting. You can do that in Settings → Integrations → GitHub."
+        )
+        assert "I'm not reading from any of your tools" not in "\n".join(lines)
+
+    def test_several_needing_reconnecting_is_one_sentence_2418(self):
+        payload = [
+            {"name": "github", "status": "needs_reconnecting"},
+            {"name": "calendar", "status": "needs_reconnecting"},
+        ]
+        assert render_connection_lines({"integrations": payload}) == [
+            "I'm not reading from any of your tools right now.",
+            "GitHub and Google Calendar need reconnecting. "
+            "You can do that in Settings → Integrations.",
+        ]
+
+    def test_single_non_github_name_ends_at_integrations_2418(self):
+        """CXO 01M832BJE4: no pointer to a Settings place that isn't confirmed to exist."""
+        lines = render_connection_lines(
+            {"integrations": [{"name": "calendar", "status": "needs_reconnecting"}]}
+        )
+        assert lines[-1] == (
+            "Google Calendar needs reconnecting. You can do that in Settings → Integrations."
+        )
+
+    def test_none_connected_is_unchanged_2418(self):
+        payload = [
+            {"name": "github", "status": "inactive"},
+            {"name": "calendar", "status": "inactive"},
+        ]
+        assert render_connection_lines({"integrations": payload}) == [
+            "None of your tools are connected yet, so I'm not reading from any of them. "
+            "You can connect GitHub or Google Calendar in Settings → Integrations."
+        ]
 
     def test_not_connected_list_names_only_beta_connectors(self):
         payload = [

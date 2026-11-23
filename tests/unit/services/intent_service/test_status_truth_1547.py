@@ -116,19 +116,22 @@ class TestFloorIntegrationVisibility:
         assert integrations["notion"] == "inactive"
 
     def test_renderer_emits_both_directions(self):
-        """The two-direction line: 'GitHub connected; Notion isn't' — not omission."""
+        """The two-direction line: 'GitHub connected; Calendar isn't' — not omission.
+
+        Issue 2419: the not-connected direction names only what this host offers, so
+        the pin uses Calendar (Notion is offered on staging only)."""
         floor = ConversationalFloor(llm_client=MagicMock())
         out = floor._format_domain_context(
             {
                 "integrations": [
                     {"name": "github", "status": "active"},
+                    {"name": "calendar", "status": "inactive"},
                     {"name": "notion", "status": "inactive"},
                 ]
             }
         )
         assert "Connected integrations: GitHub" in out
-        assert "Not connected" in out
-        assert "Notion" in out
+        assert "- Not connected (available in Settings): Google Calendar\n" in out
 
     def test_renderer_honest_when_nothing_connected(self):
         floor = ConversationalFloor(llm_client=MagicMock())

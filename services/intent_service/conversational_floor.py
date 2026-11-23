@@ -1961,10 +1961,15 @@ class ConversationalFloor:
                 # integration state entirely.
                 # #2100: the display set and what chat READS per connector live in
                 # capability_legibility, written by code beside the readers.
+                from services.integrations.integration_status_service import (
+                    offered_connectors,
+                )
                 from services.intent_service.capability_legibility import (
                     INTEGRATION_DISPLAY as display,
                 )
                 from services.intent_service.capability_legibility import chat_reads_line
+
+                _offered = offered_connectors()
 
                 def _disp(name: object) -> str:
                     return display.get(str(name), str(name).title())
@@ -1993,6 +1998,9 @@ class ConversationalFloor:
                     for i in integrations
                     if isinstance(i, dict)
                     and i.get("status") not in ("active", "needs_reconnecting", "check_failed")
+                    # Issue 2419 (Arch 01M832SQEC): only what this host offers is
+                    # ever called available. Read at call time (staging adds Notion).
+                    and str(i.get("name")) in _offered
                 ]
                 if connected or not unchecked:
                     # "none" only on a verified read: with a check failed and nothing
@@ -2026,6 +2034,8 @@ class ConversationalFloor:
                             "check_failed",
                         ):
                             continue
+                        if str(i.get("name")) not in _offered:
+                            continue  # issue 2419: no connect sentence for it either
                         _line = not_connected_line(str(i.get("name")))
                         if _line:
                             lines.append(f"  - {_disp(i.get('name'))}: say \"{_line}\"")
