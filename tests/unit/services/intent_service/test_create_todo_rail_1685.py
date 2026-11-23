@@ -322,8 +322,8 @@ class TestNoNewCeremony:
         )
         assert [row.text for row in todo_boundary["created"]] == ["buy milk"]
         assert result.success is True
-        assert "I've added that to your list." in result.message
-        assert "'buy milk' is now tracked" in result.message
+        # Issue 2427 (CXO 11-23): one sentence, with the title, and nothing after it.
+        assert result.message == "I've added 'buy milk' to your list."
 
     async def test_imperative_create_asks_nothing_and_leaves_nothing_pending(
         self, live_service, monkeypatch, todo_boundary
@@ -375,7 +375,7 @@ class TestNoNewCeremony:
             message=IMPERATIVE_CREATE, session_id=sid, user_id=_USER
         )
         assert [row.text for row in todo_boundary["created"]] == ["buy milk"]
-        assert "I've added that to your list." in result.message
+        assert "I've added 'buy milk' to your list." in result.message
 
     async def test_unauthenticated_create_declines_without_writing(
         self, live_service, monkeypatch, todo_boundary
@@ -439,7 +439,7 @@ class TestAmbiguousFramingFollowsTheRatifiedMatrix:
         monkeypatch.setattr(live_service.intent_classifier, "classify_multiple", _explosive)
         result = await live_service.process_intent(message="yes", session_id=sid, user_id=_USER)
         assert [row.text for row in todo_boundary["created"]] == ["buy milk"]
-        assert "I've added that to your list." in result.message
+        assert "I've added 'buy milk' to your list." in result.message
         assert _pending_offers(live_service).get(sid) is None
 
     async def test_execute_mode_user_proceeds_on_the_same_ambiguity(
@@ -455,7 +455,7 @@ class TestAmbiguousFramingFollowsTheRatifiedMatrix:
         )
         assert [row.text for row in todo_boundary["created"]] == ["buy milk"]
         assert _pending_offers(live_service).get(sid) is None
-        assert "I've added that to your list." in result.message
+        assert "I've added 'buy milk' to your list." in result.message
 
 
 # ---------------------------------------------------------------------------

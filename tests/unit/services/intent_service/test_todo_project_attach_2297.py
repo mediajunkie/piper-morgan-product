@@ -132,8 +132,7 @@ class TestWordGuard:
         result = await _run(_intent(msg, {"text": TITLE, "project": "Mobile Redesign"}), svc)
         assert "project_id" not in svc.todo_handlers._calls[0]
         assert svc.todo_handlers._calls[0]["text"] == TITLE
-        assert result.message.startswith("I've added that to your list.")
-        assert "Mobile Redesign" not in result.message
+        assert result.message == f"I've added '{TITLE}' to your list."
 
     def test_one_missing_word_is_enough(self):
         intent = _intent("add to Mobile: x", {"project": "Mobile Redesign"})
@@ -228,7 +227,7 @@ class TestNoArgIsUnchanged:
             }
         ]
         assert "project_id" not in svc.todo_handlers._calls[0]
-        assert result.message.startswith("I've added that to your list.")
+        assert result.message == "I've added 'buy oat milk' to your list."
 
 
 class TestOneMatch:

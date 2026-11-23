@@ -91,7 +91,7 @@ class TestSideChannelForStringHandlers:
             "target_title": "review the roadmap",
         }
         result = IntentProcessingResult(
-            success=True, message="I've added that to your list.", intent_data={}
+            success=True, message="I've added 'x' to your list.", intent_data={}
         )
         await IntentService._record_session_activity(_self(), _CONV, _USER, result)
         await IntentService._record_session_activity(
