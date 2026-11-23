@@ -280,6 +280,19 @@ INTEGRATION_DISPLAY: Dict[str, str] = {
     "notion": "Notion",
 }
 
+#: Display names that have their own row on the Settings → Integrations page, so a
+#: code-written pointer may end "→ {name}". The ONE list (Arch 01M8345420, 2026-11-22):
+#: every code-written sub-path reads it, so two lists cannot drift apart.
+SETTINGS_SUBPATH_PLACES = frozenset({"GitHub", "Google Calendar"})
+
+
+def settings_place(display_name: str) -> str:
+    """The house path to a connector's place in Settings: with the sub-path only when
+    the name is on ``SETTINGS_SUBPATH_PLACES``."""
+    base = "Settings → Integrations"
+    return f"{base} → {display_name}" if display_name in SETTINGS_SUBPATH_PLACES else base
+
+
 #: Per connector, what chat reads today. EMPTY means: connects, chat reads nothing.
 CHAT_READS: Dict[str, Tuple[ChatRead, ...]] = {
     "github": (
