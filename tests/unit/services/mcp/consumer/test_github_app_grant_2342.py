@@ -94,6 +94,24 @@ def app_off(monkeypatch):
         monkeypatch.delenv(name, raising=False)
 
 
+@pytest.fixture
+def state_redis():
+    """#2345: the connect state lives in Redis; Slack's in-memory fake stands in."""
+    from contextlib import asynccontextmanager
+    from unittest.mock import patch
+
+    from tests.unit.services.integrations.slack.test_oauth_redis_state_1109 import _FakeRedis
+
+    fake = _FakeRedis()
+
+    @asynccontextmanager
+    async def _scope():
+        yield fake
+
+    with patch("services.cache.redis_factory.RedisFactory.redis_scope", side_effect=_scope):
+        yield fake
+
+
 # ── the grant record ────────────────────────────────────────────────────────────────
 
 
@@ -272,16 +290,16 @@ def _token_reply(tag="new"):
 class TestHandlerInAppMode:
     """Requirements 1 and 3: no ``scope`` on the authorize URL; four fields stored."""
 
-    def test_authorize_url_sends_no_scope_and_uses_the_app_client(self, app_on):
-        url, _ = GitHubOAuthHandler().generate_authorization_url(_OWNER)
+    async def test_authorize_url_sends_no_scope_and_uses_the_app_client(self, app_on, state_redis):
+        url, _ = await GitHubOAuthHandler().generate_authorization_url(_OWNER)
         assert "scope=" not in url
         assert "client_id=app-client-id" in url
 
-    def test_classic_mode_still_asks_for_repo(self, app_off, monkeypatch):
+    async def test_classic_mode_still_asks_for_repo(self, app_off, monkeypatch, state_redis):
         monkeypatch.setenv("GITHUB_OAUTH_CLIENT_ID", "classic-id")
         monkeypatch.setenv("GITHUB_OAUTH_CLIENT_SECRET", "classic-secret")
         handler = GitHubOAuthHandler()
-        url, _ = handler.generate_authorization_url(_OWNER)
+        url, _ = await handler.generate_authorization_url(_OWNER)
         assert handler.app_mode is False
         assert "scope=repo" in url and "client_id=classic-id" in url
 

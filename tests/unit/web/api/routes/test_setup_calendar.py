@@ -50,9 +50,11 @@ class TestCalendarOAuthTrigger:
             mock_instance = MagicMock()
             mock_instance.client_id = "test_client_id"
             mock_instance.client_secret = "test_client_secret"
-            mock_instance.generate_authorization_url.return_value = (
-                "https://accounts.google.com/o/oauth2/v2/auth?client_id=test&scope=calendar.readonly",
-                "state_abc123",
+            mock_instance.generate_authorization_url = AsyncMock(  # #2345: async
+                return_value=(
+                    "https://accounts.google.com/o/oauth2/v2/auth?client_id=test&scope=calendar.readonly",
+                    "state_abc123",
+                )
             )
             MockHandler.return_value = mock_instance
 
@@ -82,9 +84,11 @@ class TestCalendarOAuthTrigger:
             mock_instance = MagicMock()
             mock_instance.client_id = "test_client_id"
             mock_instance.client_secret = "test_client_secret"
-            mock_instance.generate_authorization_url.return_value = (
-                "https://accounts.google.com/o/oauth2/v2/auth?scope=https://www.googleapis.com/auth/calendar.readonly",
-                "state_xyz789",
+            mock_instance.generate_authorization_url = AsyncMock(  # #2345: async
+                return_value=(
+                    "https://accounts.google.com/o/oauth2/v2/auth?scope=https://www.googleapis.com/auth/calendar.readonly",
+                    "state_xyz789",
+                )
             )
             MockHandler.return_value = mock_instance
 
@@ -108,9 +112,11 @@ class TestCalendarOAuthTrigger:
             mock_instance = MagicMock()
             mock_instance.client_id = "test_client_id"
             mock_instance.client_secret = "test_client_secret"
-            mock_instance.generate_authorization_url.return_value = (
-                "https://accounts.google.com/o/oauth2/v2/auth?access_type=offline&prompt=consent",
-                "state_offline",
+            mock_instance.generate_authorization_url = AsyncMock(  # #2345: async
+                return_value=(
+                    "https://accounts.google.com/o/oauth2/v2/auth?access_type=offline&prompt=consent",
+                    "state_offline",
+                )
             )
             MockHandler.return_value = mock_instance
 
