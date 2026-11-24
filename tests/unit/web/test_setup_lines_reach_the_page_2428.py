@@ -194,12 +194,83 @@ class TestTheDatabaseLineThroughTheRoute:
         assert "Errno" not in reply.text and "5499" not in reply.text
 
 
+# Issue 2430 (Arch, mail 01M8786G87): the closed list of picker functions a marked
+# ``detail=`` may call. The guard reads each one's body and fails unless every ``return``
+# is an UPPER_CASE name or ``None``. A new entry here is a diff Arch reads.
+DETAIL_PICKERS = ("github_degrade_fixed_line",)
+
+
+def _returns_only_constants(func):
+    """True when every ``return`` in ``func`` is an UPPER_CASE name or ``None``."""
+    returns = [n for n in ast.walk(func) if isinstance(n, ast.Return)]
+    if not returns:
+        return False
+    for node in returns:
+        value = node.value
+        ok = (
+            value is None
+            or (isinstance(value, ast.Constant) and value.value is None)
+            or (isinstance(value, ast.Name) and value.id.isupper())
+        )
+        if not ok:
+            return False
+    return True
+
+
+def _picker_definitions(name):
+    """Every function named ``name`` defined under ``web/`` and ``services/``."""
+    found = []
+    for folder in ("web", "services"):
+        for path in sorted((ROOT / folder).rglob("*.py")):
+            text = path.read_text(encoding="utf-8")
+            if f"def {name}" not in text:
+                continue
+            for node in ast.walk(ast.parse(text)):
+                if isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef)) and node.name == name:
+                    found.append(node)
+    return found
+
+
+def _detail_problem(detail, find_definitions=_picker_definitions):
+    """None when a marked ``detail`` is allowed, else why not: a string literal, an
+    UPPER_CASE name, or a call to a listed picker whose body returns only constants."""
+    if isinstance(detail, ast.Constant) and isinstance(detail.value, str):
+        return None
+    if isinstance(detail, ast.Name) and detail.id.isupper():
+        return None
+    if isinstance(detail, ast.Call) and isinstance(detail.func, ast.Name):
+        name = detail.func.id
+        if name not in DETAIL_PICKERS:
+            return f"{name} is not on the closed list of pickers"
+        definitions = find_definitions(name)
+        if len(definitions) != 1:
+            return f"{name} is defined {len(definitions)} times, not once"
+        if not _returns_only_constants(definitions[0]):
+            return f"{name} returns something other than an UPPER_CASE name or None"
+        return None
+    return "not a literal, an UPPER_CASE name or a listed picker"
+
+
+def _renaming_imports(tree):
+    """Line numbers of every import that binds ``UserFacingHTTPException`` to another name."""
+    return [
+        node.lineno
+        for node in ast.walk(tree)
+        if isinstance(node, (ast.Import, ast.ImportFrom))
+        for alias in node.names
+        if alias.name.split(".")[-1] == "UserFacingHTTPException"
+        and alias.asname not in (None, "UserFacingHTTPException")
+    ]
+
+
 class TestArchsGuardOverEveryMarkedRaise:
     """Arch, 2026-11-24 (mail 01M8742TG4): across ``web/`` and ``services/``, the detail of
     every ``UserFacingHTTPException(...)`` call is a string literal or a module-level
     UPPER_CASE constant. An f-string, ``str(e)``, a concatenation or an ordinary variable
     fails, so exception text cannot reach a person through the one path the handler does
-    not mask (2402's rule). DENOMINATOR: every Python file under both folders."""
+    not mask (2402's rule). One allowance (issue 2430, Arch mail 01M8786G87): a call to a
+    picker on ``DETAIL_PICKERS`` whose every ``return`` is an UPPER_CASE name or None.
+    DENOMINATOR: every Python file under both folders."""
 
     @staticmethod
     def _marked_calls():
@@ -218,19 +289,95 @@ class TestArchsGuardOverEveryMarkedRaise:
                         calls.append((path.relative_to(ROOT).as_posix(), node))
         return calls
 
+    @staticmethod
+    def _trees():
+        for folder in ("web", "services"):
+            for path in sorted((ROOT / folder).rglob("*.py")):
+                text = path.read_text(encoding="utf-8")
+                yield path.relative_to(ROOT).as_posix(), text
+
     def test_the_guard_sees_the_known_sites(self):
-        files = {path for path, _ in self._marked_calls()}
-        assert files == {"web/api/routes/setup.py", "web/api/routes/settings_integrations.py"}
         per_file = {}
         for path, _ in self._marked_calls():
             per_file[path] = per_file.get(path, 0) + 1
-        # setup.py: the eleven vetted lines, and 2345's two (Redis down at the Calendar
-        # start; Google's client not configured). settings_integrations.py: eight
-        # preferences reads, the Notion check, the GitHub token read, and 2345's two starts.
+        # setup.py: the eleven vetted lines, and 2345's three (Redis down at the Calendar
+        # start; Google's and Slack's clients not configured). settings_integrations.py:
+        # eight preferences reads, the Notion check, the GitHub token read, 2345's two
+        # starts and (issue 2430) the repository list's named degrade line. Issue 2429: the
+        # session line at the refresh route, standup's dependency and get_current_user; the
+        # admin and operations-reader gates.
         assert per_file == {
             "web/api/routes/setup.py": 14,
-            "web/api/routes/settings_integrations.py": 12,
+            "web/api/routes/settings_integrations.py": 13,
+            "web/api/routes/auth.py": 1,
+            "web/api/routes/standup.py": 1,
+            "services/auth/auth_middleware.py": 3,
         }
+
+    def test_no_import_renames_the_class(self):
+        """Issue 2429 (Arch): ``import ... as`` would hide a call from this guard, which
+        reads calls by the name ``UserFacingHTTPException``."""
+        renamed = []
+        for path, text in self._trees():
+            if "UserFacingHTTPException" not in text:
+                continue
+            renamed += [f"{path}:{line}" for line in _renaming_imports(ast.parse(text))]
+        assert renamed == []
+
+    def test_the_class_is_never_called_through_an_attribute(self):
+        """``errors.UserFacingHTTPException(...)`` would also escape the by-name read."""
+        found = []
+        for path, text in self._trees():
+            if "UserFacingHTTPException" not in text:
+                continue
+            for node in ast.walk(ast.parse(text)):
+                if (
+                    isinstance(node, ast.Call)
+                    and isinstance(node.func, ast.Attribute)
+                    and node.func.attr == "UserFacingHTTPException"
+                ):
+                    found.append(f"{path}:{node.lineno}")
+        assert found == []
+
+    @pytest.mark.parametrize(
+        "source",
+        [
+            "from services.api.errors import UserFacingHTTPException as Shown",
+            "from web.api.exceptions import UserFacingHTTPException as UFE",
+        ],
+    )
+    def test_the_rename_rule_refuses_an_alias(self, source):
+        assert _renaming_imports(ast.parse(source)) == [1]
+
+    def test_the_rename_rule_allows_the_plain_import(self):
+        assert (
+            _renaming_imports(ast.parse("from services.api.errors import UserFacingHTTPException"))
+            == []
+        )
+
+    def test_every_middleware_503_message_is_a_literal_or_an_upper_case_constant(self):
+        """Issue 2429: ``AuthMiddleware._service_unavailable_response`` builds its own 503,
+        which never passes the app's handler, so its message reaches the client as
+        written. The same rule as a marked detail holds for every call."""
+        calls = []
+        for path, text in self._trees():
+            if "_service_unavailable_response" not in text:
+                continue
+            for node in ast.walk(ast.parse(text)):
+                if (
+                    isinstance(node, ast.Call)
+                    and isinstance(node.func, ast.Attribute)
+                    and node.func.attr == "_service_unavailable_response"
+                ):
+                    calls.append((path, node))
+        assert [path for path, _ in calls] == ["services/auth/auth_middleware.py"]
+        for path, node in calls:
+            keywords = {k.arg: k.value for k in node.keywords}
+            message = node.args[0] if node.args else keywords.get("message")
+            ok = (isinstance(message, ast.Constant) and isinstance(message.value, str)) or (
+                isinstance(message, ast.Name) and message.id.isupper()
+            )
+            assert ok, f"{path}:{node.lineno}: {ast.unparse(message)[:70] if message else None}"
 
     def test_every_marked_detail_is_a_literal_or_an_upper_case_constant(self):
         """No exception to the rule (Arch, mail 01M8762YMW): a ``.format`` on a template
@@ -239,10 +386,8 @@ class TestArchsGuardOverEveryMarkedRaise:
             keywords = {k.arg: k.value for k in node.keywords}
             assert "detail" in keywords, f"{path}:{node.lineno}: detail must be a keyword"
             detail = keywords["detail"]
-            ok = (isinstance(detail, ast.Constant) and isinstance(detail.value, str)) or (
-                isinstance(detail, ast.Name) and detail.id.isupper()
-            )
-            assert ok, f"{path}:{node.lineno}: {ast.unparse(detail)[:70]}"
+            problem = _detail_problem(detail)
+            assert problem is None, f"{path}:{node.lineno}: {ast.unparse(detail)[:70]}: {problem}"
 
     @pytest.mark.parametrize(
         "source",
@@ -256,10 +401,52 @@ class TestArchsGuardOverEveryMarkedRaise:
     )
     def test_the_rule_refuses_the_shapes_arch_named(self, source):
         detail = {k.arg: k.value for k in ast.parse(source).body[0].value.keywords}["detail"]
-        fixed = (isinstance(detail, ast.Constant) and isinstance(detail.value, str)) or (
-            isinstance(detail, ast.Name) and detail.id.isupper()
+        assert _detail_problem(detail) is not None
+
+    @staticmethod
+    def _detail_of(source):
+        return {k.arg: k.value for k in ast.parse(source).body[0].value.keywords}["detail"]
+
+    def test_the_closed_list_holds_one_picker(self):
+        assert DETAIL_PICKERS == ("github_degrade_fixed_line",)
+
+    def test_the_allowance_refuses_a_function_not_on_the_list(self):
+        detail = self._detail_of(
+            "UserFacingHTTPException(status_code=502, detail=github_degrade_reply(d))"
         )
-        assert not fixed
+        assert "not on the closed list" in _detail_problem(detail)
+
+    @pytest.mark.parametrize(
+        "body",
+        [
+            "    return degradation.user_message",
+            "    if x:\n        return LINE\n    return getattr(d, 'user_message', '')",
+            '    return f"{LINE}"',
+            "    return line",
+            "    return LINE + OTHER",
+            "    pass",
+        ],
+    )
+    def test_the_allowance_refuses_a_listed_picker_with_a_bad_return(self, body):
+        picker = ast.parse(f"def github_degrade_fixed_line(degradation):\n{body}\n").body[0]
+        detail = self._detail_of(
+            "UserFacingHTTPException(status_code=502, detail=github_degrade_fixed_line(d))"
+        )
+        problem = _detail_problem(detail, find_definitions=lambda _name: [picker])
+        assert problem is not None and "returns something other" in problem
+
+    def test_the_allowance_accepts_a_listed_picker_with_constant_returns(self):
+        picker = ast.parse(
+            "def github_degrade_fixed_line(d):\n    if d:\n        return LINE\n    return None\n"
+        ).body[0]
+        detail = self._detail_of(
+            "UserFacingHTTPException(status_code=502, detail=github_degrade_fixed_line(d))"
+        )
+        assert _detail_problem(detail, find_definitions=lambda _name: [picker]) is None
+
+    def test_the_real_picker_passes_the_body_read(self):
+        (definition,) = _picker_definitions("github_degrade_fixed_line")
+        assert _returns_only_constants(definition)
 
 
 class TestThePreferencesLinesAreWrittenWhole:
