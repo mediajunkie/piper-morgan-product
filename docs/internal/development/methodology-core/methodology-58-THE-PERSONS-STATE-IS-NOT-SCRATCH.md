@@ -83,6 +83,11 @@ entry is about where a run lands. The two meet in the fix: the keychain rule fir
    `browser_keychain_check.py` takes a browser under `/Applications` to be his own. The remembered flag
    failed twice. HOST's proposal is this entry's rule 2, fix the default: `should_open_browser()` returns
    False when stdout isn't a terminal, so a tester at a terminal still gets the tab and a seat never does.
+   **Fixed 11-24 (`21e0ee47b0`, Lead; Arch approved it as a stricter edit, decisions.log `07:40`; HOST
+   read it):** `should_open_browser()` is False unless stdin and stdout are both terminals, and
+   `--no-browser` stays as a second guard. A pin fails if shipped code calls `webbrowser` anywhere but
+   `main.py`'s two gated sites. HOST's limit: the pin does not see a launch by `subprocess`, `open` or
+   `xdg-open`.
 
 A seventh of the same shape, at the money layer, is why ADR-084 exists: the only provider key a seat could
 reach was one of his, so every paid run became a step on his hands. The ADR's answer is this entry's
