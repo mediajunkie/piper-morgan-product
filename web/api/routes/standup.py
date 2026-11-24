@@ -282,7 +282,11 @@ async def get_current_user_optional(
         )
 
     # Validate token
-    from services.api.errors import APIError
+    from services.api.errors import (
+        SESSION_COULD_NOT_BE_CHECKED_MESSAGE,
+        APIError,
+        UserFacingHTTPException,
+    )
     from services.auth.jwt_service import (
         BlacklistUnavailable,
         TokenExpired,
@@ -312,16 +316,9 @@ async def get_current_user_optional(
         )
     except BlacklistUnavailable:
         # #1792: store outage — refuse, but do not claim a revocation.
-        raise APIError(
-            status_code=503,
-            error_code="REVOCATION_CHECK_UNAVAILABLE",
-            details={
-                "detail": (
-                    "Couldn't verify your session right now — nothing was "
-                    "changed. Try again in a moment."
-                )
-            },
-        )
+        # Issue 2429: APIError's handler never shows `details` to a person, so this
+        # raises the user-facing exception with CXO's line; still 503.
+        raise UserFacingHTTPException(status_code=503, detail=SESSION_COULD_NOT_BE_CHECKED_MESSAGE)
     except TokenExpired:
         raise APIError(
             status_code=401,

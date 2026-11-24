@@ -194,6 +194,18 @@ class TestTheDatabaseLineThroughTheRoute:
         assert "Errno" not in reply.text and "5499" not in reply.text
 
 
+def _renaming_imports(tree):
+    """Line numbers of every import that binds ``UserFacingHTTPException`` to another name."""
+    return [
+        node.lineno
+        for node in ast.walk(tree)
+        if isinstance(node, (ast.Import, ast.ImportFrom))
+        for alias in node.names
+        if alias.name.split(".")[-1] == "UserFacingHTTPException"
+        and alias.asname not in (None, "UserFacingHTTPException")
+    ]
+
+
 class TestArchsGuardOverEveryMarkedRaise:
     """Arch, 2026-11-24 (mail 01M8742TG4): across ``web/`` and ``services/``, the detail of
     every ``UserFacingHTTPException(...)`` call is a string literal or a module-level
@@ -218,19 +230,94 @@ class TestArchsGuardOverEveryMarkedRaise:
                         calls.append((path.relative_to(ROOT).as_posix(), node))
         return calls
 
+    @staticmethod
+    def _trees():
+        for folder in ("web", "services"):
+            for path in sorted((ROOT / folder).rglob("*.py")):
+                text = path.read_text(encoding="utf-8")
+                yield path.relative_to(ROOT).as_posix(), text
+
     def test_the_guard_sees_the_known_sites(self):
-        files = {path for path, _ in self._marked_calls()}
-        assert files == {"web/api/routes/setup.py", "web/api/routes/settings_integrations.py"}
         per_file = {}
         for path, _ in self._marked_calls():
             per_file[path] = per_file.get(path, 0) + 1
-        # setup.py: the eleven vetted lines, and 2345's two (Redis down at the Calendar
-        # start; Google's client not configured). settings_integrations.py: eight
-        # preferences reads, the Notion check, the GitHub token read, and 2345's two starts.
+        # setup.py: the eleven vetted lines, and 2345's three (Redis down at the Calendar
+        # start; Google's and Slack's clients not configured). settings_integrations.py:
+        # eight preferences reads, the Notion check, the GitHub token read, and 2345's two
+        # starts. Issue 2429: the session line at the refresh route, standup's dependency
+        # and get_current_user; the admin and operations-reader gates.
         assert per_file == {
             "web/api/routes/setup.py": 14,
             "web/api/routes/settings_integrations.py": 12,
+            "web/api/routes/auth.py": 1,
+            "web/api/routes/standup.py": 1,
+            "services/auth/auth_middleware.py": 3,
         }
+
+    def test_no_import_renames_the_class(self):
+        """Issue 2429 (Arch): ``import ... as`` would hide a call from this guard, which
+        reads calls by the name ``UserFacingHTTPException``."""
+        renamed = []
+        for path, text in self._trees():
+            if "UserFacingHTTPException" not in text:
+                continue
+            renamed += [f"{path}:{line}" for line in _renaming_imports(ast.parse(text))]
+        assert renamed == []
+
+    def test_the_class_is_never_called_through_an_attribute(self):
+        """``errors.UserFacingHTTPException(...)`` would also escape the by-name read."""
+        found = []
+        for path, text in self._trees():
+            if "UserFacingHTTPException" not in text:
+                continue
+            for node in ast.walk(ast.parse(text)):
+                if (
+                    isinstance(node, ast.Call)
+                    and isinstance(node.func, ast.Attribute)
+                    and node.func.attr == "UserFacingHTTPException"
+                ):
+                    found.append(f"{path}:{node.lineno}")
+        assert found == []
+
+    @pytest.mark.parametrize(
+        "source",
+        [
+            "from services.api.errors import UserFacingHTTPException as Shown",
+            "from web.api.exceptions import UserFacingHTTPException as UFE",
+        ],
+    )
+    def test_the_rename_rule_refuses_an_alias(self, source):
+        assert _renaming_imports(ast.parse(source)) == [1]
+
+    def test_the_rename_rule_allows_the_plain_import(self):
+        assert (
+            _renaming_imports(ast.parse("from services.api.errors import UserFacingHTTPException"))
+            == []
+        )
+
+    def test_every_middleware_503_message_is_a_literal_or_an_upper_case_constant(self):
+        """Issue 2429: ``AuthMiddleware._service_unavailable_response`` builds its own 503,
+        which never passes the app's handler, so its message reaches the client as
+        written. The same rule as a marked detail holds for every call."""
+        calls = []
+        for path, text in self._trees():
+            if "_service_unavailable_response" not in text:
+                continue
+            for node in ast.walk(ast.parse(text)):
+                if (
+                    isinstance(node, ast.Call)
+                    and isinstance(node.func, ast.Attribute)
+                    and node.func.attr == "_service_unavailable_response"
+                ):
+                    calls.append((path, node))
+        assert [path for path, _ in calls] == ["services/auth/auth_middleware.py"]
+        for path, node in calls:
+            keywords = {k.arg: k.value for k in node.keywords}
+            message = node.args[0] if node.args else keywords.get("message")
+            ok = (isinstance(message, ast.Constant) and isinstance(message.value, str)) or (
+                isinstance(message, ast.Name) and message.id.isupper()
+            )
+            assert ok, f"{path}:{node.lineno}: {ast.unparse(message)[:70] if message else None}"
 
     def test_every_marked_detail_is_a_literal_or_an_upper_case_constant(self):
         """No exception to the rule (Arch, mail 01M8762YMW): a ``.format`` on a template

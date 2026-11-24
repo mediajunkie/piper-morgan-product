@@ -13,6 +13,10 @@ from typing import List, Optional
 
 from fastapi import HTTPException
 
+# Issue 2429: the class moved to services/api/errors.py so a services/ gate can raise it;
+# re-exported here so existing importers keep working.
+from services.api.errors import UserFacingHTTPException  # noqa: F401
+
 
 class HTTPExceptionWithCookieClear(HTTPException):
     """HTTPException that signals the friendly-error handler to clear named cookies.
@@ -34,14 +38,3 @@ class HTTPExceptionWithCookieClear(HTTPException):
     ):
         super().__init__(*args, **kwargs)
         self.clear_cookies = clear_cookies or []
-
-
-class UserFacingHTTPException(HTTPException):
-    """An HTTP error whose detail is vetted product copy: the app's error handler keeps
-    it for a 5xx instead of masking it (#2154).
-
-    Use it only where the detail is a fixed line the CXO has worded. A detail built from
-    an exception's text, a path or a name stays a plain ``HTTPException``, which the
-    handler masks (issue 2428 pins this for the setup routes)."""
-
-    user_facing = True
