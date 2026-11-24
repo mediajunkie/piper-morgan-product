@@ -383,3 +383,62 @@ class TestNoUnmarked4xxCanReachTheClientWithItsOwnWords:
             and ast.unparse(n.targets[0]) == "friendly_message"
         ]
         assert len(sends_detail) == 3
+
+
+class TestTheResetPageKeepsItsLengthRule:
+    """Arch, mail 01M87RHFPQ (2026-11-24): the reset request carried ``min_length=8`` on its
+    two password fields, so pydantic refused a short password before the route ran and,
+    with the validation 422 now one fixed line, the person would have lost "at least 8
+    characters". The rule lives in ``PasswordValidator`` only. LAYER: the real app, its
+    real handlers and the real route, through a TestClient; the short password is refused
+    before any database read, so none is needed."""
+
+    @staticmethod
+    def _post(new, confirm):
+        from web.app import app
+
+        return TestClient(app, follow_redirects=False).post(
+            "/api/v1/auth/reset-password",
+            json={
+                "reset_token": "a-made-up-code",
+                "new_password": new,
+                "new_password_confirm": confirm,
+            },
+        )
+
+    def test_a_seven_character_password_gets_the_length_line_not_the_422_line(self):
+        from services.api.errors import UNREADABLE_REQUEST_LINE
+
+        reply = self._post("Abc12!x", "Abc12!x")
+        assert reply.status_code == 400
+        line = "Your password needs at least 8 characters."
+        assert reply.json() == {"message": line, "detail": line}
+        assert UNREADABLE_REQUEST_LINE not in reply.text
+
+    def test_a_mismatched_pair_gets_the_mismatch_line(self):
+        reply = self._post("Abcdef12!", "Abcdef12?")
+        assert reply.status_code == 400
+        assert reply.json()["message"] == "The new passwords don't match."
+
+    def test_a_password_with_no_listed_special_character_is_told_which_count(self):
+        reply = self._post("Abcdefg12-", "Abcdefg12-")
+        assert reply.status_code == 400
+        assert reply.json()["message"] == (
+            "Your password needs a special character, such as ! @ # $ % ^ & * ( )."
+        )
+
+    def test_the_reset_request_holds_no_length_rule_of_its_own(self):
+        from web.api.routes.auth import PasswordResetRequest
+
+        for name in ("new_password", "new_password_confirm"):
+            assert PasswordResetRequest.model_fields[name].metadata == []
+
+    def test_a_missing_reset_code_is_still_a_validation_422(self):
+        from services.api.errors import UNREADABLE_REQUEST_LINE
+
+        reply = TestClient(__import__("web.app", fromlist=["app"]).app).post(
+            "/api/v1/auth/reset-password",
+            json={"reset_token": "", "new_password": "x", "new_password_confirm": "x"},
+        )
+        assert reply.status_code == 422
+        assert reply.json()["message"] == UNREADABLE_REQUEST_LINE

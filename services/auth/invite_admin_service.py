@@ -69,20 +69,25 @@ class InviteAdminError(ValueError):
         self.left = left
 
 
-# The lines an admin reads. Today's words, unchanged, now as constants (CXO has the read).
-# The first is built once at import from the limit it names.
-INVITE_MINT_COUNT_LINE = "Mint between 1 and {limit} codes at a time.".format(
-    limit=int(MAX_PER_REQUEST)
+# The lines an admin reads (CXO, mail 01M87RB23J, 2026-11-24). The first is built once at
+# import from the limit it names. "Nothing was revoked" is true: each refusal is raised
+# before the write.
+INVITE_MINT_COUNT_LINE = "You can create between 1 and {max} invite codes at a time.".format(
+    max=int(MAX_PER_REQUEST)
 )
 INVITE_DAILY_LIMIT_TEMPLATE = (
-    "Daily limit: {minted} of {limit} codes minted today; {left} left today."
+    "That would go past today's limit: {used} of {limit} invite codes created, {left} left."
 )
-INVITE_NOT_MASKED_LINE = "That is not a masked invite code (ABCD…WXYZ)."
+INVITE_NOT_MASKED_LINE = (
+    "That doesn't look like a masked invite code. It should look like ABCD…WXYZ."
+)
 INVITE_NO_MATCH_LINE = "No invite code matches that masked form."
-INVITE_AMBIGUOUS_LINE = "More than one unused code matches that masked form; nothing was revoked."
-INVITE_ALREADY_REDEEMED_LINE = "That code is already redeemed; nothing to revoke."
-INVITE_ALREADY_REVOKED_LINE = "That code is already revoked; nothing to revoke."
-INVITE_USED_MEANWHILE_LINE = "That code was used in the meantime; nothing was revoked."
+INVITE_AMBIGUOUS_LINE = (
+    "More than one unused code matches that masked form, so nothing was revoked."
+)
+INVITE_ALREADY_REDEEMED_LINE = "That code is already redeemed, so there is nothing to revoke."
+INVITE_ALREADY_REVOKED_LINE = "That code is already revoked, so there is nothing to revoke."
+INVITE_USED_MEANWHILE_LINE = "That code was used in the meantime, so nothing was revoked."
 
 
 def invite_refusal_line(code: str) -> Optional[str]:

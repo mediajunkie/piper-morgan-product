@@ -273,30 +273,42 @@ class TestInviteRefusalsReachTheAdminAsFixedLines:
             svc.InviteAdminError(svc.REFUSAL_DAILY_LIMIT, 429, minted=18, limit=20, left=2)
         )
         assert reply.status_code == 429
-        line = "Daily limit: 18 of 20 codes minted today; 2 left today."
+        line = "That would go past today's limit: 18 of 20 invite codes created, 2 left."
         assert reply.json() == {"message": line, "detail": line}
         assert TOO_MANY_REQUESTS_LINE not in reply.text
 
     @pytest.mark.parametrize(
         "code, status, line",
         [
-            (svc.REFUSAL_MINT_COUNT, 422, "Mint between 1 and 20 codes at a time."),
-            (svc.REFUSAL_NOT_MASKED, 422, "That is not a masked invite code (ABCD…WXYZ)."),
+            (
+                svc.REFUSAL_MINT_COUNT,
+                422,
+                "You can create between 1 and 20 invite codes at a time.",
+            ),
+            (
+                svc.REFUSAL_NOT_MASKED,
+                422,
+                "That doesn't look like a masked invite code. It should look like ABCD…WXYZ.",
+            ),
             (
                 svc.REFUSAL_AMBIGUOUS,
                 409,
-                "More than one unused code matches that masked form; nothing was revoked.",
+                "More than one unused code matches that masked form, so nothing was revoked.",
             ),
             (
                 svc.REFUSAL_ALREADY_REDEEMED,
                 409,
-                "That code is already redeemed; nothing to revoke.",
+                "That code is already redeemed, so there is nothing to revoke.",
             ),
-            (svc.REFUSAL_ALREADY_REVOKED, 409, "That code is already revoked; nothing to revoke."),
+            (
+                svc.REFUSAL_ALREADY_REVOKED,
+                409,
+                "That code is already revoked, so there is nothing to revoke.",
+            ),
             (
                 svc.REFUSAL_USED_MEANWHILE,
                 409,
-                "That code was used in the meantime; nothing was revoked.",
+                "That code was used in the meantime, so nothing was revoked.",
             ),
         ],
     )
