@@ -86,8 +86,10 @@ document.addEventListener('DOMContentLoaded', function() {
                     window.location.href = safeNextUrl();
                 } else {
                     // Login failed
+                    // Issue 2431: a refused sign-in (an outage, the rate limit, a full
+                    // server) says why in `message`; read it through the one reader.
                     const error = await response.json();
-                    showError(error.detail || 'Invalid username or password');
+                    showError(RouteMessage.read(error, error.detail || 'Invalid username or password'));
                 }
             } catch (error) {
                 console.error('Login error:', error);
