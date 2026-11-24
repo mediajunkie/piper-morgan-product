@@ -200,7 +200,12 @@ class TestTheDatabaseLineThroughTheRoute:
 # Issue 2432: ``password_rule_line`` (Arch's note 01M87HVCTY: rule codes and constants behind
 # a listed picker) and ``not_offered_line`` (CXO, comment 7144095698: the not-offered card
 # family "behind a listed picker").
-DETAIL_PICKERS = ("github_degrade_fixed_line", "password_rule_line", "not_offered_line")
+DETAIL_PICKERS = (
+    "github_degrade_fixed_line",
+    "password_rule_line",
+    "not_offered_line",
+    "invite_refusal_line",  # issue 2432, Arch mail 01M87QXPZZ: the admin invites refusals
+)
 
 
 def _returns_only_constants(func):
@@ -236,10 +241,15 @@ def _picker_definitions(name):
 
 def _detail_problem(detail, find_definitions=_picker_definitions):
     """None when a marked ``detail`` is allowed, else why not: a string literal, an
-    UPPER_CASE name, or a call to a listed picker whose body returns only constants."""
+    UPPER_CASE name, a call to a listed picker whose body returns only constants, or
+    (issue 2432, Arch mail 01M87QXPZZ: the admin invites daily limit) the whole-number
+    shape ``UPPER_CASE_TEMPLATE.format(<name>=int(<expr>))``, keywords only. A whole
+    number cannot carry text, so nothing a person typed can ride in on it."""
     if isinstance(detail, ast.Constant) and isinstance(detail.value, str):
         return None
     if isinstance(detail, ast.Name) and detail.id.isupper():
+        return None
+    if _fixed_line_or_whole_number_format(detail):
         return None
     if isinstance(detail, ast.Call) and isinstance(detail.func, ast.Name):
         name = detail.func.id
@@ -348,6 +358,7 @@ class TestArchsGuardOverEveryMarkedRaise:
         # the rule picker and its fallback, the reset code twice, the service refusal),
         # auth_middleware.py +2 (the admin and operations-reader 403s); the rest are new.
         assert per_file == {
+            "web/api/routes/admin_invites.py": 2,  # the daily limit, and the picker
             "web/api/routes/admin_ops.py": 1,
             "web/api/routes/admin_test_preferences.py": 2,
             "web/api/routes/api_keys.py": 4,
@@ -612,12 +623,30 @@ class TestArchsGuardOverEveryMarkedRaise:
     def _detail_of(source):
         return {k.arg: k.value for k in ast.parse(source).body[0].value.keywords}["detail"]
 
-    def test_the_closed_list_holds_three_pickers(self):
+    def test_the_closed_list_holds_four_pickers(self):
         assert DETAIL_PICKERS == (
             "github_degrade_fixed_line",
             "password_rule_line",
             "not_offered_line",
+            "invite_refusal_line",
         )
+
+    @pytest.mark.parametrize(
+        "source, allowed",
+        [
+            ("LIMIT_TEMPLATE.format(minted=int(exc.minted), limit=int(exc.limit))", True),
+            ("LIMIT_TEMPLATE.format(minted=exc.minted)", False),  # not an int(...) call
+            ("LIMIT_TEMPLATE.format(minted=str(exc.minted))", False),
+            ("LIMIT_TEMPLATE.format(int(exc.minted))", False),  # positional
+            ("LIMIT_TEMPLATE.format(**numbers)", False),
+            ("template.format(minted=int(exc.minted))", False),  # not an UPPER_CASE name
+            ('"Daily limit: {n}".format(n=int(exc.minted))', False),  # not a named constant
+            ("LIMIT_TEMPLATE.format(name=int(a)) + tail", False),
+        ],
+    )
+    def test_a_marked_detail_may_be_a_whole_number_format_and_nothing_wider(self, source, allowed):
+        detail = ast.parse(source, mode="eval").body
+        assert (_detail_problem(detail) is None) is allowed
 
     def test_the_allowance_refuses_a_function_not_on_the_list(self):
         detail = self._detail_of(

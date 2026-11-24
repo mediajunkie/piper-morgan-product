@@ -265,6 +265,18 @@ def _echo_problems(func, call, pickers):
         ):
             for arg in node.args + [k.value for k in node.keywords]:
                 skip.update(id(n) for n in ast.walk(arg))
+        # Issue 2432 (Arch, mail 01M87QXPZZ): what sits inside a bare ``int(<expr>)`` is
+        # skipped. ``int()`` returns a whole number or raises, so no text a person sent
+        # can come out of it. The 2428 guard holds the surrounding shape to
+        # ``UPPER_CASE_TEMPLATE.format(<name>=int(<expr>))``.
+        if (
+            isinstance(node, ast.Call)
+            and isinstance(node.func, ast.Name)
+            and node.func.id == "int"
+            and len(node.args) == 1
+            and not node.keywords
+        ):
+            skip.update(id(n) for n in ast.walk(node.args[0]))
     problems = []
     for node in ast.walk(detail):
         if id(node) in skip:
