@@ -26,49 +26,47 @@ The beta was rebuilt 15 times, and Lead Developer wrote an update to the tool th
 
 Last week I confessed I was astounded to learn that Arch made 160 architectural rulings in supervising the build. I guess I need to get use to that pace because this week they made 175 rulings.
 
-I oversaw one fresh deployment of the MCP build on Nov 15, working with Piper Alpha (it's their project!). It kept the connector's GitHub reads inside the repositories you chose (see Product).
-- **Clock rule:** live 11-18 (CIO), the follow-through on #069's time-guessing story. Backtest: it would have refused 138 of 1,781 past commits (7.7%). The backtest found one false positive, which CIO fixed, and no seat has reported a false refusal since it went live.
+I oversaw one fresh deployment of the MCP build on Nov 15, working with Piper Alpha (it's their project!) to narrow the scope of its GitHub connector to just the repos chosen.
+
+The clock rule (about not guessing the time) went live on Nov 18 per the CIO. A backtest showed it would have refused 7.7% of past commits and revealed a false-positive, enabling CIO to fix it. No false refusals reported yet since.
 
 ## 🎯 Product & experience
 
-**▸ Write about:** what a user can do now that they couldn't on 11-12, and the caveat that almost none of it has been read by a signed-in person.
+What a user can do now that they couldn't last week (as far as we can tell, given that I have not tested any of it yet):
 
-**▸ Facts: read on the live service by a person (1 item)**
-- In Claude, the connector's GitHub issue reads stay inside the repositories you installed the App on. Before: 366 issues, mostly from public repositories nobody chose. After: 1, the one issue in the chosen test repository. PA read it through the connector on your account on 11-15, and CXO passed it. (#2374)
-
-**▸ Facts: on beta, not yet read signed in**
-- **Disconnect** says what stays behind at the provider: the App stays installed, and a token or Notion key stays valid. The wording is cautious when Piper can't tell how GitHub was connected. Disconnect All lists what's left to do.
-- **The Integrations cards** read in plain sentences: no code words or exception text, and one sentence about a stale connection per connector, on the card and in chat. Before a write to a repository without the App installed, Piper says to install the App first. (#2379, #2401, #2402)
-- **Piper's replies follow the nine conduct rules** you approved (#2354). They sit outside the classifier, so routing is unchanged.
-- **Self-hosters:** a fresh database is built by alembic, not pre-empted by setup (#2372, closed 11-15). The key saved at setup becomes the account's key (#2405, closed 11-20, after the window, so say "since" or move it to next week). Two copies on one machine no longer share a database: a variable now prefixes every container, network and volume name (`433a8c6b33`, 11-16). Setup's self-hoster lines now name the three data services the docker compose step starts, in CXO's words (`6a27a0a47d`, 11-16). Both are under #2386, which is still open, so call them built, not closed. (Exec 11-23: sources for the two lines Comms flagged.)
-- **Smaller fixes:**
-  - Piper stops blaming GitHub when it never touched it (#2407).
-  - An unreachable Redis no longer costs 2 seconds a call (#2370).
-  - The Anthropic subscription sentence (#2274).
-  - The archive pick shows its date (#2271).
+- In Claude, limit the Piper Morgan MCP connector's GitHub access to **just the repos you installed it on***.
+- **Disconnect** an integration from the Piper Morgan side with clear indications that the connection remains valid and can still be reconnected. 
+- Use **Disconnect All** to remove all connections [Exec: please fact-check this?]
+- Understand the plain language in the **Integrations** setting page
+- Attempt to write to a repository [Exec: does "without the App installed" mean without doing the Github integration, ... the App lingo seems like GitHub App terminology which is not necessarily how the user will understand as "connecting Piper Morgan to Github" - if it means something else, please clarify for me] and get a reminder from Piper says to [install the App first][??]
 
 **▸ Facts: what you can't do yet** (the same shape as #069's list)
 - Get an invitation (the hold stands).
 - Sign in as a fresh account.
 - Reach a first valuable thing in a first session.
 
+Built but not closed yet:
+- **Host their own beta** now that a fresh database is built by alembic, not pre-empted by setup. Two copies on one machine no longer share a database: a variable now prefixes every container, network and volume name
+
+We also codified nine conduct rules for Piper's replies:
+
+[Exec: please add succinct list for me to review and edit:]
+
+(These rules sit outside the classifier, so routing is unchanged.)
+
 ## 🔬 Methodology & process innovation
 
-**▸ Write about:** turning "don't hand me workarounds" into structure, and one or two of the week's process rules.
+I've already devoted enough ink to "don't hand me workarounds (ADR-084) above, and the clock rule.
 
-**▸ Facts:**
-- **ADR-084 as method:** the fix for "xian keeps becoming the manual step" is to give each seat its own key, account and browser, with a budget, rather than a rule to remember. Same shape as #069's chokepoint lesson.
-- **The D6 check** (from the ADR-084 sitting): any step that lands on you is checked for whether standing access would remove it, and who would actually do it.
-- **"The check and the claim go in separate calls"** (CIO, 11-15), after CIO caught itself reporting a result before reading it six times in two days (11-14 and 11-15, seven by that night). The same shape recurred in Comms (11-17: reporting "The Wall" unchanged after you'd edited it in the admin UI). This is the same family as #069's time guessing.
-- **The clock rule** went live 11-18 (see Engineering), the end of #069's "weary of the repeated shuffle".
+We also put my machines' keychains off-limits to agents.
 - **Keychain follow-through:** on 11-15 a test browser started without the mock-keychain flag, so it may have touched your login keychain. CIO disclosed it 11-16. A hook and an every-fire check now cover it.
-- **Mail move:** v4 (the separate mail repository) is now the only path between seats. The old path ended 11-23, which is after the window, so mention it only as "since".
+
+The entire team has migrated to the v4 mail system that involves a separate mail repository to avoid overloading traffic on the primary code-and-docs repository. 
 
 ## 🌍 External relations & community
 
-**▸ Write about:** the five posts, all your prose, plus the new cadence starting this week: Ship on Tuesday, a narrative on Thursday and an insight on the weekend.
+I maintained the current hand-written cadence at a barely sustainable pace this week and prepared to move to a new schedule for this phase of the project:
 
-This week we published:
 
 - Sat 11-14, insight: ["Which Agent Did It?"](https://pipermorgan.ai/blog/which-agent-did-it/)
 - Sun 11-15, insight: ["No New Skills This Time"](https://pipermorgan.ai/blog/no-new-skills-this-time)
@@ -79,14 +77,12 @@ This week we published:
 [![A nervous host welcomes a smiling guest carrying flowers into a cozy living room, while a translucent AI helper pauses beside a half-painted wall.](https://pipermorgan.ai/assets/blog-images/inviting-company-in.webp)](https://pipermorgan.ai/blog/inviting-company-in)
 *"Come in! Mind the unfinished business!"*
 
-**▸ Facts:**
-- All five are distributed (calendar). Each one is your prose, which Comms checked against sources, with fixes made only on your OK.
-- **One-line content notes**, from each post's opening:
-  - *Which Agent Did It?*: every agent acted on GitHub as your account, so work couldn't be traced to a seat.
-  - *No New Skills This Time*: the monthly skills sweep found nothing new to build, and that was the right result.
-  - *The Wall*: the September week the team hit the weekly usage limit.
-  - *Inviting Company In*: the first arc post, about the stale hosted alpha, moving onto Fly, and inviting a reader in.
-- **Hero alternative:** "The Wall" (`the-wall.webp`, caption *"I thought you said it ran itself?"*). Both image URLs returned 200. I picked "Inviting Company In" because "unfinished business" fits a week of work that was built but not yet seen. Your call.
+The new schedule is as follows:
+
+1. **Tuesdays** (like today) I will publish the Weekly Ship for the sprint week that ended the previous Thursday. This is moving from Wednesdays. The Ship will continue to appear first in the [Shipping News](https://pipermorgan.ai/shipping-news/) on the Piper Morgan website and then gets crossposted to the [Building Piper Morgan newsletter](https://www.linkedin.com/newsletters/building-piper-morgan-7346158338541305856) on LinkedIn.
+2. **Thursdays** I will publish an update on the building narrative, focused on moving from beta to production and less on the day-to-day blow-by-blow minutiae of building with this agent team. This is moving from the current twice-weekly Tue/Thu schedule to just running once a week on Thursday. These posts will also continue to appear first on the [Building in Public](https://pipermorgan.ai/blog/) on the website and crossposted to the [Building Piper Morgan publication](https://medium.com/building-piper-morgan/) on Medium and will also now be crossposted to LinkedIn as well.
+3. 
+
 - **Cadence:** Ship moves to Tuesday from this one. No Thursday narrative in Thanksgiving week (your 11-17 word).
 
 ## 📊 Governance & operations
