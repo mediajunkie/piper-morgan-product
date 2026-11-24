@@ -45,6 +45,7 @@ Promote gate: "Yes, changes that only make the check stricter can go ahead with 
 ## Rules I keep
 - Timestamps only from `date`. Every grant is xian's own edit. No seat runs `fly`. A refusal is final and not reworded. Keychain off-limits without his permission. Never direct a seat to read its `.env` or settings file.
 - D6-check every step on him: who would actually do it, checked (tmux ls whole, not `head`). Don't ask him what the team can answer. No account emails or secrets in this repo.
+- Rollup: every publishing item on his card gets checked against the editorial calendar on each rebuild (skill step 2.01, added 11-23 after the stale "Do I Have To?" crosspost line).
 - At STOP: rewrite this file, list other seats' closes, close the log with `<!-- DAY-CLOSED: YYYY-MM-DD -->` as its last line.
 
 ## Owed rows (owed-scan)
