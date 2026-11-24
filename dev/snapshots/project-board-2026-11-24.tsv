@@ -2219,3 +2219,4 @@ issue	state	milestone	sprint	title	labels	blocked_by	state_reason
 2430	OPEN	Production		[UX] GitHub settings page: a stale connection says 'Try refreshing the page' on the repository list; show CXO's reconnect line for the named degrade reasons	bug		
 2431	OPEN	Production		UX: in a Redis outage a page load shows raw JSON and background requests say nothing true	UX		
 2432	OPEN	Production		4xx replies reach a person with the raiser's own words (422 interpolates validation text); no mark or guard as 5xx has	architecture		
+2433	OPEN	Production		A non-admin who opens an admin-only page by its address sees raw JSON, with words written for a refused change	bug		

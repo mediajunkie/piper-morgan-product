@@ -71,6 +71,43 @@ PIPER_IS_FULL_MESSAGE = (
 )
 
 
+# --- The 4xx status lines (CXO, issue 2432 comment 7144095698; Arch's ruling, decisions.log
+# 2026-11-24 11:50) ---
+# An unmarked 4xx answers its status's line; the raiser's own detail goes to the log only.
+# A ``UserFacingHTTPException`` with a 4xx status keeps its words. 401 and 404 are not here:
+# they keep their own lines in the handler (``web/app.py``). The one place a line is picked
+# by status is ``status_line_for``.
+
+BAD_REQUEST_LINE = "I couldn't use that request. Check what you entered and try again."
+FORBIDDEN_LINE = "You don't have permission to do that."
+METHOD_NOT_ALLOWED_LINE = "That isn't something I can do here."
+CONFLICT_LINE = "That conflicts with something that is already there."
+GONE_LINE = "That is no longer available."
+TOO_LARGE_LINE = "That is too large for me to take."
+UNSUPPORTED_TYPE_LINE = "I can't use that kind of file."
+# Also the reply to FastAPI's own request validation (``RequestValidationError``).
+UNREADABLE_REQUEST_LINE = "I couldn't read that request. Check what you entered and try again."
+TOO_MANY_REQUESTS_LINE = "That's more than I can take in a minute. Try again in a moment."
+OTHER_CLIENT_ERROR_LINE = "I couldn't do that. Try again; if it keeps failing, tell us."
+
+FOUR_XX_STATUS_LINES: Dict[int, str] = {
+    400: BAD_REQUEST_LINE,
+    403: FORBIDDEN_LINE,
+    405: METHOD_NOT_ALLOWED_LINE,
+    409: CONFLICT_LINE,
+    410: GONE_LINE,
+    413: TOO_LARGE_LINE,
+    415: UNSUPPORTED_TYPE_LINE,
+    422: UNREADABLE_REQUEST_LINE,
+    429: TOO_MANY_REQUESTS_LINE,
+}
+
+
+def status_line_for(status_code: int) -> str:
+    """The line an unmarked 4xx answers (never 401 or 404, which the handler words)."""
+    return FOUR_XX_STATUS_LINES.get(status_code, OTHER_CLIENT_ERROR_LINE)
+
+
 # --- Intent Errors ---
 
 

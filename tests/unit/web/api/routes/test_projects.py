@@ -439,7 +439,10 @@ class TestProjectIntegrationEndpoints859:
             json={"type": "invalid", "name": "Bad", "config": {}},
         )
         assert response.status_code == 400
-        assert "Invalid integration type" in response.json()["detail"]
+        # Issue 2432 (CXO): the types listed, the value sent never echoed.
+        assert response.json()["detail"] == (
+            "That isn't an integration type I recognise. Choose one of: github, jira, linear, slack."
+        )
 
     def test_create_integration_invalid_config(self, app_and_client, mock_project):
         _, client = app_and_client
@@ -448,7 +451,9 @@ class TestProjectIntegrationEndpoints859:
             json={"type": "github", "name": "No Repo Key", "config": {"wrong": "key"}},
         )
         assert response.status_code == 400
-        assert "Invalid config" in response.json()["detail"]
+        assert response.json()["detail"] == (
+            "That integration's settings aren't valid. Check them and try again."
+        )
 
     def test_create_integration_duplicate_type(
         self, app_and_client, mock_project, mock_integration_repo
@@ -460,7 +465,7 @@ class TestProjectIntegrationEndpoints859:
             json={"type": "github", "name": "Dup", "config": {"repository": "owner/repo"}},
         )
         assert response.status_code == 409
-        assert "already exists" in response.json()["detail"]
+        assert response.json()["detail"] == "That integration is already added to this project."
 
     def test_create_integration_project_not_found(self, app_and_client, mock_project_repo):
         mock_project_repo.get_by_id = AsyncMock(return_value=None)
@@ -538,7 +543,9 @@ class TestProjectIntegrationEndpoints859:
             json={"config": {"wrong": "key"}},
         )
         assert response.status_code == 400
-        assert "Invalid config" in response.json()["detail"]
+        assert response.json()["detail"] == (
+            "That integration's settings aren't valid. Check them and try again."
+        )
 
     def test_update_integration_empty_body(
         self, app_and_client, mock_project, mock_integration, mock_integration_repo
@@ -550,7 +557,7 @@ class TestProjectIntegrationEndpoints859:
             json={},
         )
         assert response.status_code == 400
-        assert "No fields to update" in response.json()["detail"]
+        assert response.json()["detail"] == "There's nothing to change."
 
     # --- DELETE ---
 

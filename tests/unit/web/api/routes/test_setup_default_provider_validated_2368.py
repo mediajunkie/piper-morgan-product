@@ -91,6 +91,11 @@ def test_the_route_refuses_before_anything_is_stored(client, value, words):
     finally:
         client.cookies.delete("auth_token")
     assert r.status_code == 422
-    assert words in r.text
+    # Issue 2432 (Arch's ruling, item 4): FastAPI's validation 422 answers the CXO's one
+    # fixed sentence; the model's own sentence (``words``) is pydantic's error text and no
+    # longer reaches the reply. The model test above still pins it on the model.
+    line = "I couldn't read that request. Check what you entered and try again."
+    assert r.json() == {"message": line, "detail": line}
+    assert words not in r.text
     factory.session_scope_fresh.assert_not_called()
     factory.session_scope.assert_not_called()

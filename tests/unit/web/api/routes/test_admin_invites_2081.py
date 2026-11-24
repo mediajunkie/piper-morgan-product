@@ -238,3 +238,119 @@ async def test_list_is_no_store_so_a_refetch_after_mint_or_revoke_is_never_stale
     response = Response()
     await api.list_invite_codes(response, ADMIN)
     assert response.headers["cache-control"] == "no-store"
+
+
+# ---- issue 2432: what an admin reads when a mint or a revoke is refused ----------------
+
+
+class TestInviteRefusalsReachTheAdminAsFixedLines:
+    """Issue 2432 (Arch, mail 01M87QXPZZ): the service raises a CODE, the route picks a
+    constant, and the daily limit puts three whole numbers into a template. The words are
+    the ones this page showed before the 4xx default flipped. LAYER: the app's real
+    ``HTTPException`` handler, so this is the JSON the page's toast reads."""
+
+    @staticmethod
+    def _reply(error):
+        from fastapi import FastAPI
+        from fastapi.testclient import TestClient
+
+        from web.app import app as real_app
+
+        app = FastAPI()
+        for exc_class, handler in real_app.exception_handlers.items():
+            app.add_exception_handler(exc_class, handler)
+
+        @app.get("/call")
+        async def call():
+            raise api._refuse(error)
+
+        return TestClient(app).get("/call")
+
+    def test_an_admin_at_the_daily_limit_reads_the_limit_line_not_the_rate_limit_line(self):
+        from services.api.errors import TOO_MANY_REQUESTS_LINE
+
+        reply = self._reply(
+            svc.InviteAdminError(svc.REFUSAL_DAILY_LIMIT, 429, minted=18, limit=20, left=2)
+        )
+        assert reply.status_code == 429
+        line = "That would go past today's limit: 18 of 20 invite codes created, 2 left."
+        assert reply.json() == {"message": line, "detail": line}
+        assert TOO_MANY_REQUESTS_LINE not in reply.text
+
+    @pytest.mark.parametrize(
+        "code, status, line",
+        [
+            (
+                svc.REFUSAL_MINT_COUNT,
+                422,
+                "You can create between 1 and 20 invite codes at a time.",
+            ),
+            (
+                svc.REFUSAL_NOT_MASKED,
+                422,
+                "That doesn't look like a masked invite code. It should look like ABCD…WXYZ.",
+            ),
+            (
+                svc.REFUSAL_AMBIGUOUS,
+                409,
+                "More than one unused code matches that masked form, so nothing was revoked.",
+            ),
+            (
+                svc.REFUSAL_ALREADY_REDEEMED,
+                409,
+                "That code is already redeemed, so there is nothing to revoke.",
+            ),
+            (
+                svc.REFUSAL_ALREADY_REVOKED,
+                409,
+                "That code is already revoked, so there is nothing to revoke.",
+            ),
+            (
+                svc.REFUSAL_USED_MEANWHILE,
+                409,
+                "That code was used in the meantime, so nothing was revoked.",
+            ),
+        ],
+    )
+    def test_each_refusal_keeps_its_own_words(self, code, status, line):
+        reply = self._reply(svc.InviteAdminError(code, status))
+        assert reply.status_code == status
+        assert reply.json() == {"message": line, "detail": line}
+
+    def test_no_match_gets_the_not_found_line_as_before(self):
+        reply = self._reply(svc.InviteAdminError(svc.REFUSAL_NO_MATCH, 404))
+        assert reply.status_code == 404
+        assert reply.json()["message"] == "I couldn't find that. It may have been moved or deleted."
+
+    def test_a_code_with_no_line_answers_its_status_line_and_never_the_code(self):
+        from services.api.errors import CONFLICT_LINE
+
+        reply = self._reply(svc.InviteAdminError("a_code_nobody_wrote_a_line_for", 409))
+        assert reply.status_code == 409
+        assert reply.json() == {"message": CONFLICT_LINE, "detail": CONFLICT_LINE}
+        assert "a_code_nobody_wrote_a_line_for" not in reply.text
+
+    def test_the_error_carries_no_sentence(self):
+        error = svc.InviteAdminError(svc.REFUSAL_DAILY_LIMIT, 429, minted=1, limit=20, left=19)
+        assert str(error) == svc.REFUSAL_DAILY_LIMIT
+        assert not hasattr(error, "reason")
+
+    def test_every_code_the_service_raises_has_a_line_or_is_the_daily_limit(self):
+        import ast
+        from pathlib import Path
+
+        tree = ast.parse(Path(svc.__file__).read_text(encoding="utf-8"))
+        raised = set()
+        for node in ast.walk(tree):
+            if (
+                isinstance(node, ast.Call)
+                and isinstance(node.func, ast.Name)
+                and node.func.id == "InviteAdminError"
+            ):
+                for name in ast.walk(node.args[0]):
+                    if isinstance(name, ast.Name) and name.id.startswith("REFUSAL_"):
+                        raised.add(name.id)
+        assert len(raised) == 8
+        for name in raised:
+            code = getattr(svc, name)
+            assert code == svc.REFUSAL_DAILY_LIMIT or svc.invite_refusal_line(code) is not None
