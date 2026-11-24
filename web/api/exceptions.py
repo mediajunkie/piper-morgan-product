@@ -34,3 +34,14 @@ class HTTPExceptionWithCookieClear(HTTPException):
     ):
         super().__init__(*args, **kwargs)
         self.clear_cookies = clear_cookies or []
+
+
+class UserFacingHTTPException(HTTPException):
+    """An HTTP error whose detail is vetted product copy: the app's error handler keeps
+    it for a 5xx instead of masking it (#2154).
+
+    Use it only where the detail is a fixed line the CXO has worded. A detail built from
+    an exception's text, a path or a name stays a plain ``HTTPException``, which the
+    handler masks (issue 2428 pins this for the setup routes)."""
+
+    user_facing = True
