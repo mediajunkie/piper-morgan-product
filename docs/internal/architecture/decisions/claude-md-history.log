@@ -1231,3 +1231,5 @@ Recipe 13 step 3 and a clone-test note in recipe 14 (canonical-ops-recipes.md) c
 `docker start piper-postgres piper-redis piper-chromadb`, with "never `docker compose up` from a worktree or clone here". Why: the
 running containers were made from Lead's worktrees and compose binds Redis and Chroma data to the folder `up` runs from, so an `up`
 from another seat's folder may recreate them on empty data. This replaces the line written at 04:23 the same day. Rule text: recipe 14.
+
+2026-11-24 (CIO; Arch's approval of the stray-tab fix, v4 01M873ER6W, decisions.log 2026-11-24 07:40: "Keep the CLAUDE.md --no-browser line as a second guard") — Quick reference: both server start lines gain `--no-browser`. Why: a seat's `python main.py` opened a tab in xian's browser on 11-11 and again on 11-24 (Lead), and had his browser not been running it would have launched it without `--use-mock-keychain`; neither browser guard sees a launch from inside Python (methodology-58 instance 6). The first guard is in code (should_open_browser() needs a terminal on stdin and stdout; Lead's branch, HOST reads); this flag is the second. Stricter only.

@@ -79,81 +79,65 @@ I maintained the current hand-written cadence at a barely sustainable pace this 
 
 The new schedule is as follows:
 
-1. Tuesdays (like today) I will publish the Weekly Ship for the sprint week that ended the previous Thursday. This is moving from Wednesdays. The Ship will continue to appear first in the [Shipping News](https://pipermorgan.ai/shipping-news/) on the Piper Morgan website and then gets crossposted to the [Building Piper Morgan](https://www.linkedin.com/newsletters/building-piper-morgan-7346158338541305856) newsletter on LinkedIn.
-2. Thursdays I will publish an update on the building narrative, focused on moving from beta to production and less on the day-to-day blow-by-blow minutiae of building with this agent team. These posts will also continue to appear first on the [Building in Public](https://pipermorgan.ai/blog/) on the website and crossposted to the [Medium](
+1. **Tuesdays** (like today) I will publish the Weekly Ship for the sprint week that ended the previous Thursday. This is moving from Wednesdays. The Ship will continue to appear first in the [Shipping News](https://pipermorgan.ai/shipping-news/) on the Piper Morgan website and then gets crossposted to the [Building Piper Morgan newsletter](https://www.linkedin.com/newsletters/building-piper-morgan-7346158338541305856) on LinkedIn.
+2. **Thursdays** I will publish an update on the building narrative, focused on moving from beta to production and less on the day-to-day blow-by-blow minutiae of building with this agent team. This is moving from the current twice-weekly Tue/Thu schedule to just running once a week on Thursday. These posts will also continue to appear first on the [Building in Public](https://pipermorgan.ai/blog/) on the website and crossposted to the [Building Piper Morgan publication](https://medium.com/building-piper-morgan/) on Medium and will also now be crossposted to LinkedIn as well.
+3. **Weekends** I will publish a single insight post, instead of the two I have been running for about 16 months. These posts will continue to appear first on the canonical blog on my site and then crossposted to both LinkedIn and Medium.
+
+I hope this pace works better for my readers as I expect it will for me.
+
 - **Cadence:** Ship moves to Tuesday from this one. No Thursday narrative in Thanksgiving week (your 11-17 word).
 
 ## 📊 Governance & operations
 
-**▸ Write about:** the numbers, and the spend line (seats spent $0, since every paid run waited on Step A).
-
 **Operations numbers**
 
-- Updates to beta: 15 (of 16 dispatches)
+- Updates to beta: 15 (of 16 attempts)
 - Signed-in reads on beta: 0
 - MCP server deploys: 1
 - Issues filed / closed: 44 / 10
 - Open Production issues: 297 → 329
 - Main CI: two red windows (the morning of 11-17), green at every read after
 - Paid model calls by seats: $0
-- Posts published: 5
-
-**▸ Facts:**
-- Closes: 10 repo-wide (gh), 8 in Production (PPM). Both are right, about different sets.
-- Your 11-17 spend reads: the test key at $16.19 of $40, and the org at $49.29 of $250. #069 printed a week's spend and tokens. I don't have this week's token totals from the same source, so leave that line out or ask me for it.
 
 # 🎯 Coming up next week
 
-**▸ Write about:** sprint 2's last week. #071 reports the final score as it stands, since sprints don't stretch (your 11-20 word).
+We finish sprint two, closing as many of the goals as possible:
 
-**▸ Facts:** the five goals you approved for 11-20 to 11-26:
 1. Seats run for real: Web's sign-in, the real-key run for the self-host fix, the conduct-rules count and cache run, and the first paid call under the cap.
-2. Read what's on beta, signed in, and close it. CXO judges.
-3. Finish the GitHub move: the open rows on the seat's GitHub account, then the lift-readiness memo.
-4. Keys and deploys off your hands: the MCP deploy job and its one token from you, and the restore drill on your day.
-5. Editorial: Sat 11-21, this Ship, and Sat 11-28. (Sat 11-21's insight ran Sun 11-22 as "Do I Have To?", at your request.)
-
-Since the window closed: your 11-20 sitting did Steps A, C, D, F0 and F.1, and "Do I Have To?" published Sun 11-22.
+2. Read what's on beta, signed in, and close it. (CXO judges.)
+3. Finish the GitHub move: the open rows on the seat's GitHub account, then the memo enabling us to resume inviting hosted beta testers.
+4. Keys and deploys off my hands: I need to deploy the MCP and provide it with one token, plus [the restore drill? Exec, please help me unpack what that means? in fact plain English help with all of these items would be good.]
+5. Hitting the new editorial calendar deadlines.
 
 # 🚧 Blockers & asks
 
-**▸ Facts:**
-- Invitations are still on hold.
-- The signed-in reads wait on the remaining sitting steps: F.2 onward, and the seat-tester account.
-- The step that puts an OpenAI key in the seats' hands is the one thing between the provider-key work and merge.
-- Wait-list line, as in #069: pipermorgan.ai/try/beta/
+Invitations are still on hold until I complete a few more manual steps.
+
+The [waitlist for beta access](https://pipermorgan.ai/try/beta/) remains open. 
 
 # 🔎 This week's learning pattern
 
-**▸ Pick one.** Candidates from the review:
 
-## Candidate A: Fix the system, not the person
+## The second reader catches hat the first one missed
 
-- **Discovery:** when a fix keeps landing on one person's hands, the system is missing a resource, not a rule.
-- **Example:** your 11-15 ruling led to ADR-084's seat keys, accounts and browser.
-- **Why it matters:** a manual step done once becomes a manual step forever.
-- **Application:** when an item's next step reads "X runs it", ask what standing access would remove the step.
-- **Related:** #069 "Fix it at the chokepoint".
+Multiple times this week one agent double-checked another agent's work and closed gaps:
 
-## Candidate B: The second reader
-
-- **The second reader caught what the first missed** (a learning-pattern candidate, see below):
-  - CIO found three gaps in HOST's first drill read.
-  - Lead caught, by running it, that Arch's deploy-step command would have stopped every promotion.
+  - CIO found three gaps in HOST's [first drill read. <= means what?]
+  - Lead caught, by running [testing it? if they ran it did they really catch it or just succumb to ti?] it, that Arch's deploy-step command would have stopped every promotion.
   - Arch caught a CXO sentence about an unknown connection that was untrue for one GitHub path.
   - All three were corrected before merge or serve.
-- **Discovery:** a second reader using a different method catches what the first missed.
-- **Example:** the three catches listed under Engineering.
-- **Why it matters:** all three were caught before a user saw them.
-- **Application:** have the second reader run it, not just reread it.
-- **Related:** {yours. I found no close match in recent Ships}
+
+**Pattern:** a second reader *using a different method* catches what the first missed.
+**Why it matters:** all three were caught before a user saw them.
+**Application:** have the second reader [run it, not just reread it. <= meaning what? test it? use a different method? in what sense? what is the practical advice?]
+- **Related:** [do we really not have any patterns about cross-checking? how about the methodolog docs?]
 
 **Thanks,**
 xian + Piper Morgan Development Team
 
 This is Weekly Ship #070. Previous: [#069 "Off-Limits by Default"](https://pipermorgan.ai/shipping-news/weekly-ship-069-off-limits-by-default).
 
-*P.S. {yours}*
+*P.S. {yours}* More beta invitations coming soon, I promise!
 
 *P.P.S. Full session logs and technical details available in the [GitHub repository](https://github.com/mediajunkie/piper-morgan-product) and [documentation site](https://pmorgan.tech). Yes, you can copy it. That just makes our protocol stronger.*
 
