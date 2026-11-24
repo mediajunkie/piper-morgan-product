@@ -74,6 +74,10 @@ on:
         description: "Grant condition 3(c): promote a must-close on xian's word while accounts are active in the last 30 minutes (otherwise the quiet count refuses)"
         type: boolean
         default: false
+      deploy_mcp:
+        description: "Deploy main's sha to the MCP app (piper-morgan-mcp). ADR-084 D6, issue 2384. Dispatch from main, with no other box ticked."
+        type: boolean
+        default: false
 
 concurrency:
   # Never let two deploys race to the SAME app. Do NOT cancel in-progress: a half-applied
@@ -87,7 +91,10 @@ concurrency:
   # The health-gate drill (a workflow_dispatch with health_gate_drill) gets its OWN group: without it,
   # a drill evaluated to 'alpha' and could silently cancel a queued real promotion (Pard 2026-10-04,
   # the 09-29 race arriving through a new dispatch path).
-  group: fly-deploy-${{ github.event_name == 'push' && 'staging' || (inputs.promote_to_alpha && 'alpha' || 'drill') }}
+  # The MCP deploy (issue 2384) is a third app, so it gets its own group: it never queues behind, or
+  # cancels, a staging deploy or a promotion. A dispatch with promote_to_alpha set still evaluates to
+  # 'alpha' as before; the MCP job refuses to run in that case (its `if`).
+  group: fly-deploy-${{ github.event_name == 'push' && 'staging' || (inputs.promote_to_alpha && 'alpha' || (inputs.deploy_mcp && 'mcp' || 'drill')) }}
   cancel-in-progress: false
 
 jobs:
@@ -652,4 +659,96 @@ jobs:
           # ONE read. That is worth doing if this signature appears, and is speculative hardening if
           # it does not.
           echo "::error title=Promotion not attested::alpha reports '${got:-<unreadable>}', expected ${EXPECTED}. If alpha is serving a coherent-but-different sha, suspect the mid-rollout window on the staging read (Arch, 2026-09-29, unverified): fix is a PIPER_GIT_SHA image LABEL so ref and sha are one read. See the comment above this line."
+          exit 1
+
+  # --- (d) the MCP app: a seat deploys main's sha by dispatch. ADR-084 D6, issue 2384. -----------
+  #
+  # WHY. piper-morgan-mcp deployed only when xian ran scripts/deploy-mcp.sh by hand, so every MCP
+  # fix sat on main unserved until he had time. xian's ruling of 2026-11-15 19:11: that is a manual
+  # step to remove, not to keep handing him. His one step is creating the token (ADR-084 card row 7).
+  #
+  # THE BOUNDS (HOST, mail 01M7H6V4JZ; ADR-084 D6):
+  #   1. Main's sha only. The job runs only for a dispatch whose ref is refs/heads/main, and builds
+  #      GITHUB_SHA, the commit main pointed at when it was dispatched. There is no input that names
+  #      a ref, a sha or any free text.
+  #   2. ONE token, scoped to this app, in the GitHub environment `mcp`, which is limited to the
+  #      `main` branch. It is not a repository secret: a branch with an edited workflow cannot read
+  #      an environment it may not deploy to. The staging and alpha jobs never name this token, and
+  #      this job names no other.
+  #   3. It prints the sha and the release number, and fixed words on a refusal or a failure.
+  #      flyctl's own output is not printed (a Fly deploy token may be able to do anything to this
+  #      app, and its output is not ours to vouch for): no `set -x`, no account email, no build log.
+  #   4. DEGRADES, DOES NOT FAIL, while the token is unset (as the staging job does): the job says
+  #      so in a notice and ends green, so the job can sit on main before xian's step.
+  deploy-mcp:
+    if: >-
+      github.event_name == 'workflow_dispatch' && inputs.deploy_mcp
+      && !inputs.promote_to_alpha && !inputs.health_gate_drill && !inputs.quiet_override
+      && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    environment: mcp
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Refuse anything but main's own config for this app
+        run: |
+          [ "${GITHUB_REF}" = "refs/heads/main" ] || { echo "::error title=Not main::The MCP deploy runs from main only."; exit 1; }
+          grep -qx 'app = "piper-morgan-mcp"' fly.mcp.toml || { echo "::error title=Wrong app::fly.mcp.toml does not name piper-morgan-mcp."; exit 1; }
+          echo "MCP deploy of main ${GITHUB_SHA}"
+
+      - name: Is the MCP deploy token present?
+        id: mcp_gate
+        env:
+          TOKEN: ${{ secrets.FLY_API_TOKEN_MCP }}
+        run: |
+          if [ -z "${TOKEN}" ]; then
+            echo "present=false" >> "$GITHUB_OUTPUT"
+            echo "::notice title=MCP deploy skipped::FLY_API_TOKEN_MCP is not set in the mcp environment. Nothing was deployed. It is xian's one-time step (ADR-084 card row 7)."
+          else
+            echo "present=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - uses: superfly/flyctl-actions/setup-flyctl@fc53c09e1bc3be6f54706524e3b82c4f462f77be # 1.5
+        if: steps.mcp_gate.outputs.present == 'true'
+
+      - name: Deploy main to piper-morgan-mcp
+        if: steps.mcp_gate.outputs.present == 'true'
+        env:
+          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN_MCP }}
+        run: |
+          # flyctl's output goes nowhere on purpose (bound 3). The verdict is its exit code here
+          # and the served sha in the next step.
+          if flyctl deploy \
+               --config fly.mcp.toml \
+               --app piper-morgan-mcp \
+               --remote-only \
+               --build-arg PIPER_GIT_SHA="${GITHUB_SHA}" \
+               --wait-timeout 600 >/dev/null 2>&1; then
+            echo "deployed: sha ${GITHUB_SHA}"
+          else
+            echo "::error title=MCP deploy failed::flyctl deploy did not succeed for ${GITHUB_SHA}. Its output is not printed here by design; read the app's releases with the Fly account."
+            exit 1
+          fi
+          # The release number, digits only; anything else prints as "not read".
+          release="$(flyctl releases --app piper-morgan-mcp --json 2>/dev/null \
+                     | python3 -c 'import sys,json; v=json.load(sys.stdin)[0].get("Version"); print(v if isinstance(v,int) else "")' 2>/dev/null || true)"
+          case "${release}" in
+            ''|*[!0-9]*) echo "release: not read" ;;
+            *) echo "release: v${release}" ;;
+          esac
+
+      - name: Verify the MCP app reports the sha we just deployed
+        if: steps.mcp_gate.outputs.present == 'true'
+        run: |
+          # As for staging: "the deploy succeeded" is not the claim. The claim is that the RUNNING
+          # app reports this sha. Only a 40-character hex sha is ever echoed from the reply.
+          for i in $(seq 1 30); do
+            got="$(curl -fsS --max-time 10 https://mcp.pipermorgan.ai/health \
+                   | python3 -c 'import sys,json,re; s=str(json.load(sys.stdin).get("git_sha","")); print(s if re.fullmatch("[0-9a-f]{40}", s) else "")' 2>/dev/null || true)"
+            [ "$got" = "$GITHUB_SHA" ] && { echo "mcp attests ${got}"; exit 0; }
+            sleep 10
+          done
+          echo "::error title=Deployed sha not attested::mcp /health reports '${got:-<unreadable>}', expected ${GITHUB_SHA}"
           exit 1
