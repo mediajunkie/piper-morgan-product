@@ -2669,8 +2669,20 @@ async def get_github_repositories(current_user: JWTClaims = Depends(get_current_
                 user_id=str(current_user.sub),
                 reason=connector_result.degradation.reason.value,
             )
-            from services.mcp.consumer.github_adapter import github_degrade_reply
+            from services.mcp.consumer.github_adapter import (
+                github_degrade_fixed_line,
+                github_degrade_reply,
+            )
 
+            # Issue 2430 (Arch, mail 01M8786G87): a reason with a fixed line for this page
+            # is raised user-facing, so the page can show it; the picker is on the
+            # guard's closed list and returns only constants or None. Every other
+            # reason stays the masked 502, as before.
+            if github_degrade_fixed_line(connector_result.degradation) is not None:
+                raise UserFacingHTTPException(
+                    status_code=status.HTTP_502_BAD_GATEWAY,
+                    detail=github_degrade_fixed_line(connector_result.degradation),
+                )
             raise HTTPException(
                 status_code=status.HTTP_502_BAD_GATEWAY,
                 detail=github_degrade_reply(connector_result.degradation),

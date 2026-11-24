@@ -966,6 +966,22 @@
         if (btn) btn.disabled = true;
       }
 
+      // Issue 2430 (CXO, mail 01M87C1V2D): when the list could not be loaded, Save does
+      // nothing (nothing was read, so nothing may be saved), so it must not look live.
+      // The same disabled state the failed preferences read sets; Refresh List stays live.
+      function disableSaveAfterFailedList() {
+        const btn = document.getElementById('save-github-prefs-btn');
+        if (btn) btn.disabled = true;
+      }
+
+      // Issue 2430 (CXO, mail 01M878T7RJ): the route's named 502 lines for the repository
+      // list, the page's copies of the Python constants (a test pins them equal). The
+      // route sends a named line only as a user-facing 502; anything else, the handler's
+      // generic line included, keeps the page's own words and toast.
+      const GITHUB_REPOSITORY_LIST_NAMED_LINES = [
+        "GitHub needs reconnecting, so I can't load your repositories. Use Reconnect with GitHub on this page.",
+      ];
+
       // #2342: nothing was listed, so nothing may be saved over the kept choices.
       let appNotInstalled = false;
 
@@ -1021,6 +1037,27 @@
               showPrefsLoadFailed(listEl, await prefsFailureLine(response, 'your saved repository choices'), 'save-github-prefs-btn');
               return;
             }
+            if (response.status === 502) {
+              // Issue 2430: a named degrade line goes in the list's place, as the catch's
+              // sentence does, with Save off and no toast. Set as text, never as HTML.
+              let detail = null;
+              try {
+                detail = (await response.json()).detail;
+              } catch (parseError) {
+                detail = null;
+              }
+              if (typeof detail === 'string' && detail && GITHUB_REPOSITORY_LIST_NAMED_LINES.includes(detail)) {
+                prefsLoadFailed = true; // #2154: nothing was read, so nothing may be saved
+                listEl.innerHTML = '';
+                const named = document.createElement('div');
+                named.className = 'repository-list-empty';
+                named.id = 'github-repository-list-named-line';
+                named.textContent = detail;
+                listEl.appendChild(named);
+                disableSaveAfterFailedList();
+                return;
+              }
+            }
             throw new Error('Failed to load repositories');
           }
 
@@ -1064,6 +1101,7 @@
           console.error('Failed to load repositories:', error);
           prefsLoadFailed = true; // #2154: nothing was read, so nothing may be saved
           listEl.innerHTML = '<div class="repository-list-empty">I couldn\'t load your repositories. Try refreshing the page.</div>';
+          disableSaveAfterFailedList();
           Toast.show('error', 'Error', 'Failed to load GitHub repositories');
         }
       }

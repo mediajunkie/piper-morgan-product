@@ -32,7 +32,7 @@ v1135 (Tue 11-24: h1 Tuesday, #070 top line, card step 7), `719UZ4h1NELjEwWZbDCc
 - Titles: Sat 11-28 is "Mark One Eyeball". Restore drill 2157: his choice of day. Later: #2387.
 
 ## In motion
-- **Beta `b86c072755`** since 11-24 09:52 (Lead 01M87AZYTZ: 2428, 2390, 2385, the terminal gate; 2384 job in the workflow). 2345 follows alone within the hour; Lead mails the minute.
+- **Beta `009afa0f7f`** since 11-24 10:24 (2345, Lead 01M87CW2PH), on top of `b86c072755` (09:52). F.4 is the GETDEL served read: its result goes to Lead and HOST as one line.
 - **Staging deploy blips:** VM start failures cleared by re-run on 11-10, 11-20 and 11-23 (Lead 01M85C2R1S). A fourth makes a pattern: take it to xian (the Fly hand is his).
 - **Open nearby:** #2417 (update_issue row, fresh account), #2245 served read, 2301 part 2. #2411's rows moved to #2425; #2426 filed. Both are sprint 3 candidates, and xian sets the slot at the 11-25 draft. #2424 is held on router evidence.
 - **Sprint 2 closes Wed 11-26.** It doesn't stretch (xian 11-20), and #071 reports the score as it stands. The first live v4 Ship kickoff is Fri 11-27 (#071), by `scripts/ship-kickoff.sh`.

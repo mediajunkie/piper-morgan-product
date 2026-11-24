@@ -1,5 +1,7 @@
 from typing import Any, Dict
 
+from fastapi import HTTPException
+
 
 class APIError(Exception):
     """Base class for all application-specific API errors."""
@@ -9,6 +11,42 @@ class APIError(Exception):
         self.error_code = error_code
         self.details = details or {}
         super().__init__(f"API Error [{error_code}]")
+
+
+class UserFacingHTTPException(HTTPException):
+    """An HTTP error whose detail is vetted product copy: the app's error handler keeps
+    it for a 5xx instead of masking it (#2154).
+
+    Use it only where the detail is a fixed line the CXO has worded. A detail built from
+    an exception's text, a path or a name stays a plain ``HTTPException``, which the
+    handler masks (issue 2428 pins this for the setup routes).
+
+    Lives here, beside ``APIError``, so a ``services/`` gate can raise it without a
+    ``services`` -> ``web`` import (Arch, issue 2429); ``web.api.exceptions`` re-exports
+    it. The guard in ``tests/unit/web/test_setup_lines_reach_the_page_2428.py`` reads
+    every ``UserFacingHTTPException(...)`` call under ``web/`` and ``services/`` and
+    refuses an import that renames it."""
+
+    user_facing = True
+
+
+# --- The three "couldn't be checked" lines (CXO, mail 01M8785ZVZ; issue 2429) ---
+# One constant per line. "Nothing was changed." is a claim about behaviour: every site
+# that says it refuses before any write, pinned in
+# tests/unit/web/test_couldnt_be_checked_lines_2429.py.
+
+SESSION_COULD_NOT_BE_CHECKED_MESSAGE = (
+    "Your session couldn't be checked just now. Nothing was changed. "
+    "Try again in a moment; if it keeps failing, tell us."
+)
+ADMIN_PERMISSIONS_COULD_NOT_BE_CHECKED_MESSAGE = (
+    "Admin permissions couldn't be checked just now. Nothing was changed. "
+    "Try again in a moment; if it keeps failing, tell us."
+)
+PERMISSIONS_COULD_NOT_BE_CHECKED_MESSAGE = (
+    "Permissions couldn't be checked just now. "
+    "Try again in a moment; if it keeps failing, tell us."
+)
 
 
 # --- Intent Errors ---
