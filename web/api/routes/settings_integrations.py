@@ -1378,14 +1378,25 @@ async def connect_calendar(
         if switch:
             handler.redirect_uri = original_redirect
             return {"switch_host_url": switch}  # #2281 (b)
-        auth_url, state = handler.generate_authorization_url(user_id=current_user.sub)
+        # #2345: async (Redis-backed state); Redis down refuses here, before any URL.
+        from services.auth.oauth_state_store import OAuthStateStoreUnavailable
+        from web.api.routes.setup import CALENDAR_CONNECT_COULD_NOT_START_MESSAGE
+
+        try:
+            auth_url, state = await handler.generate_authorization_url(user_id=current_user.sub)
+        except OAuthStateStoreUnavailable:
+            logger.warning(
+                "calendar_settings_oauth_start_state_store_unavailable", user_id=current_user.sub
+            )
+            raise UserFacingHTTPException(
+                status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+                detail=CALENDAR_CONNECT_COULD_NOT_START_MESSAGE,
+            )
 
         # Restore original
         handler.redirect_uri = original_redirect
 
-        logger.info(
-            "calendar_settings_oauth_started", user_id=current_user.sub, state=state[:8] + "..."
-        )
+        logger.info("calendar_settings_oauth_started", user_id=current_user.sub)
 
         return {
             "auth_url": auth_url,
@@ -1533,10 +1544,21 @@ async def connect_github(
         if switch:
             # #2281 (b): GitHub returns to the callback's host; start there, signed in there.
             return {"switch_host_url": switch}
-        auth_url, state = handler.generate_authorization_url(user_id=current_user.sub)
-        logger.info(
-            "github_settings_oauth_started", user_id=current_user.sub, state=state[:8] + "..."
-        )
+        # #2345: async (Redis-backed state); Redis down refuses here, before any URL.
+        from services.auth.oauth_state_store import OAuthStateStoreUnavailable
+        from web.api.routes.setup import GITHUB_CONNECT_COULD_NOT_START_MESSAGE
+
+        try:
+            auth_url, state = await handler.generate_authorization_url(user_id=current_user.sub)
+        except OAuthStateStoreUnavailable:
+            logger.warning(
+                "github_settings_oauth_start_state_store_unavailable", user_id=current_user.sub
+            )
+            raise UserFacingHTTPException(
+                status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+                detail=GITHUB_CONNECT_COULD_NOT_START_MESSAGE,
+            )
+        logger.info("github_settings_oauth_started", user_id=current_user.sub)
         return {"auth_url": auth_url, "state": state}
     except HTTPException:
         raise

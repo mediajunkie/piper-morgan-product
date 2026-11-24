@@ -50,9 +50,11 @@ class TestCalendarOAuthTrigger:
             mock_instance = MagicMock()
             mock_instance.client_id = "test_client_id"
             mock_instance.client_secret = "test_client_secret"
-            mock_instance.generate_authorization_url.return_value = (
-                "https://accounts.google.com/o/oauth2/v2/auth?client_id=test&scope=calendar.readonly",
-                "state_abc123",
+            mock_instance.generate_authorization_url = AsyncMock(  # #2345: async
+                return_value=(
+                    "https://accounts.google.com/o/oauth2/v2/auth?client_id=test&scope=calendar.readonly",
+                    "state_abc123",
+                )
             )
             MockHandler.return_value = mock_instance
 
@@ -82,9 +84,11 @@ class TestCalendarOAuthTrigger:
             mock_instance = MagicMock()
             mock_instance.client_id = "test_client_id"
             mock_instance.client_secret = "test_client_secret"
-            mock_instance.generate_authorization_url.return_value = (
-                "https://accounts.google.com/o/oauth2/v2/auth?scope=https://www.googleapis.com/auth/calendar.readonly",
-                "state_xyz789",
+            mock_instance.generate_authorization_url = AsyncMock(  # #2345: async
+                return_value=(
+                    "https://accounts.google.com/o/oauth2/v2/auth?scope=https://www.googleapis.com/auth/calendar.readonly",
+                    "state_xyz789",
+                )
             )
             MockHandler.return_value = mock_instance
 
@@ -108,9 +112,11 @@ class TestCalendarOAuthTrigger:
             mock_instance = MagicMock()
             mock_instance.client_id = "test_client_id"
             mock_instance.client_secret = "test_client_secret"
-            mock_instance.generate_authorization_url.return_value = (
-                "https://accounts.google.com/o/oauth2/v2/auth?access_type=offline&prompt=consent",
-                "state_offline",
+            mock_instance.generate_authorization_url = AsyncMock(  # #2345: async
+                return_value=(
+                    "https://accounts.google.com/o/oauth2/v2/auth?access_type=offline&prompt=consent",
+                    "state_offline",
+                )
             )
             MockHandler.return_value = mock_instance
 
@@ -142,7 +148,10 @@ class TestCalendarOAuthTrigger:
                 await start_calendar_oauth(current_user=mock_user)
 
             assert exc_info.value.status_code == 503
-            assert "not configured" in exc_info.value.detail.lower()
+            # CXO 2026-11-24 (issue 2345): the page gets a sentence for a person; the
+            # variable names go to the server log, not into the reply.
+            assert exc_info.value.detail == "Google Calendar sign-in isn't set up on this server."
+            assert "GOOGLE_CLIENT" not in exc_info.value.detail
 
 
 class TestCalendarOAuthCallback:
