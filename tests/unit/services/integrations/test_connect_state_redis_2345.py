@@ -441,3 +441,94 @@ class TestNothingSecretIsLogged:
         for line in logged:
             for secret in secrets_seen:
                 assert secret not in line
+
+
+# ── What the person receives, through the app's real handler (issues 2345 and 2428) ──
+#
+# The tests above call the route functions, which shows the route builds the line. They do
+# not show a person gets it: the app's handler masks every 5xx that is not marked
+# user-facing. These go through that handler.
+
+
+def _through_the_real_handler(route_function):
+    """Call a start route's function inside a small app that carries the REAL exception
+    handler from ``web.app``, and return what a client would receive."""
+    from fastapi import FastAPI
+    from fastapi.testclient import TestClient
+
+    from web.app import app as real_app
+
+    app = FastAPI()
+    app.add_exception_handler(HTTPException, real_app.exception_handlers[HTTPException])
+
+    @app.get("/start")
+    async def _start():
+        return await route_function()
+
+    return TestClient(app).get("/start")
+
+
+class TestThePersonGetsTheLine:
+    async def _github(self):
+        from web.api.routes import settings_integrations as si
+
+        return await si.connect_github(current_user=_claims(), request=None)
+
+    async def _calendar_settings(self):
+        from web.api.routes import settings_integrations as si
+
+        return await si.connect_calendar(current_user=_claims(), request=None)
+
+    async def _calendar_setup(self):
+        from web.api.routes import setup as setup_mod
+
+        return await setup_mod.start_calendar_oauth(current_user=_claims())
+
+    def test_github_start_with_redis_down(self, redis_down):
+        from web.api.routes.setup import GITHUB_CONNECT_COULD_NOT_START_MESSAGE as line
+
+        reply = _through_the_real_handler(self._github)
+        assert reply.status_code == 503
+        assert reply.json() == {"message": line, "detail": line}
+
+    def test_both_calendar_starts_with_redis_down(self, redis_down):
+        from web.api.routes.setup import CALENDAR_CONNECT_COULD_NOT_START_MESSAGE as line
+
+        for start in (self._calendar_settings, self._calendar_setup):
+            reply = _through_the_real_handler(start)
+            assert reply.status_code == 503
+            assert reply.json() == {"message": line, "detail": line}
+
+    def test_setup_calendar_start_with_no_google_client_says_cxos_line(self, monkeypatch):
+        """CXO 2026-11-24: never the variable names on a setup page."""
+        monkeypatch.delenv("GOOGLE_CLIENT_ID", raising=False)
+        monkeypatch.delenv("GOOGLE_CLIENT_SECRET", raising=False)
+        reply = _through_the_real_handler(self._calendar_setup)
+        assert reply.status_code == 503
+        assert reply.json()["detail"] == "Google Calendar sign-in isn't set up on this server."
+        assert "GOOGLE_CLIENT" not in reply.text and "OAuth" not in reply.text
+
+
+class TestThePagesWords:
+    """CXO 2026-11-24 (mail 01M873MXMG): no protocol word and no status code on a card."""
+
+    def test_the_github_dialog_title_and_fallback(self):
+        from web.api.routes.setup import GITHUB_CONNECT_COULD_NOT_START_MESSAGE
+
+        page = (ROOT / "templates/settings_github.html").read_text(encoding="utf-8")
+        assert 'title: "GitHub connection couldn\'t start",' in page
+        assert "Could not start GitHub OAuth" not in page
+        assert "connect failed: HTTP" not in page
+        assert f'"{GITHUB_CONNECT_COULD_NOT_START_MESSAGE}"' in page
+
+    def test_the_wizards_two_fallbacks_are_the_connection_lines(self):
+        from web.api.routes import setup as setup_mod
+
+        script = (ROOT / "web/static/js/setup.js").read_text(encoding="utf-8")
+        assert "Failed to start OAuth flow" not in script
+        assert f'"{setup_mod.SLACK_CONNECT_COULD_NOT_START_MESSAGE}"' in script
+        assert f'"{setup_mod.CALENDAR_CONNECT_COULD_NOT_START_MESSAGE}"' in script
+
+    def test_the_wording_pending_mark_is_gone(self):
+        src = (ROOT / "web/api/routes/setup.py").read_text(encoding="utf-8")
+        assert "CXO wording pending" not in src

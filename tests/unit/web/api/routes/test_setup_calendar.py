@@ -148,7 +148,10 @@ class TestCalendarOAuthTrigger:
                 await start_calendar_oauth(current_user=mock_user)
 
             assert exc_info.value.status_code == 503
-            assert "not configured" in exc_info.value.detail.lower()
+            # CXO 2026-11-24 (issue 2345): the page gets a sentence for a person; the
+            # variable names go to the server log, not into the reply.
+            assert exc_info.value.detail == "Google Calendar sign-in isn't set up on this server."
+            assert "GOOGLE_CLIENT" not in exc_info.value.detail
 
 
 class TestCalendarOAuthCallback:

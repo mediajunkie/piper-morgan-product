@@ -706,11 +706,16 @@
         btn.disabled = true;
         btn.textContent = 'Redirecting to GitHub…';
         try {
+          // Mirrors GITHUB_CONNECT_COULD_NOT_START_MESSAGE (web/api/routes/setup.py); a test
+          // keeps the two equal.
+          const GITHUB_CONNECT_COULD_NOT_START =
+            "The GitHub connection couldn't start just now. Try again in a moment; if it keeps failing, tell us.";
           const resp = await fetch('/api/v1/settings/integrations/github/connect');
           if (!resp.ok) {
             // #2345: show the route's own line (e.g. the sign-in state couldn't be saved).
             const errBody = await resp.json().catch(() => ({}));
-            throw new Error(parseApiDetail(errBody.detail, 'connect failed: HTTP ' + resp.status));
+            // CXO 2026-11-24: never a status code on the card; the same line the route sends.
+            throw new Error(parseApiDetail(errBody.detail, GITHUB_CONNECT_COULD_NOT_START));
           }
           const data = await resp.json();
           // #2281 (b): GitHub returns to the callback's host; start Connect there.
@@ -720,7 +725,7 @@
           btn.textContent = original;
           // #1689: Dialog.alert (design-floor F1 #1170), not native alert()
           await Dialog.alert({
-            title: 'Could not start GitHub OAuth',
+            title: "GitHub connection couldn't start",
             body: e.message,
           });
         }

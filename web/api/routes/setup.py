@@ -731,6 +731,10 @@ INVITE_CHECK_COULD_NOT_RUN_MESSAGE = f"The invite check couldn't run just now. {
 GITHUB_CONNECT_COULD_NOT_START_MESSAGE = (
     f"The GitHub connection couldn't start just now. {_TRY_AGAIN}"
 )
+# CXO 2026-11-24 (2345): the setup wizard's Calendar step when Google's client is not
+# configured. The page used to show fixed words for any refusal; it now shows the route's
+# line, so this case gets one written for a person (the operator detail is logged).
+CALENDAR_SIGN_IN_NOT_SET_UP_MESSAGE = "Google Calendar sign-in isn't set up on this server."
 SETUP_COULD_NOT_FINISH_MESSAGE = (
     "Setup couldn't finish just now. Try again in a moment; if it keeps failing, tell us."
 )
@@ -1961,9 +1965,15 @@ async def start_calendar_oauth(
 
         # Verify credentials are configured
         if not handler.client_id or not handler.client_secret:
-            raise HTTPException(
+            # CXO 2026-11-24 (2345): the variable names are for whoever runs the server, so
+            # they go to the log; the page gets a sentence a person can read.
+            logger.warning(
+                "calendar_oauth_not_configured",
+                missing="GOOGLE_CLIENT_ID and GOOGLE_CLIENT_SECRET",
+            )
+            raise UserFacingHTTPException(
                 status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
-                detail="Google Calendar OAuth not configured. Set GOOGLE_CLIENT_ID and GOOGLE_CLIENT_SECRET.",
+                detail=CALENDAR_SIGN_IN_NOT_SET_UP_MESSAGE,
             )
 
         # Issue #734: Pass user_id for multi-tenant state
@@ -1974,7 +1984,7 @@ async def start_calendar_oauth(
             auth_url, state = await handler.generate_authorization_url(user_id=current_user.sub)
         except OAuthStateStoreUnavailable:
             logger.warning("calendar_oauth_start_state_store_unavailable", user_id=current_user.sub)
-            raise HTTPException(
+            raise UserFacingHTTPException(
                 status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
                 detail=CALENDAR_CONNECT_COULD_NOT_START_MESSAGE,
             )
