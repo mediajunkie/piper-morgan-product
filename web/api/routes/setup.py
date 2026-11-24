@@ -350,7 +350,8 @@ async def require_setup_incomplete() -> None:
     except Exception:
         raise UserFacingHTTPException(
             status_code=503,
-            detail="Couldn't verify setup state — try again in a moment.",
+            # CXO 2026-11-24 (2428): no code phrase, and the same ending as the other lines.
+            detail=SETUP_COULD_NOT_BE_CHECKED_MESSAGE,
         )
     if already:
         raise HTTPException(
@@ -673,7 +674,7 @@ async def check_invite(req: InviteCheckRequest) -> InviteCheckResponse:
         logger.error("invite_check_failed", error_type=type(e).__name__)
         raise UserFacingHTTPException(
             status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
-            detail="The invite check couldn't run. Try again in a moment.",
+            detail=INVITE_CHECK_COULD_NOT_RUN_MESSAGE,  # CXO 2026-11-24 (2428)
         )
     logger.info("invite_check", valid=valid)
     return InviteCheckResponse(valid=valid, message=None if valid else INVITE_REFUSED_MESSAGE)
@@ -721,6 +722,9 @@ SLACK_CONNECT_COULD_NOT_START_MESSAGE = (
 CALENDAR_CONNECT_COULD_NOT_START_MESSAGE = (
     f"The Google Calendar connection couldn't start just now. {_TRY_AGAIN}"
 )
+# CXO 2026-11-24 (issue 2428): the two 503 lines that had no "tell us" ending.
+SETUP_COULD_NOT_BE_CHECKED_MESSAGE = f"Setup couldn't be checked just now. {_TRY_AGAIN}"
+INVITE_CHECK_COULD_NOT_RUN_MESSAGE = f"The invite check couldn't run just now. {_TRY_AGAIN}"
 SETUP_COULD_NOT_FINISH_MESSAGE = (
     "Setup couldn't finish just now. Try again in a moment; if it keeps failing, tell us."
 )

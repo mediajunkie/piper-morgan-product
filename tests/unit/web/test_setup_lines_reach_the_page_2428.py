@@ -51,9 +51,9 @@ TABLES_LINE = (
     "who runs it."
 )
 VETTED_LINES = (
-    "Couldn't verify setup state — try again in a moment.",
+    setup.SETUP_COULD_NOT_BE_CHECKED_MESSAGE,
     setup.SYSTEM_CHECK_COULD_NOT_RUN_MESSAGE,
-    "The invite check couldn't run. Try again in a moment.",
+    setup.INVITE_CHECK_COULD_NOT_RUN_MESSAGE,
     TABLES_LINE,
     DATABASE_LINE,
     setup.ACCOUNT_COULD_NOT_BE_CREATED_MESSAGE,
@@ -219,27 +219,26 @@ class TestArchsGuardOverEveryMarkedRaise:
     def test_the_guard_sees_the_known_sites(self):
         files = {path for path, _ in self._marked_calls()}
         assert files == {"web/api/routes/setup.py", "web/api/routes/settings_integrations.py"}
-        assert len(self._marked_calls()) == 14  # 11 in setup.py, 3 in settings_integrations.py
+        per_file = {}
+        for path, _ in self._marked_calls():
+            per_file[path] = per_file.get(path, 0) + 1
+        # setup.py: the eleven vetted lines. settings_integrations.py: eight preferences
+        # reads, the Notion check and the GitHub token read.
+        assert per_file == {
+            "web/api/routes/setup.py": 11,
+            "web/api/routes/settings_integrations.py": 10,
+        }
 
     def test_every_marked_detail_is_a_literal_or_an_upper_case_constant(self):
+        """No exception to the rule (Arch, mail 01M8762YMW): a ``.format`` on a template
+        would trust every caller to pass a literal, which the guard cannot see."""
         for path, node in self._marked_calls():
             keywords = {k.arg: k.value for k in node.keywords}
             assert "detail" in keywords, f"{path}:{node.lineno}: detail must be a keyword"
             detail = keywords["detail"]
-            if isinstance(detail, ast.Call) and isinstance(detail.func, ast.Attribute):
-                # ``TEMPLATE.format(thing=...)`` on an UPPER_CASE constant with literal or
-                # plain-name arguments: #2154's one templated line (the prefs read).
-                base = detail.func.value
-                ok = (
-                    detail.func.attr == "format"
-                    and isinstance(base, ast.Name)
-                    and base.id.isupper()
-                    and path == "web/api/routes/settings_integrations.py"
-                )
-            else:
-                ok = (isinstance(detail, ast.Constant) and isinstance(detail.value, str)) or (
-                    isinstance(detail, ast.Name) and detail.id.isupper()
-                )
+            ok = (isinstance(detail, ast.Constant) and isinstance(detail.value, str)) or (
+                isinstance(detail, ast.Name) and detail.id.isupper()
+            )
             assert ok, f"{path}:{node.lineno}: {ast.unparse(detail)[:70]}"
 
     @pytest.mark.parametrize(
@@ -249,6 +248,7 @@ class TestArchsGuardOverEveryMarkedRaise:
             "UserFacingHTTPException(status_code=500, detail=str(e))",
             'UserFacingHTTPException(status_code=500, detail="a" + reason)',
             "UserFacingHTTPException(status_code=500, detail=error_msg)",
+            "UserFacingHTTPException(status_code=503, detail=TEMPLATE.format(thing=thing))",
         ],
     )
     def test_the_rule_refuses_the_shapes_arch_named(self, source):
@@ -257,3 +257,46 @@ class TestArchsGuardOverEveryMarkedRaise:
             isinstance(detail, ast.Name) and detail.id.isupper()
         )
         assert not fixed
+
+
+class TestThePreferencesLinesAreWrittenWhole:
+    """Arch 2026-11-24: one constant per sentence, each written whole. Pinned to #2154's
+    template with its old ``thing``, so no word changed and CXO has nothing new to read."""
+
+    THINGS = {
+        "SLACK_PREFS_LOAD_FAILED_MESSAGE": "your Slack preferences",
+        "CALENDAR_CHOICES_LOAD_FAILED_MESSAGE": "your saved calendar choices",
+        "CALENDAR_PREFS_LOAD_FAILED_MESSAGE": "your Google Calendar preferences",
+        "NOTION_DATABASE_CHOICES_LOAD_FAILED_MESSAGE": "your saved database choices",
+        "NOTION_PREFS_LOAD_FAILED_MESSAGE": "your Notion preferences",
+        "GITHUB_REPOSITORY_CHOICES_LOAD_FAILED_MESSAGE": "your saved repository choices",
+        "GITHUB_PREFS_LOAD_FAILED_MESSAGE": "your GitHub preferences",
+    }
+
+    @pytest.mark.parametrize("name", sorted(THINGS))
+    def test_each_constant_equals_the_template_with_its_thing(self, name):
+        from web.api.routes import settings_integrations as si
+
+        assert getattr(si, name) == si.PREFS_LOAD_FAILED_TEMPLATE.format(thing=self.THINGS[name])
+
+    def test_no_preferences_line_is_built_at_run_time_any_more(self):
+        src = (ROOT / "web/api/routes/settings_integrations.py").read_text(encoding="utf-8")
+        assert "PREFS_LOAD_FAILED_TEMPLATE.format(" not in src
+        assert "_prefs_unavailable" not in src
+        for thing in self.THINGS.values():
+            assert src.count(f'"{thing}"') == 0, thing  # only inside its whole sentence
+
+    async def test_a_failed_read_raises_the_callers_own_line(self):
+        from unittest.mock import AsyncMock
+
+        from web.api.routes import settings_integrations as si
+
+        unavailable = UserFacingHTTPException(
+            status_code=503, detail=si.SLACK_PREFS_LOAD_FAILED_MESSAGE
+        )
+        with patch.object(
+            si, "_load_prefs_db", AsyncMock(side_effect=si.PreferencesReadFailed("x"))
+        ):
+            with pytest.raises(UserFacingHTTPException) as raised:
+                await si._load_prefs_or_503("u-1", "slack", unavailable)
+        assert raised.value is unavailable and raised.value.status_code == 503
