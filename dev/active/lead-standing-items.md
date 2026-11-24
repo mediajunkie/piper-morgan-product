@@ -5,16 +5,15 @@ The 08-31 version had gone stale again: on 11-24 an audit found twelve issues it
 ## Mine now (no blocker)
 
 - **2352 box 3 (Arch ruled 11-24):** `keys add` keeps its name and calls `local_key_setup.py`'s store path; no separate keychain write. Box 4 (the wizard reading keys from the environment) was not put to Arch. Placed in D, no sprint: ask PPM for a slot with 2399. — **Filed**: 2026-11-24
-- **2264 box 2:** image size before and after on the issue. Low value; the "before" image may be gone. — **Filed**: 2026-11-24
-- **`scripts/secret_prompt.py` shared module:** its trigger (xian's Redis rotation run) is dead since HOST cut 2335. Build it or drop it; my call. — **Filed**: 2026-11-12
 
 ## Waiting on a named seat (each was asked; mail id given)
 
-- **2431 (outage screens: raw JSON on a page load when Redis is unreachable):** filed by CXO 11-24 from my render, with her sentence. Arch ruled 11-24 10:50 and CXO added the 429 and at-capacity words; built, rendered, on main `f4a5baa9b6` and on beta since 11-24 12:30. Web was asked for a happy-path read (01M87M2KSB). Rows are CXO's and Arch's to tick; the session-check page was never rendered (cannot be forced). — **Filed**: 2026-11-24
-- **2432 (4xx replies carry the raiser's own words):** step 1 (the six `str(e)` sites) is on main `6ff8197d9a` (11-24). Arch ruled the mechanism (decisions.log 11-24 11:50). Waits on CXO's read of the 68 fixed lines and her line per status; then mine: the handler's default flip and the validation 422 handler in one change. — **Filed**: 2026-11-24
+- **2431 (outage screens):** on main `f4a5baa9b6`, on beta since 11-24 12:30. Web's happy-path read passed (01M87M994Q); I read the sign-in form's failed branch on beta. Refusal states were rendered locally only. Rows are Arch's and CXO's to tick. — **Filed**: 2026-11-24
+- **2433 (a non-admin opening an admin-only page by address gets raw JSON):** filed by me 11-24 from a render; low priority (the card shows to admins only). Needs PPM's placement, Arch's shape (2431's refusal page) and CXO's words. Not asked by mail yet beyond the issue; raise with PPM in the sprint 3 draft. — **Filed**: 2026-11-24
+- **Pages with their own copy of a route's refusal:** the Lists page says `Give your list a name`, the route `Give the list a name first.` (Web's read, 11-24). Asked CXO on 2432 (issuecomment-7147294554) whether she wants a sweep; no issue until she says. — **Filed**: 2026-11-24
+- **2264 box 2:** the measurable figure is on the issue (11-24: the change removed 2,119 files, 83.9 MB, from every build). Not ticked: image sizes cannot be produced and `.dockerignore` lists two `data/` folders, not all of `data/` (settle with 2244). Asked PPM on the issue whether the measurement is enough. — **Filed**: 2026-11-24
 - **2429, 2430:** on main and on beta (`b2cda27b5d`, 11-24 11:25); rows are Arch's and CXO's to tick. — **Filed**: 2026-11-24
 - **2345:** on beta `009afa0f7f`; 2 of 3 starts served-read by Web; the return half is xian's F.4 connect (roll back first if it fails); the wizard's start waits on the `setup-calendar` allow. — **Filed**: 2026-11-24
-- **2386 close:** string 1 passed by CXO (01M8749H51). String 2 is 2428's database line; closes when 2428 lands and CXO has read the render (sent, 01M875ZVDT). — **Filed**: 2026-11-16
 - **2388 row 2:** forced-failure output posted on the issue for HOST's read (asked in the issue comment and 01M871EC86). Row 4 waits on the counter-read allow on xian's card (CIO's steps line) and Web's run. — **Filed**: 2026-11-16
 - **2390:** on main (`e43ebe55ab`). Open rows: the served read by a seat account (waits on an allow, which HOST says to add only when a seat has a reason). — **Filed**: 2026-11-24
 - **2391:** rows 1 and 2 ticked (Arch's option A: no second counter). Row 3 ticks now that 2390 is on main; row 4 (amended) waits on the counter-read allow. — **Filed**: 2026-11-24
