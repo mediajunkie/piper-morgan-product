@@ -74,7 +74,7 @@ def _refuse(exc: InviteAdminError) -> HTTPException:
         return UserFacingHTTPException(
             status_code=429,
             detail=INVITE_DAILY_LIMIT_TEMPLATE.format(
-                minted=int(exc.minted), limit=int(exc.limit), left=int(exc.left)
+                used=int(exc.minted), limit=int(exc.limit), left=int(exc.left)
             ),
         )
     if invite_refusal_line(exc.code) is not None:

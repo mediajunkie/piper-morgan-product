@@ -52,7 +52,7 @@ ENTER_CLIENT_ID_LINE = "Enter the client ID."
 ENTER_CLIENT_SECRET_LINE = "Enter the client secret."
 SLACK_REPLIES_OFF_LINE = "Slack replies are turned off in this release, so your token wasn't saved."
 SLACK_APP_TOKEN_SHAPE_LINE = (
-    "That doesn't look like an app-level token — they start with 'xapp-'. "
+    "That doesn't look like an app-level token. They start with 'xapp-'. "
     "Check you copied the right one from Basic Information → App-Level Tokens."
 )
 NOTION_KEY_DIDNT_WORK_LINE = "That Notion API key didn't work. Check it and try again."

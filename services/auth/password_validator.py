@@ -166,7 +166,12 @@ PASSWORD_TOO_SHORT_LINE = f"Your password needs at least {PasswordValidator.MIN_
 PASSWORD_NEEDS_UPPERCASE_LINE = "Your password needs an uppercase letter."
 PASSWORD_NEEDS_LOWERCASE_LINE = "Your password needs a lowercase letter."
 PASSWORD_NEEDS_NUMBER_LINE = "Your password needs a number."
-PASSWORD_NEEDS_SPECIAL_LINE = "Your password needs a special character."
+# CXO (mail 01M87RB23J): the line names the characters that count, so a person who types
+# another one learns why it failed. Built from the validator's own set (Arch, mail
+# 01M87RHFPQ), so the sentence and the rule cannot drift.
+PASSWORD_NEEDS_SPECIAL_LINE = "Your password needs a special character, such as {}.".format(
+    " ".join(PasswordValidator.SPECIAL_CHARS)
+)
 PASSWORDS_DONT_MATCH_LINE = "The passwords don't match."
 # For a rule code with no line of its own (CXO's fallback, her log 2026-11-24 11:51 and
 # Arch's note 01M87HVCTY: "That password can't be used. Choose a different one.").

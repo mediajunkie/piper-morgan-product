@@ -284,7 +284,7 @@ TABLE = [
     (
         "web.api.routes.settings_integrations",
         "SLACK_APP_TOKEN_SHAPE_LINE",
-        "That doesn't look like an app-level token — they start with 'xapp-'. "
+        "That doesn't look like an app-level token. They start with 'xapp-'. "
         "Check you copied the right one from Basic Information → App-Level Tokens.",
         CXO,
     ),
@@ -547,7 +547,7 @@ class TestThePasswordRules:
         "no_uppercase": "Your password needs an uppercase letter.",
         "no_lowercase": "Your password needs a lowercase letter.",
         "no_digit": "Your password needs a number.",
-        "no_special": "Your password needs a special character.",
+        "no_special": "Your password needs a special character, such as ! @ # $ % ^ & * ( ).",
         "mismatch": "The passwords don't match.",
     }
     FALLBACK = "That password can't be used. Choose a different one."
@@ -602,7 +602,7 @@ class TestThePasswordRules:
             ("Ab1!", "Your password needs at least 8 characters."),
             ("abcdefg1!", "Your password needs an uppercase letter."),
             ("Abcdefgh!", "Your password needs a number."),
-            ("Abcdefg12", "Your password needs a special character."),
+            ("Abcdefg12", "Your password needs a special character, such as ! @ # $ % ^ & * ( )."),
         ],
     )
     def test_the_change_route_answers_the_rules_line(self, password, line):
