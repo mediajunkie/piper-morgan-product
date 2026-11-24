@@ -16,6 +16,7 @@ from uuid import UUID
 from fastapi import APIRouter, Depends, HTTPException
 from pydantic import BaseModel, Field
 
+from services.api.errors import UserFacingHTTPException
 from services.auth.auth_middleware import get_current_user
 from services.database.session_factory import AsyncSessionFactory
 from services.domain.user_preference_manager import UserPreferenceManager
@@ -31,6 +32,9 @@ TIME_ZONE_NOT_RECOGNISED_MESSAGE = (
 )
 
 router = APIRouter(prefix="/api/v1/preferences", tags=["preferences"])
+
+# Issue 2432 (CXO, comment 7144095698): marked.
+PREFERENCE_NOT_APPLIED_LINE = "I couldn't apply that preference."
 
 # Service instances
 preference_manager = UserPreferenceManager()
@@ -123,10 +127,8 @@ async def accept_preference(
 
         if not result.get("success"):
             logger.warning(f"Failed to confirm preference for {user_id}: {result}")
-            raise HTTPException(
-                status_code=400,
-                detail=result.get("error", "Failed to apply preference"),
-            )
+            # Issue 2432 (CXO): the handler's own error is in the warning above, never sent.
+            raise UserFacingHTTPException(status_code=400, detail=PREFERENCE_NOT_APPLIED_LINE)
 
         return PreferenceResponse(
             success=True,
@@ -304,7 +306,9 @@ async def set_timezone(
         await preference_manager.set_reminder_timezone(current_user.user_id, request.timezone)
     except ValueError as e:
         # Issue 2432 (CXO): a fixed line; the value the person typed is not echoed.
-        raise HTTPException(status_code=400, detail=TIME_ZONE_NOT_RECOGNISED_MESSAGE) from e
+        raise UserFacingHTTPException(
+            status_code=400, detail=TIME_ZONE_NOT_RECOGNISED_MESSAGE
+        ) from e
 
     return TimezoneResponse(
         timezone=request.timezone, is_default=(request.timezone == DEFAULT_USER_TIMEZONE)

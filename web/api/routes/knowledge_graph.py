@@ -13,6 +13,7 @@ from typing import Optional
 import structlog
 from fastapi import APIRouter, Depends, HTTPException, status
 
+from services.api.errors import UserFacingHTTPException
 from services.auth.auth_middleware import get_current_user
 from services.auth.jwt_service import JWTClaims
 from services.shared_types import EdgeType, NodeType
@@ -20,6 +21,22 @@ from web.api.dependencies import get_knowledge_graph_service
 
 router = APIRouter(prefix="/api/v1/knowledge", tags=["knowledge-graph"])
 logger = structlog.get_logger(__name__)
+
+# Issue 2432 (CXO, comment 7144095698): reworded, marked. The two type lists are computed
+# once here from the enums, in their declared order, and no line echoes the value sent.
+NODE_NAME_NEEDED_LINE = "Give it a name first."
+NODE_TYPE_NEEDED_LINE = "Choose a type first."
+EDGE_TYPE_NEEDED_LINE = "Choose a type for the connection first."
+NODE_TYPE_NOT_RECOGNISED_LINE = (
+    "That isn't a node type I recognise. Choose one of: "
+    + ", ".join(t.value for t in NodeType)
+    + "."
+)
+EDGE_TYPE_NOT_RECOGNISED_LINE = (
+    "That isn't an edge type I recognise. Choose one of: "
+    + ", ".join(t.value for t in EdgeType)
+    + "."
+)
 
 
 @router.post("/nodes")
@@ -53,15 +70,13 @@ async def create_node(
     """
     try:
         if not name or not name.strip():
-            raise HTTPException(
-                status_code=status.HTTP_400_BAD_REQUEST,
-                detail="Node name is required",
+            raise UserFacingHTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST, detail=NODE_NAME_NEEDED_LINE
             )
 
         if not node_type or not node_type.strip():
-            raise HTTPException(
-                status_code=status.HTTP_400_BAD_REQUEST,
-                detail="Node type is required",
+            raise UserFacingHTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST, detail=NODE_TYPE_NEEDED_LINE
             )
 
         # #1436 B14: coerce to the enum the service requires; the old code
@@ -70,10 +85,8 @@ async def create_node(
         try:
             node_type_enum = NodeType(node_type.strip().upper())
         except ValueError:
-            raise HTTPException(
-                status_code=status.HTTP_400_BAD_REQUEST,
-                detail=f"Invalid node_type: {node_type}. "
-                f"Must be one of: {', '.join(t.value for t in NodeType)}",
+            raise UserFacingHTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST, detail=NODE_TYPE_NOT_RECOGNISED_LINE
             )
 
         created_node = await kg_service.create_node(
@@ -221,9 +234,8 @@ async def create_edge(
     """
     try:
         if not edge_type or not edge_type.strip():
-            raise HTTPException(
-                status_code=status.HTTP_400_BAD_REQUEST,
-                detail="Edge type is required",
+            raise UserFacingHTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST, detail=EDGE_TYPE_NEEDED_LINE
             )
 
         # Verify both nodes are owned by current user
@@ -240,10 +252,8 @@ async def create_edge(
         try:
             edge_type_enum = EdgeType(edge_type.strip().upper())
         except ValueError:
-            raise HTTPException(
-                status_code=status.HTTP_400_BAD_REQUEST,
-                detail=f"Invalid edge_type: {edge_type}. "
-                f"Must be one of: {', '.join(t.value for t in EdgeType)}",
+            raise UserFacingHTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST, detail=EDGE_TYPE_NOT_RECOGNISED_LINE
             )
 
         created_edge = await kg_service.create_edge(
@@ -323,10 +333,8 @@ async def query_graph(
             try:
                 node_type_enum = NodeType(node_type.strip().upper())
             except ValueError:
-                raise HTTPException(
-                    status_code=status.HTTP_400_BAD_REQUEST,
-                    detail=f"Invalid node_type: {node_type}. "
-                    f"Must be one of: {', '.join(t.value for t in NodeType)}",
+                raise UserFacingHTTPException(
+                    status_code=status.HTTP_400_BAD_REQUEST, detail=NODE_TYPE_NOT_RECOGNISED_LINE
                 )
         nodes = await kg_service.search_nodes(
             node_type=node_type_enum,

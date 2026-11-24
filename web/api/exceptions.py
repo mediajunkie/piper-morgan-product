@@ -16,6 +16,15 @@ from fastapi import HTTPException
 # Issue 2429: the class moved to services/api/errors.py so a services/ gate can raise it;
 # re-exported here so existing importers keep working.
 from services.api.errors import UserFacingHTTPException  # noqa: F401
+from services.domain.models import ShareRole
+
+# Issue 2432 (CXO, comment 7144095698): the one role refusal the list, todo and project
+# share routes give. The roles are computed once here from ``ShareRole``, in its declared
+# order, and the line never echoes the role the person sent.
+SHARE_ROLES = tuple(role.value for role in ShareRole)
+ROLE_NOT_RECOGNISED_LINE = (
+    "That isn't a role I recognise. Choose one of: " + ", ".join(SHARE_ROLES) + "."
+)
 
 
 class HTTPExceptionWithCookieClear(HTTPException):

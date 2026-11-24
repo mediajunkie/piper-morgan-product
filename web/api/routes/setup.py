@@ -44,6 +44,18 @@ from web.api.exceptions import UserFacingHTTPException  # noqa: E402 (issue 2428
 router = APIRouter(prefix="/api/v1/setup", tags=["setup"])
 logger = structlog.get_logger(__name__)
 
+# Issue 2432 (CXO, comment 7144095698 and mail 01M87NVGEW): the setup routes' 4xx lines,
+# kept or reworded, marked.
+SETUP_ALREADY_COMPLETE_LINE = (
+    "Setup is already complete on this server. Sign in and manage "
+    "credentials and projects from Settings → Integrations instead."
+)
+SIGNED_IN_ACCOUNT_ONLY_LINE = "This setup step applies to the signed-in account only."
+INVITE_CODE_NOT_VALID_LINE = "That invite code isn't valid or has already been used."
+EMAIL_OR_USERNAME_IN_USE_LINE = "That email or username is already in use."
+PROJECT_NAME_NEEDED_LINE = "Give the project a name first."
+GITHUB_OWNER_REPO_LINE = "Write the GitHub repository as owner/repo."
+
 
 # ============================================================================
 # Pydantic Models
@@ -354,13 +366,7 @@ async def require_setup_incomplete() -> None:
             detail=SETUP_COULD_NOT_BE_CHECKED_MESSAGE,
         )
     if already:
-        raise HTTPException(
-            status_code=403,
-            detail=(
-                "Setup is already complete on this server. Sign in and manage "
-                "credentials and projects from Settings → Integrations instead."
-            ),
-        )
+        raise UserFacingHTTPException(status_code=403, detail=SETUP_ALREADY_COMPLETE_LINE)
 
 
 def _principal_or_none(current_user: object) -> Optional[str]:
@@ -381,9 +387,8 @@ def _setup_principal(current_user: JWTClaims, body_user_id: Optional[str]) -> st
     principal check is what stops F1 (anyone writing anyone's keys)."""
     principal = str(current_user.sub)
     if body_user_id is not None and str(body_user_id) != principal:
-        raise HTTPException(
-            status_code=status.HTTP_403_FORBIDDEN,
-            detail="This setup step applies to the signed-in account only.",
+        raise UserFacingHTTPException(
+            status_code=status.HTTP_403_FORBIDDEN, detail=SIGNED_IN_ACCOUNT_ONLY_LINE
         )
     return principal
 
@@ -1266,9 +1271,8 @@ async def create_user(
             consumed = await consume_invite_token(session, req.invite_token, user.id)
             if not consumed:
                 logger.warning("user_creation_failed_invalid_invite_token", username=req.username)
-                raise HTTPException(
-                    status_code=status.HTTP_400_BAD_REQUEST,
-                    detail="Invalid or already-used invite token",
+                raise UserFacingHTTPException(
+                    status_code=status.HTTP_400_BAD_REQUEST, detail=INVITE_CODE_NOT_VALID_LINE
                 )
             await session.commit()
 
@@ -1291,11 +1295,11 @@ async def create_user(
             # #1348: email is unique too — say which field collided instead of
             # blaming the username for an email conflict.
             field = "Email" if "email" in error_str else "Username"
-            value = req.email if field == "Email" else req.username
             logger.warning("user_creation_failed_duplicate", username=req.username, field=field)
-            raise HTTPException(
-                status_code=status.HTTP_400_BAD_REQUEST,
-                detail=f"{field} '{value}' already exists",
+            # Issue 2432 (CXO, mail 01M87NVGEW): one line for both fields; the typed value
+            # is never echoed.
+            raise UserFacingHTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST, detail=EMAIL_OR_USERNAME_IN_USE_LINE
             )
         # Provide helpful error messages for common database issues
         elif "relation" in error_str and "does not exist" in error_str:
@@ -1631,9 +1635,8 @@ async def create_setup_project(
     user_id = _setup_principal(current_user, req.user_id)
     try:
         if not req.project_name or not req.project_name.strip():
-            raise HTTPException(
-                status_code=status.HTTP_400_BAD_REQUEST,
-                detail="Project name is required",
+            raise UserFacingHTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST, detail=PROJECT_NAME_NEEDED_LINE
             )
 
         async with AsyncSessionFactory.session_scope_fresh() as session:
@@ -1653,9 +1656,8 @@ async def create_setup_project(
                 repo_name = req.github_repo.strip()
                 # Basic format validation (owner/repo)
                 if "/" not in repo_name:
-                    raise HTTPException(
-                        status_code=status.HTTP_400_BAD_REQUEST,
-                        detail="GitHub repo must be in owner/repo format",
+                    raise UserFacingHTTPException(
+                        status_code=status.HTTP_400_BAD_REQUEST, detail=GITHUB_OWNER_REPO_LINE
                     )
 
                 # Issue #867: Soft-validate via GitHub API

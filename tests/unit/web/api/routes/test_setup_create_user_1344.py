@@ -130,8 +130,9 @@ def test_email_is_required_on_the_request_model_1348():
 
 
 async def test_duplicate_email_400_names_the_email_field_1348(db_session, unused_token):
-    """Two accounts, same email, different usernames → the 400 must blame the
-    EMAIL (previously it said "Username 'x' already exists" for email dupes)."""
+    """Two accounts, same email, different usernames → a 400. Issue 2432 (CXO, mail
+    01M87NVGEW): one line for both fields, and the typed email is never echoed; which
+    field collided goes to the log (``user_creation_failed_duplicate``)."""
     from services.auth.invite_token_service import generate_invite_token
 
     email = f"dupe_{uuid.uuid4().hex[:8]}@test.invalid"
@@ -157,5 +158,6 @@ async def test_duplicate_email_400_names_the_email_field_1348(db_session, unused
     with pytest.raises(HTTPException) as exc:
         await create_user(second)
     assert exc.value.status_code == 400
-    assert "Email" in exc.value.detail
-    assert email in exc.value.detail
+    assert exc.value.detail == "That email or username is already in use."
+    assert email not in exc.value.detail
+    assert getattr(exc.value, "user_facing", False) is True

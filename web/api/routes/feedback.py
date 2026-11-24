@@ -13,12 +13,16 @@ import structlog
 from fastapi import APIRouter, Depends, HTTPException, status
 from pydantic import BaseModel, Field
 
+from services.api.errors import UserFacingHTTPException
 from services.auth.auth_middleware import get_current_user, require_admin
 from services.auth.jwt_service import JWTClaims
 from web.api.dependencies import get_feedback_service
 
 router = APIRouter(prefix="/api/v1/feedback", tags=["feedback"])
 logger = structlog.get_logger(__name__)
+
+# Issue 2432 (CXO, comment 7144095698): reworded, marked.
+FEEDBACK_NEEDED_LINE = "Write your feedback first."
 
 # #2096 (Arch, 2026-10-19): the text travels in a bounded JSON body, never the
 # query string (a query string lands in access logs; a tester's words must not).
@@ -60,9 +64,8 @@ async def submit_feedback(
     page_path = submission.page_path
     try:
         if not content or not content.strip():
-            raise HTTPException(
-                status_code=status.HTTP_400_BAD_REQUEST,
-                detail="Feedback content is required",
+            raise UserFacingHTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST, detail=FEEDBACK_NEEDED_LINE
             )
 
         # #1436 B15: this route constructed a nonexistent domain.Feedback and
