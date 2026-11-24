@@ -8,78 +8,65 @@ caption: ''
 
 *November 13–19, 2026*
 
-> **OUTLINE SCAFFOLD for xian (Exec, 11-23).** These are the sections, with bare facts under each one, for you to write from. I've erred on the side of including things, so trim freely. This is the first **progress Ship** of sprint 2 (week 1 of 2). Sources: the Ship #070 week review (approved 11-23), decisions.log, and the ten workstream reviews. Issue numbers are here for reference only. Public prose names the thing, not the number. Remove this box before publishing.
+This week the agent team piled up a lot of work that waited for my attention to fully complete or execute. More and more workflows led to manual tasks for me. Eventually, I asked for a review of the state of affairs, writing "We keep changing how provider keys are used, how github is used, how piper morgan is used by our agents and it's become a tangled mess that keeps becoming my problem to manually navigate. this is not an acceptable state of affairs."
 
-**▸ Write about:** your 11-15 ruling, and what it set off. Sprint 2's goal and where its named set stands at halfway.
-
-**▸ Facts:**
-- 11-15, 19:11, your words to the team: "We need to solve that problem, not assign me manual tasks as a workaround for a poorly conceived solution." Also: "We keep changing how provider keys are used, how github is used, how piper morgan is used by our agents and it's become a tangled mess that keeps becoming my problem to manually navigate. this is not an acceptable state of affairs."
-- What led up to it: a stored testing key couldn't be decrypted, the classifier refused the workaround, and the seats drifted toward "xian runs it".
-- The structural answer: ADR-084, which gives the seats their own keys, accounts and browser (a paraphrase. Its title is "Seat resources: what agents use to run and test Piper is separate from xian's, granted once, and bounded where a seat can't pass"). You accepted it 11-16 at 06:20 with a budget of $10 a run without asking, under a hard cap of $150 a month. Every seat rewrote its open items so that none ends in "xian runs it".
-- The cost: a whole week of work that was built and put on beta but not read by a signed-in person. All of it converged on one sitting at Amber (Fri 11-20).
-- Sprint 2 is "onboarding to first value", 11-13 to 11-26, and it has 14 named items. 2 were done before the sprint began. 0 closed in week one, and 12 are open. Most of the 12 are built and on beta, waiting for a signed-in read.
-- Continuity: #069 was "Off-Limits by Default" (the keychain). This one is the same instinct applied to your own hands.
+This led to an architecture decision record ([ADR-084](https://pmorgan.tech/internal/architecture/adrs/adr-084-seat-resources-are-separate-granted-once-and-bounded)) with an ungainly name, "Seat resources are separate, granted once, and bounded." It gives each agent/role "seat" their own keys, accounts and browser. I accepted it on Nov 16, approving a budget of $10 a run without asking, under a hard cap of $150 a month. Every agent then reviewed their open items for tasks they had assigned to me to run manually that they were now adequately provisioned to run themselves.
 
 # 🚀 Shipped this week
 
+The upshot was that the work done in the first week of this two-week sprint (itself the team's first sprint of this length) didn't get a human review before the second half of the sprint behan.
+
 ## ⚙️ Engineering & architecture
 
-**▸ Write about:** the seat tools built for ADR-084, the promotions to beta, and the review layer catching mistakes before they reached a user.
+The goal of this sprint (Sprint 2 of the Production milestone) is that a new user make it from "onboarding to first valuable experience." The sprint runs from Friday, November 13 to Thursday, November 26 (a U.S. holiday, no newsletter that day, by the way), with 14 specific items, two of which were actually done before the sprint began. We didn't close any in the first week, as noted above, but most of the remaining twelve are already built and on beta, waiting for my to sign-in and review them.
 
-**▸ Facts:**
-- **ADR-084's tools, built and read by 11-18:** seat keys, seat sign-in, seat accounts, the seat browser, a dollar cap per run, and a scan for credential shapes. Real runs that week: 0. Your sitting on 11-20 did Steps A, C, D, F0 and F.1.
-- **Updates to beta:** 15 of 16 promotion dispatches succeeded. The gate refused one (11-15 20:00). Lead counts 14, and GitHub and the omnibus count 15.
-- **The promotion gate now walks every parent** of a merge, not just one line of history (Lead, landed 11-13. #2363 itself is still open, so don't say closed). This follows on #069's story of the gate missing the tested commit.
-- **The second reader caught what the first missed** (a learning-pattern candidate, see below):
-  - CIO found three gaps in HOST's first drill read.
-  - Lead caught, by running it, that Arch's deploy-step command would have stopped every promotion.
-  - Arch caught a CXO sentence about an unknown connection that was untrue for one GitHub path.
-  - All three were corrected before merge or serve.
-- **Arch:** 175 ruling lines this week, with at least five self-corrections. (Last week's Ship said 160. Your "somewhat astonished" line could continue.)
-- **Main CI** had two red windows on the morning of 11-17 (5 failed Tests runs, 08:11 to 09:50, from Lead's pushes) and was 12 of 12 green at every read after (Lead's and PPM's reads).
-- **MCP deploys:** 1, yours on 11-15 in PA's session. It kept the connector's GitHub reads inside the repositories you chose (see Product).
-- **Clock rule:** live 11-18 (CIO), the follow-through on #069's time-guessing story. Backtest: it would have refused 138 of 1,781 past commits (7.7%). The backtest found one false positive, which CIO fixed, and no seat has reported a false refusal since it went live.
+The team also built the tooling to implement ADR-084, with step-by-step instructions ready for me to implement.
+
+The beta was rebuilt 15 times, and Lead Developer wrote an update to the tool that promotes builds to beta so that it walks every parent of a merge (instead of just checking one line of history as it it had done in the past), to address the problem noted in last week's shipping news about the promotion gate missing a tested commit.
+
+Last week I confessed I was astounded to learn that Arch made 160 architectural rulings in supervising the build. I guess I need to get use to that pace because this week they made 175 rulings.
+
+I oversaw one fresh deployment of the MCP build on Nov 15, working with Piper Alpha (it's their project!) to narrow the scope of its GitHub connector to just the repos chosen.
+
+The clock rule (about not guessing the time) went live on Nov 18 per the CIO. A backtest showed it would have refused 7.7% of past commits and revealed a false-positive, enabling CIO to fix it. No false refusals reported yet since.
 
 ## 🎯 Product & experience
 
-**▸ Write about:** what a user can do now that they couldn't on 11-12, and the caveat that almost none of it has been read by a signed-in person.
+What a user can do now that they couldn't last week (as far as we can tell, given that I have not tested any of it yet):
 
-**▸ Facts: read on the live service by a person (1 item)**
-- In Claude, the connector's GitHub issue reads stay inside the repositories you installed the App on. Before: 366 issues, mostly from public repositories nobody chose. After: 1, the one issue in the chosen test repository. PA read it through the connector on your account on 11-15, and CXO passed it. (#2374)
-
-**▸ Facts: on beta, not yet read signed in**
-- **Disconnect** says what stays behind at the provider: the App stays installed, and a token or Notion key stays valid. The wording is cautious when Piper can't tell how GitHub was connected. Disconnect All lists what's left to do.
-- **The Integrations cards** read in plain sentences: no code words or exception text, and one sentence about a stale connection per connector, on the card and in chat. Before a write to a repository without the App installed, Piper says to install the App first. (#2379, #2401, #2402)
-- **Piper's replies follow the nine conduct rules** you approved (#2354). They sit outside the classifier, so routing is unchanged.
-- **Self-hosters:** a fresh database is built by alembic, not pre-empted by setup (#2372, closed 11-15). The key saved at setup becomes the account's key (#2405, closed 11-20, after the window, so say "since" or move it to next week). Two copies on one machine no longer share a database: a variable now prefixes every container, network and volume name (`433a8c6b33`, 11-16). Setup's self-hoster lines now name the three data services the docker compose step starts, in CXO's words (`6a27a0a47d`, 11-16). Both are under #2386, which is still open, so call them built, not closed. (Exec 11-23: sources for the two lines Comms flagged.)
-- **Smaller fixes:**
-  - Piper stops blaming GitHub when it never touched it (#2407).
-  - An unreachable Redis no longer costs 2 seconds a call (#2370).
-  - The Anthropic subscription sentence (#2274).
-  - The archive pick shows its date (#2271).
+- In Claude, limit the Piper Morgan MCP connector's GitHub access to **just the repos you installed it on***.
+- **Disconnect** an integration from the Piper Morgan side with clear indications that the connection remains valid and can still be reconnected. 
+- Use **Disconnect All** to remove all connections [Exec: please fact-check this?]
+- Understand the plain language in the **Integrations** setting page
+- Attempt to write to a repository [Exec: does "without the App installed" mean without doing the Github integration, ... the App lingo seems like GitHub App terminology which is not necessarily how the user will understand as "connecting Piper Morgan to Github" - if it means something else, please clarify for me] and get a reminder from Piper says to [install the App first][??]
 
 **▸ Facts: what you can't do yet** (the same shape as #069's list)
 - Get an invitation (the hold stands).
 - Sign in as a fresh account.
 - Reach a first valuable thing in a first session.
 
+Built but not closed yet:
+- **Host their own beta** now that a fresh database is built by alembic, not pre-empted by setup. Two copies on one machine no longer share a database: a variable now prefixes every container, network and volume name
+
+We also codified nine conduct rules for Piper's replies:
+
+[Exec: please add succinct list for me to review and edit:]
+
+(These rules sit outside the classifier, so routing is unchanged.)
+
 ## 🔬 Methodology & process innovation
 
-**▸ Write about:** turning "don't hand me workarounds" into structure, and one or two of the week's process rules.
+I've already devoted enough ink to "don't hand me workarounds (ADR-084) above, and the clock rule.
 
-**▸ Facts:**
-- **ADR-084 as method:** the fix for "xian keeps becoming the manual step" is to give each seat its own key, account and browser, with a budget, rather than a rule to remember. Same shape as #069's chokepoint lesson.
-- **The D6 check** (from the ADR-084 sitting): any step that lands on you is checked for whether standing access would remove it, and who would actually do it.
-- **"The check and the claim go in separate calls"** (CIO, 11-15), after CIO caught itself reporting a result before reading it six times in two days (11-14 and 11-15, seven by that night). The same shape recurred in Comms (11-17: reporting "The Wall" unchanged after you'd edited it in the admin UI). This is the same family as #069's time guessing.
-- **The clock rule** went live 11-18 (see Engineering), the end of #069's "weary of the repeated shuffle".
+We also put my machines' keychains off-limits to agents.
 - **Keychain follow-through:** on 11-15 a test browser started without the mock-keychain flag, so it may have touched your login keychain. CIO disclosed it 11-16. A hook and an every-fire check now cover it.
-- **Mail move:** v4 (the separate mail repository) is now the only path between seats. The old path ended 11-23, which is after the window, so mention it only as "since".
+
+The entire team has migrated to the v4 mail system that involves a separate mail repository to avoid overloading traffic on the primary code-and-docs repository. 
 
 ## 🌍 External relations & community
 
-**▸ Write about:** the five posts, all your prose, plus the new cadence starting this week: Ship on Tuesday, a narrative on Thursday and an insight on the weekend.
+I maintained the current hand-written cadence at a barely sustainable pace this week and prepared to move to a new schedule for this phase of the project:
 
-This week we published:
 
 - Sat 11-14, insight: ["Which Agent Did It?"](https://pipermorgan.ai/blog/which-agent-did-it/)
 - Sun 11-15, insight: ["No New Skills This Time"](https://pipermorgan.ai/blog/no-new-skills-this-time)
@@ -90,14 +77,10 @@ This week we published:
 [![A nervous host welcomes a smiling guest carrying flowers into a cozy living room, while a translucent AI helper pauses beside a half-painted wall.](https://pipermorgan.ai/assets/blog-images/inviting-company-in.webp)](https://pipermorgan.ai/blog/inviting-company-in)
 *"Come in! Mind the unfinished business!"*
 
-**▸ Facts:**
-- All five are distributed (calendar). Each one is your prose, which Comms checked against sources, with fixes made only on your OK.
-- **One-line content notes**, from each post's opening:
-  - *Which Agent Did It?*: every agent acted on GitHub as your account, so work couldn't be traced to a seat.
-  - *No New Skills This Time*: the monthly skills sweep found nothing new to build, and that was the right result.
-  - *The Wall*: the September week the team hit the weekly usage limit.
-  - *Inviting Company In*: the first arc post, about the stale hosted alpha, moving onto Fly, and inviting a reader in.
-- **Hero alternative:** "The Wall" (`the-wall.webp`, caption *"I thought you said it ran itself?"*). Both image URLs returned 200. I picked "Inviting Company In" because "unfinished business" fits a week of work that was built but not yet seen. Your call.
+The new schedule is as follows:
+
+1. Tuesdays (like today) I will publish the Weekly Ship for the sprint week that ended the previous Thursday. This is moving from Wednesdays. The Ship will continue to appear first in the [Shipping News](https://pipermorgan.ai/shipping-news/) on the Piper Morgan website and then gets crossposted to the [Building Piper Morgan](https://www.linkedin.com/newsletters/building-piper-morgan-7346158338541305856) newsletter on LinkedIn.
+2. Thursdays I will publish an update on the building narrative, focused on moving from beta to production and less on the day-to-day blow-by-blow minutiae of building with this agent team. These posts will also continue to appear first on the [Building in Public](https://pipermorgan.ai/blog/) on the website and crossposted to the [Medium](
 - **Cadence:** Ship moves to Tuesday from this one. No Thursday narrative in Thanksgiving week (your 11-17 word).
 
 ## 📊 Governance & operations
@@ -154,6 +137,11 @@ Since the window closed: your 11-20 sitting did Steps A, C, D, F0 and F.1, and "
 
 ## Candidate B: The second reader
 
+- **The second reader caught what the first missed** (a learning-pattern candidate, see below):
+  - CIO found three gaps in HOST's first drill read.
+  - Lead caught, by running it, that Arch's deploy-step command would have stopped every promotion.
+  - Arch caught a CXO sentence about an unknown connection that was untrue for one GitHub path.
+  - All three were corrected before merge or serve.
 - **Discovery:** a second reader using a different method catches what the first missed.
 - **Example:** the three catches listed under Engineering.
 - **Why it matters:** all three were caught before a user saw them.
