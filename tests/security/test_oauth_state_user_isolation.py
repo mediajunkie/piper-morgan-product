@@ -69,10 +69,24 @@ def _patched_slack_oauth_redis():
         yield fake
 
 
+@pytest.fixture
+def calendar_state_redis():
+    """#2345: the Calendar connect state lives in Redis too; the same in-memory fake,
+    patched at RedisFactory itself (the accessor the shared state store uses)."""
+    fake = _FakeRedis()
+
+    @asynccontextmanager
+    async def _scope():
+        yield fake
+
+    with patch("services.cache.redis_factory.RedisFactory.redis_scope", side_effect=_scope):
+        yield fake
+
+
 class TestOAuthStateEncoding:
     """Tests for OAuth state encoding with user_id."""
 
-    def test_generate_state_includes_user_id(self):
+    async def test_generate_state_includes_user_id(self, calendar_state_redis):
         """State must include user_id in encoded payload."""
         from services.integrations.calendar.oauth_handler import GoogleCalendarOAuthHandler
 
@@ -80,7 +94,7 @@ class TestOAuthStateEncoding:
         user_id = "test-user-123"
 
         # Generate authorization URL with user_id
-        auth_url, state = handler.generate_authorization_url(user_id=user_id)
+        auth_url, state = await handler.generate_authorization_url(user_id=user_id)
 
         # Decode state and verify user_id is present
         state_data = _decode_oauth_state(state)
@@ -88,20 +102,20 @@ class TestOAuthStateEncoding:
         assert "user_id" in state_data, "State must include user_id"
         assert state_data["user_id"] == user_id, "user_id must match input"
 
-    def test_generate_state_includes_nonce(self):
+    async def test_generate_state_includes_nonce(self, calendar_state_redis):
         """State must include a CSRF nonce."""
         from services.integrations.calendar.oauth_handler import GoogleCalendarOAuthHandler
 
         handler = GoogleCalendarOAuthHandler()
         user_id = "test-user-456"
 
-        auth_url, state = handler.generate_authorization_url(user_id=user_id)
+        auth_url, state = await handler.generate_authorization_url(user_id=user_id)
 
         state_data = _decode_oauth_state(state)
         assert "nonce" in state_data, "State must include nonce"
         assert len(state_data["nonce"]) >= 16, "Nonce must be sufficiently random"
 
-    def test_generate_state_optionally_includes_return_url(self):
+    async def test_generate_state_optionally_includes_return_url(self, calendar_state_redis):
         """State can optionally include return_url."""
         from services.integrations.calendar.oauth_handler import GoogleCalendarOAuthHandler
 
@@ -109,13 +123,15 @@ class TestOAuthStateEncoding:
         user_id = "test-user-789"
         return_url = "/settings/integrations"
 
-        auth_url, state = handler.generate_authorization_url(user_id=user_id, return_url=return_url)
+        auth_url, state = await handler.generate_authorization_url(
+            user_id=user_id, return_url=return_url
+        )
 
         state_data = _decode_oauth_state(state)
         assert "return_url" in state_data, "State should include return_url when provided"
         assert state_data["return_url"] == return_url
 
-    def test_state_without_user_id_rejected(self):
+    async def test_state_without_user_id_rejected(self, calendar_state_redis):
         """Generating state without user_id should raise an error."""
         from services.integrations.calendar.oauth_handler import GoogleCalendarOAuthHandler
 
@@ -123,7 +139,7 @@ class TestOAuthStateEncoding:
 
         # Calling without user_id should raise ValueError
         with pytest.raises((ValueError, TypeError)):
-            handler.generate_authorization_url()  # No user_id
+            await handler.generate_authorization_url()  # No user_id
 
     async def test_slack_generate_state_includes_user_id(self):
         """Slack handler must also include user_id in state.
@@ -150,7 +166,7 @@ class TestOAuthStateEncoding:
 class TestOAuthStateDecoding:
     """Tests for OAuth state decoding and user_id extraction."""
 
-    def test_verify_state_returns_user_id(self):
+    async def test_verify_state_returns_user_id(self, calendar_state_redis):
         """State verification should return extracted user_id."""
         from services.integrations.calendar.oauth_handler import GoogleCalendarOAuthHandler
 
@@ -158,27 +174,27 @@ class TestOAuthStateDecoding:
         user_id = "decode-test-user"
 
         # Generate state
-        auth_url, state = handler.generate_authorization_url(user_id=user_id)
+        auth_url, state = await handler.generate_authorization_url(user_id=user_id)
 
         # Verify state - should return tuple (is_valid, user_id)
-        is_valid, extracted_user_id = handler.verify_state(state)
+        is_valid, extracted_user_id = await handler.verify_state(state)
 
         assert is_valid is True, "Valid state should pass verification"
         assert extracted_user_id == user_id, "Extracted user_id must match"
 
-    def test_verify_state_rejects_invalid_state(self):
+    async def test_verify_state_rejects_invalid_state(self, calendar_state_redis):
         """Invalid state should be rejected."""
         from services.integrations.calendar.oauth_handler import GoogleCalendarOAuthHandler
 
         handler = GoogleCalendarOAuthHandler()
 
         # Random invalid state
-        is_valid, extracted_user_id = handler.verify_state("invalid-random-state")
+        is_valid, extracted_user_id = await handler.verify_state("invalid-random-state")
 
         assert is_valid is False, "Invalid state should fail verification"
         assert extracted_user_id is None, "No user_id should be extracted from invalid state"
 
-    def test_verify_state_rejects_expired_state(self):
+    async def test_verify_state_rejects_expired_state(self, calendar_state_redis):
         """Expired state should be rejected."""
         from services.integrations.calendar.oauth_handler import GoogleCalendarOAuthHandler
 
@@ -186,17 +202,17 @@ class TestOAuthStateDecoding:
         user_id = "expire-test-user"
 
         # Generate state
-        auth_url, state = handler.generate_authorization_url(user_id=user_id)
+        auth_url, state = await handler.generate_authorization_url(user_id=user_id)
 
         # Simulate time passing (mock the state storage to show expired)
         # The implementation stores timestamp, so we'll mock time.time()
         with patch("time.time", return_value=9999999999):  # Far future
-            is_valid, extracted_user_id = handler.verify_state(state)
+            is_valid, extracted_user_id = await handler.verify_state(state)
 
         assert is_valid is False, "Expired state should fail verification"
         assert extracted_user_id is None
 
-    def test_verify_state_rejects_tampered_state(self):
+    async def test_verify_state_rejects_tampered_state(self, calendar_state_redis):
         """Tampered state should be rejected."""
         from services.integrations.calendar.oauth_handler import GoogleCalendarOAuthHandler
 
@@ -204,7 +220,7 @@ class TestOAuthStateDecoding:
         user_id = "original-user"
 
         # Generate valid state
-        auth_url, state = handler.generate_authorization_url(user_id=user_id)
+        auth_url, state = await handler.generate_authorization_url(user_id=user_id)
 
         # Tamper with state (decode, modify, re-encode)
         state_data = _decode_oauth_state(state)
@@ -212,7 +228,7 @@ class TestOAuthStateDecoding:
         tampered_state = _encode_oauth_state(state_data)
 
         # Tampered state should fail (nonce won't match stored)
-        is_valid, extracted_user_id = handler.verify_state(tampered_state)
+        is_valid, extracted_user_id = await handler.verify_state(tampered_state)
 
         assert is_valid is False, "Tampered state should fail verification"
 
@@ -241,7 +257,7 @@ class TestOAuthStateDecoding:
 class TestOAuthStateSecurityRequirements:
     """Security requirements for OAuth state handling."""
 
-    def test_state_nonce_is_unique_per_request(self):
+    async def test_state_nonce_is_unique_per_request(self, calendar_state_redis):
         """Each request should generate a unique nonce."""
         from services.integrations.calendar.oauth_handler import GoogleCalendarOAuthHandler
 
@@ -249,29 +265,29 @@ class TestOAuthStateSecurityRequirements:
         user_id = "same-user"
 
         # Generate multiple states for same user
-        _, state1 = handler.generate_authorization_url(user_id=user_id)
-        _, state2 = handler.generate_authorization_url(user_id=user_id)
+        _, state1 = await handler.generate_authorization_url(user_id=user_id)
+        _, state2 = await handler.generate_authorization_url(user_id=user_id)
 
         state1_data = _decode_oauth_state(state1)
         state2_data = _decode_oauth_state(state2)
 
         assert state1_data["nonce"] != state2_data["nonce"], "Each request must have unique nonce"
 
-    def test_state_cannot_be_reused(self):
+    async def test_state_cannot_be_reused(self, calendar_state_redis):
         """State should be consumed after first verification (single-use)."""
         from services.integrations.calendar.oauth_handler import GoogleCalendarOAuthHandler
 
         handler = GoogleCalendarOAuthHandler()
         user_id = "reuse-test-user"
 
-        auth_url, state = handler.generate_authorization_url(user_id=user_id)
+        auth_url, state = await handler.generate_authorization_url(user_id=user_id)
 
         # First verification should succeed
-        is_valid1, user_id1 = handler.verify_state(state)
+        is_valid1, user_id1 = await handler.verify_state(state)
         assert is_valid1 is True
 
         # Second verification should fail (state consumed)
-        is_valid2, user_id2 = handler.verify_state(state)
+        is_valid2, user_id2 = await handler.verify_state(state)
         assert is_valid2 is False, "State must be single-use"
 
 
