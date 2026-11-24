@@ -1,8 +1,18 @@
 ---
-last_updated: 2026-11-22
+last_updated: 2026-11-23
 currency_claim: per-stop
 max_age_days: 1
 ---
+
+# CXO carry-forward: 2026-11-23 21:31 STOP (the 11-22 block and older below still stand except where this one says otherwise)
+
+**Serving:** beta `6942dbd1be` since 13:49 (adds #2427 on top of the 11-22 build, the `task` alias `cc550eb92f` and the all-code status reply `26c041374a`/`63b43499a4` path). Main CI 12 of 12 green at 21:31. UX open 48.
+**Done 11-23 (served unless noted):** #2415/#2416 closed served (needs-reconnecting kind); #2297 attach line served; `task` alias served; #2427 served 3 of 3 (plain, priority form, several todos; one sentence, nothing after), PPM to tick; Disconnect pass to the extent the account allows (needs-reconnecting GitHub card has one Reconnect link and no Disconnect; Disconnect All is the removal path; Lead added the state to `card-states.md`); #2411 router candidate NO-GO and parked (#2425, Arch's lever, sprint 3); #2424 held until router evidence of the `project` arg; #2426 filed (a read naming a stored project still asks which); briefing updated for #2421. Old overdue acks cleared as `read`.
+**Owed by me:** unchanged from the 11-22 block: fresh account (`seat-tester-1`) for #2417 `update_issue` never-connected, #2411 never-connected and could-not-check replies, the 2406 row, and `status_all_code: never_connected`; #2423 (mechanism A, connected case) needs an App-connected seat account; #2412 after Step E. Ruling pending Lead's words: Settings index card, GitHub repository page, ic-2 label on #2409. Older list as in the 11-22 block.
+**Waiting on xian via Exec:** Step E (OpenAI run for 2364), the fresh-account invite mint, Steps C/D/F0, Tier 1 approval card items, an MCP deploy for #2382.
+**New rule (Exec 01M85PWK3T):** when xian finishes something with me, send Exec a one-line done-note the same turn. Nothing completed with him today.
+**Rules/slips:** mail4 `read` and `inbox` run past 120s: background plus Monitor; scratch files in the scratchpad by full path, never `/tmp`.
+**Next START (11-24 06:31):** Step 0 check for the 11-23 DAY-CLOSED marker.
 
 # CXO carry-forward: 2026-11-22 21:31 STOP (11-21 block and older below still stand except where this one says otherwise)
 

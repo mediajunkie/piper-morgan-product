@@ -1,10 +1,28 @@
+# Lead carry-forward — Fable 5.2 seat again since 2026-11-20 08:56 (Opus 5.5 from 2026-11-17 21:30 until then); Model A worktree ~/Development/piper-morgan-worktrees/lead
+
+## DAY-END 2026-11-23 (read this first at the 11-24 START)
+
+- **State at close (21:46):** beta serves `6942dbd1be` (promoted 13:49, run 45272988390), healthy. Main CI 12 of 12 green. No code in flight, nothing running, inbox 0 unacknowledged.
+- **Landed and served today:** `cc550eb92f` (the router's `task` title key), `26c041374a` (all-code status reply, 2415/2416), `6942dbd1be` (todo-created line, 2427); also `15cb27a481` (pre-push refuses a single code commit that is not checked out) and `036a03faeb` (card-state scenario). Two promotions (12:19, 13:49).
+- **Closed today:** 2415, 2416, 2427 (read served 3 of 3, passed by CXO, closed by PPM); 2245 (closeable since 11-01; I closed it 22 days late).
+- **2411's router candidate: NO-GO** (Arch confirmed), parked on `lead/2411-router-candidate`, not for main. Routing half is 2425, read-side twin 2426. No second wording until Arch picks the lever.
+- **Paid 11-23:** $4.4346 (screen $0.6546, full run $3.39, attribution $0.39).
+- **At START, re-open the source of every wait below and check the next action is really theirs and they were asked** (today's lesson: three deferrals were mis-stated for days).
+- **Waits, each with its blocker:**
+  - 2424: built on `lead/2424-list-project-arg-r1123` (`ce244d7fca`, tree `../lead-2424`), held on Arch's trigger (a main-arm router sample or served log line with `list_todos_query` and a `project` arg). At landing: fresh rebase, then CI's full suite (the recorded suite ran mid-rebase).
+  - 2425, 2426: PPM's sprint 3 slot (draft due 11-25) and Arch's choice of lever.
+  - 2417, 2406's fresh-account row, 2411's last row: xian's `seat-tester-1` sitting (invite mint, console check, allow). Then `scripts/seat_account_create.py --account seat-tester-1` and `scripts/seat_session.py --account seat-tester-1 --save-key anthropic`, output line to HOST. The remove mode is built on `lead/seat-remove-key` (`4be378d957`, tree `../lead-seat`), waiting on HOST's read (01M861THCC); land it on HOST's yes, then give CIO the command for the allow row.
+  - 2412, 2297's list-name row, 2364 step 1 merge: Step E (xian's OpenAI key).
+  - 2423: an App-connected account.
+  - 2157: xian's restore-drill sitting (HOST), then 2158 for proof 3.
+- **New standing rules today:** a seat that finishes something with xian sends Exec a one-line done-note the same turn (Exec 01M85PWK3T). `mail-send.sh` refuses seat-to-seat memos. Promotion pre-check uses the gate's own rule (Tests on staging's nearest tested ancestor), script kept only in the 11-23 session scratchpad, so rewrite it if needed.
+- **Watch:** staging's deploy failed to start a machine three times this month (11-10, 11-20, 11-23); a fourth goes to xian through Exec.
+
 ## AFTERNOON 2026-11-23 15:46 (supersedes the MIDDAY block below where they differ)
 - **Beta serves `6942dbd1be`** (promoted 13:49, run 45272988390), healthy. Main CI 12 of 12 green (a staging deploy blip at 14:04 cleared on my re-run, 15:32; HOST told).
 - **Closed today:** 2415, 2416, 2427 (all read served and passed by CXO), 2245.
 - **Paid 11-23:** $4.4346. No code in flight; nothing running.
 - **Waits, each with its blocker:** 2424 (built, held on Arch's trigger; fresh rebase and full suite at landing) · 2425, 2426 (PPM's sprint 3 slot, Arch's lever) · 2417, 2406 fresh-account row, 2411 last row (xian's `seat-tester-1` sitting) · 2412, 2297 list-name row, 2364 step 1 (Step E, xian's OpenAI key) · 2423 (an App-connected account) · 2157 (xian's restore-drill sitting).
-
-# Lead carry-forward — Fable 5.2 seat again since 2026-11-20 08:56 (Opus 5.5 from 2026-11-17 21:30 until then); Model A worktree ~/Development/piper-morgan-worktrees/lead
 
 ## MIDDAY 2026-11-23 12:46 (supersedes the MORNING block's state; read this first)
 
