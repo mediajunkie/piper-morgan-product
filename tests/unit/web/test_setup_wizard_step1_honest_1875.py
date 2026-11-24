@@ -3,8 +3,9 @@
 Three stacked causes, each pinned at its own layer (m-43):
 1. ROUTE — `/api/v1/setup/check-system` is a read and is not behind the #1504
    write lockout (the classification test in test_setup_lockout_1504.py moved it).
-2. APP HANDLER — a 403 raised WITH a specific detail keeps that detail in the
-   JSON body; only a bare "Forbidden" gets the generic copy.
+2. APP HANDLER — the setup gate's 403 line reaches the JSON body. Since issue 2432 it
+   does so because it is raised as a marked ``UserFacingHTTPException``; an unmarked 403,
+   bare or specific, answers the CXO's 403 status line.
 3. RENDER (JS) — the wizard checks `response.ok` before reading check-system
    fields, and its failure copy no longer asserts a Docker cause on a hosted
    instance. The message is JS-rendered, so the pin reads the shipped source.
@@ -20,6 +21,7 @@ import pytest
 from fastapi import FastAPI, HTTPException
 from fastapi.testclient import TestClient
 
+from services.api.errors import UserFacingHTTPException
 from web.api.routes import setup as setup_routes
 
 REPO_ROOT = Path(__file__).resolve().parents[3]
@@ -52,8 +54,8 @@ def _app_with_handlers():
 
     @app.get("/specific")
     async def specific():
-        raise HTTPException(
-            status_code=403, detail="Setup is already complete on this server. Sign in instead."
+        raise UserFacingHTTPException(
+            status_code=403, detail=setup_routes.SETUP_ALREADY_COMPLETE_LINE
         )
 
     @app.get("/bare")
@@ -67,7 +69,8 @@ def _app_with_handlers():
 def test_specific_403_detail_survives_the_app_handler():
     c = _app_with_handlers()
     body = c.get("/specific").json()
-    assert "already complete" in (body.get("message") or body.get("detail") or "")
+    assert body["message"] == setup_routes.SETUP_ALREADY_COMPLETE_LINE
+    assert "already complete" in body["message"]
 
 
 def test_bare_403_still_gets_the_generic_copy():

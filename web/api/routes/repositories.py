@@ -11,6 +11,7 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from pydantic import BaseModel
 from sqlalchemy import update as sa_update
 
+from services.api.errors import UserFacingHTTPException
 from services.auth.auth_middleware import get_current_user
 from services.auth.jwt_service import JWTClaims
 from services.database.models import RepositoryDB
@@ -26,6 +27,18 @@ logger = structlog.get_logger()
 router = APIRouter(prefix="/api/v1/repositories", tags=["repositories"])
 
 VALID_PROVIDERS = {"github", "gitlab", "bitbucket"}
+
+# Issue 2432 (CXO, comment 7144095698): reworded, marked. The providers are computed once
+# here from ``VALID_PROVIDERS`` (sorted, so the order never varies); no line echoes the
+# provider or repository the person sent.
+PROVIDER_NOT_RECOGNISED_LINE = (
+    "That isn't a repository provider I recognise. Choose one of: "
+    + ", ".join(sorted(VALID_PROVIDERS))
+    + "."
+)
+OWNER_REPO_FORMAT_LINE = "Write the repository as owner/repo."
+ALREADY_REGISTERED_LINE = "That repository is already registered."
+ALREADY_LINKED_LINE = "That repository is already linked to this project."
 
 
 # -- Pydantic models --
@@ -54,27 +67,20 @@ async def create_repository(
     """Register a new code repository for the current user."""
     # Validate provider
     if req.provider not in VALID_PROVIDERS:
-        raise HTTPException(
-            status_code=400,
-            detail=f"Invalid provider '{req.provider}'. Must be one of: {', '.join(sorted(VALID_PROVIDERS))}",
-        )
+        raise UserFacingHTTPException(status_code=400, detail=PROVIDER_NOT_RECOGNISED_LINE)
 
     # Validate full_name format
     full_name = req.full_name.strip()
     if "/" not in full_name:
-        raise HTTPException(
-            status_code=400,
-            detail="Repository full_name must be in owner/repo format",
-        )
+        raise UserFacingHTTPException(status_code=400, detail=OWNER_REPO_FORMAT_LINE)
 
     # Check for duplicate
     existing = await repo_repo.get_by_full_name(
         full_name=full_name, provider=req.provider, owner_id=current_user.sub
     )
     if existing:
-        raise HTTPException(
-            status_code=status.HTTP_409_CONFLICT,
-            detail=f"Repository '{full_name}' ({req.provider}) already registered",
+        raise UserFacingHTTPException(
+            status_code=status.HTTP_409_CONFLICT, detail=ALREADY_REGISTERED_LINE
         )
 
     # Derive display_name and url
@@ -180,9 +186,8 @@ async def link_repository_to_project(
     existing_links = await repo_repo.get_project_links(repo_id)
     for link in existing_links:
         if link.project_id == project_id:
-            raise HTTPException(
-                status_code=status.HTTP_409_CONFLICT,
-                detail="Repository already linked to this project",
+            raise UserFacingHTTPException(
+                status_code=status.HTTP_409_CONFLICT, detail=ALREADY_LINKED_LINE
             )
 
     link = await repo_repo.link_to_project(

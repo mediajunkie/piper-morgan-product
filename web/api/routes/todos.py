@@ -14,13 +14,19 @@ import structlog
 from fastapi import APIRouter, Depends, HTTPException, Query, status
 from pydantic import BaseModel
 
+from services.api.errors import UserFacingHTTPException
 from services.auth.auth_middleware import get_current_user
 from services.auth.jwt_service import JWTClaims
 from services.domain import models as domain
 from web.api.dependencies import get_todo_repository
+from web.api.exceptions import ROLE_NOT_RECOGNISED_LINE, SHARE_ROLES
 
 router = APIRouter(prefix="/api/v1/todos", tags=["todos"])
 logger = structlog.get_logger(__name__)
+
+# Issue 2432 (CXO, comment 7144095698): reworded, marked.
+TODO_TITLE_NEEDED_LINE = "Give the todo a title first."
+DUE_DATE_NOT_READABLE_LINE = "I couldn't read that due date. Use a date like 2026-12-01."
 
 
 # Pydantic models for sharing operations
@@ -108,9 +114,8 @@ async def create_todo(
     """
     try:
         if not request.title or not request.title.strip():
-            raise HTTPException(
-                status_code=status.HTTP_400_BAD_REQUEST,
-                detail="Todo title is required",
+            raise UserFacingHTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST, detail=TODO_TITLE_NEEDED_LINE
             )
 
         # #1541: parse due_date (the page sends "YYYY-MM-DD" from
@@ -120,9 +125,8 @@ async def create_todo(
             try:
                 due_date = datetime.fromisoformat(request.due_date)
             except ValueError:
-                raise HTTPException(
-                    status_code=status.HTTP_400_BAD_REQUEST,
-                    detail="Invalid due_date: use ISO format (YYYY-MM-DD)",
+                raise UserFacingHTTPException(
+                    status_code=status.HTTP_400_BAD_REQUEST, detail=DUE_DATE_NOT_READABLE_LINE
                 )
             if due_date.tzinfo is None:
                 due_date = due_date.replace(tzinfo=timezone.utc)
@@ -368,9 +372,8 @@ async def update_todo(
         updates = {}
         if title is not None:
             if not title.strip():
-                raise HTTPException(
-                    status_code=status.HTTP_400_BAD_REQUEST,
-                    detail="Todo title cannot be empty",
+                raise UserFacingHTTPException(
+                    status_code=status.HTTP_400_BAD_REQUEST, detail=TODO_TITLE_NEEDED_LINE
                 )
             updates["text"] = title
 
@@ -601,17 +604,17 @@ async def share_todo(
     """
     try:
         if not request.user_id or not request.user_id.strip():
+            # Issue 2432 (CXO): unmarked, so it answers the 400 status line.
             raise HTTPException(
                 status_code=status.HTTP_400_BAD_REQUEST,
                 detail="user_id is required",
             )
 
         # Validate role
-        valid_roles = ["viewer", "editor", "admin"]
+        valid_roles = SHARE_ROLES
         if request.role not in valid_roles:
-            raise HTTPException(
-                status_code=status.HTTP_400_BAD_REQUEST,
-                detail=f"role must be one of {valid_roles}",
+            raise UserFacingHTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST, detail=ROLE_NOT_RECOGNISED_LINE
             )
 
         # Convert string role to ShareRole enum
@@ -776,11 +779,10 @@ async def update_todo_share_role(
     """
     try:
         # Validate role
-        valid_roles = ["viewer", "editor", "admin"]
+        valid_roles = SHARE_ROLES
         if request.role not in valid_roles:
-            raise HTTPException(
-                status_code=status.HTTP_400_BAD_REQUEST,
-                detail=f"role must be one of {valid_roles}",
+            raise UserFacingHTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST, detail=ROLE_NOT_RECOGNISED_LINE
             )
 
         # Convert string role to ShareRole enum

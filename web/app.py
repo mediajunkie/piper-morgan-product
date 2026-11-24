@@ -107,6 +107,7 @@ try:
     from fastapi import HTTPException, Request
     from fastapi.responses import JSONResponse
 
+    from services.api.errors import status_line_for
     from services.ui_messages.user_friendly_errors import UserFriendlyErrorService
 
     error_service = UserFriendlyErrorService()
@@ -132,25 +133,20 @@ try:
                 friendly_message = BAD_CREDENTIALS_DETAIL
             else:
                 friendly_message = "Let's try logging in again. Your session may have expired."
-        elif exc.status_code == 403:
-            # A route that wrote a SPECIFIC 403 reason keeps it (#1875: the setup
-            # gate's "already complete — sign in instead" was being replaced by
-            # this canned line); only a bare/default detail gets the generic copy.
-            _detail = str(exc.detail or "")
-            if _detail and _detail.lower() not in (
-                "forbidden",
-                "not authenticated",
-                "not authorized",
-            ):
-                friendly_message = _detail
-            else:
-                friendly_message = "You don't have permission to access that. Please contact your administrator if you think this is incorrect."
         elif exc.status_code == 404:
             # Not found errors
             friendly_message = "I couldn't find that. It may have been moved or deleted."
-        elif exc.status_code == 422:
-            # Validation errors
-            friendly_message = f"I couldn't process that request: {str(exc.detail)}"
+        elif 400 <= exc.status_code < 500 and getattr(exc, "user_facing", False):
+            # Issue 2432 (Arch, decisions.log 2026-11-24 11:50): a 4xx raised as
+            # UserFacingHTTPException carries CXO-vetted words, and keeps them. The guard in
+            # tests/unit/web/test_setup_lines_reach_the_page_2428.py holds every such detail
+            # to a literal, an UPPER_CASE constant or a listed picker.
+            friendly_message = str(exc.detail)
+        elif 400 <= exc.status_code < 500:
+            # Issue 2432: every other 4xx answers its status's fixed line (CXO's words); the
+            # raiser's own detail is logged below and never sent. This replaces the old
+            # 403 pass-through (#1875's setup line is now marked) and the 422 wrapper.
+            friendly_message = status_line_for(exc.status_code)
         elif exc.status_code >= 500 and getattr(exc, "user_facing", False):
             # #2154: a 5xx whose detail is vetted product copy (CXO's words, no exception
             # text) keeps it; every other 5xx stays masked.
@@ -208,6 +204,46 @@ try:
     )
 except Exception as e:
     logger.error(f"⚠️ Failed to register HTTPException handler: {e}")
+
+# Issue 2432 (Arch, decisions.log 2026-11-24 11:50): FastAPI's own request validation.
+# Its default reply is the pydantic error list, which carries field paths, pydantic's
+# wording and the value the person sent. The reply is now CXO's one fixed sentence in both
+# keys; the log gets the field names and error types, never a value or a message.
+try:
+    from fastapi.exceptions import RequestValidationError
+
+    @app.exception_handler(RequestValidationError)
+    async def request_validation_handler(
+        request: Request, exc: RequestValidationError
+    ) -> JSONResponse:
+        return validation_reply(request, exc)
+
+except Exception as e:
+    logger.error(f"⚠️ Failed to register the request-validation handler: {e}")
+
+
+def validation_reply(request: Request, exc) -> JSONResponse:
+    """The 422 for a ``RequestValidationError``: one fixed line, and a log line naming
+    only where each error is (field names) and what kind it is (pydantic's type code)."""
+    from services.api.errors import UNREADABLE_REQUEST_LINE
+
+    fields = []
+    error_types = []
+    for error in exc.errors():
+        fields.append(".".join(str(part) for part in error.get("loc", ())))
+        error_types.append(str(error.get("type", "")))
+    logger.warning(
+        "request_validation_failed",
+        fields=fields,
+        error_types=error_types,
+        path=request.url.path,
+        method=request.method,
+    )
+    return JSONResponse(
+        status_code=422,
+        content={"message": UNREADABLE_REQUEST_LINE, "detail": UNREADABLE_REQUEST_LINE},
+    )
+
 
 # #2039: content-negotiated 404. An unmatched route raises Starlette's HTTPException
 # (not FastAPI's subclass, so the handler above never sees it). Browser requests
