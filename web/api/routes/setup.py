@@ -39,6 +39,7 @@ from services.integrations.integration_status_service import (
 )
 from services.security.field_encryption import KeyStoreConfigError
 from services.security.user_api_key_service import UserAPIKeyService
+from web.api.exceptions import UserFacingHTTPException  # noqa: E402 (issue 2428)
 
 router = APIRouter(prefix="/api/v1/setup", tags=["setup"])
 logger = structlog.get_logger(__name__)
@@ -347,7 +348,7 @@ async def require_setup_incomplete() -> None:
     try:
         already = await _completed_setup_exists()
     except Exception:
-        raise HTTPException(
+        raise UserFacingHTTPException(
             status_code=503,
             detail="Couldn't verify setup state — try again in a moment.",
         )
@@ -513,7 +514,7 @@ async def check_system():
 
     except Exception as e:
         logger.error("system_check_failed", error=str(e), exc_info=True)
-        raise HTTPException(
+        raise UserFacingHTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=SYSTEM_CHECK_COULD_NOT_RUN_MESSAGE,
         )
@@ -670,7 +671,7 @@ async def check_invite(req: InviteCheckRequest) -> InviteCheckResponse:
             valid = await check_invite_token(session, req.invite_token)
     except Exception as e:
         logger.error("invite_check_failed", error_type=type(e).__name__)
-        raise HTTPException(
+        raise UserFacingHTTPException(
             status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
             detail="The invite check couldn't run. Try again in a moment.",
         )
@@ -1284,7 +1285,7 @@ async def create_user(
         # Provide helpful error messages for common database issues
         elif "relation" in error_str and "does not exist" in error_str:
             logger.error("user_creation_failed_missing_table", username=req.username, error=str(e))
-            raise HTTPException(
+            raise UserFacingHTTPException(
                 status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
                 detail=(
                     "Database tables are missing. "
@@ -1294,7 +1295,7 @@ async def create_user(
             )
         elif "connection" in error_str or "connect" in error_str:
             logger.error("user_creation_failed_db_connection", username=req.username, error=str(e))
-            raise HTTPException(
+            raise UserFacingHTTPException(
                 status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
                 # CXO 2026-11-16 (2386): the three services by name, a colon before the
                 # command and no quote marks, so it can be copied.
@@ -1306,7 +1307,7 @@ async def create_user(
             )
         else:
             logger.error("user_creation_failed", username=req.username, error=str(e), exc_info=True)
-            raise HTTPException(
+            raise UserFacingHTTPException(
                 status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
                 detail=ACCOUNT_COULD_NOT_BE_CREATED_MESSAGE,
             )
@@ -1505,13 +1506,13 @@ async def complete_setup(
     except KeyStoreConfigError as e:
         # #2125: the instance cannot encrypt; say so, never the parameter
         logger.error("key_store_unavailable", user_id=user_id, error_type=type(e).__name__)
-        raise HTTPException(
+        raise UserFacingHTTPException(
             status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
             detail=SERVER_CANNOT_STORE_KEYS_MESSAGE,
         )
     except Exception as e:
         logger.error("setup_completion_failed", user_id=user_id, error=str(e), exc_info=True)
-        raise HTTPException(
+        raise UserFacingHTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=SETUP_COULD_NOT_FINISH_MESSAGE,
         )
@@ -1717,7 +1718,7 @@ async def create_setup_project(
             error=str(e),
             exc_info=True,
         )
-        raise HTTPException(
+        raise UserFacingHTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=PROJECT_COULD_NOT_BE_CREATED_MESSAGE,
         )
@@ -1791,7 +1792,7 @@ async def start_slack_oauth(
         raise
     except Exception as e:
         logger.error("slack_oauth_start_failed", error=str(e), exc_info=True)
-        raise HTTPException(
+        raise UserFacingHTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=SLACK_CONNECT_COULD_NOT_START_MESSAGE,
         )
@@ -1965,7 +1966,7 @@ async def start_calendar_oauth(
         raise
     except Exception as e:
         logger.error("calendar_oauth_start_failed", error=str(e), exc_info=True)
-        raise HTTPException(
+        raise UserFacingHTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=CALENDAR_CONNECT_COULD_NOT_START_MESSAGE,
         )

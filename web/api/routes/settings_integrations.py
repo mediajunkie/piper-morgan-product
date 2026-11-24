@@ -43,6 +43,7 @@ from services.connectors.config_service import (
 from services.integrations.integration_status_service import refuse_unless_offered
 from services.mcp.consumer.connector import DegradationReason
 from services.mcp.consumer.github_adapter import GitHubMCPSpatialAdapter
+from web.api.exceptions import UserFacingHTTPException  # noqa: E402 (#2154; moved, issue 2428)
 
 logger = structlog.get_logger(__name__)
 
@@ -439,13 +440,6 @@ PREFS_LOAD_FAILED_TEMPLATE = (
     "I couldn't load {thing} just now, so Saving is turned off to keep your saved "
     "settings as they are. Reload to try again; if it keeps failing, tell us."
 )
-
-
-class UserFacingHTTPException(HTTPException):
-    """An HTTP error whose detail is vetted product copy: the app's error handler keeps
-    it for a 5xx instead of masking it (#2154)."""
-
-    user_facing = True
 
 
 def _prefs_unavailable(thing: str) -> HTTPException:
