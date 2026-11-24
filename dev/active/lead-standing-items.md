@@ -10,7 +10,7 @@ The 08-31 version had gone stale again: on 11-24 an audit found twelve issues it
 
 ## Waiting on a named seat (each was asked; mail id given)
 
-- **2431 (outage screens: raw JSON on a page load when Redis is unreachable):** filed by CXO 11-24 from my render, with her sentence. Waits on Arch's mechanism ruling (its first row); then mine to build, accepted on local renders. — **Filed**: 2026-11-24
+- **2431 (outage screens: raw JSON on a page load when Redis is unreachable):** filed by CXO 11-24 from my render, with her sentence. Arch ruled 11-24 10:50 and CXO added the 429 and at-capacity words; a coding agent is building it on `lead/2431-outage-screens`. Then: my review and re-run, local renders for CXO (each response kind, a page load and one background request), full suite, landing. — **Filed**: 2026-11-24
 - **2429, 2430:** on main (`24d1e8b443`, `683f27ffb5`); rows are Arch's and CXO's to tick; promotion follows CI. — **Filed**: 2026-11-24
 - **2345:** on beta `009afa0f7f`; 2 of 3 starts served-read by Web; the return half is xian's F.4 connect (roll back first if it fails); the wizard's start waits on the `setup-calendar` allow. — **Filed**: 2026-11-24
 - **2386 close:** string 1 passed by CXO (01M8749H51). String 2 is 2428's database line; closes when 2428 lands and CXO has read the render (sent, 01M875ZVDT). — **Filed**: 2026-11-16

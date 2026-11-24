@@ -8,11 +8,8 @@
 
 **Clock rule live:** no estimated minutes in commits, mail or logs. The hook reads the command text too, so build such a string in Python if you must replace one. Headings: `scripts/log-entry.sh "title" >/dev/null`. zsh: never `echo =====`.
 
-## Tuesday 11-24, first: Ship #070 "No Workarounds" publishes today
-- The outline is on main: `docs/public/comms/drafts/weekly-ship-070-draft-2026-11-23.md`. Comms fact-checked it 18:39 (10 fixes). My 18:43 fix resolved the two flags. 0 warning marks. It was sent to xian twice.
-- Goals approved 18:17 ("Yes, all goals approved."). The discussed marker is on the review. Theme, writer and score were already ruled 11-20 (decisions.log 3576-3578). Janus has been told not to re-ask.
-- 11-24: LIVE 09:44 (Docs 01M87AH0QM, verified 200). Owed: xian's LinkedIn crosspost; the URL goes to Docs, who marks it distributed. Check the calendar, not mail.
-- After it publishes, the calendar row goes to published/distributed and he crossposts to LinkedIn. Check the calendar, not mail (step 2.01).
+## Ship #070 "No Workarounds": DONE 11-24
+Live 09:44, crossposted to LinkedIn, calendar row `distributed` (Docs 01M87ETVG6, 10:59). Nothing owed. Next Ship: #071 kickoff Fri 11-27 via `scripts/ship-kickoff.sh` (the first live v4 kickoff).
 
 ## Rollup
 v1135 (Tue 11-24: h1 Tuesday, #070 top line, card step 7), `719UZ4h1NELjEwWZbDCceT`. Source `dev/active/exec-attention-rollup-current.html`. Python replace plus assert, and bump the stamp from a `date` call. **At START 11-24:** retitle the h1 to Tuesday, and make #070's line the top line ("publishes today, waiting on your prose"). On every rebuild, check each item on his card against the seats' logs and the editorial calendar (cohort-attention-rollup step 2.01, xian's tell-one-agent rule).
