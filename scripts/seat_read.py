@@ -56,8 +56,10 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 import seat_session  # noqa: E402
 from seat_session import Refused, Transport  # noqa: E402
 
-# The closed list (HOST and Lead, 11-16). The ops_reader routes of issue 2390 join it as they land.
-ALLOWED_PATHS = frozenset({"/api/v1/admin/floored-actions"})
+# The closed list (HOST and Lead, 11-16). The ops_reader routes of issue 2390 join it as they
+# land: active-keys (11-24) returns provider names from a fixed list with counts. A count
+# that could single out a tester is written in this public repo as "none" or "at least one".
+ALLOWED_PATHS = frozenset({"/api/v1/admin/floored-actions", "/api/v1/admin/active-keys"})
 QUERY_OK = re.compile(r"^[A-Za-z0-9_=&.-]*$")
 
 # The connect-start routes ``--redirect-uri`` may call (HOST, 2026-11-16). Kept apart
