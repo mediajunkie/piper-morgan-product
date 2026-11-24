@@ -492,7 +492,7 @@
                 Validators.required(),
                 Validators.custom(
                     (value) => value === document.getElementById('password').value,
-                    'Passwords do not match'
+                    "The passwords don't match."
                 )
             ]
         });
@@ -529,7 +529,7 @@
 
         // Fallback password check if FormValidation not loaded
         if (typeof FormValidation === 'undefined' && password !== passwordConfirm) {
-            showError('Passwords do not match.', 'Validation Error');
+            showError("The passwords don't match.", 'Validation Error');
             return;
         }
 
