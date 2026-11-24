@@ -8,12 +8,9 @@ caption: ''
 
 *November 13–19, 2026*
 
-> **OUTLINE SCAFFOLD for xian (Exec, 11-23).** These are the sections, with bare facts under each one, for you to write from. I've erred on the side of including things, so trim freely. This is the first **progress Ship** of sprint 2 (week 1 of 2). Sources: the Ship #070 week review (approved 11-23), decisions.log, and the ten workstream reviews. Issue numbers are here for reference only. Public prose names the thing, not the number. Remove this box before publishing.
+This week the agent team piled up a lot of work that waited for my attention to fully complete or execute. More and more workflows led to manual tasks for me. Eventually, I asked for a review of the state of affairs, writing "We keep changing how provider keys are used, how github is used, how piper morgan is used by our agents and it's become a tangled mess that keeps becoming my problem to manually navigate. this is not an acceptable state of affairs."
 
-**▸ Write about:** your 11-15 ruling, and what it set off. Sprint 2's goal and where its named set stands at halfway.
-
-**▸ Facts:**
-- 11-15, 19:11, your words to the team: "We need to solve that problem, not assign me manual tasks as a workaround for a poorly conceived solution." Also: "We keep changing how provider keys are used, how github is used, how piper morgan is used by our agents and it's become a tangled mess that keeps becoming my problem to manually navigate. this is not an acceptable state of affairs."
+This led to 
 - What led up to it: a stored testing key couldn't be decrypted, the classifier refused the workaround, and the seats drifted toward "xian runs it".
 - The structural answer: ADR-084, which gives the seats their own keys, accounts and browser (a paraphrase. Its title is "Seat resources: what agents use to run and test Piper is separate from xian's, granted once, and bounded where a seat can't pass"). You accepted it 11-16 at 06:20 with a budget of $10 a run without asking, under a hard cap of $150 a month. Every seat rewrote its open items so that none ends in "xian runs it".
 - The cost: a whole week of work that was built and put on beta but not read by a signed-in person. All of it converged on one sitting at Amber (Fri 11-20).
