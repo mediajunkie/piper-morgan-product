@@ -27,6 +27,7 @@ from services.api.errors import (
     SESSION_COULD_NOT_BE_CHECKED_MESSAGE,
     UserFacingHTTPException,
 )
+from services.api.refusal_pages import refusal_page, wants_a_page
 from services.domain.models import RequestContext
 
 from .jwt_service import JWTClaims, JWTService
@@ -522,9 +523,15 @@ class AuthMiddleware(BaseHTTPMiddleware):
         analogous case (#1485/#1598): a 503 that says the check could not be
         made. ``message`` reaches the client as written, so every caller passes
         a literal or an UPPER_CASE constant (issue 2429's guard reads each call).
+
+        Issue 2431 (Arch's ruling): a page load gets a plain page with the same line and
+        a reload link, status 503 and ``Retry-After`` kept, and still no redirect to
+        ``/login``. Every other request keeps this JSON.
         """
         from fastapi.responses import JSONResponse
 
+        if request is not None and wants_a_page(request):
+            return refusal_page(message, status.HTTP_503_SERVICE_UNAVAILABLE, 5)
         return JSONResponse(
             status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
             content={
@@ -544,16 +551,10 @@ class AuthMiddleware(BaseHTTPMiddleware):
         """
         from fastapi.responses import JSONResponse, RedirectResponse
 
-        # Check if this is a browser request to a UI route (should redirect to login)
+        # A page load (not under /api/, accepts HTML) is redirected to /login. Issue
+        # 2431: the rule lives once, in services.api.refusal_pages.wants_a_page.
         if request:
-            path = request.url.path
-            accept_header = request.headers.get("accept", "")
-
-            # If it's not an API route and browser accepts HTML, redirect to login
-            is_api_route = path.startswith("/api/")
-            accepts_html = "text/html" in accept_header
-
-            if not is_api_route and accepts_html:
+            if wants_a_page(request):
                 # Redirect to login with return URL. #1480: percent-encode the
                 # WHOLE original path+query into a single `next` param —
                 # unencoded, a multi-param query (the #1466 Slack deep-link

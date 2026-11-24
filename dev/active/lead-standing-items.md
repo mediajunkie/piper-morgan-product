@@ -10,8 +10,9 @@ The 08-31 version had gone stale again: on 11-24 an audit found twelve issues it
 
 ## Waiting on a named seat (each was asked; mail id given)
 
-- **2431 (outage screens: raw JSON on a page load when Redis is unreachable):** filed by CXO 11-24 from my render, with her sentence. Waits on Arch's mechanism ruling (its first row); then mine to build, accepted on local renders. — **Filed**: 2026-11-24
-- **2429, 2430:** on main (`24d1e8b443`, `683f27ffb5`); rows are Arch's and CXO's to tick; promotion follows CI. — **Filed**: 2026-11-24
+- **2431 (outage screens: raw JSON on a page load when Redis is unreachable):** filed by CXO 11-24 from my render, with her sentence. Arch ruled 11-24 10:50 and CXO added the 429 and at-capacity words; a coding agent is building it on `lead/2431-outage-screens`. Then: my review and re-run, local renders for CXO (each response kind, a page load and one background request), full suite, landing. — **Filed**: 2026-11-24
+- **2432 (4xx replies carry the raiser's own words):** my sweep is on the issue (102 pass-through raises, five `str(e)`). Waits on Arch's mechanism ruling, then CXO's read of the 68 fixed lines and her 422 sentence; then mine to build. — **Filed**: 2026-11-24
+- **2429, 2430:** on main and on beta (`b2cda27b5d`, 11-24 11:25); rows are Arch's and CXO's to tick. — **Filed**: 2026-11-24
 - **2345:** on beta `009afa0f7f`; 2 of 3 starts served-read by Web; the return half is xian's F.4 connect (roll back first if it fails); the wizard's start waits on the `setup-calendar` allow. — **Filed**: 2026-11-24
 - **2386 close:** string 1 passed by CXO (01M8749H51). String 2 is 2428's database line; closes when 2428 lands and CXO has read the render (sent, 01M875ZVDT). — **Filed**: 2026-11-16
 - **2388 row 2:** forced-failure output posted on the issue for HOST's read (asked in the issue comment and 01M871EC86). Row 4 waits on the counter-read allow on xian's card (CIO's steps line) and Web's run. — **Filed**: 2026-11-16
