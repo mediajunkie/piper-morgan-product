@@ -488,11 +488,14 @@
             username: [Validators.required(), Validators.minLength(3)],
             email: [Validators.required(), Validators.email()],
             password: [Validators.required(), Validators.minLength(8)],
-            'password-confirm': [
+            // Keyed by the field's NAME (password_confirm). It was keyed by the id
+            // ('password-confirm'), which FormValidation never finds, so this rule
+            // never ran and a mismatched pair went to the server.
+            password_confirm: [
                 Validators.required(),
                 Validators.custom(
                     (value) => value === document.getElementById('password').value,
-                    'Passwords do not match'
+                    "The passwords don't match."
                 )
             ]
         });
@@ -529,7 +532,7 @@
 
         // Fallback password check if FormValidation not loaded
         if (typeof FormValidation === 'undefined' && password !== passwordConfirm) {
-            showError('Passwords do not match.', 'Validation Error');
+            showError("The passwords don't match.", 'Validation Error');
             return;
         }
 

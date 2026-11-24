@@ -352,6 +352,9 @@ TABLE = [
         ADDENDUM,
     ),
     ("web.api.routes.setup", "PROJECT_NAME_NEEDED_LINE", "Give the project a name first.", CXO),
+    # Found by render 2026-11-24: the setup account step's own check (CXO, mail 01M87SH7F2:
+    # "The passwords don't match." in the wizard).
+    ("web.api.routes.setup", "PASSWORDS_DONT_MATCH_LINE", "The passwords don't match.", CXO),
     (
         "web.api.routes.setup",
         "GITHUB_OWNER_REPO_LINE",
@@ -513,9 +516,9 @@ class TestEveryKeptOrRewordedLine:
             if isinstance(detail, ast.Name):
                 seen.add(detail.id)
         assert seen - known == set()
-        # 75 distinct names (TITLE_NEEDED_LINE and PROJECT_NAME_NEEDED_LINE live in two
+        # 77 distinct names (TITLE_NEEDED_LINE and PROJECT_NAME_NEEDED_LINE live in two
         # modules each).
-        assert len(seen) == 75
+        assert len(seen) == 77  # +2: the setup account step's mismatch and length lines
 
 
 class TestTheComputedLines:

@@ -442,3 +442,58 @@ class TestTheResetPageKeepsItsLengthRule:
         )
         assert reply.status_code == 422
         assert reply.json()["message"] == UNREADABLE_REQUEST_LINE
+
+
+class TestTheSetupAccountStepKeepsItsPasswordLines:
+    """Issue 2432 follow-up, found by render 2026-11-24. ``CreateUserRequest`` held a
+    ``min_length=8`` and a match validator, so pydantic refused a short or mismatched
+    password before the route ran and the person read only the validation 422's line.
+    Both checks are now the route's first statements, before the invite code is spent or
+    anything is written. LAYER: the real app and the real route through a TestClient; both
+    refusals come before any database read."""
+
+    @staticmethod
+    def _post(password, confirm):
+        from web.app import app
+
+        return TestClient(app, follow_redirects=False).post(
+            "/api/v1/setup/create-user",
+            json={
+                "username": "a-made-up-name",
+                "email": "made-up@test.local",
+                "password": password,
+                "password_confirm": confirm,
+                "invite_token": "A-MADE-UP-CODE",
+            },
+        )
+
+    def test_a_mismatched_pair_gets_the_mismatch_line_not_the_422_line(self):
+        from services.api.errors import UNREADABLE_REQUEST_LINE
+
+        reply = self._post("Abcdef12!", "Abcdef12?")
+        assert reply.status_code == 400
+        line = "The passwords don't match."
+        assert reply.json() == {"message": line, "detail": line}
+        assert UNREADABLE_REQUEST_LINE not in reply.text
+
+    def test_a_seven_character_password_gets_the_length_line(self):
+        reply = self._post("Abc12!x", "Abc12!x")
+        assert reply.status_code == 400
+        assert reply.json()["message"] == "Your password needs at least 8 characters."
+
+    def test_the_request_model_holds_no_password_rule_of_its_own(self):
+        from web.api.routes.setup import CreateUserRequest
+
+        for name in ("password", "password_confirm"):
+            assert CreateUserRequest.model_fields[name].metadata == []
+        assert not hasattr(CreateUserRequest, "passwords_match")
+
+    def test_both_checks_come_before_anything_else_in_the_route(self):
+        import inspect
+
+        from web.api.routes import setup
+
+        body = inspect.getsource(setup.create_user)
+        first_check = body.index("req.password != req.password_confirm")
+        assert first_check < body.index("PasswordService()")
+        assert first_check < body.index("try:")

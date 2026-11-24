@@ -374,7 +374,7 @@ class TestArchsGuardOverEveryMarkedRaise:
             "web/api/routes/projects.py": 12,
             "web/api/routes/repositories.py": 4,
             "web/api/routes/settings_integrations.py": 25,
-            "web/api/routes/setup.py": 20,
+            "web/api/routes/setup.py": 22,  # +2: the account step's two password checks
             "web/api/routes/standup.py": 1,
             "web/api/routes/todos.py": 5,
             "web/api/routes/work_items.py": 1,
