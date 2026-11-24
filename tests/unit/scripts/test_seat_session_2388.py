@@ -1254,3 +1254,136 @@ def test_a_file_with_anything_but_a_standard_api_key_is_refused(ss, tester, cont
     with pytest.raises(ss.Refused, match="not a standard API key"):
         ss.save_key(TESTER, "anthropic", host)
     assert host.calls == []
+
+
+# --- HOST 01M82C816F and 01M82F420Z (11-22): the remove mode, recovery after "validated: no" ---
+
+
+class DeadKeyHost(KeyHost):
+    """Beta for the tester account with a key already on file. ``removes`` False models a
+    delete route that answers 2xx and leaves the row."""
+
+    def __init__(self, ss, validated=False, delete_status=200, removes=True, **over):
+        super().__init__(ss, validated=validated, **over)
+        self.stored, self.delete_status, self.removes = True, delete_status, removes
+
+    def __call__(self, method, path, data, headers):
+        if method == "DELETE":
+            self.calls.append((method, path, data, dict(headers)))
+            if 200 <= self.delete_status < 300 and self.removes:
+                self.stored = False
+            return self.ss.Reply(self.delete_status, f"echo {FAKE_KEY}".encode())
+        return super().__call__(method, path, data, headers)
+
+
+def _deletes(host):
+    return [c for c in host.calls if c[0] == "DELETE"]
+
+
+@pytest.mark.parametrize("validated", [False, None, "true", 1])
+def test_remove_key_clears_a_key_the_provider_did_not_accept(ss, tester, validated):
+    host = DeadKeyHost(ss, validated=validated)
+    assert ss.remove_key(TESTER, "anthropic", host) == f"{TESTER}: key removed; key on file: no"
+    assert [c[1] for c in _deletes(host)] == ["/api/v1/keys/anthropic"]
+    assert _deletes(host)[0][2] is None  # nothing is sent in the body
+    assert not [c for c in host.calls if c[1] == "/api/v1/keys/store"]
+    assert not list(tester.glob("*session*"))  # no session is saved
+
+
+def test_remove_key_runs_bound_2_before_and_after_the_delete(ss, tester):
+    host = DeadKeyHost(ss)
+    ss.remove_key(TESTER, "anthropic", host)
+    paths = [c[1].split("?")[0] for c in host.calls]
+    at = paths.index("/api/v1/keys/anthropic")
+    assert "/api/v1/admin/account-flags" in paths[:at]
+    assert "/api/v1/admin/account-flags" in paths[at + 1 :]
+
+
+def test_remove_key_refuses_a_validated_key_and_sends_nothing(ss, tester):
+    host = DeadKeyHost(ss, validated=True)
+    with pytest.raises(ss.Refused, match="validated; a working key is not removed"):
+        ss.remove_key(TESTER, "anthropic", host)
+    assert not _deletes(host)
+
+
+def test_remove_key_with_no_key_on_file_says_so_and_sends_nothing(ss, tester):
+    host = KeyHost(ss)
+    assert (
+        ss.remove_key(TESTER, "anthropic", host) == f"{TESTER}: no key to remove; key on file: no"
+    )
+    assert not _deletes(host)
+
+
+@pytest.mark.parametrize(
+    "account, provider",
+    [
+        (ACCOUNT, "anthropic"),
+        ("seat-github-1", "anthropic"),
+        (TESTER, "openai"),
+        ("x", "anthropic"),
+    ],
+)
+def test_remove_key_refuses_off_its_closed_list_before_any_call(ss, tester, account, provider):
+    """``web-seed-1386`` holds a key other served rows depend on; it is not removable."""
+    host = DeadKeyHost(ss)
+    with pytest.raises(ss.Refused):
+        ss.remove_key(account, provider, host)
+    assert host.calls == []
+    assert ss.KEY_REMOVABLE == {TESTER: frozenset({"anthropic"})}
+
+
+@pytest.mark.parametrize("status, word", [(404, "4xx"), (500, "5xx")])
+def test_a_refused_removal_prints_the_status_class_only(ss, tester, capsys, status, word):
+    ss.remove_key.__defaults__ = (DeadKeyHost(ss, delete_status=status),)
+    code, text = _run_main(ss, ["--account", TESTER, "--remove-key", "anthropic"], capsys)
+    assert code == 2
+    assert text.strip() == (
+        f"seat_session: refused: the key removal was not accepted (status {word})"
+    )
+    for secret in SAVE_SECRETS:
+        assert secret not in text
+
+
+def test_an_accepted_removal_that_leaves_the_key_refuses(ss, tester):
+    with pytest.raises(ss.Refused, match="a key is still on file"):
+        ss.remove_key(TESTER, "anthropic", DeadKeyHost(ss, removes=False))
+
+
+def test_remove_key_never_opens_the_key_file(ss, tester):
+    (tester / KEY_FILE).unlink()
+    assert ss.remove_key(TESTER, "anthropic", DeadKeyHost(ss)).endswith("key on file: no")
+
+
+def test_remove_key_through_main_prints_one_line_and_no_secret(ss, tester, capsys):
+    ss.remove_key.__defaults__ = (DeadKeyHost(ss),)
+    code, text = _run_main(ss, ["--account", TESTER, "--remove-key", "anthropic"], capsys)
+    assert code == 0
+    assert text.strip() == f"{TESTER}: key removed; key on file: no"
+    for secret in SAVE_SECRETS:
+        assert secret not in text
+
+
+def test_remove_key_unexpected_error_prints_class_name_only(ss, tester, capsys):
+    def boom(*_args, **_kwargs):
+        raise RuntimeError(f"body with {FAKE_KEY}")
+
+    ss.remove_key.__defaults__ = (boom,)
+    code, text = _run_main(ss, ["--account", TESTER, "--remove-key", "anthropic"], capsys)
+    assert code == 3 and text.strip() == "seat_session: refused: unexpected RuntimeError"
+
+
+def test_remove_key_is_its_own_mode_and_takes_only_listed_providers(ss, tester, capsys):
+    for other in (["--save-key", "anthropic"], ["--disconnect", "calendar"]):
+        code, text = _run_main(
+            ss, ["--account", TESTER, "--remove-key", "anthropic", *other], capsys
+        )
+        assert code == 2 and "one mode at a time" in text
+    with pytest.raises(SystemExit):
+        ss.main(["--account", TESTER, "--remove-key", "openai"])
+
+
+def test_after_a_removal_a_save_can_run_again(ss, tester):
+    host = DeadKeyHost(ss)
+    ss.remove_key(TESTER, "anthropic", host)
+    host.validated = True
+    assert ss.save_key(TESTER, "anthropic", host).endswith("validated: yes")
