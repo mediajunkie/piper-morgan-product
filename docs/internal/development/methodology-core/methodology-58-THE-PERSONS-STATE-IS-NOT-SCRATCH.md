@@ -28,6 +28,7 @@ the day something new is found.
 | Accounts and consoles | Anthropic, OpenAI, GitHub, Fly, his mail | a session or token that is his, wherever a seat can read it |
 | The shared checkout | `~/Development/piper-morgan-product` | git commands that discard working-tree changes (CLAUDE.md hard rule 1) |
 | Running local servers | every `python main.py` on the machine | `pkill -f "python main.py"` (it was in `scripts/stop.sh`, retired 2026-11-16) |
+| His default browser | `/Applications/…`, his profile | `python main.py` without `--no-browser` (`webbrowser.open`; it launches the browser if it isn't running). Neither browser guard sees it (instance 6) |
 
 ## The rule
 
@@ -72,7 +73,18 @@ entry is about where a run lands. The two meet in the fix: the keychain rule fir
    recur, though." The default could not be changed (it is the browser's), so the fix is a guard and a
    check: a Bash hook that refuses the launch, and a process check at every fire. See the next section.
 
-A sixth of the same shape, at the money layer, is why ADR-084 exists: the only provider key a seat could
+6. **A local server opened a tab in his browser (11-24, Lead; HOST's read).** `python main.py` opens the
+   default browser on macOS unless `--no-browser` is passed (`should_open_browser()`, issue 461). Lead
+   started one from a clean shell for issue 2403 and a `localhost:8095` tab appeared in xian's browser, the same
+   slip as 11-11 (memory `feedback_local_main_py_start_passes_no_browser`). Safe this time only because
+   his browser was running: `webbrowser.open` added a tab. Had it not been, the call would have *launched*
+   his browser from a seat's shell, without `--use-mock-keychain`. **Neither of instance 5's guards sees
+   it, and both say so:** the Bash hook reads the command line (here `main.py`), and
+   `browser_keychain_check.py` takes a browser under `/Applications` to be his own. The remembered flag
+   failed twice. HOST's proposal is this entry's rule 2, fix the default: `should_open_browser()` returns
+   False when stdout isn't a terminal, so a tester at a terminal still gets the tab and a seat never does.
+
+A seventh of the same shape, at the money layer, is why ADR-084 exists: the only provider key a seat could
 reach was one of his, so every paid run became a step on his hands. The ADR's answer is this entry's
 rule stated as a class: a seat resource is **separate** from anything he uses, **granted once** by his
 own edit, and **bounded** where a seat can't pass (a provider cap, a non-admin account).

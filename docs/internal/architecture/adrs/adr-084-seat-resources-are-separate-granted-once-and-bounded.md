@@ -86,7 +86,7 @@ A fact seats need more than once gets a **read-only route behind `ops_reader`**.
 6. **A route can't read logs.** The app has no access to its host's log stream. A recurring log fact becomes a counter written where the event is emitted (the #2373 shape: site and name only, no text, no user id), and the route reads the counter.
 7. Deployed secrets: a boolean per name on a fixed expected list. Never an enumeration of the environment.
 
-The first routes: active keys by provider; the floored-action counter (served); the routing-to-floor tally. A count that would single out a described tester is written in this public repo as "none" or "at least one".
+The first routes: active keys by provider; the floored-action counter (served); the routing-to-floor tally. *(Arch, 2026-11-24, #2391: the routing-to-floor tally is the floored-action counter. #2327 writes it at the four `*_routing_to_floor` sites, keyed by name, site and day. A tally of in-vocabulary floor events is not built, because no reader is named for it. A floor-routed category floors by design, so that count is ordinary traffic. If a reader is named later, it is a new counter and its own diff.)* A count that would single out a described tester is written in this public repo as "none" or "at least one".
 
 A one-off fact is asked of xian once and not built.
 
