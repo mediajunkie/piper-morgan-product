@@ -2214,5 +2214,6 @@ issue	state	milestone	sprint	title	labels	blocked_by	state_reason
 2425	OPEN	Production		Router: 'add a task to my/the <project> project' reaches create_todo with the project arg (split from 2411 after the candidate's NO-GO)			
 2426	OPEN	Production		[UX] "Show me the todos in the Launch project" asks which project, after the person named it	UX		
 2427	CLOSED	Production		[UX] Adding a todo with no project says it was added twice and ends on a generic offer (code-written, three sentences)	UX		COMPLETED
-2428	OPEN	Production		[UX] Setup's own error lines never reach the page: the app's handler replaces every unmarked 5xx detail with the generic line	bug		
+2428	CLOSED	Production		[UX] Setup's own error lines never reach the page: the app's handler replaces every unmarked 5xx detail with the generic line	bug		COMPLETED
 2429	OPEN	Production		[UX] Three 'couldn't be checked' 503 lines (session, admin gate, operations-reader gate): CXO's words, one constant each, shown from every site	bug		
+2430	OPEN	Production		[UX] GitHub settings page: a stale connection says 'Try refreshing the page' on the repository list; show CXO's reconnect line for the named degrade reasons	bug		

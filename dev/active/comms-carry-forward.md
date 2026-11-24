@@ -2,7 +2,7 @@
 
 ## ⭐ CURRENT STATE — 2026-11-23 21:19 PT (STOP). Read this first. It supersedes everything below.
 - **Log 11-23:** `dev/2026/11/23/2026-11-23-0621-comms-code-log.md` (DAY-CLOSED). Tomorrow creates a new log.
-- **TUE 11-24 IS SHIP DAY.** #070 outline fact-checked 11-23. Exec resolved both ⚠ lines at 18:43 (`489c14f283`, commits 433a8c6b33 and 6a27a0a47d, both under open #2386, which I verified). Waiting on xian's prose, then review, fact-check, Ship-calibrated template-audit, PUBLISH-READY to Docs, all Tuesday morning if needed.
+- **Ship #070 LIVE 11-24** (Docs 09:44, https://pipermorgan.ai/shipping-news/weekly-ship-070-no-workarounds). LinkedIn crosspost is xian's, then Docs marks it distributed.
 - **Pace (xian, 11-02):** keep working, not racing. Drain rule holds. No nudges to xian about posts (Exec 11-12).
 - **Draft-state check:** `git log -1 --format='%h %ad %s' -- <one path>` per draft, plus `git -C <shared checkout> status --short docs/public/comms/drafts/` (read-only). Admin-UI edits land as "content(<slug>): edit via admin UI".
 - **Clock rule LIVE (752547e88e, decisions.log):** no estimated `HH:Mx` minute, future time or `~` heading in logs, carry-forward, standing items, briefing or decisions.log. Quote a time in backticks. Helper: `scripts/log-entry.sh "title"`.
