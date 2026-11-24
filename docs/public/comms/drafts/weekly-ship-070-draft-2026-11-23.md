@@ -65,10 +65,7 @@ We also codified nine conduct rules for Piper's replies:
 
 I've already devoted enough ink to "don't hand me workarounds" (ADR-084) above, and the clock rule.
 
-We also put my machines' keychains off-limits to agents.
-- **Keychain follow-through:** on 11-15 a test browser started without the mock-keychain flag, so it may have touched your login keychain. CIO disclosed it 11-16. A hook and an every-fire check now cover it.
-
-The entire team has migrated to the v4 mail system that involves a separate mail repository to avoid overloading traffic on the primary code-and-docs repository. 
+We also put my machines' keychains off-limits to agents, and the entire team has migrated to the v4 mail system that involves a separate mail repository to avoid overloading traffic on the primary code-and-docs repository. 
 
 ## 🌍 External relations & community
 
