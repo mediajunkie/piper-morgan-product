@@ -27,8 +27,10 @@ before this middleware reads it, so this middleware's own ``add_middleware`` cal
 must happen BEFORE AuthMiddleware's in web/app.py, not after.
 
 Fail-closed (D4): a Redis outage denies rather than silently allowing unbounded
-access. Fail-visibly (D5): every rejection is a JSON body with a machine-parseable
-``error`` field + ``retry_after_seconds``, never a silent hang or bare string.
+access. Fail-visibly (D5): every rejection to a background request is a JSON body with
+a machine-parseable ``error`` field + ``retry_after_seconds``, never a silent hang or bare
+string. Issue 2431: a page load (``services.api.refusal_pages.wants_a_page``) gets a plain
+page with the same sentence instead, and the same status and ``Retry-After``.
 """
 
 import os
@@ -40,6 +42,12 @@ from starlette.middleware.base import BaseHTTPMiddleware, RequestResponseEndpoin
 from starlette.requests import Request
 from starlette.responses import JSONResponse, Response
 
+from services.api.errors import (
+    PIPER_CANT_TAKE_REQUESTS_MESSAGE,
+    PIPER_IS_FULL_MESSAGE,
+    RATE_LIMITED_MESSAGE,
+)
+from services.api.refusal_pages import refusal_page, wants_a_page
 from services.cache.redis_factory import RedisFactory
 
 logger = structlog.get_logger(__name__)
@@ -95,39 +103,54 @@ def _resolve_principal(request: Request) -> str:
     return f"ip:{ip}"
 
 
-def _rate_limited_response(retry_after: int) -> JSONResponse:
+def _rate_limited_response(request: Request, retry_after: int) -> Response:
+    """429 (issue 2431, CXO's words): a page for a page load, the sentence as ``message``
+    otherwise. The per-minute number is gone from the words; the seconds stay, put in by
+    the one shape the guard allows (Arch, mail 01M87EY4N7): ``.format(seconds=int(...))``."""
+    if wants_a_page(request):
+        return refusal_page(RATE_LIMITED_MESSAGE.format(seconds=int(retry_after)), 429, retry_after)
     return JSONResponse(
         status_code=429,
         content={
             "error": "rate_limited",
-            "message": f"Rate limit: {RATE_LIMIT_PER_MINUTE} requests/minute. Retry in {retry_after}s.",
+            "message": RATE_LIMITED_MESSAGE.format(seconds=int(retry_after)),
             "retry_after_seconds": retry_after,
         },
         headers={"Retry-After": str(retry_after)},
     )
 
 
-def _at_capacity_response(current: int, limit: int) -> JSONResponse:
+def _at_capacity_response(request: Request) -> Response:
+    """503 at capacity (issue 2431, CXO's words). The session counts are logged at the
+    call site and never sent: operator numbers that say how many other people are on."""
+    if wants_a_page(request):
+        return refusal_page(PIPER_IS_FULL_MESSAGE, 503, 30)
     return JSONResponse(
         status_code=503,
         content={
             "error": "at_capacity",
-            "message": f"Instance at capacity ({current}/{limit} active sessions). Try again shortly.",
+            "message": PIPER_IS_FULL_MESSAGE,
             "retry_after_seconds": 30,
         },
         headers={"Retry-After": "30"},
     )
 
 
-def _redis_unavailable_response() -> JSONResponse:
+def _redis_unavailable_response(request: Request) -> Response:
     """D4 fail-closed: a Redis outage denies rather than silently allowing
-    unbounded access. Distinct message from the two above — this is "we
-    couldn't verify your capacity," not "you are over your limit.\" """
+    unbounded access. Distinct from the two above: "we couldn't verify your
+    capacity," not "you are over your limit."
+
+    Issue 2431 (Arch's ruling): a page load gets a plain page with CXO's sentence and a
+    reload link, never JSON and never a redirect; everything else keeps JSON, with the
+    sentence as ``message`` and ``capacity_check_unavailable`` kept for code and the log."""
+    if wants_a_page(request):
+        return refusal_page(PIPER_CANT_TAKE_REQUESTS_MESSAGE, 503, 5)
     return JSONResponse(
         status_code=503,
         content={
             "error": "capacity_check_unavailable",
-            "message": "Temporarily unable to verify usage capacity. Please retry shortly.",
+            "message": PIPER_CANT_TAKE_REQUESTS_MESSAGE,
             "retry_after_seconds": 5,
         },
         headers={"Retry-After": "5"},
@@ -161,7 +184,7 @@ class UsageCapMiddleware(BaseHTTPMiddleware):
                     ttl = await redis.ttl(rate_key)
                     retry_after = ttl if ttl and ttl > 0 else 60
                     logger.warning("usage_cap_rate_limited", principal=principal, count=count)
-                    return _rate_limited_response(retry_after)
+                    return _rate_limited_response(request, retry_after)
 
                 # --- Mechanism 2: concurrency cap (ZSET gauge, TTL-pruned) ---
                 # #1390: AUTHENTICATED principals only. The gauge measures live
@@ -190,7 +213,7 @@ class UsageCapMiddleware(BaseHTTPMiddleware):
                                 principal=principal,
                                 current_count=current_count,
                             )
-                            return _at_capacity_response(current_count, MAX_CONCURRENT_SESSIONS)
+                            return _at_capacity_response(request)
                     # Register/refresh this principal's last-active timestamp —
                     # whether newly admitted or already an active member.
                     await redis.zadd(CONCURRENCY_GAUGE_KEY, {principal: now})
@@ -199,6 +222,6 @@ class UsageCapMiddleware(BaseHTTPMiddleware):
             # (connection refused, timeout, auth failure) denies rather than
             # silently falling through to unbounded access.
             logger.error("usage_cap_redis_unavailable", error=str(e), principal=principal)
-            return _redis_unavailable_response()
+            return _redis_unavailable_response(request)
 
         return await call_next(request)

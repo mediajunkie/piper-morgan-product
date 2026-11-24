@@ -79,6 +79,8 @@
   <script src="/static/vendor/purify-3.2.7.min.js?v={{ asset_v }}"></script>
   <script src="/assets/bot-message-renderer.js?v={{ asset_v }}"></script>
   <script src="/static/js/timestamp-utils.js?v={{ asset_v }}"></script>
+  {# Issue 2431: the one reader for a refused request's `message` (chat.js and pages use it). #}
+  <script src="/static/js/route-message.js?v={{ asset_v }}"></script>
   <script src="/static/js/chat.js?v={{ asset_v }}"></script>
   <script src="/static/js/toast.js?v={{ asset_v }}"></script>
   <script src="/static/js/permissions.js?v={{ asset_v }}"></script>

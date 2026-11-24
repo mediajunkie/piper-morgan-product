@@ -997,7 +997,14 @@
         method: 'POST'
       });
       if (response.status === 401) return; // #2067: modal is up; no card changes state
-      const results = await response.json();
+      const body = await response.json().catch(() => null);
+      if (!response.ok) {
+        // Issue 2431: a refused request says why in `message` (an outage, the rate
+        // limit, a full server). Read it through the one reader; no card changes state.
+        Toast.show('error', 'Test Error', RouteMessage.read(body, 'Failed to test connections'));
+        return;
+      }
+      const results = body;
 
       // Update each integration
       for (const result of results) {

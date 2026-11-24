@@ -263,6 +263,39 @@ def _renaming_imports(tree):
     ]
 
 
+def _fixed_line_or_whole_number_format(node):
+    """Issue 2431's sink rule (Arch, mail 01M87EY4N7): a string literal, an UPPER_CASE name,
+    or ``UPPER_CASE_TEMPLATE.format(<name>=int(<expr>))`` with keyword arguments only, at
+    least one, each value a call to the bare name ``int`` with one positional argument."""
+    if isinstance(node, ast.Constant) and isinstance(node.value, str):
+        return True
+    if isinstance(node, ast.Name):
+        return node.id.isupper()
+    if not (
+        isinstance(node, ast.Call)
+        and isinstance(node.func, ast.Attribute)
+        and node.func.attr == "format"
+        and isinstance(node.func.value, ast.Name)
+        and node.func.value.id.isupper()
+    ):
+        return False
+    if node.args or not node.keywords:
+        return False
+    for keyword in node.keywords:
+        value = keyword.value
+        if keyword.arg is None:  # **mapping
+            return False
+        if not (
+            isinstance(value, ast.Call)
+            and isinstance(value.func, ast.Name)
+            and value.func.id == "int"
+            and len(value.args) == 1
+            and not value.keywords
+        ):
+            return False
+    return True
+
+
 class TestArchsGuardOverEveryMarkedRaise:
     """Arch, 2026-11-24 (mail 01M8742TG4): across ``web/`` and ``services/``, the detail of
     every ``UserFacingHTTPException(...)`` call is a string literal or a module-level
@@ -378,6 +411,152 @@ class TestArchsGuardOverEveryMarkedRaise:
                 isinstance(message, ast.Name) and message.id.isupper()
             )
             assert ok, f"{path}:{node.lineno}: {ast.unparse(message)[:70] if message else None}"
+
+    # Issue 2431 (Arch's ruling, item 4, and his addendum, mail 01M87EY4N7): the page
+    # builder and all four of the capacity guard's refusal builders (the outage, the 429
+    # and at capacity) join the sinks. A message there is a literal, an UPPER_CASE name,
+    # or exactly ``UPPER_CASE_TEMPLATE.format(<name>=int(<expr>))``: keywords only, each a
+    # call to the builtin ``int``. The one pass-through allowed is
+    # ``_service_unavailable_response`` handing on its own ``message`` parameter, whose
+    # every caller the test above already reads.
+    REFUSAL_PAGE_PASS_THROUGH = {"_service_unavailable_response": "message"}
+    CAPACITY_REFUSALS = (
+        "_rate_limited_response",
+        "_at_capacity_response",
+        "_redis_unavailable_response",
+    )
+
+    @staticmethod
+    def _fixed_line(node):
+        return _fixed_line_or_whole_number_format(node)
+
+    @pytest.mark.parametrize(
+        "source",
+        [
+            "RATE_LIMITED_MESSAGE",
+            "'a literal line'",
+            "RATE_LIMITED_MESSAGE.format(seconds=int(retry_after))",
+            "TEMPLATE.format(seconds=int(a), minutes=int(b))",
+        ],
+    )
+    def test_the_sink_rule_allows_the_ruled_shapes(self, source):
+        assert _fixed_line_or_whole_number_format(ast.parse(source, mode="eval").body)
+
+    @pytest.mark.parametrize(
+        "source",
+        [
+            "RATE_LIMITED_MESSAGE.format(seconds=retry_after)",  # not an int(...) call
+            "RATE_LIMITED_MESSAGE.format(seconds=str(retry_after))",
+            "RATE_LIMITED_MESSAGE.format(thing=thing)",  # this morning's ruling stands
+            "RATE_LIMITED_MESSAGE.format(int(retry_after))",  # a positional argument
+            "RATE_LIMITED_MESSAGE.format(int(a), seconds=int(b))",
+            "rate_limited_message.format(seconds=int(retry_after))",  # lowercase template
+            "RATE_LIMITED_MESSAGE.format(seconds=x.int(retry_after))",  # int as an attribute
+            "RATE_LIMITED_MESSAGE.format(**values)",
+            "RATE_LIMITED_MESSAGE.format()",
+            "RATE_LIMITED_MESSAGE.format(seconds=int(a, b))",
+            "RATE_LIMITED_MESSAGE.replace('{seconds}', str(n))",
+            "fill_in_seconds(RATE_LIMITED_MESSAGE, n)",
+            "f'Try again in {n} seconds.'",
+            "message",
+        ],
+    )
+    def test_the_sink_rule_refuses_every_other_shape(self, source):
+        assert not _fixed_line_or_whole_number_format(ast.parse(source, mode="eval").body)
+
+    def _refusal_page_calls(self):
+        """(path, enclosing function name, call) for every ``refusal_page(...)`` call."""
+        calls = []
+        for path, text in self._trees():
+            if "refusal_page" not in text:
+                continue
+            for func in ast.walk(ast.parse(text)):
+                if not isinstance(func, (ast.FunctionDef, ast.AsyncFunctionDef)):
+                    continue
+                for node in ast.walk(func):
+                    if (
+                        isinstance(node, ast.Call)
+                        and isinstance(node.func, ast.Name)
+                        and node.func.id == "refusal_page"
+                    ):
+                        calls.append((path, func.name, node))
+        return calls
+
+    def test_the_guard_sees_the_known_refusal_page_sites(self):
+        per_file = {}
+        for path, _, _ in self._refusal_page_calls():
+            per_file[path] = per_file.get(path, 0) + 1
+        # The capacity guard's three refusals, and the auth middleware's session 503.
+        assert per_file == {
+            "web/middleware/usage_cap_middleware.py": 3,
+            "services/auth/auth_middleware.py": 1,
+        }
+
+    def test_every_refusal_page_message_is_a_literal_or_an_upper_case_constant(self):
+        for path, enclosing, node in self._refusal_page_calls():
+            keywords = {k.arg: k.value for k in node.keywords}
+            message = node.args[0] if node.args else keywords.get("message")
+            passed_on = (
+                isinstance(message, ast.Name)
+                and self.REFUSAL_PAGE_PASS_THROUGH.get(enclosing) == message.id
+            )
+            assert (
+                self._fixed_line(message) or passed_on
+            ), f"{path}:{node.lineno}: {ast.unparse(message)[:70] if message else None}"
+
+    def test_refusal_page_is_never_renamed_or_called_through_an_attribute(self):
+        found = []
+        for path, text in self._trees():
+            if "refusal_page" not in text:
+                continue
+            for node in ast.walk(ast.parse(text)):
+                if isinstance(node, (ast.Import, ast.ImportFrom)):
+                    found += [
+                        f"{path}:{node.lineno}"
+                        for alias in node.names
+                        if alias.name.split(".")[-1] == "refusal_page"
+                        and alias.asname not in (None, "refusal_page")
+                    ]
+                if (
+                    isinstance(node, ast.Call)
+                    and isinstance(node.func, ast.Attribute)
+                    and node.func.attr == "refusal_page"
+                ):
+                    found.append(f"{path}:{node.lineno}")
+        assert found == []
+
+    def test_every_capacity_refusal_message_is_a_fixed_line(self):
+        """Each of the capacity guard's three refusal builders sends a JSON ``message`` that
+        passes the sink rule (the 429's is the one ``.format(seconds=int(...))``)."""
+        tree = ast.parse((ROOT / "web/middleware/usage_cap_middleware.py").read_text())
+        seen = {}
+        for func in ast.walk(tree):
+            if not (isinstance(func, ast.FunctionDef) and func.name in self.CAPACITY_REFUSALS):
+                continue
+            for node in ast.walk(func):
+                if not isinstance(node, ast.Dict):
+                    continue
+                for key, value in zip(node.keys, node.values):
+                    if not (isinstance(key, ast.Constant) and key.value == "message"):
+                        continue
+                    seen[func.name] = seen.get(func.name, 0) + 1
+                    assert _fixed_line_or_whole_number_format(
+                        value
+                    ), f"{func.name}:{node.lineno}: {ast.unparse(value)[:70]}"
+        assert seen == {name: 1 for name in self.CAPACITY_REFUSALS}
+
+    def test_only_the_429_uses_the_format_shape(self):
+        """At capacity and the outage are plain constants; the 429 alone formats, and only
+        with ``seconds=int(...)``."""
+        tree = ast.parse((ROOT / "web/middleware/usage_cap_middleware.py").read_text())
+        formats = [
+            ast.unparse(node)
+            for node in ast.walk(tree)
+            if isinstance(node, ast.Call)
+            and isinstance(node.func, ast.Attribute)
+            and node.func.attr == "format"
+        ]
+        assert formats == ["RATE_LIMITED_MESSAGE.format(seconds=int(retry_after))"] * 2
 
     def test_every_marked_detail_is_a_literal_or_an_upper_case_constant(self):
         """No exception to the rule (Arch, mail 01M8762YMW): a ``.format`` on a template
