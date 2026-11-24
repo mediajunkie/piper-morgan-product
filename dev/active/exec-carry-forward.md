@@ -1,52 +1,57 @@
 # Exec carry-forward
 
-**Rewritten 2026-11-22 22:02 PST at STOP.** Model: Opus 5.5. History: `git log -p -- dev/active/exec-carry-forward.md`. Last session log: `dev/2026/11/22/2026-11-22-0601-exec-code-log.md` (closed). Start a new log on 11-23.
+**Rewritten 2026-11-23 22:01 PST at STOP.** Model: Opus 5.5. History: `git log -p -- dev/active/exec-carry-forward.md`. Last session log: `dev/2026/11/23/2026-11-23-0601-exec-code-log.md` (closed). Start a new log on 11-24.
 
 **STATE: LIVE on LaunchAgent** `com.xian.pm-exec-cycle`, firing at :01 on hours 6, 10, 14, 18 and 22. Empty CronList is normal. Liveness is Pard's.
 
-**Mail v4:** `python3 scripts/mail4.py inbox --role exec` every wake. `--to`/`--cc` take space-separated roles, not commas. Ack one at a time, never in parallel (parallel acks race on the ref). v3 fallback ends 11-23. Janus's words arrive as `mailboxes/exec/inbox/memo-janus-to-exec-*`; reply with `scripts/mail-send-external.sh ~/Development/designinproduct docs/mail <memo>`.
+**Mail v4:** `python3 scripts/mail4.py inbox --role exec` every wake (it can take 2 minutes, so use timeout 200000). `--to`/`--cc` take space-separated roles. Ack one at a time. v3 ended 11-23: mail-send.sh is only for outside parties (Janus) with `PIPER_V3_FALLBACK='<why>'`. Janus's words arrive as `mailboxes/exec/inbox/janus-to-exec-*`. Reply by writing the memo in `mailboxes/exec/sent/`, then `scripts/mail-send-external.sh ~/Development/designinproduct docs/mail <memo>`, then the mail-send.sh mirror.
 
-**Clock rule live:** no estimated minutes (`HH:Mx`) in commits or mail. Headings: `scripts/log-entry.sh "title" >/dev/null` (it appends the heading itself; don't also printf it). zsh: never `echo =====`.
+**Clock rule live:** no estimated minutes in commits, mail or logs. The hook reads the command text too, so build such a string in Python if you must replace one. Headings: `scripts/log-entry.sh "title" >/dev/null`. zsh: never `echo =====`.
+
+## Tuesday 11-24, first: Ship #070 "No Workarounds" publishes today
+- The outline is on main: `docs/public/comms/drafts/weekly-ship-070-draft-2026-11-23.md`. Comms fact-checked it 18:39 (10 fixes). My 18:43 fix resolved the two flags. 0 warning marks. It was sent to xian twice.
+- Goals approved 18:17 ("Yes, all goals approved."). The discussed marker is on the review. Theme, writer and score were already ruled 11-20 (decisions.log 3576-3578). Janus has been told not to re-ask.
+- Next: xian's prose (he gates the Comms handoff). Then Comms review, template-audit and PUBLISH-READY to Docs, and the publish on Tuesday. If nothing has arrived by the morning, it's his own fallback ("write and publish Tuesday morning"). Remind him at START, and on the rollup.
+- After it publishes, the calendar row goes to published/distributed and he crossposts to LinkedIn. Check the calendar, not mail (step 2.01).
 
 ## Rollup
-v1119, `719UZ4h1NELjEwWZbDCceT`. Source `dev/active/exec-attention-rollup-current.html`. Python replace plus assert; bump the stamp from a `date` call. At START 11-23: retitle the h1 to Monday; the Ship #070 Tuesday risk line moves up (publish Tue 11-24, no discussed marker yet).
+v1132, `719UZ4h1NELjEwWZbDCceT`. Source `dev/active/exec-attention-rollup-current.html`. Python replace plus assert, and bump the stamp from a `date` call. **At START 11-24:** retitle the h1 to Tuesday, and make #070's line the top line ("publishes today, waiting on your prose"). On every rebuild, check each item on his card against the seats' logs and the editorial calendar (cohort-attention-rollup step 2.01, xian's tell-one-agent rule).
 
 ## ADR-084 sitting (steps file `docs/internal/operations/adr-084-one-time-steps.md`)
 - **Done:** A, C, D, F0, F.1 (11-20).
-- **Next for xian: F.2** (org Base permissions No permission; invite `atswimtwobirds` as Member; team `seat-test` with the test repos only; billing seat-count line). Then F.3, F.4 connect as seat-github-1, G parts 1 and 2, PA's zero-install read, F.5 install (PA's order, 01M7Y03RJG).
-- **Step E (OpenAI key):** open; the one thing between #2364 and merge.
-- Guide him one step at a time (his ask 11-20).
+- **Next for xian: F.2** (org Base permissions No permission; invite `atswimtwobirds` as Member; team `seat-test` with the test repos only; the billing seat-count line). Then F.3, F.4 (connect as seat-github-1), G parts 1 and 2, PA's zero-install read, and the F.5 install (PA's order, 01M7Y03RJG).
+- **Step E (OpenAI key):** open. It's the one thing between #2364 and merge.
+- Guide him one step at a time (his ask, 11-20).
 
-## On xian's card (rollup v1119), in order
-1. **Fleet deny** (on main 733636419f + ed85825f3c): `cd ~/Development/piper-morgan-worktrees/cio && python3 scripts/seat_settings_grant.py fleet-deny`, expect `added 6 deny rule(s); 2 were already there...`. Relay his line to CIO; Pard restarts Web; Web's Read must be refused. D6: auto mode refuses Pard a shared-settings edit.
-2. **seat-tester-1 sitting (#2406, and #2417's last row):** mint; `seat_account_create.py --account seat-tester-1 --write-invite` (product checkout); Lead's create allow; console check (key in piper-morgan-test; stop if not); save-key allow. Optional CIO allow for seat-github-1. After: Lead creates and saves the key, output to HOST; Web runs CXO's six turns and #2417's `update_issue` never-connected line. If `validated: no`, Lead's remove mode (diff to HOST).
-3. **"Do I Have To?" crosspost** (live 11-22): LinkedIn and Medium, URLs to Docs; Medium "Inviting Company In" footer swap.
+## On xian's card (rollup v1132), in order
+1. **Ship #070 prose** (above).
+2. **Fleet deny** (on main 733636419f + ed85825f3c): `cd ~/Development/piper-morgan-worktrees/cio && python3 scripts/seat_settings_grant.py fleet-deny`, expect `added 6 deny rule(s); 2 were already there...`. Relay his output line to CIO. Pard restarts Web, and Web's Read must then be refused. Still open per HOST's 11-23 logs.
+3. **seat-tester-1 sitting (#2406, and #2417's last row):** mint; `seat_account_create.py --account seat-tester-1 --write-invite`; Lead's create allow; console check; save-key allow. After that, Lead creates and saves the key, and Web runs CXO's six turns and #2417's never-connected line. Lead's `--remove-key` is on branch `lead/seat-remove-key` (HOST read it as conforming at 11-23 evening).
 4. **F.2, E** (above).
-5. **Ship #070 "No Workarounds":** his read of https://claude.ai/artifact/4Pgs8DrAXpyB2P9o6BvRRn, ratify or edit next week's goals. Then add `<!-- discussed: DATE -->`, run draft-weekly-ship, outline scaffold (bare facts under each heading), Comms fact-check. Publish Tue 11-24; at risk.
-- Titles: Sat 11-28 is "Mark One Eyeball" (locked). Restore drill 2157: his choice of day. Later: #2387.
+- Done 11-23 and off the card: the "Do I Have To?" crosspost and the Medium "Inviting Company In" tease (Web's feed read; Docs recorded it).
+- Titles: Sat 11-28 is "Mark One Eyeball". Restore drill 2157: his choice of day. Later: #2387.
 
 ## In motion
-- **Beta `6942dbd1be`** since 11-23 13:49 (Lead 01M85664NN; #2427). Before that `d6ed62181a` since 11-23 12:19 (Lead 01M8512DSM; #2415/#2416 all-code status reply, task alias; a 12:02 dispatch refused by the gate, Lead read the grant as covering the red it left). Before that `079e6aaf78` since 11-22 19:54 (Lead 01M83922SA). Day's builds: `a805384f7e` (2301 part 1, 2413, 2414, 2411), `948af3a198` 17:08 (#2417 one cause), `f2213c7a85` 19:08 (#2418, #2419, both closed served by PPM 19:37), `079e6aaf78` (#2419 follow-up). #2420 guard on main `25048aedde`; PPM to close.
-- **Open nearby:** #2417 (update_issue row, fresh account), #2416 (offers, parked), #2245 served read, 2301 part 2.
-- **Web:** signed in as web-seed-1386 (session expires 11-23 15:06 UTC).
-- **Seat spend 11-22:** Lead paid about $1.30; no run over $1. All under xian's 11-13 yes.
-- **Read-outside-dir prompt** held CXO 12:31 and Web 18:18 fires (CIO 01M836RA3G); gotchas updated; a scoped allow comes to me for xian only if a task-output stop recurs.
-- **Promote hold:** `ops/promote-hold.md` mechanism exists, not in use.
-- **Staging D6:** HOST's read-only staging Machines token idea at 2 of 3 repeats.
+- **Beta `6942dbd1be`** since 11-23 13:49 (Lead 01M85664NN; #2427 served 3 of 3, Web). Earlier the same day: `d6ed62181a` (#2415/#2416).
+- **Staging deploy blips:** VM start failures cleared by re-run on 11-10, 11-20 and 11-23 (Lead 01M85C2R1S). A fourth makes a pattern: take it to xian (the Fly hand is his).
+- **Open nearby:** #2417 (update_issue row, fresh account), #2245 served read, 2301 part 2. #2411's rows moved to #2425; #2426 filed. Both are sprint 3 candidates, and xian sets the slot at the 11-25 draft. #2424 is held on router evidence.
+- **Sprint 2 closes Wed 11-26.** It doesn't stretch (xian 11-20), and #071 reports the score as it stands. The first live v4 Ship kickoff is Fri 11-27 (#071), by `scripts/ship-kickoff.sh`.
+- **Seat done-notes:** any seat that finishes something with xian mails me one line in the same turn (my relay 01M85PWK3T; duty-cycle-tick v1.66 Step 5, CIO). Docs sent the first one at 18:46.
+- **Promote hold:** the `ops/promote-hold.md` mechanism exists but isn't in use. **Staging D6:** HOST's read-only staging Machines token idea is at 2 of 3 repeats.
 - Main 12 of 12 green at 22:01.
-- **Staging deploy blips:** release/VM start failures cleared by re-run on 11-10, 11-20, 11-23 (Lead 01M85C2R1S). A fourth = pattern; take it to xian (Fly hand is his).
 
-## Closes at 22:01 on 11-22
-Closed: Comms, Web, HOST, Arch, CXO, PPM, Lead, PA. Open: Docs, CIO, prog (their STOPs may still run). Check at START.
+## Closes at 22:01 on 11-23
+Closed: Web, Comms, HOST, Arch, CXO, PPM, Lead, PA. Open: Docs, CIO, prog (their STOPs may still run). Check at START.
 
 ## Standing word
-Promote gate: "Yes, changes that only make the check stricter can go ahead with Arch's approval, although I should still be informed." I tell him the same hour.
+- Promote gate: "Yes, changes that only make the check stricter can go ahead with Arch's approval, although I should still be informed." I tell him the same hour.
+- Tell-one-agent (11-23): "I need to be able to trust that I can tell the agent I am working with such an update and that I will not have to also manually report it to their primary point of contact let alone to you directly."
 
 ## Rules I keep
-- Timestamps only from `date`. Every grant is xian's own edit. No seat runs `fly`. A refusal is final and not reworded. Keychain off-limits without his permission. Never direct a seat to read its `.env` or settings file.
-- D6-check every step on him: who would actually do it, checked (tmux ls whole, not `head`). Don't ask him what the team can answer. No account emails or secrets in this repo.
-- Rollup: every publishing item on his card gets checked against the editorial calendar on each rebuild (skill step 2.01, added 11-23 after the stale "Do I Have To?" crosspost line).
-- At STOP: rewrite this file, list other seats' closes, close the log with `<!-- DAY-CLOSED: YYYY-MM-DD -->` as its last line.
+- Timestamps only from `date`. Every grant is xian's own edit. No seat runs `fly`. A refusal is final and is not reworded. The keychain is off-limits without his permission. Never direct a seat to read its `.env` or settings file.
+- D6-check every step that lands on him: who would actually do it? Check (tmux ls in full, not `head`). Don't ask him what the team can answer. No account emails or secrets in this repo.
+- Before re-asking xian anything, grep decisions.log for it (11-23: Janus nearly re-asked three questions he had settled 11-20, because my review page never marked them answered).
+- At STOP: rewrite this file, list the other seats' closes, and close the log with `<!-- DAY-CLOSED: YYYY-MM-DD -->` as its last line.
 
 ## Owed rows (owed-scan)
-- key: 1715-review. Filed: 2026-10-31. Issue 1715 closed (CIO 11-06); walk on xian's talk list only if he wants it.
+- key: 1715-review. Filed: 2026-10-31. Issue 1715 closed (CIO 11-06). Walk it on xian's talk list only if he wants it.
