@@ -193,8 +193,11 @@ class GoogleCalendarOAuthHandler:
             logger.warning("calendar_oauth_state_decode_failed", error=type(e).__name__)
             return False, None
 
-        nonce = state_data.get("nonce") if isinstance(state_data, dict) else None
-        user_id = state_data.get("user_id") if isinstance(state_data, dict) else None
+        if not isinstance(state_data, dict):
+            logger.warning("calendar_oauth_state_decode_failed")
+            return False, None
+        nonce = state_data.get("nonce")
+        user_id = state_data.get("user_id")
 
         if not nonce or not user_id:
             logger.warning(
