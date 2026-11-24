@@ -35,3 +35,21 @@ def test_no_page_or_script_keeps_the_old_wording():
             if "do not match" in path.read_text(encoding="utf-8", errors="ignore").lower():
                 found.append(path.relative_to(ROOT).as_posix())
     assert found == []
+
+
+def test_the_wizards_match_rule_is_keyed_by_the_fields_name():
+    """Found by render 2026-11-24: the rule was keyed 'password-confirm' (the id), which
+    ``FormValidation.validateField`` looks up as ``[name="password-confirm"]`` and never
+    finds, so the check never ran. The field's name is ``password_confirm``."""
+    import re
+
+    script = (ROOT / "web/static/js/setup.js").read_text(encoding="utf-8")
+    page = (ROOT / "templates/setup.html").read_text(encoding="utf-8")
+    assert "'password-confirm': [" not in script
+    assert re.search(r"^\s+password_confirm: \[$", script, re.M)
+    assert 'name="password_confirm"' in page
+    start = script.index("FormValidation.init('account-form'")
+    keys = re.findall(r"^\s{12}'?([a-z_-]+)'?: \[", script[start : start + 900], re.M)
+    assert keys == ["username", "email", "password", "password_confirm"]
+    for key in keys:
+        assert f'name="{key}"' in page, key
