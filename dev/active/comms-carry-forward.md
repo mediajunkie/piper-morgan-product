@@ -1,8 +1,8 @@
 # Comms carry-forward
 
-## ⭐ CURRENT STATE — 2026-11-22 21:19 PT (STOP). Read this first. It supersedes everything below.
-- **Log 11-22:** `dev/2026/11/22/2026-11-22-0610-comms-code-log.md` (DAY-CLOSED). Tomorrow creates a new log.
-- **11-22 afternoon and evening:** quiet. No mail, no draft edits since 08:17, main green, 2364 still OPEN. Next owed: xian's 11-28 prose, his 12-03 title, Exec's Ship #070 outline (Ship publishes Tue 11-24).
+## ⭐ CURRENT STATE — 2026-11-23 21:19 PT (STOP). Read this first. It supersedes everything below.
+- **Log 11-23:** `dev/2026/11/23/2026-11-23-0621-comms-code-log.md` (DAY-CLOSED). Tomorrow creates a new log.
+- **TUE 11-24 IS SHIP DAY.** #070 outline fact-checked 11-23. Exec resolved both ⚠ lines at 18:43 (`489c14f283`, commits 433a8c6b33 and 6a27a0a47d, both under open #2386, which I verified). Waiting on xian's prose, then review, fact-check, Ship-calibrated template-audit, PUBLISH-READY to Docs, all Tuesday morning if needed.
 - **Pace (xian, 11-02):** keep working, not racing. Drain rule holds. No nudges to xian about posts (Exec 11-12).
 - **Draft-state check:** `git log -1 --format='%h %ad %s' -- <one path>` per draft, plus `git -C <shared checkout> status --short docs/public/comms/drafts/` (read-only). Admin-UI edits land as "content(<slug>): edit via admin UI".
 - **Clock rule LIVE (752547e88e, decisions.log):** no estimated `HH:Mx` minute, future time or `~` heading in logs, carry-forward, standing items, briefing or decisions.log. Quote a time in backticks. Helper: `scripts/log-entry.sh "title"`.
@@ -12,7 +12,7 @@
 - **Sat 11-28 "Mark One Eyeball": title LOCKED by xian 11-22** (draft file still test-the-page-you-draw.md). Further locks: 12-03 "Ready or Not" (before 11-28 goes to Docs), 12-05, 12-10, 12-12.
 - **Scaffolds (all rows drafted, draftPath set):** 11-28 `test-the-page-you-draw.md`; 12-03 `ready-or-not.md` (beat 2 sourced line by line 11-21); 12-05 `a-record-is-not-a-delivery.md` (Nov 9-11); 12-10 `open-then-hold.md` (arc 3, Nov 4-7, premise corrected: GitHub's permission page, seen on a tester call; hold not lifted, re-check status when written); 12-12 `a-deletion-can-fail-its-own-gate.md` (Nov 13; stronger since the 11-20 rerun PASS, still offers swap with "The Number That Looked Like a Ceiling" or "A Keyword Is Not a Measurement", **xian's call**).
 - **Held scaffolds:** Thu 12-17 "What the Beta Is Teaching Us" (trigger: Thu 12-03 lands). Sat 12-19 placeholder waits on the mining pass about Fri 12-04 (Nov 17 to Dec 3).
-- **Ship #070 outline FACT-CHECKED 11-23 (01M85PQMN8 to Exec):** `weekly-ship-070-draft-2026-11-23.md`, 10 fact lines fixed, 2 flagged ⚠ for Exec (compose-step source, PA instance). Next: xian's prose, then review, fact-check, Ship-calibrated template-audit, PUBLISH-READY.
+- **Ship #070 outline FACT-CHECKED 11-23 (01M85PQMN8 to Exec):** `weekly-ship-070-draft-2026-11-23.md`, 10 fact lines fixed. Both ⚠ resolved by Exec 18:43 (compose lines sourced, PA instance cut). Next: xian's prose, then review, fact-check, Ship-calibrated template-audit, PUBLISH-READY.
 - **Ship #070 STAYS Tue 11-24 (xian via Janus/Exec 11-23 12:02, 01M850105D):** don't move it. Fallback: outline, prose and Comms' fact-check all Tue morning, publish same day. Keep Tue morning open.
 - **Ship #070 "No Workarounds" (xian 11-20):** Exec writes an outline scaffold (sections plus bare facts, include generously). Exec sends it to Comms for the fact-check after xian reads the week review. Comms' workstream review filed 11-20 05:14 (01M7WHGS2E).
 - **12-12 update 11-20, corrected 11-21:** the 2364 live gate run failed by one probe in the morning. CXO found the probe band had drifted from its definition, Arch fixed the bar before the rerun (dl 3569), and the rerun PASSED at 14:13 (dl 3572). Merge still held on the second-provider item, which is xian's. Scaffold updated 11-21 (I had missed the PASS at the 11-20 STOP). Related new issue 2409 (probe ic-2 likely mislabelled).
