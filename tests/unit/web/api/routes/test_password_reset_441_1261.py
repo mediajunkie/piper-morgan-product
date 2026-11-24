@@ -130,7 +130,8 @@ class TestResetPasswordEndpoint:
         with pytest.raises(HTTPException) as exc:
             await reset_password(_FakeRequest(), _req("TOTALLY-BOGUS-CODE"))
         assert exc.value.status_code == 400
-        assert "Invalid or expired" in exc.value.detail
+        # Issue 2432 (CXO): reworded and marked.
+        assert exc.value.detail == "That reset code isn't valid or has expired. Ask for a new one."
 
     async def test_expired_token_is_generic_400(self, db_session):
         user = _mk_user()

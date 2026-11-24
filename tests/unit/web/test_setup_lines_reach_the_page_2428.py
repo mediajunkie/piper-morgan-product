@@ -197,7 +197,15 @@ class TestTheDatabaseLineThroughTheRoute:
 # Issue 2430 (Arch, mail 01M8786G87): the closed list of picker functions a marked
 # ``detail=`` may call. The guard reads each one's body and fails unless every ``return``
 # is an UPPER_CASE name or ``None``. A new entry here is a diff Arch reads.
-DETAIL_PICKERS = ("github_degrade_fixed_line",)
+# Issue 2432: ``password_rule_line`` (Arch's note 01M87HVCTY: rule codes and constants behind
+# a listed picker) and ``not_offered_line`` (CXO, comment 7144095698: the not-offered card
+# family "behind a listed picker").
+DETAIL_PICKERS = (
+    "github_degrade_fixed_line",
+    "password_rule_line",
+    "not_offered_line",
+    "invite_refusal_line",  # issue 2432, Arch mail 01M87QXPZZ: the admin invites refusals
+)
 
 
 def _returns_only_constants(func):
@@ -233,10 +241,15 @@ def _picker_definitions(name):
 
 def _detail_problem(detail, find_definitions=_picker_definitions):
     """None when a marked ``detail`` is allowed, else why not: a string literal, an
-    UPPER_CASE name, or a call to a listed picker whose body returns only constants."""
+    UPPER_CASE name, a call to a listed picker whose body returns only constants, or
+    (issue 2432, Arch mail 01M87QXPZZ: the admin invites daily limit) the whole-number
+    shape ``UPPER_CASE_TEMPLATE.format(<name>=int(<expr>))``, keywords only. A whole
+    number cannot carry text, so nothing a person typed can ride in on it."""
     if isinstance(detail, ast.Constant) and isinstance(detail.value, str):
         return None
     if isinstance(detail, ast.Name) and detail.id.isupper():
+        return None
+    if _fixed_line_or_whole_number_format(detail):
         return None
     if isinstance(detail, ast.Call) and isinstance(detail.func, ast.Name):
         name = detail.func.id
@@ -339,12 +352,35 @@ class TestArchsGuardOverEveryMarkedRaise:
         # starts and (issue 2430) the repository list's named degrade line. Issue 2429: the
         # session line at the refresh route, standup's dependency and get_current_user; the
         # admin and operations-reader gates.
+        # Issue 2432 (steps 2 to 4): every 4xx line the CXO kept or reworded is marked, so
+        # it keeps its words when the handler's 4xx default flips to the status line.
+        # setup.py +6, settings_integrations.py +12, auth.py +9 (two routes: the mismatch,
+        # the rule picker and its fallback, the reset code twice, the service refusal),
+        # auth_middleware.py +2 (the admin and operations-reader 403s); the rest are new.
         assert per_file == {
-            "web/api/routes/setup.py": 14,
-            "web/api/routes/settings_integrations.py": 13,
-            "web/api/routes/auth.py": 1,
+            "web/api/routes/admin_invites.py": 2,  # the daily limit, and the picker
+            "web/api/routes/admin_ops.py": 1,
+            "web/api/routes/admin_test_preferences.py": 2,
+            "web/api/routes/api_keys.py": 4,
+            "web/api/routes/artifacts.py": 3,
+            "web/api/routes/auth.py": 10,
+            "web/api/routes/conversations.py": 7,
+            "web/api/routes/documents.py": 5,
+            "web/api/routes/feedback.py": 1,
+            "web/api/routes/files.py": 9,
+            "web/api/routes/knowledge_graph.py": 6,
+            "web/api/routes/lists.py": 6,
+            "web/api/routes/preferences.py": 2,
+            "web/api/routes/projects.py": 12,
+            "web/api/routes/repositories.py": 4,
+            "web/api/routes/settings_integrations.py": 25,
+            "web/api/routes/setup.py": 22,  # +2: the account step's two password checks
             "web/api/routes/standup.py": 1,
-            "services/auth/auth_middleware.py": 3,
+            "web/api/routes/todos.py": 5,
+            "web/api/routes/work_items.py": 1,
+            "services/api/transparency.py": 1,
+            "services/auth/auth_middleware.py": 5,
+            "services/integrations/integration_status_service.py": 1,
         }
 
     def test_no_import_renames_the_class(self):
@@ -587,8 +623,30 @@ class TestArchsGuardOverEveryMarkedRaise:
     def _detail_of(source):
         return {k.arg: k.value for k in ast.parse(source).body[0].value.keywords}["detail"]
 
-    def test_the_closed_list_holds_one_picker(self):
-        assert DETAIL_PICKERS == ("github_degrade_fixed_line",)
+    def test_the_closed_list_holds_four_pickers(self):
+        assert DETAIL_PICKERS == (
+            "github_degrade_fixed_line",
+            "password_rule_line",
+            "not_offered_line",
+            "invite_refusal_line",
+        )
+
+    @pytest.mark.parametrize(
+        "source, allowed",
+        [
+            ("LIMIT_TEMPLATE.format(minted=int(exc.minted), limit=int(exc.limit))", True),
+            ("LIMIT_TEMPLATE.format(minted=exc.minted)", False),  # not an int(...) call
+            ("LIMIT_TEMPLATE.format(minted=str(exc.minted))", False),
+            ("LIMIT_TEMPLATE.format(int(exc.minted))", False),  # positional
+            ("LIMIT_TEMPLATE.format(**numbers)", False),
+            ("template.format(minted=int(exc.minted))", False),  # not an UPPER_CASE name
+            ('"Daily limit: {n}".format(n=int(exc.minted))', False),  # not a named constant
+            ("LIMIT_TEMPLATE.format(name=int(a)) + tail", False),
+        ],
+    )
+    def test_a_marked_detail_may_be_a_whole_number_format_and_nothing_wider(self, source, allowed):
+        detail = ast.parse(source, mode="eval").body
+        assert (_detail_problem(detail) is None) is allowed
 
     def test_the_allowance_refuses_a_function_not_on_the_list(self):
         detail = self._detail_of(
@@ -624,8 +682,9 @@ class TestArchsGuardOverEveryMarkedRaise:
         )
         assert _detail_problem(detail, find_definitions=lambda _name: [picker]) is None
 
-    def test_the_real_picker_passes_the_body_read(self):
-        (definition,) = _picker_definitions("github_degrade_fixed_line")
+    @pytest.mark.parametrize("name", DETAIL_PICKERS)
+    def test_the_real_picker_passes_the_body_read(self, name):
+        (definition,) = _picker_definitions(name)
         assert _returns_only_constants(definition)
 
 

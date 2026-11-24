@@ -23,7 +23,7 @@ from fastapi import APIRouter, Depends, HTTPException, Query
 from pydantic import BaseModel
 from sqlalchemy import select
 
-from services.api.errors import APIError
+from services.api.errors import APIError, UserFacingHTTPException
 from services.auth.auth_middleware import get_current_user
 from services.auth.jwt_service import JWTClaims
 from services.database.models import ConversationDB
@@ -54,10 +54,15 @@ async def _require_session_owner_or_admin(session_id: str, current_user: JWTClai
         conv = result.scalar_one_or_none()
     if conv is None or str(conv.user_id) != str(current_user.sub):
         # Uniform 403 — don't differentiate "doesn't exist" from "not yours"
+        # Issue 2432 (CXO): unmarked, so it answers the 403 status line.
         raise HTTPException(
             status_code=403,
             detail="Not authorized to access this session's audit data",
         )
+
+
+# Issue 2432 (CXO, comment 7144095698): the admin-only refusal, marked.
+ADMIN_ACCOUNT_NEEDED_LINE = "This needs an admin account."
 
 
 def _require_admin(current_user: JWTClaims) -> None:
@@ -70,7 +75,7 @@ def _require_admin(current_user: JWTClaims) -> None:
     """
     is_admin = getattr(current_user, "is_admin", False)
     if not is_admin:
-        raise HTTPException(status_code=403, detail="Admin access required")
+        raise UserFacingHTTPException(status_code=403, detail=ADMIN_ACCOUNT_NEEDED_LINE)
 
 
 class AuditLogResponse(BaseModel):

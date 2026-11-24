@@ -19,6 +19,7 @@ from fastapi.responses import Response
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from services.api.errors import UserFacingHTTPException
 from services.auth.auth_middleware import get_current_user
 from services.auth.jwt_service import JWTClaims
 from services.database.connection import db
@@ -62,6 +63,20 @@ ALLOWED_MIME_TYPES = {
 }
 ALLOWED_EXTENSIONS = {".txt", ".pdf", ".docx", ".md", ".json"}
 
+# Issue 2432 (CXO, comment 7144095698): what a person reads, marked. The two limits are
+# computed once here from the constants above (sorted, so the order never varies), and no
+# line names the size, type or name of the file the person sent.
+FILE_TOO_LARGE_LINE = f"That file is too large. The limit is {MAX_FILE_SIZE // (1024 * 1024)} MB."
+FILE_KIND_NOT_USABLE_LINE = (
+    "I can't use that kind of file. Allowed: " + ", ".join(sorted(ALLOWED_EXTENSIONS)) + "."
+)
+CHOOSE_A_FILE_LINE = "Choose a file first."
+CHOOSE_AT_LEAST_ONE_FILE_LINE = "Choose at least one file."
+TOO_MANY_TO_DOWNLOAD_LINE = "You can download up to 50 files at a time."
+CANT_DOWNLOAD_FILE_LINE = "You can't download that file."
+CANT_VIEW_FILE_LINE = "You can't view that file."
+FILE_NO_LONGER_AVAILABLE_LINE = "This file is no longer available. Please upload it again."
+
 
 @router.post("/upload")
 async def upload_file(
@@ -94,9 +109,8 @@ async def upload_file(
     try:
         # 1. Validate file exists
         if not file or not file.filename:
-            raise HTTPException(
-                status_code=status.HTTP_400_BAD_REQUEST,
-                detail="File is required",
+            raise UserFacingHTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST, detail=CHOOSE_A_FILE_LINE
             )
 
         # 2. Read file content
@@ -112,9 +126,9 @@ async def upload_file(
                 size=file_size,
                 max_size=MAX_FILE_SIZE,
             )
-            raise HTTPException(
-                status_code=status.HTTP_413_REQUEST_ENTITY_TOO_LARGE,
-                detail=f"File too large: {file_size} bytes (max {MAX_FILE_SIZE})",
+            logger.info("file_upload_refused_too_large", size=file_size, limit=MAX_FILE_SIZE)
+            raise UserFacingHTTPException(
+                status_code=status.HTTP_413_REQUEST_ENTITY_TOO_LARGE, detail=FILE_TOO_LARGE_LINE
             )
 
         # 4. Validate file type (MIME type)
@@ -125,9 +139,9 @@ async def upload_file(
                 filename=file.filename,
                 content_type=file.content_type,
             )
-            raise HTTPException(
-                status_code=status.HTTP_415_UNSUPPORTED_MEDIA_TYPE,
-                detail=f"Unsupported file type: {file.content_type}. Allowed types: {', '.join(ALLOWED_MIME_TYPES)}",
+            logger.info("file_upload_refused_type", content_type=file.content_type)
+            raise UserFacingHTTPException(
+                status_code=status.HTTP_415_UNSUPPORTED_MEDIA_TYPE, detail=FILE_KIND_NOT_USABLE_LINE
             )
 
         # 5. Validate file extension
@@ -139,9 +153,9 @@ async def upload_file(
                 filename=file.filename,
                 extension=file_path.suffix,
             )
-            raise HTTPException(
-                status_code=status.HTTP_415_UNSUPPORTED_MEDIA_TYPE,
-                detail=f"Unsupported file extension: {file_path.suffix}. Allowed extensions: {', '.join(ALLOWED_EXTENSIONS)}",
+            logger.info("file_upload_refused_extension", suffix=file_path.suffix)
+            raise UserFacingHTTPException(
+                status_code=status.HTTP_415_UNSUPPORTED_MEDIA_TYPE, detail=FILE_KIND_NOT_USABLE_LINE
             )
 
         # 7. Generate unique file ID and safe filename
@@ -619,9 +633,8 @@ async def download_file(
 
             # Check permissions: only owner or admin can download
             if not is_admin and file.owner_id != user_id:
-                raise HTTPException(
-                    status_code=status.HTTP_403_FORBIDDEN,
-                    detail="Not authorized to download this file",
+                raise UserFacingHTTPException(
+                    status_code=status.HTTP_403_FORBIDDEN, detail=CANT_DOWNLOAD_FILE_LINE
                 )
             if is_admin and file.owner_id != user_id:
                 _audit_admin_bypass(
@@ -643,13 +656,8 @@ async def download_file(
                 # gone (uploads predating the durable volume were wiped by
                 # deploys). 410, not 404 — the file existed; its content is
                 # permanently lost. Re-upload is the only recovery.
-                raise HTTPException(
-                    status_code=status.HTTP_410_GONE,
-                    detail=(
-                        "This file's content is no longer available — it was "
-                        "uploaded before durable storage was added and did not "
-                        "survive a redeploy. Please upload it again."
-                    ),
+                raise UserFacingHTTPException(
+                    status_code=status.HTTP_410_GONE, detail=FILE_NO_LONGER_AVAILABLE_LINE
                 )
 
             logger.info(
@@ -718,9 +726,8 @@ async def preview_file(file_id: str, request: Request):
                     detail=f"File not found: {file_id}",
                 )
             if not is_admin and file.owner_id != user_id:
-                raise HTTPException(
-                    status_code=status.HTTP_403_FORBIDDEN,
-                    detail="Not authorized to view this file",
+                raise UserFacingHTTPException(
+                    status_code=status.HTTP_403_FORBIDDEN, detail=CANT_VIEW_FILE_LINE
                 )
             if is_admin and file.owner_id != user_id:
                 _audit_admin_bypass(
@@ -806,10 +813,12 @@ async def download_bulk(
 
     items = (body or {}).get("items") or []
     if not isinstance(items, list) or not items:
-        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="items list required")
+        raise UserFacingHTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST, detail=CHOOSE_AT_LEAST_ONE_FILE_LINE
+        )
     if len(items) > 50:
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST, detail="Max 50 items per bulk download"
+        raise UserFacingHTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST, detail=TOO_MANY_TO_DOWNLOAD_LINE
         )
 
     if not db._initialized:
@@ -965,6 +974,7 @@ async def set_file_tags(file_id: str, request: Request, body: dict):
             if not row:
                 raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Not found")
             if not is_admin and row.owner_id != user_id:
+                # Issue 2432 (CXO): unmarked, so it answers the 403 status line.
                 raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Not authorized")
             owner_id = row.owner_id
             meta = dict(row.file_metadata or {})

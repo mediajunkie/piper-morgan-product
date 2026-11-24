@@ -24,6 +24,7 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from pydantic import BaseModel
 from sqlalchemy import func, select
 
+from services.api.errors import UserFacingHTTPException
 from services.auth import narrow_flags
 from services.auth.auth_middleware import require_admin, require_ops_reader
 from services.auth.jwt_service import JWTClaims
@@ -160,7 +161,9 @@ async def set_account_flag(
         result = await narrow_flags.set_flag(req.username, req.flag, req.on, admin.user_id)
     except narrow_flags.UnknownFlag:
         logger.warning("account_flag_refused_unknown", flag=req.flag, admin_id=str(admin.user_id))
-        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=UNKNOWN_FLAG_DETAIL)
+        raise UserFacingHTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST, detail=UNKNOWN_FLAG_DETAIL
+        )
     if result is None:
         return _not_found()
     return {"found": True, **result, "settable": list(narrow_flags.NARROW_FLAGS)}

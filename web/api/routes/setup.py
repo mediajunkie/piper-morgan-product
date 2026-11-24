@@ -28,6 +28,11 @@ from services.auth.oauth_callback_guard import (
     refusal_redirect_url,
 )
 from services.auth.password_service import PasswordService
+from services.auth.password_validator import (  # noqa: E402 (issue 2432)
+    PASSWORD_TOO_SHORT_LINE,
+    PASSWORDS_DONT_MATCH_LINE,
+    PasswordValidator,
+)
 from services.auth.session_cookies import set_session_cookies
 from services.config.llm_config_service import KEY_CHECK_UNAVAILABLE_MESSAGE, KeyCheckUnavailable
 from services.database.models import User
@@ -43,6 +48,18 @@ from web.api.exceptions import UserFacingHTTPException  # noqa: E402 (issue 2428
 
 router = APIRouter(prefix="/api/v1/setup", tags=["setup"])
 logger = structlog.get_logger(__name__)
+
+# Issue 2432 (CXO, comment 7144095698 and mail 01M87NVGEW): the setup routes' 4xx lines,
+# kept or reworded, marked.
+SETUP_ALREADY_COMPLETE_LINE = (
+    "Setup is already complete on this server. Sign in and manage "
+    "credentials and projects from Settings → Integrations instead."
+)
+SIGNED_IN_ACCOUNT_ONLY_LINE = "This setup step applies to the signed-in account only."
+INVITE_CODE_NOT_VALID_LINE = "That invite code isn't valid or has already been used."
+EMAIL_OR_USERNAME_IN_USE_LINE = "That email or username is already in use."
+PROJECT_NAME_NEEDED_LINE = "Give the project a name first."
+GITHUB_OWNER_REPO_LINE = "Write the GitHub repository as owner/repo."
 
 
 # ============================================================================
@@ -100,16 +117,13 @@ class CreateUserRequest(BaseModel):
     # Previously Optional -> a missing email leaked a Postgres NotNullViolation
     # as a confusing 500 instead of a clean 422.
     email: str = Field(min_length=3, max_length=255, description="Email (required)")
-    password: str = Field(min_length=8, description="Password (minimum 8 characters)")
-    password_confirm: str = Field(min_length=8, description="Password confirmation")
+    # Issue 2432 follow-up (render, 2026-11-24): no length rule and no match validator
+    # here. Pydantic refused a short or mismatched password before the route ran, and the
+    # validation 422's one fixed line told the person nothing. ``create_user`` makes both
+    # checks first, before any write, and answers a marked 400 with the line.
+    password: str = Field(description="Password (the route checks its length)")
+    password_confirm: str = Field(description="Password confirmation (the route checks it)")
     invite_token: str = Field(min_length=1, description="Alpha invite token (#1344, required)")
-
-    @field_validator("password_confirm")
-    @classmethod
-    def passwords_match(cls, v: str, info) -> str:
-        if "password" in info.data and v != info.data["password"]:
-            raise ValueError("Passwords do not match")
-        return v
 
 
 class CreateUserResponse(BaseModel):
@@ -354,13 +368,7 @@ async def require_setup_incomplete() -> None:
             detail=SETUP_COULD_NOT_BE_CHECKED_MESSAGE,
         )
     if already:
-        raise HTTPException(
-            status_code=403,
-            detail=(
-                "Setup is already complete on this server. Sign in and manage "
-                "credentials and projects from Settings → Integrations instead."
-            ),
-        )
+        raise UserFacingHTTPException(status_code=403, detail=SETUP_ALREADY_COMPLETE_LINE)
 
 
 def _principal_or_none(current_user: object) -> Optional[str]:
@@ -381,9 +389,8 @@ def _setup_principal(current_user: JWTClaims, body_user_id: Optional[str]) -> st
     principal check is what stops F1 (anyone writing anyone's keys)."""
     principal = str(current_user.sub)
     if body_user_id is not None and str(body_user_id) != principal:
-        raise HTTPException(
-            status_code=status.HTTP_403_FORBIDDEN,
-            detail="This setup step applies to the signed-in account only.",
+        raise UserFacingHTTPException(
+            status_code=status.HTTP_403_FORBIDDEN, detail=SIGNED_IN_ACCOUNT_ONLY_LINE
         )
     return principal
 
@@ -1236,6 +1243,18 @@ async def create_user(
         HTTPException 400: If username already exists, or invite_token is invalid/already used
         HTTPException 500: If user creation fails
     """
+    # Issue 2432 follow-up: the two password checks, first, before the invite code is
+    # spent or anything is written. The same two rules the request model used to hold
+    # (a match, and at least 8 characters), now with a line a person can read.
+    if req.password != req.password_confirm:
+        raise UserFacingHTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST, detail=PASSWORDS_DONT_MATCH_LINE
+        )
+    if len(req.password) < PasswordValidator.MIN_LENGTH:
+        raise UserFacingHTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST, detail=PASSWORD_TOO_SHORT_LINE
+        )
+
     try:
         # Hash password with bcrypt
         password_service = PasswordService()
@@ -1266,9 +1285,8 @@ async def create_user(
             consumed = await consume_invite_token(session, req.invite_token, user.id)
             if not consumed:
                 logger.warning("user_creation_failed_invalid_invite_token", username=req.username)
-                raise HTTPException(
-                    status_code=status.HTTP_400_BAD_REQUEST,
-                    detail="Invalid or already-used invite token",
+                raise UserFacingHTTPException(
+                    status_code=status.HTTP_400_BAD_REQUEST, detail=INVITE_CODE_NOT_VALID_LINE
                 )
             await session.commit()
 
@@ -1291,11 +1309,11 @@ async def create_user(
             # #1348: email is unique too — say which field collided instead of
             # blaming the username for an email conflict.
             field = "Email" if "email" in error_str else "Username"
-            value = req.email if field == "Email" else req.username
             logger.warning("user_creation_failed_duplicate", username=req.username, field=field)
-            raise HTTPException(
-                status_code=status.HTTP_400_BAD_REQUEST,
-                detail=f"{field} '{value}' already exists",
+            # Issue 2432 (CXO, mail 01M87NVGEW): one line for both fields; the typed value
+            # is never echoed.
+            raise UserFacingHTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST, detail=EMAIL_OR_USERNAME_IN_USE_LINE
             )
         # Provide helpful error messages for common database issues
         elif "relation" in error_str and "does not exist" in error_str:
@@ -1631,9 +1649,8 @@ async def create_setup_project(
     user_id = _setup_principal(current_user, req.user_id)
     try:
         if not req.project_name or not req.project_name.strip():
-            raise HTTPException(
-                status_code=status.HTTP_400_BAD_REQUEST,
-                detail="Project name is required",
+            raise UserFacingHTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST, detail=PROJECT_NAME_NEEDED_LINE
             )
 
         async with AsyncSessionFactory.session_scope_fresh() as session:
@@ -1653,9 +1670,8 @@ async def create_setup_project(
                 repo_name = req.github_repo.strip()
                 # Basic format validation (owner/repo)
                 if "/" not in repo_name:
-                    raise HTTPException(
-                        status_code=status.HTTP_400_BAD_REQUEST,
-                        detail="GitHub repo must be in owner/repo format",
+                    raise UserFacingHTTPException(
+                        status_code=status.HTTP_400_BAD_REQUEST, detail=GITHUB_OWNER_REPO_LINE
                     )
 
                 # Issue #867: Soft-validate via GitHub API

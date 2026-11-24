@@ -25,7 +25,11 @@ from services.auth.models import (
     PasswordChangeResponse,
 )
 from services.auth.password_service import PasswordService
-from services.auth.password_validator import PasswordValidator
+from services.auth.password_validator import (
+    PASSWORD_CANT_BE_USED_LINE,
+    PasswordValidator,
+    password_rule_line,
+)
 from services.auth.session_cookies import set_session_cookies
 from services.database.connection import db
 from services.database.models import User
@@ -38,6 +42,10 @@ PASSWORD_COULD_NOT_BE_CHANGED_MESSAGE = (
     "Your password couldn't be changed just now. "
     "Try again in a moment; if it keeps failing, tell us."
 )
+# Issue 2432 (CXO, comment 7144095698): reworded, marked. The password rules' own lines
+# live with the validator (``password_rule_line``).
+NEW_PASSWORDS_DONT_MATCH_LINE = "The new passwords don't match."
+RESET_CODE_NOT_VALID_LINE = "That reset code isn't valid or has expired. Ask for a new one."
 
 router = APIRouter(prefix="/api/v1/auth", tags=["authentication"])
 # piper-morgan-fb9: auto_error=False allows logout to handle missing/invalid tokens gracefully
@@ -645,17 +653,21 @@ async def change_password(
 
         # Verify new passwords match
         if data.new_password != data.new_password_confirm:
-            raise HTTPException(
-                status_code=status.HTTP_400_BAD_REQUEST,
-                detail="New passwords do not match",
+            raise UserFacingHTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST, detail=NEW_PASSWORDS_DONT_MATCH_LINE
             )
 
-        # Validate new password strength
-        is_valid, error_message = PasswordValidator.validate(data.new_password)
-        if not is_valid:
-            raise HTTPException(
-                status_code=status.HTTP_400_BAD_REQUEST,
-                detail=error_message,
+        # Validate new password strength. Issue 2432: the reply is the rule's vetted line,
+        # picked by its code; the validator's own message never reaches it.
+        rule = PasswordValidator.failed_rule(data.new_password)
+        if rule is not None:
+            logger.info("password_change_refused_rule", rule=rule)
+            if password_rule_line(rule) is not None:
+                raise UserFacingHTTPException(
+                    status_code=status.HTTP_400_BAD_REQUEST, detail=password_rule_line(rule)
+                )
+            raise UserFacingHTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST, detail=PASSWORD_CANT_BE_USED_LINE
             )
 
         # Get database session for password update
@@ -724,7 +736,7 @@ async def change_password(
                     # Issue 2432: the exception's text is logged above and never
                     # sent. The password rules are checked earlier and are not this
                     # branch (CXO 01M87K06YA).
-                    raise HTTPException(
+                    raise UserFacingHTTPException(
                         status_code=status.HTTP_400_BAD_REQUEST,
                         detail=PASSWORD_COULD_NOT_BE_CHANGED_MESSAGE,
                     )
@@ -758,8 +770,12 @@ class PasswordResetRequest(BaseModel):
     """Reset payload: the PM-issued code + the new password (pre-login flow)."""
 
     reset_token: str = Field(min_length=1, description="PM-issued reset code")
-    new_password: str = Field(min_length=8, description="New password")
-    new_password_confirm: str = Field(min_length=8, description="Confirmation")
+    # Issue 2432 (Arch, mail 01M87RHFPQ): no ``min_length`` on the two password fields.
+    # The password rules live in one place, ``PasswordValidator``. With a length rule
+    # here, pydantic refused a short password first and the person read only the
+    # validation 422's line, never "at least 8 characters".
+    new_password: str = Field(description="New password")
+    new_password_confirm: str = Field(description="Confirmation")
 
 
 class PasswordResetResponse(BaseModel):
@@ -789,14 +805,20 @@ async def reset_password(request: Request, data: PasswordResetRequest):
     """
     try:
         if data.new_password != data.new_password_confirm:
-            raise HTTPException(
-                status_code=status.HTTP_400_BAD_REQUEST,
-                detail="New passwords do not match",
+            raise UserFacingHTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST, detail=NEW_PASSWORDS_DONT_MATCH_LINE
             )
 
-        is_valid, error_message = PasswordValidator.validate(data.new_password)
-        if not is_valid:
-            raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=error_message)
+        rule = PasswordValidator.failed_rule(data.new_password)
+        if rule is not None:
+            logger.info("password_reset_refused_rule", rule=rule)
+            if password_rule_line(rule) is not None:
+                raise UserFacingHTTPException(
+                    status_code=status.HTTP_400_BAD_REQUEST, detail=password_rule_line(rule)
+                )
+            raise UserFacingHTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST, detail=PASSWORD_CANT_BE_USED_LINE
+            )
 
         if not db._initialized:
             await db.initialize()
@@ -808,9 +830,8 @@ async def reset_password(request: Request, data: PasswordResetRequest):
                     "password_reset_failed_invalid_token",
                     ip_address=request.client.host if request.client else None,
                 )
-                raise HTTPException(
-                    status_code=status.HTTP_400_BAD_REQUEST,
-                    detail="Invalid or expired reset code",
+                raise UserFacingHTTPException(
+                    status_code=status.HTTP_400_BAD_REQUEST, detail=RESET_CODE_NOT_VALID_LINE
                 )
 
             password_service = PasswordService()
@@ -819,9 +840,8 @@ async def reset_password(request: Request, data: PasswordResetRequest):
             user = result.scalar_one_or_none()
             if user is None or not user.is_active:
                 # Bound account vanished/deactivated since mint — same generic 400.
-                raise HTTPException(
-                    status_code=status.HTTP_400_BAD_REQUEST,
-                    detail="Invalid or expired reset code",
+                raise UserFacingHTTPException(
+                    status_code=status.HTTP_400_BAD_REQUEST, detail=RESET_CODE_NOT_VALID_LINE
                 )
             user.password_hash = new_hash
             user.updated_at = datetime.now(timezone.utc)

@@ -303,7 +303,8 @@ class TestTheDependencies:
             reply = client.post("/write")
         assert reply.status_code == 403
         expected = (
-            "This changes app-wide configuration, so it needs an admin account — nothing "
+            # Issue 2432 (CXO): reworded (no em dash), marked; still refused before the route.
+            "This changes app-wide configuration, so it needs an admin account. Nothing "
             "was changed."
             if gate is require_admin
             else "This page is for operations readers."

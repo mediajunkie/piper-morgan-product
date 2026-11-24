@@ -130,7 +130,10 @@ class TestSaveNotionKey:
                 await save_notion_key("secret_invalid_key", mock_current_user)
 
             assert exc_info.value.status_code == 400
-            assert "Invalid API key" in str(exc_info.value.detail)
+            # Issue 2432 (CXO): Notion's own reason goes to the log, never the reply.
+            assert (
+                exc_info.value.detail == "That Notion API key didn't work. Check it and try again."
+            )
 
     @pytest.mark.asyncio
     async def test_saves_valid_key_and_returns_success(self, mock_current_user):
