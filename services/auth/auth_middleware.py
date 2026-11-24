@@ -21,6 +21,12 @@ from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 from starlette.middleware.base import BaseHTTPMiddleware
 from starlette.responses import Response
 
+from services.api.errors import (
+    ADMIN_PERMISSIONS_COULD_NOT_BE_CHECKED_MESSAGE,
+    PERMISSIONS_COULD_NOT_BE_CHECKED_MESSAGE,
+    SESSION_COULD_NOT_BE_CHECKED_MESSAGE,
+    UserFacingHTTPException,
+)
 from services.domain.models import RequestContext
 
 from .jwt_service import JWTClaims, JWTService
@@ -416,10 +422,11 @@ class AuthMiddleware(BaseHTTPMiddleware):
                         client_ip=self._get_client_ip(request),
                         error=str(e),
                     )
+                    # Issue 2429: CXO's line, one constant. This 503 is the
+                    # middleware's own response, so it never passes the app's
+                    # handler and is not masked.
                     return self._service_unavailable_response(
-                        "Couldn't verify your session right now — nothing was "
-                        "changed. Try again in a moment.",
-                        request,
+                        SESSION_COULD_NOT_BE_CHECKED_MESSAGE, request
                     )
                 except TokenExpired:
                     logger.warning(
@@ -512,8 +519,9 @@ class AuthMiddleware(BaseHTTPMiddleware):
         not consult the blacklist they would land straight back here.
 
         Shape follows the in-repo precedent `require_admin` set for the
-        analogous case (#1485/#1598): 503 + "couldn't verify ... right now
-        — nothing was changed. Try again in a moment."
+        analogous case (#1485/#1598): a 503 that says the check could not be
+        made. ``message`` reaches the client as written, so every caller passes
+        a literal or an UPPER_CASE constant (issue 2429's guard reads each call).
         """
         from fastapi.responses import JSONResponse
 
@@ -651,16 +659,9 @@ async def get_current_user(
     except BlacklistUnavailable as e:
         # #1792: unknown ≠ revoked. Fail closed, but honestly.
         logger.error("token_revocation_check_unavailable", error=str(e))
-        raise APIError(
-            status_code=503,
-            error_code="REVOCATION_CHECK_UNAVAILABLE",
-            details={
-                "detail": (
-                    "Couldn't verify your session right now — nothing was "
-                    "changed. Try again in a moment."
-                )
-            },
-        )
+        # Issue 2429: APIError's handler never shows `details` to a person, so this
+        # raises the user-facing exception with CXO's line; still 503.
+        raise UserFacingHTTPException(status_code=503, detail=SESSION_COULD_NOT_BE_CHECKED_MESSAGE)
     except TokenExpired:
         raise APIError(
             status_code=401,
@@ -762,12 +763,9 @@ async def require_admin(
             user_id=str(current_user.user_id),
             error=str(e),
         )
-        raise HTTPException(
+        raise UserFacingHTTPException(
             status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
-            detail=(
-                "Couldn't verify admin permissions right now — nothing was "
-                "changed. Try again in a moment."
-            ),
+            detail=ADMIN_PERMISSIONS_COULD_NOT_BE_CHECKED_MESSAGE,
         )
 
     if not is_admin:
@@ -816,9 +814,9 @@ async def require_ops_reader(
         logger.warning(
             "ops_reader_check_unavailable", user_id=str(current_user.user_id), error=str(e)
         )
-        raise HTTPException(
+        raise UserFacingHTTPException(
             status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
-            detail="Couldn't verify permissions right now. Try again in a moment.",
+            detail=PERMISSIONS_COULD_NOT_BE_CHECKED_MESSAGE,
         )
     if not allowed:
         logger.warning("ops_read_refused", user_id=str(current_user.user_id))
