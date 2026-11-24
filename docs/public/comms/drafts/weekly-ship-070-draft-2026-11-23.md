@@ -79,8 +79,10 @@ I maintained the current hand-written cadence at a barely sustainable pace this 
 
 The new schedule is as follows:
 
-1. Tuesdays (like today) I will publish the Weekly Ship for the sprint week that ended the previous Thursday. This is moving from Wednesdays. The Ship will continue to appear first in the [Shipping News](https://pipermorgan.ai/shipping-news/) on the Piper Morgan website and then gets crossposted to the [Building Piper Morgan](https://www.linkedin.com/newsletters/building-piper-morgan-7346158338541305856) newsletter on LinkedIn.
-2. Thursdays I will publish an update on the building narrative, focused on moving from beta to production and less on the day-to-day blow-by-blow minutiae of building with this agent team. These posts will also continue to appear first on the [Building in Public](https://pipermorgan.ai/blog/) on the website and crossposted to the [Medium](
+1. **Tuesdays** (like today) I will publish the Weekly Ship for the sprint week that ended the previous Thursday. This is moving from Wednesdays. The Ship will continue to appear first in the [Shipping News](https://pipermorgan.ai/shipping-news/) on the Piper Morgan website and then gets crossposted to the [Building Piper Morgan newsletter](https://www.linkedin.com/newsletters/building-piper-morgan-7346158338541305856) on LinkedIn.
+2. **Thursdays** I will publish an update on the building narrative, focused on moving from beta to production and less on the day-to-day blow-by-blow minutiae of building with this agent team. This is moving from the current twice-weekly Tue/Thu schedule to just running once a week on Thursday. These posts will also continue to appear first on the [Building in Public](https://pipermorgan.ai/blog/) on the website and crossposted to the [Building Piper Morgan publication](https://medium.com/building-piper-morgan/) on Medium and will also now be crossposted to LinkedIn as well.
+3. 
+
 - **Cadence:** Ship moves to Tuesday from this one. No Thursday narrative in Thanksgiving week (your 11-17 word).
 
 ## 📊 Governance & operations
