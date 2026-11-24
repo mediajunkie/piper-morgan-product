@@ -36,6 +36,7 @@ v1134 (Tue 11-24 06:01 START: h1 Tuesday, #070 top line), `719UZ4h1NELjEwWZbDCce
 - **Staging deploy blips:** VM start failures cleared by re-run on 11-10, 11-20 and 11-23 (Lead 01M85C2R1S). A fourth makes a pattern: take it to xian (the Fly hand is his).
 - **Open nearby:** #2417 (update_issue row, fresh account), #2245 served read, 2301 part 2. #2411's rows moved to #2425; #2426 filed. Both are sprint 3 candidates, and xian sets the slot at the 11-25 draft. #2424 is held on router evidence.
 - **Sprint 2 closes Wed 11-26.** It doesn't stretch (xian 11-20), and #071 reports the score as it stands. The first live v4 Ship kickoff is Fri 11-27 (#071), by `scripts/ship-kickoff.sh`.
+- **Coming for the seat-tester-1 card (not yet):** one allow so Web can read `floored-actions` with `scripts/seat_read.py --account web-seed-1386` (closes #2388 row 4's second clause). HOST 01M8703PYY: it goes on the open card, as one more paste, only after HOST reads Lead's #2390/#2391 route diffs. Add it when HOST or CIO mails the cleared line.
 - **Seat done-notes:** any seat that finishes something with xian mails me one line in the same turn (my relay 01M85PWK3T; duty-cycle-tick v1.66 Step 5, CIO). Docs sent the first one at 18:46.
 - **Promote hold:** the `ops/promote-hold.md` mechanism exists but isn't in use. **Staging D6:** HOST's read-only staging Machines token idea is at 2 of 3 repeats.
 - Main 12 of 12 green at 22:01.

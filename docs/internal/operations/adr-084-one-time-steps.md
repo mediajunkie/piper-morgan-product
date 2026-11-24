@@ -148,6 +148,13 @@ scripts/seat_settings_grant.py add-allow --seat web --rule 'Bash(scripts/seat_re
 
 - **You should see:** `added 1 allow rule for seat web` after each line, then the rule counts.
 - **Seat check:** the seat runs the helper once. It prints one line, `web-seed-1386 session saved, expires <time>`, and nothing else. (Once Step D is done, in a seat with a seat browser it prints a second line, `web-seed-1386 placed in seat browser web, expires <time>`.) Then `scripts/seat_read.py --account web-seed-1386 '/api/v1/admin/floored-actions?days=30'` prints the counter's JSON. Then `scripts/seat_read.py --account web-seed-1386 --redirect-uri github` and the same with `calendar` each print one line with the address the sign-in returns to and nothing else (run each once; don't loop them, each run leaves one unused sign-in state in the app until its next deploy; Web sends the two printed lines to Lead, who puts them on issue 2282). If the helper prints `refused:` with a reason (for example, the account holds a provider key), nothing was saved: the seat reports the reason to HOST and Exec and does not retry.
+- **Owed, the counter read (2026-11-24, HOST's call on #2388 row 4):** no allow covers `seat_read.py`'s counter read, so it has never run. One more line, for a card xian already has open (not a sitting of its own), **after HOST reads the ops_reader route diffs #2390 and #2391** (Lead's):
+
+```
+scripts/seat_settings_grant.py add-allow --seat web --rule 'Bash(scripts/seat_read.py --account web-seed-1386 /api/v1/admin/floored-actions)'
+```
+
+  The path carries no `?days=30` on purpose: the route's default is 30 days (`web/api/routes/admin_ops.py`, `days: int = 30`), and a bare path needs no shell quotes, so the command Web types matches the rule character for character. Web then runs it once, alone, and quotes the JSON's `window` line on #2388.
 - **If it fails:** if the classifier still refuses the helper's run, this route is dropped and the ADR's fallback applies (he signs in himself, rarely). Nobody works around the refusal.
 
 ## Step D (ADR row 10): load the seat browser's LaunchAgent
