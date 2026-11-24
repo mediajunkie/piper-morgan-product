@@ -31,11 +31,11 @@ SRC = (ROOT / "web/api/routes/setup.py").read_text(encoding="utf-8")
 TREE = ast.parse(SRC)
 GENERIC = "Something went wrong on my end. I've logged the details for debugging."
 
-# The one 5xx line that stays masked: it tells an operator which environment variables to
-# set, and is not worded for a person on the page. Changing this set is a CXO ruling. (The
-# Google Calendar twin left it on 2026-11-24, issue 2345: the wizard page now gets
-# "Google Calendar sign-in isn't set up on this server." and the variable names are logged.)
-KEPT_MASKED = ("Slack OAuth not configured.",)
+# No setup 5xx line stays masked. The two that told an operator which environment variables
+# to set left this list on 2026-11-24 (issue 2345, CXO): the wizard's page now gets
+# "Google Calendar sign-in isn't set up on this server." or its Slack twin, and the variable
+# names are logged. A new unmarked 5xx in the setup routes is a CXO ruling, added here.
+KEPT_MASKED = ()
 
 # CXO's words of 2026-11-24 for the two database lines (mail 01M8749H51): each says the
 # own-computer case and the hosted case, and the command carries no quote marks.
@@ -63,6 +63,7 @@ VETTED_LINES = (
     setup.CALENDAR_CONNECT_COULD_NOT_START_MESSAGE,
     setup.CALENDAR_CONNECT_COULD_NOT_START_MESSAGE,  # 2345: the same line when Redis is down
     setup.CALENDAR_SIGN_IN_NOT_SET_UP_MESSAGE,  # 2345, CXO: Google's client not configured
+    setup.SLACK_SIGN_IN_NOT_SET_UP_MESSAGE,  # 2345, CXO: Slack's client not configured
 )
 
 
@@ -129,7 +130,7 @@ class TestEverySetupSite:
     def test_the_denominator_is_fourteen_5xx_raises(self):
         assert len(_five_xx_raises()) == 14  # thirteen, and 2345's Redis-down refusal
 
-    def test_every_5xx_is_marked_except_the_two_operator_lines(self):
+    def test_every_setup_5xx_is_marked(self):
         unmarked = [
             _detail_value(detail)
             for _, callee, _, detail in _five_xx_raises()
@@ -137,7 +138,7 @@ class TestEverySetupSite:
         ]
         assert len(unmarked) == len(KEPT_MASKED)
         for line in unmarked:
-            assert line and line.startswith(KEPT_MASKED), line
+            assert line and KEPT_MASKED and line.startswith(KEPT_MASKED), line
 
     def test_the_marked_lines_are_exactly_the_vetted_ones(self):
         marked = [
@@ -227,7 +228,7 @@ class TestArchsGuardOverEveryMarkedRaise:
         # start; Google's client not configured). settings_integrations.py: eight
         # preferences reads, the Notion check, the GitHub token read, and 2345's two starts.
         assert per_file == {
-            "web/api/routes/setup.py": 13,
+            "web/api/routes/setup.py": 14,
             "web/api/routes/settings_integrations.py": 12,
         }
 

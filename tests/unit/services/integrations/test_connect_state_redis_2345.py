@@ -529,6 +529,23 @@ class TestThePagesWords:
         assert f'"{setup_mod.SLACK_CONNECT_COULD_NOT_START_MESSAGE}"' in script
         assert f'"{setup_mod.CALENDAR_CONNECT_COULD_NOT_START_MESSAGE}"' in script
 
+    def test_the_slack_step_says_cxos_line_when_slack_is_not_set_up(self):
+        """CXO 2026-11-24: Calendar's twin. The raise is marked, the names are logged, and
+        the wizard's Slack step shows the route's line when there is one."""
+        from web.api.routes import setup as setup_mod
+
+        assert setup_mod.SLACK_SIGN_IN_NOT_SET_UP_MESSAGE == (
+            "Slack sign-in isn't set up on this server."
+        )
+        src = (ROOT / "web/api/routes/setup.py").read_text(encoding="utf-8")
+        assert "detail=SLACK_SIGN_IN_NOT_SET_UP_MESSAGE" in src
+        assert 'detail="Slack OAuth not configured' not in src
+        script = (ROOT / "web/static/js/setup.js").read_text(encoding="utf-8")
+        slack = script[script.index("/api/v1/setup/slack/oauth/start") :][:1200]
+        assert (
+            "showSlackError(typeof data.detail === 'string' && data.detail ? data.detail :" in slack
+        )
+
     def test_the_wording_pending_mark_is_gone(self):
         src = (ROOT / "web/api/routes/setup.py").read_text(encoding="utf-8")
         assert "CXO wording pending" not in src
