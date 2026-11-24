@@ -178,7 +178,7 @@ Sizes are counts, not effort. Nothing here is estimated. We'll discover more alo
 | #2269 | Chat tells a person to type "link repo", then doesn't recognize it; offers to connect GitHub from chat (beta session 11-04, from xian's call notes via Exec 13:14; filed by PPM; #2042 class) | — |
 | #1553 | Status-truth F6-F10: remaining surfaces after IntegrationStatusService landed (#1547 slice 2) | PUB (back to plan per PDR-009 §5, 11-13 09:40) |
 | #2428 | Setup's own error lines never reach the page: the app's handler replaces every unmarked 5xx detail with the generic line; ten setup.py sites (11-24, Lead from 2386's local render; Arch: move `UserFacingHTTPException` to its own module, ast guard that detail is a literal or UPPER_CASE constant; CXO confirms the ten lines; 2345's two "couldn't start" raises ride the same mark; placed by PPM) | — |
-| #2429 | Three 'couldn't be checked' 503 lines (session, admin gate, operations-reader gate): CXO's words, one constant each, shown from every site (11-24, Lead from 2428's sweep; waits on Arch: where the user-facing class lives for services-layer gates, and whether the guard covers the middleware and APIError sites; CXO's no-write row; placed by PPM) | — |
+| #2429 | Three 'couldn't be checked' 503 lines (session, admin gate, operations-reader gate): CXO's words, one constant each, shown from every site (11-24, Lead from 2428's sweep; Arch ruled 11-24 (01M878T3PA): class to `services/api/errors.py` with no aliasing, the `APIError` sites switched, the guard extended to `_service_unavailable_response`, one constant; Lead builds; CXO's no-write row; placed by PPM) | — |
 
 ### D: Data boundaries and terms (28)
 
