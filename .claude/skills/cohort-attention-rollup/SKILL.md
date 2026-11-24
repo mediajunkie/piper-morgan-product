@@ -258,6 +258,8 @@ a role whose whole job is knowing what has already been decided.
 
 **Added 2026-11-23** after a crosspost item ("Do I Have To?") stayed on xian's card for a day and a half after he had done it. Docs recorded it as distributed in the calendar at 09:03 on 11-22, but nothing told Exec, and the board never read the calendar. Janus copied the stale line to xian.
 
+xian's rule (11-23, via Janus): "I need to be able to trust that I can tell the agent I am working with such an update and that I will not have to also manually report it to their primary point of contact let alone to you directly." So for **every** item on his card, read the record of the seat he did it with (its session log for today, and the editorial calendar for posts), not just Exec's mail. Mail from that seat is a bonus, not the check.
+
 On every rebuild, check each item on xian's card about a post (crosspost, URLs to Docs, a Medium edit, a publish) against its row in `docs/internal/planning/comms/editorial-calendar.csv`: `status`, `mediumURL`, `linkedinURL` and `notes`. If `status` is `distributed` and both URLs are filled, the crosspost is done: take it off the card. A part the calendar doesn't record, such as an edit to an older post on Medium, is unknown, not owed. Ask Docs or Web to check the live page before you leave it on his card.
 
 ### ⚠️ 2.0 — A MAIL-BASED ASK IS VERIFIED IN THE RECIPIENT'S `sent/`, NOT ON GITHUB
