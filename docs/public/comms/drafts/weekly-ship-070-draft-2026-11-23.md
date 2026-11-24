@@ -87,9 +87,9 @@ The new schedule is as follows:
 2. **Thursdays** I will publish an update on the building narrative, focused on moving from beta to production and less on the day-to-day blow-by-blow minutiae of building with this agent team. This is moving from the current twice-weekly Tue/Thu schedule to just running once a week on Thursday. These posts will also continue to appear first on the [Building in Public](https://pipermorgan.ai/blog/) on the website and crossposted to the [Building Piper Morgan publication](https://medium.com/building-piper-morgan/) on Medium and will also now be crossposted to LinkedIn as well.
 3. **Weekends** I will publish a single insight post, instead of the two I have been running for about 16 months. These posts will continue to appear first on the canonical blog on my site and then crossposted to both LinkedIn and Medium.
 
-I hope this pace works better for my readers as I expect it will for me.
+Also, I'm taking Thanksgiving off.
 
-- **Cadence:** Ship moves to Tuesday from this one. No Thursday narrative in Thanksgiving week (your 11-17 word).
+I hope this pace works better for my readers as I expect it will for me.
 
 ## 📊 Governance & operations
 
