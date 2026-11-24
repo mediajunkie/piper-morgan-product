@@ -1003,3 +1003,4 @@ Brake FIRED (second slip = #1965 admission, found and ledgered 10-09). Memo to E
 - **Production 327**: #2432 placed in H (4xx replies pass the raiser's words; pre-existing; Lead's sweep, CXO reads, Arch's mechanism). #2431 landing holds on CXO's word about the chat reader. Map v201.
 - **Beta serves `f4a5baa9b6`** since `12:30` 11-24: adds #2431 (refusal pages and sentences). Web's happy-path read is asked.
 - **Beta serves `6ff8197d9a`** since `13:08` 11-24: adds #2432 step 1 (six `str(e)` sites). The fifth promotion today. The rest of #2432 comes next, with local renders and a happy-path read.
+- **Production 328**: #2433 placed in H (admin page by address shows raw JSON to a non-admin; pre-existing). Map v202. #2432 steps 2 to 4 are on a branch awaiting rulings.
