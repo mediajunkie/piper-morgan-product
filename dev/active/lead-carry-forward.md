@@ -1,5 +1,14 @@
 # Lead carry-forward — Fable 5.2 seat again since 2026-11-20 08:56 (Opus 5.5 from 2026-11-17 21:30 until then); Model A worktree ~/Development/piper-morgan-worktrees/lead
 
+## AFTERNOON 2026-11-24 15:46 (read this first; it adds to the MIDDAY block below)
+
+- **Beta serves `23b1373185`** since 15:12 (six promotions today; 13:08 `6ff8197d9a`, 15:12 `23b1373185`). Healthy. Main CI 12 of 12 green.
+- **2432 is closed** (all of it on beta). Landed after midday: `cb79d77723`, `cb88e351f8`, `dec919799b`, `8278e110ac`, `23b1373185`. Web's happy-path read passed.
+- **A defect reached main for 37 minutes** (14:11 to 14:48): the setup wizard's mismatched-password case read the generic validation sentence. Found by a local render, promotion held, fixed, never on beta.
+- **Rule from it (Arch added it to decisions.log):** a rule a person can break lives in the route or service, never in the request model. Before landing a change to how validation refusals read, sweep request models for rules a page lets a person break, and render each page that can.
+- **Open from today:** issue 2433 (admin-only pages answer a non-admin's browser with JSON; needs PPM's placement); CXO's answer on a sweep of pages that carry their own copy of a route's refusal (asked on 2432).
+- **Side trees `../lead-2418` and `../lead-2432b` are clean** and on landed branches; reuse them.
+
 ## MIDDAY 2026-11-24 12:46 (read this first; it supersedes the DAY-END 11-23 block's waits)
 
 - **Beta serves `f4a5baa9b6`** (four promotions today: 09:52 `b86c072755`, 10:24 `009afa0f7f`, 11:25 `b2cda27b5d`, 12:30 `f4a5baa9b6`), healthy. Main CI 12 of 12 green. On main and not yet promoted: `6ff8197d9a` (2432 step 1); it rides the next promotion once CI's Tests on it are green and one Health Watch run is green since 12:30.
