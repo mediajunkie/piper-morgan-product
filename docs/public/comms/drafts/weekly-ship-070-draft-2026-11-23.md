@@ -24,14 +24,9 @@ The team also built the tooling to implement ADR-084, with step-by-step instruct
 
 The beta was rebuilt 15 times, and Lead Developer wrote an update to the tool that promotes builds to beta so that it walks every parent of a merge (instead of just checking one line of history as it it had done in the past), to address the problem noted in last week's shipping news about the promotion gate missing a tested commit.
 
-- **The second reader caught what the first missed** (a learning-pattern candidate, see below):
-  - CIO found three gaps in HOST's first drill read.
-  - Lead caught, by running it, that Arch's deploy-step command would have stopped every promotion.
-  - Arch caught a CXO sentence about an unknown connection that was untrue for one GitHub path.
-  - All three were corrected before merge or serve.
-- **Arch:** 175 ruling lines this week, with at least five self-corrections. (Last week's Ship said 160. Your "somewhat astonished" line could continue.)
-- **Main CI** had two red windows on the morning of 11-17 (5 failed Tests runs, 08:11 to 09:50, from Lead's pushes) and was 12 of 12 green at every read after (Lead's and PPM's reads).
-- **MCP deploys:** 1, yours on 11-15 in PA's session. It kept the connector's GitHub reads inside the repositories you chose (see Product).
+Last week I confessed I was astounded to learn that Arch made 160 architectural rulings in supervising the build. I guess I need to get use to that pace because this week they made 175 rulings.
+
+I oversaw one fresh deployment of the MCP build on Nov 15, working with Piper Alpha (it's their project!). It kept the connector's GitHub reads inside the repositories you chose (see Product).
 - **Clock rule:** live 11-18 (CIO), the follow-through on #069's time-guessing story. Backtest: it would have refused 138 of 1,781 past commits (7.7%). The backtest found one false positive, which CIO fixed, and no seat has reported a false refusal since it went live.
 
 ## 🎯 Product & experience
@@ -148,6 +143,11 @@ Since the window closed: your 11-20 sitting did Steps A, C, D, F0 and F.1, and "
 
 ## Candidate B: The second reader
 
+- **The second reader caught what the first missed** (a learning-pattern candidate, see below):
+  - CIO found three gaps in HOST's first drill read.
+  - Lead caught, by running it, that Arch's deploy-step command would have stopped every promotion.
+  - Arch caught a CXO sentence about an unknown connection that was untrue for one GitHub path.
+  - All three were corrected before merge or serve.
 - **Discovery:** a second reader using a different method catches what the first missed.
 - **Example:** the three catches listed under Engineering.
 - **Why it matters:** all three were caught before a user saw them.
