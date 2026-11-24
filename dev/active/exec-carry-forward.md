@@ -15,7 +15,7 @@
 - After it publishes, the calendar row goes to published/distributed and he crossposts to LinkedIn. Check the calendar, not mail (step 2.01).
 
 ## Rollup
-v1134 (Tue 11-24 06:01 START: h1 Tuesday, #070 top line), `719UZ4h1NELjEwWZbDCceT`. Source `dev/active/exec-attention-rollup-current.html`. Python replace plus assert, and bump the stamp from a `date` call. **At START 11-24:** retitle the h1 to Tuesday, and make #070's line the top line ("publishes today, waiting on your prose"). On every rebuild, check each item on his card against the seats' logs and the editorial calendar (cohort-attention-rollup step 2.01, xian's tell-one-agent rule).
+v1135 (Tue 11-24: h1 Tuesday, #070 top line, card step 7), `719UZ4h1NELjEwWZbDCceT`. Source `dev/active/exec-attention-rollup-current.html`. Python replace plus assert, and bump the stamp from a `date` call. **At START 11-24:** retitle the h1 to Tuesday, and make #070's line the top line ("publishes today, waiting on your prose"). On every rebuild, check each item on his card against the seats' logs and the editorial calendar (cohort-attention-rollup step 2.01, xian's tell-one-agent rule).
 
 ## ADR-084 sitting (steps file `docs/internal/operations/adr-084-one-time-steps.md`)
 - **Done:** A, C, D, F0, F.1 (11-20).
@@ -26,7 +26,7 @@ v1134 (Tue 11-24 06:01 START: h1 Tuesday, #070 top line), `719UZ4h1NELjEwWZbDCce
 ## On xian's card (rollup v1132), in order
 1. **Ship #070 prose** (above).
 2. **Fleet deny** (on main 733636419f + ed85825f3c): `cd ~/Development/piper-morgan-worktrees/cio && python3 scripts/seat_settings_grant.py fleet-deny`, expect `added 6 deny rule(s); 2 were already there...`. Relay his output line to CIO. Pard restarts Web, and Web's Read must then be refused. Still open per HOST's 11-23 logs.
-3. **seat-tester-1 sitting (#2406, and #2417's last row):** mint; `seat_account_create.py --account seat-tester-1 --write-invite`; Lead's create allow; console check; save-key allow. After that, Lead creates and saves the key, and Web runs CXO's six turns and #2417's never-connected line. Lead's `--remove-key` is on main `4755940a10`. Its allow is now step 6 of the card (rollup v1133, CIO 01M862N72R), after `--save-key`.
+3. **seat-tester-1 sitting (#2406, and #2417's last row):** mint; `seat_account_create.py --account seat-tester-1 --write-invite`; Lead's create allow; console check; save-key allow. After that, Lead creates and saves the key, and Web runs CXO's six turns and #2417's never-connected line. Lead's `--remove-key` is on main `4755940a10`. Its allow is step 6 (CIO 01M862N72R). Step 7 (v1135): Web's floored-actions read allow (HOST 01M870QDFH).
 4. **F.2, E** (above).
 - Done 11-23 and off the card: the "Do I Have To?" crosspost and the Medium "Inviting Company In" tease (Web's feed read; Docs recorded it).
 - Titles: Sat 11-28 is "Mark One Eyeball". Restore drill 2157: his choice of day. Later: #2387.
@@ -36,6 +36,7 @@ v1134 (Tue 11-24 06:01 START: h1 Tuesday, #070 top line), `719UZ4h1NELjEwWZbDCce
 - **Staging deploy blips:** VM start failures cleared by re-run on 11-10, 11-20 and 11-23 (Lead 01M85C2R1S). A fourth makes a pattern: take it to xian (the Fly hand is his).
 - **Open nearby:** #2417 (update_issue row, fresh account), #2245 served read, 2301 part 2. #2411's rows moved to #2425; #2426 filed. Both are sprint 3 candidates, and xian sets the slot at the 11-25 draft. #2424 is held on router evidence.
 - **Sprint 2 closes Wed 11-26.** It doesn't stretch (xian 11-20), and #071 reports the score as it stands. The first live v4 Ship kickoff is Fri 11-27 (#071), by `scripts/ship-kickoff.sh`.
+- **seat-tester-1 card step 7 (rollup v1135):** Web's floored-actions read allow, HOST cleared 06:52 (01M870QDFH; it no longer waits on #2390/#2391). Closes #2388 row 4 after Web runs it once.
 - **Seat done-notes:** any seat that finishes something with xian mails me one line in the same turn (my relay 01M85PWK3T; duty-cycle-tick v1.66 Step 5, CIO). Docs sent the first one at 18:46.
 - **Promote hold:** the `ops/promote-hold.md` mechanism exists but isn't in use. **Staging D6:** HOST's read-only staging Machines token idea is at 2 of 3 repeats.
 - Main 12 of 12 green at 22:01.

@@ -974,10 +974,10 @@ Brake FIRED (second slip = #1965 admission, found and ledgered 10-09). Memo to E
   - #2425 (2 rows), #2426 (4 rows): a sprint 3 slot; the lever is Arch's.
   - 2406 (2 rows): served row on the fresh account (CXO's (b)).
 - **ADR-084:** Steps A, C and D done 11-20 (Exec's 11-20 log: C `11:22`, D `13:21`); F0 done 11-20 18:36 (Lead). Step F (seat-github-1's GitHub connect, HOST owner) is what's left for the hold rows (`docs/internal/operations/adr-084-one-time-steps.md`; its C and D status lines still read READY).
-- **Waiting on others:** signed-in reads now possible on the seat browser (2379; 2401 and 2402 in Web's queue); 2388 rows 4 and 5 and 2400 rows 2 and 3 asked of CIO and Web 11-24 (stale since C and D were done 11-20); Step F (2389 rows 3 to 5); Lead's 2383 row 3, 2354 H1 and 2364's close; 2351's clean-machine line; 2403 row 4 (a person's check); #2363 row 3; 2382 row 4 (2384). CXO's still-unrun Disconnect steps (step 2, Disconnect All with two or more cards) need the fresh account.
+- **Waiting on others:** signed-in reads now possible on the seat browser (2379; 2401 and 2402 in Web's queue); #2400 rows 1 to 3 ticked 11-24 (CIO); row 4: Arch counts the D2 half (01M870YA40; D2 plan rule in decisions.log 11-24 06:56); browser half is in Web's 01M856B8BH; Web ticks, #2400 closes on Arch's read. #2388 row 4 open on the floored-actions counter read (HOST 01M870QDFH: the bare-path allow can go on a card xian already has open now; no longer waits on #2390/#2391); row 5 on Step H; rows 1 to 3 Lead's. #2401 and #2402 served rows need an account with a GitHub Test (fresh account; Web 01M86ZYM25); Step F (2389 rows 3 to 5); Lead's 2383 row 3, 2354 H1 and 2364's close; 2351's clean-machine line; 2403 row 4 (a person's check); #2363 row 3; 2382 row 4 (2384). CXO's still-unrun Disconnect steps (step 2, Disconnect All with two or more cards) need the fresh account.
 - **Sprint 2 closes Thu 11-26 as planned**; sprints don't stretch, #071 reports the score as it stands (xian 11-20).
 - **OWED rows:**
-  - sprint-3-plan: draft on the current score at the 11-25 START; candidates #2149, 2410, #2425, #2426; revise at the 11-26 close. Dates are xian's.
+  - sprint-3-plan: draft on the current score at the 11-25 START; candidates #2149, 2410, #2425, #2426, 2399 (Arch's 11-24 07:10 split), 2244 (needs Lead's deploy-path question for xian, asked 11-24); revise at the 11-26 close. Dates are xian's.
   - 2364-known-limit (2388's first run); 2364-untested-provider-row (the 2390 route); 2364-selfhost-wording (the ethics flip served).
   - tier1-approval-batch: xian's quoted yes, then Docs.
   - rule7-key-ask, path-b-quote, notion-offer-ask: unchanged.
@@ -990,3 +990,4 @@ Brake FIRED (second slip = #1965 admission, found and ledgered 10-09). Memo to E
   - Closes: tick the description first, then the comment, then close.
   - Edit only the last occurrence in this file (`rindex`).
   - The staged scan has no skip. No compose on Amber. `PIPER_CREDENTIAL_STORE=db`. A classifier refusal is final.
+- **11-24 morning:** Production 330 (`07:11`: #2400 closed on Arch's read; #2280, #2333, #2262 closed by Lead's audit; H header drift fixed; map v195). 2282 box 3 ticked (alpha 301 to beta); box 4 needs Lead's no-use read, then an app-settings edit only xian can make, via Exec. 2281: owner Web, trigger Step F (comment 7135679987). 2385: Lead builds today (no objection). Arch ruled 2391 A, 2174 close, 2350 and 2362 local proof, 2399 split, 2352 one writer; CXO ruled 2284 close, 2386 local render OK.
