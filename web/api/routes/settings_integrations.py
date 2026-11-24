@@ -1388,7 +1388,7 @@ async def connect_calendar(
             logger.warning(
                 "calendar_settings_oauth_start_state_store_unavailable", user_id=current_user.sub
             )
-            raise HTTPException(
+            raise UserFacingHTTPException(
                 status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
                 detail=CALENDAR_CONNECT_COULD_NOT_START_MESSAGE,
             )
@@ -1554,7 +1554,7 @@ async def connect_github(
             logger.warning(
                 "github_settings_oauth_start_state_store_unavailable", user_id=current_user.sub
             )
-            raise HTTPException(
+            raise UserFacingHTTPException(
                 status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
                 detail=GITHUB_CONNECT_COULD_NOT_START_MESSAGE,
             )
