@@ -406,13 +406,13 @@ def test_every_add_allow_line_in_the_steps_file_is_accepted_as_written(tmp_path)
         seat, rule = words[words.index("--seat") + 1], words[words.index("--rule") + 1]
         # One fixed command each: a helper for a named account, plus at most one closed
         # tail. Each tail is an exact literal, never a slot, so a new shape is a diff HOST
-        # reads: the two fixed redirect_uri reads (issue 2282 step 5; HOST's land
-        # 2026-11-16); the counter read, the one path on seat_read.ALLOWED_PATHS (#2388
+        # reads: the fixed redirect_uri reads (issue 2282 step 5; HOST's land
+        # 2026-11-16; the /setup calendar start, issue 2282 box 4, 2026-11-24); the counter read, the one path on seat_read.ALLOWED_PATHS (#2388
         # row 4; HOST 2026-11-24); --save-key and --remove-key for anthropic (#2406, HOST's
         # reads 2026-11-22 and 11-23). No other path or flag.
         assert re.fullmatch(
             r"Bash\(scripts/seat_[a-z_]+\.py --account [a-z0-9-]+"
-            r"( --redirect-uri (github|calendar)"
+            r"( --redirect-uri (github|calendar|setup-calendar)"
             r"| /api/v1/admin/floored-actions"
             r"| --save-key anthropic"
             r"| --remove-key anthropic)?\)",
