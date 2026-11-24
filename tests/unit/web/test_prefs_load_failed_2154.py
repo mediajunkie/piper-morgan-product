@@ -94,8 +94,14 @@ def test_every_route_read_of_preferences_goes_through_the_503():
     for at in github_reads:
         window = src[at : at + 300]
         assert "except PreferencesReadFailed" in window, "a GitHub prefs read without the 503"
-    for thing in ("your saved calendar choices", "your saved database choices"):
-        assert f'"{thing}"' in src
+    # Issue 2428 (Arch 2026-11-24): the phrase is no longer passed as an argument; each
+    # read names its own whole sentence, and the sentence still carries the phrase.
+    for name, thing in (
+        ("CALENDAR_CHOICES_LOAD_FAILED_MESSAGE", "your saved calendar choices"),
+        ("NOTION_DATABASE_CHOICES_LOAD_FAILED_MESSAGE", "your saved database choices"),
+    ):
+        assert f"detail={name}" in src
+        assert f"I couldn't load {thing} just now" in src
 
 
 # ── Layer 2: the pages under Node ────────────────────────────────────────────

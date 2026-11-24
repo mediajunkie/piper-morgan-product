@@ -40,13 +40,12 @@ What a user can do now that they couldn't last week (as far as we can tell, give
 - Understand the plain language in the **Integrations** setting page
 - Ask Piper to change something in a GitHub repository you haven't given it access to, and get a plain answer saying so, with where to add that repository (Settings, under Integrations).
 
-**▸ Facts: what you can't do yet** (the same shape as #069's list)
-- Get an invitation (the hold stands).
-- Sign in as a fresh account.
-- Reach a first valuable thing in a first session.
-
 Built but not closed yet:
-- **Host their own beta** now that a fresh database is built by alembic, not pre-empted by setup. Two copies on one machine no longer share a database: a variable now prefixes every container, network and volume name
+- **Host their own beta** now that a fresh database is built by alembic, not pre-empted by setup. Two copies on one machine no longer share a database: a variable now prefixes every container, network and volume name.
+
+What you can't do yet:
+- Get an invitation (still holding).
+- Reach a first valuable thing in a first session.
 
 We also codified nine conduct rules for Piper's replies:
 
@@ -66,10 +65,7 @@ We also codified nine conduct rules for Piper's replies:
 
 I've already devoted enough ink to "don't hand me workarounds" (ADR-084) above, and the clock rule.
 
-We also put my machines' keychains off-limits to agents.
-- **Keychain follow-through:** on 11-15 a test browser started without the mock-keychain flag, so it may have touched your login keychain. CIO disclosed it 11-16. A hook and an every-fire check now cover it.
-
-The entire team has migrated to the v4 mail system that involves a separate mail repository to avoid overloading traffic on the primary code-and-docs repository. 
+We also put my machines' keychains off-limits to agents, and the entire team has migrated to the v4 mail system that involves a separate mail repository to avoid overloading traffic on the primary code-and-docs repository. 
 
 ## 🌍 External relations & community
 
@@ -91,9 +87,9 @@ The new schedule is as follows:
 2. **Thursdays** I will publish an update on the building narrative, focused on moving from beta to production and less on the day-to-day blow-by-blow minutiae of building with this agent team. This is moving from the current twice-weekly Tue/Thu schedule to just running once a week on Thursday. These posts will also continue to appear first on the [Building in Public](https://pipermorgan.ai/blog/) on the website and crossposted to the [Building Piper Morgan publication](https://medium.com/building-piper-morgan/) on Medium and will also now be crossposted to LinkedIn as well.
 3. **Weekends** I will publish a single insight post, instead of the two I have been running for about 16 months. These posts will continue to appear first on the canonical blog on my site and then crossposted to both LinkedIn and Medium.
 
-I hope this pace works better for my readers as I expect it will for me.
+Also, I'm taking Thanksgiving off.
 
-- **Cadence:** Ship moves to Tuesday from this one. No Thursday narrative in Thanksgiving week (your 11-17 word).
+I hope this pace works better for my readers as I expect it will for me.
 
 ## 📊 Governance & operations
 
@@ -125,7 +121,6 @@ The [waitlist for beta access](https://pipermorgan.ai/try/beta/) remains open.
 
 # 🔎 This week's learning pattern
 
-
 ## The second reader catches what the first one missed
 
 Multiple times this week one agent double-checked another agent's work and closed gaps:
@@ -145,7 +140,7 @@ xian + Piper Morgan Development Team
 
 This is Weekly Ship #070. Previous: [#069 "Off-Limits by Default"](https://pipermorgan.ai/shipping-news/weekly-ship-069-off-limits-by-default).
 
-*P.S. {yours}* More beta invitations coming soon, I promise!
+*P.S. More beta invitations coming soon, I promise!
 
 *P.P.S. Full session logs and technical details available in the [GitHub repository](https://github.com/mediajunkie/piper-morgan-product) and [documentation site](https://pmorgan.tech). Yes, you can copy it. That just makes our protocol stronger.*
 

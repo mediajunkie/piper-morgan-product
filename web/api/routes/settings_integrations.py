@@ -43,6 +43,7 @@ from services.connectors.config_service import (
 from services.integrations.integration_status_service import refuse_unless_offered
 from services.mcp.consumer.connector import DegradationReason
 from services.mcp.consumer.github_adapter import GitHubMCPSpatialAdapter
+from web.api.exceptions import UserFacingHTTPException  # noqa: E402 (#2154; moved, issue 2428)
 
 logger = structlog.get_logger(__name__)
 
@@ -439,31 +440,53 @@ PREFS_LOAD_FAILED_TEMPLATE = (
     "I couldn't load {thing} just now, so Saving is turned off to keep your saved "
     "settings as they are. Reload to try again; if it keeps failing, tell us."
 )
+# Issue 2428 (Arch 2026-11-24): each sentence written whole, one constant per thing, so the
+# detail of every user-facing 5xx is a literal or an UPPER_CASE name and the guard needs no
+# exception. A test pins each to the template above with its thing, so no word differs.
+SLACK_PREFS_LOAD_FAILED_MESSAGE = (
+    "I couldn't load your Slack preferences just now, so Saving is turned off to keep your "
+    "saved settings as they are. Reload to try again; if it keeps failing, tell us."
+)
+CALENDAR_CHOICES_LOAD_FAILED_MESSAGE = (
+    "I couldn't load your saved calendar choices just now, so Saving is turned off to keep your "
+    "saved settings as they are. Reload to try again; if it keeps failing, tell us."
+)
+CALENDAR_PREFS_LOAD_FAILED_MESSAGE = (
+    "I couldn't load your Google Calendar preferences just now, so Saving is turned off to keep your "
+    "saved settings as they are. Reload to try again; if it keeps failing, tell us."
+)
+NOTION_DATABASE_CHOICES_LOAD_FAILED_MESSAGE = (
+    "I couldn't load your saved database choices just now, so Saving is turned off to keep your "
+    "saved settings as they are. Reload to try again; if it keeps failing, tell us."
+)
+NOTION_PREFS_LOAD_FAILED_MESSAGE = (
+    "I couldn't load your Notion preferences just now, so Saving is turned off to keep your "
+    "saved settings as they are. Reload to try again; if it keeps failing, tell us."
+)
+GITHUB_REPOSITORY_CHOICES_LOAD_FAILED_MESSAGE = (
+    "I couldn't load your saved repository choices just now, so Saving is turned off to keep your "
+    "saved settings as they are. Reload to try again; if it keeps failing, tell us."
+)
+GITHUB_PREFS_LOAD_FAILED_MESSAGE = (
+    "I couldn't load your GitHub preferences just now, so Saving is turned off to keep your "
+    "saved settings as they are. Reload to try again; if it keeps failing, tell us."
+)
 
 
-class UserFacingHTTPException(HTTPException):
-    """An HTTP error whose detail is vetted product copy: the app's error handler keeps
-    it for a 5xx instead of masking it (#2154)."""
-
-    user_facing = True
+_PREFS_UNAVAILABLE_STATUS = status.HTTP_503_SERVICE_UNAVAILABLE
 
 
-def _prefs_unavailable(thing: str) -> HTTPException:
-    """The 503 a GET answers when the preferences read failed (#2154). ``thing`` is
-    "your Slack preferences", "your saved calendar choices", and so on. Marked
-    ``user_facing`` so the app's error handler keeps CXO's line (it masks other 5xx)."""
-    return UserFacingHTTPException(
-        status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
-        detail=PREFS_LOAD_FAILED_TEMPLATE.format(thing=thing),
-    )
-
-
-async def _load_prefs_or_503(owner_sub: str, connector: str, thing: str) -> dict:
-    """``_load_prefs_db`` for a GET route: a failed read is the 503 with CXO's line."""
+async def _load_prefs_or_503(
+    owner_sub: str, connector: str, unavailable: UserFacingHTTPException
+) -> dict:
+    """``_load_prefs_db`` for a GET route: a failed read raises ``unavailable``, the 503 the
+    caller built with CXO's line for that page (#2154). The caller builds it so the line is
+    a named constant at the raise's own call site (issue 2428's guard); the handler keeps
+    a user-facing 5xx and masks every other."""
     try:
         return await _load_prefs_db(owner_sub, connector)
     except PreferencesReadFailed:
-        raise _prefs_unavailable(thing)
+        raise unavailable
 
 
 async def _load_prefs_db(owner_sub: str, connector: str) -> dict:
@@ -768,7 +791,11 @@ async def get_slack_preferences(current_user: JWTClaims = Depends(get_current_us
     """
     try:
         user_prefs = await _load_prefs_or_503(
-            str(current_user.sub), "slack", "your Slack preferences"
+            str(current_user.sub),
+            "slack",
+            UserFacingHTTPException(
+                status_code=_PREFS_UNAVAILABLE_STATUS, detail=SLACK_PREFS_LOAD_FAILED_MESSAGE
+            ),
         )
 
         logger.info("slack_preferences_loaded", user_id=str(current_user.sub))
@@ -1791,7 +1818,11 @@ async def get_calendar_list(current_user: JWTClaims = Depends(get_current_user))
 
         # Load user's saved preferences (DB store, #1400)
         user_prefs = await _load_prefs_or_503(
-            str(current_user.sub), "calendar", "your saved calendar choices"
+            str(current_user.sub),
+            "calendar",
+            UserFacingHTTPException(
+                status_code=_PREFS_UNAVAILABLE_STATUS, detail=CALENDAR_CHOICES_LOAD_FAILED_MESSAGE
+            ),
         )
         selected_calendars = user_prefs.get("selected_calendars", [])
 
@@ -1837,7 +1868,11 @@ async def get_calendar_preferences(current_user: JWTClaims = Depends(get_current
     """
     try:
         user_prefs = await _load_prefs_or_503(
-            str(current_user.sub), "calendar", "your Google Calendar preferences"
+            str(current_user.sub),
+            "calendar",
+            UserFacingHTTPException(
+                status_code=_PREFS_UNAVAILABLE_STATUS, detail=CALENDAR_PREFS_LOAD_FAILED_MESSAGE
+            ),
         )
 
         logger.info("calendar_preferences_loaded", user_id=str(current_user.sub))
@@ -1980,8 +2015,9 @@ async def save_notion_key(
     if not is_valid:
         if error_msg == NOTION_CHECK_FAILED_MESSAGE:
             # #2151: Notion didn't answer; the key wasn't refused, so not a 400.
+            # The constant itself, never the variable (Arch 2026-11-24, issue 2428's guard).
             raise UserFacingHTTPException(
-                status_code=status.HTTP_503_SERVICE_UNAVAILABLE, detail=error_msg
+                status_code=status.HTTP_503_SERVICE_UNAVAILABLE, detail=NOTION_CHECK_FAILED_MESSAGE
             )
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
@@ -2103,7 +2139,12 @@ async def get_notion_databases(current_user: JWTClaims = Depends(get_current_use
 
         # Load user's saved preferences (DB store, #1400)
         user_prefs = await _load_prefs_or_503(
-            str(current_user.sub), "notion", "your saved database choices"
+            str(current_user.sub),
+            "notion",
+            UserFacingHTTPException(
+                status_code=_PREFS_UNAVAILABLE_STATUS,
+                detail=NOTION_DATABASE_CHOICES_LOAD_FAILED_MESSAGE,
+            ),
         )
         selected_databases = user_prefs.get("selected_databases", [])
 
@@ -2155,7 +2196,11 @@ async def get_notion_preferences(current_user: JWTClaims = Depends(get_current_u
     """
     try:
         user_prefs = await _load_prefs_or_503(
-            str(current_user.sub), "notion", "your Notion preferences"
+            str(current_user.sub),
+            "notion",
+            UserFacingHTTPException(
+                status_code=_PREFS_UNAVAILABLE_STATUS, detail=NOTION_PREFS_LOAD_FAILED_MESSAGE
+            ),
         )
 
         logger.info("notion_preferences_loaded", user_id=str(current_user.sub))
@@ -2613,7 +2658,10 @@ async def get_github_repositories(current_user: JWTClaims = Depends(get_current_
         try:
             user_prefs = await _load_github_prefs_db(str(current_user.sub))
         except PreferencesReadFailed:
-            raise _prefs_unavailable("your saved repository choices")
+            raise UserFacingHTTPException(
+                status_code=_PREFS_UNAVAILABLE_STATUS,
+                detail=GITHUB_REPOSITORY_CHOICES_LOAD_FAILED_MESSAGE,
+            )
         selected_repos = user_prefs.get("selected_repositories", [])
 
         repositories = []
@@ -2734,7 +2782,9 @@ async def get_github_preferences(current_user: JWTClaims = Depends(get_current_u
         try:
             user_prefs = await _load_github_prefs_db(str(current_user.sub))
         except PreferencesReadFailed:
-            raise _prefs_unavailable("your GitHub preferences")
+            raise UserFacingHTTPException(
+                status_code=_PREFS_UNAVAILABLE_STATUS, detail=GITHUB_PREFS_LOAD_FAILED_MESSAGE
+            )
 
         logger.info("github_preferences_loaded", user_id=str(current_user.sub))
 
@@ -2782,7 +2832,9 @@ async def save_github_preferences(
     try:
         stored_github_prefs = await _load_github_prefs_db(str(current_user.sub))
     except PreferencesReadFailed:
-        raise _prefs_unavailable("your GitHub preferences")
+        raise UserFacingHTTPException(
+            status_code=_PREFS_UNAVAILABLE_STATUS, detail=GITHUB_PREFS_LOAD_FAILED_MESSAGE
+        )
     try:
         # Store preferences for this user (WS-1: DB store is the single home)
         user_prefs: Dict[str, Any] = {
