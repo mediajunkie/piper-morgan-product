@@ -10,8 +10,8 @@ The 08-31 version had gone stale again: on 11-24 an audit found twelve issues it
 
 ## Waiting on a named seat (each was asked; mail id given)
 
-- **2431 (outage screens: raw JSON on a page load when Redis is unreachable):** filed by CXO 11-24 from my render, with her sentence. Arch ruled 11-24 10:50 and CXO added the 429 and at-capacity words; a coding agent is building it on `lead/2431-outage-screens`. Then: my review and re-run, local renders for CXO (each response kind, a page load and one background request), full suite, landing. — **Filed**: 2026-11-24
-- **2432 (4xx replies carry the raiser's own words):** my sweep is on the issue (102 pass-through raises, five `str(e)`). Waits on Arch's mechanism ruling, then CXO's read of the 68 fixed lines and her 422 sentence; then mine to build. — **Filed**: 2026-11-24
+- **2431 (outage screens: raw JSON on a page load when Redis is unreachable):** filed by CXO 11-24 from my render, with her sentence. Arch ruled 11-24 10:50 and CXO added the 429 and at-capacity words; built, rendered, on main `f4a5baa9b6` and on beta since 11-24 12:30. Web was asked for a happy-path read (01M87M2KSB). Rows are CXO's and Arch's to tick; the session-check page was never rendered (cannot be forced). — **Filed**: 2026-11-24
+- **2432 (4xx replies carry the raiser's own words):** step 1 (the six `str(e)` sites) is on main `6ff8197d9a` (11-24). Arch ruled the mechanism (decisions.log 11-24 11:50). Waits on CXO's read of the 68 fixed lines and her line per status; then mine: the handler's default flip and the validation 422 handler in one change. — **Filed**: 2026-11-24
 - **2429, 2430:** on main and on beta (`b2cda27b5d`, 11-24 11:25); rows are Arch's and CXO's to tick. — **Filed**: 2026-11-24
 - **2345:** on beta `009afa0f7f`; 2 of 3 starts served-read by Web; the return half is xian's F.4 connect (roll back first if it fails); the wizard's start waits on the `setup-calendar` allow. — **Filed**: 2026-11-24
 - **2386 close:** string 1 passed by CXO (01M8749H51). String 2 is 2428's database line; closes when 2428 lands and CXO has read the render (sent, 01M875ZVDT). — **Filed**: 2026-11-16
