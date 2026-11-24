@@ -1005,3 +1005,4 @@ Brake FIRED (second slip = #1965 admission, found and ledgered 10-09). Memo to E
 - **Beta serves `6ff8197d9a`** since `13:08` 11-24: adds #2432 step 1 (six `str(e)` sites). The fifth promotion today. The rest of #2432 comes next, with local renders and a happy-path read.
 - **Production 328**: #2433 placed in H (admin page by address shows raw JSON to a non-admin; pre-existing). Map v202. #2432 steps 2 to 4 are on a branch awaiting rulings.
 - **Beta serves `23b1373185`** since `15:12` 11-24: all of #2432 (4xx lines vetted or fixed per status; the setup wizard's password checks). Lead read three reset refusals on beta; Web's happy-path read is asked. A 14:11 defect sat on main for 37 minutes and never reached beta.
+- **Production 327**: #2432 closed by Lead (23:47Z). #2433 goes in the sprint 3 draft as a low-priority candidate. Map v203.
