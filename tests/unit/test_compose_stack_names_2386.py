@@ -126,5 +126,7 @@ def test_the_create_account_database_error_names_the_three_services():
     route = (ROOT / "web" / "api" / "routes" / "setup.py").read_text()
     assert "docker compose up -d postgres redis chromadb. " in route
     assert "'docker compose up -d'" not in route
-    assert "Cannot connect to the database. Make sure Docker is running, then " in route
+    # CXO 2026-11-24 (issue 2428): the hosted case is said in the same line.
+    assert "Cannot connect to the database. If you run Piper on your own computer, " in route
+    assert "make sure Docker is running, then start the services with: " in route
     assert "Then try again." in route
