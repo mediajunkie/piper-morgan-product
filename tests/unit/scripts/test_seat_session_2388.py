@@ -654,7 +654,7 @@ def test_the_connect_routes_can_never_be_read_as_a_body(ss, sr, shared):
         with pytest.raises(ss.Refused, match="not on the list"):
             sr.read(ACCOUNT, route, host, now=1_800_000_100)
     assert host.calls == []
-    assert sorted(sr.REDIRECT_URI_ROUTES) == ["calendar", "github"]
+    assert sorted(sr.REDIRECT_URI_ROUTES) == ["calendar", "github", "setup-calendar"]
 
 
 def test_main_takes_a_path_or_the_option_never_both_or_neither(ss, sr, shared, capsys, monkeypatch):
@@ -760,7 +760,8 @@ def test_the_host_switch_line_is_only_ever_the_apps_own_page(ss, sr, shared):
     host = StubHost(ss, **{GH_CONNECT: _raw_reply(ss, other)})
     with pytest.raises(ss.Refused, match="not the page"):
         sr.read_redirect_uri(ACCOUNT, "github", host, now=1_800_000_100)
-    assert set(sr.SWITCH_PAGES) == set(sr.REDIRECT_URI_ROUTES)
+    # The /setup start mints a state every time and has no host-switch page (issue 2282).
+    assert set(sr.SWITCH_PAGES) == set(sr.REDIRECT_URI_ROUTES) - {"setup-calendar"}
 
 
 def test_the_real_callback_paths_fit_the_length_rule(sr):
@@ -1387,3 +1388,51 @@ def test_after_a_removal_a_save_can_run_again(ss, tester):
     ss.remove_key(TESTER, "anthropic", host)
     host.validated = True
     assert ss.save_key(TESTER, "anthropic", host).endswith("validated: yes")
+
+
+# --- Issue 2282 box 4 (Arch 01M8728HYN, 2026-11-24): the third start, the /setup calendar step ---
+
+SETUP_CAL_START = "/api/v1/setup/calendar/oauth/start"
+
+
+def test_setup_calendar_prints_the_return_address_and_nothing_else(ss, sr, shared):
+    _saved(ss, shared)
+    reply = _connect_reply(
+        ss, redirect="https://beta.pipermorgan.ai/api/v1/setup/calendar/oauth/callback"
+    )
+    host = StubHost(ss, **{SETUP_CAL_START: reply})
+    line = sr.read_redirect_uri(ACCOUNT, "setup-calendar", host, now=1_800_000_100)
+    assert line == (
+        "setup-calendar redirect_uri: "
+        "https://beta.pipermorgan.ai/api/v1/setup/calendar/oauth/callback"
+    )
+    assert [(c[0], c[1]) for c in host.calls] == [("GET", SETUP_CAL_START)]
+
+
+def test_setup_calendar_shows_an_alpha_return_address_as_it_is(ss, sr, shared):
+    """The read exists to find this case: the line says alpha if the host names alpha."""
+    _saved(ss, shared)
+    reply = _connect_reply(
+        ss, redirect="https://alpha.pipermorgan.ai/api/v1/setup/calendar/oauth/callback"
+    )
+    host = StubHost(ss, **{SETUP_CAL_START: reply})
+    line = sr.read_redirect_uri(ACCOUNT, "setup-calendar", host, now=1_800_000_100)
+    assert line.endswith("https://alpha.pipermorgan.ai/api/v1/setup/calendar/oauth/callback")
+
+
+def test_setup_calendar_has_no_host_switch_and_refuses_one(ss, sr, shared):
+    _saved(ss, shared)
+    other = {"switch_host_url": "https://beta.pipermorgan.ai/settings/integrations/calendar"}
+    host = StubHost(ss, **{SETUP_CAL_START: _raw_reply(ss, other)})
+    with pytest.raises(ss.Refused, match="not the page"):
+        sr.read_redirect_uri(ACCOUNT, "setup-calendar", host, now=1_800_000_100)
+
+
+def test_the_setup_start_can_never_be_read_as_a_body_and_its_callback_fits(ss, sr, shared):
+    _saved(ss, shared)
+    assert SETUP_CAL_START == sr.REDIRECT_URI_ROUTES["setup-calendar"]
+    assert SETUP_CAL_START not in sr.ALLOWED_PATHS
+    with pytest.raises(ss.Refused, match="not on the list"):
+        sr.read(ACCOUNT, SETUP_CAL_START, StubHost(ss), now=1_800_000_100)
+    shown = sr.host_and_path("https://beta.pipermorgan.ai/api/v1/setup/calendar/oauth/callback")
+    assert shown == "https://beta.pipermorgan.ai/api/v1/setup/calendar/oauth/callback"
