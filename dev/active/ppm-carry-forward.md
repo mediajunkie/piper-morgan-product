@@ -997,3 +997,4 @@ Brake FIRED (second slip = #1965 admission, found and ledgered 10-09). Memo to E
 - **Production 325**: #2429 placed in H (three 'couldn't be checked' lines; waits on Arch's class-location and guard-scope rulings). Map v198.
 - **Production 325** (09:33 WATCH): #2428 closed by Lead; #2430 placed in C (GitHub repo list says 'Try refreshing' on a stale grant). Map v199.
 - **Beta serves `b86c072755`** since `09:52` 11-24 (Lead 01M87AZYTZ): 2428, 2390, 2385, the `main.py` terminal gate; 2384's job is in the workflow. No connect change. 2345 is promoted alone after one green Health Watch; from that minute xian's F.4 connect is its served read.
+- **Beta serves `009afa0f7f`** since `10:24` 11-24 (Lead 01M87CW2PH): adds only 2345 (connect state in Redis). Not yet verified: any connect. Served reads are Web's `seat_read --redirect-uri github` (start half) and xian's F.4 connect (return half, the first GETDEL on beta's Redis). If it fails, Lead rolls back first.
