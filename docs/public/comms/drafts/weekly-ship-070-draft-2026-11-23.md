@@ -40,13 +40,12 @@ What a user can do now that they couldn't last week (as far as we can tell, give
 - Understand the plain language in the **Integrations** setting page
 - Ask Piper to change something in a GitHub repository you haven't given it access to, and get a plain answer saying so, with where to add that repository (Settings, under Integrations).
 
-**▸ Facts: what you can't do yet** (the same shape as #069's list)
-- Get an invitation (the hold stands).
-- Sign in as a fresh account.
-- Reach a first valuable thing in a first session.
-
 Built but not closed yet:
-- **Host their own beta** now that a fresh database is built by alembic, not pre-empted by setup. Two copies on one machine no longer share a database: a variable now prefixes every container, network and volume name
+- **Host their own beta** now that a fresh database is built by alembic, not pre-empted by setup. Two copies on one machine no longer share a database: a variable now prefixes every container, network and volume name.
+
+What you can't do yet:
+- Get an invitation (still holding).
+- Reach a first valuable thing in a first session.
 
 We also codified nine conduct rules for Piper's replies:
 
