@@ -902,7 +902,10 @@
                 // Redirect to Slack OAuth
                 window.location.href = data.auth_url;
             } else {
-                showSlackError('Failed to start OAuth flow');
+                // CXO 2026-11-24 (2345): the route's own line when it sends one (every 5xx it
+                // raises is vetted copy now); otherwise the Slack connection line, never a
+                // protocol word. Mirrors SLACK_CONNECT_COULD_NOT_START_MESSAGE (setup.py).
+                showSlackError(typeof data.detail === 'string' && data.detail ? data.detail : "The Slack connection couldn't start just now. Try again in a moment; if it keeps failing, tell us.");
                 if (btn) {
                     btn.disabled = false;
                     btn.textContent = 'Connect to Slack';
@@ -1131,7 +1134,9 @@
                 // Redirect to Google OAuth
                 window.location.href = data.auth_url;
             } else {
-                showCalendarError('Failed to start OAuth flow');
+                // #2345: the route's own line when it refused to start (e.g. Redis down).
+                // Mirrors CALENDAR_CONNECT_COULD_NOT_START_MESSAGE (web/api/routes/setup.py).
+                showCalendarError(typeof data.detail === 'string' && data.detail ? data.detail : "The Google Calendar connection couldn't start just now. Try again in a moment; if it keeps failing, tell us.");
                 if (btn) {
                     btn.disabled = false;
                     btn.textContent = 'Connect Calendar';

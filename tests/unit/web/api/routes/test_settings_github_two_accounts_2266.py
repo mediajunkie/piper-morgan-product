@@ -84,7 +84,7 @@ class TestAnAccountWithNothingStored:
 
     async def test_connect_binds_the_state_to_the_signed_in_account(self, empty_db):
         handler = MagicMock()
-        handler.generate_authorization_url = MagicMock(
+        handler.generate_authorization_url = AsyncMock(  # #2345: async (Redis-backed state)
             return_value=("https://github.com/login/oauth/authorize?state=s", "s")
         )
         with patch(

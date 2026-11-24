@@ -15,12 +15,19 @@ from urllib.parse import urlencode
 import aiohttp
 import structlog
 
+from services.auth.oauth_state_store import (
+    CALENDAR_STATE_KEY_PREFIX,
+    OAuthStateStoreUnavailable,
+    put_state,
+    take_state,
+)
+
 logger = structlog.get_logger(__name__)
 
-# Module-level state storage (singleton pattern)
-# This ensures state persists across handler instances within the same process.
-# Production should use Redis/DB - this works for single-server alpha.
-_PENDING_STATES: Dict[str, float] = {}
+# #2345: the pending state lives in Redis (services/auth/oauth_state_store.py), keyed
+# per nonce under CALENDAR_STATE_KEY_PREFIX with a TTL of STATE_EXPIRATION, read once by
+# GETDEL; it survives a restart between Connect and the callback, for both starts
+# (Settings and the setup wizard).
 
 
 @dataclass
@@ -89,9 +96,8 @@ class GoogleCalendarOAuthHandler:
             "https://www.googleapis.com/auth/calendar.readonly",
             "https://www.googleapis.com/auth/userinfo.email",
         ]
-        # State storage is now module-level (_PENDING_STATES) to persist across instances
 
-    def generate_authorization_url(
+    async def generate_authorization_url(
         self, user_id: str, return_url: Optional[str] = None
     ) -> Tuple[str, str]:
         """
@@ -109,6 +115,8 @@ class GoogleCalendarOAuthHandler:
 
         Raises:
             ValueError: If user_id is not provided
+            OAuthStateStoreUnavailable: #2345, Redis can't store the state; no URL is
+                made, so nobody is sent to Google with a state that can't be checked.
         """
         if not user_id:
             raise ValueError("user_id is required for OAuth state")
@@ -128,12 +136,14 @@ class GoogleCalendarOAuthHandler:
 
         state = base64.urlsafe_b64encode(json.dumps(state_data).encode()).decode().rstrip("=")
 
-        # Store nonce with timestamp and user_id for verification
+        # Store nonce with timestamp and user_id for verification, in Redis (#2345)
         # Issue #734: Store user_id to detect tampering
-        _PENDING_STATES[nonce] = {
-            "created_at": time.time(),
-            "user_id": user_id,
-        }
+        await put_state(
+            CALENDAR_STATE_KEY_PREFIX,
+            nonce,
+            {"created_at": time.time(), "user_id": user_id},
+            self.STATE_EXPIRATION,
+        )
 
         params = {
             "client_id": self.client_id,
@@ -150,18 +160,19 @@ class GoogleCalendarOAuthHandler:
         logger.info(
             "calendar_oauth_url_generated",
             user_id=user_id,
-            state_prefix=state[:8],
             redirect_uri=self.redirect_uri,
         )
 
         return auth_url, state
 
-    def _verify_state(self, state: str) -> Tuple[bool, Optional[str]]:
+    async def _verify_state(self, state: str) -> Tuple[bool, Optional[str]]:
         """
-        Verify state token is valid and not expired.
+        Verify state token is valid and not expired, and consume it.
 
         Issue #734: SEC-MULTITENANCY - Extract user_id from state and verify
         against stored value to detect tampering.
+        #2345: the stored entry is read and deleted in one Redis GETDEL (single use);
+        Redis unreachable refuses (fail closed), never accepts.
 
         Args:
             state: The base64-encoded state parameter from callback
@@ -179,13 +190,12 @@ class GoogleCalendarOAuthHandler:
             decoded = base64.urlsafe_b64decode(padded)
             state_data = json.loads(decoded)
         except (ValueError, json.JSONDecodeError) as e:
-            logger.warning(
-                "calendar_oauth_state_decode_failed",
-                state_prefix=state[:8] if state else "none",
-                error=str(e),
-            )
+            logger.warning("calendar_oauth_state_decode_failed", error=type(e).__name__)
             return False, None
 
+        if not isinstance(state_data, dict):
+            logger.warning("calendar_oauth_state_decode_failed")
+            return False, None
         nonce = state_data.get("nonce")
         user_id = state_data.get("user_id")
 
@@ -197,18 +207,21 @@ class GoogleCalendarOAuthHandler:
             )
             return False, None
 
-        if nonce not in _PENDING_STATES:
-            logger.warning(
-                "calendar_oauth_state_not_found", nonce_prefix=nonce[:8] if nonce else "none"
-            )
+        try:
+            nonce_data = await take_state(CALENDAR_STATE_KEY_PREFIX, nonce)
+        except OAuthStateStoreUnavailable:
+            logger.warning("calendar_oauth_state_store_unavailable")
             return False, None
 
-        nonce_data = _PENDING_STATES[nonce]
-        created_at = nonce_data["created_at"]
+        if nonce_data is None:  # never stored, already used, or expired in Redis
+            logger.warning("calendar_oauth_state_not_found")
+            return False, None
 
-        if time.time() - created_at > self.STATE_EXPIRATION:
-            del _PENDING_STATES[nonce]
-            logger.warning("calendar_oauth_state_expired", nonce_prefix=nonce[:8])
+        created_at = nonce_data.get("created_at")
+        if not isinstance(created_at, (int, float)) or (
+            time.time() - created_at > self.STATE_EXPIRATION
+        ):
+            logger.warning("calendar_oauth_state_expired")
             return False, None
 
         # Issue #734: Verify user_id matches stored value (detect tampering)
@@ -219,18 +232,17 @@ class GoogleCalendarOAuthHandler:
                 expected=stored_user_id,
                 received=user_id,
             )
-            del _PENDING_STATES[nonce]
             return False, None
 
-        # Remove state after successful verification (single-use)
-        del _PENDING_STATES[nonce]
+        # The GETDEL above already removed the state (single-use)
         return True, user_id
 
-    def verify_state(self, state: str) -> Tuple[bool, Optional[str]]:
+    async def verify_state(self, state: str) -> Tuple[bool, Optional[str]]:
         """
         Public method to verify OAuth state and extract user_id.
 
         Issue #734: SEC-MULTITENANCY - State verification for multi-tenant.
+        #2345: async (Redis-backed state).
 
         Args:
             state: The base64-encoded state parameter from callback
@@ -238,7 +250,7 @@ class GoogleCalendarOAuthHandler:
         Returns:
             Tuple of (is_valid, user_id). user_id is None if invalid.
         """
-        return self._verify_state(state)
+        return await self._verify_state(state)
 
     async def handle_oauth_callback(
         self, code: str, state: str, *, session_user_id: Optional[str]
@@ -258,7 +270,7 @@ class GoogleCalendarOAuthHandler:
         Raises:
             ValueError: If state is invalid or expired
         """
-        is_valid, user_id = self._verify_state(state)
+        is_valid, user_id = await self._verify_state(state)
         if not is_valid:
             raise ValueError("Invalid or expired state token")
         # #2283: the browser's own session user must be the state's user, before any exchange.

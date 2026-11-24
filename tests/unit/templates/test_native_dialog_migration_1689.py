@@ -52,7 +52,9 @@ def test_settings_github_renders_with_dialog_assets():
 
 def test_settings_github_oauth_error_uses_dialog_alert(github):
     assert "await Dialog.alert(" in github
-    assert "Could not start GitHub OAuth" in github, "error copy went missing"
+    # CXO 2026-11-24 (issue 2345): no protocol word in the dialog's title.
+    assert "GitHub connection couldn't start" in github, "error copy went missing"
+    assert "Could not start GitHub OAuth" not in github
 
 
 def test_settings_github_has_no_native_dialogs(github):
