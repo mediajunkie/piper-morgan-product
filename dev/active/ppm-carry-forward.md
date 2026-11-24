@@ -928,7 +928,7 @@ Brake FIRED (second slip = #1965 admission, found and ledgered 10-09). Memo to E
   - Edit only the last occurrence in this file (`rindex`).
   - The staged scan has no skip. No compose on Amber. `PIPER_CREDENTIAL_STORE=db`. A classifier refusal is final.
 
-## Now (rewritten at the 11-22 21:33 STOP, written `21:34`; carry into Mon 11-23)
+## Superseded (was Now from the 11-22 21:33 STOP, with 11-23 updates; replaced at the 11-23 21:33 STOP)
 
 - **11-22 in one line:** Web's sitting ran. 2301, 2413 and 2414 closed served (Lead, `15:05`). #2418, #2419 and #2420 filed, built, served and closed by PPM. #2417 lever 1 served on `948af3a198`; one row left. Production 333 = Total, 0 unmilestoned, main CI 12 of 12 green, map v188.
 - **Beta serves `079e6aaf78`** (since `19:54`, run 45108430580; healthy at the STOP). It carries `346565cc30` (#2420: `SETTINGS_SUBPATH_PLACES`, the "What chat reads" filter) and #2420's guard `25048aedde` (test-only).
@@ -956,5 +956,37 @@ Brake FIRED (second slip = #1965 admission, found and ledgered 10-09). Memo to E
   - Clock rule: stamp with `date` or `scripts/log-entry.sh`; never type the next minute (twice today: 18:40 and 19:38, both fixed). Quoted times in backticks.
   - mail4 reads in a loop can run past 120 s; run them in the background. `timeout` isn't on macOS.
   - Closes: tick the description first, then the comment, then close. I offered Lead to leave closes on Lead's units to Lead.
+  - Edit only the last occurrence in this file (`rindex`).
+  - The staged scan has no skip. No compose on Amber. `PIPER_CREDENTIAL_STORE=db`. A classifier refusal is final.
+
+## Now (rewritten at the 11-23 21:33 STOP; carry into Tue 11-24)
+
+- **11-23 in one line:** 2415, 2416 (mechanism B) and #2427 (one-sentence add-todo line) closed served by PPM; #2245 closed by Lead. 2411's router candidate `6874df924d` NO-GO (Arch); its routing half split to #2425. #2423, #2424, #2425, #2426 filed and placed in V. Production 334 = Total, 0 unmilestoned, main CI 12 of 12 green, map v194.
+- **Beta serves `6942dbd1be`** since `13:49` 11-23 (#2427; healthy at the STOP). Before it `d6ed62181a` (`12:19`: mechanism B `26c041374a`, the `task` alias `cc550eb92f`).
+- **Invite hold, PDR-008.** #2261, #2282 and #2342 OPEN at the STOP (`gh issue view`). The lift-readiness memo to Exec waits on #2342's served rows, #2261's close and #2282.
+- **Week goals of record, 11-20 to 11-26** (xian approved all five; Exec 01M85NMGMG, decisions.log 2026-11-23 18:19): 1 seats run for real; 2 read what's on beta signed in, and close it; 3 finish the GitHub move; 4 keys and deploys off xian's hands; 5 editorial. Goal 2 is PPM's served-close lane.
+- **New standing rule (xian via Exec 01M85PWK3T, decisions.log 2026-11-23 18:41):** when xian finishes something with PPM, send Exec a one-line done-note the same turn it's recorded; check the primary record before relaying anything to xian.
+- **Open in V, each with its blocker (rows re-read with `gh` at the STOP):**
+  - #2417 (1 row) and 2411 (1 row): the fresh account (seat-tester-1); the mint needs xian's go-ahead via Exec.
+  - 2297 (1 row, list-name served read): #2412, which waits on #2364 step 1 (xian's OpenAI run).
+  - #2423 (4 rows): an App-connected account (mechanism A).
+  - #2424 (5 rows): router evidence of the project arg (0 of 29 samples 11-23).
+  - #2425 (2 rows), #2426 (4 rows): a sprint 3 slot; the lever is Arch's.
+  - 2406 (2 rows): served row on the fresh account (CXO's (b)).
+- **ADR-084:** Step A done 11-20. Steps C, D and F are xian's (`docs/internal/operations/adr-084-one-time-steps.md`).
+- **Waiting on others:** Step D's signed-in reads (2379, 2401, 2402, 2400 row 1); Step F (2389 rows 3 to 5); Step C (2388's first run); Lead's 2383 row 3, 2354 H1 and 2364's close; 2351's clean-machine line; 2403 row 4 (a person's check); #2363 row 3; 2382 row 4 (2384). CXO's still-unrun Disconnect steps (step 2, Disconnect All with two or more cards) need the fresh account.
+- **Sprint 2 closes Thu 11-26 as planned**; sprints don't stretch, #071 reports the score as it stands (xian 11-20).
+- **OWED rows:**
+  - sprint-3-plan: draft on the current score at the 11-25 START; candidates #2149, 2410, #2425, #2426; revise at the 11-26 close. Dates are xian's.
+  - 2364-known-limit (2388's first run); 2364-untested-provider-row (the 2390 route); 2364-selfhost-wording (the ethics flip served).
+  - tier1-approval-batch: xian's quoted yes, then Docs.
+  - rule7-key-ask, path-b-quote, notion-offer-ask: unchanged.
+- **Parked, one trigger: linked billing** (xian: does Piper get its own Claude Platform organisation).
+- **Genuine xian decisions:** E5 naming for #2380; #2344; the possible "Safe Storage" keychain item.
+- **Rules carried:**
+  - Clock rule: stamp with `date` or `scripts/log-entry.sh`; never estimate a time, never guess a mail ID (two truncated IDs fixed 11-23). Quoted times in backticks.
+  - mail4 reads can run past 120 s; run them in the background. `timeout` isn't on macOS.
+  - Stage in one call, commit in the next (one compound slip 11-23, contents verified).
+  - Closes: tick the description first, then the comment, then close.
   - Edit only the last occurrence in this file (`rindex`).
   - The staged scan has no skip. No compose on Amber. `PIPER_CREDENTIAL_STORE=db`. A classifier refusal is final.
