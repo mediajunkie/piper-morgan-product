@@ -29,6 +29,24 @@ ROOT = Path(__file__).resolve().parents[4]
 A, B = "aaaaaaaa-2283-4000-8000-00000000000a", "bbbbbbbb-2283-4000-8000-00000000000b"
 
 
+@pytest.fixture
+def state_redis():
+    """#2345: the GitHub and Calendar connect state lives in Redis; Slack's in-memory
+    fake stands in."""
+    from contextlib import asynccontextmanager
+
+    from tests.unit.services.integrations.slack.test_oauth_redis_state_1109 import _FakeRedis
+
+    fake = _FakeRedis()
+
+    @asynccontextmanager
+    async def _scope():
+        yield fake
+
+    with patch("services.cache.redis_factory.RedisFactory.redis_scope", side_effect=_scope):
+        yield fake
+
+
 class TestTheGuard:
     def test_same_user_passes(self):
         require_session_matches_state(A, A)
@@ -88,21 +106,21 @@ class TestGitHubHandler:
     @pytest.mark.asyncio
     @pytest.mark.parametrize("session,signed_in", [(B, True), (None, False)])
     async def test_a_refused_callback_never_exchanges_and_consumes_the_state(
-        self, session, signed_in
+        self, session, signed_in, state_redis
     ):
         h = self._handler()
-        _, state = h.generate_authorization_url(user_id=A)
+        _, state = await h.generate_authorization_url(user_id=A)
         exchange = AsyncMock(side_effect=AssertionError("the code must not be exchanged"))
         with patch.object(type(h), "_exchange_code_for_tokens", exchange):
             with pytest.raises(OAuthCallbackSessionMismatch) as e:
                 await h.handle_oauth_callback("code", state, session_user_id=session)
         assert e.value.signed_in is signed_in
-        assert h.verify_state(state) == (False, None)  # consumed: a replay can't succeed
+        assert await h.verify_state(state) == (False, None)  # consumed: a replay can't succeed
 
     @pytest.mark.asyncio
-    async def test_the_states_own_account_proceeds(self):
+    async def test_the_states_own_account_proceeds(self, state_redis):
         h = self._handler()
-        _, state = h.generate_authorization_url(user_id=A)
+        _, state = await h.generate_authorization_url(user_id=A)
         tokens = SimpleNamespace(access_token="gho_x")
         with (
             patch.object(type(h), "_exchange_code_for_tokens", AsyncMock(return_value=tokens)),
@@ -122,9 +140,11 @@ class TestCalendarHandler:
 
     @pytest.mark.asyncio
     @pytest.mark.parametrize("session,signed_in", [(B, True), (None, False)])
-    async def test_a_refused_callback_never_exchanges(self, monkeypatch, session, signed_in):
+    async def test_a_refused_callback_never_exchanges(
+        self, monkeypatch, session, signed_in, state_redis
+    ):
         h = self._handler(monkeypatch)
-        _, state = h.generate_authorization_url(user_id=A)
+        _, state = await h.generate_authorization_url(user_id=A)
         with patch.object(
             type(h),
             "_exchange_code_for_tokens",
@@ -133,12 +153,12 @@ class TestCalendarHandler:
             with pytest.raises(OAuthCallbackSessionMismatch) as e:
                 await h.handle_oauth_callback("code", state, session_user_id=session)
         assert e.value.signed_in is signed_in
-        assert h.verify_state(state)[0] is False  # consumed
+        assert (await h.verify_state(state))[0] is False  # consumed
 
     @pytest.mark.asyncio
-    async def test_the_states_own_account_proceeds(self, monkeypatch):
+    async def test_the_states_own_account_proceeds(self, monkeypatch, state_redis):
         h = self._handler(monkeypatch)
-        _, state = h.generate_authorization_url(user_id=A)
+        _, state = await h.generate_authorization_url(user_id=A)
         tokens = SimpleNamespace(access_token="ya29", refresh_token="r")
         with (
             patch.object(type(h), "_exchange_code_for_tokens", AsyncMock(return_value=tokens)),

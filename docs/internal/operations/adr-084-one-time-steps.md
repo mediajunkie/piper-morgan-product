@@ -155,6 +155,13 @@ scripts/seat_settings_grant.py add-allow --seat web --rule 'Bash(scripts/seat_re
 ```
 
   The path carries no `?days=30` on purpose: the route's default is 30 days (`web/api/routes/admin_ops.py`, `days: int = 30`), and a bare path needs no shell quotes, so the command Web types matches the rule character for character. Web then runs it once, alone, and quotes the JSON's `window` line on #2388.
+- **Owed, the third start for issue 2282 box 4 (2026-11-24, Arch's ruling, mail 01M8728HYN):** the `/setup` calendar step is the one start not yet read; the github and calendar starts were read 11-20. Lead built `--redirect-uri setup-calendar` (`320f6c42d4`, the pin widened in `04421f0d0a`); Arch and HOST read it. One more line, for the same open card as the counter read (not a sitting of its own):
+
+```
+scripts/seat_settings_grant.py add-allow --seat web --rule 'Bash(scripts/seat_read.py --account web-seed-1386 --redirect-uri setup-calendar)'
+```
+
+  Web then runs it once, alone, and sends the printed line to Lead for issue 2282. It goes to HOST only if it names `alpha.`. It has no host-switch page, so a host-switch reply is refused, not printed.
 - **If it fails:** if the classifier still refuses the helper's run, this route is dropped and the ADR's fallback applies (he signs in himself, rarely). Nobody works around the refusal.
 
 ## Step D (ADR row 10): load the seat browser's LaunchAgent
