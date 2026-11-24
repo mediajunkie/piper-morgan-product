@@ -1,5 +1,19 @@
 # Lead carry-forward — Fable 5.2 seat again since 2026-11-20 08:56 (Opus 5.5 from 2026-11-17 21:30 until then); Model A worktree ~/Development/piper-morgan-worktrees/lead
 
+## MIDDAY 2026-11-24 12:46 (read this first; it supersedes the DAY-END 11-23 block's waits)
+
+- **Beta serves `f4a5baa9b6`** (four promotions today: 09:52 `b86c072755`, 10:24 `009afa0f7f`, 11:25 `b2cda27b5d`, 12:30 `f4a5baa9b6`), healthy. Main CI 12 of 12 green. On main and not yet promoted: `6ff8197d9a` (2432 step 1); it rides the next promotion once CI's Tests on it are green and one Health Watch run is green since 12:30.
+- **Landed today:** 2384 `8ac5c8e267`, 2385 `68914b5ee4`, 2390 `e43ebe55ab`, the `setup-calendar` reader `320f6c42d4`, 2428 `86f08ef950`, the terminal gate `21e0ee47b0`, 2345 `009afa0f7f`, 2429 `24d1e8b443`, 2430 `683f27ffb5`, 2431 `f4a5baa9b6`, 2432 step 1 `6ff8197d9a`.
+- **Closed today (eleven):** 2280, 2333, 2262, 2174, 2284, 2403, 2350, 2362, 2385, 2386, 2428. **Filed today:** 2428, 2429, 2430 (mine); 2431 (CXO, from my render); 2432 (Arch).
+- **`dev/active/lead-standing-items.md` was rewritten today and is the list of waits.** The morning audit found it stale (twelve closed issues named, eight closeable, three asks never sent). At START, open each row's source.
+- **Next actions by owner:**
+  - Mine when its trigger arrives: the next promotion (CI on `6ff8197d9a`); 2432's handler flip and validation-422 handler (after CXO's read of the 68 and her line per status).
+  - xian's F.4 connect is 2345's served read of the return half (first GETDEL on beta's Redis). **If it fails with `oauth_state_store_unavailable op=take`, roll back first** (Arch). 2 of 3 starts are served-read (Web).
+  - xian's card: the token for the MCP deploy job (row 7; then my first dispatch deploys 2382), the `setup-calendar` and counter-read allows for Web, the seat-tester-1 sitting, Step E.
+- **Rules learned today:** a claim that a person sees a line is tested through the app's real handler or on a rendered page, never by calling the route function (2428; a coding agent's report and my relay of it were both wrong on this). A local `main.py` start opened a tab in xian's browser again (07:31); fixed in code (`21e0ee47b0`). Render before trusting words: three defects today were found only by rendering (2428, 2431, the hidden repository card in 2430).
+- **Local render recipe (worked four times today):** scratch database via `scratchdb.py` in the session scratchpad (gone at session end; it is `CREATE DATABASE` on the local Postgres, `alembic upgrade head` with `POSTGRES_DB` set, `scripts/create_test_alpha_user.py`), `env -i` server on port 8095 with `--no-browser`, the seat browser in an isolated context, then stop the server and drop the database. Sign-in refuses when Redis is closed, so sign in first and restart with the same secrets.
+- **Paid 11-24:** $0.
+
 ## DAY-END 2026-11-23 (read this first at the 11-24 START)
 
 - **State at close (21:46):** beta serves `6942dbd1be` (promoted 13:49, run 45272988390), healthy. Main CI 12 of 12 green. No code in flight, nothing running, inbox 0 unacknowledged.
