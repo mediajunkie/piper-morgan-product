@@ -973,8 +973,8 @@ Brake FIRED (second slip = #1965 admission, found and ledgered 10-09). Memo to E
   - #2424 (5 rows): router evidence of the project arg (0 of 29 samples 11-23).
   - #2425 (2 rows), #2426 (4 rows): a sprint 3 slot; the lever is Arch's.
   - 2406 (2 rows): served row on the fresh account (CXO's (b)).
-- **ADR-084:** Step A done 11-20. Steps C, D and F are xian's (`docs/internal/operations/adr-084-one-time-steps.md`).
-- **Waiting on others:** Step D's signed-in reads (2379, 2401, 2402, 2400 row 1); Step F (2389 rows 3 to 5); Step C (2388's first run); Lead's 2383 row 3, 2354 H1 and 2364's close; 2351's clean-machine line; 2403 row 4 (a person's check); #2363 row 3; 2382 row 4 (2384). CXO's still-unrun Disconnect steps (step 2, Disconnect All with two or more cards) need the fresh account.
+- **ADR-084:** Steps A, C and D done 11-20 (Exec's 11-20 log: C `11:22`, D `13:21`); F0 done 11-20 18:36 (Lead). Step F (seat-github-1's GitHub connect, HOST owner) is what's left for the hold rows (`docs/internal/operations/adr-084-one-time-steps.md`; its C and D status lines still read READY).
+- **Waiting on others:** signed-in reads now possible on the seat browser (2379; 2401 and 2402 in Web's queue); 2388 rows 4 and 5 and 2400 rows 2 and 3 asked of CIO and Web 11-24 (stale since C and D were done 11-20); Step F (2389 rows 3 to 5); Lead's 2383 row 3, 2354 H1 and 2364's close; 2351's clean-machine line; 2403 row 4 (a person's check); #2363 row 3; 2382 row 4 (2384). CXO's still-unrun Disconnect steps (step 2, Disconnect All with two or more cards) need the fresh account.
 - **Sprint 2 closes Thu 11-26 as planned**; sprints don't stretch, #071 reports the score as it stands (xian 11-20).
 - **OWED rows:**
   - sprint-3-plan: draft on the current score at the 11-25 START; candidates #2149, 2410, #2425, #2426; revise at the 11-26 close. Dates are xian's.
