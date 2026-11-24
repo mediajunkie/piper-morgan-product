@@ -5,13 +5,30 @@ are tested directly; the code-exchange is tested with a mocked aiohttp session (
 200-with-error-field quirk included). No real network, no real credentials.
 """
 
+from contextlib import asynccontextmanager
+from unittest.mock import patch
+
 import pytest
 
 from services.mcp.consumer import github_oauth_handler as gh_oauth
 from services.mcp.consumer.github_oauth_handler import GitHubOAuthHandler
+from tests.unit.services.integrations.slack.test_oauth_redis_state_1109 import _FakeRedis
 
 _ALPHA = "11111111-1111-1111-1111-111111111111"
 _BETA = "22222222-2222-2222-2222-222222222222"
+
+
+@pytest.fixture(autouse=True)
+def _state_redis():
+    """#2345: the pending state lives in Redis; Slack's in-memory fake stands in."""
+    fake = _FakeRedis()
+
+    @asynccontextmanager
+    async def _scope():
+        yield fake
+
+    with patch("services.cache.redis_factory.RedisFactory.redis_scope", side_effect=_scope):
+        yield fake
 
 
 @pytest.fixture(autouse=True)
@@ -53,38 +70,38 @@ class _FakeSession:
 
 
 class TestAuthorizationUrl:
-    def test_url_has_required_params(self):
-        url, state = GitHubOAuthHandler().generate_authorization_url(_ALPHA)
+    async def test_url_has_required_params(self):
+        url, state = await GitHubOAuthHandler().generate_authorization_url(_ALPHA)
         assert url.startswith("https://github.com/login/oauth/authorize?")
         assert "client_id=cid" in url
         assert "scope=repo" in url
         assert f"state={state[:8]}" in url or "state=" in url
 
-    def test_state_round_trips_user_id(self):
+    async def test_state_round_trips_user_id(self):
         h = GitHubOAuthHandler()
-        _, state = h.generate_authorization_url(_ALPHA)
-        ok, uid = h.verify_state(state)
+        _, state = await h.generate_authorization_url(_ALPHA)
+        ok, uid = await h.verify_state(state)
         assert ok and uid == _ALPHA
 
-    def test_missing_user_id_raises(self):
+    async def test_missing_user_id_raises(self):
         with pytest.raises(ValueError):
-            GitHubOAuthHandler().generate_authorization_url("")
+            await GitHubOAuthHandler().generate_authorization_url("")
 
 
 class TestStateVerification:
-    def test_tampered_state_rejected(self):
+    async def test_tampered_state_rejected(self):
         h = GitHubOAuthHandler()
-        _, state = h.generate_authorization_url(_ALPHA)
-        assert h.verify_state(state + "tamper")[0] is False
+        _, state = await h.generate_authorization_url(_ALPHA)
+        assert (await h.verify_state(state + "tamper"))[0] is False
 
-    def test_unknown_state_rejected(self):
-        assert GitHubOAuthHandler().verify_state("bogus")[0] is False
+    async def test_unknown_state_rejected(self):
+        assert (await GitHubOAuthHandler().verify_state("bogus"))[0] is False
 
-    def test_state_is_single_use(self):
+    async def test_state_is_single_use(self):
         h = GitHubOAuthHandler()
-        _, state = h.generate_authorization_url(_ALPHA)
-        assert h.verify_state(state)[0] is True
-        assert h.verify_state(state)[0] is False  # consumed
+        _, state = await h.generate_authorization_url(_ALPHA)
+        assert (await h.verify_state(state))[0] is True
+        assert (await h.verify_state(state))[0] is False  # consumed
 
 
 class TestCodeExchange:

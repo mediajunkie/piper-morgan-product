@@ -26,9 +26,10 @@ browser back to, so nobody has to start a sign-in in a browser to see it:
   ``state`` parameter) or a cookie value is refused; a reply with no state to compare
   is refused; and no host label or path segment over 32 characters is printed.
 - No redirect is followed and nothing is sent to the provider.
-- One request per run. Each request leaves one unused state in the app's memory. It is
-  refused after 15 minutes (``STATE_EXPIRATION = 900`` in both handlers) and is dropped
-  when the app restarts; nothing sweeps it sooner, so don't run this in a loop.
+- One request per run. Each request leaves one unused state in Redis (#2345). It is
+  refused after 15 minutes (``STATE_EXPIRATION = 900`` in both handlers), when Redis's
+  TTL on it ends; an app restart does not drop it, and nothing removes it sooner, so
+  don't run this in a loop.
 - The account needs no connected integration: ``web-seed-1386`` runs it.
 
 Usage:

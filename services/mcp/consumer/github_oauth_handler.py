@@ -33,14 +33,21 @@ from urllib.parse import urlencode
 import aiohttp
 import structlog
 
+from services.auth.oauth_state_store import (
+    GITHUB_STATE_KEY_PREFIX,
+    OAuthStateStoreUnavailable,
+    put_state,
+    take_state,
+)
 from services.infrastructure.logging.evidence import evidence  # noqa: E402 (#2350)
 
 from .github_app_grant import GitHubAppGrant, app_client, app_mode
 
 logger = structlog.get_logger(__name__)
 
-# Module-level pending-state store (mirrors calendar; single-server alpha — Redis/DB later).
-_PENDING_STATES: Dict[str, Dict] = {}
+# #2345: the pending state lives in Redis (services/auth/oauth_state_store.py), keyed
+# per nonce under GITHUB_STATE_KEY_PREFIX with a TTL of STATE_EXPIRATION, read once by
+# GETDEL; it survives a restart between Connect and the callback.
 
 
 def _default_redirect() -> str:
@@ -168,15 +175,24 @@ class GitHubOAuthHandler:
                 pass  # keychain unavailable → empty (handler still constructs; flow fails honestly)
         return client_id, client_secret
 
-    def generate_authorization_url(self, user_id: str) -> Tuple[str, str]:
-        """Build the GitHub authorize URL with a user-bound, single-use state (CSRF/#734)."""
+    async def generate_authorization_url(self, user_id: str) -> Tuple[str, str]:
+        """Build the GitHub authorize URL with a user-bound, single-use state (CSRF/#734).
+
+        #2345: the state is stored in Redis before any URL exists; when Redis can't take
+        it this raises ``OAuthStateStoreUnavailable`` and no URL is made, so nobody is
+        sent to GitHub with a state that could not be checked on return."""
         if not user_id:
             raise ValueError("user_id is required for OAuth state")
 
         nonce = secrets.token_urlsafe(16)
         state_data = {"user_id": user_id, "nonce": nonce}
         state = base64.urlsafe_b64encode(json.dumps(state_data).encode()).decode().rstrip("=")
-        _PENDING_STATES[nonce] = {"created_at": time.time(), "user_id": user_id}
+        await put_state(
+            GITHUB_STATE_KEY_PREFIX,
+            nonce,
+            {"created_at": time.time(), "user_id": user_id},
+            self.STATE_EXPIRATION,
+        )
 
         params = {
             "client_id": self.client_id,
@@ -186,37 +202,47 @@ class GitHubOAuthHandler:
         if self.scopes:  # #2342: the GitHub App flow sends no scope at all
             params["scope"] = " ".join(self.scopes)
         auth_url = f"{self.AUTHORIZATION_URL}?{urlencode(params)}"
-        logger.info("github_oauth_url_generated", user_id=user_id, state_prefix=state[:8])
+        logger.info("github_oauth_url_generated", user_id=user_id)
         return auth_url, state
 
-    def verify_state(self, state: str) -> Tuple[bool, Optional[str]]:
-        """Validate + consume a state token. Returns (is_valid, user_id). Single-use."""
+    async def verify_state(self, state: str) -> Tuple[bool, Optional[str]]:
+        """Validate + consume a state token. Returns (is_valid, user_id). Single-use.
+
+        #2345: the stored entry is read and deleted in one GETDEL. Redis unreachable
+        refuses (fail closed), never accepts."""
         try:
             padded = state + "=" * (-len(state) % 4)
             state_data = json.loads(base64.urlsafe_b64decode(padded))
         except (ValueError, json.JSONDecodeError):
-            logger.warning("github_oauth_state_decode_failed", state_prefix=(state or "")[:8])
+            logger.warning("github_oauth_state_decode_failed")
             return False, None
 
-        nonce = state_data.get("nonce")
-        user_id = state_data.get("user_id")
-        if not nonce or not user_id or nonce not in _PENDING_STATES:
+        nonce = state_data.get("nonce") if isinstance(state_data, dict) else None
+        user_id = state_data.get("user_id") if isinstance(state_data, dict) else None
+        if not nonce or not user_id:
             logger.warning(
                 "github_oauth_state_invalid", has_nonce=bool(nonce), has_uid=bool(user_id)
             )
             return False, None
+        try:
+            nonce_data = await take_state(GITHUB_STATE_KEY_PREFIX, nonce)
+        except OAuthStateStoreUnavailable:
+            logger.warning("github_oauth_state_store_unavailable")
+            return False, None
+        if nonce_data is None:  # never stored, already used, or expired in Redis
+            logger.warning("github_oauth_state_invalid", has_nonce=True, has_uid=True)
+            return False, None
 
-        nonce_data = _PENDING_STATES[nonce]
-        if time.time() - nonce_data["created_at"] > self.STATE_EXPIRATION:
-            del _PENDING_STATES[nonce]
-            logger.warning("github_oauth_state_expired", nonce_prefix=nonce[:8])
+        created_at = nonce_data.get("created_at")
+        if not isinstance(created_at, (int, float)) or (
+            time.time() - created_at > self.STATE_EXPIRATION
+        ):
+            logger.warning("github_oauth_state_expired")
             return False, None
         if nonce_data.get("user_id") != user_id:  # tamper detection (#734)
-            del _PENDING_STATES[nonce]
             logger.warning("github_oauth_state_user_mismatch")
             return False, None
 
-        del _PENDING_STATES[nonce]  # single-use
         return True, user_id
 
     async def handle_oauth_callback(
@@ -228,7 +254,7 @@ class GitHubOAuthHandler:
         (the state is consumed either way)."""
         from services.auth.oauth_callback_guard import require_session_matches_state
 
-        is_valid, user_id = self.verify_state(state)
+        is_valid, user_id = await self.verify_state(state)
         if not is_valid:
             raise ValueError("Invalid or expired state token")
         require_session_matches_state(user_id, session_user_id)
