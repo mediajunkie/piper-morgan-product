@@ -4,15 +4,15 @@ The 08-31 version had gone stale again: on 11-24 an audit found twelve issues it
 
 ## Mine now (no blocker)
 
-- **2428 (setup's own 5xx lines never reach the page):** built on `lead/2428-setup-5xx-lines` (`30eaaa00cb`). Lands on CXO's read of the two database-line renders, her word on lines 350 and 673, Arch's word on the `.format` allowance, and a green full suite. — **Filed**: 2026-11-24
-- **2345 (connect state in Redis):** built on `lead/2345-connect-state-redis` (`d732c8904f`). Owed on the branch before landing: mark its three "couldn't start" raises user-facing (needs 2428 on main first), CXO's words of 01M873MXMG (drop the "wording pending" comment; the operator line off the wizard page as "Google Calendar sign-in isn't set up on this server."; dialog title "GitHub connection couldn't start"; the three protocol-word fallbacks), then the full suite. Arch: mechanism conforms. **First promotion that carries it needs one full connect round trip as its served read** (GETDEL has never run on beta's Redis), and HOST and Exec told the hour first; never while xian is mid Step F. — **Filed**: 2026-11-24
-- **No browser tab without a terminal:** `lead/no-tab-without-a-terminal` (`04e54aac4e`), waiting on HOST's read; full suite before landing. — **Filed**: 2026-11-24
 - **2352 box 3 (Arch ruled 11-24):** `keys add` keeps its name and calls `local_key_setup.py`'s store path; no separate keychain write. Box 4 (the wizard reading keys from the environment) was not put to Arch. Placed in D, no sprint: ask PPM for a slot with 2399. — **Filed**: 2026-11-24
 - **2264 box 2:** image size before and after on the issue. Low value; the "before" image may be gone. — **Filed**: 2026-11-24
 - **`scripts/secret_prompt.py` shared module:** its trigger (xian's Redis rotation run) is dead since HOST cut 2335. Build it or drop it; my call. — **Filed**: 2026-11-12
 
 ## Waiting on a named seat (each was asked; mail id given)
 
+- **2431 (outage screens: raw JSON on a page load when Redis is unreachable):** filed by CXO 11-24 from my render, with her sentence. Arch ruled 11-24 10:50 and CXO added the 429 and at-capacity words; a coding agent is building it on `lead/2431-outage-screens`. Then: my review and re-run, local renders for CXO (each response kind, a page load and one background request), full suite, landing. — **Filed**: 2026-11-24
+- **2429, 2430:** on main (`24d1e8b443`, `683f27ffb5`); rows are Arch's and CXO's to tick; promotion follows CI. — **Filed**: 2026-11-24
+- **2345:** on beta `009afa0f7f`; 2 of 3 starts served-read by Web; the return half is xian's F.4 connect (roll back first if it fails); the wizard's start waits on the `setup-calendar` allow. — **Filed**: 2026-11-24
 - **2386 close:** string 1 passed by CXO (01M8749H51). String 2 is 2428's database line; closes when 2428 lands and CXO has read the render (sent, 01M875ZVDT). — **Filed**: 2026-11-16
 - **2388 row 2:** forced-failure output posted on the issue for HOST's read (asked in the issue comment and 01M871EC86). Row 4 waits on the counter-read allow on xian's card (CIO's steps line) and Web's run. — **Filed**: 2026-11-16
 - **2390:** on main (`e43ebe55ab`). Open rows: the served read by a seat account (waits on an allow, which HOST says to add only when a seat has a reason). — **Filed**: 2026-11-24
