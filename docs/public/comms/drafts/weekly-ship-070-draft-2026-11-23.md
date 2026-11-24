@@ -15,7 +15,7 @@ caption: ''
 **▸ Facts:**
 - 11-15, 19:11, your words to the team: "We need to solve that problem, not assign me manual tasks as a workaround for a poorly conceived solution." Also: "We keep changing how provider keys are used, how github is used, how piper morgan is used by our agents and it's become a tangled mess that keeps becoming my problem to manually navigate. this is not an acceptable state of affairs."
 - What led up to it: a stored testing key couldn't be decrypted, the classifier refused the workaround, and the seats drifted toward "xian runs it".
-- The structural answer: ADR-084, "seats get their own keys, accounts and browser". You accepted it 11-16 at 06:20 with a budget of $10 a run without asking, under a hard cap of $150 a month. Every seat rewrote its open items so that none ends in "xian runs it".
+- The structural answer: ADR-084, which gives the seats their own keys, accounts and browser (a paraphrase. Its title is "Seat resources: what agents use to run and test Piper is separate from xian's, granted once, and bounded where a seat can't pass"). You accepted it 11-16 at 06:20 with a budget of $10 a run without asking, under a hard cap of $150 a month. Every seat rewrote its open items so that none ends in "xian runs it".
 - The cost: a whole week of work that was built and put on beta but not read by a signed-in person. All of it converged on one sitting at Amber (Fri 11-20).
 - Sprint 2 is "onboarding to first value", 11-13 to 11-26, and it has 14 named items. 2 were done before the sprint began. 0 closed in week one, and 12 are open. Most of the 12 are built and on beta, waiting for a signed-in read.
 - Continuity: #069 was "Off-Limits by Default" (the keychain). This one is the same instinct applied to your own hands.
@@ -29,29 +29,29 @@ caption: ''
 **▸ Facts:**
 - **ADR-084's tools, built and read by 11-18:** seat keys, seat sign-in, seat accounts, the seat browser, a dollar cap per run, and a scan for credential shapes. Real runs that week: 0. Your sitting on 11-20 did Steps A, C, D, F0 and F.1.
 - **Updates to beta:** 15 of 16 promotion dispatches succeeded. The gate refused one (11-15 20:00). Lead counts 14, and GitHub and the omnibus count 15.
-- **The promotion gate now walks every parent** of a merge, not just one line of history (Lead, #2363). This follows on #069's story of the gate missing the tested commit.
+- **The promotion gate now walks every parent** of a merge, not just one line of history (Lead, landed 11-13. #2363 itself is still open, so don't say closed). This follows on #069's story of the gate missing the tested commit.
 - **The second reader caught what the first missed** (a learning-pattern candidate, see below):
   - CIO found three gaps in HOST's first drill read.
   - Lead caught, by running it, that Arch's deploy-step command would have stopped every promotion.
   - Arch caught a CXO sentence about an unknown connection that was untrue for one GitHub path.
   - All three were corrected before merge or serve.
 - **Arch:** 175 ruling lines this week, with at least five self-corrections. (Last week's Ship said 160. Your "somewhat astonished" line could continue.)
-- **Main CI** went red twice on the morning of 11-17 (Lead's pushes) and was 12 of 12 green at every read after.
+- **Main CI** had two red windows on the morning of 11-17 (5 failed Tests runs, 08:11 to 09:50, from Lead's pushes) and was 12 of 12 green at every read after (Lead's and PPM's reads).
 - **MCP deploys:** 1, yours on 11-15 in PA's session. It kept the connector's GitHub reads inside the repositories you chose (see Product).
-- **Clock rule:** live 11-18 (CIO), the follow-through on #069's time-guessing story. Backtest 7.7%, with no false refusals.
+- **Clock rule:** live 11-18 (CIO), the follow-through on #069's time-guessing story. Backtest: it would have refused 138 of 1,781 past commits (7.7%). The backtest found one false positive, which CIO fixed, and no seat has reported a false refusal since it went live.
 
 ## 🎯 Product & experience
 
 **▸ Write about:** what a user can do now that they couldn't on 11-12, and the caveat that almost none of it has been read by a signed-in person.
 
 **▸ Facts: read on the live service by a person (1 item)**
-- In Claude, the connector's GitHub issue reads stay inside the repositories you installed the App on. Before: 366 issues, mostly from public repositories nobody chose. After: 1 of 1. PA read it through the connector on your account on 11-15, and CXO passed it. (#2374)
+- In Claude, the connector's GitHub issue reads stay inside the repositories you installed the App on. Before: 366 issues, mostly from public repositories nobody chose. After: 1, the one issue in the chosen test repository. PA read it through the connector on your account on 11-15, and CXO passed it. (#2374)
 
 **▸ Facts: on beta, not yet read signed in**
 - **Disconnect** says what stays behind at the provider: the App stays installed, and a token or Notion key stays valid. The wording is cautious when Piper can't tell how GitHub was connected. Disconnect All lists what's left to do.
 - **The Integrations cards** read in plain sentences: no code words or exception text, and one sentence about a stale connection per connector, on the card and in chat. Before a write to a repository without the App installed, Piper says to install the App first. (#2379, #2401, #2402)
 - **Piper's replies follow the nine conduct rules** you approved (#2354). They sit outside the classifier, so routing is unchanged.
-- **Self-hosters:** the key saved at setup becomes the account's key (#2405). Setup names the docker compose step (#2386). Two copies on one machine no longer share a database, and a fresh database is built by alembic (#2372).
+- **Self-hosters:** a fresh database is built by alembic, not pre-empted by setup (#2372, closed 11-15). The key saved at setup becomes the account's key (#2405, closed 11-20, after the window, so say "since" or move it to next week). Two copies on one machine no longer share a database: a variable now prefixes every container, network and volume name (`433a8c6b33`, 11-16). Setup's self-hoster lines now name the three data services the docker compose step starts, in CXO's words (`6a27a0a47d`, 11-16). Both are under #2386, which is still open, so call them built, not closed. (Exec 11-23: sources for the two lines Comms flagged.)
 - **Smaller fixes:**
   - Piper stops blaming GitHub when it never touched it (#2407).
   - An unreachable Redis no longer costs 2 seconds a call (#2370).
@@ -70,7 +70,7 @@ caption: ''
 **▸ Facts:**
 - **ADR-084 as method:** the fix for "xian keeps becoming the manual step" is to give each seat its own key, account and browser, with a budget, rather than a rule to remember. Same shape as #069's chokepoint lesson.
 - **The D6 check** (from the ADR-084 sitting): any step that lands on you is checked for whether standing access would remove it, and who would actually do it.
-- **"The check and the claim go in separate calls"** (CIO, 11-15), after CIO reported a result before reading it seven times in one day. The same shape recurred in Comms (reporting "The Wall" unchanged after you'd edited it) and PA (a stale blocker). This is the same family as #069's time guessing.
+- **"The check and the claim go in separate calls"** (CIO, 11-15), after CIO caught itself reporting a result before reading it six times in two days (11-14 and 11-15, seven by that night). The same shape recurred in Comms (11-17: reporting "The Wall" unchanged after you'd edited it in the admin UI). This is the same family as #069's time guessing.
 - **The clock rule** went live 11-18 (see Engineering), the end of #069's "weary of the repeated shuffle".
 - **Keychain follow-through:** on 11-15 a test browser started without the mock-keychain flag, so it may have touched your login keychain. CIO disclosed it 11-16. A hook and an every-fire check now cover it.
 - **Mail move:** v4 (the separate mail repository) is now the only path between seats. The old path ended 11-23, which is after the window, so mention it only as "since".
@@ -111,7 +111,7 @@ This week we published:
 - MCP server deploys: 1
 - Issues filed / closed: 44 / 10
 - Open Production issues: 297 → 329
-- Main CI: red twice (the morning of 11-17), green at every read after
+- Main CI: two red windows (the morning of 11-17), green at every read after
 - Paid model calls by seats: $0
 - Posts published: 5
 
@@ -128,9 +128,9 @@ This week we published:
 2. Read what's on beta, signed in, and close it. CXO judges.
 3. Finish the GitHub move: the open rows on the seat's GitHub account, then the lift-readiness memo.
 4. Keys and deploys off your hands: the MCP deploy job and its one token from you, and the restore drill on your day.
-5. Editorial: Sat 11-21, this Ship, and Sat 11-28.
+5. Editorial: Sat 11-21, this Ship, and Sat 11-28. (Sat 11-21's insight ran Sun 11-22 as "Do I Have To?", at your request.)
 
-Since the window closed: your 11-20 sitting did Steps A, C, D, F0 and F.1.
+Since the window closed: your 11-20 sitting did Steps A, C, D, F0 and F.1, and "Do I Have To?" published Sun 11-22.
 
 # 🚧 Blockers & asks
 

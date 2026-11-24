@@ -51,6 +51,7 @@ LaunchAgent `com.xian.pm-pa-cycle` (:47 at 6, 9, 12, 15, 18, 21), boot-persisten
 ## Standing mail rules
 
 - Never cc or address PM; anything needing PM goes to **exec**, naming decision / ruling-relay / would-contradict in the subject.
+- **Done-note rule (xian 11-23, decisions.log `18:41`, Exec `01M85PWK3T…`):** when xian finishes something with PA (a step he ran, a word he gave, a card item closed), send Exec a one-line done-note in the same turn PA records it. Before relaying anything to xian, check the primary record so it isn't stale.
 - zsh doesn't word-split: pass `mail-send.sh` paths via a list file and `xargs`. Path cap 180 including the `mailboxes/<role>/inbox/` prefix.
 - Never stage `dev/state/pa-last-pm-scan`.
 
