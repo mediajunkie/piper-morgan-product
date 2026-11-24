@@ -58,6 +58,9 @@ EVIDENCE_EVENTS = frozenset(
         # services/auth/narrow_flags.py: an admin turned a narrow account flag on or
         # off (#2327): the flag, the account id, on/off, the admin's id; no names
         "account_narrow_flag_changed",
+        # web/api/routes/admin_ops.py: an operations route was read (ADR-084 D4 rule 4,
+        # issue 2390): the route and the reader's account id; never the response
+        "ops_read",
     }
 )
 

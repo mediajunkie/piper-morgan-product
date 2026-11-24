@@ -88,16 +88,17 @@ class TestWhichRouteUsesWhichGate:
         assert require_ops_reader not in deps
 
     def test_no_other_route_in_the_app_uses_the_narrow_gate(self):
-        """Arch 11-14: ``ops_reader`` opens the counter read and nothing else. Every
-        Python file under web/ and services/ is read for a use of the gate as a
-        dependency; exactly one exists, on the counter route."""
+        """Arch 11-14: ``ops_reader`` opens the operations reads and nothing else.
+        Every Python file under web/ and services/ is read for a use of the gate as a
+        dependency; they are all in the one route file, one per route on the closed
+        list (issue 2390 pins the list itself)."""
         uses = {}
         for folder in ("web", "services"):
             for path in (ROOT / folder).rglob("*.py"):
                 count = path.read_text(encoding="utf-8").count("Depends(require_ops_reader)")
                 if count:
                     uses[path.relative_to(ROOT).as_posix()] = count
-        assert uses == {"web/api/routes/admin_ops.py": 1}
+        assert uses == {"web/api/routes/admin_ops.py": len(admin_ops.OPS_READER_ROUTES)}
 
     def test_the_page_is_admin_only(self):
         from web.api.routes import ui
