@@ -22,13 +22,8 @@ The goal of this sprint (Sprint 2 of the Production milestone) is that a new use
 
 The team also built the tooling to implement ADR-084, with step-by-step instructions ready for me to implement.
 
-The beta was rebuilt 15 times.
+The beta was rebuilt 15 times, and Lead Developer wrote an update to the tool that promotes builds to beta so that it walks every parent of a merge (instead of just checking one line of history as it it had done in the past), to address the problem noted in last week's shipping news about the promotion gate missing a tested commit.
 
-
-**▸ Facts:**
-- **ADR-084's tools, built and read by 11-18:** seat keys, seat sign-in, seat accounts, the seat browser, a dollar cap per run, and a scan for credential shapes. Real runs that week: 0. Your sitting on 11-20 did Steps A, C, D, F0 and F.1.
-- **Updates to beta:** 15 of 16 promotion dispatches succeeded. The gate refused one (11-15 20:00). Lead counts 14, and GitHub and the omnibus count 15.
-- **The promotion gate now walks every parent** of a merge, not just one line of history (Lead, landed 11-13. #2363 itself is still open, so don't say closed). This follows on #069's story of the gate missing the tested commit.
 - **The second reader caught what the first missed** (a learning-pattern candidate, see below):
   - CIO found three gaps in HOST's first drill read.
   - Lead caught, by running it, that Arch's deploy-step command would have stopped every promotion.
