@@ -109,7 +109,10 @@ async def active_keys(reader: JWTClaims = Depends(require_ops_reader)) -> Dict[s
     """
     _note_read("/api/v1/admin/active-keys", reader)
     async with AsyncSessionFactory.session_scope() as session:
+        # An operations aggregate across accounts by design (ADR-084 D4): the query selects
+        # the provider and a count, no account column, and the route is behind ops_reader.
         result = await session.execute(
+            # global-ok: cross-account count by provider, no account column read (ADR-084 D4)
             select(UserAPIKey.provider, func.count())
             .where(UserAPIKey.is_active.is_(True))
             .group_by(UserAPIKey.provider)
