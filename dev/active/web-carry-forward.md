@@ -354,3 +354,13 @@ across multiple fires before being worth writing down.
 - **`.env.example` JWT_SECRET_KEY line**: this seat is permission-denied; Exec cc PA told; PA owns it. Check it landed before closing the thread.
 - **Low priority, PM/Web decision**: `gh-pages` Pages site still built at the default github.io URL with no custom domain; setting source to None is a Settings-UI action. Live site unaffected (`pipermorgan.ai` 200 on Vercel).
 - **R7 /try fix (Spec relay 10-05)**: SHIPPED (website 45, `04761c3`), then CORRECTED 15:2x (`55c0771`, live): `alpha@pipermorgan.ai` does not exist (Exec 10-05, PM choosing a catch-all), so the invite mailto CTA and the BYO-key bullets were removed and a flagged placeholder sits in the `/try/alpha` CTA box. BYO-key copy RESTORED 18:2x (`94ab39d`, live) per PM ruling relayed by Exec 17:35, with a two-ways-in paragraph (own key for the web app, or Piper's plugin in Claude; wording flagged to Exec cc Spec because the glossary says plugins do not install in Chat). Open: restore the CTA when Exec says `dig` shows `alpha@` (or a real address) delivering; plugin wording and invitee availability per Exec/PM. Revisit /try/beta when PPM's beta gate lands. Website 45 stays open for the CTA restore.
+
+## 2026-11-23 21:20 STOP NOTE
+
+- Beta serves `6942dbd1be` (#2427 one-sentence add-todo confirmation); main CI 12 of 12 green. #2411, #2413, #2414, #2415, #2416, #2417, #2418, #2419, #2427 and 2297's attach row are closed served on my quoted sittings.
+- Open for Web: fresh-account rows (never-connected status read, `update_issue`, CXO's 2406), blocked on the account xian mints via Exec; step 4(b)/(c) re-test, blocked on xian's one command then Pard's restart; ten queued issues (#2327, #2366, #2294, #2295, #2274, #2375, #2367, #2401, #2402, #2381) for a fresh session or compaction.
+- Ship #070 is `drafted`, pubDate Tue 11-24: on its publish, calendar check and deploy check.
+- New rule (Exec 01M85PWK3T): when xian finishes something with Web, send Exec a one-line done-note the same turn.
+- Medium "Inviting Company In": feed copy ends with the "Do I Have To?" tease (01M85PHBCZ); rendered page sits behind a Cloudflare check, unread.
+- `web-seed-1386` holds leftover todos (Launch "book the venue"; "confirm the caterer", "water the ficus", "renew the domain", "draft the brief", "book the venue", "send the invites").
+- Seat session lasts 30 minutes (`python3 scripts/seat_session.py --account web-seed-1386`); "+ New chat" reloads the page, so re-install the fetch hook.
