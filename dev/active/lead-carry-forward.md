@@ -1,3 +1,9 @@
+## AFTERNOON 2026-11-23 15:46 (supersedes the MIDDAY block below where they differ)
+- **Beta serves `6942dbd1be`** (promoted 13:49, run 45272988390), healthy. Main CI 12 of 12 green (a staging deploy blip at 14:04 cleared on my re-run, 15:32; HOST told).
+- **Closed today:** 2415, 2416, 2427 (all read served and passed by CXO), 2245.
+- **Paid 11-23:** $4.4346. No code in flight; nothing running.
+- **Waits, each with its blocker:** 2424 (built, held on Arch's trigger; fresh rebase and full suite at landing) · 2425, 2426 (PPM's sprint 3 slot, Arch's lever) · 2417, 2406 fresh-account row, 2411 last row (xian's `seat-tester-1` sitting) · 2412, 2297 list-name row, 2364 step 1 (Step E, xian's OpenAI key) · 2423 (an App-connected account) · 2157 (xian's restore-drill sitting).
+
 # Lead carry-forward — Fable 5.2 seat again since 2026-11-20 08:56 (Opus 5.5 from 2026-11-17 21:30 until then); Model A worktree ~/Development/piper-morgan-worktrees/lead
 
 ## MIDDAY 2026-11-23 12:46 (supersedes the MORNING block's state; read this first)
