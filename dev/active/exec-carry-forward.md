@@ -11,7 +11,7 @@
 ## Tuesday 11-24, first: Ship #070 "No Workarounds" publishes today
 - The outline is on main: `docs/public/comms/drafts/weekly-ship-070-draft-2026-11-23.md`. Comms fact-checked it 18:39 (10 fixes). My 18:43 fix resolved the two flags. 0 warning marks. It was sent to xian twice.
 - Goals approved 18:17 ("Yes, all goals approved."). The discussed marker is on the review. Theme, writer and score were already ruled 11-20 (decisions.log 3576-3578). Janus has been told not to re-ask.
-- Next: xian's prose (he gates the Comms handoff). Then Comms review, template-audit and PUBLISH-READY to Docs, and the publish on Tuesday. If nothing has arrived by the morning, it's his own fallback ("write and publish Tuesday morning"). Remind him at START, and on the rollup.
+- 11-24: xian's prose done, handed to Comms 01M877QT5P. Next: Comms review, template-audit, PUBLISH-READY to Docs, publish today. Then Comms review, template-audit and PUBLISH-READY to Docs, and the publish on Tuesday. If nothing has arrived by the morning, it's his own fallback ("write and publish Tuesday morning"). Remind him at START, and on the rollup.
 - After it publishes, the calendar row goes to published/distributed and he crossposts to LinkedIn. Check the calendar, not mail (step 2.01).
 
 ## Rollup
