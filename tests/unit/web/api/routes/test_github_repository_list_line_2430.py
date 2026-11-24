@@ -287,3 +287,28 @@ class TestThePage:
         assert "I couldn\\'t load your repositories. Try refreshing the page." in catch
         assert "Toast.show('error', 'Error', 'Failed to load GitHub repositories')" in catch
         assert "prefsLoadFailed = true" in catch
+
+
+class TestSaveDoesNotLookLiveAfterAFailedList:
+    """CXO 2026-11-24 (mail 01M87C1V2D): a button that looks live and silently does nothing
+    is a control that lies. Both failed-list paths disable Save; Refresh List stays live.
+    LAYER: the page's source. The rendered state is on the issue."""
+
+    PAGE = (Path(__file__).resolve().parents[5] / "templates" / "settings_github.html").read_text(
+        encoding="utf-8"
+    )
+
+    def test_one_helper_disables_the_save_button(self):
+        helper = self.PAGE[self.PAGE.index("function disableSaveAfterFailedList()") :][:260]
+        assert "getElementById('save-github-prefs-btn')" in helper
+        assert "btn.disabled = true" in helper
+        assert "refresh" not in helper.lower()
+
+    def test_both_failed_list_paths_call_it(self):
+        load = self.PAGE[self.PAGE.index("async function loadRepositoryList()") :]
+        load = load[: load.index("function renderRepositoryList(")]
+        assert load.count("disableSaveAfterFailedList();") == 2
+        named = load[load.index("github-repository-list-named-line") :]
+        assert named.index("disableSaveAfterFailedList();") < named.index("return;")
+        catch = load[load.index("} catch (error) {") :]
+        assert "disableSaveAfterFailedList();" in catch
