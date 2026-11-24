@@ -8,16 +8,13 @@ caption: ''
 
 *November 13–19, 2026*
 
-> **OUTLINE SCAFFOLD for xian (Exec, 11-23).** These are the sections, with bare facts under each one, for you to write from. I've erred on the side of including things, so trim freely. This is the first **progress Ship** of sprint 2 (week 1 of 2). Sources: the Ship #070 week review (approved 11-23), decisions.log, and the ten workstream reviews. Issue numbers are here for reference only. Public prose names the thing, not the number. Remove this box before publishing.
+This week the agent team piled up a lot of work that waited for my attention to fully complete or execute. More and more workflows led to manual tasks for me. Eventually, I asked for a review of the state of affairs, writing "We keep changing how provider keys are used, how github is used, how piper morgan is used by our agents and it's become a tangled mess that keeps becoming my problem to manually navigate. this is not an acceptable state of affairs."
 
-**▸ Write about:** your 11-15 ruling, and what it set off. Sprint 2's goal and where its named set stands at halfway.
+This led to an architectural decision record ([ADR-084]()) with an ungainly name, "Seat resources are separate, granted once, and bounded." It gives each agent/role "seat" their own keys, accounts and browser. I accepted it on Nov 16, approving a budget of $10 a run without asking, under a hard cap of $150 a month. Every agent then reviewed their open items for tasks they had assigned to me to run manually that they were now adequately provisioned to run themselves.
 
-**▸ Facts:**
-- 11-15, 19:11, your words to the team: "We need to solve that problem, not assign me manual tasks as a workaround for a poorly conceived solution." Also: "We keep changing how provider keys are used, how github is used, how piper morgan is used by our agents and it's become a tangled mess that keeps becoming my problem to manually navigate. this is not an acceptable state of affairs."
-- What led up to it: a stored testing key couldn't be decrypted, the classifier refused the workaround, and the seats drifted toward "xian runs it".
-- The structural answer: ADR-084, which gives the seats their own keys, accounts and browser (a paraphrase. Its title is "Seat resources: what agents use to run and test Piper is separate from xian's, granted once, and bounded where a seat can't pass"). You accepted it 11-16 at 06:20 with a budget of $10 a run without asking, under a hard cap of $150 a month. Every seat rewrote its open items so that none ends in "xian runs it".
-- The cost: a whole week of work that was built and put on beta but not read by a signed-in person. All of it converged on one sitting at Amber (Fri 11-20).
-- Sprint 2 is "onboarding to first value", 11-13 to 11-26, and it has 14 named items. 2 were done before the sprint began. 0 closed in week one, and 12 are open. Most of the 12 are built and on beta, waiting for a signed-in read.
+The upshot was that the work done in the first week of this two-week sprint (itself the team's first sprint of this length) didn't get a human review before the second half of the sprint behan.
+
+The goal of this sprint (Sprint 2 of the Production milestone) is that a new user make it from "onboarding to first valuable experience." The sprint runs from Friday, November 13 to Thursday, November 26. , 11-13 to 11-26, and it has 14 named items. 2 were done before the sprint began. 0 closed in week one, and 12 are open. Most of the 12 are built and on beta, waiting for a signed-in read.
 - Continuity: #069 was "Off-Limits by Default" (the keychain). This one is the same instinct applied to your own hands.
 
 # 🚀 Shipped this week
