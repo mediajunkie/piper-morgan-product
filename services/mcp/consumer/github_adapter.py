@@ -126,6 +126,37 @@ def github_degrade_reply(degradation) -> str:
     return getattr(degradation, "user_message", "") or "The GitHub connector is degraded."
 
 
+# Issue 2430 (CXO, mail 01M878T7RJ): the Settings repository list's own line for a stale
+# grant (both stale reasons: the grant no longer accepted, and a classic grant met after the
+# move to the GitHub app). The page carries the Reconnect with GitHub button, so the line
+# names it. The too-many-repositories line is not built: the list read paginates the
+# installation read to the end and cannot produce that reason (pinned by a test in
+# tests/unit/web/api/routes/test_github_repository_list_line_2430.py).
+GITHUB_REPOSITORY_LIST_RECONNECT_LINE = (
+    "GitHub needs reconnecting, so I can't load your repositories. "
+    "Use Reconnect with GitHub on this page."
+)
+
+
+def github_degrade_fixed_line(degradation) -> Optional[str]:
+    """Issue 2430 (Arch, mail 01M8786G87): the fixed line the Settings repository list
+    shows for a degrade, or None when the reason has none (the route then raises its
+    masked 502 and the page keeps its own words). Every ``return`` is an UPPER_CASE
+    constant or None, with no fall-back to ``user_message``: the route raises this as a
+    user-facing detail, and the guard of issue 2428 reads this body to check it.
+    ``github_degrade_reply`` (chat) is separate and unchanged; a test pins both side by
+    side for every reason and detail.
+
+    The two stale cases are the plain one (no detail) and the cutover. As in the chat
+    function, an app-install ``detail`` outranks the reason, so a stale reason carrying
+    one is not named here."""
+    reason = getattr(degradation, "reason", None)
+    detail = getattr(degradation, "detail", None)
+    if reason is DegradationReason.STALE_TOKEN and detail in (None, REASON_CUTOVER):
+        return GITHUB_REPOSITORY_LIST_RECONNECT_LINE
+    return None
+
+
 def github_write_refusal_reply(degradation) -> str:
     """#2379: the line for a WRITE that was refused before it was fired. The App not
     being on the repository has its own write wording; every other state reads as
