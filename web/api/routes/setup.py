@@ -725,6 +725,12 @@ CALENDAR_CONNECT_COULD_NOT_START_MESSAGE = (
 # CXO 2026-11-24 (issue 2428): the two 503 lines that had no "tell us" ending.
 SETUP_COULD_NOT_BE_CHECKED_MESSAGE = f"Setup couldn't be checked just now. {_TRY_AGAIN}"
 INVITE_CHECK_COULD_NOT_RUN_MESSAGE = f"The invite check couldn't run just now. {_TRY_AGAIN}"
+# #2345: shown when the GitHub connect can't store its sign-in state (Redis down); the
+# same shape as the Slack and Calendar lines above, which had no GitHub twin. CXO passed
+# the words 2026-11-24 (mail 01M873MXMG).
+GITHUB_CONNECT_COULD_NOT_START_MESSAGE = (
+    f"The GitHub connection couldn't start just now. {_TRY_AGAIN}"
+)
 SETUP_COULD_NOT_FINISH_MESSAGE = (
     "Setup couldn't finish just now. Try again in a moment; if it keeps failing, tell us."
 )
@@ -1961,9 +1967,19 @@ async def start_calendar_oauth(
             )
 
         # Issue #734: Pass user_id for multi-tenant state
-        auth_url, state = handler.generate_authorization_url(user_id=current_user.sub)
+        # #2345: async (Redis-backed state); Redis down refuses here, before any URL.
+        from services.auth.oauth_state_store import OAuthStateStoreUnavailable
 
-        logger.info("calendar_oauth_started", user_id=current_user.sub, state=state[:8] + "...")
+        try:
+            auth_url, state = await handler.generate_authorization_url(user_id=current_user.sub)
+        except OAuthStateStoreUnavailable:
+            logger.warning("calendar_oauth_start_state_store_unavailable", user_id=current_user.sub)
+            raise HTTPException(
+                status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+                detail=CALENDAR_CONNECT_COULD_NOT_START_MESSAGE,
+            )
+
+        logger.info("calendar_oauth_started", user_id=current_user.sub)
 
         return {
             "auth_url": auth_url,

@@ -1131,7 +1131,8 @@
                 // Redirect to Google OAuth
                 window.location.href = data.auth_url;
             } else {
-                showCalendarError('Failed to start OAuth flow');
+                // #2345: the route's own line when it refused to start (e.g. Redis down).
+                showCalendarError(typeof data.detail === 'string' && data.detail ? data.detail : 'Failed to start OAuth flow');
                 if (btn) {
                     btn.disabled = false;
                     btn.textContent = 'Connect Calendar';
