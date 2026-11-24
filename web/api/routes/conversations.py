@@ -17,6 +17,7 @@ import structlog
 from fastapi import APIRouter, Depends, HTTPException, status
 from pydantic import BaseModel
 
+from services.api.errors import UserFacingHTTPException
 from services.auth.auth_middleware import get_current_user
 from services.auth.jwt_service import JWTClaims
 from services.database.repositories import ConversationRepository
@@ -24,6 +25,15 @@ from web.api.dependencies import get_conversation_repository
 
 router = APIRouter(prefix="/api/v1/conversations", tags=["conversations"])
 logger = structlog.get_logger(__name__)
+
+# Issue 2432 (CXO, comment 7144095698): reworded, marked. The state line names the two
+# states and never the value the person sent.
+TITLE_NEEDED_LINE = "Give it a title first."
+TITLE_TOO_LONG_LINE = "Titles can be up to 100 characters."
+STATE_NOT_RECOGNISED_LINE = "That isn't a state I recognise. Choose active or archived."
+CANT_BE_ARCHIVED_LINE = "That conversation can't be archived right now."
+CANT_BE_REACTIVATED_LINE = "That conversation can't be reactivated right now."
+ALREADY_DELETED_LINE = "That conversation has already been deleted."
 
 
 # Response Models
@@ -298,9 +308,8 @@ async def list_conversations(
             try:
                 lifecycle_state = ConversationLifecycleState(state.lower())
             except ValueError:
-                raise HTTPException(
-                    status_code=status.HTTP_400_BAD_REQUEST,
-                    detail=f"Invalid state: {state}. Valid values: active, archived",
+                raise UserFacingHTTPException(
+                    status_code=status.HTTP_400_BAD_REQUEST, detail=STATE_NOT_RECOGNISED_LINE
                 )
 
         # Get conversations for user (with optional search filter)
@@ -526,14 +535,12 @@ async def update_conversation_title(
         # Validate title length
         title = request.title.strip()
         if not title:
-            raise HTTPException(
-                status_code=status.HTTP_400_BAD_REQUEST,
-                detail="Title cannot be empty",
+            raise UserFacingHTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST, detail=TITLE_NEEDED_LINE
             )
         if len(title) > 100:
-            raise HTTPException(
-                status_code=status.HTTP_400_BAD_REQUEST,
-                detail="Title cannot exceed 100 characters",
+            raise UserFacingHTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST, detail=TITLE_TOO_LONG_LINE
             )
 
         # Get conversation and verify ownership
@@ -647,9 +654,8 @@ async def update_conversation_state(
     try:
         target_state = request.state.lower()
         if target_state not in ("active", "archived"):
-            raise HTTPException(
-                status_code=status.HTTP_400_BAD_REQUEST,
-                detail=f"Invalid target state: {request.state}. Valid values: active, archived",
+            raise UserFacingHTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST, detail=STATE_NOT_RECOGNISED_LINE
             )
 
         # Get conversation and verify ownership
@@ -671,17 +677,15 @@ async def update_conversation_state(
         if target_state == "archived":
             result = await conv_repo.archive_conversation(conversation_id)
             if not result:
-                raise HTTPException(
-                    status_code=status.HTTP_409_CONFLICT,
-                    detail="Conversation cannot be archived (not in ACTIVE state)",
+                raise UserFacingHTTPException(
+                    status_code=status.HTTP_409_CONFLICT, detail=CANT_BE_ARCHIVED_LINE
                 )
             message = "Conversation archived"
         else:  # active (reactivate)
             result = await conv_repo.reactivate_conversation(conversation_id)
             if not result:
-                raise HTTPException(
-                    status_code=status.HTTP_409_CONFLICT,
-                    detail="Conversation cannot be reactivated (not in ARCHIVED state)",
+                raise UserFacingHTTPException(
+                    status_code=status.HTTP_409_CONFLICT, detail=CANT_BE_REACTIVATED_LINE
                 )
             message = "Conversation reactivated"
 
@@ -751,9 +755,8 @@ async def delete_conversation(
 
         result = await conv_repo.delete_conversation(conversation_id)
         if not result:
-            raise HTTPException(
-                status_code=status.HTTP_409_CONFLICT,
-                detail="Conversation cannot be deleted (already deleted)",
+            raise UserFacingHTTPException(
+                status_code=status.HTTP_409_CONFLICT, detail=ALREADY_DELETED_LINE
             )
 
         logger.info(

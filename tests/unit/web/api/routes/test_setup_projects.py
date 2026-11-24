@@ -159,7 +159,8 @@ class TestSetupProjectCreation:
         with pytest.raises(HTTPException) as exc_info:
             await create_setup_project(req, _claims(req.user_id))
         assert exc_info.value.status_code == 400
-        assert "name is required" in exc_info.value.detail
+        # Issue 2432 (CXO): reworded and marked.
+        assert exc_info.value.detail == "Give the project a name first."
 
     @pytest.mark.asyncio
     async def test_create_project_invalid_repo_format(self):
