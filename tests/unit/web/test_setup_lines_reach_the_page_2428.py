@@ -436,6 +436,7 @@ class TestArchsGuardOverEveryMarkedRaise:
             "RATE_LIMITED_MESSAGE",
             "'a literal line'",
             "RATE_LIMITED_MESSAGE.format(seconds=int(retry_after))",
+            "RATE_LIMITED_MESSAGE.format(seconds=int(max(2, retry_after)))",  # the floor (CXO)
             "TEMPLATE.format(seconds=int(a), minutes=int(b))",
         ],
     )
@@ -556,7 +557,7 @@ class TestArchsGuardOverEveryMarkedRaise:
             and isinstance(node.func, ast.Attribute)
             and node.func.attr == "format"
         ]
-        assert formats == ["RATE_LIMITED_MESSAGE.format(seconds=int(retry_after))"] * 2
+        assert formats == ["RATE_LIMITED_MESSAGE.format(seconds=int(max(2, retry_after)))"] * 2
 
     def test_every_marked_detail_is_a_literal_or_an_upper_case_constant(self):
         """No exception to the rule (Arch, mail 01M8762YMW): a ``.format`` on a template

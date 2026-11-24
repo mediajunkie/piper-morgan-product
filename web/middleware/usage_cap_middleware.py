@@ -106,14 +106,18 @@ def _resolve_principal(request: Request) -> str:
 def _rate_limited_response(request: Request, retry_after: int) -> Response:
     """429 (issue 2431, CXO's words): a page for a page load, the sentence as ``message``
     otherwise. The per-minute number is gone from the words; the seconds stay, put in by
-    the one shape the guard allows (Arch, mail 01M87EY4N7): ``.format(seconds=int(...))``."""
+    the one shape the guard allows (Arch, mail 01M87EY4N7): ``.format(seconds=int(...))``.
+    The spoken number is never below 2 (CXO, mail 01M87GHNFX), so the line never says
+    "1 seconds"; the ``Retry-After`` header and ``retry_after_seconds`` keep the real value."""
     if wants_a_page(request):
-        return refusal_page(RATE_LIMITED_MESSAGE.format(seconds=int(retry_after)), 429, retry_after)
+        return refusal_page(
+            RATE_LIMITED_MESSAGE.format(seconds=int(max(2, retry_after))), 429, retry_after
+        )
     return JSONResponse(
         status_code=429,
         content={
             "error": "rate_limited",
-            "message": RATE_LIMITED_MESSAGE.format(seconds=int(retry_after)),
+            "message": RATE_LIMITED_MESSAGE.format(seconds=int(max(2, retry_after))),
             "retry_after_seconds": retry_after,
         },
         headers={"Retry-After": str(retry_after)},

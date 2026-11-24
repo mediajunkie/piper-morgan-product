@@ -687,3 +687,44 @@ class TestThePagesReader:
 
 def test_the_module_exposes_the_predicate_once():
     assert refusal_pages.wants_a_page is wants_a_page
+
+
+class TestTheSpokenSecondsAreNeverBelowTwo:
+    """CXO, mail 01M87GHNFX: the line never says "1 seconds". The number a person reads is
+    floored at 2; the ``Retry-After`` header and ``retry_after_seconds`` keep the real value,
+    so a script still retries on time. LAYER: the builder's own replies, page and JSON."""
+
+    @staticmethod
+    def _request(accept):
+        from starlette.requests import Request
+
+        return Request(
+            {
+                "type": "http",
+                "method": "GET",
+                "path": "/settings",
+                "query_string": b"",
+                "headers": [(b"accept", accept.encode())],
+            }
+        )
+
+    @pytest.mark.parametrize(
+        "left, spoken",
+        [(1, "2 seconds"), (2, "2 seconds"), (3, "3 seconds"), (37, "37 seconds")],
+    )
+    def test_the_page_and_the_json_say_the_floored_number(self, left, spoken):
+        import json as _json
+
+        from web.middleware.usage_cap_middleware import _rate_limited_response
+
+        page = _rate_limited_response(self._request("text/html"), left)
+        text = page.body.decode("utf-8")
+        assert f"Try again in {spoken}." in text
+        assert "1 seconds" not in text
+        assert page.headers["Retry-After"] == str(left)
+
+        reply = _rate_limited_response(self._request("application/json"), left)
+        body = _json.loads(reply.body)
+        assert body["message"].endswith(f"Try again in {spoken}.")
+        assert body["retry_after_seconds"] == left
+        assert reply.headers["Retry-After"] == str(left)
