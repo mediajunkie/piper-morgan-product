@@ -14,17 +14,17 @@ This led to an architecture decision record ([ADR-084](https://pmorgan.tech/inte
 
 # 🚀 Shipped this week
 
-The upshot was that the work done in the first week of this two-week sprint (itself the team's first sprint of this length) didn't get a human review before the second half of the sprint behan.
+The upshot was that the work done in the first week of this two-week sprint (itself the team's first sprint of this length) didn't get a human review before the second half of the sprint began.
 
 ## ⚙️ Engineering & architecture
 
-The goal of this sprint (Sprint 2 of the Production milestone) is that a new user make it from "onboarding to first valuable experience." The sprint runs from Friday, November 13 to Thursday, November 26 (a U.S. holiday, no newsletter that day, by the way), with 14 specific items, two of which were actually done before the sprint began. We didn't close any in the first week, as noted above, but most of the remaining twelve are already built and on beta, waiting for my to sign-in and review them.
+The goal of this sprint (Sprint 2 of the Production milestone) is that a new user make it from "onboarding to first valuable experience." The sprint runs from Friday, November 13 to Thursday, November 26 (a U.S. holiday, no newsletter that day, by the way), with 14 specific items, two of which were actually done before the sprint began. We didn't close any in the first week, as noted above, but most of the remaining twelve are already built and on beta, waiting for me to sign in and review them.
 
 The team also built the tooling to implement ADR-084, with step-by-step instructions ready for me to implement.
 
-The beta was rebuilt 15 times, and Lead Developer wrote an update to the tool that promotes builds to beta so that it walks every parent of a merge (instead of just checking one line of history as it it had done in the past), to address the problem noted in last week's shipping news about the promotion gate missing a tested commit.
+The beta was rebuilt 15 times, and Lead Developer wrote an update to the tool that promotes builds to beta so that it walks every parent of a merge (instead of just checking one line of history as it had done in the past), to address the problem noted in last week's shipping news about the promotion gate missing a tested commit.
 
-Last week I confessed I was astounded to learn that Arch made 160 architectural rulings in supervising the build. I guess I need to get use to that pace because this week they made 175 rulings.
+Last week I confessed I was astounded to learn that Arch made 160 architectural rulings in supervising the build. I guess I need to get used to that pace because this week they made 175 rulings.
 
 I oversaw one fresh deployment of the MCP build on Nov 15, working with Piper Alpha (it's their project!) to narrow the scope of its GitHub connector to just the repos chosen.
 
@@ -34,11 +34,11 @@ The clock rule (about not guessing the time) went live on Nov 18 per the CIO. A 
 
 What a user can do now that they couldn't last week (as far as we can tell, given that I have not tested any of it yet):
 
-- In Claude, limit the Piper Morgan MCP connector's GitHub access to **just the repos you installed it on***.
+- In Claude, limit the Piper Morgan MCP connector's GitHub access to **just the repos you installed it on**.
 - **Disconnect** an integration from the Piper Morgan side with clear indications that the connection remains valid and can still be reconnected. 
-- Use **Disconnect All** to remove all connections [Exec: please fact-check this?]
+- Use **Disconnect All** and get a closing note naming any service where you still need to remove Piper yourself (GitHub, if you connected it with the app or a token, and Notion).
 - Understand the plain language in the **Integrations** setting page
-- Attempt to write to a repository [Exec: does "without the App installed" mean without doing the Github integration, ... the App lingo seems like GitHub App terminology which is not necessarily how the user will understand as "connecting Piper Morgan to Github" - if it means something else, please clarify for me] and get a reminder from Piper says to [install the App first][??]
+- Ask Piper to change something in a GitHub repository you haven't given it access to, and get a plain answer saying so, with where to add that repository (Settings, under Integrations).
 
 **▸ Facts: what you can't do yet** (the same shape as #069's list)
 - Get an invitation (the hold stands).
@@ -50,13 +50,21 @@ Built but not closed yet:
 
 We also codified nine conduct rules for Piper's replies:
 
-[Exec: please add succinct list for me to review and edit:]
+1. Look before you say.
+2. Every claim has a source you could name.
+3. "Done" means confirmed.
+4. Be plain about your limits.
+5. Numbers come with what was counted.
+6. A correction is a claim too.
+7. Ask when it matters, not by reflex.
+8. Help the person check important things.
+9. Decline without leaking.
 
 (These rules sit outside the classifier, so routing is unchanged.)
 
 ## 🔬 Methodology & process innovation
 
-I've already devoted enough ink to "don't hand me workarounds (ADR-084) above, and the clock rule.
+I've already devoted enough ink to "don't hand me workarounds" (ADR-084) above, and the clock rule.
 
 We also put my machines' keychains off-limits to agents.
 - **Keychain follow-through:** on 11-15 a test browser started without the mock-keychain flag, so it may have touched your login keychain. CIO disclosed it 11-16. A hook and an every-fire check now cover it.
@@ -103,10 +111,10 @@ I hope this pace works better for my readers as I expect it will for me.
 
 We finish sprint two, closing as many of the goals as possible:
 
-1. Seats run for real: Web's sign-in, the real-key run for the self-host fix, the conduct-rules count and cache run, and the first paid call under the cap.
-2. Read what's on beta, signed in, and close it. (CXO judges.)
-3. Finish the GitHub move: the open rows on the seat's GitHub account, then the memo enabling us to resume inviting hosted beta testers.
-4. Keys and deploys off my hands: I need to deploy the MCP and provide it with one token, plus [the restore drill? Exec, please help me unpack what that means? in fact plain English help with all of these items would be good.]
+1. The agents use their new accounts for real: Web signs in to beta with its own test account, a real key confirms the self-hosting fix, we measure the size of Piper's conduct rules and check that they are cached (so they don't add cost to every reply), and an agent makes its first paid model call under the budget cap.
+2. Check what's already built on beta while signed in, and close each item that works. CXO makes the call on each one.
+3. Finish moving the agents' GitHub work onto their own GitHub account (the last few setup steps are mine), then the memo that lets us resume inviting hosted beta testers.
+4. Keys and deploys off my hands: I create one token so the team can deploy the MCP server without me from now on. I also run the restore drill, a timed practice of restoring the production database from a backup onto a throwaway copy, to prove our backups actually work before we promise anything about them.
 5. Hitting the new editorial calendar deadlines.
 
 # 🚧 Blockers & asks
@@ -118,19 +126,19 @@ The [waitlist for beta access](https://pipermorgan.ai/try/beta/) remains open.
 # 🔎 This week's learning pattern
 
 
-## The second reader catches hat the first one missed
+## The second reader catches what the first one missed
 
 Multiple times this week one agent double-checked another agent's work and closed gaps:
 
-  - CIO found three gaps in HOST's [first drill read. <= means what?]
-  - Lead caught, by running [testing it? if they ran it did they really catch it or just succumb to ti?] it, that Arch's deploy-step command would have stopped every promotion.
+  - HOST reviewed the script for our database restore drill and passed it with one change. CIO reviewed it again and found more, including that an interrupted run would skip deleting the temporary copy of the database.
+  - Arch approved a new check to run before every update to beta. Before merging it, Lead ran the command exactly as written, in a bare setup like the deploy's, and it crashed. As written, it would have blocked every update.
   - Arch caught a CXO sentence about an unknown connection that was untrue for one GitHub path.
   - All three were corrected before merge or serve.
 
 **Pattern:** a second reader *using a different method* catches what the first missed.
 **Why it matters:** all three were caught before a user saw them.
-**Application:** have the second reader [run it, not just reread it. <= meaning what? test it? use a different method? in what sense? what is the practical advice?]
-- **Related:** [do we really not have any patterns about cross-checking? how about the methodolog docs?]
+**Application:** when you check someone's work, don't repeat their method. Run the command, click through the page, or test the claim against its source, rather than rereading the same text the same way.
+- **Related:** ["Over-Checking Pays Dividends"](https://pipermorgan.ai/blog/over-checking-pays-dividends/) and ["Verify at the User Path"](https://pipermorgan.ai/blog/verify-at-the-user-path/), plus our methodology note "Agreement Is Not Replication" (several reviewers agreeing proves little if they all checked the same way).
 
 **Thanks,**
 xian + Piper Morgan Development Team
