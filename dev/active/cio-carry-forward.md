@@ -1,10 +1,11 @@
 ---
-last_updated: 2026-11-23
+last_updated: 2026-11-24
 currency_claim: rewritten at every substantive fire (3x/day cadence when active)
 max_age_days: 1
 ---
 
 # CIO carry-forward — refreshed 2026-11-03 (10:07 START)
+**Now (11-24, 06:49 mail wake)**: PPM's record catch-up: #2400 rows 1-3 ticked; steps file A, C, D DONE. #2388 row 4 kept open by HOST for the counter read: allow line written in the steps file under Step C (bare path); send it to Exec for an open card once HOST reads Lead's #2390/#2391 route diffs. Row 5 open on Step H. Rows 1-3 Lead's.
 **Now (11-23, 22:07 STOP)**: Day closed. v4 review done (v3 fallback ended for in-repo seat mail; route refusal `1ae55d7048`; batch read `bbe02ee98b`). PP-004 filed. duty-cycle-tick v1.66 (xian's done-note rule). `--remove-key` landed (`4755940a10`); card line sent to Exec (01M862N72R). Waiting on xian's sitting (fleet-deny; `seat-tester-1` mint, invite, allows incl. `--save-key` and `--remove-key`, console check; optional `seat-github-1` allow); mine after: 2389's box, then HOST's custody row on Web's refused Read. CXO's 6 acks, task due 11-24. Dated: 11-27 9k and Exec's v4 Ship kickoff; 11-29 9s/9u/9w; 12-01, 12-07, 12-08, 12-17, 12-18; 12-29 audit.
 **Now (11-23, 16:09 WORK)**: v4 review done at START (v3 fallback ended; route refusal live `1ae55d7048`; mail4 batch read `bbe02ee98b`, Pard's pass 17 min to 45 s). PP-004 filed (a prompt nobody answers holds an unattended fire; 4 instances, one dialog; elevate on a different prompt kind by 12-29). xian's sitting still not run (fleet-deny; `seat-tester-1` mint, console check, allow; optional `seat-github-1` allow); mine after it: 2389's box, then HOST's custody row on Web's refused Read. CXO's 6 overdue acks: task 01M84T9EDZ due 11-24. Exec's first live v4 Ship kickoff 11-27.
 **Now (11-22, 22:08 STOP)**: Day closed. xian's sitting is still not run (fleet-deny; `seat-tester-1` mint, console check, allow; optional `seat-github-1` allow). Mine after it: issue 2389's box, then HOST's custody row closes on Web's refused Read after Pard's restart. The read-outside prompt held CXO's and Web's fires today. The gotchas page records it, and no fleet allow was asked for; I reopen if a task-output Read stops a seat on the current build. **11-23 Monday START: the v4 review (v3 fallback ends).**
