@@ -29,6 +29,9 @@ Usage:
     scripts/seat_session.py --account seat-tester-1 --save-key anthropic
         (saves the test workspace's key on that account through the app's own route, once;
         prints no value; its own exact allow, added by xian; see ``save_key``)
+    scripts/seat_session.py --account seat-tester-1 --remove-key anthropic
+        (clears a key the provider did not accept, through the app's own route; refuses a
+        validated key; its own exact allow, added by xian; see ``remove_key``)
 
 In a seat that has a seat browser (issue 2400) it then prints a second line,
 ``<account> placed in seat browser <seat>, expires <time>``; see ``place_in_seat_browser``.
@@ -524,8 +527,8 @@ def save_key(account: str, provider: str, send: Transport = http_transport) -> s
     only a status class is ever printed. Refuses as ``run`` does; never saves a session.
 
     ``validated: no`` (exit 5) means the key is stored but the provider did not accept it.
-    A second run then refuses, because a key is on file. Recovery is a remove mode through
-    the app's own delete route, which is not built here: it is a separate diff HOST reads."""
+    A second run then refuses, because a key is on file. Recovery is ``remove_key``
+    (``--remove-key``), which clears a key the provider did not accept."""
     if account not in ACCOUNTS:
         raise Refused("that account is not on the list")
     if provider not in SAVABLE_KEYS:
@@ -556,6 +559,46 @@ def save_key(account: str, provider: str, send: Transport = http_transport) -> s
     if not all(row.get("is_validated") is True for row in rows):
         raise KeyNotValidated(f"{account}: key saved; key on file: yes; validated: no")
     return f"{account}: key saved; key on file: yes; validated: yes"
+
+
+# Which account may have which provider's key removed by a seat. Closed, like the lists
+# above: ``web-seed-1386`` is absent on purpose, because other served rows depend on its
+# key. A change to this table is a diff HOST reads.
+KEY_REMOVABLE: Mapping[str, FrozenSet[str]] = {"seat-tester-1": frozenset({"anthropic"})}
+
+
+def remove_key(account: str, provider: str, send: Transport = http_transport) -> str:
+    """Recovery after ``save_key`` printed ``validated: no`` (HOST 01M82C816F and
+    01M82F420Z, 11-22): sign in, run bound 2, and clear the account's key for ``provider``
+    through the app's own route, ``DELETE /api/v1/keys/<provider>``, read back that no key
+    is on file, and run bound 2 again. Returns a fixed-word line; saves no session and
+    reads no key file.
+
+    It removes only a key the provider did not accept: if every row for the provider reads
+    ``is_validated`` true, it refuses and sends nothing, so a working key cannot be cleared
+    by a seat. No key on file is a no-op that says so."""
+    if account not in ACCOUNTS:
+        raise Refused("that account is not on the list")
+    if provider not in KEY_REMOVABLE.get(account, frozenset()):
+        raise Refused("that account's key for that provider may not be removed")
+    user, password = read_credentials(shared_dir() / ACCOUNTS[account].credential_file)
+    cookies = sign_in(account, user, password, send)
+    header = {"Cookie": "; ".join(f"{name}={value}" for name, (value, _) in cookies.items())}
+
+    check_holds_nothing_real(account, cookies, send)
+    rows = _key_rows(provider, header, send)
+    if not rows:
+        return f"{account}: no key to remove; key on file: no"
+    if all(row.get("is_validated") is True for row in rows):
+        raise Refused("the key on file is validated; a working key is not removed")
+
+    reply = send("DELETE", f"/api/v1/keys/{provider}", None, header)
+    if not 200 <= reply.status < 300:
+        raise Refused(f"the key removal was not accepted (status {reply.status // 100}xx)")
+    if _key_rows(provider, header, send):
+        raise Refused("the key removal was accepted but a key is still on file")
+    check_holds_nothing_real(account, cookies, send)
+    return f"{account}: key removed; key on file: no"
 
 
 def run(account: str, send: Transport = http_transport, now: Optional[float] = None) -> str:
@@ -618,10 +661,25 @@ def main(argv=None) -> int:
         choices=tuple(SAVABLE_KEYS),
         help="save the test workspace's key for this provider on the account, once; saves no session",
     )
+    parser.add_argument(
+        "--remove-key",
+        choices=tuple(sorted({p for allowed in KEY_REMOVABLE.values() for p in allowed})),
+        help="clear a key the provider did not accept, through the app's route; saves no session",
+    )
     args = parser.parse_args(argv)
-    if args.disconnect and args.save_key:
+    if sum(bool(mode) for mode in (args.disconnect, args.save_key, args.remove_key)) > 1:
         print("seat_session: refused: one mode at a time", file=sys.stderr)
         return 2
+    if args.remove_key:
+        try:
+            print(remove_key(args.account, args.remove_key))
+        except Refused as refusal:
+            print(f"seat_session: refused: {refusal}", file=sys.stderr)
+            return 2
+        except Exception as error:  # never print an exception's own text
+            print(f"seat_session: refused: unexpected {type(error).__name__}", file=sys.stderr)
+            return 3
+        return 0
     if args.save_key:
         try:
             print(save_key(args.account, args.save_key))

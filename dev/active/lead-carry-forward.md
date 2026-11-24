@@ -11,7 +11,7 @@
 - **Waits, each with its blocker:**
   - 2424: built on `lead/2424-list-project-arg-r1123` (`ce244d7fca`, tree `../lead-2424`), held on Arch's trigger (a main-arm router sample or served log line with `list_todos_query` and a `project` arg). At landing: fresh rebase, then CI's full suite (the recorded suite ran mid-rebase).
   - 2425, 2426: PPM's sprint 3 slot (draft due 11-25) and Arch's choice of lever.
-  - 2417, 2406's fresh-account row, 2411's last row: xian's `seat-tester-1` sitting (invite mint, console check, allow). Then `scripts/seat_account_create.py --account seat-tester-1` and `scripts/seat_session.py --account seat-tester-1 --save-key anthropic`, output line to HOST. The remove mode is built on `lead/seat-remove-key` (`4be378d957`, tree `../lead-seat`), waiting on HOST's read (01M861THCC); land it on HOST's yes, then give CIO the command for the allow row.
+  - 2417, 2406's fresh-account row, 2411's last row: xian's `seat-tester-1` sitting (invite mint, console check, allow). Then `scripts/seat_account_create.py --account seat-tester-1` and `scripts/seat_session.py --account seat-tester-1 --save-key anthropic`, output line to HOST. The remove mode is on main (`4755940a10`, HOST and Arch read it 11-23); its allow (`scripts/seat_session.py --account seat-tester-1 --remove-key anthropic`) goes on xian's card with `--save-key`'s (Exec told, 11-23 22:10); used only if `--save-key` prints `validated: no`.
   - 2412, 2297's list-name row, 2364 step 1 merge: Step E (xian's OpenAI key).
   - 2423: an App-connected account.
   - 2157: xian's restore-drill sitting (HOST), then 2158 for proof 3.
