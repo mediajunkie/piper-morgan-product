@@ -212,18 +212,17 @@ except Exception as e:
 # #2039: content-negotiated 404. An unmatched route raises Starlette's HTTPException
 # (not FastAPI's subclass, so the handler above never sees it). Browser requests
 # outside /api/ that accept text/html get the app-shell page; everything else keeps
-# the framework's default JSON {"detail": "Not Found"}.
+# the framework's default JSON {"detail": "Not Found"}. Issue 2431: that test is
+# services.api.refusal_pages.wants_a_page, the one copy.
 try:
     from fastapi.exception_handlers import http_exception_handler as _default_http_handler
     from starlette.exceptions import HTTPException as _StarletteHTTPException
 
+    from services.api.refusal_pages import wants_a_page
+
     @app.exception_handler(_StarletteHTTPException)
     async def _not_found_negotiated(request: Request, exc: _StarletteHTTPException):
-        if (
-            exc.status_code == 404
-            and not request.url.path.startswith("/api/")
-            and "text/html" in request.headers.get("accept", "")
-        ):
+        if exc.status_code == 404 and wants_a_page(request):
             from web.api.routes.ui import render_human_not_found
 
             try:

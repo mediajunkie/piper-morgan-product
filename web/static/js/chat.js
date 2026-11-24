@@ -744,7 +744,18 @@
         }
 
         if (!response.ok) {
-          throw new Error(result.detail || "An API error occurred");
+          // Issue 2431: a refused request says why in `message` (an outage, the rate
+          // limit, a full server). Show it through the one reader, as text; the old
+          // words stay the fallback when no message came.
+          const refusedDiv = appendMessage("", false);
+          refusedDiv.classList.add("error");
+          const refusedLine = document.createElement("div");
+          refusedLine.className = "result error";
+          RouteMessage.show(refusedLine, result, result.detail || "An API error occurred");
+          refusedDiv.replaceChildren(refusedLine);
+          const thinkingContainerRefused = thinkingDiv.closest('.message-container');
+          if (thinkingContainerRefused) thinkingContainerRefused.remove(); else thinkingDiv.remove();
+          return;
         }
 
         // Replace the 'thinking' message with a new bot message (with 'reply' class)
