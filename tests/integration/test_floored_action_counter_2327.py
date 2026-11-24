@@ -12,6 +12,7 @@ checkout has not migrated); CI runs ``alembic upgrade head`` first, so it runs t
 
 import uuid
 from datetime import datetime, timezone
+from types import SimpleNamespace
 
 import pytest
 from sqlalchemy import text
@@ -20,6 +21,9 @@ from services.database.session_factory import AsyncSessionFactory
 from services.intent_service import floored_action_audit as audit
 
 pytestmark = [pytest.mark.integration, pytest.mark.asyncio]
+
+# The route notes each read with the reader (issue 2390), so the calls carry one.
+READER = SimpleNamespace(user_id="00000000-0000-0000-0000-00000000a11c")
 
 
 @pytest.fixture
@@ -72,7 +76,7 @@ async def test_the_admin_read_returns_the_rows_and_the_window(scratch_name):
 
     await audit._increment(scratch_name, audit.SITE_QUERY_ACTION)
     today = datetime.now(timezone.utc).date().isoformat()
-    payload = await floored_actions(days=1, reader=None)
+    payload = await floored_actions(days=1, reader=READER)
     assert payload["window"] == {"days": 1, "since": today, "through": today}
     mine = [r for r in payload["rows"] if r["name"] == scratch_name]
     assert mine == [
@@ -93,9 +97,9 @@ async def test_the_window_is_capped():
         ).scalar()
     if exists is None:
         pytest.skip("migration v2327floored is not applied to this database")
-    payload = await admin.floored_actions(days=100000, reader=None)
+    payload = await admin.floored_actions(days=100000, reader=READER)
     assert payload["window"]["days"] == admin.FLOORED_ACTIONS_MAX_DAYS
-    assert (await admin.floored_actions(days=0, reader=None))["window"]["days"] == 1
+    assert (await admin.floored_actions(days=0, reader=READER))["window"]["days"] == 1
 
 
 @pytest.fixture

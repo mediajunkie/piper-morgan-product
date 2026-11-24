@@ -10,31 +10,23 @@ caption: ''
 
 This week the agent team piled up a lot of work that waited for my attention to fully complete or execute. More and more workflows led to manual tasks for me. Eventually, I asked for a review of the state of affairs, writing "We keep changing how provider keys are used, how github is used, how piper morgan is used by our agents and it's become a tangled mess that keeps becoming my problem to manually navigate. this is not an acceptable state of affairs."
 
-This led to 
-- What led up to it: a stored testing key couldn't be decrypted, the classifier refused the workaround, and the seats drifted toward "xian runs it".
-- The structural answer: ADR-084, which gives the seats their own keys, accounts and browser (a paraphrase. Its title is "Seat resources: what agents use to run and test Piper is separate from xian's, granted once, and bounded where a seat can't pass"). You accepted it 11-16 at 06:20 with a budget of $10 a run without asking, under a hard cap of $150 a month. Every seat rewrote its open items so that none ends in "xian runs it".
-- The cost: a whole week of work that was built and put on beta but not read by a signed-in person. All of it converged on one sitting at Amber (Fri 11-20).
-- Sprint 2 is "onboarding to first value", 11-13 to 11-26, and it has 14 named items. 2 were done before the sprint began. 0 closed in week one, and 12 are open. Most of the 12 are built and on beta, waiting for a signed-in read.
-- Continuity: #069 was "Off-Limits by Default" (the keychain). This one is the same instinct applied to your own hands.
+This led to an architecture decision record ([ADR-084](https://pmorgan.tech/internal/architecture/adrs/adr-084-seat-resources-are-separate-granted-once-and-bounded)) with an ungainly name, "Seat resources are separate, granted once, and bounded." It gives each agent/role "seat" their own keys, accounts and browser. I accepted it on Nov 16, approving a budget of $10 a run without asking, under a hard cap of $150 a month. Every agent then reviewed their open items for tasks they had assigned to me to run manually that they were now adequately provisioned to run themselves.
 
 # 🚀 Shipped this week
 
+The upshot was that the work done in the first week of this two-week sprint (itself the team's first sprint of this length) didn't get a human review before the second half of the sprint behan.
+
 ## ⚙️ Engineering & architecture
 
-**▸ Write about:** the seat tools built for ADR-084, the promotions to beta, and the review layer catching mistakes before they reached a user.
+The goal of this sprint (Sprint 2 of the Production milestone) is that a new user make it from "onboarding to first valuable experience." The sprint runs from Friday, November 13 to Thursday, November 26 (a U.S. holiday, no newsletter that day, by the way), with 14 specific items, two of which were actually done before the sprint began. We didn't close any in the first week, as noted above, but most of the remaining twelve are already built and on beta, waiting for my to sign-in and review them.
 
-**▸ Facts:**
-- **ADR-084's tools, built and read by 11-18:** seat keys, seat sign-in, seat accounts, the seat browser, a dollar cap per run, and a scan for credential shapes. Real runs that week: 0. Your sitting on 11-20 did Steps A, C, D, F0 and F.1.
-- **Updates to beta:** 15 of 16 promotion dispatches succeeded. The gate refused one (11-15 20:00). Lead counts 14, and GitHub and the omnibus count 15.
-- **The promotion gate now walks every parent** of a merge, not just one line of history (Lead, landed 11-13. #2363 itself is still open, so don't say closed). This follows on #069's story of the gate missing the tested commit.
-- **The second reader caught what the first missed** (a learning-pattern candidate, see below):
-  - CIO found three gaps in HOST's first drill read.
-  - Lead caught, by running it, that Arch's deploy-step command would have stopped every promotion.
-  - Arch caught a CXO sentence about an unknown connection that was untrue for one GitHub path.
-  - All three were corrected before merge or serve.
-- **Arch:** 175 ruling lines this week, with at least five self-corrections. (Last week's Ship said 160. Your "somewhat astonished" line could continue.)
-- **Main CI** had two red windows on the morning of 11-17 (5 failed Tests runs, 08:11 to 09:50, from Lead's pushes) and was 12 of 12 green at every read after (Lead's and PPM's reads).
-- **MCP deploys:** 1, yours on 11-15 in PA's session. It kept the connector's GitHub reads inside the repositories you chose (see Product).
+The team also built the tooling to implement ADR-084, with step-by-step instructions ready for me to implement.
+
+The beta was rebuilt 15 times, and Lead Developer wrote an update to the tool that promotes builds to beta so that it walks every parent of a merge (instead of just checking one line of history as it it had done in the past), to address the problem noted in last week's shipping news about the promotion gate missing a tested commit.
+
+Last week I confessed I was astounded to learn that Arch made 160 architectural rulings in supervising the build. I guess I need to get use to that pace because this week they made 175 rulings.
+
+I oversaw one fresh deployment of the MCP build on Nov 15, working with Piper Alpha (it's their project!). It kept the connector's GitHub reads inside the repositories you chose (see Product).
 - **Clock rule:** live 11-18 (CIO), the follow-through on #069's time-guessing story. Backtest: it would have refused 138 of 1,781 past commits (7.7%). The backtest found one false positive, which CIO fixed, and no seat has reported a false refusal since it went live.
 
 ## 🎯 Product & experience
@@ -151,6 +143,11 @@ Since the window closed: your 11-20 sitting did Steps A, C, D, F0 and F.1, and "
 
 ## Candidate B: The second reader
 
+- **The second reader caught what the first missed** (a learning-pattern candidate, see below):
+  - CIO found three gaps in HOST's first drill read.
+  - Lead caught, by running it, that Arch's deploy-step command would have stopped every promotion.
+  - Arch caught a CXO sentence about an unknown connection that was untrue for one GitHub path.
+  - All three were corrected before merge or serve.
 - **Discovery:** a second reader using a different method catches what the first missed.
 - **Example:** the three catches listed under Engineering.
 - **Why it matters:** all three were caught before a user saw them.

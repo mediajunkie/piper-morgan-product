@@ -156,6 +156,32 @@ async def _revoke_github_grant_at_github(user_id: str) -> bool:
     return not await GitHubOAuthHandler(classic=True).revoke_grant(grant)
 
 
+async def _clear_github_personal_token(keychain, user_id: str) -> list[str]:
+    """Issue 2385: the ONE clear of an account's GitHub personal token, used by both
+    Disconnect and Remove token, so a copy added here is cleared on both paths.
+
+    Three copies: the Settings keychain copy (#849, user-scoped), the at-rest row
+    (#1982, the dual write's second copy; without this a revoke leaves a row the MCP
+    app's GitHub subkey could still read), and the key service's own keychain copy
+    (provider "github"; ``delete_user_pat_at_rest`` removes it best-effort, so it is
+    read back here). Returns the names of the copies that could not be verified gone."""
+    remaining: list[str] = []
+    if not await _keychain_copy_gone(keychain, "github_token", user_id):
+        remaining.append("keychain_pat")
+    try:
+        from services.connectors.github_pat_store import delete_user_pat_at_rest
+        from services.database.session_factory import AsyncSessionFactory
+
+        async with AsyncSessionFactory.session_scope() as session:
+            await delete_user_pat_at_rest(session, user_id)
+    except Exception as e:
+        logger.warning("github_pat_at_rest_clear_failed", error=str(e))
+        remaining.append("pat_at_rest")
+    if not await _keychain_copy_gone(keychain, "github", user_id):
+        remaining.append("keychain_pat_key_service")
+    return remaining
+
+
 async def _disconnect_github(user_id: str) -> tuple[list[str], bool]:
     from services.infrastructure.keychain_service import KeychainService
 
@@ -163,8 +189,7 @@ async def _disconnect_github(user_id: str) -> tuple[list[str], bool]:
     keychain = KeychainService()
     # #2178: at GitHub first, while the token is still readable (cleared below).
     revoke_failed = await _revoke_github_grant_at_github(user_id)
-    if not await _keychain_copy_gone(keychain, "github_token", user_id):  # #849 user-scoped
-        remaining.append("keychain_pat")
+    remaining.extend(await _clear_github_personal_token(keychain, user_id))  # issue 2385
     # #1558: NO os.environ.pop here — env tokens are system/deployment
     # credentials (#1461(a): env fallback is system-only); a user-scoped
     # disconnect mutating them was process-wide cross-tenant damage.
@@ -195,21 +220,6 @@ async def _disconnect_github(user_id: str) -> tuple[list[str], bool]:
     # row, then this copy best-effort, so read it back here.
     if not await _keychain_copy_gone(keychain, "github_mcp_oauth", user_id):
         remaining.append("oauth_grant_keychain")
-    # #1982: the at-rest PAT row (the dual write's second copy) goes too, so a
-    # revoke leaves no row the MCP app's GitHub subkey could still read.
-    try:
-        from services.connectors.github_pat_store import delete_user_pat_at_rest
-        from services.database.session_factory import AsyncSessionFactory
-
-        async with AsyncSessionFactory.session_scope() as session:
-            await delete_user_pat_at_rest(session, user_id)
-    except Exception as e:
-        logger.warning("github_pat_at_rest_clear_failed", error=str(e))
-        remaining.append("pat_at_rest")
-    # The key service's own keychain copy (provider "github", #1982's dual write);
-    # delete_user_pat_at_rest removes it best-effort, so read it back here.
-    if not await _keychain_copy_gone(keychain, "github", user_id):
-        remaining.append("keychain_pat_key_service")
     # The read-back is THE resolver (ADR-081 D1): gone means it finds no credential on
     # either leg and degrades CONNECT_REQUIRED. A leg it still serves, or a store that
     # didn't answer (UNREACHABLE), is not verified gone.
@@ -234,27 +244,14 @@ async def remove_github_personal_token(user_id: str) -> list[str]:
     nothing else. The OAuth binding and its grant are untouched, and nothing is revoked
     at GitHub (a personal token is the person's own credential, ADR-081 D4).
 
-    The same three copies ``_disconnect_github`` clears: the Settings keychain copy,
-    the at-rest row, and the key service's keychain copy. Returns what could not be
+    The same three copies ``_disconnect_github`` clears, through the one shared clear
+    (``_clear_github_personal_token``, issue 2385). Returns what could not be
     verified gone (empty when the token is gone). The read-back is the resolver's own
     read (``account_pat``): gone means it finds no token on either leg."""
     from services.infrastructure.keychain_service import KeychainService
 
-    remaining: list[str] = []
     keychain = KeychainService()
-    if not await _keychain_copy_gone(keychain, "github_token", user_id):
-        remaining.append("keychain_pat")
-    try:
-        from services.connectors.github_pat_store import delete_user_pat_at_rest
-        from services.database.session_factory import AsyncSessionFactory
-
-        async with AsyncSessionFactory.session_scope() as session:
-            await delete_user_pat_at_rest(session, user_id)
-    except Exception as e:
-        logger.warning("github_pat_at_rest_clear_failed", error=str(e))
-        remaining.append("pat_at_rest")
-    if not await _keychain_copy_gone(keychain, "github", user_id):
-        remaining.append("keychain_pat_key_service")
+    remaining = await _clear_github_personal_token(keychain, user_id)
     try:
         from services.integrations.github.config_service import GitHubConfigService
 
