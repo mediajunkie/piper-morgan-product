@@ -17,6 +17,7 @@ import structlog
 from fastapi import APIRouter, Body, Depends, HTTPException, Query, status
 from pydantic import BaseModel
 
+from services.api.errors import UserFacingHTTPException
 from services.auth.auth_middleware import get_current_user
 from services.auth.jwt_service import JWTClaims
 from services.intent_service.document_handlers import (
@@ -50,10 +51,15 @@ logger = structlog.get_logger(__name__)
 # and carries the same "nothing was changed" reassurance.
 # #1823: provider-neutral (CXO's ruled convention — the policy is ownership, not a
 # vendor; one stored key of ANY spendable provider passes the gate now).
+# Issue 2432 (CXO, mail 01M87NVGEW): reworded to the search line's twin, marked.
 USER_KEY_REQUIRED_DETAIL = (
-    "This needs an LLM key of your own — Piper doesn't bill anyone else's account. "
-    "Add an OpenAI or Anthropic API key in Settings and try this again. Nothing was charged."
+    "This needs an OpenAI or Anthropic API key of your own. "
+    "Add one in Settings → LLM API Keys, then try again. Nothing was charged."
 )
+
+# Issue 2432 (CXO, comment 7144095698): the compare route's limits, reworded, marked.
+TOO_FEW_TO_COMPARE_LINE = "Pick at least two documents to compare."
+TOO_MANY_TO_COMPARE_LINE = "You can compare up to five documents at a time."
 
 # #1819: document search embeds the query via OpenAI, so the key it needs is an
 # OPENAI key — same principle as above, honest about which key.
@@ -79,7 +85,7 @@ async def _resolve_key_or_refuse(user_id: str):
         return await resolve_user_llm_binding(None, user_id)
     except UserLLMKeyRequiredError:
         logger.warning("documents_user_key_required_1807", user_id=user_id)
-        raise HTTPException(
+        raise UserFacingHTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
             detail=USER_KEY_REQUIRED_DETAIL,
         )
@@ -327,15 +333,13 @@ async def compare_documents(
     """
     try:
         if len(file_ids) < 2:
-            raise HTTPException(
-                status_code=status.HTTP_400_BAD_REQUEST,
-                detail="At least 2 documents required for comparison",
+            raise UserFacingHTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST, detail=TOO_FEW_TO_COMPARE_LINE
             )
 
         if len(file_ids) > 5:
-            raise HTTPException(
-                status_code=status.HTTP_400_BAD_REQUEST,
-                detail="Maximum 5 documents can be compared at once",
+            raise UserFacingHTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST, detail=TOO_MANY_TO_COMPARE_LINE
             )
 
         # #1185: bind the caller's stored Anthropic key for this request.
@@ -487,7 +491,7 @@ async def search_documents(
         embed_key = await resolve_user_openai_key(current_user.sub)
     except UserLLMKeyRequiredError:
         logger.warning("documents_search_openai_key_required_1819", user_id=current_user.sub)
-        raise HTTPException(
+        raise UserFacingHTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
             detail=SEARCH_KEY_REQUIRED_DETAIL,
         )
@@ -510,7 +514,7 @@ async def search_documents(
         logger.warning("documents_search_key_refusal_1819", user_id=current_user.sub)
         # Issue 2432: the refusal's own text is developer wording (it cites issue
         # numbers), so the person gets the search route's vetted key line instead.
-        raise HTTPException(
+        raise UserFacingHTTPException(
             status_code=status.HTTP_403_FORBIDDEN, detail=SEARCH_KEY_REQUIRED_DETAIL
         )
     except Exception as e:

@@ -214,7 +214,8 @@ class TestSaveGitHubToken:
                 await save_github_token("ghp_invalid_token", current_user=mock_user)
 
             assert exc_info.value.status_code == 400
-            assert "Bad credentials" in str(exc_info.value.detail)
+            # Issue 2432 (CXO): GitHub's own reason goes to the log, never the reply.
+            assert exc_info.value.detail == "That GitHub token didn't work. Check it and try again."
             # Invalid token must NOT be stored.
             mock_keychain.store_api_key.assert_not_called()
 

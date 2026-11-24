@@ -40,13 +40,77 @@ MAX_PER_DAY = 20  # HOST's cap
 _MASK_RE = re.compile(r"^[0-9A-Z]{4}…[0-9A-Z]{4}$")
 
 
-class InviteAdminError(ValueError):
-    """A refusal with a user-facing reason; the route maps it to a status."""
+# Issue 2432 (Arch, mail 01M87QXPZZ, decisions.log 2026-11-24 13:38): a refusal carries a
+# CODE and, for the daily limit, its whole numbers. It carries no sentence. The route
+# picks the line through ``invite_refusal_line`` (on the guard's closed picker list), so
+# nothing built at run time can reach the admin's screen.
+REFUSAL_MINT_COUNT = "mint_count_out_of_range"
+REFUSAL_DAILY_LIMIT = "daily_limit"
+REFUSAL_NOT_MASKED = "not_a_masked_code"
+REFUSAL_NO_MATCH = "no_match"
+REFUSAL_AMBIGUOUS = "more_than_one_match"
+REFUSAL_ALREADY_REDEEMED = "already_redeemed"
+REFUSAL_ALREADY_REVOKED = "already_revoked"
+REFUSAL_USED_MEANWHILE = "used_meanwhile"
 
-    def __init__(self, reason: str, status_code: int = 400):
-        super().__init__(reason)
-        self.reason = reason
+
+class InviteAdminError(ValueError):
+    """A refusal: a code and a status. ``minted``, ``limit`` and ``left`` are whole
+    numbers, set only for the daily limit."""
+
+    def __init__(
+        self, code: str, status_code: int = 400, *, minted: int = 0, limit: int = 0, left: int = 0
+    ):
+        super().__init__(code)
+        self.code = code
         self.status_code = status_code
+        self.minted = minted
+        self.limit = limit
+        self.left = left
+
+
+# The lines an admin reads (CXO, mail 01M87RB23J, 2026-11-24). The first is built once at
+# import from the limit it names. "Nothing was revoked" is true: each refusal is raised
+# before the write.
+INVITE_MINT_COUNT_LINE = "You can create between 1 and {max} invite codes at a time.".format(
+    max=int(MAX_PER_REQUEST)
+)
+INVITE_DAILY_LIMIT_TEMPLATE = (
+    "That would go past today's limit: {used} of {limit} invite codes created, {left} left."
+)
+INVITE_NOT_MASKED_LINE = (
+    "That doesn't look like a masked invite code. It should look like ABCD…WXYZ."
+)
+INVITE_NO_MATCH_LINE = "No invite code matches that masked form."
+INVITE_AMBIGUOUS_LINE = (
+    "More than one unused code matches that masked form, so nothing was revoked."
+)
+INVITE_ALREADY_REDEEMED_LINE = "That code is already redeemed, so there is nothing to revoke."
+INVITE_ALREADY_REVOKED_LINE = "That code is already revoked, so there is nothing to revoke."
+INVITE_USED_MEANWHILE_LINE = "That code was used in the meantime, so nothing was revoked."
+
+
+def invite_refusal_line(code: str) -> Optional[str]:
+    """The line for a refusal code, or None for a code with no line (the refusal then
+    answers its status line). The daily limit is not here: its line carries whole
+    numbers and the route builds it from ``INVITE_DAILY_LIMIT_TEMPLATE``. A picker on the
+    guard's closed list (``DETAIL_PICKERS``): every return is an UPPER_CASE constant or
+    None."""
+    if code == REFUSAL_MINT_COUNT:
+        return INVITE_MINT_COUNT_LINE
+    if code == REFUSAL_NOT_MASKED:
+        return INVITE_NOT_MASKED_LINE
+    if code == REFUSAL_NO_MATCH:
+        return INVITE_NO_MATCH_LINE
+    if code == REFUSAL_AMBIGUOUS:
+        return INVITE_AMBIGUOUS_LINE
+    if code == REFUSAL_ALREADY_REDEEMED:
+        return INVITE_ALREADY_REDEEMED_LINE
+    if code == REFUSAL_ALREADY_REVOKED:
+        return INVITE_ALREADY_REVOKED_LINE
+    if code == REFUSAL_USED_MEANWHILE:
+        return INVITE_USED_MEANWHILE_LINE
+    return None
 
 
 def mask(token: str) -> str:
@@ -115,13 +179,12 @@ async def minted_today(session: AsyncSession, now: Optional[datetime] = None) ->
 async def mint_invites(session: AsyncSession, *, count: int, actor_user_id: UUID) -> List[str]:
     """Mint ``count`` codes. Returns the RAW codes, to be shown once. Never log them."""
     if not isinstance(count, int) or count < 1 or count > MAX_PER_REQUEST:
-        raise InviteAdminError(f"Mint between 1 and {MAX_PER_REQUEST} codes at a time.", 422)
+        raise InviteAdminError(REFUSAL_MINT_COUNT, 422)
     already = await minted_today(session)
     if already + count > MAX_PER_DAY:
         left = max(0, MAX_PER_DAY - already)
         raise InviteAdminError(
-            f"Daily limit: {already} of {MAX_PER_DAY} codes minted today; {left} left today.",
-            429,
+            REFUSAL_DAILY_LIMIT, 429, minted=already, limit=MAX_PER_DAY, left=left
         )
     raw: List[str] = []
     for _ in range(count):
@@ -172,7 +235,7 @@ async def revoke_invite(session: AsyncSession, *, masked: str, actor_user_id: UU
     no unused code (404), more than one (409: ambiguous, say so), or only a
     code already redeemed (409)."""
     if not _MASK_RE.match(masked or ""):
-        raise InviteAdminError("That is not a masked invite code (ABCD…WXYZ).", 422)
+        raise InviteAdminError(REFUSAL_NOT_MASKED, 422)
     head, tail = masked.split("…")
     result = await session.execute(
         select(InviteToken.token, InviteToken.used_at, InviteToken.used_by_user_id).where(
@@ -183,15 +246,15 @@ async def revoke_invite(session: AsyncSession, *, masked: str, actor_user_id: UU
         (t, u, b) for (t, u, b) in result.all() if len(t) >= 8 and t[:4] == head and t[-4:] == tail
     ]
     if not matches:
-        raise InviteAdminError("No invite code matches that masked form.", 404)
+        raise InviteAdminError(REFUSAL_NO_MATCH, 404)
     unused = [t for (t, u, b) in matches if u is None]
     if len(unused) > 1:
-        raise InviteAdminError(
-            "More than one unused code matches that masked form; nothing was revoked.", 409
-        )
+        raise InviteAdminError(REFUSAL_AMBIGUOUS, 409)
     if not unused:
         status = _status_of(matches[0][1], matches[0][2])
-        raise InviteAdminError(f"That code is already {status}; nothing to revoke.", 409)
+        raise InviteAdminError(
+            REFUSAL_ALREADY_REDEEMED if status == "redeemed" else REFUSAL_ALREADY_REVOKED, 409
+        )
     token = unused[0]
     now = datetime.now(timezone.utc)
     done = await session.execute(
@@ -200,7 +263,7 @@ async def revoke_invite(session: AsyncSession, *, masked: str, actor_user_id: UU
         .values(used_at=now, used_by_user_id=None)
     )
     if done.rowcount != 1:
-        raise InviteAdminError("That code was used in the meantime; nothing was revoked.", 409)
+        raise InviteAdminError(REFUSAL_USED_MEANWHILE, 409)
     await _write_audit(
         session,
         actor_user_id=actor_user_id,

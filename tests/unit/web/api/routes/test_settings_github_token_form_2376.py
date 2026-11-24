@@ -162,7 +162,9 @@ class TestSaveRefusesBeforeAnyCallToGitHub:
         with patch.object(token_validator, "verify_github_token", verify):
             with pytest.raises(HTTPException) as e:
                 await si.save_github_token(token=" ghp_typed ", current_user=_claims())
-        assert e.value.status_code == 400 and e.value.detail == "Bad credentials"
+        # Issue 2432 (CXO): GitHub's own reason goes to the log, never the reply.
+        assert e.value.status_code == 400
+        assert e.value.detail == "That GitHub token didn't work. Check it and try again."
         verify.assert_awaited_once_with("ghp_typed")  # stripped, and only now sent
 
     async def test_a_classic_connection_keeps_the_token_form(self, bindings, app_off):

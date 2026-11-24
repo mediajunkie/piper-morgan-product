@@ -14,6 +14,7 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from pydantic import BaseModel
 from sqlalchemy import select
 
+from services.api.errors import UserFacingHTTPException
 from services.auth.auth_middleware import get_current_user
 from services.auth.jwt_service import JWTClaims
 from services.database.models import ItemDB, ListDB
@@ -21,9 +22,14 @@ from services.database.session_factory import AsyncSessionFactory
 from services.domain import models as domain
 from services.domain.primitives import Item
 from web.api.dependencies import get_list_repository
+from web.api.exceptions import ROLE_NOT_RECOGNISED_LINE, SHARE_ROLES
 
 router = APIRouter(prefix="/api/v1/lists", tags=["lists"])
 logger = structlog.get_logger(__name__)
+
+# Issue 2432 (CXO, comment 7144095698): reworded, marked.
+LIST_NAME_NEEDED_LINE = "Give the list a name first."
+ITEM_TEXT_NEEDED_LINE = "Write the item first."
 
 
 # Pydantic models for sharing operations
@@ -104,9 +110,8 @@ async def create_list(
     """
     try:
         if not request.name or not request.name.strip():
-            raise HTTPException(
-                status_code=status.HTTP_400_BAD_REQUEST,
-                detail="List name is required",
+            raise UserFacingHTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST, detail=LIST_NAME_NEEDED_LINE
             )
 
         # Create list with ownership
@@ -337,9 +342,8 @@ async def update_list(
         # Update fields
         if name is not None:
             if not name.strip():
-                raise HTTPException(
-                    status_code=status.HTTP_400_BAD_REQUEST,
-                    detail="List name cannot be empty",
+                raise UserFacingHTTPException(
+                    status_code=status.HTTP_400_BAD_REQUEST, detail=LIST_NAME_NEEDED_LINE
                 )
             list_obj.name = name
 
@@ -475,17 +479,17 @@ async def share_list(
     """
     try:
         if not request.user_id or not request.user_id.strip():
+            # Issue 2432 (CXO): unmarked, so it answers the 400 status line.
             raise HTTPException(
                 status_code=status.HTTP_400_BAD_REQUEST,
                 detail="user_id is required",
             )
 
         # Validate role
-        valid_roles = ["viewer", "editor", "admin"]
+        valid_roles = SHARE_ROLES
         if request.role not in valid_roles:
-            raise HTTPException(
-                status_code=status.HTTP_400_BAD_REQUEST,
-                detail=f"role must be one of {valid_roles}",
+            raise UserFacingHTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST, detail=ROLE_NOT_RECOGNISED_LINE
             )
 
         # Convert string role to ShareRole enum
@@ -650,11 +654,10 @@ async def update_share_role(
     """
     try:
         # Validate role
-        valid_roles = ["viewer", "editor", "admin"]
+        valid_roles = SHARE_ROLES
         if request.role not in valid_roles:
-            raise HTTPException(
-                status_code=status.HTTP_400_BAD_REQUEST,
-                detail=f"role must be one of {valid_roles}",
+            raise UserFacingHTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST, detail=ROLE_NOT_RECOGNISED_LINE
             )
 
         # Convert string role to ShareRole enum
@@ -896,9 +899,8 @@ async def add_item_to_list(
     """
     try:
         if not request.text or not request.text.strip():
-            raise HTTPException(
-                status_code=status.HTTP_400_BAD_REQUEST,
-                detail="Item text is required",
+            raise UserFacingHTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST, detail=ITEM_TEXT_NEEDED_LINE
             )
 
         # Verify list ownership
@@ -1075,9 +1077,8 @@ async def update_item(
     """
     try:
         if not request.text or not request.text.strip():
-            raise HTTPException(
-                status_code=status.HTTP_400_BAD_REQUEST,
-                detail="Item text is required",
+            raise UserFacingHTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST, detail=ITEM_TEXT_NEEDED_LINE
             )
 
         # Verify list ownership

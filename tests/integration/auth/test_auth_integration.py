@@ -545,7 +545,8 @@ async def test_password_change_validation(real_client, db_session, user_registry
     )
     assert response.status_code == 400, "Non-matching passwords should be rejected"
     # Error middleware reshapes detail -> message
-    assert "do not match" in response.json()["message"].lower()
+    # Issue 2432: CXO's line is "The new passwords don't match."
+    assert response.json()["message"] == "The new passwords don't match."
 
     # Test 7: Wrong current password
     change_data = {

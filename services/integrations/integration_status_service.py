@@ -110,6 +110,32 @@ def not_offered_message(name: str) -> str:
     return NOT_OFFERED_MESSAGE.format(name=DISPLAY_NAMES.get(name, name.capitalize()))
 
 
+# Issue 2432 (CXO, comment 7144095698: "the card family I already ruled, one line per
+# offered name; keep it behind a listed picker"). One constant per known connector, each
+# computed once at import from ``NOT_OFFERED_MESSAGE`` and ``DISPLAY_NAMES``, so the route's
+# 409 keeps its words through the marked path. Pinned word for word in
+# tests/unit/web/test_vetted_4xx_lines_2432.py.
+GITHUB_NOT_OFFERED_LINE = NOT_OFFERED_MESSAGE.format(name=DISPLAY_NAMES["github"])
+SLACK_NOT_OFFERED_LINE = NOT_OFFERED_MESSAGE.format(name=DISPLAY_NAMES["slack"])
+CALENDAR_NOT_OFFERED_LINE = NOT_OFFERED_MESSAGE.format(name=DISPLAY_NAMES["calendar"])
+NOTION_NOT_OFFERED_LINE = NOT_OFFERED_MESSAGE.format(name=DISPLAY_NAMES["notion"])
+
+
+def not_offered_line(name: str) -> Optional[str]:
+    """The vetted not-offered line for ``name``, or None for a name with no line (its
+    refusal then answers the 409 status line). A picker on the guard's closed list
+    (``DETAIL_PICKERS``): every return is an UPPER_CASE constant or None."""
+    if name == "github":
+        return GITHUB_NOT_OFFERED_LINE
+    if name == "slack":
+        return SLACK_NOT_OFFERED_LINE
+    if name == "calendar":
+        return CALENDAR_NOT_OFFERED_LINE
+    if name == "notion":
+        return NOTION_NOT_OFFERED_LINE
+    return None
+
+
 def refuse_unless_offered(name: str) -> None:
     """The one server-side guard (#2237) for every connect / OAuth-start / credential-save
     route of a connector. Call it as the route body's first statement.
@@ -122,6 +148,10 @@ def refuse_unless_offered(name: str) -> None:
     if not connector_offered(name):
         from fastapi import HTTPException
 
+        from services.api.errors import UserFacingHTTPException
+
+        if not_offered_line(name) is not None:
+            raise UserFacingHTTPException(status_code=409, detail=not_offered_line(name))
         raise HTTPException(status_code=409, detail=not_offered_message(name))
 
 
