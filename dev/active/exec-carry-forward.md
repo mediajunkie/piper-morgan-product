@@ -15,7 +15,7 @@
 - After it publishes, the calendar row goes to published/distributed and he crossposts to LinkedIn. Check the calendar, not mail (step 2.01).
 
 ## Rollup
-v1132, `719UZ4h1NELjEwWZbDCceT`. Source `dev/active/exec-attention-rollup-current.html`. Python replace plus assert, and bump the stamp from a `date` call. **At START 11-24:** retitle the h1 to Tuesday, and make #070's line the top line ("publishes today, waiting on your prose"). On every rebuild, check each item on his card against the seats' logs and the editorial calendar (cohort-attention-rollup step 2.01, xian's tell-one-agent rule).
+v1134 (Tue 11-24 06:01 START: h1 Tuesday, #070 top line), `719UZ4h1NELjEwWZbDCceT`. Source `dev/active/exec-attention-rollup-current.html`. Python replace plus assert, and bump the stamp from a `date` call. **At START 11-24:** retitle the h1 to Tuesday, and make #070's line the top line ("publishes today, waiting on your prose"). On every rebuild, check each item on his card against the seats' logs and the editorial calendar (cohort-attention-rollup step 2.01, xian's tell-one-agent rule).
 
 ## ADR-084 sitting (steps file `docs/internal/operations/adr-084-one-time-steps.md`)
 - **Done:** A, C, D, F0, F.1 (11-20).
