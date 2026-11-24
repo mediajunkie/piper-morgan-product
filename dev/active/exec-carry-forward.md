@@ -26,7 +26,7 @@ v1132, `719UZ4h1NELjEwWZbDCceT`. Source `dev/active/exec-attention-rollup-curren
 ## On xian's card (rollup v1132), in order
 1. **Ship #070 prose** (above).
 2. **Fleet deny** (on main 733636419f + ed85825f3c): `cd ~/Development/piper-morgan-worktrees/cio && python3 scripts/seat_settings_grant.py fleet-deny`, expect `added 6 deny rule(s); 2 were already there...`. Relay his output line to CIO. Pard restarts Web, and Web's Read must then be refused. Still open per HOST's 11-23 logs.
-3. **seat-tester-1 sitting (#2406, and #2417's last row):** mint; `seat_account_create.py --account seat-tester-1 --write-invite`; Lead's create allow; console check; save-key allow. After that, Lead creates and saves the key, and Web runs CXO's six turns and #2417's never-connected line. Lead's `--remove-key` is on branch `lead/seat-remove-key` (HOST read it as conforming at 11-23 evening).
+3. **seat-tester-1 sitting (#2406, and #2417's last row):** mint; `seat_account_create.py --account seat-tester-1 --write-invite`; Lead's create allow; console check; save-key allow. After that, Lead creates and saves the key, and Web runs CXO's six turns and #2417's never-connected line. Lead's `--remove-key` is on main `4755940a10`. Its allow is now step 6 of the card (rollup v1133, CIO 01M862N72R), after `--save-key`.
 4. **F.2, E** (above).
 - Done 11-23 and off the card: the "Do I Have To?" crosspost and the Medium "Inviting Company In" tease (Web's feed read; Docs recorded it).
 - Titles: Sat 11-28 is "Mark One Eyeball". Restore drill 2157: his choice of day. Later: #2387.
