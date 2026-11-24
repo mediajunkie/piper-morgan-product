@@ -106,10 +106,28 @@ from services.consciousness.cli_consciousness import (
 )
 
 
+def _is_terminal(stream) -> bool:
+    """True only when ``stream`` is a real terminal. A closed, missing or odd stream is not."""
+    try:
+        return bool(stream is not None and stream.isatty())
+    except (AttributeError, ValueError, OSError):
+        return False
+
+
 def should_open_browser() -> bool:
     """Check if browser should be opened (Issue #461: on by default)"""
     # Don't open if explicitly disabled with --no-browser flag
     if args.no_browser:
+        return False
+
+    # Don't open unless a person is at a terminal on both ends (HOST and Arch,
+    # decisions.log 2026-11-24 07:44). A person who types ``python main.py`` has a terminal
+    # on stdin and stdout and keeps the tab. A seat's shell, a script, nohup with a log
+    # file or a LaunchAgent has neither, and must never open one: twice (11-11, 11-24) a
+    # seat-started server opened a tab in xian's own browser, and had his browser not been
+    # running the same call would have LAUNCHED it from a seat's shell, which no guard on
+    # command lines can see. ``--no-browser`` stays, as a second guard.
+    if not (_is_terminal(sys.stdin) and _is_terminal(sys.stdout)):
         return False
 
     # Don't open if no display (CI/CD, SSH)
