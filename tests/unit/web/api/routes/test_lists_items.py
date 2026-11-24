@@ -166,7 +166,8 @@ class TestListItemEndpoints:
         )
 
         assert response.status_code == 400
-        assert "required" in response.json()["detail"].lower()
+        # Issue 2432 (CXO): reworded and marked.
+        assert response.json()["detail"] == "Write the item first."
 
     @pytest.mark.asyncio
     async def test_get_items_in_list_success(

@@ -47,6 +47,17 @@ from web.api.exceptions import UserFacingHTTPException  # noqa: E402 (#2154; mov
 
 logger = structlog.get_logger(__name__)
 
+# Issue 2432 (CXO, comment 7144095698): 4xx lines kept or reworded, marked.
+ENTER_CLIENT_ID_LINE = "Enter the client ID."
+ENTER_CLIENT_SECRET_LINE = "Enter the client secret."
+SLACK_REPLIES_OFF_LINE = "Slack replies are turned off in this release, so your token wasn't saved."
+SLACK_APP_TOKEN_SHAPE_LINE = (
+    "That doesn't look like an app-level token — they start with 'xapp-'. "
+    "Check you copied the right one from Basic Information → App-Level Tokens."
+)
+NOTION_KEY_DIDNT_WORK_LINE = "That Notion API key didn't work. Check it and try again."
+GITHUB_TOKEN_DIDNT_WORK_LINE = "That GitHub token didn't work. Check it and try again."
+
 
 def _base_url() -> str:
     """#1324: deployed servers set PIPER_BASE_URL; OAuth redirect fallbacks derive
@@ -884,14 +895,12 @@ async def save_slack_app_credentials(
     try:
         # Validate both fields are non-empty
         if not credentials.client_id.strip():
-            raise HTTPException(
-                status_code=status.HTTP_400_BAD_REQUEST,
-                detail="client_id is required and cannot be empty",
+            raise UserFacingHTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST, detail=ENTER_CLIENT_ID_LINE
             )
         if not credentials.client_secret.strip():
-            raise HTTPException(
-                status_code=status.HTTP_400_BAD_REQUEST,
-                detail="client_secret is required and cannot be empty",
+            raise UserFacingHTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST, detail=ENTER_CLIENT_SECRET_LINE
             )
 
         # Store via IntegrationConfigService (Issue #734)
@@ -947,19 +956,12 @@ async def save_slack_app_token(
     )
 
     if not slack_inbound_enabled():
-        raise HTTPException(
-            status_code=409,
-            detail="Slack replies are turned off in this release — your token wasn't saved.",
-        )
+        raise UserFacingHTTPException(status_code=409, detail=SLACK_REPLIES_OFF_LINE)
     token = (body.app_token or "").strip()
     # Slack app-level tokens are `xapp-…`; reject anything else with a clear message.
     if not token.startswith("xapp-"):
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail=(
-                "That doesn't look like an app-level token — they start with 'xapp-'. "
-                "Check you copied the right one from Basic Information → App-Level Tokens."
-            ),
+        raise UserFacingHTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST, detail=SLACK_APP_TOKEN_SHAPE_LINE
         )
 
     try:
@@ -1208,14 +1210,12 @@ async def save_calendar_app_credentials(
     try:
         # Validate both fields are non-empty
         if not credentials.client_id.strip():
-            raise HTTPException(
-                status_code=status.HTTP_400_BAD_REQUEST,
-                detail="client_id is required and cannot be empty",
+            raise UserFacingHTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST, detail=ENTER_CLIENT_ID_LINE
             )
         if not credentials.client_secret.strip():
-            raise HTTPException(
-                status_code=status.HTTP_400_BAD_REQUEST,
-                detail="client_secret is required and cannot be empty",
+            raise UserFacingHTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST, detail=ENTER_CLIENT_SECRET_LINE
             )
 
         # Store via IntegrationConfigService (Issue #734)
@@ -1805,7 +1805,7 @@ async def get_calendar_list(current_user: JWTClaims = Depends(get_current_user))
 
         if not refresh_token:
             # #2105: not a session problem; never a 401 (the modal's trigger).
-            raise HTTPException(
+            raise UserFacingHTTPException(
                 status_code=status.HTTP_409_CONFLICT, detail=CALENDAR_NOT_CONNECTED_LINE
             )
 
@@ -1814,7 +1814,7 @@ async def get_calendar_list(current_user: JWTClaims = Depends(get_current_user))
         tokens = await handler.refresh_access_token(refresh_token)
 
         if not tokens:
-            raise HTTPException(
+            raise UserFacingHTTPException(
                 status_code=status.HTTP_409_CONFLICT, detail=CALENDAR_NEEDS_RECONNECT_LINE
             )
 
@@ -2041,9 +2041,10 @@ async def save_notion_key(
             raise UserFacingHTTPException(
                 status_code=status.HTTP_503_SERVICE_UNAVAILABLE, detail=NOTION_CHECK_FAILED_MESSAGE
             )
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail=error_msg or "Invalid Notion API key",
+        # Issue 2432 (CXO): the check's own reason goes to the log, never the reply.
+        logger.info("notion_key_refused", reason=error_msg)
+        raise UserFacingHTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST, detail=NOTION_KEY_DIDNT_WORK_LINE
         )
 
     # Store in keychain using UserAPIKeyService
@@ -2426,7 +2427,7 @@ async def save_github_token(
     # GitHub. The page makes the same check; a direct call used to skip it, and the
     # value went to GitHub's API before being refused.
     if not looks_like_personal_token(token):
-        raise HTTPException(
+        raise UserFacingHTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail=GITHUB_TOKEN_SHAPE_REFUSAL,
         )
@@ -2438,7 +2439,7 @@ async def save_github_token(
     async with AsyncSessionFactory.session_scope() as session:
         binding = await ConnectorBindingRepository(session).get(current_user.sub, "github")
     if _github_app_connected(binding.status if binding else None):
-        raise HTTPException(
+        raise UserFacingHTTPException(
             status_code=status.HTTP_409_CONFLICT,
             detail=GITHUB_TOKEN_APP_CONNECTED_REFUSAL,
         )
@@ -2451,9 +2452,10 @@ async def save_github_token(
     # submitted, no env juggling, no router/adapter dependency.
     test_result = await verify_github_token(token)
     if not test_result.get("authenticated"):
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail=test_result.get("error", "Invalid GitHub token"),
+        # Issue 2432 (CXO): the check's own reason goes to the log, never the reply.
+        logger.info("github_token_refused", reason=test_result.get("error"))
+        raise UserFacingHTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST, detail=GITHUB_TOKEN_DIDNT_WORK_LINE
         )
 
     try:

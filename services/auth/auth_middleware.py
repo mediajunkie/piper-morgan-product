@@ -34,6 +34,14 @@ from .jwt_service import JWTClaims, JWTService
 
 logger = structlog.get_logger(__name__)
 
+# Issue 2432 (CXO, comment 7144095698): the two gates' 403 lines, marked so they keep their
+# words. "Nothing was changed." is true: ``require_admin`` is a dependency, so it refuses
+# before the route body runs (pinned in tests/unit/web/test_vetted_4xx_lines_2432.py).
+ADMIN_ACCOUNT_NEEDED_FOR_CONFIG_LINE = (
+    "This changes app-wide configuration, so it needs an admin account. Nothing was changed."
+)
+OPERATIONS_READERS_ONLY_LINE = "This page is for operations readers."
+
 
 def sanitize_next_path(next_url: Optional[str], default: str = "/") -> str:
     """
@@ -774,12 +782,8 @@ async def require_admin(
             "global_credential_write_refused_non_admin",
             user_id=str(current_user.user_id),
         )
-        raise HTTPException(
-            status_code=status.HTTP_403_FORBIDDEN,
-            detail=(
-                "This changes app-wide configuration, so it needs an admin "
-                "account — nothing was changed."
-            ),
+        raise UserFacingHTTPException(
+            status_code=status.HTTP_403_FORBIDDEN, detail=ADMIN_ACCOUNT_NEEDED_FOR_CONFIG_LINE
         )
 
     return current_user
@@ -821,9 +825,8 @@ async def require_ops_reader(
         )
     if not allowed:
         logger.warning("ops_read_refused", user_id=str(current_user.user_id))
-        raise HTTPException(
-            status_code=status.HTTP_403_FORBIDDEN,
-            detail="This page is for operations readers.",
+        raise UserFacingHTTPException(
+            status_code=status.HTTP_403_FORBIDDEN, detail=OPERATIONS_READERS_ONLY_LINE
         )
     return current_user
 
@@ -853,6 +856,8 @@ def require_scopes(required_scopes: List[str]):
 
         if not required_scope_set.issubset(user_scopes):
             missing_scopes = required_scope_set - user_scopes
+            # Issue 2432 (CXO): unmarked, so a person reads the 403 status line; the
+            # scope names reach only the log (the handler logs every detail).
             raise HTTPException(
                 status_code=status.HTTP_403_FORBIDDEN,
                 detail=f"Insufficient permissions. Missing scopes: {', '.join(missing_scopes)}",

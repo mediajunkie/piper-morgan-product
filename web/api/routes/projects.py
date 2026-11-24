@@ -13,14 +13,41 @@ import structlog
 from fastapi import APIRouter, Depends, HTTPException, status
 from pydantic import BaseModel
 
+from services.api.errors import UserFacingHTTPException
 from services.auth.auth_middleware import get_current_user
 from services.auth.jwt_service import JWTClaims
 from services.domain import models as domain
 from services.shared_types import IntegrationType
 from web.api.dependencies import get_project_integration_repository, get_project_repository
+from web.api.exceptions import ROLE_NOT_RECOGNISED_LINE, SHARE_ROLES
 
 router = APIRouter(prefix="/api/v1/projects", tags=["projects"])
 logger = structlog.get_logger(__name__)
+
+# Issue 2432 (CXO, comment 7144095698): reworded, marked. The integration types are
+# computed once here from ``IntegrationType``, in its declared order; no line echoes a
+# value the person sent.
+PROJECT_NAME_NEEDED_LINE = "Give the project a name first."
+ONLY_OWNER_CAN_SHARE_LINE = "Only the project's owner can share it."
+NOTHING_TO_CHANGE_LINE = "There's nothing to change."
+INTEGRATION_TYPE_NOT_RECOGNISED_LINE = (
+    "That isn't an integration type I recognise. Choose one of: "
+    + ", ".join(t.value for t in IntegrationType)
+    + "."
+)
+INTEGRATION_SETTINGS_NOT_VALID_LINE = (
+    "That integration's settings aren't valid. Check them and try again."
+)
+INTEGRATION_ALREADY_ADDED_LINE = "That integration is already added to this project."
+# Issue 2432 (CXO, mail 01M87NVGEW): the two share refusals, one per route.
+ONLY_OWNER_CAN_REMOVE_ACCESS_LINE = (
+    "Only the project's owner can remove someone's access, "
+    "and that person has to be shared on the project."
+)
+ONLY_OWNER_CAN_CHANGE_ROLE_LINE = (
+    "Only the project's owner can change someone's role, "
+    "and that person has to be shared on the project."
+)
 
 
 # Request/Response Models (SEC-RBAC Phase 3)
@@ -88,9 +115,8 @@ async def create_project(
     """
     try:
         if not request.name or not request.name.strip():
-            raise HTTPException(
-                status_code=status.HTTP_400_BAD_REQUEST,
-                detail="Project name is required",
+            raise UserFacingHTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST, detail=PROJECT_NAME_NEEDED_LINE
             )
 
         # Create project with ownership using kwargs (BaseRepository.create signature)
@@ -454,9 +480,8 @@ async def update_project(
         update_kwargs = {}
         if name is not None:
             if not name.strip():
-                raise HTTPException(
-                    status_code=status.HTTP_400_BAD_REQUEST,
-                    detail="Project name cannot be empty",
+                raise UserFacingHTTPException(
+                    status_code=status.HTTP_400_BAD_REQUEST, detail=PROJECT_NAME_NEEDED_LINE
                 )
             update_kwargs["name"] = name
 
@@ -591,12 +616,11 @@ async def share_project(
     """
     try:
         # Validate role
-        valid_roles = ["viewer", "editor", "admin"]
+        valid_roles = SHARE_ROLES
         role = request.role.lower() if request.role else "viewer"
         if role not in valid_roles:
-            raise HTTPException(
-                status_code=status.HTTP_400_BAD_REQUEST,
-                detail=f"Invalid role. Must be one of: {', '.join(valid_roles)}",
+            raise UserFacingHTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST, detail=ROLE_NOT_RECOGNISED_LINE
             )
 
         # Convert string role to ShareRole enum
@@ -611,9 +635,8 @@ async def share_project(
         )
 
         if not updated_project:
-            raise HTTPException(
-                status_code=status.HTTP_403_FORBIDDEN,
-                detail="You must be the project owner to share it",
+            raise UserFacingHTTPException(
+                status_code=status.HTTP_403_FORBIDDEN, detail=ONLY_OWNER_CAN_SHARE_LINE
             )
 
         logger.info(
@@ -679,9 +702,8 @@ async def unshare_project(
         )
 
         if not success:
-            raise HTTPException(
-                status_code=status.HTTP_403_FORBIDDEN,
-                detail="You must be the project owner or user is not currently shared",
+            raise UserFacingHTTPException(
+                status_code=status.HTTP_403_FORBIDDEN, detail=ONLY_OWNER_CAN_REMOVE_ACCESS_LINE
             )
 
         logger.info(
@@ -744,12 +766,11 @@ async def update_project_share(
     """
     try:
         # Validate role
-        valid_roles = ["viewer", "editor", "admin"]
+        valid_roles = SHARE_ROLES
         role = request.role.lower() if request.role else "viewer"
         if role not in valid_roles:
-            raise HTTPException(
-                status_code=status.HTTP_400_BAD_REQUEST,
-                detail=f"Invalid role. Must be one of: {', '.join(valid_roles)}",
+            raise UserFacingHTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST, detail=ROLE_NOT_RECOGNISED_LINE
             )
 
         # Convert string role to ShareRole enum
@@ -764,9 +785,8 @@ async def update_project_share(
         )
 
         if not success:
-            raise HTTPException(
-                status_code=status.HTTP_403_FORBIDDEN,
-                detail="You must be the project owner or user is not currently shared",
+            raise UserFacingHTTPException(
+                status_code=status.HTTP_403_FORBIDDEN, detail=ONLY_OWNER_CAN_CHANGE_ROLE_LINE
             )
 
         logger.info(
@@ -969,10 +989,8 @@ async def create_project_integration(
         try:
             integration_type = IntegrationType(request.type)
         except ValueError:
-            valid_types = [t.value for t in IntegrationType]
-            raise HTTPException(
-                status_code=status.HTTP_400_BAD_REQUEST,
-                detail=f"Invalid integration type '{request.type}'. Valid types: {valid_types}",
+            raise UserFacingHTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST, detail=INTEGRATION_TYPE_NOT_RECOGNISED_LINE
             )
 
         # Validate config using domain model
@@ -983,9 +1001,8 @@ async def create_project_integration(
             project_id=project_id,
         )
         if not integration.validate_config():
-            raise HTTPException(
-                status_code=status.HTTP_400_BAD_REQUEST,
-                detail=f"Invalid config for {integration_type.value} integration",
+            raise UserFacingHTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST, detail=INTEGRATION_SETTINGS_NOT_VALID_LINE
             )
 
         # Check for duplicate type
@@ -995,9 +1012,8 @@ async def create_project_integration(
             owner_id=current_user.sub,
         )
         if existing:
-            raise HTTPException(
-                status_code=status.HTTP_409_CONFLICT,
-                detail=f"Integration of type '{integration_type.value}' already exists for this project",
+            raise UserFacingHTTPException(
+                status_code=status.HTTP_409_CONFLICT, detail=INTEGRATION_ALREADY_ADDED_LINE
             )
 
         created = await integration_repo.create(
@@ -1146,18 +1162,17 @@ async def update_project_integration(
                 config=request.config,
             )
             if not test_integration.validate_config():
-                raise HTTPException(
+                raise UserFacingHTTPException(
                     status_code=status.HTTP_400_BAD_REQUEST,
-                    detail=f"Invalid config for {db_integration.type.value} integration",
+                    detail=INTEGRATION_SETTINGS_NOT_VALID_LINE,
                 )
             update_kwargs["config"] = request.config
         if request.is_active is not None:
             update_kwargs["is_active"] = request.is_active
 
         if not update_kwargs:
-            raise HTTPException(
-                status_code=status.HTTP_400_BAD_REQUEST,
-                detail="No fields to update",
+            raise UserFacingHTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST, detail=NOTHING_TO_CHANGE_LINE
             )
 
         updated = await integration_repo.update(integration_id, **update_kwargs)
