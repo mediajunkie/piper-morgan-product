@@ -37,6 +37,9 @@ from web.utils.llm_key import (  # #1185; #1819/#1823 (any-provider binding + op
     resolve_user_openai_key,
 )
 
+# Issue 2432 (CXO, mail 01M87HSM8A): a file path must never reach the page.
+DOCUMENT_NOT_FOUND_MESSAGE = "I couldn't find that document."
+
 router = APIRouter(prefix="/api/v1/documents", tags=["documents"])
 logger = structlog.get_logger(__name__)
 
@@ -55,9 +58,8 @@ USER_KEY_REQUIRED_DETAIL = (
 # #1819: document search embeds the query via OpenAI, so the key it needs is an
 # OPENAI key — same principle as above, honest about which key.
 SEARCH_KEY_REQUIRED_DETAIL = (
-    "Document search uses OpenAI embeddings and needs an OpenAI API key of your own — "
-    "Piper doesn't bill anyone else's account. Add your OpenAI API key in Settings "
-    "and try this again. Nothing was charged."
+    "Document search needs an OpenAI API key of your own. "
+    "Add one in Settings → LLM API Keys, then try again. Nothing was charged."
 )
 
 
@@ -137,7 +139,7 @@ async def analyze_document(
         )
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
-            detail=str(e),
+            detail=DOCUMENT_NOT_FOUND_MESSAGE,  # issue 2432: never the exception's text
         )
 
     except HTTPException:
@@ -208,7 +210,7 @@ async def ask_question_about_document(
         )
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
-            detail=str(e),
+            detail=DOCUMENT_NOT_FOUND_MESSAGE,  # issue 2432: never the exception's text
         )
 
     except HTTPException:
@@ -278,7 +280,7 @@ async def summarize_document(
         )
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
-            detail=str(e),
+            detail=DOCUMENT_NOT_FOUND_MESSAGE,  # issue 2432: never the exception's text
         )
 
     except HTTPException:
@@ -356,7 +358,7 @@ async def compare_documents(
         )
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
-            detail=str(e),
+            detail=DOCUMENT_NOT_FOUND_MESSAGE,  # issue 2432: never the exception's text
         )
 
     except HTTPException:
@@ -430,7 +432,7 @@ async def reference_in_conversation(
         )
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
-            detail=str(e),
+            detail=DOCUMENT_NOT_FOUND_MESSAGE,  # issue 2432: never the exception's text
         )
 
     except HTTPException:
@@ -506,7 +508,11 @@ async def search_documents(
         # A spend refusal that surfaced from the embedding layer itself (#1819) —
         # e.g. the operator binding without gate 1. Honest 403, never a 500.
         logger.warning("documents_search_key_refusal_1819", user_id=current_user.sub)
-        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail=str(e))
+        # Issue 2432: the refusal's own text is developer wording (it cites issue
+        # numbers), so the person gets the search route's vetted key line instead.
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN, detail=SEARCH_KEY_REQUIRED_DETAIL
+        )
     except Exception as e:
         logger.error(
             "Search failed",

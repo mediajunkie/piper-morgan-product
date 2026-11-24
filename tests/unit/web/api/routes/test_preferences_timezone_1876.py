@@ -109,7 +109,11 @@ class TestPutTimezoneInvalid:
         client = _client_as(user_a)
         r = client.put(TIMEZONE_PATH, json={"timezone": "Mars/Olympus_Mons"})
         assert r.status_code == 400, r.text
-        assert "Mars/Olympus_Mons" in r.json()["detail"]
+        # Issue 2432 (CXO 2026-11-24): a fixed line; the typed value is not echoed back.
+        assert r.json()["detail"] == (
+            "That isn't a time zone I recognise. Use a name like America/Los_Angeles."
+        )
+        assert "Mars/Olympus_Mons" not in r.text
 
         # The bad PUT must not have silently written anything.
         after = client.get(TIMEZONE_PATH).json()
