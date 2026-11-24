@@ -150,7 +150,8 @@ class TestThePasswordRoute:
         _assert_line(
             _through_the_real_handler(call),
             400,
-            "That password can't be used. Choose a different one.",
+            "Your password couldn't be changed just now. "
+            "Try again in a moment; if it keeps failing, tell us.",
         )
 
 
@@ -195,6 +196,10 @@ class TestTheDocumentRoutes:
 
         reply = _through_the_real_handler(call)
         _assert_line(reply, 403, documents.SEARCH_KEY_REQUIRED_DETAIL)
+        assert documents.SEARCH_KEY_REQUIRED_DETAIL == (
+            "Document search needs an OpenAI API key of your own. "
+            "Add one in Settings → LLM API Keys, then try again. Nothing was charged."
+        )
         assert "#1807" not in reply.text
 
     def test_a_missing_document_never_sends_the_exceptions_text(self):
@@ -276,3 +281,92 @@ class TestNoRaiseSendsAnExceptionsText:
             and detail.func.id == "str"
         )
         assert is_str_call is caught
+
+
+class TestNoFourXxDetailNamesACaughtException:
+    """Arch, mail 01M87K024P: the same leak can be written without ``str(e)`` — an f-string,
+    ``repr(e)`` or ``e.args``. So, wider than the scan above: inside any function, a raise
+    with a status that is not 5xx may not mention, anywhere in its ``detail``, a name bound
+    by ``except ... as`` in that function.
+
+    5xx raises are left out on purpose: the app's handler masks them unless marked, and the
+    guard of issue 2428 keeps a marked one to a literal or a constant. (Many 5xx details do
+    embed the exception; that text is logged and never sent.)
+    DENOMINATOR: every function in every Python file under ``web/`` and ``services/``."""
+
+    NAMES = {"HTTPException", "HTTPExceptionWithCookieClear", "UserFacingHTTPException"}
+
+    @classmethod
+    def _offenders_in(cls, tree, label):
+        import re
+
+        found = []
+        for func in ast.walk(tree):
+            if not isinstance(func, (ast.FunctionDef, ast.AsyncFunctionDef)):
+                continue
+            caught = {h.name for h in ast.walk(func) if isinstance(h, ast.ExceptHandler) and h.name}
+            if not caught:
+                continue
+            for node in ast.walk(func):
+                if not (
+                    isinstance(node, ast.Call)
+                    and isinstance(node.func, ast.Name)
+                    and node.func.id in cls.NAMES
+                ):
+                    continue
+                keywords = {k.arg: k.value for k in node.keywords}
+                code = keywords.get("status_code") or (node.args[0] if node.args else None)
+                detail = keywords.get("detail") or (node.args[1] if len(node.args) > 1 else None)
+                if code is None or detail is None:
+                    continue
+                status_text = ast.unparse(code).replace("status.", "")
+                if re.fullmatch(r"5\d\d", status_text) or re.match(r"HTTP_5\d\d", status_text):
+                    continue
+                used = {n.id for n in ast.walk(detail) if isinstance(n, ast.Name)}
+                if used & caught:
+                    found.append(f"{label}:{node.lineno}")
+        return found
+
+    def test_no_site_does(self):
+        offenders = []
+        for folder in ("web", "services"):
+            for path in sorted((ROOT / folder).rglob("*.py")):
+                text = path.read_text(encoding="utf-8")
+                if "HTTPException" not in text or "except" not in text:
+                    continue
+                offenders += self._offenders_in(ast.parse(text), path.relative_to(ROOT).as_posix())
+        assert offenders == []
+
+    @pytest.mark.parametrize(
+        "detail, caught",
+        [
+            ("str(e)", True),
+            ('f"Could not save: {e}"', True),
+            ("repr(e)", True),
+            ("e.args[0]", True),
+            ('"prefix " + str(e)', True),
+            ('f"{type(e).__name__}"', True),
+            ("FIXED_LINE", False),
+            ('"a fixed line"', False),
+            ('f"Invalid role: {role}"', False),  # a request value: the issue's later rows
+        ],
+    )
+    def test_the_scan_catches_each_way_of_writing_it(self, detail, caught):
+        source = (
+            "def route(role):\n"
+            "    try:\n"
+            "        work()\n"
+            "    except ValueError as e:\n"
+            f"        raise HTTPException(status_code=400, detail={detail})\n"
+        )
+        assert bool(self._offenders_in(ast.parse(source), "x.py")) is caught
+
+    def test_a_5xx_is_left_to_the_handlers_mask(self):
+        source = (
+            "def route():\n"
+            "    try:\n"
+            "        work()\n"
+            "    except Exception as e:\n"
+            '        raise HTTPException(status_code=500, detail=f"Analysis failed: {e}")\n'
+        )
+        assert self._offenders_in(ast.parse(source), "x.py") == []

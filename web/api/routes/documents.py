@@ -58,9 +58,8 @@ USER_KEY_REQUIRED_DETAIL = (
 # #1819: document search embeds the query via OpenAI, so the key it needs is an
 # OPENAI key — same principle as above, honest about which key.
 SEARCH_KEY_REQUIRED_DETAIL = (
-    "Document search uses OpenAI embeddings and needs an OpenAI API key of your own — "
-    "Piper doesn't bill anyone else's account. Add your OpenAI API key in Settings "
-    "and try this again. Nothing was charged."
+    "Document search needs an OpenAI API key of your own. "
+    "Add one in Settings → LLM API Keys, then try again. Nothing was charged."
 )
 
 

@@ -31,9 +31,13 @@ from services.database.connection import db
 from services.database.models import User
 from services.database.session_factory import AsyncSessionFactory
 
-# Issue 2432 (CXO, mail 01M87HSM8A): the password-change route's 400 when the service
-# refuses with anything but a wrong current password.
-PASSWORD_CANT_BE_USED_MESSAGE = "That password can't be used. Choose a different one."
+# Issue 2432 (CXO, mail 01M87K06YA): the password-change route's 400 when the service
+# refuses with anything but a wrong current password. On main that is only a missing
+# account row, so the line says nothing about the password itself.
+PASSWORD_COULD_NOT_BE_CHANGED_MESSAGE = (
+    "Your password couldn't be changed just now. "
+    "Try again in a moment; if it keeps failing, tell us."
+)
 
 router = APIRouter(prefix="/api/v1/auth", tags=["authentication"])
 # piper-morgan-fb9: auto_error=False allows logout to handle missing/invalid tokens gracefully
@@ -718,11 +722,11 @@ async def change_password(
                         error=str(e),
                     )
                     # Issue 2432: the exception's text is logged above and never
-                    # sent. CXO's fallback line; rule-by-rule lines, if any are
-                    # wanted, come as constants behind a picker (Arch 01M87HVCTY).
+                    # sent. The password rules are checked earlier and are not this
+                    # branch (CXO 01M87K06YA).
                     raise HTTPException(
                         status_code=status.HTTP_400_BAD_REQUEST,
-                        detail=PASSWORD_CANT_BE_USED_MESSAGE,
+                        detail=PASSWORD_COULD_NOT_BE_CHANGED_MESSAGE,
                     )
 
     except HTTPException:
