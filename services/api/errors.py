@@ -49,6 +49,28 @@ PERMISSIONS_COULD_NOT_BE_CHECKED_MESSAGE = (
 )
 
 
+# --- The capacity guard's three refusals (CXO, issue 2431) ---
+# One constant per line. Each refusal happens before the route runs, so "Nothing was
+# changed." is true for every request it answers (pinned in
+# tests/unit/web/test_outage_replies_2431.py). The `error` codes stay in the JSON for code
+# and the log, never on screen. `{seconds}` is filled only as
+# `RATE_LIMITED_MESSAGE.format(seconds=int(...))`, the one shape the guard allows (Arch,
+# mail 01M87EY4N7).
+
+PIPER_CANT_TAKE_REQUESTS_MESSAGE = (
+    "Piper can't take requests just now. Nothing was changed. "
+    "Try again in a moment; if it keeps failing, tell us."
+)
+RATE_LIMITED_MESSAGE = (
+    "That's more than I can take in a minute. Nothing was changed. "
+    "Try again in {seconds} seconds."
+)
+PIPER_IS_FULL_MESSAGE = (
+    "Piper is full right now. Nothing was changed. "
+    "Try again in a minute; if it keeps happening, tell us."
+)
+
+
 # --- Intent Errors ---
 
 
