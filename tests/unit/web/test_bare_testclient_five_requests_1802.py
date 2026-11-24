@@ -1,12 +1,13 @@
 """#1802 — a bare `TestClient` gets one authenticated request, not five.
 
 Split out of #1792. #1792 fixed the MESSAGE an unreachable blacklist store
-produces (401 "Token has been revoked" -> 503 "couldn't verify"). It did not
+produces (401 "Token has been revoked" -> 503, the session line; since issue
+2429 that line reads "Your session couldn't be checked just now."). It did not
 fix the reason the store becomes unreachable in a bare `TestClient` at all,
 so the practical symptom for test authors survived the fix, just reworded:
 
     before #1792:  200, 401, 401, 401, 401   ("Token has been revoked")
-    after  #1792:  200, 503, 503, 503, 503   ("Couldn't verify your session")
+    after  #1792:  200, 503, 503, 503, 503   (the session line)
     after  #1802:  200, 200, 200, 200, 200   (this file)
 
 ROOT CAUSE, two layers, both distinct from #1792:
@@ -179,8 +180,8 @@ class TestBareTestClientSequentialAuth:
     def test_five_sequential_authenticated_requests_all_succeed(self):
         """THE symptom, pinned as the sequence (not a single-request sample).
 
-        Pre-#1802: [200, 503, 503, 503, 503] — 503 "Couldn't verify your
-        session right now" from request 2 onward, `_check_database` binding
+        Pre-#1802: [200, 503, 503, 503, 503] — the 503 session line from
+        request 2 onward, `_check_database` binding
         to a dead event loop. Post-#1802: all five succeed.
         """
         client, jwt_service = _bare_client_and_jwt_service()

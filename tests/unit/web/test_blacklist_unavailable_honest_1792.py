@@ -36,7 +36,7 @@ verify), real `AuthMiddleware`, real `get_current_user`.
 
 DENOMINATOR. Two refusal surfaces are covered: the ASGI `AuthMiddleware.dispatch`
 path (wire-level status + body) and the `get_current_user` FastAPI dependency
-(APIError status_code + detail). Two further call sites take the same new branch and
+(status_code + detail; a ``UserFacingHTTPException`` since issue 2429). Two further call sites take the same new branch and
 are NOT covered here: `web/api/routes/standup.py` and the refresh route in
 `web/api/routes/auth.py`. `MCPAuthAdapter.validate_mcp_token` deliberately does not
 catch the new exception at all.
@@ -53,7 +53,11 @@ import pytest
 from fastapi import FastAPI
 from fastapi.testclient import TestClient
 
-from services.api.errors import APIError
+from services.api.errors import (
+    SESSION_COULD_NOT_BE_CHECKED_MESSAGE,
+    APIError,
+    UserFacingHTTPException,
+)
 from services.auth.auth_middleware import AuthMiddleware, get_current_user
 from services.auth.container import AuthContainer
 from services.auth.jwt_service import JWTService
@@ -214,8 +218,8 @@ class TestStoreOutageIsReportedHonestly:
         assert (
             REVOKED_CLAIM not in response.text
         ), "the response still claims a revocation that never happened"
-        assert "verify" in body["message"].lower()
-        assert "nothing was changed" in body["message"].lower()
+        # Issue 2429: CXO's words, one constant.
+        assert body["message"] == SESSION_COULD_NOT_BE_CHECKED_MESSAGE
 
     @pytest.mark.smoke
     @pytest.mark.parametrize(
@@ -240,14 +244,18 @@ class TestStoreOutageIsReportedHonestly:
     @pytest.mark.smoke
     @pytest.mark.asyncio
     async def test_dependency_surface_reports_unavailable_not_revoked(self):
-        """Same property at the `get_current_user` dependency (503 APIError)."""
-        with pytest.raises(APIError) as exc:
+        """Same property at the `get_current_user` dependency (503).
+
+        Issue 2429: this site raised ``APIError``, whose handler never shows ``details``
+        to a person; it now raises ``UserFacingHTTPException`` with CXO's line. What the
+        client receives is pinned through the real handler in
+        ``test_couldnt_be_checked_lines_2429.py``."""
+        with pytest.raises(UserFacingHTTPException) as exc:
             await _call_dependency(_blacklist_redis_raises())
 
         assert exc.value.status_code == 503
-        assert exc.value.error_code == "REVOCATION_CHECK_UNAVAILABLE"
-        assert REVOKED_CLAIM not in exc.value.details["detail"]
-        assert "nothing was changed" in exc.value.details["detail"].lower()
+        assert exc.value.detail == SESSION_COULD_NOT_BE_CHECKED_MESSAGE
+        assert REVOKED_CLAIM not in exc.value.detail
 
 
 # ---------------------------------------------------------------------------
