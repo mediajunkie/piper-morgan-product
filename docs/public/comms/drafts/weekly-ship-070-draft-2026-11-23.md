@@ -121,7 +121,6 @@ The [waitlist for beta access](https://pipermorgan.ai/try/beta/) remains open.
 
 # 🔎 This week's learning pattern
 
-
 ## The second reader catches what the first one missed
 
 Multiple times this week one agent double-checked another agent's work and closed gaps:
@@ -141,7 +140,7 @@ xian + Piper Morgan Development Team
 
 This is Weekly Ship #070. Previous: [#069 "Off-Limits by Default"](https://pipermorgan.ai/shipping-news/weekly-ship-069-off-limits-by-default).
 
-*P.S. {yours}* More beta invitations coming soon, I promise!
+*P.S. More beta invitations coming soon, I promise!
 
 *P.P.S. Full session logs and technical details available in the [GitHub repository](https://github.com/mediajunkie/piper-morgan-product) and [documentation site](https://pmorgan.tech). Yes, you can copy it. That just makes our protocol stronger.*
 
