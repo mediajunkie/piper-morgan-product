@@ -122,7 +122,7 @@ If it is not empty: `git fetch origin main && git merge origin/main && git push 
 ## Quick reference
 
 ```bash
-PIPER_CREDENTIAL_STORE=db python main.py   # server, port 8001 (entry point; not web/app.py); =db is the default since #2353, kept here for clarity
+PIPER_CREDENTIAL_STORE=db python main.py --no-browser   # server, port 8001 (entry point; not web/app.py); =db is the default since #2353, kept here for clarity; --no-browser: a seat never opens a tab in xian's browser
 python -m pytest tests/unit/ -v
 docker start piper-postgres piper-redis piper-chromadb   # Amber's shared data services (Postgres 5433); never `docker compose up` from a worktree or clone here, and migrations follow recipe 14
 ./scripts/fix-newlines.sh         # before committing
@@ -134,7 +134,7 @@ From a Claude Code shell, start the server with the inherited Anthropic vars str
 
 ```bash
 env -u ANTHROPIC_API_KEY -u ANTHROPIC_BASE_URL -u ANTHROPIC_AUTH_TOKEN -u ANTHROPIC_CUSTOM_HEADERS \
-  PIPER_CREDENTIAL_STORE=db POSTGRES_PORT=5433 nohup venv/bin/python main.py > /tmp/piper-server.log 2>&1 &
+  PIPER_CREDENTIAL_STORE=db POSTGRES_PORT=5433 nohup venv/bin/python main.py --no-browser > /tmp/piper-server.log 2>&1 &
 ```
 
 The app uses the OS keychain only when `PIPER_CREDENTIAL_STORE=keychain` is set (#2353); unset means the database store. `=db` stays on these lines for clarity. xian's rule (2026-11-11): nothing we run reads his login keychain without his permission, so a seat never sets `=keychain`. Provider keys come from the database store, or from a key variable you put on the command line after the `env -u` flags (which strip any inherited `ANTHROPIC_API_KEY`). If a run would need the keychain, stop and ask xian through Exec. The same rule covers a browser: start Chrome or Chromium only through the browser tool or the seat browser (`scripts/seat_browser.py`); a launch by hand must carry `--use-mock-keychain`. A Bash hook refuses one without it (`.claude/hooks/guard-browser-launch.sh`), and every fire runs `scripts/browser_keychain_check.py`.
