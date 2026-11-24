@@ -28,6 +28,11 @@ from services.auth.oauth_callback_guard import (
     refusal_redirect_url,
 )
 from services.auth.password_service import PasswordService
+from services.auth.password_validator import (  # noqa: E402 (issue 2432)
+    PASSWORD_TOO_SHORT_LINE,
+    PASSWORDS_DONT_MATCH_LINE,
+    PasswordValidator,
+)
 from services.auth.session_cookies import set_session_cookies
 from services.config.llm_config_service import KEY_CHECK_UNAVAILABLE_MESSAGE, KeyCheckUnavailable
 from services.database.models import User
@@ -112,16 +117,13 @@ class CreateUserRequest(BaseModel):
     # Previously Optional -> a missing email leaked a Postgres NotNullViolation
     # as a confusing 500 instead of a clean 422.
     email: str = Field(min_length=3, max_length=255, description="Email (required)")
-    password: str = Field(min_length=8, description="Password (minimum 8 characters)")
-    password_confirm: str = Field(min_length=8, description="Password confirmation")
+    # Issue 2432 follow-up (render, 2026-11-24): no length rule and no match validator
+    # here. Pydantic refused a short or mismatched password before the route ran, and the
+    # validation 422's one fixed line told the person nothing. ``create_user`` makes both
+    # checks first, before any write, and answers a marked 400 with the line.
+    password: str = Field(description="Password (the route checks its length)")
+    password_confirm: str = Field(description="Password confirmation (the route checks it)")
     invite_token: str = Field(min_length=1, description="Alpha invite token (#1344, required)")
-
-    @field_validator("password_confirm")
-    @classmethod
-    def passwords_match(cls, v: str, info) -> str:
-        if "password" in info.data and v != info.data["password"]:
-            raise ValueError("Passwords do not match")
-        return v
 
 
 class CreateUserResponse(BaseModel):
@@ -1241,6 +1243,18 @@ async def create_user(
         HTTPException 400: If username already exists, or invite_token is invalid/already used
         HTTPException 500: If user creation fails
     """
+    # Issue 2432 follow-up: the two password checks, first, before the invite code is
+    # spent or anything is written. The same two rules the request model used to hold
+    # (a match, and at least 8 characters), now with a line a person can read.
+    if req.password != req.password_confirm:
+        raise UserFacingHTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST, detail=PASSWORDS_DONT_MATCH_LINE
+        )
+    if len(req.password) < PasswordValidator.MIN_LENGTH:
+        raise UserFacingHTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST, detail=PASSWORD_TOO_SHORT_LINE
+        )
+
     try:
         # Hash password with bcrypt
         password_service = PasswordService()
