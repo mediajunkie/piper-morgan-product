@@ -15,6 +15,7 @@ from fastapi import APIRouter, Depends, Form, HTTPException, Request, Response, 
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 from sqlalchemy import func, select
 
+from services.api.errors import SESSION_COULD_NOT_BE_CHECKED_MESSAGE, UserFacingHTTPException
 from services.auth.auth_middleware import get_current_user
 from services.auth.jwt_service import BlacklistUnavailable, JWTClaims, JWTService
 from services.auth.models import (
@@ -354,12 +355,11 @@ async def refresh_token(
         # expired" AND clear the auth cookies — telling the user their
         # session ended because our revocation store was unreachable.
         logger.error("token_revocation_check_unavailable", error=str(e))
-        raise HTTPException(
+        # Issue 2429: CXO's line, marked so the app's handler shows it. Nothing has
+        # been written by this point: no cookie set, no token issued, no audit row.
+        raise UserFacingHTTPException(
             status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
-            detail=(
-                "Couldn't verify your session right now — nothing was "
-                "changed. Try again in a moment."
-            ),
+            detail=SESSION_COULD_NOT_BE_CHECKED_MESSAGE,
         )
     except Exception as e:
         logger.warning("refresh_token_validation_error", error=str(e))
