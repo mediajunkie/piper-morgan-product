@@ -79,7 +79,7 @@ I maintained the current hand-written cadence at a barely sustainable pace this 
 
 The new schedule is as follows:
 
-1. Tuesdays (like today) I will publish the Weekly Ship for the sprint week that ended the previous Thursday. This is moving from Wednesdays. The Ship will continue to appear first in the Shipping News on the Piper Morgan website and then gets crossposted to the Building Piper Morgan newsletter on LinkedIn.
+1. Tuesdays (like today) I will publish the Weekly Ship for the sprint week that ended the previous Thursday. This is moving from Wednesdays. The Ship will continue to appear first in the [Shipping News](https://pipermorgan.ai/shipping-news/) on the Piper Morgan website and then gets crossposted to the Building Piper Morgan newsletter on LinkedIn.
 - **Cadence:** Ship moves to Tuesday from this one. No Thursday narrative in Thanksgiving week (your 11-17 word).
 
 ## 📊 Governance & operations
