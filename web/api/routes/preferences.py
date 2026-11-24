@@ -25,6 +25,11 @@ from services.utils.datetime_utils import DEFAULT_USER_TIMEZONE
 
 logger = logging.getLogger(__name__)
 
+# Issue 2432 (CXO, mail 01M87HSM8A).
+TIME_ZONE_NOT_RECOGNISED_MESSAGE = (
+    "That isn't a time zone I recognise. Use a name like America/Los_Angeles."
+)
+
 router = APIRouter(prefix="/api/v1/preferences", tags=["preferences"])
 
 # Service instances
@@ -292,12 +297,14 @@ async def set_timezone(
     against `zoneinfo.available_timezones()` + a `ZoneInfo()` construction) —
     no duplicate check here, so there is exactly one place that decides what
     counts as a valid zone. An unknown name raises `ValueError`; that becomes
-    an honest 400 naming the bad value, never a silent fallback to the default.
+    an honest 400 with a fixed line (issue 2432: the typed value is not echoed back),
+    never a silent fallback to the default.
     """
     try:
         await preference_manager.set_reminder_timezone(current_user.user_id, request.timezone)
     except ValueError as e:
-        raise HTTPException(status_code=400, detail=str(e)) from e
+        # Issue 2432 (CXO): a fixed line; the value the person typed is not echoed.
+        raise HTTPException(status_code=400, detail=TIME_ZONE_NOT_RECOGNISED_MESSAGE) from e
 
     return TimezoneResponse(
         timezone=request.timezone, is_default=(request.timezone == DEFAULT_USER_TIMEZONE)

@@ -30,6 +30,16 @@ logger = structlog.get_logger(__name__)
 # Connect/Disconnect, which clear every copy. A new connector must not appear here.
 LLM_KEY_PROVIDERS = frozenset(p.value for p in LLMProvider)
 
+# Issue 2432 (CXO, mail 01M87HSM8A, 2026-11-24): what a person reads when a key is
+# refused with a ValueError. True for every such error here (a provider or a key the
+# app won't accept); the reason goes to the log, never to the screen.
+KEY_COULD_NOT_BE_SAVED_MESSAGE = (
+    "That key couldn't be saved. Check the provider and the key, then try again."
+)
+KEY_COULD_NOT_BE_REPLACED_MESSAGE = (
+    "That key couldn't be replaced. Check the provider and the key, then try again."
+)
+
 # CXO 2026-10-25.
 NOT_AN_LLM_PROVIDER = (
     "This page is for AI provider keys only. Connected services like GitHub, "
@@ -236,7 +246,10 @@ async def store_api_key(
 
     except ValueError as e:
         logger.error("Failed to store API key", error=str(e), user_id=current_user.user_id)
-        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(e))
+        # Issue 2432: the exception's text is logged above and never sent.
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST, detail=KEY_COULD_NOT_BE_SAVED_MESSAGE
+        )
     except Exception as e:
         logger.error("Unexpected error storing API key", error=str(e), user_id=current_user.user_id)
         raise HTTPException(
@@ -462,7 +475,10 @@ async def rotate_api_key(
 
     except ValueError as e:
         logger.error("Failed to rotate API key", error=str(e), user_id=current_user.user_id)
-        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(e))
+        # Issue 2432: the exception's text is logged above and never sent.
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST, detail=KEY_COULD_NOT_BE_REPLACED_MESSAGE
+        )
     except Exception as e:
         logger.error(
             "Unexpected error rotating API key", error=str(e), user_id=current_user.user_id
