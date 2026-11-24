@@ -41,7 +41,7 @@ What a user can do now that they couldn't last week (as far as we can tell, give
 - Ask Piper to change something in a GitHub repository you haven't given it access to, and get a plain answer saying so, with where to add that repository (Settings, under Integrations).
 
 Built but not closed yet:
-- **Host their own beta** now that a fresh database is built by alembic, not pre-empted by setup. Two copies on one machine no longer share a database: a variable now prefixes every container, network and volume name.
+- **Run their own copy of Piper** (self-hosting) more reliably: a fresh database is now set up by our database migration tool rather than the setup script, and two copies on one machine no longer share a database, because a variable now prefixes every container, network and volume name.
 
 What you can't do yet:
 - Get an invitation (still holding).
@@ -65,7 +65,7 @@ We also codified nine conduct rules for Piper's replies:
 
 I've already devoted enough ink to "don't hand me workarounds" (ADR-084) above, and the clock rule.
 
-We also put my machines' keychains off-limits to agents, and the entire team has migrated to the v4 mail system that involves a separate mail repository to avoid overloading traffic on the primary code-and-docs repository.
+We also backed up my earlier rule keeping agents out of my keychain with an automatic block and a check that runs every cycle, and the entire team has migrated to the v4 mail system that involves a separate mail repository to avoid overloading traffic on the primary code-and-docs repository.
 
 ## 🌍 External relations & community
 
@@ -115,7 +115,7 @@ We finish sprint two, closing as many of the goals as possible:
 
 # 🚧 Blockers & asks
 
-Invitations are still on hold until I complete a few more manual steps.
+Invitations are still on hold until three things happen: I finish my last few setup steps, the agents run their signed-in checks on their own test accounts, and I give the go-ahead.
 
 The [waitlist for beta access](https://pipermorgan.ai/try/beta/) remains open.
 
