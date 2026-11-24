@@ -4,7 +4,7 @@ number: "N/A"
 title: "Proto-Pattern Tracking"
 status: "Index"
 valid_from: "2026-02-06"
-last_updated: "2026-11-04"
+last_updated: "2026-11-23"
 ---
 
 # Proto-Pattern Tracking
@@ -43,6 +43,34 @@ Elevated to **[Pattern-075: Load-Bearing Work Crowded Out by Commodity Work](pat
 **Related Patterns**:
 - Pattern-046 (100% completion): the baseline is the remaining percentage
 - CIO's 11-04 audit rule (standing-items row 9m): a deferral that carries exposure needs a mechanical trigger or gate
+
+### PP-004: A Prompt Nobody Is There to Answer Holds an Unattended Fire
+
+**Observed**: November 22, 2026 (Pard's wrapper logs: CXO's and Web's fires held by the same dialog)
+**Source**: Pard's 11-22 memo on the read-outside dialog; `docs/internal/operations/github-and-tooling-gotchas.md` (the scratchpad bullet); CIO log 2026-11-23
+**CIO Decision**: Proto-pattern (CIO, 2026-11-23)
+**Elevation Criteria**: 2+ instances of a *different* prompt (another dialog, a credential ask, a sign-in) holding a scheduled or mail-wake fire, by the 2026-12-29 methodology audit
+
+**Description**: A seat's fire runs with nobody at the screen. When a step in it raises a question meant for a person (a permission dialog, a "continue?" ask), the fire doesn't fail. It waits. Nothing errors, no heartbeat says "stopped", and the seat looks alive until a wrapper's timeout or a human notices. The step that raised it was usually harmless (a seat reading a file it wrote itself), so the cost isn't the risk the prompt guards against; it's a whole fire lost to a question with an obvious answer. Attended sessions hide the shape, because there xian answers in a second and it reads as friction, not as a stall.
+
+**Known Instances** (one mechanism so far: "Allow this read outside the working directories?", switch `permissions.blockReadsOutsideWorkingDirectories`):
+1. Zephyr, 2026-10-08
+2. Docs, 2026-10-30: a Read of its own background task's output under `/private/tmp/claude-501/`
+3. CXO, 2026-11-22 12:31 (the file read isn't recorded in the wrapper line; CXO's same-day `/tmp` Read prompted xian in an attended session)
+4. Web, 2026-11-22 18:18 (same dialog)
+
+**What was done**: the gotchas page says scratch files go in the session's scratchpad (which Read doesn't ask about). No allow rule was proposed: CIO's own Reads of task output on 11-22 didn't prompt on the current build, so the narrower fix waits for a recurrence.
+
+**What Would Make This a Pattern**:
+- The same hold from a different prompt kind (that is what makes it a shape and not one setting's quirk)
+- Or a positive instance: a fire design that removes the question in advance (an allow, a non-interactive flag, a refusal instead of an ask) and a measured drop in held fires
+
+**Not the same as**:
+- Pattern-068 (silent state mutation): there the unattended job *acts* wrongly; here it *stops*
+- `feedback_mechanism_silence_is_not_coverage` (memory): there a guard isn't running; here the seat is running and blocked
+- `feedback_session_start_config_ships_with_a_restart_ask` (memory): a change nobody loads; here nobody answers
+
+**Related**: duty-cycle-tick's heartbeat (a held fire never writes one, so the freeze check is the backstop); the seat role card's "never work around an auto-mode refusal" (a refusal ends a step visibly, which is the property a prompt lacks)
 
 ### PP-001: Design Archaeology
 

@@ -1,10 +1,11 @@
 ---
-last_updated: 2026-11-22
+last_updated: 2026-11-23
 currency_claim: rewritten at every substantive fire (3x/day cadence when active)
 max_age_days: 1
 ---
 
 # CIO carry-forward — refreshed 2026-11-03 (10:07 START)
+**Now (11-23, 16:09 WORK)**: v4 review done at START (v3 fallback ended; route refusal live `1ae55d7048`; mail4 batch read `bbe02ee98b`, Pard's pass 17 min to 45 s). PP-004 filed (a prompt nobody answers holds an unattended fire; 4 instances, one dialog; elevate on a different prompt kind by 12-29). xian's sitting still not run (fleet-deny; `seat-tester-1` mint, console check, allow; optional `seat-github-1` allow); mine after it: 2389's box, then HOST's custody row on Web's refused Read. CXO's 6 overdue acks: task 01M84T9EDZ due 11-24. Exec's first live v4 Ship kickoff 11-27.
 **Now (11-22, 22:08 STOP)**: Day closed. xian's sitting is still not run (fleet-deny; `seat-tester-1` mint, console check, allow; optional `seat-github-1` allow). Mine after it: issue 2389's box, then HOST's custody row closes on Web's refused Read after Pard's restart. The read-outside prompt held CXO's and Web's fires today. The gotchas page records it, and no fleet allow was asked for; I reopen if a task-output Read stops a seat on the current build. **11-23 Monday START: the v4 review (v3 fallback ends).**
 **Now (11-22, 16:08 WORK)**: Quiet. xian's sitting (fleet-deny; `seat-tester-1` mint, console check, allow; optional `seat-github-1` allow) not yet run. The 11:09 line below is done: `6e22d5b3df` on main. Mine after the allow: 2389's box. 11-23 v4 review at Monday START.
 **Now (11-22, 11:09)**: ADRs and patterns live on pmorgan.tech (xian 'part 1', Docs). Exec's task 01M829Y9MZ (mine): `internal/` must fail closed. Check built on `claude/cio-site-internal-guard` (`6e22d5b3df`, `tests/unit/scripts/test_site_internal_children_reviewed.py`); asked Arch's yes (01M82AJH3R); merge on yes, tell Exec and Docs, ack Exec's task done. Allow-list in Jekyll unverified (Docs could try).
