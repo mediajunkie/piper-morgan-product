@@ -23,6 +23,7 @@ import structlog
 from fastapi import APIRouter, Depends, HTTPException
 from pydantic import BaseModel, Field
 
+from services.api.errors import UserFacingHTTPException
 from services.auth.auth_middleware import require_admin
 from services.auth.jwt_service import JWTClaims
 from services.intent_service.verified_inference import ForgetOutcome, forget_verified_inference
@@ -30,6 +31,10 @@ from services.intent_service.verified_inference import ForgetOutcome, forget_ver
 logger = structlog.get_logger()
 
 router = APIRouter(prefix="/api/v1/admin/test-preferences", tags=["admin"])
+
+# Issue 2432 (CXO, comment 7144095698): kept as written, marked.
+ONLY_A_LISTED_TEST_ACCOUNT_LINE = "Only a listed test account can be reset."
+PREFERENCE_CANT_BE_RESET_LINE = "That preference can't be reset here."
 
 # The cohort's alpha test accounts (Web's and PA's served-check accounts). An account
 # not named here is refused, whatever the admin asks.
@@ -104,9 +109,9 @@ async def forget_test_preference(
     body: ForgetRequest, admin: JWTClaims = Depends(require_admin)
 ) -> ForgetResponse:
     if body.username not in TEST_ACCOUNT_USERNAMES:
-        raise HTTPException(status_code=403, detail="Only a listed test account can be reset.")
+        raise UserFacingHTTPException(status_code=403, detail=ONLY_A_LISTED_TEST_ACCOUNT_LINE)
     if not body.key.startswith(FORGETTABLE_KEY_PREFIXES):
-        raise HTTPException(status_code=422, detail="That preference can't be reset here.")
+        raise UserFacingHTTPException(status_code=422, detail=PREFERENCE_CANT_BE_RESET_LINE)
     user_id = await _user_id_for(body.username)
     if user_id is None:
         raise HTTPException(status_code=404, detail="No account with that username.")

@@ -18,11 +18,15 @@ import structlog
 from fastapi import APIRouter, Depends, HTTPException, Response
 from pydantic import BaseModel, Field
 
+from services.api.errors import UserFacingHTTPException
 from services.auth.auth_middleware import require_admin
 from services.auth.invite_admin_service import (
+    INVITE_DAILY_LIMIT_TEMPLATE,
     MAX_PER_DAY,
     MAX_PER_REQUEST,
+    REFUSAL_DAILY_LIMIT,
     InviteAdminError,
+    invite_refusal_line,
     list_invites,
     mint_invites,
     minted_today,
@@ -63,7 +67,21 @@ class InviteListResponse(BaseModel):
 
 
 def _refuse(exc: InviteAdminError) -> HTTPException:
-    return HTTPException(status_code=exc.status_code, detail=exc.reason)
+    """Issue 2432 (Arch, mail 01M87QXPZZ): the service gives a code; the words come from
+    constants. The daily limit's three numbers go in as whole numbers, the one shape the
+    guard allows. A code with no line answers its status line."""
+    if exc.code == REFUSAL_DAILY_LIMIT:
+        return UserFacingHTTPException(
+            status_code=429,
+            detail=INVITE_DAILY_LIMIT_TEMPLATE.format(
+                used=int(exc.minted), limit=int(exc.limit), left=int(exc.left)
+            ),
+        )
+    if invite_refusal_line(exc.code) is not None:
+        return UserFacingHTTPException(
+            status_code=exc.status_code, detail=invite_refusal_line(exc.code)
+        )
+    return HTTPException(status_code=exc.status_code, detail=exc.code)
 
 
 @router.get("", response_model=InviteListResponse)

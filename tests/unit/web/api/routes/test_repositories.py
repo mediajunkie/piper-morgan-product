@@ -116,7 +116,10 @@ class TestCreateRepository:
             json={"full_name": "owner/repo", "provider": "svn"},
         )
         assert resp.status_code == 400
-        assert "Invalid provider" in resp.json()["detail"]
+        # Issue 2432 (CXO): the providers listed, the value sent never echoed.
+        assert resp.json()["detail"] == (
+            "That isn't a repository provider I recognise. Choose one of: bitbucket, github, gitlab."
+        )
 
     def test_create_duplicate_409(self):
         repo_repo = MagicMock()

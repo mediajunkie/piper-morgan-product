@@ -14,6 +14,7 @@ import structlog
 from fastapi import APIRouter, Depends, HTTPException, Request, status
 from pydantic import BaseModel, Field
 
+from services.api.errors import UserFacingHTTPException
 from services.auth.auth_middleware import get_current_user
 from services.auth.jwt_service import JWTClaims
 from services.database.session_factory import AsyncSessionFactory
@@ -49,7 +50,9 @@ NOT_AN_LLM_PROVIDER = (
 
 def _require_llm_provider(provider: str) -> None:
     if provider not in LLM_KEY_PROVIDERS:
-        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=NOT_AN_LLM_PROVIDER)
+        raise UserFacingHTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST, detail=NOT_AN_LLM_PROVIDER
+        )
 
 
 # #2367 (CXO 2026-11-13 14:27; mechanism Arch 14:38): a save or a rotate is refused
@@ -71,7 +74,9 @@ NOT_A_PROVIDER_PIPER_USES = "That isn't a provider Piper uses. Anthropic and Ope
 
 def _refuse_unserved_provider(provider: str) -> None:
     if provider in UNSERVED_LLM_PROVIDERS:
-        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=PROVIDER_NOT_USED_YET)
+        raise UserFacingHTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST, detail=PROVIDER_NOT_USED_YET
+        )
 
 
 def build_audit_context(request: Request) -> Dict[str, Any]:
@@ -247,7 +252,7 @@ async def store_api_key(
     except ValueError as e:
         logger.error("Failed to store API key", error=str(e), user_id=current_user.user_id)
         # Issue 2432: the exception's text is logged above and never sent.
-        raise HTTPException(
+        raise UserFacingHTTPException(
             status_code=status.HTTP_400_BAD_REQUEST, detail=KEY_COULD_NOT_BE_SAVED_MESSAGE
         )
     except Exception as e:
@@ -476,7 +481,7 @@ async def rotate_api_key(
     except ValueError as e:
         logger.error("Failed to rotate API key", error=str(e), user_id=current_user.user_id)
         # Issue 2432: the exception's text is logged above and never sent.
-        raise HTTPException(
+        raise UserFacingHTTPException(
             status_code=status.HTTP_400_BAD_REQUEST, detail=KEY_COULD_NOT_BE_REPLACED_MESSAGE
         )
     except Exception as e:

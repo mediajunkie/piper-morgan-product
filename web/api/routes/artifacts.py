@@ -17,6 +17,7 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi.responses import Response
 from pydantic import BaseModel
 
+from services.api.errors import UserFacingHTTPException
 from services.auth.auth_middleware import get_current_user
 from services.auth.jwt_service import JWTClaims
 from services.database.repositories import ArtifactRepository
@@ -27,6 +28,10 @@ from services.mux.lifecycle import LifecycleState
 logger = structlog.get_logger()
 
 router = APIRouter(prefix="/api/v1/artifacts", tags=["artifacts"])
+
+# Issue 2432 (CXO, comment 7144095698): reworded, marked.
+NOTHING_TO_SAVE_LINE = "There's nothing to save yet."
+TITLE_NEEDED_LINE = "Give it a title first."
 
 _MIN_SAVE_LEN = (
     1  # endpoint accepts any non-empty content; the >500-char gate is a UI affordance (#355)
@@ -56,9 +61,8 @@ async def save_artifact(
     """
     content = (body.content or "").strip()
     if len(content) < _MIN_SAVE_LEN:
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail="Cannot save an empty artifact.",
+        raise UserFacingHTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST, detail=NOTHING_TO_SAVE_LINE
         )
 
     # Title rides in payload (Artifact has no flat title field — same place the
@@ -154,6 +158,11 @@ _DOWNLOAD_FORMATS = {
     "md": ("text/markdown", ".md"),
     "txt": ("text/plain", ".txt"),
 }
+# Issue 2432 (CXO): the format refusal names the allowed formats, computed once here from
+# ``_DOWNLOAD_FORMATS``, and never the value the person sent.
+DOWNLOAD_FORMAT_NOT_RECOGNISED_LINE = (
+    "I can't download it in that format. Choose one of: " + ", ".join(_DOWNLOAD_FORMATS) + "."
+)
 
 
 @router.get("/{artifact_id}/download")
@@ -167,10 +176,7 @@ async def download_artifact(
     no existence leak). Bad format → 400 (fail fast, before the fetch)."""
     fmt = (format or "md").lower()
     if fmt not in _DOWNLOAD_FORMATS:
-        raise HTTPException(
-            status_code=400,
-            detail=f"Unsupported format '{format}'. Supported: {', '.join(_DOWNLOAD_FORMATS)}.",
-        )
+        raise UserFacingHTTPException(status_code=400, detail=DOWNLOAD_FORMAT_NOT_RECOGNISED_LINE)
     media_type, ext = _DOWNLOAD_FORMATS[fmt]
     try:
         async with AsyncSessionFactory.session_scope_fresh() as session:
@@ -247,7 +253,7 @@ async def rename_artifact(
     projected /files filename. Owner-scoped (cross-owner → 404, no existence leak)."""
     new_title = (body.title or "").strip()
     if not new_title:
-        raise HTTPException(status_code=400, detail="Title cannot be empty.")
+        raise UserFacingHTTPException(status_code=400, detail=TITLE_NEEDED_LINE)
     try:
         async with AsyncSessionFactory.session_scope_fresh() as session:
             repo = ArtifactRepository(session)

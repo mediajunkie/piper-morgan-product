@@ -11,6 +11,7 @@ import structlog
 from fastapi import APIRouter, Depends, HTTPException, status
 from pydantic import BaseModel
 
+from services.api.errors import UserFacingHTTPException
 from services.auth.auth_middleware import get_current_user
 from services.auth.jwt_service import JWTClaims
 from services.database.repositories import WorkItemRepository
@@ -30,6 +31,9 @@ class CreateWorkItemRequest(BaseModel):
 
 router = APIRouter(prefix="/api/v1/work-items", tags=["work-items"])
 logger = structlog.get_logger(__name__)
+
+# Issue 2432 (CXO, comment 7144095698): reworded, marked.
+WORK_ITEM_TITLE_NEEDED_LINE = "Give the work item a title first."
 
 
 @router.get("")
@@ -124,9 +128,8 @@ async def create_work_item(
     """
     try:
         if not request.title or not request.title.strip():
-            raise HTTPException(
-                status_code=status.HTTP_400_BAD_REQUEST,
-                detail="Work item title is required",
+            raise UserFacingHTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST, detail=WORK_ITEM_TITLE_NEEDED_LINE
             )
 
         # Create work item using BaseRepository.create
