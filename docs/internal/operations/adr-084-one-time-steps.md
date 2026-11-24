@@ -1,6 +1,6 @@
 # ADR-084: xian's one-time steps
 
-**Status: APPROVED. xian said yes to ADR-084 on 2026-11-16 at 06:20 PT** (relayed by Exec, mail 01M7JBP51M). Each step still runs only when its own row says it is ready. Done so far: Step B (06:23). Written as a draft, asked for by Exec on 2026-11-15 (mail 01M7HF64B8…) so that his yes is followed by a paste, not a new round of mail.
+**Status: APPROVED. xian said yes to ADR-084 on 2026-11-16 at 06:20 PT** (relayed by Exec, mail 01M7JBP51M). Each step still runs only when its own row says it is ready. Done so far: Step B (11-16, 06:23); Steps A, C, D and F0 (11-20), and F.1 (per Exec's rollup of 11-23; each step's own status line is the record). Written as a draft, asked for by Exec on 2026-11-15 (mail 01M7HF64B8…) so that his yes is followed by a paste, not a new round of mail.
 
 **The sitting (updated 2026-11-17 18:36 PT).** xian is away from Amber until Friday 2026-11-20, and every Terminal step here has to run on Amber (Exec's relay of Docs, mail 01M7P7NMPD). One sitting, in this order, each ready as written below: **Step A, Step C, Step D, Step F0.** No seat stands by before he starts.
 
@@ -28,7 +28,7 @@ The ADR: `docs/internal/architecture/adrs/adr-084-seat-resources-are-separate-gr
 
 ## Step A (ADR row 2): the Anthropic seat key in Lead's settings
 
-**Owner: CIO (written 2026-11-15). Ready: the tool is tested on dummy values; the first real use is the test.** Unblocks arm B the same hour (its $8 stop is in code). The #2364 gate runs the same hour only if #2383 (the live-call cap) has landed; if it hasn't, Lead sends Exec the planned-calls line first (26 calls, $0.20 to $0.35), as ADR-084 D2 requires for a run with no in-code stop (Lead, 11-15 22:07).
+**Owner: CIO (written 2026-11-15). Status: DONE 2026-11-20** (Exec's log: started `11:12`; Lead 01M7X6RV7Z, `check-env` passes; CIO removed the made-up file the same day). Previously ready: the tool was tested on dummy values and the first real use was the test. Unblocks arm B the same hour (its $8 stop is in code). The #2364 gate runs the same hour only if #2383 (the live-call cap) has landed; if it hasn't, Lead sends Exec the planned-calls line first (26 calls, $0.20 to $0.35), as ADR-084 D2 requires for a run with no in-code stop (Lead, 11-15 22:07).
 
 What the ADR requires of this row (D2): the seat's own `.claude/settings.local.json` in the lead worktree, an `env` entry named `PIPER_SEAT_ANTHROPIC_KEY`, file mode 0600, a Read deny on that file in the same settings, and a check script that prints key names only. `scripts/seat_settings_grant.py` does all of that in one command.
 
@@ -125,7 +125,7 @@ scripts/seat_settings_grant.py check-env --name PIPER_SEAT_ANTHROPIC_KEY
 
 ## Step C (ADR row 5): the sign-in helper's exact-command allow
 
-**Owner: CIO. READY (2026-11-16): `scripts/seat_session.py` and its exception rows are on main (issue 2388). Lead reviewed the routes, HOST read the helper at ff8b9d51b7 and the exception rows at 12c42ff864 and said land, Arch validated against D3. Web holds the allow first (HOST). The first real run is the test: 0 of 1 so far.** Two things can still make that first run print `refused:`, and neither needs anything more from xian: the key names inside the credential file are unknown to every seat (the refusal names which expected name is missing), and what beta shows for this account today is unread. Its client is `scripts/seat_read.py`, which does one GET from the saved session and needs no grant of its own: each run goes to the classifier, because its path argument differs every time.
+**Owner: CIO. Status: DONE 2026-11-20 (Exec's log, `11:22`: three `added 1 allow rule for seat web` lines on xian's screen). First real run by Web the same day: `session saved, expires 2026-11-21T21:26:11Z` and `placed in seat browser web`, name and expiry only (Web's 11-20 log); Web has re-run it before each signed-in read since. Not yet run: the floored-actions read in the seat check below (no exact allow covers it). Previously READY (2026-11-16): `scripts/seat_session.py` and its exception rows are on main (issue 2388). Lead reviewed the routes, HOST read the helper at ff8b9d51b7 and the exception rows at 12c42ff864 and said land, Arch validated against D3. Web holds the allow first (HOST). The first real run is the test: 0 of 1 so far.** Two things can still make that first run print `refused:`, and neither needs anything more from xian: the key names inside the credential file are unknown to every seat (the refusal names which expected name is missing), and what beta shows for this account today is unread. Its client is `scripts/seat_read.py`, which does one GET from the saved session and needs no grant of its own: each run goes to the classifier, because its path argument differs every time.
 
 What the ADR requires (D3): one exact-command allow per seeded account name, added by xian to the settings of each seat that does served reads. The helper prints the account name and the session's expiry only.
 
@@ -152,7 +152,7 @@ scripts/seat_settings_grant.py add-allow --seat web --rule 'Bash(scripts/seat_re
 
 ## Step D (ADR row 10): load the seat browser's LaunchAgent
 
-**Owner: CIO, with Pard. Issue 2400. READY (2026-11-16 19:53), to be done after Step C: CIO's half is on main, validated by Arch and read by HOST; Pard's plist and wrapper are built and read by HOST** against D3's debug-port bound (127.0.0.1 only, a dedicated profile folder at mode 0700, no wildcard origins, the port read from one place, never xian's own Chrome).
+**Owner: CIO, with Pard. Issue 2400. Status: DONE 2026-11-20 (Exec's log, `13:21`; Pard, stamped `18:15`: xian's `--check web` printed `port 9333` and Pard's cycle-check arm passes: 127.0.0.1 only, 0700, mock keychain). Previously READY (2026-11-16 19:53), to be done after Step C: CIO's half is on main, validated by Arch and read by HOST; Pard's plist and wrapper are built and read by HOST** against D3's debug-port bound (127.0.0.1 only, a dedicated profile folder at mode 0700, no wildcard origins, the port read from one place, never xian's own Chrome).
 
 What is on main (CIO, 2026-11-16), none of it in use until this step is done:
 
