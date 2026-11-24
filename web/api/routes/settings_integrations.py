@@ -1974,8 +1974,9 @@ async def save_notion_key(
     if not is_valid:
         if error_msg == NOTION_CHECK_FAILED_MESSAGE:
             # #2151: Notion didn't answer; the key wasn't refused, so not a 400.
+            # The constant itself, never the variable (Arch 2026-11-24, issue 2428's guard).
             raise UserFacingHTTPException(
-                status_code=status.HTTP_503_SERVICE_UNAVAILABLE, detail=error_msg
+                status_code=status.HTTP_503_SERVICE_UNAVAILABLE, detail=NOTION_CHECK_FAILED_MESSAGE
             )
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,

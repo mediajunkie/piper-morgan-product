@@ -38,16 +38,23 @@ KEPT_MASKED = (
     "Google Calendar OAuth not configured.",
 )
 
+# CXO's words of 2026-11-24 for the two database lines (mail 01M8749H51): each says the
+# own-computer case and the hosted case, and the command carries no quote marks.
 DATABASE_LINE = (
-    "Cannot connect to the database. Make sure Docker is running, then start the "
-    "services with: docker compose up -d postgres redis chromadb. Then try again."
+    "Cannot connect to the database. If you run Piper on your own computer, make sure "
+    "Docker is running, then start the services with: docker compose up -d postgres redis "
+    "chromadb. Then try again. On a hosted instance, tell the person who runs it."
+)
+TABLES_LINE = (
+    "Database tables are missing. If you run Piper on your own computer, create them with: "
+    "python -m alembic upgrade head. Then try again. On a hosted instance, tell the person "
+    "who runs it."
 )
 VETTED_LINES = (
     "Couldn't verify setup state — try again in a moment.",
     setup.SYSTEM_CHECK_COULD_NOT_RUN_MESSAGE,
     "The invite check couldn't run. Try again in a moment.",
-    "Database tables are missing. Run 'python -m alembic upgrade head' to create them, "
-    "then try again.",
+    TABLES_LINE,
     DATABASE_LINE,
     setup.ACCOUNT_COULD_NOT_BE_CREATED_MESSAGE,
     setup.SERVER_CANNOT_STORE_KEYS_MESSAGE,
@@ -183,3 +190,70 @@ class TestTheDatabaseLineThroughTheRoute:
         assert reply.status_code == 500
         assert reply.json() == {"message": DATABASE_LINE, "detail": DATABASE_LINE}
         assert "Errno" not in reply.text and "5499" not in reply.text
+
+
+class TestArchsGuardOverEveryMarkedRaise:
+    """Arch, 2026-11-24 (mail 01M8742TG4): across ``web/`` and ``services/``, the detail of
+    every ``UserFacingHTTPException(...)`` call is a string literal or a module-level
+    UPPER_CASE constant. An f-string, ``str(e)``, a concatenation or an ordinary variable
+    fails, so exception text cannot reach a person through the one path the handler does
+    not mask (2402's rule). DENOMINATOR: every Python file under both folders."""
+
+    @staticmethod
+    def _marked_calls():
+        calls = []
+        for folder in ("web", "services"):
+            for path in sorted((ROOT / folder).rglob("*.py")):
+                text = path.read_text(encoding="utf-8")
+                if "UserFacingHTTPException" not in text:
+                    continue
+                for node in ast.walk(ast.parse(text)):
+                    if (
+                        isinstance(node, ast.Call)
+                        and isinstance(node.func, ast.Name)
+                        and node.func.id == "UserFacingHTTPException"
+                    ):
+                        calls.append((path.relative_to(ROOT).as_posix(), node))
+        return calls
+
+    def test_the_guard_sees_the_known_sites(self):
+        files = {path for path, _ in self._marked_calls()}
+        assert files == {"web/api/routes/setup.py", "web/api/routes/settings_integrations.py"}
+        assert len(self._marked_calls()) == 14  # 11 in setup.py, 3 in settings_integrations.py
+
+    def test_every_marked_detail_is_a_literal_or_an_upper_case_constant(self):
+        for path, node in self._marked_calls():
+            keywords = {k.arg: k.value for k in node.keywords}
+            assert "detail" in keywords, f"{path}:{node.lineno}: detail must be a keyword"
+            detail = keywords["detail"]
+            if isinstance(detail, ast.Call) and isinstance(detail.func, ast.Attribute):
+                # ``TEMPLATE.format(thing=...)`` on an UPPER_CASE constant with literal or
+                # plain-name arguments: #2154's one templated line (the prefs read).
+                base = detail.func.value
+                ok = (
+                    detail.func.attr == "format"
+                    and isinstance(base, ast.Name)
+                    and base.id.isupper()
+                    and path == "web/api/routes/settings_integrations.py"
+                )
+            else:
+                ok = (isinstance(detail, ast.Constant) and isinstance(detail.value, str)) or (
+                    isinstance(detail, ast.Name) and detail.id.isupper()
+                )
+            assert ok, f"{path}:{node.lineno}: {ast.unparse(detail)[:70]}"
+
+    @pytest.mark.parametrize(
+        "source",
+        [
+            'UserFacingHTTPException(status_code=500, detail=f"failed: {e}")',
+            "UserFacingHTTPException(status_code=500, detail=str(e))",
+            'UserFacingHTTPException(status_code=500, detail="a" + reason)',
+            "UserFacingHTTPException(status_code=500, detail=error_msg)",
+        ],
+    )
+    def test_the_rule_refuses_the_shapes_arch_named(self, source):
+        detail = {k.arg: k.value for k in ast.parse(source).body[0].value.keywords}["detail"]
+        fixed = (isinstance(detail, ast.Constant) and isinstance(detail.value, str)) or (
+            isinstance(detail, ast.Name) and detail.id.isupper()
+        )
+        assert not fixed

@@ -1287,10 +1287,12 @@ async def create_user(
             logger.error("user_creation_failed_missing_table", username=req.username, error=str(e))
             raise UserFacingHTTPException(
                 status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                # CXO 2026-11-24 (2428): the hosted case said too, as the system check's
+                # line does; no quote marks around the command, so it can be copied.
                 detail=(
-                    "Database tables are missing. "
-                    "Run 'python -m alembic upgrade head' to create them, "
-                    "then try again."
+                    "Database tables are missing. If you run Piper on your own computer, "
+                    "create them with: python -m alembic upgrade head. Then try again. "
+                    "On a hosted instance, tell the person who runs it."
                 ),
             )
         elif "connection" in error_str or "connect" in error_str:
@@ -1298,11 +1300,13 @@ async def create_user(
             raise UserFacingHTTPException(
                 status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
                 # CXO 2026-11-16 (2386): the three services by name, a colon before the
-                # command and no quote marks, so it can be copied.
+                # command and no quote marks, so it can be copied. CXO 2026-11-24 (2428):
+                # the hosted case said too; a person there has nothing to do with Docker.
                 detail=(
-                    "Cannot connect to the database. Make sure Docker is running, then "
-                    "start the services with: docker compose up -d postgres redis chromadb. "
-                    "Then try again."
+                    "Cannot connect to the database. If you run Piper on your own computer, "
+                    "make sure Docker is running, then start the services with: "
+                    "docker compose up -d postgres redis chromadb. Then try again. "
+                    "On a hosted instance, tell the person who runs it."
                 ),
             )
         else:
