@@ -1,5 +1,5 @@
 """``main.py`` opens a browser tab only for a person at a terminal (HOST and Arch,
-decisions.log 2026-11-24 07:44).
+decisions.log 2026-11-24 07:40).
 
 Twice (11-11, 11-24) a server started from a seat's shell opened a tab in xian's own
 browser. A remembered ``--no-browser`` flag is not a mechanism; this is.

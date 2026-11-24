@@ -121,7 +121,7 @@ def should_open_browser() -> bool:
         return False
 
     # Don't open unless a person is at a terminal on both ends (HOST and Arch,
-    # decisions.log 2026-11-24 07:44). A person who types ``python main.py`` has a terminal
+    # decisions.log 2026-11-24 07:40). A person who types ``python main.py`` has a terminal
     # on stdin and stdout and keeps the tab. A seat's shell, a script, nohup with a log
     # file or a LaunchAgent has neither, and must never open one: twice (11-11, 11-24) a
     # seat-started server opened a tab in xian's own browser, and had his browser not been
