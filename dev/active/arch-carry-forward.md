@@ -1,5 +1,5 @@
 ---
-last_updated: 2026-11-23 06:29 PST (START, verified: 11-22 STOP line current)
+last_updated: 2026-11-23 21:28 PST (STOP)
 currency_claim: rewritten at substantive-change boundaries, verified at every START
 max_age_days: 4
 ---
@@ -25,6 +25,13 @@ context-floor directive that duplicating it here is exactly the accretion to cut
 | GitHub criteria line | `gh issue list --repo mediajunkie/piper-morgan-product --label architecture --state open` — the third work-queue source (PM v1.33). Open each issue, don't write a row from the list. Report drained as "mail (N) + standing-items (N) + label:architecture (M)." |
 
 ## IN FLIGHT — current state only
+
+**11-23 state (STOP):** main is 12/12 green. Fly staging went red at 14:04 because a release machine failed to start. It cleared on Lead's re-run, the third staging blip this month; a fourth would go to xian via Exec. The inbox is empty. Beta serves `6942dbd1be`. Model Opus 5.5. Every ruling is in decisions.log (11-23).
+- **Closed and served today:** #2415 and #2416 (Mechanism B, all-code status reply on the 2301 block path, served on `d6ed62181a`, 3 of 3); the 2297 attach row; #2245. #2427 (one-sentence add-todo confirmation) passed CXO's served read; PPM closes it. The `task` alias (`cc550eb92f`) is served.
+- **2411:** the catalog candidate is NO-GO (rule-7 miss). Narrowed lesson: an additive example perturbs least only when its distinctive words are rare across catalog families. Grep the corpus first, and price an attribution screen when the words are common.
+- **New issues filed today and held:** #2423 (Mechanism A, connected case; needs an App-connected seat account); #2424 (list read using `project`; needs router evidence of a `project` arg, 0 of 29 today); #2425 (row 2 routing) and #2426 (a read naming a project still asks which). For #2425 and #2426 I choose the lever and set the bar once xian slots them in sprint 3.
+- **Still waiting on others:** the 2411 fresh-account row and 2417's `update_issue` row (xian's mint via Exec); save-key allow (xian's console); 2364 step 1 (xian's OpenAI run); 2410 (sprint slot); the 2157 drill (xian); 2403 row 4 (a person).
+- **New standing rule (xian, 11-23 18:34):** when xian finishes something with Arch, send Exec a one-line done-note in the same turn (memory `feedback_done_with_xian_send_exec_done_note`).
 
 **11-22 state (STOP):** main 12/12 green; inbox empty; beta serves `079e6aaf78` (promotions at 14:37 `a805384f7e`, 17:08 `948af3a198`, 19:08 `f2213c7a85`, 19:54 `079e6aaf78`). Model Opus 5.5. Every ruling is in decisions.log (11-22, 09:47 through 20:09).
 - **Closed and served today:** 2301 (part 1), 2413, 2414, 2418, 2419. 2301 part 2 moved to #2416. #2420 (the sub-path guard `25048aedde`) conforms; its last row is PPM's to close.
