@@ -19,7 +19,7 @@
 - **CIO ask (11-16):** first push printing `already passed on this content` → mail CIO that line. Not seen yet.
 - **Mail v4 only (v3 fallback ended 11-23, CIO 1ae55d7048):** mail-send.sh refuses seat-to-seat memos. If v4 itself is broken: `PIPER_V3_FALLBACK=<why> scripts/mail-send.sh`, reason in the log.
 - **Arcs (adopted 11-14):** map in planning doc (Claude Docs 5vc7f1CTHhadvvPBB73h86). Era 8 "The Beta" starts 10-31.
-- **Standing rules:** keychain off-limits (never `=keychain`); only `scripts/alpha-setup.sh` banned on Amber, no compose up/down; invites held (xian 11-04); HOLD (PDR-102) no ownership claim in copy; Rule 8 no outside names; never mail or cc PM.
+- **Standing rules:** done-note to Exec, one line, same turn, whenever xian finishes something with me (a word, a title, a fix OK, a step; xian 11-23, dl 11-23 18:41); keychain off-limits (never `=keychain`); only `scripts/alpha-setup.sh` banned on Amber, no compose up/down; invites held (xian 11-04); HOLD (PDR-102) no ownership claim in copy; Rule 8 no outside names; never mail or cc PM.
 
 ## OLDER STATE blocks pruned 2026-11-06 (10-14 to 11-04). They are in git history and in the dated session logs.
 
