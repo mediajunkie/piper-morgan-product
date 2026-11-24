@@ -10,7 +10,7 @@ caption: ''
 
 This week the agent team piled up a lot of work that waited for my attention to fully complete or execute. More and more workflows led to manual tasks for me. Eventually, I asked for a review of the state of affairs, writing "We keep changing how provider keys are used, how github is used, how piper morgan is used by our agents and it's become a tangled mess that keeps becoming my problem to manually navigate. this is not an acceptable state of affairs."
 
-This led to an architecture decision record ([ADR-084](https://pmorgan.tech/internal/architecture/adrs/adr-084-seat-resources-are-separate-granted-once-and-bounded)) with an ungainly name, "Seat resources are separate, granted once, and bounded." It gives each agent/role "seat" their own keys, accounts and browser. I accepted it on Nov 16, approving a budget of $10 a run without asking, under a hard cap of $150 a month. Every agent then reviewed their open items for tasks they had assigned to me to run manually that they were now adequately provisioned to run themselves.
+This led to an architecture decision record ([ADR-084](https://pmorgan.tech/internal/architecture/adrs/adr-084-seat-resources-are-separate-granted-once-and-bounded)) with an ungainly name, "Seat resources: what agents use to run and test Piper is separate from xian's, granted once, and bounded where a seat can't pass." It gives each agent/role "seat" their own keys, accounts and browser. I accepted it on Nov 16, approving a budget of $10 a run without asking, under a hard cap of $150 a month. Every agent then reviewed their open items for tasks they had assigned to me to run manually that they were now adequately provisioned to run themselves.
 
 # 🚀 Shipped this week
 
@@ -18,7 +18,7 @@ The upshot was that the work done in the first week of this two-week sprint (its
 
 ## ⚙️ Engineering & architecture
 
-The goal of this sprint (Sprint 2 of the Production milestone) is that a new user make it from "onboarding to first valuable experience." The sprint runs from Friday, November 13 to Thursday, November 26 (a U.S. holiday, no newsletter that day, by the way), with 14 specific items, two of which were actually done before the sprint began. We didn't close any in the first week, as noted above, but most of the remaining twelve are already built and on beta, waiting for me to sign in and review them.
+The goal of this sprint (Sprint 2 of the Production milestone) is that a new user make it from onboarding to first valuable experience. The sprint runs from Friday, November 13 to Thursday, November 26 (a U.S. holiday, no newsletter that day, by the way), with 14 specific items, two of which were actually done before the sprint began. We didn't close any in the first week, as noted above, but most of the remaining twelve are already built and on beta, waiting for me to sign in and review them.
 
 The team also built the tooling to implement ADR-084, with step-by-step instructions ready for me to implement.
 
@@ -35,13 +35,13 @@ The clock rule (about not guessing the time) went live on Nov 18 per the CIO. A 
 What a user can do now that they couldn't last week (as far as we can tell, given that I have not tested any of it yet):
 
 - In Claude, limit the Piper Morgan MCP connector's GitHub access to **just the repos you installed it on**.
-- **Disconnect** an integration from the Piper Morgan side with clear indications that the connection remains valid and can still be reconnected.
+- **Disconnect** an integration from the Piper Morgan side and be told plainly what stays valid at GitHub or Notion until you remove it there, and that you can connect again anytime.
 - Use **Disconnect All** and get a closing note naming any service where you still need to remove Piper yourself (GitHub, if you connected it with the app or a token, and Notion).
 - Understand the plain language in the **Integrations** settings page.
 - Ask Piper to change something in a GitHub repository you haven't given it access to, and get a plain answer saying so, with where to add that repository (Settings, under Integrations).
 
 Built but not closed yet:
-- **Host their own beta** now that a fresh database is built by alembic, not pre-empted by setup. Two copies on one machine no longer share a database: a variable now prefixes every container, network and volume name.
+- **Run their own copy of Piper** (self-hosting) more reliably: a fresh database is now set up by our database migration tool rather than the setup script, and two copies on one machine no longer share a database, because a variable now prefixes every container, network and volume name.
 
 What you can't do yet:
 - Get an invitation (still holding).
@@ -65,7 +65,7 @@ We also codified nine conduct rules for Piper's replies:
 
 I've already devoted enough ink to "don't hand me workarounds" (ADR-084) above, and the clock rule.
 
-We also put my machines' keychains off-limits to agents, and the entire team has migrated to the v4 mail system that involves a separate mail repository to avoid overloading traffic on the primary code-and-docs repository.
+We also backed up my earlier rule keeping agents out of my keychain with an automatic block and a check that runs every cycle, and the entire team has migrated to the v4 mail system that involves a separate mail repository to avoid overloading traffic on the primary code-and-docs repository.
 
 ## 🌍 External relations & community
 
@@ -115,7 +115,7 @@ We finish sprint two, closing as many of the goals as possible:
 
 # 🚧 Blockers & asks
 
-Invitations are still on hold until I complete a few more manual steps.
+Invitations are still on hold until three things happen: I finish my last few setup steps, the agents run their signed-in checks on their own test accounts, and I give the go-ahead.
 
 The [waitlist for beta access](https://pipermorgan.ai/try/beta/) remains open.
 
