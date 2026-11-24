@@ -13,7 +13,7 @@ Bounds:
 - If the body contains either cookie's value, nothing is printed.
 - A failure prints a fixed reason and the status code, never a header.
 
-A second mode, ``--redirect-uri github|calendar`` (issue 2282 step 5; HOST's four
+A second mode, ``--redirect-uri github|calendar|setup-calendar`` (issue 2282 step 5; HOST's four
 conditions and Exec's yes, 2026-11-16), reads where a connector's sign-in would send the
 browser back to, so nobody has to start a sign-in in a browser to see it:
 - One GET to that connector's connect-start route, a second closed list by exact path.
@@ -34,6 +34,7 @@ browser back to, so nobody has to start a sign-in in a browser to see it:
 Usage:
     scripts/seat_read.py --account web-seed-1386 '/api/v1/admin/floored-actions?days=30'
     scripts/seat_read.py --account web-seed-1386 --redirect-uri github
+    scripts/seat_read.py --account web-seed-1386 --redirect-uri setup-calendar
 
 Concept: docs/internal/operations/adr-084-one-time-steps.md
 """
@@ -55,8 +56,10 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 import seat_session  # noqa: E402
 from seat_session import Refused, Transport  # noqa: E402
 
-# The closed list (HOST and Lead, 11-16). The ops_reader routes of issue 2390 join it as they land.
-ALLOWED_PATHS = frozenset({"/api/v1/admin/floored-actions"})
+# The closed list (HOST and Lead, 11-16). The ops_reader routes of issue 2390 join it as they
+# land: active-keys (11-24) returns provider names from a fixed list with counts. A count
+# that could single out a tester is written in this public repo as "none" or "at least one".
+ALLOWED_PATHS = frozenset({"/api/v1/admin/floored-actions", "/api/v1/admin/active-keys"})
 QUERY_OK = re.compile(r"^[A-Za-z0-9_=&.-]*$")
 
 # The connect-start routes ``--redirect-uri`` may call (HOST, 2026-11-16). Kept apart
@@ -64,6 +67,10 @@ QUERY_OK = re.compile(r"^[A-Za-z0-9_=&.-]*$")
 REDIRECT_URI_ROUTES = {
     "github": "/api/v1/settings/integrations/github/connect",
     "calendar": "/api/v1/settings/integrations/calendar/connect",
+    # Issue 2282 box 4 (Arch 2026-11-24, mail 01M8728HYN): the calendar step in /setup is
+    # the third start, and the one whose return address no seat had read. Same shape: a
+    # GET for a signed-in account that answers with the sign-in address and a state.
+    "setup-calendar": "/api/v1/setup/calendar/oauth/start",
 }
 HOST_OK = re.compile(r"^[A-Za-z0-9.-]+(:[0-9]{1,5})?$")
 PATH_OK = re.compile(r"^/[A-Za-z0-9/_.-]*$")
@@ -187,7 +194,8 @@ def read_redirect_uri(
         # state, so there is nothing to compare: the path must be that page, exactly.
         switch = payload["switch_host_url"]
         shown = host_and_path(switch)
-        if urllib.parse.urlsplit(switch).path != SWITCH_PAGES[connector]:
+        # A start with no host-switch page of its own (setup-calendar) is refused here.
+        if urllib.parse.urlsplit(switch).path != SWITCH_PAGES.get(connector):
             raise Refused("the host-switch address is not the page this script expects")
         line = f"{connector}: start on {shown}"
     else:
