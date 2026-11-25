@@ -1025,7 +1025,7 @@ Brake FIRED (second slip = #1965 admission, found and ledgered 10-09). Memo to E
   - 2244 (3): a sprint 3 slot; then xian's yes via Exec; served row on Step E.
 - **Sprint 2 closes Thu 11-26 as planned**; #071 reports the score as it stands (xian 11-20).
 - **OWED rows:**
-  - sprint-3-plan: draft at the 11-25 START on the current score. Candidates #2149, 2410, #2425, #2426, 2352 (box 3), 2356, 2399, 2244 (Lead's two-line entrypoint change; HOST's two custody notes: the volume stops being uploads-only, and #2062's restore drill names the index; Arch: plain `chown`, not `-R`), #2433, #2434 (both low). Revise at the 11-26 close. Dates are xian's.
+  - sprint-3-plan: DRAFTED 11-25 START (`docs/internal/planning/production-sprint-3-draft-2026-11-25.md`; to Exec 01M89J4NND as a decision request: focus, dates, 2244). Revise at the 11-26 close if sprint 2's last day changes a row; then await xian via Exec. Was: draft at the 11-25 START on the current score. Candidates #2149, 2410, #2425, #2426, 2352 (box 3), 2356, 2399, 2244 (Lead's two-line entrypoint change; HOST's two custody notes: the volume stops being uploads-only, and #2062's restore drill names the index; Arch: plain `chown`, not `-R`), #2433, #2434 (both low). Revise at the 11-26 close. Dates are xian's.
   - 2364-known-limit, 2364-untested-provider-row, 2364-selfhost-wording.
   - tier1-approval-batch: xian's quoted yes, then Docs.
   - rule7-key-ask, path-b-quote, notion-offer-ask: unchanged.
