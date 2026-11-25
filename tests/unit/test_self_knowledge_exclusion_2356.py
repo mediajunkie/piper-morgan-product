@@ -50,9 +50,10 @@ def _item_paths(cell):
 
 
 def _lands_in_a_never_indexed_tree(path):
-    p = os.path.normpath(path).replace(os.sep, "/")
-    if os.path.isabs(p) or p.startswith(("~", "../")) or p == "..":
+    raw = path.strip().replace(os.sep, "/")
+    if ".." in raw.split("/") or os.path.isabs(raw) or raw.startswith("~"):
         return True
+    p = os.path.normpath(raw).replace(os.sep, "/")
     return any(("/" + tree) in ("/" + p + "/") for tree in NEVER_INDEXED)
 
 
@@ -108,6 +109,12 @@ class TestTheCheckerKeepsTheRule:
             ("/Users/someone/.claude-pm/memory/user.md", True),
             ("~/.claude-pm/memory/user.md", True),
             ("../piper-morgan-mail/x.md", True),
+            # Any ".." is refused, even one that resolves outside the excluded trees
+            # (Arch, mail 01M89KB8TK): the old prefix rule refused this one too.
+            ("dev/../docs/tier1/how-i-act.md", True),
+            ("docs/tier1/../tier1/how-i-act.md", True),
+            (" dev/x.md", True),
+            ("docs/a/memory/x.md", True),
             ("docs/tier1/how-i-act.md", False),
             ("docs/BETA_KNOWN_ISSUES.md", False),
             ("docs/developer-guide.md", False),  # "dev" inside a name is not the tree
