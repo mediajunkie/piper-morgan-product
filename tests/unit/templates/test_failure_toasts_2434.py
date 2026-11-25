@@ -148,3 +148,20 @@ def test_the_setup_wizard_counts_the_password_as_typed():
     shared = (ROOT / "web/static/js/form-validation.js").read_text(encoding="utf-8")
     block = shared[shared.index("minLength: (length)") :][:200]
     assert "field.value?.trim()" in block
+
+
+def test_the_setup_email_field_cannot_send_more_than_the_route_accepts():
+    """Arch (mail 01M89PD7NG): the page enforces the model's limit first, so a person cannot
+    meet the generic validation sentence; the model's rule stays as the backstop for a script."""
+    from web.api.routes.setup import CreateUserRequest
+
+    limit = next(
+        m.max_length
+        for m in CreateUserRequest.model_fields["email"].metadata
+        if getattr(m, "max_length", None) is not None
+    )
+    page = (ROOT / "templates/setup.html").read_text(encoding="utf-8")
+    fields = re.findall(r'<input[^>]*name="email"[^>]*>', page)
+    assert len(fields) == 1
+    assert f'maxlength="{limit}"' in fields[0]
+    assert limit == 255
