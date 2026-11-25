@@ -27,7 +27,7 @@ Alternative, if xian wants a build focus instead: Path B's routing (items 5 and 
 | 4 | Fresh-account rows: #2417, 2411, 2406, #2401, #2402, and Paths A and B served | PA, Web, CXO | xian's go-ahead to mint `seat-tester-1`, via Exec (one decision, so one named item) | 1, 1, 2, 5, 3 open |
 | 5 | #2425 + #2424: "add a task to my/the X project" reaches create_todo with the project arg; the list read honours it | Lead | Arch's choice of lever (rule 7; the description lever is advised against) | 2 / 0, 5 / 0 |
 | 6 | #2426: "show me the todos in the Launch project" stops asking which project | Lead, CXO | rides on item 5's lever (read-side twin; same ruling) | 4 / 0 |
-| 7 | 2399: said-instead replies on the write rail stop reporting success | CXO, Web | the next promotion, then CXO's served box (one bubble of each kind) | 7 / 0; built on main 11-25 `db75ae3bc5` (Lead 01M89R13A8) |
+| 7 | 2399: said-instead replies on the write rail stop reporting success | CXO, Web | the already-closed and not-found lines need a working GitHub connection: read in xian's F.4 sitting (Lead's proposal to CXO, 01M89SNRXV) | 7 / 0; on beta `aaf8d9249e`; vague-write line served 11-25 (Web 01M89SJ9ZD) |
 | 8 | 2356: self-knowledge part 4, the served question set (CXO's set, CIO's three, PPM's known-limits question) | CXO, Web | #2355's build step landing (no runtime index yet, so a served run would not test the exclusion; CXO 01M89KHPZ1); then a named build on a self-hosted install | no boxes; exclusion test landed 11-25 `16e47c26c2` (Lead 01M89K6EAP) |
 | 9 | 2244: the document vector store moves onto the `/data` volume | Lead, HOST | xian's yes via Exec to two lines in the root-run `deploy/docker-entrypoint.sh` (below) | 3 / 0 |
 
@@ -55,6 +55,8 @@ These are rulings, not builds. Each names its follow-on build for sprint 4.
 - ~~#2434~~: closed 11-25 by Lead on CXO's pass of the forced-failure render; built before sprint 3 opened, so out of the set. Web's served quotes of the helper line follow on `aaf8d9249e`.
 
 ## Not in the set, with why
+
+- #2435 (Slack silent on not-performed replies), #2436 (builders set their own not-performed kind; Arch: later, one unit) and #2437 (close/reopen on a stale connection asks yes/no): filed 11-25 from 2399's work, placed in H. Each waits on an Arch mechanism or CXO's words; xian can pull any of them in at ratification.
 
 - 2297's last row: behind #2412, which waits on #2364 step 1 (xian's OpenAI run).
 - #2423: needs an App-connected account, so it follows Step F; it can join item 1's sitting if Lead has it ready.

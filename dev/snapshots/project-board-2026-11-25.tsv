@@ -2221,3 +2221,6 @@ issue	state	milestone	sprint	title	labels	blocked_by	state_reason
 2432	CLOSED	Production		4xx replies reach a person with the raiser's own words (422 interpolates validation text); no mark or guard as 5xx has	architecture		COMPLETED
 2433	CLOSED	Production		A non-admin who opens an admin-only page by its address sees raw JSON, with words written for a refused change	bug		COMPLETED
 2434	CLOSED	Production		UX: pages' own failure toasts say only 'Failed to…' under the title 'Error'	UX		COMPLETED
+2435	OPEN	Production		Slack goes silent on replies marked not-performed (degraded, not found, not connected); web chat shows the honest line	UX		
+2436	OPEN	Production		Said-instead replies: builders set their own not-performed kind, and GitHubWriteRefused carries one (follow-up to 2399)			
+2437	OPEN	Production		Close/reopen on a stale GitHub connection asks yes/no for a write that cannot succeed; the edit path says to reconnect			
