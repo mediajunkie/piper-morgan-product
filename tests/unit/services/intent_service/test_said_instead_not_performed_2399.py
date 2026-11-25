@@ -34,7 +34,7 @@ from services.intent_service.destructive_confirm import build_close_reopen_confi
 from services.intent_service.not_performed import (
     NOT_PERFORMED_KEY,
     NOT_PERFORMED_KINDS,
-    SAID_INSTEAD_KINDS,
+    SAID_INSTEAD_KEY,
     NotPerformed,
     mark_not_performed,
     was_not_performed,
@@ -85,19 +85,59 @@ def _kind(result):
     return (result.intent_data or {}).get(NOT_PERFORMED_KEY)
 
 
+def _assert_said_instead(result, kind):
+    """One of the three 2399 paths: not performed, this kind, and the said-instead flag."""
+    assert result.success is False
+    assert _kind(result) == kind
+    assert result.intent_data[SAID_INSTEAD_KEY] is True
+    assert was_said_instead(result)
+
+
+def _slack_handler(result):
+    from services.integrations.slack.response_handler import SlackResponseHandler
+
+    handler = SlackResponseHandler(
+        spatial_adapter=MagicMock(),
+        intent_classifier=MagicMock(),
+        slack_client=MagicMock(),
+        intent_service=MagicMock(),
+    )
+    handler.intent_service.process_intent = AsyncMock(return_value=result)
+    return handler
+
+
+async def _slack(result):
+    """The Slack events path's answer for a turn whose result is ``result``."""
+    intent = Intent(
+        category=IntentCategory.EXECUTION,
+        action="create_issue",
+        original_message="file a bug about the header",
+        confidence=0.95,
+    )
+    return await _slack_handler(result)._process_through_orchestration(
+        intent, {"user_id": str(uuid4()), "workspace_id": "T1", "channel_id": "C1"}
+    )
+
+
+async def _assert_slack_sends(result):
+    out = await _slack(result)
+    assert out is not None and out["type"] == "workflow_result"
+    assert out["result"]["message"] == result.message
+
+
 class TestTheNewKind:
     def test_already_in_state_is_a_kind(self):
         assert NotPerformed.ALREADY_IN_STATE in NOT_PERFORMED_KINDS
         data = mark_not_performed(None, NotPerformed.ALREADY_IN_STATE)
         assert was_not_performed(SimpleNamespace(intent_data=data))
 
-    def test_said_instead_kinds_are_the_two_only_these_paths_set(self):
-        assert SAID_INSTEAD_KINDS == {
-            NotPerformed.REFUSED_BEFORE_WRITE,
-            NotPerformed.ALREADY_IN_STATE,
-        }
-        for kind in (NotPerformed.DEGRADED, NotPerformed.NOT_FOUND, NotPerformed.NOT_CONNECTED):
-            assert not was_said_instead(SimpleNamespace(intent_data={NOT_PERFORMED_KEY: kind}))
+    def test_said_instead_needs_the_flag_and_a_kind(self):
+        for kind in NOT_PERFORMED_KINDS:
+            marked = {NOT_PERFORMED_KEY: kind}
+            assert not was_said_instead(SimpleNamespace(intent_data=marked))
+            assert was_said_instead(SimpleNamespace(intent_data={**marked, SAID_INSTEAD_KEY: True}))
+        assert not was_said_instead(SimpleNamespace(intent_data={SAID_INSTEAD_KEY: True}))
+        assert not was_said_instead(SimpleNamespace(intent_data=None))
 
 
 # ── Path 1: the write ask's reply ──────────────────────────────────────────────
@@ -119,9 +159,10 @@ class TestWriteAskReply:
         result = outcome.result
         assert result.message == NOT_SURE_STATEMENT
         assert result.success is False
-        assert _kind(result) == NotPerformed.REFUSED_BEFORE_WRITE
+        _assert_said_instead(result, NotPerformed.REFUSED_BEFORE_WRITE)
         assert result.requires_clarification is False
         assert outcome.armed is False
+        await _assert_slack_sends(result)
 
     async def test_a_statement_builder_is_not_performed(self):
         ask = await update_document_write_ask(
@@ -130,7 +171,7 @@ class TestWriteAskReply:
         result = _reply(ask, floor_write=True).result
         assert result.message == NOT_SURE_UPDATE_DOCUMENT
         assert result.success is False
-        assert _kind(result) == NotPerformed.REFUSED_BEFORE_WRITE
+        _assert_said_instead(result, NotPerformed.REFUSED_BEFORE_WRITE)
         assert result.intent_data["floor_category_write"] is True
 
     async def test_the_app_line_keeps_its_degraded_kind(self):
@@ -145,8 +186,9 @@ class TestWriteAskReply:
         result = _reply(ask).result
         assert result.message == GITHUB_APP_NOT_ON_REPOSITORY_WRITE_REPLY
         assert result.success is False
-        assert _kind(result) == NotPerformed.DEGRADED
+        _assert_said_instead(result, NotPerformed.DEGRADED)
         assert result.intent_data["repository"] == _REPO
+        await _assert_slack_sends(result)
 
     async def test_an_armed_question_is_a_clarification_with_no_marker(self):
         """add_project's name question, armed on its own carrier."""
@@ -161,7 +203,9 @@ class TestWriteAskReply:
         assert result.success is True
         assert result.requires_clarification is True
         assert NOT_PERFORMED_KEY not in result.intent_data
+        assert SAID_INSTEAD_KEY not in result.intent_data
         assert not was_not_performed(result)
+        assert not was_said_instead(result)
         assert outcome.armed is True
 
     async def test_the_split_reads_armed_not_the_text(self):
@@ -169,7 +213,8 @@ class TestWriteAskReply:
         armed = _reply(WriteAsk(reply=NOT_SURE_STATEMENT, armed=True)).result
         unarmed = _reply(WriteAsk(reply=ADD_PROJECT_NAME_QUESTION)).result
         assert armed.success is True and not was_not_performed(armed)
-        assert unarmed.success is False and _kind(unarmed) == NotPerformed.REFUSED_BEFORE_WRITE
+        _assert_said_instead(unarmed, NotPerformed.REFUSED_BEFORE_WRITE)
+        assert SAID_INSTEAD_KEY not in armed.intent_data
 
 
 # ── Path 2: the close/reopen passthrough ──────────────────────────────────────
@@ -274,7 +319,8 @@ class TestCloseReopenPassthroughThroughTheRail:
         result = await self._turn(service, message)
         assert result.message == expected
         assert result.success is False
-        assert _kind(result) == NotPerformed.NOT_FOUND
+        _assert_said_instead(result, NotPerformed.NOT_FOUND)
+        await _assert_slack_sends(result)
         assert result.requires_clarification is False
 
     async def test_already_closed(self, service, monkeypatch):
@@ -283,7 +329,8 @@ class TestCloseReopenPassthroughThroughTheRail:
         result = await self._turn(service, f"close issue 108 in {_REPO}")
         assert result.message == "Issue #108: Login bug is already closed."
         assert result.success is False
-        assert _kind(result) == NotPerformed.ALREADY_IN_STATE
+        _assert_said_instead(result, NotPerformed.ALREADY_IN_STATE)
+        await _assert_slack_sends(result)
 
     async def test_already_open(self, service, monkeypatch):
         _no_app_refusal(monkeypatch)
@@ -291,7 +338,8 @@ class TestCloseReopenPassthroughThroughTheRail:
         result = await self._turn(service, f"reopen issue 108 in {_REPO}")
         assert result.message == "Issue #108: Login bug is already open."
         assert result.success is False
-        assert _kind(result) == NotPerformed.ALREADY_IN_STATE
+        _assert_said_instead(result, NotPerformed.ALREADY_IN_STATE)
+        await _assert_slack_sends(result)
 
     async def test_app_refusal(self, service, monkeypatch):
         from services.mcp.consumer.github_adapter import GITHUB_APP_NOT_ON_REPOSITORY_WRITE_REPLY
@@ -303,13 +351,16 @@ class TestCloseReopenPassthroughThroughTheRail:
         result = await self._turn(service, f"close issue 108 in {_REPO}")
         assert result.message == GITHUB_APP_NOT_ON_REPOSITORY_WRITE_REPLY
         assert result.success is False
-        assert _kind(result) == NotPerformed.DEGRADED
+        _assert_said_instead(result, NotPerformed.DEGRADED)
+        await _assert_slack_sends(result)
 
 
 # ── Path 3: the refused-write handler ─────────────────────────────────────────
 
 
 class TestGitHubWriteRefused:
+    pytestmark = pytest.mark.asyncio
+
     def _render(self, service, degradation):
         from services.integrations.github.github_integration_router import GitHubWriteRefused
 
@@ -318,7 +369,7 @@ class TestGitHubWriteRefused:
         )
         return service._unverified_write_result(e, _intent("x", action="create_issue"), "wf")
 
-    def test_unknown_tool_refusal(self, service):
+    async def test_unknown_tool_refusal(self, service):
         """2106: the server does not offer the tool. The text is the adapter's own words."""
         from services.mcp.consumer.github_adapter import GitHubMCPSpatialAdapter
 
@@ -326,12 +377,13 @@ class TestGitHubWriteRefused:
         result = self._render(service, deg)
         assert result.message == f"{deg.user_message} {deg.action_hint}"
         assert result.success is False
-        assert _kind(result) == NotPerformed.REFUSED_BEFORE_WRITE
+        _assert_said_instead(result, NotPerformed.REFUSED_BEFORE_WRITE)
+        await _assert_slack_sends(result)
         assert result.intent_data["write_refused"] is True
         assert result.requires_clarification is False
         assert result.error is None
 
-    def test_app_not_on_repository_choke_point(self, service):
+    async def test_app_not_on_repository_choke_point(self, service):
         """2379's choke point: no hint, the App line itself."""
         from services.mcp.consumer.github_adapter import GITHUB_APP_NOT_ON_REPOSITORY_WRITE_REPLY
 
@@ -341,24 +393,41 @@ class TestGitHubWriteRefused:
         result = self._render(service, deg)
         assert result.message == GITHUB_APP_NOT_ON_REPOSITORY_WRITE_REPLY
         assert result.success is False
-        assert _kind(result) == NotPerformed.REFUSED_BEFORE_WRITE
+        _assert_said_instead(result, NotPerformed.REFUSED_BEFORE_WRITE)
+        await _assert_slack_sends(result)
 
 
 # ── Consumers (Arch's condition) ──────────────────────────────────────────────
+#
+# A flagged reply (the three 2399 paths) behaves in each consumer as it did when it was
+# success=True; a marked result WITHOUT the flag (2188, 2280) behaves exactly as on main.
+
+_SAID_INSTEAD_KINDS_ON_THE_PATHS = (
+    NotPerformed.REFUSED_BEFORE_WRITE,  # the write ask's statement, GitHubWriteRefused
+    NotPerformed.DEGRADED,  # 2379's App line (write ask, close/reopen)
+    NotPerformed.NOT_FOUND,  # close/reopen not found
+    NotPerformed.ALREADY_IN_STATE,  # close/reopen already closed/open
+)
+_OLDER_MARKED_KINDS = (
+    NotPerformed.DEGRADED,  # 2188 degrade
+    NotPerformed.NOT_FOUND,  # 2188 not-found
+    NotPerformed.NOT_CONNECTED,  # 2280
+)
 
 
-class TestSoftOfferAndUnansweredHalfReadTheMarker:
+def _marked(kind, flagged):
+    data = {"action": "create_issue", NOT_PERFORMED_KEY: kind}
+    if flagged:
+        data[SAID_INSTEAD_KEY] = True
+    return IntentProcessingResult(success=False, message="Nothing was written.", intent_data=data)
+
+
+class TestSoftOfferAndUnansweredHalf:
     """``_apply_soft_offer`` returned early on ``success=False`` and the unanswered-half
-    question was dropped on it; a said-instead reply gets both exactly as before."""
+    question was dropped on it."""
 
     LINE = 'I haven\'t done "tell me a joke" yet. Want me to?'
-
-    def _result(self, kind):
-        return IntentProcessingResult(
-            success=False,
-            message="Nothing was written.",
-            intent_data={"action": "create_issue", NOT_PERFORMED_KEY: kind},
-        )
+    OFFER = "I could help set up a project. Want that?"
 
     def _open_soft_offer(self, service):
         from services.intent_service.soft_invocation import SoftInvocationResult, WorkflowOffer
@@ -368,7 +437,7 @@ class TestSoftOfferAndUnansweredHalfReadTheMarker:
                 has_offer=True,
                 offer=WorkflowOffer(
                     workflow_type="project_setup",
-                    offer_message="I could help set up a project. Want that?",
+                    offer_message=self.OFFER,
                     decline_message="No worries.",
                     confidence=0.9,
                 ),
@@ -376,27 +445,26 @@ class TestSoftOfferAndUnansweredHalfReadTheMarker:
         )
         service.workflow_offer_service.should_offer = MagicMock(return_value=(True, "open"))
 
-    def test_refused_before_write_keeps_the_soft_offer(self, service):
+    @pytest.mark.parametrize("kind", _SAID_INSTEAD_KINDS_ON_THE_PATHS)
+    def test_flagged_reply_keeps_the_soft_offer(self, service, kind):
         self._open_soft_offer(service)
-        out = service._apply_soft_offer(
-            self._result(NotPerformed.REFUSED_BEFORE_WRITE), "hi", str(uuid4()), user_id=_USER
-        )
-        assert "I could help set up a project. Want that?" in out.message
-        assert out.success is False and was_not_performed(out)
+        out = service._apply_soft_offer(_marked(kind, True), "hi", str(uuid4()), user_id=_USER)
+        assert self.OFFER in out.message
+        assert out.success is False and was_said_instead(out)
 
-    def test_other_kinds_keep_no_soft_offer(self, service):
+    @pytest.mark.parametrize("kind", _OLDER_MARKED_KINDS)
+    def test_unflagged_marked_result_gets_no_soft_offer_as_on_main(self, service, kind):
         self._open_soft_offer(service)
-        out = service._apply_soft_offer(
-            self._result(NotPerformed.DEGRADED), "hi", str(uuid4()), user_id=_USER
-        )
+        out = service._apply_soft_offer(_marked(kind, False), "hi", str(uuid4()), user_id=_USER)
         assert out.message == "Nothing was written."
         service.soft_invocation_detector.detect.assert_not_called()
 
-    def test_refused_before_write_keeps_the_unanswered_half_question(self, service):
+    @pytest.mark.parametrize("kind", _SAID_INSTEAD_KINDS_ON_THE_PATHS)
+    def test_flagged_reply_keeps_the_unanswered_half_question(self, service, kind):
         service.workflow_offer_service.should_offer = MagicMock(return_value=(False, "shut"))
         sid = str(uuid4())
         out = service._apply_soft_offer(
-            self._result(NotPerformed.REFUSED_BEFORE_WRITE),
+            _marked(kind, True),
             "hi",
             sid,
             user_id=_USER,
@@ -408,10 +476,11 @@ class TestSoftOfferAndUnansweredHalfReadTheMarker:
             "tell me a joke"
         )
 
-    def test_degraded_still_drops_the_question(self, service):
+    @pytest.mark.parametrize("kind", _OLDER_MARKED_KINDS)
+    def test_unflagged_marked_result_drops_the_question_as_on_main(self, service, kind):
         sid = str(uuid4())
         out = service._apply_soft_offer(
-            self._result(NotPerformed.DEGRADED),
+            _marked(kind, False),
             "hi",
             sid,
             user_id=_USER,
@@ -422,44 +491,30 @@ class TestSoftOfferAndUnansweredHalfReadTheMarker:
         assert get_or_create_context(sid, user_id=_USER).last_offer is None
 
 
-class TestSlackKeepsAMarkedReply:
-    """The Slack events path dropped any ``success=False`` result (no reply at all)."""
+class TestSlack:
+    """The Slack events path dropped any ``success=False`` result (no reply at all). The
+    real path results are also sent in each path's own test above."""
 
     pytestmark = pytest.mark.asyncio
 
-    def _handler(self, result):
-        from services.integrations.slack.response_handler import SlackResponseHandler
+    @pytest.mark.parametrize("kind", _SAID_INSTEAD_KINDS_ON_THE_PATHS)
+    async def test_flagged_reply_is_sent_with_its_text(self, kind):
+        await _assert_slack_sends(_marked(kind, True))
 
-        handler = SlackResponseHandler(
-            spatial_adapter=MagicMock(),
-            intent_classifier=MagicMock(),
-            slack_client=MagicMock(),
-            intent_service=MagicMock(),
-        )
-        handler.intent_service.process_intent = AsyncMock(return_value=result)
-        return handler
-
-    async def _run(self, result):
-        intent = Intent(
-            category=IntentCategory.EXECUTION,
-            action="create_issue",
-            original_message="file a bug about the header",
-            confidence=0.95,
-        )
-        return await self._handler(result)._process_through_orchestration(
-            intent, {"user_id": str(uuid4()), "workspace_id": "T1", "channel_id": "C1"}
-        )
-
-    async def test_marked_reply_is_sent_with_its_text(self):
-        result = IntentProcessingResult(
-            success=False,
-            message=NOT_SURE_STATEMENT,
-            intent_data={NOT_PERFORMED_KEY: NotPerformed.REFUSED_BEFORE_WRITE},
-        )
-        out = await self._run(result)
-        assert out is not None and out["type"] == "workflow_result"
-        assert out["result"]["message"] == NOT_SURE_STATEMENT
+    @pytest.mark.parametrize("kind", _OLDER_MARKED_KINDS)
+    async def test_unflagged_marked_result_is_dropped_as_on_main(self, kind):
+        assert await _slack(_marked(kind, False)) is None
 
     async def test_unmarked_failure_is_still_dropped(self):
-        out = await self._run(IntentProcessingResult(success=False, message="boom", intent_data={}))
+        out = await _slack(IntentProcessingResult(success=False, message="boom", intent_data={}))
         assert out is None
+
+    async def test_flag_without_a_kind_is_dropped(self):
+        result = IntentProcessingResult(
+            success=False, message="boom", intent_data={SAID_INSTEAD_KEY: True}
+        )
+        assert await _slack(result) is None
+
+    async def test_armed_question_is_sent_as_before(self):
+        result = _reply(WriteAsk(reply=ADD_PROJECT_NAME_QUESTION, armed=True)).result
+        await _assert_slack_sends(result)

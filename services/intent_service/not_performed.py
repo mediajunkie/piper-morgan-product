@@ -66,17 +66,18 @@ def was_not_performed(result: Any) -> bool:
     return data.get(NOT_PERFORMED_KEY) in NOT_PERFORMED_KINDS
 
 
-#: #2399: the kinds set only by the said-instead replies, which answered ``success=True``
-#: before 2399 (the write ask's statement, close/reopen's "already", the refused-write
-#: handler). A reader that appends to or arms after a successful turn (the soft offer, the
-#: unanswered-half question) treats these as it did then, so the text a person reads is
-#: unchanged; every other marked kind keeps the behaviour it already had.
-SAID_INSTEAD_KINDS = frozenset({NotPerformed.REFUSED_BEFORE_WRITE, NotPerformed.ALREADY_IN_STATE})
+#: #2399 (option B): set to True, next to the kind, by exactly the three said-instead paths
+#: (an unarmed ``IntentService._rail_write_ask_reply``, a close/reopen passthrough leg, the
+#: ``GitHubWriteRefused`` branch of ``_unverified_write_result``). Those replies answered
+#: ``success=True`` before 2399. A reader that acted on ``success`` (the soft offer, the
+#: unanswered-half question, the Slack events path) treats a flagged reply as it did then,
+#: so its text is unchanged; any other marked or failed result behaves as before.
+SAID_INSTEAD_KEY = "said_instead"
 
 
 def was_said_instead(result: Any) -> bool:
-    """True when the result's marker is one of ``SAID_INSTEAD_KINDS`` (#2399)."""
+    """True when the result carries ``SAID_INSTEAD_KEY`` and a known marker kind (#2399)."""
     data = getattr(result, "intent_data", None)
     if not isinstance(data, dict):
         return False
-    return data.get(NOT_PERFORMED_KEY) in SAID_INSTEAD_KINDS
+    return data.get(SAID_INSTEAD_KEY) is True and was_not_performed(result)

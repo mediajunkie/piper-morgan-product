@@ -729,13 +729,12 @@ class SlackResponseHandler:
                 )
                 return None
 
-            # #2399 (Arch 2026-11-24 07:10, condition): a not-performed reply (a
-            # said-instead line, a degrade, a not-found) is still the reply; only an
-            # unmarked failure is dropped here.
-            from services.intent_service.not_performed import was_not_performed
+            # #2399 (Arch 2026-11-24 07:10, condition): a said-instead reply (success=True
+            # before 2399) is still sent, as it was; every other failure is dropped as before.
+            from services.intent_service.not_performed import was_said_instead
 
             if result is None or not (
-                getattr(result, "success", False) or was_not_performed(result)
+                getattr(result, "success", False) or was_said_instead(result)
             ):
                 self.logger.warning(
                     f"intent_service dispatch returned no success for intent {intent.action}"

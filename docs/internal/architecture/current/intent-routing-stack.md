@@ -6583,10 +6583,13 @@ paths answer `success=False` with the #2188 marker; no reply text changed. `Inte
 set (2379's App line: `DEGRADED`) or else `REFUSED_BEFORE_WRITE`. The close/reopen passthrough reads the kind each
 `build_close_reopen_confirmation` leg sets on its own branch: not found `NOT_FOUND`, already closed/open the new
 `ALREADY_IN_STATE`, the App refusal `DEGRADED`. `_unverified_write_result`'s `GitHubWriteRefused` branch is `success=False`
-with `REFUSED_BEFORE_WRITE`. Readers: `_apply_soft_offer` and `_append_unanswered_half` treat
-`not_performed.SAID_INSTEAD_KINDS` as they treated `success=True` (`was_said_instead`), so the soft offer and the
-"Want me to?" are as before; the Slack events path (`SlackResponseHandler._process_through_orchestration`) keeps any
-marked reply (`was_not_performed`) instead of dropping it. Pins: `tests/unit/services/intent_service/test_said_instead_not_performed_2399.py`.
+with `REFUSED_BEFORE_WRITE`. Each of the three paths also sets `not_performed.SAID_INSTEAD_KEY` (`said_instead: True`)
+next to the kind; an armed question sets neither. Readers that acted on `success` key on `was_said_instead` (the flag
+plus a known kind) and treat a flagged reply as they treated `success=True`: `_apply_soft_offer` (the soft offer),
+`_append_unanswered_half` (the "Want me to?"), and the Slack events path
+(`SlackResponseHandler._process_through_orchestration`, which still sends it). Any other marked or failed result
+(2188, 2280) behaves as before: no soft offer, no question, no Slack reply. The flag rides `intent_data`, which the
+chat route returns as `intent`; no page script reads that field. Pins: `tests/unit/services/intent_service/test_said_instead_not_performed_2399.py`.
 
 **#2301 a status ask that names one project shows that project's open todos, by code (2026-11-20, Arch's six conditions; floor change 2026-11-22, Arch 01M8270WE5, CXO's agreement).** No catalog, router, classifier or pre-classifier text changed. On the STATUS floor path (`_handle_floor_with_context`), when the action is `get_project_status`, `project_status_todos.status_todos_block` takes the project from the router's `project` arg through 2297's reader and lookup, never from the person's words. Exactly one match yields a block under CXO's header in the main list's render; anything else yields nothing and the reply is today's. The block is resolved BEFORE the floor is called and joined to the floor's message after it; the floor never receives the list. When the block is non-empty (a list, the no-open-todos line, or the couldn't-check line), the person's todo keys (`project_status_todos.FLOOR_TODO_KEYS`) are REMOVED from the floor's `domain_context` and its provenance map, so the floor has no todo to name above the block. Removed, not emptied: an empty list reads to the floor as a verified zero. Due reminders stay. A resolved #2197 milestone still returns first. Not yet done: the prompt line that stops the floor offering todos on these turns (part 2, measured on real replies). Pins: `tests/unit/services/intent_service/test_project_status_todos_2301.py`.
 
