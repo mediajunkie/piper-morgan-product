@@ -12,7 +12,7 @@
 Live 09:44, crossposted to LinkedIn, calendar row `distributed` (Docs 01M87ETVG6, 10:59). Nothing owed. Next Ship: #071 kickoff Fri 11-27 via `scripts/ship-kickoff.sh` (the first live v4 kickoff).
 
 ## Rollup
-v1155 (Tue 11-24, rebuilt 15:12: #070 done, 2432 note, beta 23b1373185), `719UZ4h1NELjEwWZbDCceT`. Source `dev/active/exec-attention-rollup-current.html`. Python replace plus assert, and bump the stamp from a `date` call. **At START 11-25:** retitle the h1 to Wednesday and drop the #070 done line. On every rebuild, check each card item against the seats' logs and the editorial calendar (cohort-attention-rollup step 2.01, xian's tell-one-agent rule). 11-24 18:01 and 22:01 found no xian completions.
+v1156 (Wed 11-25 START: h1 Wednesday; #070 done line and 11-24's two for-your-record notes dropped), `719UZ4h1NELjEwWZbDCceT`. Source `dev/active/exec-attention-rollup-current.html`. Python replace plus assert, and bump the stamp from a `date` call. **At START 11-26:** retitle the h1 to Thursday. On every rebuild, check each card item against the seats' logs and the editorial calendar (cohort-attention-rollup step 2.01, xian's tell-one-agent rule). 11-24 18:01 and 22:01 found no xian completions.
 
 ## ADR-084 sitting (steps file `docs/internal/operations/adr-084-one-time-steps.md`)
 - **Done:** A, C, D, F0, F.1 (11-20).
