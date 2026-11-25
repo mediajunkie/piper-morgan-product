@@ -1037,3 +1037,4 @@ Brake FIRED (second slip = #1965 admission, found and ledgered 10-09). Memo to E
 - **Beta serves `92836ae41d`** since `10:15` 11-25 (adds #2437). Web's served read asked (Lead 01M89YVZ50).
 - Production 328 (11-25 12:33 WATCH): #2437 closed by Lead on CXO's served pass; H 50; map v208.
 - 2438 (11-25 13:02): Production H, Production 329. Arch: five rules in one place, unless xian loosens them. CXO: one fixed line. Exec holds the seat-tester-1 sitting until 2438's creation check is served on beta (01M8A7V37S). Lead tells Exec when it's promoted.
+- Beta `cf3486389e` (11-25 13:50; 2438 promoted). Exec told the seat-tester-1 hold can lift.
