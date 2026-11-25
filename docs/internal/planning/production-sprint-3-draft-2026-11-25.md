@@ -52,7 +52,7 @@ These are rulings, not builds. Each names its follow-on build for sprint 4.
 ## Low priority, if the set runs dry
 
 - ~~#2433~~: closed 11-25 by Lead (`7d9da206bd`); built before sprint 3 opened, so out of the set. Its served read follows the next promotion.
-- #2434: pages' own "Failed to…" toasts, plus one sweep row for page copy that contradicts the route in fact (CXO 01M888Q5GX).
+- ~~#2434~~: closed 11-25 by Lead on CXO's pass of the forced-failure render; built before sprint 3 opened, so out of the set. Web's served quotes of the helper line follow on `aaf8d9249e`.
 
 ## Not in the set, with why
 
