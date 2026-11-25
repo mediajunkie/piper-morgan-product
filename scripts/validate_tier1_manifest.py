@@ -76,13 +76,14 @@ EXCLUDED = ("dev/", "mailboxes/", "docs/omnibus-logs/", ".claude-pm/", "memory/"
 
 
 def under_excluded(path):
-    """True when ``path`` lands in a never-indexed tree (#2356). The path is normalised
-    first, so ``./dev/x.md`` and ``docs/../dev/x.md`` are caught, and a path that leaves
-    the checkout (absolute, ``~`` or leading ``..``) is refused the same way: an item is
-    always a file inside this repo."""
-    p = os.path.normpath(path.strip()).replace(os.sep, "/")
-    if os.path.isabs(p) or p.startswith(("~", "../")) or p == "..":
+    """True when ``path`` lands in a never-indexed tree (#2356). Any ``..`` segment is
+    refused outright (Arch, mail 01M89KB8TK: an item never needs one), so is a path that
+    leaves the checkout (absolute or ``~``). The rest is normalised first, so
+    ``./dev/x.md`` is caught: an item is always a file inside this repo."""
+    raw = path.strip().replace(os.sep, "/")
+    if ".." in raw.split("/") or os.path.isabs(raw) or raw.startswith("~"):
         return True
+    p = os.path.normpath(raw).replace(os.sep, "/")
     return (p + "/").startswith(EXCLUDED) or any("/" + e in "/" + p + "/" for e in EXCLUDED)
 
 
