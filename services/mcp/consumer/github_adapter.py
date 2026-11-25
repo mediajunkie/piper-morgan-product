@@ -16,7 +16,7 @@ import uuid
 from contextlib import asynccontextmanager
 from dataclasses import dataclass
 from datetime import datetime, timedelta, timezone
-from typing import Any, AsyncIterator, Dict, List, Literal, Optional, Tuple
+from typing import Any, AsyncIterator, Dict, List, Literal, Optional, Tuple, Union
 
 import aiohttp
 
@@ -164,6 +164,81 @@ def github_write_refusal_reply(degradation) -> str:
     if getattr(degradation, "detail", None) == DETAIL_APP_NOT_ON_REPOSITORY:
         return GITHUB_APP_NOT_ON_REPOSITORY_WRITE_REPLY
     return github_degrade_reply(degradation)
+
+
+# Issue 2437 (Arch decisions.log 2026-11-25 08:55 and 09:04; CXO's words, mails 01M89T1XXR
+# and 01M89TNSJK): the close/reopen gate's lines for a probe that came back degraded. Said
+# in place of the confirm; nothing is armed. One constant per verb, never a format, so a
+# fact has one spelling. The stale pair is the same fact the after-yes reply states
+# (``IntentService._github_gate_failed``), which returns these constants for close_issue
+# and reopen_issue.
+GITHUB_CLOSE_STALE_REPLY = (
+    "Your GitHub connection isn't working anymore. Reconnect it in Settings → Integrations, "
+    "and I can close that issue."
+)
+GITHUB_REOPEN_STALE_REPLY = (
+    "Your GitHub connection isn't working anymore. Reconnect it in Settings → Integrations, "
+    "and I can reopen that issue."
+)
+GITHUB_CLOSE_NOT_CONNECTED_REPLY = (
+    "GitHub isn't connected yet. Connect it in Settings → Integrations, and I can close "
+    "that issue."
+)
+GITHUB_REOPEN_NOT_CONNECTED_REPLY = (
+    "GitHub isn't connected yet. Connect it in Settings → Integrations, and I can reopen "
+    "that issue."
+)
+# Said BEFORE any question, so it says nothing was done. The after-yes handler line
+# ("... so I can't close that issue yet. Nothing was changed. ...") is a different fact and
+# stays separate (Arch 09:05).
+GITHUB_ISSUE_COULD_NOT_CHECK_REPLY = (
+    "I couldn't check that issue just now, so I haven't done anything. Try again in a "
+    "moment; if it keeps failing, tell us."
+)
+
+CLOSE_VERB = "close"
+REOPEN_VERB = "reopen"
+
+
+def close_reopen_degrade_line(degradation, verb: str) -> str:
+    """Issue 2437: the close/reopen gate's line for a degraded probe. Picked by the
+    degrade's ``detail`` and ``reason`` in code, never by reading a message. Every
+    ``return`` is an UPPER_CASE constant, and every ``DegradationReason`` member is named
+    here (both pinned by tests). An App ``detail`` outranks the reason, as in
+    ``github_degrade_reply``; the App lines are the ones the gate's 2379 check already
+    says for a write (``github_write_refusal_reply``)."""
+    if verb not in (CLOSE_VERB, REOPEN_VERB):
+        raise ValueError(f"not a close/reopen verb: {verb!r}")
+    close = verb == CLOSE_VERB
+    reason = getattr(degradation, "reason", None)
+    detail = getattr(degradation, "detail", None)
+    if detail == DETAIL_APP_NOT_ON_REPOSITORY:
+        return GITHUB_APP_NOT_ON_REPOSITORY_WRITE_REPLY
+    if detail == DETAIL_APP_NOT_INSTALLED:
+        return GITHUB_APP_NOT_INSTALLED_REPLY
+    if detail == DETAIL_APP_INSTALL_LINK_MISSING:
+        return GITHUB_APP_INSTALL_LINK_MISSING_REPLY
+    if detail == DETAIL_APP_TOO_MANY_REPOSITORIES:
+        return GITHUB_APP_TOO_MANY_REPOSITORIES_REPLY
+    if reason is DegradationReason.STALE_TOKEN:
+        if close:
+            return GITHUB_CLOSE_STALE_REPLY
+        return GITHUB_REOPEN_STALE_REPLY
+    if reason is DegradationReason.CONNECT_REQUIRED:
+        if close:
+            return GITHUB_CLOSE_NOT_CONNECTED_REPLY
+        return GITHUB_REOPEN_NOT_CONNECTED_REPLY
+    if reason in (
+        DegradationReason.NOT_CONFIGURED,
+        DegradationReason.UNREACHABLE,
+        DegradationReason.MISCONFIGURED,
+        DegradationReason.REPO_UNRESOLVED,
+        # After the probe's own 404 check did not match: never a not-found claim.
+        DegradationReason.RESOURCE_NOT_FOUND,
+    ):
+        return GITHUB_ISSUE_COULD_NOT_CHECK_REPLY
+    # A reason added later and not mapped above: the test that every member is named fails.
+    return GITHUB_ISSUE_COULD_NOT_CHECK_REPLY
 
 
 async def github_app_write_refusal_line(
@@ -2043,7 +2118,11 @@ class GitHubMCPSpatialAdapter(BaseSpatialAdapter):
         issue_number: int,
         explicit_repo: Optional[str] = None,
         project_id=None,
-    ) -> Tuple[Literal["found", "not_found", "unknown"], Optional[Dict[str, Any]], Optional[str]]:
+    ) -> Tuple[
+        Literal["found", "not_found", "unknown", "degraded"],
+        Optional[Dict[str, Any]],
+        Union[str, DegradationResponse, None],
+    ]:
         """#1959: a tri-state existence probe for the close/reopen resolve-first
         confirm gate — NEVER infers not-found from absence.
 
@@ -2062,25 +2141,30 @@ class GitHubMCPSpatialAdapter(BaseSpatialAdapter):
           text matches ``_is_not_found_text`` (the SAME check #1858's
           write-verification readback leg already uses, applied here to a
           plain read instead of a write's readback).
-        - ``("unknown", None, None)``: any degradation (REPO_UNRESOLVED,
-          CONNECT_REQUIRED, STALE_TOKEN, UNREACHABLE, ...) or any other
-          unparseable/erroring result with no positive not-found evidence.
-          The caller must treat this as "could not confirm either way" —
-          never as not-found.
+        - ``("degraded", None, degradation)``: issue 2437 (Arch, decisions.log
+          2026-11-25 08:54 and 09:04). The connector could not serve: the resolver's
+          or the binding's degrade, the App check's (2379), or ``_degrade_for_exc``'s
+          for a non-404 exception (which keeps the 2029 stale mark and 2342's
+          replaced-token check). The third element is that ``DegradationResponse``;
+          the caller picks its line from it and never re-derives a reason.
+        - ``("unknown", None, None)``: the connector served but gave no evidence
+          either way (a degenerate or unparseable body). The caller must treat this
+          as "could not confirm either way", never as not-found.
         """
         resolved = await self._resolve_or_degrade(
             user_id, explicit_repo=explicit_repo, project_id=project_id
         )
         if isinstance(resolved, DegradationResponse):
-            return "unknown", None, None
+            return "degraded", None, resolved
 
         binding_or_degrade = await self._bound_binding_or_degrade(user_id)
         if isinstance(binding_or_degrade, DegradationResponse):
-            return "unknown", None, None
-        if await self._app_repository_degrade(binding_or_degrade, resolved.full_name) is not None:
+            return "degraded", None, binding_or_degrade
+        app_degrade = await self._app_repository_degrade(binding_or_degrade, resolved.full_name)
+        if app_degrade is not None:
             # #2379: the App isn't on that repository (or that couldn't be read). No
-            # read, and no evidence either way about the issue.
-            return "unknown", None, None
+            # read; issue 2437: the degrade goes to the caller.
+            return "degraded", None, app_degrade
 
         try:
             async with self._mcp_client_ctx(binding_or_degrade) as client:
@@ -2111,9 +2195,11 @@ class GitHubMCPSpatialAdapter(BaseSpatialAdapter):
                 "GitHub MCP issue_read probe failed (server unreachable/unprovisioned)",
                 exc_info=True,
             )
-            if self._degrade_reason_for_exc(exc) is DegradationReason.STALE_TOKEN:
-                await self._mark_oauth_binding_stale(binding_or_degrade)  # #2029
-            return "unknown", None, None
+            # Issue 2437 (Arch 09:04): the one place that decides, with 2029's stale mark
+            # and 2342's replaced-token check. A RESOURCE_NOT_FOUND from here (the 404
+            # check above did not match) is never a not-found claim; the caller's line
+            # for it is the couldn't-check one.
+            return "degraded", None, await self._degrade_for_exc(binding_or_degrade, exc)
 
         if item is not None and item.get("number") is not None:
             # A real parsed issue carries its own number — trust it
