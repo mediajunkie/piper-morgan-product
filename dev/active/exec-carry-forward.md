@@ -12,7 +12,7 @@
 Live 09:44, crossposted to LinkedIn, calendar row `distributed` (Docs 01M87ETVG6, 10:59). Nothing owed. Next Ship: #071 kickoff Fri 11-27 via `scripts/ship-kickoff.sh` (the first live v4 kickoff).
 
 ## Rollup
-v1157 (Wed 11-25: sprint 3 three answers added; START: h1 Wednesday; #070 done line and 11-24's two for-your-record notes dropped), `719UZ4h1NELjEwWZbDCceT`. Source `dev/active/exec-attention-rollup-current.html`. Python replace plus assert, and bump the stamp from a `date` call. **At START 11-26:** retitle the h1 to Thursday. On every rebuild, check each card item against the seats' logs and the editorial calendar (cohort-attention-rollup step 2.01, xian's tell-one-agent rule). 11-24 18:01 and 22:01 found no xian completions.
+v1158 (Wed 11-25: beta aaf8d9249e;: sprint 3 three answers added; START: h1 Wednesday; #070 done line and 11-24's two for-your-record notes dropped), `719UZ4h1NELjEwWZbDCceT`. Source `dev/active/exec-attention-rollup-current.html`. Python replace plus assert, and bump the stamp from a `date` call. **At START 11-26:** retitle the h1 to Thursday. On every rebuild, check each card item against the seats' logs and the editorial calendar (cohort-attention-rollup step 2.01, xian's tell-one-agent rule). 11-24 18:01 and 22:01 found no xian completions.
 
 ## ADR-084 sitting (steps file `docs/internal/operations/adr-084-one-time-steps.md`)
 - **Done:** A, C, D, F0, F.1 (11-20).
@@ -30,7 +30,7 @@ v1157 (Wed 11-25: sprint 3 three answers added; START: h1 Wednesday; #070 done l
 
 ## In motion
 - **New 11-24:** 2433 (non-admin opening an admin page gets raw JSON) and 2434 (six vague "Failed to" toasts, plus CXO's page-copy sweep row) are placed by PPM; 2434 in H. Nothing for xian.
-- **Beta `23b1373185`** since 11-24 15:12 (all of 2432; Lead 01M87XBH8G). Before it `6ff8197d9a` 13:08. Before it `f4a5baa9b6` 12:30 (2431). Before it `b2cda27b5d` 11:25 (2429, 2430). Before it `009afa0f7f` since 10:24 (2345, Lead 01M87CW2PH), on top of `b86c072755` (09:52). F.4 is the GETDEL served read: its result goes to Lead and HOST as one line.
+- **Beta `aaf8d9249e`** since 11-25 08:36 (2433, 2434, 2399, 2356 test; Lead 01M89S7T8B; Web's four served reads open). Before it `23b1373185` since 11-24 15:12 (all of 2432; Lead 01M87XBH8G). Before it `6ff8197d9a` 13:08. Before it `f4a5baa9b6` 12:30 (2431). Before it `b2cda27b5d` 11:25 (2429, 2430). Before it `009afa0f7f` since 10:24 (2345, Lead 01M87CW2PH), on top of `b86c072755` (09:52). F.4 is the GETDEL served read: its result goes to Lead and HOST as one line.
 - **Staging deploy blips:** VM start failures cleared by re-run on 11-10, 11-20 and 11-23 (Lead 01M85C2R1S). A fourth makes a pattern: take it to xian (the Fly hand is his).
 - **Open nearby:** #2417 (update_issue row, fresh account), #2245 served read, 2301 part 2. #2411's rows moved to #2425; #2426 filed. Both are sprint 3 candidates, and xian sets the slot at the 11-25 draft. #2424 is held on router evidence.
 - **Sprint 2 closes Wed 11-26.** It doesn't stretch (xian 11-20), and #071 reports the score as it stands. The first live v4 Ship kickoff is Fri 11-27 (#071), by `scripts/ship-kickoff.sh`.
