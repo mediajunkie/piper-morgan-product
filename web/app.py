@@ -105,15 +105,22 @@ except Exception as e:
 # This catches FastAPI's built-in HTTPException errors (401, 404, etc) which bypass middleware
 try:
     from fastapi import HTTPException, Request
-    from fastapi.responses import JSONResponse
+    from fastapi.responses import JSONResponse, Response
 
     from services.api.errors import status_line_for
+    from services.api.refusal_pages import (
+        ADMIN_PAGE_NEEDS_ADMIN_LINE,
+        WayOut,
+        refusal_page,
+        wants_a_page,
+    )
+    from services.auth.auth_middleware import ADMIN_ACCOUNT_NEEDED_FOR_CONFIG_LINE
     from services.ui_messages.user_friendly_errors import UserFriendlyErrorService
 
     error_service = UserFriendlyErrorService()
 
     @app.exception_handler(HTTPException)
-    async def http_exception_handler(request: Request, exc: HTTPException) -> JSONResponse:
+    async def http_exception_handler(request: Request, exc: HTTPException) -> Response:
         """
         Convert FastAPI HTTPException to user-friendly messages.
 
@@ -121,6 +128,21 @@ try:
         that bypass normal middleware exception handling, and converts them using
         UserFriendlyErrorService for consistent user-friendly messaging.
         """
+        # Issue 2433 (Arch, mails 01M87ZCEAF and 01M880KDHY; CXO, mail 01M87ZZX8Q): a
+        # non-admin who opens an admin-only PAGE gets a page, with words that fit opening
+        # a page and a link back to Settings (a reload would only be refused again). A
+        # caller that asked for JSON falls through and keeps the gate's own line.
+        if (
+            exc.status_code == 403
+            and getattr(exc, "user_facing", False)
+            and str(exc.detail or "") == ADMIN_ACCOUNT_NEEDED_FOR_CONFIG_LINE
+            and wants_a_page(request)
+        ):
+            logger.warning(
+                "admin_page_refused_non_admin", path=request.url.path, method=request.method
+            )
+            return refusal_page(ADMIN_PAGE_NEEDS_ADMIN_LINE, 403, None, way_out=WayOut.SETTINGS)
+
         # Get friendly message based on status code and exception detail
         friendly_message = None
 
