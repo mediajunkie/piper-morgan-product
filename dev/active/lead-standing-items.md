@@ -44,3 +44,6 @@ The 08-31 version had gone stale again: on 11-24 an audit found twelve issues it
 - **No force-push on any branch; a refused push goes up under a new branch name.** — **Filed**: 2026-11-23
 - **Card-state file:** diff it at each promotion that touches the Integrations cards. — **Filed**: 2026-11-18
 - **Slow checkout in the Tests full-suite job:** if it recurs, ask Docs for the check it offered. — **Filed**: 2026-11-16
+- **2436 (builders set their own not-performed kind; GitHubWriteRefused carries one):** filed 11-25 at Arch's word (01M89MMJY4), follow-up to 2399. Waits on 2399 landing and PPM's placement. — **Filed**: 2026-11-25
+- **2356 served question set:** waits on 2355's build step and a named build on a self-hosted install; then send CXO the build id (01M89KHPZ1). The exclusion test also needs one more row then, for what the build loaded (Arch). — **Filed**: 2026-11-25
+- **2433 served read:** after the next promotion, ask Web for one read of `/settings/invites` as a non-admin; CXO judges Web's quote. — **Filed**: 2026-11-25
