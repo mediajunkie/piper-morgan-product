@@ -323,6 +323,11 @@ def _stub_close_classify(monkeypatch, service):
         )
 
     monkeypatch.setattr(service.intent_classifier, "classify", _classify)
+    # Issue 2437: a working GitHub connection at the probe (an open issue to close).
+    monkeypatch.setattr(
+        "services.mcp.consumer.github_adapter.GitHubMCPSpatialAdapter.probe_issue_connector",
+        AsyncMock(return_value=("found", {"title": "Test issue", "state": "open"}, None)),
+    )
 
 
 @pytest.fixture

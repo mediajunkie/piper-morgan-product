@@ -362,6 +362,25 @@ def _stub_close_reopen_classify(monkeypatch, service):
         )
 
     monkeypatch.setattr(service.intent_classifier, "classify", _classify)
+    # Issue 2437: a working GitHub connection at the probe: an open issue for a close,
+    # a closed one for a reopen (keyed on the action this helper just classified).
+    _last = {"action": "close_issue_query"}
+    _inner = _classify
+
+    async def _classify_and_note(message, *args, **kwargs):
+        intent = await _inner(message, *args, **kwargs)
+        _last["action"] = intent.action
+        return intent
+
+    async def _probe(self, *args, **kwargs):
+        state = "closed" if _last["action"] == "reopen_issue_query" else "open"
+        return "found", {"title": "Test issue", "state": state}, None
+
+    monkeypatch.setattr(service.intent_classifier, "classify", _classify_and_note)
+    monkeypatch.setattr(
+        "services.mcp.consumer.github_adapter.GitHubMCPSpatialAdapter.probe_issue_connector",
+        _probe,
+    )
 
 
 @pytest.fixture
