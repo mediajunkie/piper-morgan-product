@@ -104,3 +104,47 @@ def test_no_new_toast_takes_the_bare_title_error():
         if count:
             found[path.relative_to(ROOT).as_posix()] = count
     assert found == {"templates/settings_github.html": 1}
+
+
+# ---- the sweep row: page text that contradicted the route in fact (CXO, mail 01M89MSJ49) ----
+
+
+def test_the_upload_picker_offers_exactly_the_kinds_the_route_accepts():
+    from web.api.routes.files import ALLOWED_EXTENSIONS
+
+    text = (ROOT / "templates/files.html").read_text(encoding="utf-8")
+    accepts = re.findall(r'accept="([^"]*)"', text)
+    assert len(accepts) == 1
+    assert set(accepts[0].split(",")) == set(ALLOWED_EXTENSIONS)
+    assert ".doc" not in accepts[0].split(",")  # the old Word format the route refuses
+
+
+def test_the_upload_helper_names_the_word_kind_that_is_accepted():
+    text = (ROOT / "templates/files.html").read_text(encoding="utf-8")
+    assert "Max size: 10MB. Allowed: Text, PDF, Word (.docx), Markdown, JSON" in text
+    assert "Allowed: Text, PDF, Word, Markdown" not in text
+
+
+def test_the_upload_helpers_size_is_the_routes_limit():
+    from web.api.routes.files import MAX_FILE_SIZE
+
+    assert MAX_FILE_SIZE == 10 * 1024 * 1024
+
+
+def test_the_setup_wizard_counts_the_password_as_typed():
+    """Arch (mail 01M89MNGKX): the password field only. The shared ``minLength`` still
+    trims, which is right for the username."""
+    from services.auth.password_validator import PasswordValidator
+
+    setup = (ROOT / "web/static/js/setup.js").read_text(encoding="utf-8")
+    start = setup.index("password: [", setup.index("FormValidation.init('account-form'"))
+    rule = setup[start : setup.index("],", start)]
+    assert "Validators.minLength" not in rule
+    assert ".trim()" not in rule
+    assert f"(field.value || '').length >= {PasswordValidator.MIN_LENGTH}" in rule
+    assert "'Needs at least 8 characters'" in rule
+    assert "username: [Validators.required(), Validators.minLength(3)]" in setup
+
+    shared = (ROOT / "web/static/js/form-validation.js").read_text(encoding="utf-8")
+    block = shared[shared.index("minLength: (length)") :][:200]
+    assert "field.value?.trim()" in block

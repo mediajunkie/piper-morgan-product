@@ -487,7 +487,15 @@
         FormValidation.init('account-form', {
             username: [Validators.required(), Validators.minLength(3)],
             email: [Validators.required(), Validators.email()],
-            password: [Validators.required(), Validators.minLength(8)],
+            // Issue 2434 (Arch, mail 01M89MNGKX): the password is counted as typed,
+            // like the route (PasswordValidator) and the field's own minlength. The
+            // shared Validators.minLength trims first, which is right for a username
+            // and wrong here: seven characters and a space would be refused by the
+            // page and accepted by the route.
+            password: [
+                Validators.required(),
+                (field) => ((field.value || '').length >= 8 ? null : 'Needs at least 8 characters')
+            ],
             // Keyed by the field's NAME (password_confirm). It was keyed by the id
             // ('password-confirm'), which FormValidation never finds, so this rule
             // never ran and a mismatched pair went to the server.

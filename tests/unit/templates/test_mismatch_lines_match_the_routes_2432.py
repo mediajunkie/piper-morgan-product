@@ -49,7 +49,10 @@ def test_the_wizards_match_rule_is_keyed_by_the_fields_name():
     assert re.search(r"^\s+password_confirm: \[$", script, re.M)
     assert 'name="password_confirm"' in page
     start = script.index("FormValidation.init('account-form'")
-    keys = re.findall(r"^\s{12}'?([a-z_-]+)'?: \[", script[start : start + 900], re.M)
+    # To the end of the init call (issue 2434 made the password rule longer than the
+    # fixed 900-character window this used to read).
+    block = script[start : script.index("});", start)]
+    keys = re.findall(r"^\s{12}'?([a-z_-]+)'?: \[", block, re.M)
     assert keys == ["username", "email", "password", "password_confirm"]
     for key in keys:
         assert f'name="{key}"' in page, key
