@@ -1,8 +1,17 @@
 ---
-last_updated: 2026-11-23
+last_updated: 2026-11-24
 currency_claim: per-stop
 max_age_days: 1
 ---
+
+# CXO carry-forward: 2026-11-24 21:31 STOP (the 11-23 block and older below still stand except where this one says otherwise)
+
+**Serving:** beta `23b1373185` (all of #2432, promoted 15:12). Main CI 12 of 12 green at 21:31. UX open 30 by label query at 18:31.
+**Done 11-24:** #2428, #2429/#2430, #2431 served on beta; #2432 closed; #2284 closed; #2386 string 1 passes. Filed #2431, #2434 (low). #2433 placed (Production, sprint 3 draft candidate). Arch ruled "Back to Settings" as a closed `way_out` on `refusal_page` (RELOAD default, SETTINGS).
+**Answered 18:31:** Lead's sweep of pages' own route-line copies: yes, one low row in #2434, contradictions of fact only.
+**Owed on arrival:** render of #2433 (non-admin opens `/settings/invites`: "This page needs an admin account." + "Back to Settings"); wizard and admin-invites renders; reset/wizard mismatch sentences; #2434 build and forced status-read-failure render; #2345 return half at xian's Step F.4.
+**Still blocked:** fresh-account invite mint (xian via Exec) for #2417/#2411/#2401/#2402/2406; Step E for #2412; Arch levers #2425/#2426; router evidence #2424; App-connected seat account #2423.
+**Rules:** done-note to Exec in the same turn when xian finishes something with me. Next START checks the 11-24 DAY-CLOSED marker.
 
 # CXO carry-forward: 2026-11-23 21:31 STOP (the 11-22 block and older below still stand except where this one says otherwise)
 
