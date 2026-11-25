@@ -146,7 +146,8 @@ class TestOAuthLeg401MarksStale:
         assert await _status(maker) == ConnectorStatusState.STALE.value
 
     async def test_issue_probe_401_on_oauth_leg_writes_stale(self, maker):
-        # probe_issue_connector (#1959) returns "unknown" rather than a degrade; it marks too.
+        # probe_issue_connector (#1959): issue 2437 returns "degraded" with the stale degrade
+        # from _degrade_for_exc, which marks too.
         await _seed(maker, ConnectorStatusState.BOUND.value)
         adapter = GitHubMCPSpatialAdapter()
         server = FastMCP("github-issue-401-fixture")
@@ -169,8 +170,9 @@ class TestOAuthLeg401MarksStale:
             patch.object(adapter, "resolve_credential", AsyncMock(return_value=_oauth())),
             patch.object(adapter, "_resolve_or_degrade", AsyncMock(return_value=_Repo())),
         ):
-            state, item, _repo = await adapter.probe_issue_connector(_ALPHA, issue_number=9)
-        assert (state, item) == ("unknown", None)
+            state, item, degradation = await adapter.probe_issue_connector(_ALPHA, issue_number=9)
+        assert (state, item) == ("degraded", None)
+        assert degradation.reason is DegradationReason.STALE_TOKEN
         assert await _status(maker) == ConnectorStatusState.STALE.value
 
     async def test_a_rejected_personal_token_never_marks_the_grant_stale(self, maker):

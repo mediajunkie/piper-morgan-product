@@ -29,7 +29,7 @@ from services.integrations.github.repo_resolver import ResolutionSource, Resolve
 from services.mcp.consumer import github_adapter as gh_mod
 from services.mcp.consumer import github_app_grant as grant_mod
 from services.mcp.consumer import github_app_install as install_mod
-from services.mcp.consumer.connector import DegradationReason
+from services.mcp.consumer.connector import DegradationReason, DegradationResponse
 from services.mcp.consumer.github_adapter import GitHubCredential, GitHubMCPSpatialAdapter
 from services.mcp.consumer.github_app_install import (
     DETAIL_APP_INSTALL_LINK_MISSING,
@@ -207,18 +207,34 @@ class TestTheCloseReopenProbe:
         assert status == "found" and item["number"] == 7 and repo == "octo/public"
 
     @pytest.mark.parametrize(
-        "installed",
-        [_installed("octo/a"), _installed(), InstallationReadFailed(500)],
+        "installed,app_details",
+        [
+            (
+                _installed("octo/a"),
+                (DETAIL_APP_NOT_ON_REPOSITORY, DETAIL_APP_INSTALL_LINK_MISSING),
+            ),
+            (_installed(), (DETAIL_APP_NOT_INSTALLED, DETAIL_APP_INSTALL_LINK_MISSING)),
+            (InstallationReadFailed(500), None),
+        ],
         ids=["not on it", "installed nowhere", "read failed"],
     )
-    async def test_otherwise_unknown_with_no_client_call(self, monkeypatch, installed):
+    async def test_otherwise_degraded_with_no_client_call(
+        self, monkeypatch, installed, app_details
+    ):
+        """Issue 2437 (Arch 09:04): the App check's degrade goes to the caller as
+        "degraded", never "unknown", and never "not found" from a read that didn't run."""
         adapter, seen, _ = _adapter(monkeypatch, installed)
-        assert await adapter.probe_issue_connector(_OWNER, issue_number=7) == (
-            "unknown",
-            None,
-            None,
-        )
-        assert seen == []  # never "not found" from a read that didn't run
+        status, item, degradation = await adapter.probe_issue_connector(_OWNER, issue_number=7)
+        assert (status, item) == ("degraded", None)
+        assert isinstance(degradation, DegradationResponse)
+        if app_details:
+            # The degrade _app_repository_degrade answered (or the link-missing state
+            # when no install link is configured).
+            assert degradation.detail in app_details
+        else:
+            assert degradation.reason is DegradationReason.UNREACHABLE
+            assert degradation.detail is None
+        assert seen == []
 
 
 class TestOneInstallationReadPerRequest:

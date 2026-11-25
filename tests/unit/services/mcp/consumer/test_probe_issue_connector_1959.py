@@ -23,6 +23,7 @@ from __future__ import annotations
 
 import contextlib
 import json
+from unittest.mock import AsyncMock
 
 import pytest
 import pytest_asyncio
@@ -42,6 +43,7 @@ from sqlalchemy.ext.asyncio import (  # noqa: E402
 from services.connectors.binding_repository import ConnectorBindingRepository  # noqa: E402
 from services.database.models import ConnectorBinding  # noqa: E402
 from services.mcp.consumer import github_adapter as gh_mod  # noqa: E402
+from services.mcp.consumer.connector import DegradationReason  # noqa: E402
 from services.mcp.consumer.github_adapter import GitHubMCPSpatialAdapter  # noqa: E402
 from services.mcp.consumer.mcp_client import MCPClient  # noqa: E402
 
@@ -232,10 +234,14 @@ class TestNotFoundLeg:
 
 
 class TestUnknownLegNeverClaimsNotFound:
-    async def test_mcp_layer_not_found_exception_is_unknown_not_not_found(self, sm):
+    """Issue 2437 (Arch, decisions.log 2026-11-25 08:54 and 09:04): a degrade is now
+    ``"degraded"`` carrying its ``DegradationResponse`` (third element), not ``"unknown"``.
+    Still never ``"not_found"``. Only a served, unparseable body stays ``"unknown"``."""
+
+    async def test_mcp_layer_not_found_exception_is_degraded_not_not_found(self, sm):
         """Lead review (1959): an MCP-layer error that merely says "not found"
         (a missing tool, a missing binding) is NOT GitHub saying the issue is
-        missing. Without GitHub's 404 shape the probe must stay unknown."""
+        missing. Without GitHub's 404 shape the probe is degraded (RESOURCE_NOT_FOUND from _degrade_for_exc), never not_found."""
         await _bind(sm)
         adapter = GitHubMCPSpatialAdapter()
         _wire_fake_server(
@@ -245,12 +251,13 @@ class TestUnknownLegNeverClaimsNotFound:
         status, item, resolved_repo = await adapter.probe_issue_connector(
             _ALPHA, issue_number=99999, explicit_repo="o/r"
         )
-        assert status == "unknown"
+        assert status == "degraded"
         assert item is None
+        assert resolved_repo.reason is DegradationReason.RESOURCE_NOT_FOUND
 
-    async def test_auth_failure_is_unknown_never_not_found(self, sm):
+    async def test_auth_failure_is_degraded_never_not_found(self, sm):
         """(a) Lead's pin: a 401 failure on the tool call itself — no
-        not-found evidence anywhere — must classify unknown, never
+        not-found evidence anywhere — must classify degraded, never
         not_found."""
         await _bind(sm)
         adapter = GitHubMCPSpatialAdapter()
@@ -260,10 +267,11 @@ class TestUnknownLegNeverClaimsNotFound:
         status, item, resolved_repo = await adapter.probe_issue_connector(
             _ALPHA, issue_number=108, explicit_repo="o/r"
         )
-        assert status == "unknown"
-        assert item is None and resolved_repo is None
+        assert status == "degraded"
+        assert item is None
+        assert resolved_repo.reason is DegradationReason.STALE_TOKEN
 
-    async def test_rate_limit_failure_is_unknown_never_not_found(self, sm):
+    async def test_rate_limit_failure_is_degraded_never_not_found(self, sm):
         """(a) Lead's pin, the 403 variant."""
         await _bind(sm)
         adapter = GitHubMCPSpatialAdapter()
@@ -273,39 +281,45 @@ class TestUnknownLegNeverClaimsNotFound:
         status, item, resolved_repo = await adapter.probe_issue_connector(
             _ALPHA, issue_number=108, explicit_repo="o/r"
         )
-        assert status == "unknown"
-        assert item is None and resolved_repo is None
+        assert status == "degraded"
+        assert item is None
+        assert resolved_repo.reason is DegradationReason.UNREACHABLE
 
-    async def test_network_failure_is_unknown_never_not_found(self, sm):
+    async def test_network_failure_is_degraded_never_not_found(self, sm):
         await _bind(sm)
         adapter = GitHubMCPSpatialAdapter()
         _wire_fake_server(adapter, issue_read_raises=ConnectionError("connection reset by peer"))
         status, item, resolved_repo = await adapter.probe_issue_connector(
             _ALPHA, issue_number=108, explicit_repo="o/r"
         )
-        assert status == "unknown"
-        assert item is None and resolved_repo is None
+        assert status == "degraded"
+        assert item is None
+        assert resolved_repo.reason is DegradationReason.UNREACHABLE
 
-    async def test_connect_required_degradation_is_unknown(self, sm):
-        """(d) Lead's pin: no binding at all -> CONNECT_REQUIRED -> unknown."""
-        # Deliberately do NOT call _bind: no binding row exists for _ALPHA.
+    async def test_connect_required_degradation_is_degraded(self, sm):
+        """(d) Lead's pin: no binding at all -> CONNECT_REQUIRED -> degraded."""
+        # Deliberately do NOT call _bind: no binding row exists for _ALPHA. No personal
+        # token either (the harness's PAT store would otherwise fail, which is UNREACHABLE).
         adapter = GitHubMCPSpatialAdapter()
+        adapter.account_pat = AsyncMock(return_value=None)
         status, item, resolved_repo = await adapter.probe_issue_connector(
             _ALPHA, issue_number=108, explicit_repo="o/r"
         )
-        assert status == "unknown"
-        assert item is None and resolved_repo is None
+        assert status == "degraded"
+        assert item is None
+        assert resolved_repo.reason is DegradationReason.CONNECT_REQUIRED
 
-    async def test_stale_token_degradation_is_unknown(self, sm):
+    async def test_stale_token_degradation_is_degraded(self, sm):
         """(d) Lead's pin: a bound-but-non-BOUND status (token needs
-        refresh) -> STALE_TOKEN -> unknown."""
+        refresh) -> STALE_TOKEN -> degraded."""
         await _bind(sm, status="stale")
         adapter = GitHubMCPSpatialAdapter()
         status, item, resolved_repo = await adapter.probe_issue_connector(
             _ALPHA, issue_number=108, explicit_repo="o/r"
         )
-        assert status == "unknown"
-        assert item is None and resolved_repo is None
+        assert status == "degraded"
+        assert item is None
+        assert resolved_repo.reason is DegradationReason.STALE_TOKEN
 
     async def test_unparseable_empty_response_is_unknown_not_not_found(self, sm):
         """An empty/garbage response with NO not-found text anywhere is
