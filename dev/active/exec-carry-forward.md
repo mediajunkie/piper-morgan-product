@@ -1,6 +1,6 @@
 # Exec carry-forward
 
-**Rewritten 2026-11-23 22:01 PST at STOP.** Model: Opus 5.5. History: `git log -p -- dev/active/exec-carry-forward.md`. Last session log: `dev/2026/11/23/2026-11-23-0601-exec-code-log.md` (closed). Start a new log on 11-24.
+**Rewritten 2026-11-24 22:02 PST at STOP.** Model: Opus 5.5. History: `git log -p -- dev/active/exec-carry-forward.md`. Last session log: `dev/2026/11/24/2026-11-24-0601-exec-code-log.md` (closed). Start a new log on 11-25.
 
 **STATE: LIVE on LaunchAgent** `com.xian.pm-exec-cycle`, firing at :01 on hours 6, 10, 14, 18 and 22. Empty CronList is normal. Liveness is Pard's.
 
@@ -12,7 +12,7 @@
 Live 09:44, crossposted to LinkedIn, calendar row `distributed` (Docs 01M87ETVG6, 10:59). Nothing owed. Next Ship: #071 kickoff Fri 11-27 via `scripts/ship-kickoff.sh` (the first live v4 kickoff).
 
 ## Rollup
-v1135 (Tue 11-24: h1 Tuesday, #070 top line, card step 7), `719UZ4h1NELjEwWZbDCceT`. Source `dev/active/exec-attention-rollup-current.html`. Python replace plus assert, and bump the stamp from a `date` call. **At START 11-24:** retitle the h1 to Tuesday, and make #070's line the top line ("publishes today, waiting on your prose"). On every rebuild, check each item on his card against the seats' logs and the editorial calendar (cohort-attention-rollup step 2.01, xian's tell-one-agent rule).
+v1155 (Tue 11-24, rebuilt 15:12: #070 done, 2432 note, beta 23b1373185), `719UZ4h1NELjEwWZbDCceT`. Source `dev/active/exec-attention-rollup-current.html`. Python replace plus assert, and bump the stamp from a `date` call. **At START 11-25:** retitle the h1 to Wednesday and drop the #070 done line. On every rebuild, check each card item against the seats' logs and the editorial calendar (cohort-attention-rollup step 2.01, xian's tell-one-agent rule). 11-24 18:01 and 22:01 found no xian completions.
 
 ## ADR-084 sitting (steps file `docs/internal/operations/adr-084-one-time-steps.md`)
 - **Done:** A, C, D, F0, F.1 (11-20).
@@ -20,15 +20,16 @@ v1135 (Tue 11-24: h1 Tuesday, #070 top line, card step 7), `719UZ4h1NELjEwWZbDCc
 - **Step E (OpenAI key):** open. It's the one thing between #2364 and merge.
 - Guide him one step at a time (his ask, 11-20).
 
-## On xian's card (rollup v1132), in order
-1. **Ship #070 prose** (above).
-2. **Fleet deny** (on main 733636419f + ed85825f3c): `cd ~/Development/piper-morgan-worktrees/cio && python3 scripts/seat_settings_grant.py fleet-deny`, expect `added 6 deny rule(s); 2 were already there...`. Relay his output line to CIO. Pard restarts Web, and Web's Read must then be refused. Still open per HOST's 11-23 logs.
-3. **seat-tester-1 sitting (#2406, and #2417's last row):** mint; `seat_account_create.py --account seat-tester-1 --write-invite`; Lead's create allow; console check; save-key allow. After that, Lead creates and saves the key, and Web runs CXO's six turns and #2417's never-connected line. Lead's `--remove-key` is on main `4755940a10`. Its allow is step 6 (CIO 01M862N72R). Step 7 (v1135): Web's floored-actions read allow (HOST 01M870QDFH).
-4. **F.2, E** (above).
+## On xian's card (rollup v1155), in order
+1. **Fleet deny** (on main 733636419f + ed85825f3c): `cd ~/Development/piper-morgan-worktrees/cio && python3 scripts/seat_settings_grant.py fleet-deny`, expect `added 6 deny rule(s); 2 were already there...`. Relay his output line to CIO. Pard restarts Web, and Web's Read must then be refused. Still open per HOST's 11-23 logs.
+2. **seat-tester-1 sitting (#2406, and #2417's last row):** mint; `seat_account_create.py --account seat-tester-1 --write-invite`; Lead's create allow; console check; save-key allow. After that, Lead creates and saves the key, and Web runs CXO's six turns and #2417's never-connected line. Lead's `--remove-key` is on main `4755940a10`. Its allow is step 6 (CIO 01M862N72R). Step 7 (v1135): Web's floored-actions read allow (HOST 01M870QDFH).
+3. **F.2, then F.4, and E** (above).
+4. **Step H** (four steps; relay his date and expiry to HOST).
 - Done 11-23 and off the card: the "Do I Have To?" crosspost and the Medium "Inviting Company In" tease (Web's feed read; Docs recorded it).
 - Titles: Sat 11-28 is "Mark One Eyeball". Restore drill 2157: his choice of day. Later: #2387.
 
 ## In motion
+- **New 11-24:** 2433 (non-admin opening an admin page gets raw JSON) and 2434 (six vague "Failed to" toasts, plus CXO's page-copy sweep row) are placed by PPM; 2434 in H. Nothing for xian.
 - **Beta `23b1373185`** since 11-24 15:12 (all of 2432; Lead 01M87XBH8G). Before it `6ff8197d9a` 13:08. Before it `f4a5baa9b6` 12:30 (2431). Before it `b2cda27b5d` 11:25 (2429, 2430). Before it `009afa0f7f` since 10:24 (2345, Lead 01M87CW2PH), on top of `b86c072755` (09:52). F.4 is the GETDEL served read: its result goes to Lead and HOST as one line.
 - **Staging deploy blips:** VM start failures cleared by re-run on 11-10, 11-20 and 11-23 (Lead 01M85C2R1S). A fourth makes a pattern: take it to xian (the Fly hand is his).
 - **Open nearby:** #2417 (update_issue row, fresh account), #2245 served read, 2301 part 2. #2411's rows moved to #2425; #2426 filed. Both are sprint 3 candidates, and xian sets the slot at the 11-25 draft. #2424 is held on router evidence.
@@ -38,10 +39,10 @@ v1135 (Tue 11-24: h1 Tuesday, #070 top line, card step 7), `719UZ4h1NELjEwWZbDCc
 - **Step 7 (counter-read allow) stays:** Lead asked to hold it (01M87219QQ), but HOST 07:16 read `add_allow`, and the tool takes the line. Only a test pin is red, and CIO widens it by three literals.
 - **Seat done-notes:** any seat that finishes something with xian mails me one line in the same turn (my relay 01M85PWK3T; duty-cycle-tick v1.66 Step 5, CIO). Docs sent the first one at 18:46.
 - **Promote hold:** the `ops/promote-hold.md` mechanism exists but isn't in use. **Staging D6:** HOST's read-only staging Machines token idea is at 2 of 3 repeats.
-- Main 12 of 12 green at 22:01.
+- Main 12 of 12 green at 22:01 on 11-24.
 
-## Closes at 22:01 on 11-23
-Closed: Web, Comms, HOST, Arch, CXO, PPM, Lead, PA. Open: Docs, CIO, prog (their STOPs may still run). Check at START.
+## Closes at 22:01 on 11-24
+Closed: Web, Comms, HOST, Arch, CXO, PPM, Lead, PA. Open: Docs, CIO, prog (four prog logs; their STOPs may still run). Check at START.
 
 ## Standing word
 - Promote gate: "Yes, changes that only make the check stricter can go ahead with Arch's approval, although I should still be informed." I tell him the same hour.
