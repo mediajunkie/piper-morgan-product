@@ -267,3 +267,30 @@ def test_write_invite_refuses_an_empty_answer_and_writes_nothing(shared, code, e
 def test_write_invite_refuses_a_name_off_the_list(shared):
     with pytest.raises(Refused, match="not on the list"):
         create.write_invite("someone-else", is_terminal=lambda: True, **_typed())
+
+
+# ---- issue 2438: the generated password meets the host's password rule ----
+
+
+def test_every_generated_password_passes_the_hosts_password_rule():
+    """Account creation applies ``PasswordValidator``. ``token_urlsafe`` alone never
+    holds a listed special character, so the host would refuse the sign-up."""
+    from services.auth.password_validator import PasswordValidator
+
+    for _ in range(500):
+        assert PasswordValidator.failed_rule(create.new_password()) is None
+
+
+def test_the_tail_adds_no_secret_and_the_random_part_keeps_its_length():
+    import secrets as real_secrets
+
+    password = create.new_password()
+    tail = create.PASSWORD_RULE_TAIL
+    assert password.endswith(tail)
+    assert len(password) - len(tail) == len(real_secrets.token_urlsafe(create.PASSWORD_BYTES))
+
+
+def test_the_run_uses_the_rule_meeting_password_and_nothing_else_draws_one():
+    src = Path(create.__file__).read_text(encoding="utf-8")
+    assert src.count("secrets.token_urlsafe(") == 1  # inside new_password only
+    assert "password = new_password()" in src

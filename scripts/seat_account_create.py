@@ -95,6 +95,20 @@ def read_invite(path: Path) -> Tuple[str, str]:
     return found[INVITE_KEY], found[EMAIL_KEY]
 
 
+# Issue 2438: account creation applies PasswordValidator's five rules (8 characters, an
+# uppercase letter, a lowercase letter, a number, one of ! @ # $ % ^ & * ( )).
+# ``token_urlsafe`` draws from letters, digits, ``-`` and ``_``, so on its own it never
+# holds a listed special character and could miss a class by chance; the host would
+# refuse the sign-up with a 400. The fixed tail meets every rule and adds no secret:
+# all the strength is in the 43 random characters before it.
+PASSWORD_RULE_TAIL = "aA1!"
+
+
+def new_password() -> str:
+    """A password only this process holds, in a form the host's password rule accepts."""
+    return secrets.token_urlsafe(PASSWORD_BYTES) + PASSWORD_RULE_TAIL
+
+
 def _created(reply: Reply) -> bool:
     if reply.status != 200:
         return False
@@ -143,8 +157,9 @@ def sign_up(account: str, email: str, password: str, invite: str, send: Transpor
     if reply is not None and reply.status == 400:
         # The app refuses inside one transaction, so the code is not spent.
         raise Refused(
-            "the host refused the sign-up (400): the name or email is taken, or the invite "
-            "code is wrong or already used. The invite file is kept."
+            "the host refused the sign-up (400): the name or email is taken, the invite "
+            "code is wrong or already used, or the password rule changed. "
+            "The invite file is kept."
         )
     if reply is not None and reply.status == 422:
         raise Refused(
@@ -240,7 +255,7 @@ def run(account: str, send: Optional[Transport] = None) -> str:
         raise Refused("that account already has a credential file; it was created before")
     invite_file = invite_path(account)
     invite, email = read_invite(invite_file)
-    password = secrets.token_urlsafe(PASSWORD_BYTES)
+    password = new_password()
     sign_up(account, email, password, invite, send)
     write_credentials(account, password)
     try:
