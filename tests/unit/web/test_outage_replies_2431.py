@@ -377,7 +377,10 @@ class TestThePage:
                 imported |= {a.name for a in node.names}
             elif isinstance(node, ast.ImportFrom):
                 imported.add(node.module)
-        assert imported == {"html", "starlette.requests", "starlette.responses"}
+        # Issue 2433 added ``enum`` and ``typing`` (the closed ``WayOut`` set and an optional
+        # ``Retry-After``): both standard library, neither reads a session, a database or
+        # Redis, so the page still builds during the outage that broke those.
+        assert imported == {"enum", "html", "starlette.requests", "starlette.responses", "typing"}
 
     def test_the_page_builds_with_the_template_engine_session_factory_and_redis_all_raising(
         self,

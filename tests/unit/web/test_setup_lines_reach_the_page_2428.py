@@ -523,10 +523,68 @@ class TestArchsGuardOverEveryMarkedRaise:
         per_file = {}
         for path, _, _ in self._refusal_page_calls():
             per_file[path] = per_file.get(path, 0) + 1
-        # The capacity guard's three refusals, and the auth middleware's session 503.
+        # The capacity guard's three refusals, the auth middleware's session 503, and
+        # (issue 2433) the app handler's page for a non-admin opening an admin-only page.
         assert per_file == {
             "web/middleware/usage_cap_middleware.py": 3,
             "services/auth/auth_middleware.py": 1,
+            "web/app.py": 1,
+        }
+
+    @staticmethod
+    def _way_out_problem(node):
+        """None when a ``refusal_page`` call's ``way_out`` is allowed (issue 2433, Arch
+        mail 01M880KDHY): absent, or ``WayOut.<MEMBER>`` naming a member of the closed
+        set. Never a name, a call, a string or a fourth positional of any other shape."""
+        from services.api.refusal_pages import WayOut
+
+        keywords = {k.arg: k.value for k in node.keywords}
+        if None in keywords:
+            return "**kwargs"
+        way_out = node.args[3] if len(node.args) > 3 else keywords.get("way_out")
+        if len(node.args) > 4:
+            return "a fifth positional argument"
+        if way_out is None:
+            return None
+        if (
+            isinstance(way_out, ast.Attribute)
+            and isinstance(way_out.value, ast.Name)
+            and way_out.value.id == "WayOut"
+            and way_out.attr in WayOut.__members__
+        ):
+            return None
+        return ast.unparse(way_out)[:70]
+
+    def test_every_refusal_page_way_out_names_a_member_of_the_closed_set(self):
+        for path, _, node in self._refusal_page_calls():
+            problem = self._way_out_problem(node)
+            assert problem is None, f"{path}:{node.lineno}: {problem}"
+
+    @pytest.mark.parametrize(
+        "source, allowed",
+        [
+            ("refusal_page(LINE, 503, 5)", True),
+            ("refusal_page(LINE, 403, None, way_out=WayOut.SETTINGS)", True),
+            ("refusal_page(LINE, 403, None, WayOut.SETTINGS)", True),
+            ("refusal_page(LINE, 503, 5, way_out=WayOut.RELOAD)", True),
+            ("refusal_page(LINE, 403, None, way_out=WayOut.HOME)", False),  # not a member
+            ("refusal_page(LINE, 403, None, way_out=way)", False),
+            ("refusal_page(LINE, 403, None, way_out=WayOut(pair))", False),
+            ("refusal_page(LINE, 403, None, way_out=('Go', 'https://x.example'))", False),
+            ("refusal_page(LINE, 403, None, way_out=pages.WayOut.SETTINGS)", False),
+            ("refusal_page(LINE, 403, None, **extra)", False),
+        ],
+    )
+    def test_the_way_out_rule_allows_a_named_member_and_nothing_wider(self, source, allowed):
+        call = ast.parse(source, mode="eval").body
+        assert (self._way_out_problem(call) is None) is allowed
+
+    def test_the_closed_set_holds_two_ways_out_with_fixed_text_and_address(self):
+        from services.api.refusal_pages import WayOut
+
+        assert {m.name: m.value for m in WayOut} == {
+            "RELOAD": ("Try again", ""),
+            "SETTINGS": ("Back to Settings", "/settings"),
         }
 
     def test_every_refusal_page_message_is_a_literal_or_an_upper_case_constant(self):
