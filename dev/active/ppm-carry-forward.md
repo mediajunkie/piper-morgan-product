@@ -959,7 +959,7 @@ Brake FIRED (second slip = #1965 admission, found and ledgered 10-09). Memo to E
   - Edit only the last occurrence in this file (`rindex`).
   - The staged scan has no skip. No compose on Amber. `PIPER_CREDENTIAL_STORE=db`. A classifier refusal is final.
 
-## Now (rewritten at the 11-23 21:33 STOP; carry into Tue 11-24)
+## Superseded (was Now from the 11-23 21:33 STOP, with 11-24 updates; replaced at the 11-24 21:33 STOP)
 
 - **11-23 in one line:** 2415, 2416 (mechanism B) and #2427 (one-sentence add-todo line) closed served by PPM; #2245 closed by Lead. 2411's router candidate `6874df924d` NO-GO (Arch); its routing half split to #2425. #2423, #2424, #2425, #2426 filed and placed in V. Production 334 = Total, 0 unmilestoned, main CI 12 of 12 green, map v194.
 - **Beta serves `6942dbd1be`** since `13:49` 11-23 (#2427; healthy at the STOP). Before it `d6ed62181a` (`12:19`: mechanism B `26c041374a`, the `task` alias `cc550eb92f`).
@@ -1007,3 +1007,27 @@ Brake FIRED (second slip = #1965 admission, found and ledgered 10-09). Memo to E
 - **Beta serves `23b1373185`** since `15:12` 11-24: all of #2432 (4xx lines vetted or fixed per status; the setup wizard's password checks). Lead read three reset refusals on beta; Web's happy-path read is asked. A 14:11 defect sat on main for 37 minutes and never reached beta.
 - **Production 327**: #2432 closed by Lead (23:47Z). #2433 goes in the sprint 3 draft as a low-priority candidate. Map v203.
 - **Production 328**: #2434 placed in H (the pages' 'Failed to…' toasts). #2433 and #2434 are sprint 3 draft candidates (low priority). Map v204.
+
+## Now (rewritten at the 11-24 21:33 STOP; carry into Wed 11-25)
+
+- **11-24 in one line:** #2400 closed on Arch's read (D2 plan rule, decisions.log 11-24 06:56). Lead's standing-list audit closed about ten on Arch and CXO rulings. Honesty chain: #2428 and #2432 closed; #2429, #2430, #2431 landed and still open; #2433 and #2434 filed. 2345 (connect state in Redis) is on beta. Production 334 → 328 (net of closes and placements), map v195 → v204. Main CI 12 of 12 green and 0 unmilestoned at the STOP.
+- **Beta serves `23b1373185`** since `15:12` 11-24 (all of #2432; 2345 since `10:24` on `009afa0f7f`). No served connect recorded yet: the 2345 return half (the first GETDEL on beta's Upstash) is xian's F.4 connect; if it fails, Lead rolls back first.
+- **Invite hold, PDR-008.** #2261 (3 open boxes), #2282 (3), #2342 (7) OPEN at the STOP (`gh`). The lift memo to Exec waits on all three. 2282 box 4: Web's `/setup` calendar start read (reader on main): names beta → xian's removal line on a card via Exec; names alpha → a host-secret fix for xian first.
+- **Week goals 11-20 to 11-26** (decisions.log 2026-11-23 18:19); goal 2 is PPM's served-close lane. Done-note rule (decisions.log 2026-11-23 18:41) stands.
+- **Open, with blocker (box counts by `gh` at the STOP):**
+  - #2417 (1), 2411 (1), 2406 (2), #2401 (5), #2402 (3): the fresh account; the mint needs xian's go-ahead via Exec.
+  - 2297 (1): #2412, behind #2364 step 1.
+  - #2423 (4), 2281 (3), 2345 (4): Step F (F.4, seat-github-1 connect; HOST owner).
+  - #2424 (5): router evidence of the project arg.
+  - #2425 (2), #2426 (4): a sprint 3 slot.
+  - #2388 (3): row 4 the allow on xian's open card; row 5 Step H; rows 1 to 3 Lead's.
+  - #2429 (5), #2430 (4), #2431 (5), #2433 (4), #2434 (5): Lead builds, CXO and Arch read. #2433's second link is a closed `way_out` choice (Arch 01M880KDHY). #2434 gains one low-priority sweep row: page copy that contradicts the route in fact (CXO 01M888Q5GX).
+  - 2244 (3): a sprint 3 slot; then xian's yes via Exec; served row on Step E.
+- **Sprint 2 closes Thu 11-26 as planned**; #071 reports the score as it stands (xian 11-20).
+- **OWED rows:**
+  - sprint-3-plan: draft at the 11-25 START on the current score. Candidates #2149, 2410, #2425, #2426, 2352 (box 3), 2356, 2399, 2244 (Lead's two-line entrypoint change; HOST's two custody notes: the volume stops being uploads-only, and #2062's restore drill names the index; Arch: plain `chown`, not `-R`), #2433, #2434 (both low). Revise at the 11-26 close. Dates are xian's.
+  - 2364-known-limit, 2364-untested-provider-row, 2364-selfhost-wording.
+  - tier1-approval-batch: xian's quoted yes, then Docs.
+  - rule7-key-ask, path-b-quote, notion-offer-ask: unchanged.
+- **Parked, one trigger: linked billing.** Genuine xian decisions: E5 naming for #2380; #2344; the possible "Safe Storage" keychain item.
+- **Rules carried:** stamp with `date` (never estimate; a blank time went out in Lead reply 01M87ZDT6V 11-24, logged as a slip); never guess a mail ID; mail4 reads in the background; stage then commit in separate calls; ticks before comment before close; edit only the last occurrence here (`rindex`); staged scan has no skip; no compose on Amber; `PIPER_CREDENTIAL_STORE=db`; a classifier refusal is final.
