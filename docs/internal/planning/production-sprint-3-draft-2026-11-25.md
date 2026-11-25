@@ -27,7 +27,7 @@ Alternative, if xian wants a build focus instead: Path B's routing (items 5 and 
 | 4 | Fresh-account rows: #2417, 2411, 2406, #2401, #2402, and Paths A and B served | PA, Web, CXO | xian's go-ahead to mint `seat-tester-1`, via Exec (one decision, so one named item) | 1, 1, 2, 5, 3 open |
 | 5 | #2425 + #2424: "add a task to my/the X project" reaches create_todo with the project arg; the list read honours it | Lead | Arch's choice of lever (rule 7; the description lever is advised against) | 2 / 0, 5 / 0 |
 | 6 | #2426: "show me the todos in the Launch project" stops asking which project | Lead, CXO | rides on item 5's lever (read-side twin; same ruling) | 4 / 0 |
-| 7 | 2399: said-instead replies on the write rail stop reporting success | Lead | none (Arch's 11-24 split: `ask.armed`, new kind `ALREADY_IN_STATE`) | 7 / 0 |
+| 7 | 2399: said-instead replies on the write rail stop reporting success | CXO, Web | the next promotion, then CXO's served box (one bubble of each kind) | 7 / 0; built on main 11-25 `db75ae3bc5` (Lead 01M89R13A8) |
 | 8 | 2356: self-knowledge part 4, the served question set (CXO's set, CIO's three, PPM's known-limits question) | CXO, Web | #2355's build step landing (no runtime index yet, so a served run would not test the exclusion; CXO 01M89KHPZ1); then a named build on a self-hosted install | no boxes; exclusion test landed 11-25 `16e47c26c2` (Lead 01M89K6EAP) |
 | 9 | 2244: the document vector store moves onto the `/data` volume | Lead, HOST | xian's yes via Exec to two lines in the root-run `deploy/docker-entrypoint.sh` (below) | 3 / 0 |
 
@@ -51,7 +51,7 @@ These are rulings, not builds. Each names its follow-on build for sprint 4.
 
 ## Low priority, if the set runs dry
 
-- #2433: a non-admin opening an admin-only page by address sees raw JSON (card shows to admins only). The way out is a closed `way_out` choice (Arch 01M880KDHY).
+- ~~#2433~~: closed 11-25 by Lead (`7d9da206bd`); built before sprint 3 opened, so out of the set. Its served read follows the next promotion.
 - #2434: pages' own "Failed to…" toasts, plus one sweep row for page copy that contradicts the route in fact (CXO 01M888Q5GX).
 
 ## Not in the set, with why

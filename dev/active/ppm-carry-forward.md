@@ -1031,3 +1031,4 @@ Brake FIRED (second slip = #1965 admission, found and ledgered 10-09). Memo to E
   - rule7-key-ask, path-b-quote, notion-offer-ask: unchanged.
 - **Parked, one trigger: linked billing.** Genuine xian decisions: E5 naming for #2380; #2344; the possible "Safe Storage" keychain item.
 - **Rules carried:** stamp with `date` (never estimate; a blank time went out in Lead reply 01M87ZDT6V 11-24, logged as a slip); never guess a mail ID; mail4 reads in the background; stage then commit in separate calls; ticks before comment before close; edit only the last occurrence here (`rindex`); staged scan has no skip; no compose on Amber; `PIPER_CREDENTIAL_STORE=db`; a classifier refusal is final.
+- **Production 327** (11-25 `08:21` wake): #2433 closed by Lead (`7d9da206bd`); row out of H. Map v205. 2399 and all of #2434 on main, not yet on beta; one promotion follows. Sprint 3 draft rows updated.
