@@ -24,7 +24,7 @@ Alternative, if xian wants a build focus instead: Path B's routing (items 5 and 
 | 1 | #2342: ADR-081 D3, GitHub connect through the published App | Lead, HOST | Step F: xian's F.4 connect on `seat-github-1` (HOST's owner line in `adr-084-one-time-steps.md`) | 7 / 10 |
 | 2 | #2261: narrow GitHub's `repo` scope | Lead | closes on #2342's served rows (same sitting as item 1) | 3 / 0 |
 | 3 | #2282: one canonical host, `beta.pipermorgan.ai` | Web | box 4: Web's `/setup` calendar start read (reader on main). Names beta → xian's removal line on a card; names alpha → a host-secret fix for xian first | 3 / 1 |
-| 4 | Fresh-account rows: #2417, 2411, 2406, #2401, #2402, and Paths A and B served | PA, Web, CXO | xian's go-ahead to mint `seat-tester-1`, via Exec (one decision, so one named item) | 1, 1, 2, 5, 3 open |
+| 4 | Fresh-account rows: #2417, 2411, 2406, #2401, #2402, and Paths A and B served | PA, Web, CXO | xian's go-ahead to mint `seat-tester-1`, via Exec (one decision, so one named item). Then, held by Exec 11-25 (01M8A7V37S): the sitting waits until 2438's creation check is served on beta, unless xian picks length-only | 1, 1, 2, 5, 3 open |
 | 5 | #2425 + #2424: "add a task to my/the X project" reaches create_todo with the project arg; the list read honours it | Lead | Arch's choice of lever (rule 7; the description lever is advised against) | 2 / 0, 5 / 0 |
 | 6 | #2426: "show me the todos in the Launch project" stops asking which project | Lead, CXO | rides on item 5's lever (read-side twin; same ruling) | 4 / 0 |
 | 7 | 2399: said-instead replies on the write rail stop reporting success | CXO, Web | the already-closed and not-found lines need a working GitHub connection: read in xian's F.4 sitting (Lead's proposal to CXO, 01M89SNRXV) | 7 / 0; on beta `aaf8d9249e`; vague-write line served 11-25 (Web 01M89SJ9ZD) |
@@ -57,6 +57,8 @@ These are rulings, not builds. Each names its follow-on build for sprint 4.
 ## Not in the set, with why
 
 - #2435 (Slack silent on not-performed replies), #2436 (builders set their own not-performed kind; Arch: later, one unit) and ~~#2437~~ (close/reopen on a stale connection asks yes/no; closed 11-25 on CXO's served pass, on beta `92836ae41d`): filed 11-25 from 2399's work, placed in H. The two open ones wait on an Arch mechanism or CXO's words; xian can pull any of them in at ratification.
+
+- #2438 (password rules differ between creation and reset; the reset page states only the length): filed 11-25 by Lead, placed in H. Both answers came the same day: Arch ruled the five-rule set (unless xian loosens it, via Exec), and CXO gave one fixed refusal line. Lead can build it now. The creation change should land before item 4's mint.
 
 - 2297's last row: behind #2412, which waits on #2364 step 1 (xian's OpenAI run).
 - #2423: needs an App-connected account, so it follows Step F; it can join item 1's sitting if Lead has it ready.

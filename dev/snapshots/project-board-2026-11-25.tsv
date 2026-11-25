@@ -2224,3 +2224,4 @@ issue	state	milestone	sprint	title	labels	blocked_by	state_reason
 2435	OPEN	Production		Slack goes silent on replies marked not-performed (degraded, not found, not connected); web chat shows the honest line	UX		
 2436	OPEN	Production		Said-instead replies: builders set their own not-performed kind, and GitHubWriteRefused carries one (follow-up to 2399)			
 2437	CLOSED	Production		Close/reopen on a stale GitHub connection asks yes/no for a write that cannot succeed; the edit path says to reconnect			COMPLETED
+2438	OPEN	Production		Password rules differ between account creation and reset, and the reset page states only the length	bug		

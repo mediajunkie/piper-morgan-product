@@ -149,8 +149,8 @@ class TestCreateUserIssuesTheSession:
             CreateUserRequest(
                 username=name,
                 email=f"{name}@test.invalid",
-                password="a-fine-password",
-                password_confirm="a-fine-password",
+                password="A-fine-passw0rd!",
+                password_confirm="A-fine-passw0rd!",
                 invite_token=token,
             )
         )
@@ -167,8 +167,8 @@ class TestCreateUserIssuesTheSession:
             CreateUserRequest(
                 username=name,
                 email=f"{name}@test.invalid",
-                password="a-fine-password",
-                password_confirm="a-fine-password",
+                password="A-fine-passw0rd!",
+                password_confirm="A-fine-passw0rd!",
                 invite_token=token,
             ),
             _http_request(),
@@ -208,8 +208,8 @@ class TestWizardSequenceAsTheNewUser:
             CreateUserRequest(
                 username=name,
                 email=f"{name}@test.invalid",
-                password="a-fine-password",
-                password_confirm="a-fine-password",
+                password="A-fine-passw0rd!",
+                password_confirm="A-fine-passw0rd!",
                 invite_token=token,
             ),
             _http_request(),
