@@ -28,7 +28,7 @@ Alternative, if xian wants a build focus instead: Path B's routing (items 5 and 
 | 5 | #2425 + #2424: "add a task to my/the X project" reaches create_todo with the project arg; the list read honours it | Lead | Arch's choice of lever (rule 7; the description lever is advised against) | 2 / 0, 5 / 0 |
 | 6 | #2426: "show me the todos in the Launch project" stops asking which project | Lead, CXO | rides on item 5's lever (read-side twin; same ruling) | 4 / 0 |
 | 7 | 2399: said-instead replies on the write rail stop reporting success | Lead | none (Arch's 11-24 split: `ask.armed`, new kind `ALREADY_IN_STATE`) | 7 / 0 |
-| 8 | 2356: self-knowledge part 4, exclusion test and the served question set | Lead | none (Lead's half of 2354's served checks) | no boxes |
+| 8 | 2356: self-knowledge part 4, the served question set (CXO's set, CIO's three, PPM's known-limits question) | CXO, Web | a named build and a self-hosted install to ask it on (CXO schedules with Web) | no boxes; exclusion test landed 11-25 `16e47c26c2` (Lead 01M89K6EAP) |
 | 9 | 2244: the document vector store moves onto the `/data` volume | Lead, HOST | xian's yes via Exec to two lines in the root-run `deploy/docker-entrypoint.sh` (below) | 3 / 0 |
 
 ### Item 9, the question for xian (2244)
