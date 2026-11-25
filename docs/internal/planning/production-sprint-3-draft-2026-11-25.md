@@ -56,7 +56,7 @@ These are rulings, not builds. Each names its follow-on build for sprint 4.
 
 ## Not in the set, with why
 
-- #2435 (Slack silent on not-performed replies), #2436 (builders set their own not-performed kind; Arch: later, one unit) and #2437 (close/reopen on a stale connection asks yes/no): filed 11-25 from 2399's work, placed in H. Each waits on an Arch mechanism or CXO's words; xian can pull any of them in at ratification.
+- #2435 (Slack silent on not-performed replies), #2436 (builders set their own not-performed kind; Arch: later, one unit) and ~~#2437~~ (close/reopen on a stale connection asks yes/no; closed 11-25 on CXO's served pass, on beta `92836ae41d`): filed 11-25 from 2399's work, placed in H. The two open ones wait on an Arch mechanism or CXO's words; xian can pull any of them in at ratification.
 
 - 2297's last row: behind #2412, which waits on #2364 step 1 (xian's OpenAI run).
 - #2423: needs an App-connected account, so it follows Step F; it can join item 1's sitting if Lead has it ready.
