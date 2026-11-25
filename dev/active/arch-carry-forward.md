@@ -1,5 +1,5 @@
 ---
-last_updated: 2026-11-23 21:28 PST (STOP)
+last_updated: 2026-11-24 21:27 PST (STOP)
 currency_claim: rewritten at substantive-change boundaries, verified at every START
 max_age_days: 4
 ---
@@ -25,6 +25,14 @@ context-floor directive that duplicating it here is exactly the accretion to cut
 | GitHub criteria line | `gh issue list --repo mediajunkie/piper-morgan-product --label architecture --state open` — the third work-queue source (PM v1.33). Open each issue, don't write a row from the list. Report drained as "mail (N) + standing-items (N) + label:architecture (M)." |
 
 ## IN FLIGHT — current state only
+
+**11-24 state (STOP):** main 12/12 green; inbox empty; beta serves `23b1373185` (all of #2432). Model Opus 5.5. Every ruling is in decisions.log (11-24, 06:56 through 16:09).
+- **The user-facing error mechanism (built today, rulings 07:51 through 14:38):** the app masks every 5xx unless it is a `UserFacingHTTPException` (`services/api/errors.py`; aliased imports are refused). An ast guard checks every marked detail: a literal, an UPPER name, `UPPER.format(name=int(expr))`, or a listed `DETAIL_PICKERS` call whose returns are all UPPER or None. Unmarked 4xx show a fixed line per status, and 422 shows a fixed line. **General rule (14:38): a rule a person can break never lives in a request model; it is a marked 400 in the route, before any write.**
+- **#2431:** `refusal_page` in `services/api/refusal_pages.py` is plain HTML from one constant with `html.escape`; the 429 floor is `int(max(2, retry_after))`. **#2433 (16:09):** `way_out` comes from a closed set (RELOAD default, SETTINGS); text and href are constants, and a new member is a diff Arch reads. Waiting on Lead's build after PPM's placement; I read the diff.
+- **Closed or conforming today:** #2400 closed; 2403 row 4 validated (env -i plus the .env-moved-aside control); 2384, 2390, 2385, 2345 (start half), 2428, 2429, 2430, 2431 and 2432 conform; #2432 closed. D2 ruling (06:56): a pre-sitting v4 mail or a pushed log line counts as the plan record.
+- **#2434 (CXO):** the pages' own wording. Includes one low-priority sweep for factual contradictions with the route line, with my residual and Lead's PasswordChangeRequest note folded in (CXO 01M888Q5GX). I read the findings when Lead posts them.
+- **Waiting on others:** #2345's return half (xian's F.4); #2424 (router evidence); sprint 3 candidates #2425, #2426, 2410, 2399, 2352, 2356 and 2244 (xian, 11-25); #2423 (Step F); the fresh-account rows 2411, 2417, 2401 and 2402 (xian's mint via Exec); the save-key and setup-calendar allows (xian's card); 2364 step 1 (xian's OpenAI run); the 2157 drill (xian).
+- **Lessons (11-24):** (1) Read the clock before writing any minute in a mail body: five slips today, each corrected. (2) Before saying a guard allows something, read the judging function, not a test case or a docstring. (3) When ruling on one instance of a rule, grep for its siblings before writing the ruling (13:49 named only the reset request; setup `create_user` had the same defect).
 
 **11-23 state (STOP):** main is 12/12 green. Fly staging went red at 14:04 because a release machine failed to start. It cleared on Lead's re-run, the third staging blip this month; a fourth would go to xian via Exec. The inbox is empty. Beta serves `6942dbd1be`. Model Opus 5.5. Every ruling is in decisions.log (11-23).
 - **Closed and served today:** #2415 and #2416 (Mechanism B, all-code status reply on the 2301 block path, served on `d6ed62181a`, 3 of 3); the 2297 attach row; #2245. #2427 (one-sentence add-todo confirmation) passed CXO's served read; PPM closes it. The `task` alias (`cc550eb92f`) is served.
