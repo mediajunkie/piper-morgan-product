@@ -75,6 +75,17 @@ OWNERS = {"docs", "lead", "cio", "cxo", "arch", "ppm"}
 EXCLUDED = ("dev/", "mailboxes/", "docs/omnibus-logs/", ".claude-pm/", "memory/")
 
 
+def under_excluded(path):
+    """True when ``path`` lands in a never-indexed tree (#2356). The path is normalised
+    first, so ``./dev/x.md`` and ``docs/../dev/x.md`` are caught, and a path that leaves
+    the checkout (absolute, ``~`` or leading ``..``) is refused the same way: an item is
+    always a file inside this repo."""
+    p = os.path.normpath(path.strip()).replace(os.sep, "/")
+    if os.path.isabs(p) or p.startswith(("~", "../")) or p == "..":
+        return True
+    return (p + "/").startswith(EXCLUDED) or any("/" + e in "/" + p + "/" for e in EXCLUDED)
+
+
 def refs(cell):
     """Yield (path, heading or None) for each `;`-joined reference."""
     for part in cell.split(";"):
@@ -209,7 +220,7 @@ def main(argv):
             errors.append(f"{rid}: status {d['status']} but no item file")
         for col in ("item", "derived_from"):
             for p, h in refs(d[col]):
-                if col == "item" and p.startswith(EXCLUDED):
+                if col == "item" and under_excluded(p):
                     errors.append(f"{rid}: item {p} is under a never-indexed tree")
                     continue
                 if not os.path.exists(p):
