@@ -33,6 +33,9 @@ class NotPerformed:
     REFUSED_BEFORE_WRITE = "refused_before_write"  # the handler refused before any write
     NOT_FOUND = "not_found"  # the target was not there (#1858): nothing was changed
     NOT_CONNECTED = "not_connected"  # #2280: the connector was never connected, so nothing ran
+    # #2399 (Arch 2026-11-24 07:10): close/reopen of an issue already in that state.
+    # Nothing was changed, and nothing needed to be; kept apart from NOT_FOUND.
+    ALREADY_IN_STATE = "already_in_state"
 
 
 NOT_PERFORMED_KINDS = frozenset(
@@ -41,6 +44,7 @@ NOT_PERFORMED_KINDS = frozenset(
         NotPerformed.REFUSED_BEFORE_WRITE,
         NotPerformed.NOT_FOUND,
         NotPerformed.NOT_CONNECTED,
+        NotPerformed.ALREADY_IN_STATE,
     }
 )
 
@@ -60,3 +64,19 @@ def was_not_performed(result: Any) -> bool:
     if not isinstance(data, dict):
         return False
     return data.get(NOT_PERFORMED_KEY) in NOT_PERFORMED_KINDS
+
+
+#: #2399: the kinds set only by the said-instead replies, which answered ``success=True``
+#: before 2399 (the write ask's statement, close/reopen's "already", the refused-write
+#: handler). A reader that appends to or arms after a successful turn (the soft offer, the
+#: unanswered-half question) treats these as it did then, so the text a person reads is
+#: unchanged; every other marked kind keeps the behaviour it already had.
+SAID_INSTEAD_KINDS = frozenset({NotPerformed.REFUSED_BEFORE_WRITE, NotPerformed.ALREADY_IN_STATE})
+
+
+def was_said_instead(result: Any) -> bool:
+    """True when the result's marker is one of ``SAID_INSTEAD_KINDS`` (#2399)."""
+    data = getattr(result, "intent_data", None)
+    if not isinstance(data, dict):
+        return False
+    return data.get(NOT_PERFORMED_KEY) in SAID_INSTEAD_KINDS

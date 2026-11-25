@@ -50,7 +50,13 @@ from services.intent_service.conversation_context import (
     snapshot_session_slice,
 )
 from services.intent_service.list_remainder import compose_capped_list, page_floor
-from services.intent_service.not_performed import NOT_PERFORMED_KEY, NotPerformed, was_not_performed
+from services.intent_service.not_performed import (
+    NOT_PERFORMED_KEY,
+    NotPerformed,
+    mark_not_performed,
+    was_not_performed,
+    was_said_instead,
+)
 from services.intent_service.orchestrator import IntentOrchestrator
 from services.intent_service.pre_classifier import MultiIntentResult
 from services.intent_service.soft_invocation import (
@@ -1275,7 +1281,8 @@ class IntentService:
         if not result.message:
             return result
         armed = False
-        if clause and session_id and result.success:
+        # #2399: a said-instead reply was success=True before; it still arms, unchanged.
+        if clause and session_id and (result.success or was_said_instead(result)):
             try:
                 intent_data = result.intent_data or {}
                 handler_armed = any(
@@ -1387,7 +1394,10 @@ class IntentService:
                 session_id,
                 user_id,
             )
-        if not result.success:
+        # #2399 (Arch 2026-11-24 07:10, condition): a said-instead reply now answers
+        # success=False with its marker; it gets the soft offer it got before, so the
+        # text is unchanged. Other not-performed kinds keep their behaviour.
+        if not (result.success or was_said_instead(result)):
             return result
 
         # #1605 (+ #1190/#1509 belt): a result that just ARMED a pending
@@ -13733,15 +13743,19 @@ class IntentService:
         if isinstance(e, GitHubWriteRefused):
             # #2106: the server refused the tool by name; nothing was written.
             # Say so, with the connector's hint; no "check the repository".
+            # #2399 (Arch 2026-11-24 07:10): nothing was performed. The exception
+            # carries no kind of its own (2379's choke point raises the same class),
+            # so the kind is REFUSED_BEFORE_WRITE.
             hint = f" {e.action_hint}" if e.action_hint else ""
             return IntentProcessingResult(
-                success=True,
+                success=False,
                 message=f"{e.user_message}{hint}",
                 intent_data={
                     "category": intent.category.value,
                     "action": intent.action,
                     "confidence": intent.confidence,
                     "write_refused": True,
+                    NOT_PERFORMED_KEY: NotPerformed.REFUSED_BEFORE_WRITE,
                 },
                 workflow_id=workflow_id,
                 requires_clarification=False,
@@ -20870,10 +20884,14 @@ Add any additional information here.
                 _cr_gate = await build_close_reopen_confirmation(intent, self, workflow_id)
                 if _cr_gate.passthrough_result is not None:
                     _cr = _cr_gate.passthrough_result
+                    # #2399 (Arch 2026-11-24 07:10): every passthrough leg (not found,
+                    # already in that state, the App refusal) sets its own kind; nothing
+                    # was performed. Read from the builder's marker, never the text.
+                    _cr_kind = (_cr.get("intent_data") or {}).get(NOT_PERFORMED_KEY)
                     return _RailOutcome(
                         on_rail=True,
                         result=IntentProcessingResult(
-                            success=True,
+                            success=_cr_kind is None,
                             message=_cr["message"],
                             intent_data={
                                 "category": intent.category.value,
@@ -21118,7 +21136,12 @@ Add any additional information here.
     ) -> "_RailOutcome":
         """#2304: a write ask that says something instead of arming a yes/no: CXO's
         "not sure" statement (nothing armed), or a question the builder armed on its
-        own carrier (complete's pick, add_project's name question)."""
+        own carrier (complete's pick, add_project's name question).
+
+        #2399 (Arch 2026-11-24 07:10): the split keys on ``ask.armed``, never on the
+        reply text. Armed: a clarification (``success`` True, no marker). Unarmed:
+        nothing was done (``success=False``), marked with the kind the builder set
+        (2379's App line: DEGRADED) or else REFUSED_BEFORE_WRITE."""
         intent_data: Dict[str, Any] = {
             "category": intent.category.value,
             "action": intent.action,
@@ -21127,11 +21150,13 @@ Add any additional information here.
         if floor_write:
             intent_data["floor_category_write"] = True
         intent_data.update(ask.intent_data or {})
+        if not ask.armed and intent_data.get(NOT_PERFORMED_KEY) is None:
+            intent_data = mark_not_performed(intent_data, NotPerformed.REFUSED_BEFORE_WRITE)
         return _RailOutcome(
             on_rail=True,
             armed=ask.armed,
             result=IntentProcessingResult(
-                success=True,
+                success=bool(ask.armed),
                 message=ask.reply,
                 intent_data=intent_data,
                 requires_clarification=ask.armed,

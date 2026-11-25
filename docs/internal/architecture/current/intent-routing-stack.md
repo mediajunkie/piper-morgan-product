@@ -6565,7 +6565,7 @@ step's line. A failed installation read: the honest failure. If the check itself
 raising), the four confirm builders say `GITHUB_APP_WRITE_CHECK_FAILED_REPLY` (CXO 2026-11-16 17:27) and arm nothing (Arch 2026-11-16 16:45: the write uses
 the same resolver, so a confirm would be a yes to a write that can't succeed); the draft step goes ahead instead,
 since a draft arms no write. Otherwise the confirm is offered as before. The close/reopen passthrough carries the
-not-performed marker for these refusals, as create and update do (`success` on these said-instead replies: #2399). The adapter's
+not-performed marker for these refusals, as create and update do (and, since #2399, `success=False`). The adapter's
 `_verified_write` makes the same check as the choke point, so a write with no confirm (a comment, a create to the
 default repository) is never fired either; it returns `refused` (not "never fired", which would send the router to the
 native-token path) and the reply is the same line. The create draft step in `_handle_create_issue` makes the check
@@ -6575,6 +6575,18 @@ close/reopen probe, the duplicate-title read) make the check before any client c
 per HTTP request (`installation_read_scope`, opened by `web/middleware/installation_read_scope.py`) and is never held
 across requests: the holder is closed on exit, so a task started inside the request reads again after it. The personal-token leg and classic grants make no installation read. Pins:
 `tests/unit/services/mcp/consumer/test_github_adapter_repo_scoped_installed_2379.py`.
+
+**#2399 said-instead replies record that nothing was performed (Arch 2026-11-24 07:10, decisions.log).** Three shared reply
+paths answer `success=False` with the #2188 marker; no reply text changed. `IntentService._rail_write_ask_reply` keys on
+`ask.armed`, never on the text: an armed question (add_project's name, complete's pick, link_repo's which-repository) stays
+`success=True` with `requires_clarification` and no marker; an unarmed reply is `success=False` with the kind the builder
+set (2379's App line: `DEGRADED`) or else `REFUSED_BEFORE_WRITE`. The close/reopen passthrough reads the kind each
+`build_close_reopen_confirmation` leg sets on its own branch: not found `NOT_FOUND`, already closed/open the new
+`ALREADY_IN_STATE`, the App refusal `DEGRADED`. `_unverified_write_result`'s `GitHubWriteRefused` branch is `success=False`
+with `REFUSED_BEFORE_WRITE`. Readers: `_apply_soft_offer` and `_append_unanswered_half` treat
+`not_performed.SAID_INSTEAD_KINDS` as they treated `success=True` (`was_said_instead`), so the soft offer and the
+"Want me to?" are as before; the Slack events path (`SlackResponseHandler._process_through_orchestration`) keeps any
+marked reply (`was_not_performed`) instead of dropping it. Pins: `tests/unit/services/intent_service/test_said_instead_not_performed_2399.py`.
 
 **#2301 a status ask that names one project shows that project's open todos, by code (2026-11-20, Arch's six conditions; floor change 2026-11-22, Arch 01M8270WE5, CXO's agreement).** No catalog, router, classifier or pre-classifier text changed. On the STATUS floor path (`_handle_floor_with_context`), when the action is `get_project_status`, `project_status_todos.status_todos_block` takes the project from the router's `project` arg through 2297's reader and lookup, never from the person's words. Exactly one match yields a block under CXO's header in the main list's render; anything else yields nothing and the reply is today's. The block is resolved BEFORE the floor is called and joined to the floor's message after it; the floor never receives the list. When the block is non-empty (a list, the no-open-todos line, or the couldn't-check line), the person's todo keys (`project_status_todos.FLOOR_TODO_KEYS`) are REMOVED from the floor's `domain_context` and its provenance map, so the floor has no todo to name above the block. Removed, not emptied: an empty list reads to the floor as a verified zero. Due reminders stay. A resolved #2197 milestone still returns first. Not yet done: the prompt line that stops the floor offering todos on these turns (part 2, measured on real replies). Pins: `tests/unit/services/intent_service/test_project_status_todos_2301.py`.
 
