@@ -1,5 +1,17 @@
 # Lead carry-forward — Fable 5.2 seat again since 2026-11-20 08:56 (Opus 5.5 from 2026-11-17 21:30 until then); Model A worktree ~/Development/piper-morgan-worktrees/lead
 
+## DAY-END 2026-11-24 21:47 (read this first; the blocks below are today's earlier states)
+
+- **Beta serves `23b1373185`** (promoted 15:12, the sixth promotion of the day; all six went on the first dispatch). Healthy at 21:47. Main CI 12 of 12 green. No code has landed since, so nothing waits to be promoted.
+- **Closed today (12):** 2280, 2333, 2262, 2174, 2284, 2403, 2350, 2362, 2385, 2386, 2428, 2432. **Filed today:** 2428, 2429, 2430, 2433 (mine); 2431, 2434 (CXO); 2432 (Arch).
+- **Nothing is in flight:** no suite running, no local server, scratch databases dropped, seat-browser pages closed, side trees `../lead-2418` and `../lead-2432b` clean.
+- **Fully specified, not built, waiting on PPM's slot (sprint 3 draft is due 11-25):**
+  - 2433: CXO's line `This page needs an admin account.` with `Back to Settings`; Arch's closed `way_out` set on `refusal_page` (`RELOAD` default, `SETTINGS`). Both are on the issue.
+  - 2434: five toast rewordings, plus (CXO, 18:31) a sweep of pages' own copies of route lines for contradictions of fact only, plus 2432's two leftovers (12 `Field` rules in route models; `PasswordChangeRequest`'s spaces-only validator). Rows are on the issue.
+- **Other waits, unchanged:** 2352 box 3, 2356, 2399, 2244 (PPM's draft, xian's slots); 2424 (Arch's trigger: fresh rebase and full suite at landing); 2425, 2426 (PPM's slot, Arch's lever); 2429, 2430, 2431 rows (Arch's and CXO's ticks); 2264 box 2 (PPM's answer on the figure); 2345 return half (xian's F.4 connect); 2384 (xian's token, HOST's names-only read, then my first `deploy_mcp` dispatch); 2282 box 4, 2388 row 4, 2390/2391 served rows (allow lines on xian's card, then Web's runs); xian's sittings (seat-tester-1, Step E, Step F, 2157 restore drill).
+- **Carry this habit:** before landing a change to how refusals read, ask which pages rely on a request model for a rule a person can break, and render each one locally. Today's 37-minute defect on main came from asking a narrower question.
+- **Carry this too:** a served check goes to `https://beta.pipermorgan.ai`; `alpha.` answers a POST with a 308.
+
 ## AFTERNOON 2026-11-24 15:46 (read this first; it adds to the MIDDAY block below)
 
 - **Beta serves `23b1373185`** since 15:12 (six promotions today; 13:08 `6ff8197d9a`, 15:12 `23b1373185`). Healthy. Main CI 12 of 12 green.
