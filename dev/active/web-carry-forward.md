@@ -364,3 +364,12 @@ across multiple fires before being worth writing down.
 - Medium "Inviting Company In": feed copy ends with the "Do I Have To?" tease (01M85PHBCZ); rendered page sits behind a Cloudflare check, unread.
 - `web-seed-1386` holds leftover todos (Launch "book the venue"; "confirm the caterer", "water the ficus", "renew the domain", "draft the brief", "book the venue", "send the invites").
 - Seat session lasts 30 minutes (`python3 scripts/seat_session.py --account web-seed-1386`); "+ New chat" reloads the page, so re-install the fetch hook.
+
+## 2026-11-24 21:18 STOP NOTE (supersedes the 11-23 note where they differ)
+- Beta serves 23b1373185 (all of 2432). Main CI 12 of 12 green. Mail drained; last handled: Arch 01M87ZCEAF and CXO 01M87ZCT6X on 2432 follow-ups (2433 awaits PPM placement; 2434 filed by CXO).
+- Ship #070 published 11-24, calendar row distributed, website 4773820 live. LinkedIn unchecked; Medium page unread (Cloudflare), feed copy checked.
+- Allow-gated, waiting on xian via Exec: seat_read.py floored-actions counter read (#2388 row 4) and --redirect-uri setup-calendar run (2282). Done-note to Exec the same turn if xian runs either.
+- Fresh-account rows (never-connected status read, update_issue, CXO 2406 six-turn row, #2401/#2402 served rows) wait on xian minting the account via Exec.
+- Step 4(b)/(c) re-test waits on xian's one command (dev/active/cio-install-batch-2026-11-22.md), then Pard's restart.
+- Ten queued issues (2327, 2366, 2294, 2295, 2274, 2375, 2367, 2401, 2402, 2381) deferred to a fresh session or compaction.
+- web-seed-1386: 17 open todos (leftovers from 11-22 and 11-23 sittings); session lasts 30 min via seat_session.py.
