@@ -614,18 +614,20 @@ class TestThePagesReader:
         login = (ROOT / "templates/login.html").read_text(encoding="utf-8")
         assert login.index("/static/js/route-message.js") < login.index("/static/js/auth.js")
 
-    def test_test_all_reads_message_and_falls_back_to_its_old_words(self):
+    def test_test_all_reads_message_and_falls_back_to_its_own_words(self):
         src = (ROOT / "templates/integrations.html").read_text(encoding="utf-8")
         start = src.index("async function testAllConnections")
         block = src[start : src.index("function updateLastUpdated", start)]
         assert "if (!response.ok)" in block
         assert (
-            "Toast.show('error', 'Test Error', RouteMessage.read(body, "
-            "'Failed to test connections'));" in block
+            # Issue 2434: the fallback and its title are CXO's words now.
+            "Toast.show('error', 'Couldn\\'t test', RouteMessage.read(body, "
+            "'I couldn\\'t test your connections just now. Try again in a moment.'));" in block
         )
-        # The old words appear twice: the reader's fallback, and the catch for a
+        # The fallback words appear twice: the reader's fallback, and the catch for a
         # network failure or an unreadable reply (no message came).
-        assert block.count("'Failed to test connections'") == 2
+        assert block.count("just now. Try again in a moment.'") == 2
+        assert "Failed to test connections" not in block
         assert block.index("if (!response.ok)") < block.index("for (const result of results)")
 
     def test_the_toast_sets_its_message_as_text(self):
