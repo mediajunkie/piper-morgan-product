@@ -677,7 +677,7 @@
           updateStatusUI(data);
         } catch (error) {
           console.error('Failed to load Calendar status:', error);
-          Toast.show('error', 'Error', 'Failed to load connection status');
+          Toast.show('error', 'Couldn\'t load', 'I couldn\'t load your connections. Try refreshing the page.');
         }
       }
 
@@ -1072,7 +1072,7 @@ function updateAppConfigUI(configured) {
           console.error('Failed to load calendars:', error);
           prefsLoadFailed = true; // #2154: nothing was read, so nothing may be saved
           calendarListEl.innerHTML = '<div class="calendar-list-empty">I couldn\'t load your calendars. Try refreshing the page.</div>';
-          Toast.show('error', 'Error', 'Failed to load calendar list');
+          Toast.show('error', 'Couldn\'t load', 'I couldn\'t load your calendars. Try refreshing the page.');
           return false;
         }
       }

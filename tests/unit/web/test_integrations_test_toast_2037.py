@@ -275,14 +275,20 @@ def test_test_all_on_a_refusal_toasts_the_routes_message_and_changes_no_card(bod
         "retry_after_seconds": 5,
     }
     out = _run_all(body, refusal, status=503)
-    assert out["toasts"] == [{"type": "error", "message": OUTAGE, "title": "Test Error"}]
+    # Issue 2434: the title is CXO's "Couldn't test" (was "Test Error").
+    assert out["toasts"] == [{"type": "error", "message": OUTAGE, "title": "Couldn't test"}]
     assert out["cards"] == {}
 
 
 @needs_node
-def test_test_all_on_a_refusal_without_a_message_keeps_its_old_words(body):
+def test_test_all_on_a_refusal_without_a_message_says_cxos_fallback_line(body):
+    # Issue 2434: CXO's words replace "Test Error" / "Failed to test connections".
     out = _run_all(body, {"detail": "Bad Gateway"}, status=502)
     assert out["toasts"] == [
-        {"type": "error", "message": "Failed to test connections", "title": "Test Error"}
+        {
+            "type": "error",
+            "message": "I couldn't test your connections just now. Try again in a moment.",
+            "title": "Couldn't test",
+        }
     ]
     assert out["cards"] == {}

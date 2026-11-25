@@ -1190,7 +1190,9 @@ class CloseReopenGate:
       question format).
     - ``passthrough_result``: resolution reached a definitive, NON-arming
       answer — a confirmed not-found, or an honest "already closed/open" —
-      as a plain ``{"message": str, "requires_clarification": bool}`` dict
+      as a plain ``{"message": str, "requires_clarification": bool,
+      "intent_data": {NOT_PERFORMED_KEY: kind}}`` dict (#2399: every leg sets its
+      own not-performed kind; the caller sends ``success=False`` on it)
       (mirrors ``UnlinkRepoGate.passthrough_result``'s shape; the caller in
       ``intent_service.py`` wraps it into the turn's ``IntentProcessingResult``,
       so this module never needs to import that class).
@@ -1395,10 +1397,14 @@ async def build_close_reopen_confirmation(
             # an exception leaf matching _is_not_found_text) — definitive.
             not_found = GitHubIssueNotFound(issue_number=issue_number, owner=_owner, repo=_name)
             result = intent_service._unverified_write_result(not_found, intent, workflow_id)
+            from services.intent_service.not_performed import NOT_PERFORMED_KEY, NotPerformed
+
             return CloseReopenGate(
                 passthrough_result={
                     "message": result.message,
                     "requires_clarification": result.requires_clarification,
+                    # #2399 (Arch 2026-11-24 07:10): set on this branch, never read from text.
+                    "intent_data": {NOT_PERFORMED_KEY: NotPerformed.NOT_FOUND},
                 }
             )
 
@@ -1415,11 +1421,15 @@ async def build_close_reopen_confirmation(
 
         title = display_title(raw_title, f"(untitled issue #{issue_number})")
 
+        # #2399 (Arch 2026-11-24 07:10): nothing was changed, and nothing needed to be.
+        from services.intent_service.not_performed import NOT_PERFORMED_KEY, NotPerformed
+
         if action in _CLOSE_FAMILY and state == "closed":
             return CloseReopenGate(
                 passthrough_result={
                     "message": f"Issue #{issue_number}: {title} is already closed.",
                     "requires_clarification": False,
+                    "intent_data": {NOT_PERFORMED_KEY: NotPerformed.ALREADY_IN_STATE},
                 }
             )
         if action in _REOPEN_FAMILY and state == "open":
@@ -1427,6 +1437,7 @@ async def build_close_reopen_confirmation(
                 passthrough_result={
                     "message": f"Issue #{issue_number}: {title} is already open.",
                     "requires_clarification": False,
+                    "intent_data": {NOT_PERFORMED_KEY: NotPerformed.ALREADY_IN_STATE},
                 }
             )
 
