@@ -106,6 +106,18 @@ def _stub_github_arm_classify(monkeypatch, service, keyword, action):
         )
 
     monkeypatch.setattr(service.intent_classifier, "classify", _classify)
+    # Issue 2437: a working GitHub connection at the probe: an open issue for a close,
+    # a closed one for a reopen.
+    monkeypatch.setattr(
+        "services.mcp.consumer.github_adapter.GitHubMCPSpatialAdapter.probe_issue_connector",
+        AsyncMock(
+            return_value=(
+                "found",
+                {"title": "Test issue", "state": "closed" if "reopen" in action else "open"},
+                None,
+            )
+        ),
+    )
 
 
 def _resolver_unresolved():
