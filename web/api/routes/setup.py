@@ -29,9 +29,10 @@ from services.auth.oauth_callback_guard import (
 )
 from services.auth.password_service import PasswordService
 from services.auth.password_validator import (  # noqa: E402 (issue 2432)
-    PASSWORD_TOO_SHORT_LINE,
+    PASSWORD_CANT_BE_USED_LINE,
     PASSWORDS_DONT_MATCH_LINE,
     PasswordValidator,
+    password_rule_line,
 )
 from services.auth.session_cookies import set_session_cookies
 from services.config.llm_config_service import KEY_CHECK_UNAVAILABLE_MESSAGE, KeyCheckUnavailable
@@ -1243,16 +1244,23 @@ async def create_user(
         HTTPException 400: If username already exists, or invite_token is invalid/already used
         HTTPException 500: If user creation fails
     """
-    # Issue 2432 follow-up: the two password checks, first, before the invite code is
-    # spent or anything is written. The same two rules the request model used to hold
-    # (a match, and at least 8 characters), now with a line a person can read.
+    # The password checks, first, before the invite code is spent or anything is written.
+    # Issue 2438 (Arch, mail 01M8A7N4F1): the strength rules are the validator's, the same
+    # ones a reset and a change apply, so an account is never created under one rule set
+    # and refused under another later. The match check is not a strength rule and stays.
     if req.password != req.password_confirm:
         raise UserFacingHTTPException(
             status_code=status.HTTP_400_BAD_REQUEST, detail=PASSWORDS_DONT_MATCH_LINE
         )
-    if len(req.password) < PasswordValidator.MIN_LENGTH:
+    rule = PasswordValidator.failed_rule(req.password)
+    if rule is not None:
+        logger.info("create_user_refused_password_rule", rule=rule)
+        if password_rule_line(rule) is not None:
+            raise UserFacingHTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST, detail=password_rule_line(rule)
+            )
         raise UserFacingHTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST, detail=PASSWORD_TOO_SHORT_LINE
+            status_code=status.HTTP_400_BAD_REQUEST, detail=PASSWORD_CANT_BE_USED_LINE
         )
 
     try:

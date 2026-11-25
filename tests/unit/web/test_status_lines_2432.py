@@ -411,7 +411,11 @@ class TestTheResetPageKeepsItsLengthRule:
 
         reply = self._post("Abc12!x", "Abc12!x")
         assert reply.status_code == 400
-        line = "Your password needs at least 8 characters."
+        # Issue 2438: every strength rule answers the one line that states the whole rule.
+        line = (
+            "Your password needs at least 8 characters, an uppercase letter, "
+            "a lowercase letter, a number and one of ! @ # $ % ^ & * ( )."
+        )
         assert reply.json() == {"message": line, "detail": line}
         assert UNREADABLE_REQUEST_LINE not in reply.text
 
@@ -423,8 +427,10 @@ class TestTheResetPageKeepsItsLengthRule:
     def test_a_password_with_no_listed_special_character_is_told_which_count(self):
         reply = self._post("Abcdefg12-", "Abcdefg12-")
         assert reply.status_code == 400
+        # Issue 2438: the one line names the characters that count.
         assert reply.json()["message"] == (
-            "Your password needs a special character, such as ! @ # $ % ^ & * ( )."
+            "Your password needs at least 8 characters, an uppercase letter, "
+            "a lowercase letter, a number and one of ! @ # $ % ^ & * ( )."
         )
 
     def test_the_reset_request_holds_no_length_rule_of_its_own(self):
@@ -479,7 +485,11 @@ class TestTheSetupAccountStepKeepsItsPasswordLines:
     def test_a_seven_character_password_gets_the_length_line(self):
         reply = self._post("Abc12!x", "Abc12!x")
         assert reply.status_code == 400
-        assert reply.json()["message"] == "Your password needs at least 8 characters."
+        # Issue 2438: the account step applies the validator's rules and its one line.
+        assert reply.json()["message"] == (
+            "Your password needs at least 8 characters, an uppercase letter, "
+            "a lowercase letter, a number and one of ! @ # $ % ^ & * ( )."
+        )
 
     def test_the_request_model_holds_no_password_rule_of_its_own(self):
         from web.api.routes.setup import CreateUserRequest

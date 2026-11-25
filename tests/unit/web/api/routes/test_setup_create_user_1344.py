@@ -28,8 +28,8 @@ def _req(token: str, username: str | None = None) -> CreateUserRequest:
     return CreateUserRequest(
         username=name,
         email=f"{name}@test.invalid",
-        password="a-fine-password",
-        password_confirm="a-fine-password",
+        password="A-fine-passw0rd!",
+        password_confirm="A-fine-passw0rd!",
         invite_token=token,
     )
 
@@ -46,8 +46,8 @@ def test_invite_token_is_required_on_the_request_model():
     with pytest.raises(ValidationError):
         CreateUserRequest(
             username="someone",
-            password="a-fine-password",
-            password_confirm="a-fine-password",
+            password="A-fine-passw0rd!",
+            password_confirm="A-fine-passw0rd!",
         )
 
 
@@ -123,8 +123,8 @@ def test_email_is_required_on_the_request_model_1348():
     with pytest.raises(ValidationError):
         CreateUserRequest(
             username="someone",
-            password="a-fine-password",
-            password_confirm="a-fine-password",
+            password="A-fine-passw0rd!",
+            password_confirm="A-fine-passw0rd!",
             invite_token="SOMETOKEN",
         )
 
@@ -139,8 +139,8 @@ async def test_duplicate_email_400_names_the_email_field_1348(db_session, unused
     first = CreateUserRequest(
         username=f"u_{uuid.uuid4().hex[:10]}",
         email=email,
-        password="a-fine-password",
-        password_confirm="a-fine-password",
+        password="A-fine-passw0rd!",
+        password_confirm="A-fine-passw0rd!",
         invite_token=unused_token,
     )
     await create_user(first)
@@ -151,8 +151,8 @@ async def test_duplicate_email_400_names_the_email_field_1348(db_session, unused
     second = CreateUserRequest(
         username=f"u_{uuid.uuid4().hex[:10]}",  # different username
         email=email,  # SAME email
-        password="a-fine-password",
-        password_confirm="a-fine-password",
+        password="A-fine-passw0rd!",
+        password_confirm="A-fine-passw0rd!",
         invite_token=token2,
     )
     with pytest.raises(HTTPException) as exc:

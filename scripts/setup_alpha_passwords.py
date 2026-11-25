@@ -113,9 +113,12 @@ async def set_user_password(username: str, password: str = None, interactive: bo
             print("❌ Password cannot be empty")
             return False
 
-        # Validate password strength
-        if len(password) < 8:
-            print("❌ Password must be at least 8 characters")
+        # Validate password strength. Issue 2438: the rules are PasswordValidator's, the
+        # same ones the web wizard, a reset and a change apply; no second copy here.
+        from services.auth.password_validator import PASSWORD_RULE_LINE, PasswordValidator
+
+        if PasswordValidator.failed_rule(password) is not None:
+            print(f"❌ {PASSWORD_RULE_LINE}")
             return False
 
         # Hash password

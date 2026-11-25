@@ -592,21 +592,28 @@ async def create_user_account() -> Any:
 
         email = input("   Email (optional, press Enter to skip): ").strip() or None
 
-        # Prompt for password (Issue #297 - Secure password setup)
+        # Prompt for password (Issue #297 - Secure password setup).
+        # Issue 2438 (Arch, mail 01M8A7N4F1): the rules are PasswordValidator's, the same
+        # ones the web wizard, a reset and a change apply. One loop, so a password typed
+        # again after a mismatch is checked again too.
+        from services.auth.password_validator import (
+            PASSWORD_RULE_HELPER_LINE,
+            PASSWORD_RULE_LINE,
+            PasswordValidator,
+        )
+
         print("\n   Create a secure password:")
-        password = getpass("   Password (min 8 characters): ")
-
-        while len(password) < 8:
-            print("   ✗ Password must be at least 8 characters")
-            password = getpass("   Password (min 8 characters): ")
-
-        # Confirm password
-        password_confirm = getpass("   Confirm password: ")
-
-        while password != password_confirm:
-            print("   ✗ Passwords don't match, please try again")
-            password = getpass("   Password (min 8 characters): ")
+        print(f"   {PASSWORD_RULE_HELPER_LINE}")
+        while True:
+            password = getpass("   Password: ")
+            if PasswordValidator.failed_rule(password) is not None:
+                print(f"   ✗ {PASSWORD_RULE_LINE}")
+                continue
             password_confirm = getpass("   Confirm password: ")
+            if password != password_confirm:
+                print("   ✗ Passwords don't match, please try again")
+                continue
+            break
 
         # Hash password with bcrypt
         password_service = PasswordService()

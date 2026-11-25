@@ -24,6 +24,14 @@ RULE_NO_LOWERCASE = "no_lowercase"
 RULE_NO_DIGIT = "no_digit"
 RULE_NO_SPECIAL = "no_special"
 RULE_MISMATCH = "mismatch"
+# Issue 2438: the five strength rules, the ones ``PASSWORD_RULE_LINE`` states.
+STRENGTH_RULES = (
+    RULE_TOO_SHORT,
+    RULE_NO_UPPERCASE,
+    RULE_NO_LOWERCASE,
+    RULE_NO_DIGIT,
+    RULE_NO_SPECIAL,
+)
 
 # The validator's own messages, word for word as before issue 2432, kept for
 # ``validate``'s callers and logs. Never a reply's words.
@@ -157,21 +165,25 @@ class PasswordValidator:
         return cls.validate(password)
 
 
-# --- What a person reads (CXO, issue 2432 comment 7144095698) ---
-# One constant per rule. The length line is computed once here from ``MIN_LENGTH``, so a
-# changed minimum changes the sentence and the pin in
-# tests/unit/web/test_vetted_4xx_lines_2432.py fails until it is read again.
+# --- What a person reads ---
+# Issue 2438 (CXO, mail 01M8A7MG8Q; Arch, mails 01M8A7N4F1 and 01M8A7PQQ6): the whole rule
+# is stated twice and only here. ``PASSWORD_RULE_HELPER_LINE`` sits under a new-password
+# field before the person types; ``PASSWORD_RULE_LINE`` is the one refusal for every
+# strength rule. It states the rule, not which part failed, so it is true for each of the
+# five codes and nobody is refused once per unstated rule. Both are built once from
+# ``MIN_LENGTH`` and ``SPECIAL_CHARS``, so the sentences and the rule cannot drift; the
+# pins in tests/unit/web/test_password_rules_one_place_2438.py fail until a changed rule
+# is read again.
+_SPECIALS_AS_READ = " ".join(PasswordValidator.SPECIAL_CHARS)
+PASSWORD_RULE_HELPER_LINE = (
+    "At least {min_length} characters, with an uppercase letter, a lowercase letter, "
+    "a number and one of {specials}."
+).format(min_length=int(PasswordValidator.MIN_LENGTH), specials=_SPECIALS_AS_READ)
+PASSWORD_RULE_LINE = (
+    "Your password needs at least {min_length} characters, an uppercase letter, "
+    "a lowercase letter, a number and one of {specials}."
+).format(min_length=int(PasswordValidator.MIN_LENGTH), specials=_SPECIALS_AS_READ)
 PASSWORD_EMPTY_LINE = "Your password can't be empty."
-PASSWORD_TOO_SHORT_LINE = f"Your password needs at least {PasswordValidator.MIN_LENGTH} characters."
-PASSWORD_NEEDS_UPPERCASE_LINE = "Your password needs an uppercase letter."
-PASSWORD_NEEDS_LOWERCASE_LINE = "Your password needs a lowercase letter."
-PASSWORD_NEEDS_NUMBER_LINE = "Your password needs a number."
-# CXO (mail 01M87RB23J): the line names the characters that count, so a person who types
-# another one learns why it failed. Built from the validator's own set (Arch, mail
-# 01M87RHFPQ), so the sentence and the rule cannot drift.
-PASSWORD_NEEDS_SPECIAL_LINE = "Your password needs a special character, such as {}.".format(
-    " ".join(PasswordValidator.SPECIAL_CHARS)
-)
 PASSWORDS_DONT_MATCH_LINE = "The passwords don't match."
 # For a rule code with no line of its own (CXO's fallback, her log 2026-11-24 11:51 and
 # Arch's note 01M87HVCTY: "That password can't be used. Choose a different one.").
@@ -184,16 +196,9 @@ def password_rule_line(code: Optional[str]) -> Optional[str]:
     (``DETAIL_PICKERS``): every return is an UPPER_CASE constant or None."""
     if code == RULE_EMPTY:
         return PASSWORD_EMPTY_LINE
-    if code == RULE_TOO_SHORT:
-        return PASSWORD_TOO_SHORT_LINE
-    if code == RULE_NO_UPPERCASE:
-        return PASSWORD_NEEDS_UPPERCASE_LINE
-    if code == RULE_NO_LOWERCASE:
-        return PASSWORD_NEEDS_LOWERCASE_LINE
-    if code == RULE_NO_DIGIT:
-        return PASSWORD_NEEDS_NUMBER_LINE
-    if code == RULE_NO_SPECIAL:
-        return PASSWORD_NEEDS_SPECIAL_LINE
+    # Issue 2438: the five strength codes share the one line that states the whole rule.
+    if code in STRENGTH_RULES:
+        return PASSWORD_RULE_LINE
     if code == RULE_MISMATCH:
         return PASSWORDS_DONT_MATCH_LINE
     return None

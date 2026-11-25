@@ -440,14 +440,18 @@ COMPUTED = [
     ),
     (
         "services.auth.password_validator",
-        "PASSWORD_TOO_SHORT_LINE",
-        "Your password needs at least 8 characters.",
+        "PASSWORD_RULE_LINE",  # issue 2438: the one line for the five strength rules
+        "Your password needs at least 8 characters, an uppercase letter, a lowercase letter, "
+        "a number and one of ! @ # $ % ^ & * ( ).",
     ),
 ]
 
 # Used through an import: the module that raises with it, when not the one defining it.
 RAISED_IN = {
-    ("services.auth.password_validator", "PASSWORD_CANT_BE_USED_LINE"): ["web/api/routes/auth.py"],
+    ("services.auth.password_validator", "PASSWORD_CANT_BE_USED_LINE"): [
+        "web/api/routes/auth.py",
+        "web/api/routes/setup.py",  # issue 2438
+    ],
     ("web.api.exceptions", "ROLE_NOT_RECOGNISED_LINE"): [
         "web/api/routes/lists.py",
         "web/api/routes/todos.py",
@@ -518,7 +522,10 @@ class TestEveryKeptOrRewordedLine:
         assert seen - known == set()
         # 77 distinct names (TITLE_NEEDED_LINE and PROJECT_NAME_NEEDED_LINE live in two
         # modules each).
-        assert len(seen) == 77  # +2: the setup account step's mismatch and length lines
+        # 76 since issue 2438: the setup account step's length line went; the step now
+        # answers through ``password_rule_line`` (a picker, not a name) and the fallback,
+        # which auth.py already raised.
+        assert len(seen) == 76
 
 
 class TestTheComputedLines:
@@ -543,14 +550,21 @@ class TestTheComputedLines:
             assert "valid_roles = SHARE_ROLES" in src
 
 
+RULE_LINE_2438 = (
+    "Your password needs at least 8 characters, an uppercase letter, a lowercase letter, "
+    "a number and one of ! @ # $ % ^ & * ( )."
+)
+
+
 class TestThePasswordRules:
     CODES = {
         "empty": "Your password can't be empty.",
-        "too_short": "Your password needs at least 8 characters.",
-        "no_uppercase": "Your password needs an uppercase letter.",
-        "no_lowercase": "Your password needs a lowercase letter.",
-        "no_digit": "Your password needs a number.",
-        "no_special": "Your password needs a special character, such as ! @ # $ % ^ & * ( ).",
+        # Issue 2438 (CXO, mail 01M8A7MG8Q): the five strength codes share one line.
+        "too_short": RULE_LINE_2438,
+        "no_uppercase": RULE_LINE_2438,
+        "no_lowercase": RULE_LINE_2438,
+        "no_digit": RULE_LINE_2438,
+        "no_special": RULE_LINE_2438,
         "mismatch": "The passwords don't match.",
     }
     FALLBACK = "That password can't be used. Choose a different one."
@@ -602,10 +616,10 @@ class TestThePasswordRules:
     @pytest.mark.parametrize(
         "password, line",
         [
-            ("Ab1!", "Your password needs at least 8 characters."),
-            ("abcdefg1!", "Your password needs an uppercase letter."),
-            ("Abcdefgh!", "Your password needs a number."),
-            ("Abcdefg12", "Your password needs a special character, such as ! @ # $ % ^ & * ( )."),
+            ("Ab1!", RULE_LINE_2438),
+            ("abcdefg1!", RULE_LINE_2438),
+            ("Abcdefgh!", RULE_LINE_2438),
+            ("Abcdefg12", RULE_LINE_2438),
         ],
     )
     def test_the_change_route_answers_the_rules_line(self, password, line):

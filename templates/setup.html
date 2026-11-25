@@ -734,8 +734,9 @@
               name="password"
               required
               minlength="8"
+              aria-describedby="password-rule"
             />
-            <small>At least 8 characters</small>
+            <small id="password-rule">{{ password_rule_helper }}</small>
           </div>
           <div class="form-group">
             <label for="password-confirm">Confirm Password</label>
