@@ -6592,6 +6592,29 @@ plus a known kind) and treat a flagged reply as they treated `success=True`: `_a
 (2188, 2280) behaves as before: no soft offer, no question, no Slack reply. The flag rides `intent_data`, which the
 chat route returns as `intent`; no page script reads that field. Pins: `tests/unit/services/intent_service/test_said_instead_not_performed_2399.py`.
 
+**Issue 2437: a degraded probe answers its line and arms no close/reopen confirm (Arch, decisions.log 2026-11-25 08:54 to 09:06; CXO's words).**
+`probe_issue_connector` has a fourth status, `"degraded"`. Its third element is the `DegradationResponse` the probe already held, from one of four places:
+- the resolver's degrade;
+- the binding's degrade;
+- the App check's degrade (`_app_repository_degrade`);
+- `_degrade_for_exc` for a non-404 exception, which keeps 2029's stale mark and 2342's replaced-token check.
+
+`"unknown"` now means only that GitHub served a degenerate or unparseable body.
+
+On `"degraded"`, `build_close_reopen_confirmation` returns a passthrough with `github_adapter.close_reopen_degrade_line(degradation, verb)`. The intent data carries `NOT_PERFORMED_KEY: DEGRADED` and `repository`. The passthrough branch above adds the said-instead flag, and nothing is armed. The chooser picks by `detail`, then `reason`, and every return is an UPPER constant:
+- App details: the App lines the 2379 write check already says.
+- STALE_TOKEN: `GITHUB_CLOSE_STALE_REPLY` or `GITHUB_REOPEN_STALE_REPLY`.
+- CONNECT_REQUIRED: `GITHUB_CLOSE_NOT_CONNECTED_REPLY` or `GITHUB_REOPEN_NOT_CONNECTED_REPLY`.
+- NOT_CONFIGURED, UNREACHABLE, MISCONFIGURED, REPO_UNRESOLVED and RESOURCE_NOT_FOUND: `GITHUB_ISSUE_COULD_NOT_CHECK_REPLY`. It is never a not-found claim.
+
+`"unknown"` and the gate's pre-probe fallbacks keep the generic confirm.
+
+After a `yes`, `IntentService._github_gate_failed` returns the same stale constants for `close_issue` and `reopen_issue` (`_GATE_FAILED_STALE_BY_ACTION`). Every other action keeps its line built from its verb, byte for byte. Every reply from `_github_gate_failed` (nine actions) now carries `mark_not_performed(..., DEGRADED)` and no said-instead flag. Its text and `success=False` are unchanged, and the learning handler skips it.
+
+Pins:
+- `tests/unit/services/intent_service/test_close_reopen_degraded_2437.py`
+- `tests/unit/services/intent_service/test_gate_failed_text_pinned_2437.py`
+
 **#2301 a status ask that names one project shows that project's open todos, by code (2026-11-20, Arch's six conditions; floor change 2026-11-22, Arch 01M8270WE5, CXO's agreement).** No catalog, router, classifier or pre-classifier text changed. On the STATUS floor path (`_handle_floor_with_context`), when the action is `get_project_status`, `project_status_todos.status_todos_block` takes the project from the router's `project` arg through 2297's reader and lookup, never from the person's words. Exactly one match yields a block under CXO's header in the main list's render; anything else yields nothing and the reply is today's. The block is resolved BEFORE the floor is called and joined to the floor's message after it; the floor never receives the list. When the block is non-empty (a list, the no-open-todos line, or the couldn't-check line), the person's todo keys (`project_status_todos.FLOOR_TODO_KEYS`) are REMOVED from the floor's `domain_context` and its provenance map, so the floor has no todo to name above the block. Removed, not emptied: an empty list reads to the floor as a verified zero. Due reminders stay. A resolved #2197 milestone still returns first. Not yet done: the prompt line that stops the floor offering todos on these turns (part 2, measured on real replies). Pins: `tests/unit/services/intent_service/test_project_status_todos_2301.py`.
 
 **#2413 "show me the todos in the Launch project" asks which project, then shows it (2026-11-22, Arch 01M82907VE and 01M82A8RX0, CXO 01M829VZ5X and 01M82AGXFK, PPM 01M82986YX).** No catalog, router, classifier or pre-classifier text changed. The legacy classifier's `list_project_todos` and `list_todos_by_project` land on one READ entry with `router_visible=False` (the #2132 (b) mechanism), so `derive_routing_grammar` skips it and `router_none_stands` leaves the landing standing. No model supplies a project on these turns, so `project_todos_read.run_list_project_todos_workflow` never reads a name from the person's words: it reads the person's active projects and arms CXO's which-project question with every one bound (five listed), or says there are none, or that the read failed; with no session or store it shows no question. The answer is taken at the pop seam (`handle_project_todos_pick_turn`, beside 2297's) by 2297's lookup over the bound names (exact, ignoring case, one trailing "project"); one match is re-checked by id under the principal and shown by 2301's render (`todo_handlers.project_status_todos`); two bound projects with one name get a numbered question; no match returns `None` and the message routes as new; a decline or bare yes goes to the generic seam (decline line, or the `clarify_project_todos_pick` landing re-asks). Nothing is written. Pins: `tests/unit/services/intent_service/test_project_todos_read_2413.py`, including the router's request and the classifier's request by sha256. It is the fourth router-hidden entry, by Arch's amendment of his own 11-08 cap (01M82F5PKR, decisions.log 2026-11-22 12:30): there is no fifth, and #2149 is the exit.
