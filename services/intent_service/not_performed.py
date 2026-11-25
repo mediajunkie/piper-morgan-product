@@ -66,17 +66,29 @@ def was_not_performed(result: Any) -> bool:
     return data.get(NOT_PERFORMED_KEY) in NOT_PERFORMED_KINDS
 
 
-#: #2399 (option B): set to True, next to the kind, by exactly the three said-instead paths
-#: (an unarmed ``IntentService._rail_write_ask_reply``, a close/reopen passthrough leg, the
-#: ``GitHubWriteRefused`` branch of ``_unverified_write_result``). Those replies answered
-#: ``success=True`` before 2399. A reader that acted on ``success`` (the soft offer, the
-#: unanswered-half question, the Slack events path) treats a flagged reply as it did then,
-#: so its text is unchanged; any other marked or failed result behaves as before.
+#: #2399 (option B; Arch 2026-11-25 07:19): set beside the kind by exactly the three
+#: said-instead paths (an unarmed ``IntentService._rail_write_ask_reply``, a close/reopen
+#: passthrough leg, the ``GitHubWriteRefused`` branch of ``_unverified_write_result``),
+#: which answered ``success=True`` before 2399. The flag is a NARROWING of the marker,
+#: never a second marker: it is only ever set by ``mark_said_instead`` together with a
+#: kind, and only ever read by ``was_said_instead``, which also requires the kind. No
+#: other module names this key (pinned by a static test). A reader that acted on
+#: ``success`` (the soft offer, the unanswered-half question, the Slack events path) treats
+#: a said-instead reply as it did then, so its text is unchanged; any other marked or
+#: failed result behaves as before.
 SAID_INSTEAD_KEY = "said_instead"
 
 
+def mark_said_instead(intent_data: Optional[Dict[str, Any]], kind: str) -> Dict[str, Any]:
+    """The one setter (#2399): the not-performed ``kind`` and the said-instead flag together.
+    A path whose builder already set a kind passes that kind; it is never read from text."""
+    data = mark_not_performed(intent_data, kind)  # raises on a kind not in NOT_PERFORMED_KINDS
+    data[SAID_INSTEAD_KEY] = True
+    return data
+
+
 def was_said_instead(result: Any) -> bool:
-    """True when the result carries ``SAID_INSTEAD_KEY`` and a known marker kind (#2399)."""
+    """The one reader (#2399): the flag AND a known not-performed kind."""
     data = getattr(result, "intent_data", None)
     if not isinstance(data, dict):
         return False

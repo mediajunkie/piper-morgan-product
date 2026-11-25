@@ -52,9 +52,8 @@ from services.intent_service.conversation_context import (
 from services.intent_service.list_remainder import compose_capped_list, page_floor
 from services.intent_service.not_performed import (
     NOT_PERFORMED_KEY,
-    SAID_INSTEAD_KEY,
     NotPerformed,
-    mark_not_performed,
+    mark_said_instead,
     was_not_performed,
     was_said_instead,
 )
@@ -13751,14 +13750,15 @@ class IntentService:
             return IntentProcessingResult(
                 success=False,
                 message=f"{e.user_message}{hint}",
-                intent_data={
-                    "category": intent.category.value,
-                    "action": intent.action,
-                    "confidence": intent.confidence,
-                    "write_refused": True,
-                    NOT_PERFORMED_KEY: NotPerformed.REFUSED_BEFORE_WRITE,
-                    SAID_INSTEAD_KEY: True,
-                },
+                intent_data=mark_said_instead(
+                    {
+                        "category": intent.category.value,
+                        "action": intent.action,
+                        "confidence": intent.confidence,
+                        "write_refused": True,
+                    },
+                    NotPerformed.REFUSED_BEFORE_WRITE,
+                ),
                 workflow_id=workflow_id,
                 requires_clarification=False,
             )
@@ -20891,20 +20891,23 @@ Add any additional information here.
                     # was performed. Read from the builder's marker, never the text. The
                     # said-instead flag keeps the success readers as before (option B).
                     _cr_kind = (_cr.get("intent_data") or {}).get(NOT_PERFORMED_KEY)
+                    _cr_data: Dict[str, Any] = {
+                        "category": intent.category.value,
+                        "action": intent.action,
+                        "confidence": intent.confidence,
+                        # #2379 (Arch 2026-11-16 16:45): a refusal carries the
+                        # not-performed marker, as create and update do.
+                        **(_cr.get("intent_data") or {}),
+                    }
+                    if _cr_kind is not None:
+                        # The leg's own kind, with the said-instead flag (one setter).
+                        _cr_data = mark_said_instead(_cr_data, _cr_kind)
                     return _RailOutcome(
                         on_rail=True,
                         result=IntentProcessingResult(
                             success=_cr_kind is None,
                             message=_cr["message"],
-                            intent_data={
-                                "category": intent.category.value,
-                                "action": intent.action,
-                                "confidence": intent.confidence,
-                                # #2379 (Arch 2026-11-16 16:45): a refusal carries the
-                                # not-performed marker, as create and update do.
-                                **(_cr.get("intent_data") or {}),
-                                **({SAID_INSTEAD_KEY: True} if _cr_kind is not None else {}),
-                            },
+                            intent_data=_cr_data,
                             requires_clarification=_cr.get("requires_clarification", False),
                             suggestions=all_suggestions,
                             preferences=preferences,
@@ -21145,8 +21148,9 @@ Add any additional information here.
         #2399 (Arch 2026-11-24 07:10): the split keys on ``ask.armed``, never on the
         reply text. Armed: a clarification (``success`` True, no marker). Unarmed:
         nothing was done (``success=False``), marked with the kind the builder set
-        (2379's App line: DEGRADED) or else REFUSED_BEFORE_WRITE, plus SAID_INSTEAD_KEY so
-        the readers that acted on ``success`` treat it as before (``was_said_instead``)."""
+        (2379's App line: DEGRADED) or else REFUSED_BEFORE_WRITE, set with the said-instead
+        flag by ``mark_said_instead`` so the readers that acted on ``success`` treat it as
+        before (``was_said_instead``)."""
         intent_data: Dict[str, Any] = {
             "category": intent.category.value,
             "action": intent.action,
@@ -21156,9 +21160,10 @@ Add any additional information here.
             intent_data["floor_category_write"] = True
         intent_data.update(ask.intent_data or {})
         if not ask.armed:
-            if intent_data.get(NOT_PERFORMED_KEY) is None:
-                intent_data = mark_not_performed(intent_data, NotPerformed.REFUSED_BEFORE_WRITE)
-            intent_data[SAID_INSTEAD_KEY] = True
+            intent_data = mark_said_instead(
+                intent_data,
+                intent_data.get(NOT_PERFORMED_KEY) or NotPerformed.REFUSED_BEFORE_WRITE,
+            )
         return _RailOutcome(
             on_rail=True,
             armed=ask.armed,

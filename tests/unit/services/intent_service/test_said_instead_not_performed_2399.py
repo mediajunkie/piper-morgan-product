@@ -37,6 +37,7 @@ from services.intent_service.not_performed import (
     SAID_INSTEAD_KEY,
     NotPerformed,
     mark_not_performed,
+    mark_said_instead,
     was_not_performed,
     was_said_instead,
 )
@@ -138,6 +139,55 @@ class TestTheNewKind:
             assert was_said_instead(SimpleNamespace(intent_data={**marked, SAID_INSTEAD_KEY: True}))
         assert not was_said_instead(SimpleNamespace(intent_data={SAID_INSTEAD_KEY: True}))
         assert not was_said_instead(SimpleNamespace(intent_data=None))
+
+
+class TestOneSetterOneReader:
+    """Arch 2026-11-25 07:19: the flag is a narrowing of the marker, never a second marker."""
+
+    @pytest.mark.parametrize("kind", sorted(NOT_PERFORMED_KINDS))
+    def test_the_setter_sets_both_and_said_instead_implies_not_performed(self, kind):
+        data = mark_said_instead({"action": "x"}, kind)
+        result = SimpleNamespace(intent_data=data)
+        assert data[NOT_PERFORMED_KEY] == kind
+        assert data["action"] == "x"
+        assert was_said_instead(result)
+        assert was_not_performed(result)
+
+    def test_the_setter_refuses_an_unknown_kind(self):
+        with pytest.raises(ValueError):
+            mark_said_instead({}, "not_a_kind")
+        with pytest.raises(ValueError):
+            mark_said_instead({}, None)
+
+    def test_the_setter_does_not_mutate_its_input(self):
+        given = {"action": "x"}
+        mark_said_instead(given, NotPerformed.NOT_FOUND)
+        assert given == {"action": "x"}
+
+    def test_no_module_but_not_performed_names_the_key(self):
+        """One setter and one reader: under services/ and web/, only not_performed.py
+        names ``SAID_INSTEAD_KEY`` or the literal key."""
+        import re
+        from pathlib import Path
+
+        root = Path(__file__).resolve().parents[4]
+        home = root / "services" / "intent_service" / "not_performed.py"
+        pattern = re.compile(r"\bSAID_INSTEAD_KEY\b|[\"']said_instead[\"']")
+        offenders = []
+        for top in ("services", "web"):
+            for path in (root / top).rglob("*"):
+                if path == home or not path.is_file():
+                    continue
+                if path.suffix not in {".py", ".js", ".html", ".jinja", ".j2", ".ts", ".json"}:
+                    continue
+                try:
+                    text = path.read_text(encoding="utf-8")
+                except (UnicodeDecodeError, OSError):
+                    continue
+                if pattern.search(text):
+                    offenders.append(str(path.relative_to(root)))
+        assert home.is_file()
+        assert offenders == []
 
 
 # ── Path 1: the write ask's reply ──────────────────────────────────────────────

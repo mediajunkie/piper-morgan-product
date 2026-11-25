@@ -6583,8 +6583,9 @@ paths answer `success=False` with the #2188 marker; no reply text changed. `Inte
 set (2379's App line: `DEGRADED`) or else `REFUSED_BEFORE_WRITE`. The close/reopen passthrough reads the kind each
 `build_close_reopen_confirmation` leg sets on its own branch: not found `NOT_FOUND`, already closed/open the new
 `ALREADY_IN_STATE`, the App refusal `DEGRADED`. `_unverified_write_result`'s `GitHubWriteRefused` branch is `success=False`
-with `REFUSED_BEFORE_WRITE`. Each of the three paths also sets `not_performed.SAID_INSTEAD_KEY` (`said_instead: True`)
-next to the kind; an armed question sets neither. Readers that acted on `success` key on `was_said_instead` (the flag
+with `REFUSED_BEFORE_WRITE`. Each of the three paths also sets the said-instead flag beside the kind, only through the one setter
+`not_performed.mark_said_instead(intent_data, kind)` (Arch 2026-11-25 07:19: a narrowing of the marker, never a second
+marker; no other module names the key, pinned); an armed question sets neither. Readers that acted on `success` key on `was_said_instead` (the flag
 plus a known kind) and treat a flagged reply as they treated `success=True`: `_apply_soft_offer` (the soft offer),
 `_append_unanswered_half` (the "Want me to?"), and the Slack events path
 (`SlackResponseHandler._process_through_orchestration`, which still sends it). Any other marked or failed result
