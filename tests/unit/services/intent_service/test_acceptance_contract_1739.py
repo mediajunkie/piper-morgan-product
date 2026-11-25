@@ -30,6 +30,8 @@ Layer honesty (m-43): classes 1–2 pin the shared predicate (unit); class 3
 drives the REAL IntentService offer seam with the LLM boundary explosive.
 """
 
+from unittest.mock import AsyncMock
+
 import pytest
 
 from services.domain.models import Intent
@@ -566,6 +568,12 @@ class TestConfirmSeamAdopted:
             )
 
         monkeypatch.setattr(service.intent_classifier, "classify", _classify_close_issue_108)
+        # Issue 2437: a connection that served but gave no evidence ("unknown"), so the
+        # generic confirm _CLOSE_ASK pins is armed, as it was before 2437.
+        monkeypatch.setattr(
+            "services.mcp.consumer.github_adapter.GitHubMCPSpatialAdapter.probe_issue_connector",
+            AsyncMock(return_value=("unknown", None, None)),
+        )
 
         result = await service.process_intent(
             message="close issue #108", session_id=sid, user_id=_USER

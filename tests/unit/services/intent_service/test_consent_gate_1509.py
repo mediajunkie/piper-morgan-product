@@ -1094,6 +1094,11 @@ class TestEndToEndConsentCheck:
             )
 
         monkeypatch.setattr(live_service.intent_classifier, "classify", _classify)
+        # Issue 2437: a working GitHub connection at the probe (an open issue to close).
+        monkeypatch.setattr(
+            "services.mcp.consumer.github_adapter.GitHubMCPSpatialAdapter.probe_issue_connector",
+            AsyncMock(return_value=("found", {"title": "Test issue", "state": "open"}, None)),
+        )
 
         sid = "e2e-1509-destructive"
         result = await live_service.process_intent(

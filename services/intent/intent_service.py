@@ -53,6 +53,7 @@ from services.intent_service.list_remainder import compose_capped_list, page_flo
 from services.intent_service.not_performed import (
     NOT_PERFORMED_KEY,
     NotPerformed,
+    mark_not_performed,
     mark_said_instead,
     was_not_performed,
     was_said_instead,
@@ -68,7 +69,11 @@ from services.intent_service.todo_handlers import TodoIntentHandlers
 from services.knowledge.conversation_integration import ConversationKnowledgeGraphIntegration
 from services.learning.learning_handler import LearningHandler
 from services.llm.request_key import LLMKeyRequiredError
-from services.mcp.consumer.github_adapter import github_degrade_reply
+from services.mcp.consumer.github_adapter import (
+    GITHUB_CLOSE_STALE_REPLY,
+    GITHUB_REOPEN_STALE_REPLY,
+    github_degrade_reply,
+)
 from services.personality.personality_profile import PersonalityProfile
 from services.process import ProcessCheckResult, ProcessType, get_process_registry
 from services.process.standup_copy import (
@@ -690,6 +695,13 @@ GENERATE_CONTENT_WHAT_I_CAN_DRAFT = (
 _GITHUB_WRITE_GATE_ACTIONS = frozenset(
     {"close_issue", "reopen_issue", "comment_issue", "create_issue", "update_issue"}
 )
+# Issue 2437 (Arch 09:05): the stale line is one constant per verb, shared by the
+# close/reopen gate and the after-yes reply. Only these two actions; every other action's
+# stale line is built from its verb as before.
+_GATE_FAILED_STALE_BY_ACTION = {
+    "close_issue": GITHUB_CLOSE_STALE_REPLY,
+    "reopen_issue": GITHUB_REOPEN_STALE_REPLY,
+}
 # #2151 (CXO 10-24 16:54): the productivity summary when the GitHub check itself failed. It
 # follows the summary in its own paragraph; a not-connected account gets no line.
 PRODUCTIVITY_GITHUB_CHECK_FAILED = (
@@ -10625,7 +10637,10 @@ class IntentService:
 
         if rf.reason is DegradationReason.STALE_TOKEN:
             # CXO 10-24 17:39: "isn't working anymore" is true for expired, revoked and stale.
-            message = (
+            # Issue 2437 (Arch 09:05): close and reopen say the same fact as the
+            # close/reopen gate, so they return its constants; every other action keeps
+            # the line built from its verb, unchanged.
+            message = _GATE_FAILED_STALE_BY_ACTION.get(action) or (
                 "Your GitHub connection isn't working anymore. Reconnect it in Settings → "
                 f"Integrations, and I can {verb}."
             )
@@ -10655,11 +10670,16 @@ class IntentService:
         return IntentProcessingResult(
             success=False,
             message=message,
-            intent_data={
-                "category": "query",
-                "action": action,
-                "context": {"read_failed": rf.reason_code, "detail": rf.detail},
-            },
+            # Issue 2437 (Arch 09:06): a degrade under 2188, so it carries the
+            # not-performed marker. Not said-instead: it was already success=False.
+            intent_data=mark_not_performed(
+                {
+                    "category": "query",
+                    "action": action,
+                    "context": {"read_failed": rf.reason_code, "detail": rf.detail},
+                },
+                NotPerformed.DEGRADED,
+            ),
         )
 
     def _github_list_read_failed(self, rf, action: str, noun: str) -> "IntentProcessingResult":

@@ -1270,10 +1270,11 @@ async def build_close_reopen_confirmation(
     only from a parsed payload that carries a real issue number; ``"not_found"``
     only from POSITIVE not-found evidence (in-band content text or an
     exception leaf matching ``_is_not_found_text`` — the SAME check #1858's
-    write-verification readback leg already uses); every degradation
-    (REPO_UNRESOLVED, CONNECT_REQUIRED, STALE_TOKEN, UNREACHABLE, ...) or
-    other unparseable/erroring result is ``"unknown"`` — never inferred as
-    not-found. ``"not_found"`` is handed to ``intent_service
+    write-verification readback leg already uses); issue 2437: every
+    degradation (REPO_UNRESOLVED, CONNECT_REQUIRED, STALE_TOKEN, UNREACHABLE,
+    the App check, ...) is ``"degraded"`` carrying its ``DegradationResponse``,
+    answered here with ``close_reopen_degrade_line`` and nothing armed; a served
+    but unparseable result is ``"unknown"`` — never inferred as not-found. ``"not_found"`` is handed to ``intent_service
     ._unverified_write_result`` via a locally-built ``GitHubIssueNotFound``
     — the EXACT formatter the write path's own #1858 not-found leg already
     uses, so the copy can never drift between the two paths that can
@@ -1360,7 +1361,10 @@ async def build_close_reopen_confirmation(
         intent.context[CONFIRM_REPOSITORY_CONTEXT_KEY] = _repo
 
         from services.mcp.consumer.github_adapter import (
+            CLOSE_VERB,
+            REOPEN_VERB,
             GitHubMCPSpatialAdapter,
+            close_reopen_degrade_line,
             github_app_write_refusal_line,
         )
 
@@ -1381,15 +1385,30 @@ async def build_close_reopen_confirmation(
                 }
             )
 
-        status, issue_details, _ = await GitHubMCPSpatialAdapter().probe_issue_connector(
+        status, issue_details, _probed = await GitHubMCPSpatialAdapter().probe_issue_connector(
             _gh_user_id, issue_number=issue_number, explicit_repo=_repo
         )
 
+        if status == "degraded":
+            # Issue 2437 (Arch, decisions.log 2026-11-25 08:54 and 09:04): the connector
+            # can't serve now, so a yes would be armed for a write it can't run. Say the
+            # degrade's line instead; nothing is armed and nothing is written. The line
+            # comes from the probe's own degrade (``_probed``), never re-derived here.
+            from services.intent_service.not_performed import NOT_PERFORMED_KEY, NotPerformed
+
+            _verb = CLOSE_VERB if action in _CLOSE_FAMILY else REOPEN_VERB
+            return CloseReopenGate(
+                passthrough_result={
+                    "message": close_reopen_degrade_line(_probed, _verb),
+                    "requires_clarification": False,
+                    "intent_data": {NOT_PERFORMED_KEY: NotPerformed.DEGRADED, "repository": _repo},
+                }
+            )
+
         if status == "unknown":
-            # No positive evidence either way (degraded binding, repo
-            # unresolved on the probe's own resolution, unreachable server,
-            # an unparseable response, ...) — honest fallback, never a
-            # block on the user and never a guessed claim.
+            # The connector served but gave no evidence either way (a degenerate or
+            # unparseable body). Honest fallback, never a block on the user and never a
+            # guessed claim: the write may still succeed.
             return _fallback()
 
         if status == "not_found":
