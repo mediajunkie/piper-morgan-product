@@ -618,7 +618,7 @@
           applyTokenFormState();  // #2376: with whatever oauth-status last said
         } catch (error) {
           console.error('Failed to load GitHub status:', error);
-          Toast.show('error', 'Error', 'Failed to load connection status');
+          Toast.show('error', 'Couldn\'t load', 'I couldn\'t load your connections. Try refreshing the page.');
         }
         // #1329: check the OAuth-connector binding LAST so it wins over a stale
         // native-PAT "Connection Issue" — the connector is the live read path post-cutover.
