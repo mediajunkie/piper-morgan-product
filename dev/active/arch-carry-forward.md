@@ -1,5 +1,5 @@
 ---
-last_updated: 2026-11-24 21:27 PST (STOP)
+last_updated: 2026-11-25 21:27 PST (STOP)
 currency_claim: rewritten at substantive-change boundaries, verified at every START
 max_age_days: 4
 ---
@@ -25,6 +25,12 @@ context-floor directive that duplicating it here is exactly the accretion to cut
 | GitHub criteria line | `gh issue list --repo mediajunkie/piper-morgan-product --label architecture --state open` — the third work-queue source (PM v1.33). Open each issue, don't write a row from the list. Report drained as "mail (N) + standing-items (N) + label:architecture (M)." |
 
 ## IN FLIGHT — current state only
+
+**11-25 state (STOP):** main 12/12 green; inbox empty; beta serves `cf3486389e` (2438). Model Opus 5.5 on Claude Code 2.1.332 (Pard's restart, logged 18:59, at xian's go). Every ruling is in decisions.log (11-25, 07:19 through 13:34).
+- **Landed and served today, conforming:** #2399 said-instead (B, one setter), #2433 admin-only pages, #2434 email length, #2437 degraded close/reopen (fourth probe status, lines by reason), 2438 one password rule set at sign-up, reset and change (served by Web 14:02; CXO passed the reset half).
+- **2438 open:** the wizard row waits on the fresh-account sitting; close is Lead's call. xian's choice between five rules and length-only goes via Exec 01M8A7NE11.
+- **Waiting on others (unchanged):** #2345 return half (xian's F.4); #2424 (router evidence); sprint 3 candidates (xian); #2423 (Step F); fresh-account rows 2411, 2417, 2401, 2402 (xian's mint via Exec); save-key and setup-calendar allows (xian's card); 2364 step 1 (xian's OpenAI run); the 2157 drill (xian). Standing: Bets 001-003 (PM), Q5 denominator (PM), Epic-6 GatherOutcome (PPM's order).
+- **Lesson (11-25):** my 12:51 out-of-scope list missed setup_alpha_passwords' typed path; grep every caller of the setter before listing what a rule doesn't touch.
 
 **11-24 state (STOP):** main 12/12 green; inbox empty; beta serves `23b1373185` (all of #2432). Model Opus 5.5. Every ruling is in decisions.log (11-24, 06:56 through 16:09).
 - **The user-facing error mechanism (built today, rulings 07:51 through 14:38):** the app masks every 5xx unless it is a `UserFacingHTTPException` (`services/api/errors.py`; aliased imports are refused). An ast guard checks every marked detail: a literal, an UPPER name, `UPPER.format(name=int(expr))`, or a listed `DETAIL_PICKERS` call whose returns are all UPPER or None. Unmarked 4xx show a fixed line per status, and 422 shows a fixed line. **General rule (14:38): a rule a person can break never lives in a request model; it is a marked 400 in the route, before any write.**
