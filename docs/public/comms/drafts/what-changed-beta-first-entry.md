@@ -11,7 +11,7 @@ scaffold-by: Comms, 2026-11-26
 
 **Recommendation (Comms and CXO, agreed 2026-11-26; xian can overrule here):** one entry for 10-31 to 11-25, grouped as below, with the couldn't-check group first. After it, one dated entry per promotion that changes something a user sees, newest on top. One page, linked from Account Settings (that link is the acceptance row), with the same page on the site. Publishes at the public beta (F12 as xian approved it 10-24, Exec 01M8C4A3V2).
 
-**What this is.** Facts for the first entry of a user-findable release note (issue 2439, from F12 in the 10-23 Production map review; gate: public beta). It isn't prose. xian picks the lines and words them; Comms fact-checks the result. Where it lives and how users reach it are Web's and CXO's call.
+**What this is.** Facts for the first entry of a user-findable release note (issue 2439, from F12 in the 10-23 Production map review; publishes at the public beta, not a PDR-009 gate row, PPM 11-26). It isn't prose. xian picks the lines and words them; Comms fact-checks the result. Where it lives and how users reach it are Web's and CXO's call.
 
 **Reader.** A beta user who last used Piper a few weeks ago. What would they notice?
 
