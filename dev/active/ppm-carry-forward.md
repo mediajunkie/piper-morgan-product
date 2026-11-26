@@ -1051,3 +1051,4 @@ Brake FIRED (second slip = #1965 admission, found and ledgered 10-09). Memo to E
 - **v3 inbox:** only the Ship 070 kickoff (handled 11-20 05:16) and MANIFEST.
 - **Rules carried:** unchanged from the superseded block above.
 
+- **Production 330** (11-26 `06:37` START): #2439 (user 'what changed' note, F12) placed in Dist; not a PDR-009 row (plan, not gate); Exec told 01M8C4KBPJ, gate row is xian's if wanted. Map v210. Roadmap v19.3 (Current Position) re-folded at the 11-26 mail wake on Docs' audit #2422. Sprint 3 sits on xian's card (Exec); Thanksgiving, no new asks.
