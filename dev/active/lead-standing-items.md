@@ -16,22 +16,24 @@ The 08-31 version had gone stale again: on 11-24 an audit found twelve issues it
 - **2390:** on main (`e43ebe55ab`). Open rows: the served read by a seat account (waits on an allow, which HOST says to add only when a seat has a reason). — **Filed**: 2026-11-24
 - **2391:** rows 1 and 2 ticked (Arch's option A: no second counter). Row 3 ticks now that 2390 is on main; row 4 (amended) waits on the counter-read allow. — **Filed**: 2026-11-24
 - **2282 box 4:** `seat_read.py --redirect-uri setup-calendar` is on main (`320f6c42d4`). Next: CIO writes the allow line, xian adds it on an open card, Web runs it once. `beta.` → xian's removal line; `alpha.` → a host-secret fix first. — **Filed**: 2026-11-24
-- **2384:** job on main (`8ac5c8e267`); Step H READY (CIO). Waits on xian's token (card row 7: environment `mcp` limited to main, token as an environment secret), HOST's names-only read, then **my first dispatch deploys 2382** and PA reads its row 4 that hour. — **Filed**: 2026-11-24
-- **2244:** on beta `cd26a9b2e4` since 11-26 11:48; `check-system` on beta answers `chromadb_ready: true`. Rows 1 and 3 ticked. Row 2 (an ingest survives a deploy) needs the operator CLI on the host (xian's hand) and Step E. Follow-ups: issue 2441 (uploads symlink guard; xian's yes-or-leave via Exec), issue 2440 (Arch's). — **Filed**: 2026-11-24
+- **2384:** Step H done 11-26 (token on environment `mcp`, main only; names read by Exec and by me). **My first `deploy_mcp` dispatch is ready and not sent:** waits on Exec's line that xian has not started Step G (a), HOST's word on the names read, Tests green on main's newest code commit. Then the result line to HOST and PA; PA reads 2382's row 4. — **Filed**: 2026-11-24
+- **2244:** on beta `cd26a9b2e4` since 11-26 11:48; `check-system` on beta answers `chromadb_ready: true`. Rows 1 and 3 ticked. Row 2 (an ingest survives a deploy) needs the operator CLI on the host (xian's hand) and Step E. Follow-ups: issue 2441 (xian's yes 11-26; built on `lead/2441-uploads-guard` `0876684f0b`; waits on Arch's and HOST's reads and its full suite; then the next promotion), issue 2440 (Arch's). — **Filed**: 2026-11-24
 - **2424:** built (`lead/2424-list-project-arg-r1123`, `ce244d7fca`), held on Arch's trigger (a main-arm router sample or served log line with `list_todos_query` and a `project` arg). Fresh rebase and full suite at landing. — **Filed**: 2026-11-23
 - **2425, 2426:** PPM's sprint 3 slot and Arch's choice of lever. — **Filed**: 2026-11-23
 - **2281:** owner Web, trigger Step F (PPM, 11-24). Nothing of mine. — **Filed**: 2026-11-24
 - **2356 exclusion test (my half of 2354's served checks):** not on main; no order found. Raise with PPM in the sprint 3 draft. — **Filed**: 2026-11-24
 - **2361, 2355 (my Tier 1 parts), 2219's stopgap removal, ADR-082 residual:** PPM's order or their named triggers. — **Filed**: 2026-11-13
 
-- **seat-github-1's row in `seat_session.py`:** built on `lead/seat-github-1-row` (`88d651b235`), waiting on HOST's and Arch's reads (01M8CQ7GZK) and the full suite running on `lead/seat-row-and-tail` (which also carries the approved `aA1!` tail removal). Then land both; CIO's run as seat-github-1 is the first real pass. Blocks Web's rows for 2399 and 2342. The connector allowance comes out with Step G's Ending. — **Filed**: 2026-11-26
+- **seat-github-1's row in `seat_session.py`:** landed `ff17237182`, first real pass by CIO 11-26 12:27. The connector allowance (one OAuth connection) comes out with Step G's Ending: a diff for HOST then. Asked of Web (01M8CRNG1H): 2399's not-found and already-open reads as seat-github-1. — **Filed**: 2026-11-26
 - **Issue 2445 (`mcp_allow.py --username`):** filed 11-26 on Arch's word; build after Step G part 1, HOST reads the diff. — **Filed**: 2026-11-26
 
 - **`seat_account_create.py` writes an `email:` line in the credential file** (HOST's custody ask, 01M8CPF7P2, 11-26; not blocking): for accounts created after it, so nobody reads near a password to find an address. Goes with issue 2445's build; HOST reads the diff. — **Filed**: 2026-11-26
 
+- **Issue 2446 (close and reopen ask for the repository before saying GitHub isn't connected):** Arch's mechanism is on the issue (the one resolver at the gate's top; a degrade arms nothing; one constant per verb). Build when PPM places it; Arch reads the diff. — **Filed**: 2026-11-26
+
 ## Waiting on xian (through Exec; each is on a card or Exec's held list)
 
-- **seat-tester-1:** created and key saved 11-26 (`key saved; key on file: yes; validated: yes`; key-prefix change `bf0603a7c7`). Web runs CXO's six turns (2406) and 2417's never-connected line; CXO judges; I close or tick what they earn. 2411's last row rides the same sitting. — **Filed**: 2026-11-22
+- **seat-tester-1:** created, key saved, six turns served and passed 11-26 (2406: PPM's tick). Asked of Web (01M8CRZBCM): 2417's `update_issue` never-connected reply and 2411's `create_issue` row, two more turns. 2411's status half needs a project with todos (PPM's and CXO's call: split or a second fresh account). — **Filed**: 2026-11-22
 - **Step E (OpenAI key):** unblocks 2412, 2297's list-name row, 2364 step 1's merge. — **Filed**: 2026-11-15
 - **Step F (seat-github-1 connected through sign-in):** unblocks 2423, 2379's served rows, 2266's last box, 2401, 2402, 2281. HOST's sitting. — **Filed**: 2026-11-16
 - **2157 restore drill:** xian's sitting with HOST; then 2158 for proof 3. 2158's first step (does the Fly org have object storage) has had no answer since 11-12; raise through Exec when 2158 is slotted. — **Filed**: 2026-11-04

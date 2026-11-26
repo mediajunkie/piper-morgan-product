@@ -2193,7 +2193,7 @@ issue	state	milestone	sprint	title	labels	blocked_by	state_reason
 2403	CLOSED	Production		Two service modules load .env at import, so every test run's environment depends on a git-ignored file	architecture		COMPLETED
 2404	CLOSED	Production		Seat driver for the self-host guide's keyed steps (6, 7, 9 and the chat check), ADR-084 D2			COMPLETED
 2405	CLOSED	Production		Self-host: the key stored at guide step 5 never becomes the account's key, so the guide's chat check answers user_key_required	bug		COMPLETED
-2406	OPEN	Production		PIPER.md bullets that overlap the 2354 conduct rules: replace them, as a router-prompt change under rule 7 (paid, after Step A)			
+2406	CLOSED	Production		PIPER.md bullets that overlap the 2354 conduct rules: replace them, as a router-prompt change under rule 7 (paid, after Step A)			COMPLETED
 2407	CLOSED	Production		degrade_nudge names GitHub on paths that pass no connector			COMPLETED
 2408	CLOSED	Production		Boundary detector discards a usable reply on a schema validation failure (probe p-3: 4 of 10 live calls); the turn then passes	bug		COMPLETED
 2409	OPEN	Production		Boundary probe ic-2 (aggressive competitive message): detector says none every run; likely a mislabelled probe	UX		
@@ -2232,3 +2232,4 @@ issue	state	milestone	sprint	title	labels	blocked_by	state_reason
 2444	OPEN	Production		A document summary reads only the first 3,000 characters and doesn't say so	UX		
 2445	OPEN	Production		mcp_allow.py: accept --username, so nobody reads a credential file to name an account			
 2446	OPEN	Production		Close/reopen on a never-connected account asks which repository before saying GitHub isn't connected	UX		
+2447	OPEN	Production		Guidance replies claim first-hand experience ('patterns I've seen'); the attention reply doesn't say an account has no projects			

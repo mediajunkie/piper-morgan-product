@@ -273,21 +273,26 @@ def test_write_invite_refuses_a_name_off_the_list(shared):
 
 
 def test_every_generated_password_passes_the_hosts_password_rule():
-    """Account creation applies ``PasswordValidator``. ``token_urlsafe`` alone never
-    holds a listed special character, so the host would refuse the sign-up."""
+    """Account creation applies ``PasswordValidator`` (length only since 2026-11-26)."""
     from services.auth.password_validator import PasswordValidator
 
     for _ in range(500):
         assert PasswordValidator.failed_rule(create.new_password()) is None
 
 
-def test_the_tail_adds_no_secret_and_the_random_part_keeps_its_length():
+def test_the_password_is_the_random_part_alone():
+    """Arch's condition 6 (01M8CE2GFC): the ``aA1!`` tail existed only for the composition
+    rules. 43 characters, inside both of the rule's bounds."""
     import secrets as real_secrets
 
+    from services.auth.password_validator import PasswordValidator
+
     password = create.new_password()
-    tail = create.PASSWORD_RULE_TAIL
-    assert password.endswith(tail)
-    assert len(password) - len(tail) == len(real_secrets.token_urlsafe(create.PASSWORD_BYTES))
+    assert not hasattr(create, "PASSWORD_RULE_TAIL")
+    assert len(password) == len(real_secrets.token_urlsafe(create.PASSWORD_BYTES)) == 43
+    assert not password.endswith("aA1!")
+    assert PasswordValidator.MIN_LENGTH <= len(password)
+    assert len(password.encode("utf-8")) <= PasswordValidator.MAX_PASSWORD_BYTES
 
 
 def test_the_run_uses_the_rule_meeting_password_and_nothing_else_draws_one():
