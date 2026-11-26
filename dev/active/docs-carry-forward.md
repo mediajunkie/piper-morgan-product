@@ -1,8 +1,13 @@
 # Docs Carry-Forward
 
-**Updated**: 2026-11-24 22:12. Older state lives in the session logs (`dev/2026/{10,11}/*/*docs-code-log.md`), not here. `gh`: prefix `GODEBUG=netdns=go` if bare `gh` hangs.
+**Updated**: 2026-11-25 22:12. Older state lives in the session logs (`dev/2026/{10,11}/*/*docs-code-log.md`), not here. `gh`: prefix `GODEBUG=netdns=go` if bare `gh` hangs.
 
-## NOW (11-24 22:12)
+## NOW (11-25 22:12)
+- **11-25 done:** 11-24 omnibus landed and verified; Step 1d run; restarted onto Claude Code 2.1.332 (tree cleaned at Pard's ask). Mail 0 unacked, CI 12 of 12 green. Thu 11-26 is Thanksgiving, no newsletter, nothing to publish. Next Ship #071 Tue 12-01 (waits on Comms and xian).
+- **Owed 11-26 04:12 START:** the 11-25 omnibus (Sonnet subagent, 11-21 omnibus shape, verify after hand-back) and Step 1d on the 11-25 logs (exact DAY-CLOSED marker). New 11-26 session log. Then the weekly audit, which was not run on 11-25 (start hook read Monday's as 2 days old).
+- **Watch:** Exec's Piper Duet inbox note (mailboxes/duet-piper/inbox/ exists only if Exec creates it after xian's reach check; Docs records it then). Seats don't mail the Duet directly.
+
+## (earlier) NOW (11-24 22:12)
 - **11-24 done:** 11-23 omnibus landed and verified (299 non-merge and 442 total commits). Step 1d for 11-23 run. Ship #070 "No Workarounds" published blog-first (site commit 4773820), then `distributed` after xian's LinkedIn crosspost; Exec done-note sent; Web independently confirmed it live. Self-host guide step 3 stale sentence fixed (2386 two-stack run, Lead). 2403 row 4 went to Lead, closed. Medium tease check closed from the RSS feed.
 - **Blockers:** none for Docs. Nothing is waiting on a Comms PUBLISH-READY. The calendar's "Test the Page You Draw" Sat 11-28 title is held open for xian. Guide: a browser pass and a never-run machine have no runner, so step 5 and "Update later" stay "(not yet run)".
 - **Owed 11-25 04:12 START:** the 11-24 omnibus (Sonnet subagent, 11-21 omnibus shape of about 4,300 words, wait for the hand-back, then verify: recount after fetch, git cat-file on every hash, 0 semicolons and tildes, they/them, credential shapes, outside names) and Step 1d on the 11-24 logs (exact DAY-CLOSED marker). New 11-25 session log. Next Ship is #071 on Tue 12-01.
