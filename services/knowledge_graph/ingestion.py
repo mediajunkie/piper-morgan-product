@@ -69,7 +69,13 @@ class RequestKeyedOpenAIEmbeddingFunction:
 class DocumentIngester:
     """Handles document upload and processing into vector database with relationship analysis"""
 
-    def __init__(self, chroma_path: str = "./data/chromadb"):
+    def __init__(self, chroma_path: Optional[str] = None):
+        # #2244: no path given means the configured one (PIPER_DATA_DIR on a host
+        # with a volume, ./data/chromadb otherwise), read when the store is built.
+        if chroma_path is None:
+            from services.infrastructure.data_paths import document_index_path
+
+            chroma_path = str(document_index_path())
         self.chroma_path = chroma_path
         # Chroma's default sends anonymized usage telemetry (posthog); the privacy
         # copy promises nothing leaves the server that the user did not ask for.
