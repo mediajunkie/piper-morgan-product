@@ -35,7 +35,10 @@ mid-sitting usually doesn't. They take the closest match. So the check has to ha
    credential file. That file holds `username:` and `password:` only. He took the closest line and
    typed the password into a `--user-email` argument. The script refused it, but the value reached a
    chat transcript, his shell history and a short-lived process argv on the beta machine. Remedy:
-   rotation, HOST's call.
+   rotation, HOST's call. Structural fix, Arch 01M8CPER7T (Lead's to build after Step G): give
+   `mcp_allow.py` a `--username` option, so the step names the `username:` line the file actually has
+   and nobody looks up a value sitting next to a password. That is the mechanism form of this rule:
+   make the tool take what the artifact holds, not ask the person to translate.
 3. **A page the host doesn't serve (Exec's first remedy).** The rotation advice said to change the
    password "on beta's account page". `templates/account.html` reads "Change password functionality
    coming soon". Exec corrected it within a minute, before anyone acted on it.
