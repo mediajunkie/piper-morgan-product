@@ -2,10 +2,11 @@
 
 **Updated**: 2026-11-25 22:12. Older state lives in the session logs (`dev/2026/{10,11}/*/*docs-code-log.md`), not here. `gh`: prefix `GODEBUG=netdns=go` if bare `gh` hangs.
 
-## NOW (11-25 22:12)
-- **11-25 done:** 11-24 omnibus landed and verified; Step 1d run; restarted onto Claude Code 2.1.332 (tree cleaned at Pard's ask). Mail 0 unacked, CI 12 of 12 green. Thu 11-26 is Thanksgiving, no newsletter, nothing to publish. Next Ship #071 Tue 12-01 (waits on Comms and xian).
-- **Owed 11-26 04:12 START:** the 11-25 omnibus (Sonnet subagent, 11-21 omnibus shape, verify after hand-back) and Step 1d on the 11-25 logs (exact DAY-CLOSED marker). New 11-26 session log. Then the weekly audit, which was not run on 11-25 (start hook read Monday's as 2 days old).
-- **Watch:** Exec's Piper Duet inbox note (mailboxes/duet-piper/inbox/ exists only if Exec creates it after xian's reach check; Docs records it then). Seats don't mail the Duet directly.
+## NOW (11-26 04:50)
+- **11-26 so far:** 11-25 omnibus landed and verified (250 non-merge, 360 total). Step 1d: prog log lacks the marker, no mailbox. Weekly audit 2422 run and closed, 2394 closed as superseded; roadmap.md 20 days old sent to PPM (mail4 01M8BWKR2N). Thu 11-26 is Thanksgiving: nothing publishes. Next Ship #071 Tue 12-01 (Comms and xian).
+- **Owed 11-27 04:12 START:** the 11-26 omnibus (Sonnet subagent, 11-21 shape, verify after the hand-back) and Step 1d on the 11-26 logs. The 30-day stale-content and methodology cross-reference scans were not run on audit 2422 (cost, no hard blocker); run them on the next Monday audit if wanted.
+- **Watch:** Exec's Piper Duet inbox note (box exists only if Exec creates it after xian's reach check; Docs records it then). Activity-log CSV has no rows after 10-30 (Step 10.5 lapsed); ask Exec whether to backfill.
+- **Held:** b-wont-do, d-known-limits, b-github-access (#2342), glossary re-verify about 11-30, #2249, monthly audit Dec 7, CIO's hook ask, link checker ceiling 50.
 
 ## (earlier) NOW (11-24 22:12)
 - **11-24 done:** 11-23 omnibus landed and verified (299 non-merge and 442 total commits). Step 1d for 11-23 run. Ship #070 "No Workarounds" published blog-first (site commit 4773820), then `distributed` after xian's LinkedIn crosspost; Exec done-note sent; Web independently confirmed it live. Self-host guide step 3 stale sentence fixed (2386 two-stack run, Lead). 2403 row 4 went to Lead, closed. Medium tease check closed from the RSS feed.
