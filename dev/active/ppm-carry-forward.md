@@ -25,7 +25,7 @@ warning (live bug 2026-09-22 to 2026-09-23 13:22, since fixed and re-verified cl
 each issue before placing. State the denominator when reporting.
 
 
-**Last rewritten**: 2026-11-22 21:34 PT (21:33 STOP; the current block is at the bottom, "Now").
+**Last rewritten**: 2026-11-25 21:34 PT (21:33 STOP; the current block is at the bottom, "Now").
 
 **Mechanism state**: LaunchAgent cadence (`:33` past 6,9,12,15,18,21), `CronList` "No scheduled jobs" is normal, no cron ritual. `sprint-truth.py` reads `dev/state/sprint-truth-MVP.ppm.json`. No pytest/venv on this seat: handler tests are "unverified, not run".
 
@@ -1008,7 +1008,7 @@ Brake FIRED (second slip = #1965 admission, found and ledgered 10-09). Memo to E
 - **Production 327**: #2432 closed by Lead (23:47Z). #2433 goes in the sprint 3 draft as a low-priority candidate. Map v203.
 - **Production 328**: #2434 placed in H (the pages' 'Failed to…' toasts). #2433 and #2434 are sprint 3 draft candidates (low priority). Map v204.
 
-## Now (rewritten at the 11-24 21:33 STOP; carry into Wed 11-25)
+## Superseded (was Now from the 11-24 21:33 STOP, with 11-25 updates; replaced at the 11-25 21:33 STOP)
 
 - **11-24 in one line:** #2400 closed on Arch's read (D2 plan rule, decisions.log 11-24 06:56). Lead's standing-list audit closed about ten on Arch and CXO rulings. Honesty chain: #2428 and #2432 closed; #2429, #2430, #2431 landed and still open; #2433 and #2434 filed. 2345 (connect state in Redis) is on beta. Production 334 → 328 (net of closes and placements), map v195 → v204. Main CI 12 of 12 green and 0 unmilestoned at the STOP.
 - **Beta serves `23b1373185`** since `15:12` 11-24 (all of #2432; 2345 since `10:24` on `009afa0f7f`). No served connect recorded yet: the 2345 return half (the first GETDEL on beta's Upstash) is xian's F.4 connect; if it fails, Lead rolls back first.
@@ -1038,3 +1038,16 @@ Brake FIRED (second slip = #1965 admission, found and ledgered 10-09). Memo to E
 - Production 328 (11-25 12:33 WATCH): #2437 closed by Lead on CXO's served pass; H 50; map v208.
 - 2438 (11-25 13:02): Production H, Production 329. Arch: five rules in one place, unless xian loosens them. CXO: one fixed line. Exec holds the seat-tester-1 sitting until 2438's creation check is served on beta (01M8A7V37S). Lead tells Exec when it's promoted.
 - Beta `cf3486389e` (11-25 13:50; 2438 promoted). Exec told the seat-tester-1 hold can lift.
+
+## Now (rewritten at the 11-25 21:33 STOP; carry into Thu 11-26, sprint 2's last day)
+
+- **11-25 in one line:** sprint 3 draft sent to Exec (01M89J4NND, decision request for xian). Closed: #2433, #2434, #2437. 2399, 2356's test and 2438 landed. Production 328 → 329 (net), map v204 → v208. Restart onto Claude Code 2.1.332 at 19:05; model unchanged.
+- **Beta serves `cf3486389e`** since `13:50` 11-25 (2438, the one password rule set). Re-read 21:33: healthy.
+- **Invite hold, PDR-008:** #2261, #2282, #2342 OPEN (`gh` 21:33). The lift memo to Exec waits on all three. 2282 box 4: Web's `/setup` read.
+- **2438 stays OPEN on the wizard row** (PPM ruling 13:52, reply 01M8ABRRPG): read at the seat-tester-1 sitting. Exec's hold on that sitting can lift (Lead 01M8AB1QAT); the sitting itself needs xian's go-ahead via Exec.
+- **Sprint 2 closes Thu 11-26** as planned (xian 11-20). #071 reports the score as it stands. At the 11-26 close: revise the sprint 3 draft (`docs/internal/planning/production-sprint-3-draft-2026-11-25.md`) for any row sprint 2's last day changes; then await xian's answer via Exec on 01M89J4NND. Dates are xian's.
+- **Open, with blocker:** fresh-account rows (#2417, 2411, 2406, #2401, #2402) and 2438's wizard row: xian's go-ahead via Exec. #2423, 2281, 2345's return half: Step F (F.4). 2297: #2412 behind #2364 step 1. #2424: router evidence. #2425, #2426, 2244: a sprint 3 slot. #2388 rows 4 and 5: xian's card, Step H. #2429 to #2431: Lead builds. 2356: #2355's build step. 2399's last row: the F.4 sitting.
+- **OWED rows:** sprint-3-plan (revise at the 11-26 close, then xian via Exec); others unchanged from the superseded block above.
+- **v3 inbox:** only the Ship 070 kickoff (handled 11-20 05:16) and MANIFEST.
+- **Rules carried:** unchanged from the superseded block above.
+
