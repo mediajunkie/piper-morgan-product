@@ -1,0 +1,28 @@
+{"os_backend": "not consulted", "fallback_error": "EncryptedDBCredentialStore requires ENCRYPTION_MASTER_KEY \u2014 refusing to store credentials without encryption (#1382).", "effect": "credential writes will raise; reads return None", "fix": "Set ENCRYPTION_MASTER_KEY to use the encrypted database store (a local install: python scripts/local_key_setup.py creates it), or opt in to the OS keychain with PIPER_CREDENTIAL_STORE=keychain.", "event": "keychain_no_secure_store", "logger": "services.infrastructure.keychain_service", "level": "error", "timestamp": "2026-11-26T23:47:47.985500Z"}
+semantic_detector_llm_failure
+semantic_detector_llm_failure
+semantic_detector_llm_failure
+semantic_detector_llm_failure
+semantic_detector_llm_failure
+semantic_detector_llm_failure
+semantic_detector_llm_failure
+semantic_detector_llm_failure
+semantic_detector_llm_failure
+semantic_detector_llm_failure
+semantic_detector_llm_failure
+semantic_detector_llm_failure
+semantic_detector_llm_failure
+semantic_detector_llm_failure
+semantic_detector_llm_failure
+semantic_detector_llm_failure
+semantic_detector_llm_failure
+semantic_detector_llm_failure
+semantic_detector_llm_failure
+semantic_detector_llm_failure
+semantic_detector_llm_failure
+semantic_detector_llm_failure
+semantic_detector_llm_failure
+semantic_detector_llm_failure
+semantic_detector_llm_failure
+semantic_detector_llm_failure
+dev_key_binding: the run was stopped at its $0.45 cap: 26 calls were refused and not sent. The run is incomplete; do not count its rows.
