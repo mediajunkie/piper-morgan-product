@@ -1,5 +1,10 @@
 # Lead carry-forward — Fable 5.2 seat again since 2026-11-20 08:56 (Opus 5.5 from 2026-11-17 21:30 until then); Model A worktree ~/Development/piper-morgan-worktrees/lead
 
+## START 2026-11-26 06:47 (re-verified; the DAY-END 11-25 block below still holds)
+
+- Checked this morning: beta `cf3486389e` healthy and quiet; main CI 12 of 12 green; no code on main since the 11-25 STOP; inbox 0; decisions.log has nothing after 11-25 13:34; PPM's sprint 3 draft is still a draft for xian; all 26 issues named in the waits are open and unchanged.
+- New overnight, not Lead's: issue 2439 (user-findable release note; Comms and Web).
+
 ## DAY-END 2026-11-25 21:47 (read this first; the blocks below are earlier states)
 
 - **Beta serves `cf3486389e`** (promoted 13:47, the third promotion of the day; all three went on the first dispatch). Healthy and quiet at 21:46. Main CI 12 of 12 green. No code has landed since, so nothing waits to be promoted.
