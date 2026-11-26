@@ -20,7 +20,12 @@
 set -e
 
 if [ "$(id -u)" = "0" ]; then
-    if [ -n "${UPLOAD_DIR:-}" ]; then
+    # #2441: never through a symlink, the same guard as the data root below. A
+    # linked UPLOAD_DIR is left alone and the boot probe (UploadStorageProbePhase)
+    # reports whether the app can write it. Measured 2026-11-26 in this image's
+    # base (GNU chown 9.1): the recursive chown below does not change the target
+    # of a link, inside the folder or at its top, so this is defence in depth.
+    if [ -n "${UPLOAD_DIR:-}" ] && [ ! -L "$UPLOAD_DIR" ]; then
         mkdir -p "$UPLOAD_DIR"
         # -R: also repairs anything root left behind inside the dir (e.g. the
         # #1401 probe file written via fly ssh). The dir is small by design.
