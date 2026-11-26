@@ -1,9 +1,12 @@
-# Production sprint 3: draft named set
+# Production sprint 3 (Fri 11-27 to Thu 12-10): the named set
 
-**Status: focus and item 9 RATIFIED by xian 11-26 09:18 PT (Exec relay 01M8CDTEVT); dates still open** (Exec has put Fri 11-27 to Thu 12-10 to him under his 11-06 two-week ruling; his word follows in a separate relay). PPM proposes the set and the blockers, not dates.
-**Author:** PPM, 2026-11-25 START, on the sprint 2 score as it stands. Revised at the 11-26 close if sprint 2's last day changes a row.
+**Status: RATIFIED by xian, Thu 11-26.** At 09:18 PT he ratified the focus ("I agree with PPM") and 2244 ("yes the vector-store may ship"), relayed in Exec 01M8CDTEVT. At 09:22 PT he ratified the dates ("yes those dates are right and we can assume the schedule is rigid until I say otherwise"), relayed in Exec 01M8CE2RBY. Both are in decisions.log. The Sprint field isn't touched; as in sprint 2, the set lives here and on the map. The filename keeps its draft-date name so the links in mail still resolve.
+**Schedule rule (xian, 11-26 09:22):** sprints are a rigid two weeks, Friday to Thursday. They don't shift for holidays or slips, and their dates aren't asked of him again, until he says otherwise. Sprint 4 therefore runs Fri 12-11 to Thu 12-24.
+**Ships:** #072 (11-27 to 12-03) reports progress, and #073 (12-04 to 12-10) reports the final score. #071 reports sprint 2's score as it stands on 11-26.
+**The close doesn't move** (sprint 2's rule, carried): an item not done by 12-10 isn't stretched in. It goes to the retro and to sprint 4's plan as information.
+**Author:** PPM. Drafted at the 11-25 START, and set up at 09:23 PT on 11-26 after ratification.
 **Rule carried from sprint 2 (xian, 11-06):** no more than one named item behind any single unanswered design question or decision.
-**State column:** `gh issue view` box counts read at the 11-25 START, written `06:35` (open boxes / done boxes).
+**State column:** `gh issue view` box counts (open boxes / done boxes). They were read at the 11-25 START and re-read at 09:23 PT on 11-26; only item 7 had changed. PPM re-checks the column in one line at the 11-27 START, sprint 3's first day.
 
 ## What sprint 2 leaves
 
@@ -27,7 +30,7 @@
 | 4 | Fresh-account rows: #2417, 2411, 2406, #2401, #2402, and Paths A and B served | PA, Web, CXO | xian's go-ahead to mint `seat-tester-1`, via Exec (one decision, so one named item). ~~Then, held by Exec 11-25 (01M8A7V37S): the sitting waits until 2438's creation check is served on beta, unless xian picks length-only~~ xian picked length-only 11-26 (Exec 01M8CDTHCC), which by Exec's 11-25 condition lifts that wait. PPM's note to Exec: beta `cf3486389e` still enforces the five rules at creation, so the sitting should run on a beta carrying the length-only build | 1, 1, 2, 5, 3 open |
 | 5 | #2425 + #2424: "add a task to my/the X project" reaches create_todo with the project arg; the list read honours it | Lead | Arch's choice of lever (rule 7; the description lever is advised against) | 2 / 0, 5 / 0 |
 | 6 | #2426: "show me the todos in the Launch project" stops asking which project | Lead, CXO | rides on item 5's lever (read-side twin; same ruling) | 4 / 0 |
-| 7 | 2399: said-instead replies on the write rail stop reporting success | CXO, Web | the already-closed and not-found lines need a working GitHub connection: read in xian's F.4 sitting (Lead's proposal to CXO, 01M89SNRXV) | 7 / 0; on beta `aaf8d9249e`; vague-write line served 11-25 (Web 01M89SJ9ZD) |
+| 7 | 2399: said-instead replies on the write rail stop reporting success | CXO, Web | the already-closed and not-found lines need a working GitHub connection: read in xian's F.4 sitting (Lead's proposal to CXO, 01M89SNRXV) | 1 / 6 (11-26 09:23); on beta `aaf8d9249e`; vague-write line served 11-25 (Web 01M89SJ9ZD) |
 | 8 | 2356: self-knowledge part 4, the served question set (CXO's set, CIO's three, PPM's known-limits question) | CXO, Web | #2355's build step landing (no runtime index yet, so a served run would not test the exclusion; CXO 01M89KHPZ1); then a named build on a self-hosted install | no boxes; exclusion test landed 11-25 `16e47c26c2` (Lead 01M89K6EAP) |
 | 9 | 2244: the document vector store moves onto the `/data` volume | Lead, HOST | ~~xian's yes via Exec~~ given 11-26 09:18 PT ("yes the vector-store may ship"; Exec 01M8CDTEVT). Lead clear to build, under the standing grant, on Arch's validation (plain `chown`, not `-R`) and HOST's read. Served row waits on Step E | 3 / 0 |
 
@@ -58,7 +61,7 @@ These are rulings, not builds. Each names its follow-on build for sprint 4.
 
 - #2435 (Slack silent on not-performed replies), #2436 (builders set their own not-performed kind; Arch: later, one unit) and ~~#2437~~ (close/reopen on a stale connection asks yes/no; closed 11-25 on CXO's served pass, on beta `92836ae41d`): filed 11-25 from 2399's work, placed in H. The two open ones wait on an Arch mechanism or CXO's words; xian can pull any of them in at ratification.
 
-- #2438 (password rules differ between creation and reset; the reset page states only the length): filed 11-25 by Lead, placed in H. Both answers came the same day: Arch ruled the five-rule set (unless xian loosens it, via Exec), and CXO gave one fixed refusal line. Built and on beta `cf3486389e` 11-25; reset half passed (CXO). **11-26: xian chose length-only** (Exec 01M8CDTHCC): Arch re-rules for sign-up, reset and change, CXO sets the new refusal line, Lead rebuilds; PPM rewrote the acceptance rows the same hour. It is a rebuild of a row already outside the set, so it stays in H and out of the named set; its wizard row is still read at item 4's sitting.
+- #2438 (password rules differ between creation and reset; the reset page states only the length): filed 11-25 by Lead, placed in H. Both answers came the same day: Arch ruled the five-rule set (unless xian loosens it, via Exec), and CXO gave one fixed refusal line. Built and on beta `cf3486389e` 11-25; reset half passed (CXO). **11-26: xian chose length-only** (Exec 01M8CDTHCC): Arch re-rules for sign-up, reset and change, CXO sets the new refusal line, Lead rebuilds; Arch re-ruled at 09:22 (length-only, a 72-byte maximum, and build conditions; MIN_LENGTH is 8 for now, and "8 or 15" is on xian's card through Exec). PPM rewrote the acceptance rows the same hour. It is a rebuild of an item already outside the set, so it stays in H and out of the named set. Its wizard row is still read at item 4's sitting.
 
 - 2297's last row: behind #2412, which waits on #2364 step 1 (xian's OpenAI run).
 - #2423: needs an App-connected account, so it follows Step F; it can join item 1's sitting if Lead has it ready.
