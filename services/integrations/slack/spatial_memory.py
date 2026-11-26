@@ -180,7 +180,13 @@ class SpatialMemoryStore:
     """
 
     def __init__(self, storage_path: Optional[str] = None):
-        self.storage_path = Path(storage_path or "data/spatial_memory")
+        if not storage_path:
+            # #2244: the configured path (under PIPER_DATA_DIR when set).
+            from services.infrastructure.data_paths import spatial_memory_path
+
+            self.storage_path = spatial_memory_path()
+        else:
+            self.storage_path = Path(storage_path)
         self.storage_path.mkdir(parents=True, exist_ok=True)
 
         # In-memory caches for performance

@@ -117,6 +117,28 @@ class UploadStorageProbePhase:
             logger.error("upload_dir_not_writable", detail=message)
 
 
+class DocumentIndexProbePhase:
+    """#2244: verify the RUNNING PROCESS can write the document index, at boot.
+
+    The index moved onto the mounted volume; a root-owned or missing folder
+    there would fail every ingest with nothing saying why. Same shape and same
+    two channels as the upload probe above. Non-fatal.
+    """
+
+    @staticmethod
+    async def startup(app) -> None:
+        from services.infrastructure.data_paths import check_document_index_writable
+
+        ok, message = check_document_index_writable()
+        app.state.document_index_writable = ok
+        if ok:
+            print(f"✅ Document index: {message}", flush=True)
+            logger.info("document_index_writable", detail=message)
+        else:
+            print(f"🔴 Document index: {message}", flush=True)
+            logger.error("document_index_not_writable", detail=message)
+
+
 class SchemaValidationPhase:
     """Issue #484: Schema validation at startup
 
@@ -765,6 +787,7 @@ class StartupManager:
             ServiceContainerPhase,
             ConfigValidationPhase,
             UploadStorageProbePhase,  # #1656: loud boot signal when UPLOAD_DIR is unwritable
+            DocumentIndexProbePhase,  # #2244: the same signal for the document index
             SchemaValidationPhase,  # Issue #484: Validate models match DB schema
             TokenBlacklistInitPhase,  # #1808: light the Redis cache (seeded, write-through)
             ServiceRetrievalPhase,

@@ -22,12 +22,13 @@ import chromadb
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
 from services.database.session_factory import AsyncSessionFactory  # noqa: E402
+from services.infrastructure.data_paths import document_index_path  # noqa: E402
 from services.repositories.document_repository import (  # noqa: E402
     DocumentRepository,
     resolve_pm_owner_id,
 )
 
-CHROMA_PATH = "./data/chromadb"
+CHROMA_PATH = str(document_index_path())  # #2244: the store the app uses
 COLLECTION = "pm_knowledge"
 
 

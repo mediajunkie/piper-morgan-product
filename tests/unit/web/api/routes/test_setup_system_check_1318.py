@@ -73,56 +73,27 @@ class TestCheckRedis:
 
 
 class TestCheckChromadb:
-    @pytest.mark.asyncio
-    async def test_uses_chromadb_host_env_var_when_set(self):
-        with patch("web.api.routes.setup.check_service_port", new_callable=AsyncMock) as mock_port:
-            mock_port.return_value = True
-            # #1452: the route honors the Fly spelling CHROMA_HOST FIRST —
-            # .env sets it locally (via conftest load_dotenv), shadowing the
-            # CHROMADB_* patch. Control both spellings.
-            import os as _os
+    """#2244: the three tests here pinned which server host and port the check
+    probed (CHROMADB_HOST, the docker service name, localhost). The app has no
+    Chroma server client, so the check now tests the in-process store's folder.
+    One test keeps the class's point: no environment spelling sends it to a port.
+    Full coverage: tests/unit/services/infrastructure/test_data_paths_2244.py."""
 
-            env_clean = {
-                k: v for k, v in _os.environ.items() if k not in ("CHROMA_HOST", "CHROMA_PORT")
+    @pytest.mark.asyncio
+    async def test_no_host_spelling_sends_the_check_to_a_port(self, tmp_path):
+        with patch("web.api.routes.setup.check_service_port", new_callable=AsyncMock) as mock_port:
+            mock_port.return_value = False
+            env = {
+                "CHROMADB_HOST": "my-chromadb",
+                "CHROMADB_PORT": "9000",
+                "CHROMA_HOST": "other",
+                "PIPER_DATA_DIR": str(tmp_path / "vol"),
             }
-            env_clean.update({"CHROMADB_HOST": "my-chromadb", "CHROMADB_PORT": "9000"})
-            with patch.dict("os.environ", env_clean, clear=True):
+            with patch.dict("os.environ", env):
                 from web.api.routes.setup import check_chromadb
 
-                await check_chromadb()
-            mock_port.assert_called_once_with("my-chromadb", 9000)
-
-    @pytest.mark.asyncio
-    async def test_defaults_to_chromadb_service_name_inside_docker(self):
-        with patch("web.api.routes.setup.check_service_port", new_callable=AsyncMock) as mock_port:
-            mock_port.return_value = True
-            with patch("web.api.routes.setup._IN_DOCKER", True):
-                env_without = {
-                    k: v
-                    for k, v in __import__("os").environ.items()
-                    if k not in ("CHROMADB_HOST", "CHROMADB_PORT", "CHROMA_HOST", "CHROMA_PORT")
-                }
-                with patch.dict("os.environ", env_without, clear=True):
-                    from web.api.routes.setup import check_chromadb
-
-                    await check_chromadb()
-            mock_port.assert_called_once_with("chromadb", 8000)
-
-    @pytest.mark.asyncio
-    async def test_defaults_to_localhost_outside_docker(self):
-        with patch("web.api.routes.setup.check_service_port", new_callable=AsyncMock) as mock_port:
-            mock_port.return_value = True
-            with patch("web.api.routes.setup._IN_DOCKER", False):
-                env_without = {
-                    k: v
-                    for k, v in __import__("os").environ.items()
-                    if k not in ("CHROMADB_HOST", "CHROMADB_PORT", "CHROMA_HOST", "CHROMA_PORT")
-                }
-                with patch.dict("os.environ", env_without, clear=True):
-                    from web.api.routes.setup import check_chromadb
-
-                    await check_chromadb()
-            mock_port.assert_called_once_with("localhost", 8000)
+                assert await check_chromadb() is True
+            mock_port.assert_not_called()
 
 
 class TestCheckTemporal:
