@@ -1,11 +1,15 @@
-# Piper Morgan Roadmap v19.2
+# Piper Morgan Roadmap v19.3
 
-**Date**: November 6, 2026 (v19.2: Current Position re-folded after the gate passed, the beta letters and the invite hold; v19.1 of October 26 is in git history at `2791603254`. v19.1: the Current Position re-fold after the Production map rulings, ESSENCE v1.1 and the ratified promise register; v19.0 of October 10 is archived whole at `../historical/roadmap-v19.0-2026-10-26.md`)
+**Date**: November 26, 2026 (v19.3: Current Position re-folded for the Production sprints, the invite hold under PDR-008 and the public-beta gate PDR-009; v19.2 of November 6 is in git history at `9e393a1bd5`. v19.2: Current Position re-folded after the gate passed, the beta letters and the invite hold; v19.1 of October 26 is in git history at `2791603254`. v19.1: the Current Position re-fold after the Production map rulings, ESSENCE v1.1 and the ratified promise register; v19.0 of October 10 is archived whole at `../historical/roadmap-v19.0-2026-10-26.md`)
 **Author**: PPM. Section owners as in v18: PA (BYOC / skunkworks), CIO (Methodology), CXO (Differentiator stack), Architect (architectural commitments), Lead Dev (build), Comms (external language).
 **Status**: Active. Canonical `roadmap.md`. **The v18.10 document is archived whole** at `../historical/roadmap-v18.10-2026-10-10.md` (v18.1 through v18.10 changelogs, the Beta Blockers / 22-issue narrative, the 07-16 Current Position). Nothing was deleted; sections below that predate this fold are kept in place under an explicit "historical" banner so a reader cannot mistake May or July state for current state.
 **Supersedes**: v19.0 (October 10, 2026); the v18 line (v18.0 through v18.10); v17.0 (May 30, 2026); v16.0 (May 10, 2026).
 
 **How to read this document.** The **gate, the dates and the audience model** are current as of 2026-10-26 and live in *Current Position*, *Sprint Summary* and *Timeline* below. They are **pointers to canonical sources**, not copies: the gate rules are `../beta-gate-standard.md`, the audience model is `../release-model.md`, live counts are `scripts/sprint-truth.py`, orientation is `docs/briefing/BRIEFING-CURRENT-STATE.md`. Where this document and one of those disagree, **that source wins**. Sections marked `[HISTORICAL]` are frozen at the date in their banner (May 30 or July 16) and are retained for provenance only.
+
+**v19.3 changelog** (November 26, 2026, PPM; Docs' weekly audit #2422 found this file 20 days untouched). Only *Current Position* is rewritten. Sources: decisions.log 11-09 08:53 (sprint 2 ratified), 11-12 17:32 (PDR-009 accepted) and 11-20 18:12 (sprints don't stretch); PDR-008; the sprint 2 proposal and sprint 3 draft; the plan's Total line; the map commit `408d4f979f` (v209). Nothing re-litigated.
+
+**Verified how (v19.3).** Ran, 11-26 04:20 PT: `curl https://beta.pipermorgan.ai/health` (healthy, `cf3486389e`); `gh issue list --milestone Production --state open` (329); `gh issue view` on #2261, #2282, #2342, #2438 (all OPEN). Layer: the tracker, the decision record and served health. Not re-audited: every section other than *Current Position*; the Sprint Summary and Timeline still read as of 10-10 and 10-26.
 
 **v19.2 changelog** (November 6, 2026, PPM; found stale while answering Agent 360 v0.6). Only *Current Position* is rewritten. Sources: the PPM logs of 10-30 to 11-05; `gh api .../milestones` (MVP closed); `git tag` (v0.9.0.0); `curl https://beta.pipermorgan.ai/health` at 05:15 PT; `gh issue list --milestone Production --state open` (252); the onboarding proposal's "xian's ruling, 11-04 19:31". Nothing re-litigated. Not re-audited: every section other than *Current Position*, including the Sprint Summary and Timeline, which still read as of 10-10 and 10-26.
 
@@ -64,39 +68,30 @@ Layer: the decision record, the tracker and served health. Not re-audited: any s
 - **Per-surface sufficient-signals as coordination primitive** — Phase 2.2 unblocked via two separate "Surface 2 unblocked" + "Surface 4 unblocked" PPM-to-Lead-Dev memos (May 18); composite signal declined; per-surface signals match Lead Dev's sub-phase model
 
 ---
-## Current Position (November 6, 2026)
+## Current Position (November 26, 2026)
 
-**The gate passed.** xian said Go at 17:03 PT on Fri 10-30, on build `ac5b69f865`. PPM closed #1386 and the MVP milestone (closed 2026-10-31 00:07 UTC, 0 open). The gate standard (`../beta-gate-standard.md`) is now a record. No slip rows were written: the hard stop held.
+**The private beta runs on one host, and no one new is invited yet.**
+- **Beta** (`beta.pipermorgan.ai`; alpha 301s to it since 11-05, #2282) served `cf3486389e` at 04:20 11-26 (`/health`, healthy). It carries #2438, one password rule set at sign-up, reset and change. Lead promotes under the standing grant; the tag is still v0.9.0.0.
+- **The invite hold** (PDR-008, `docs/internal/product/pdr/PDR-008-invite-readiness.md`): no invitations of any kind until its six conditions are met, then xian's word. **Met:** #1551, #2283, #2178, #2292. **Open:** #2261 (narrow GitHub's scope) through its D3 leg #2342 (connect through the published App), and #2282 (one canonical host). The open rows wait on Step F, a GitHub connect on a seat test account (`docs/internal/operations/adr-084-one-time-steps.md`), and on one served `/setup` read. PPM sends Exec the lift memo when all six are met.
 
-**The private beta.**
-- **Letters went out 10-31**, with 9 known-issues lines after xian's 10-30 tracking audit (28 product issues and 9 gaps filed that day).
-- **v0.9.0.0** is tagged at `c44dd081cb` (release page created by xian 11-01). Beta serves 0.9.0.0 builds; on 11-06 at 05:15 PT `/health` read `4e4c3fb1a8`.
-- **One host:** `beta.pipermorgan.ai` is canonical, and alpha 301s to it since 11-05 12:47 (#2282, xian's YES). Long term, xian ruled a hosting split (#2291, Ongoing).
-- **The GitHub OAuth app** moved to an organization on 11-04, so GitHub's page reads "Authorize pipermorgan".
+**Production runs in two-week sprints** (xian, 11-09; "sprints don't stretch", 11-20).
+- **Sprint 2, 11-13 to 11-26, closes today**: onboarding to first value, Paths A and B served on a fresh test account (`../production-sprint-2-onboarding-proposal-2026-11-06.md`). Score as it stands on 11-25: Paths 0 of 2, hold P0s 0 of 3. The build work is largely on beta; both counts sit behind Step F and xian's go-ahead to mint a fresh test account. #071 reports the score as it stands, and the misses go to the retro.
+- **Sprint 3 is a draft for xian** (`../production-sprint-3-draft-2026-11-25.md`, sent to Exec 11-25 as a decision request): finish lifting the hold and serve Paths A and B, plus a small routing lane. Focus and dates are xian's.
+- **Size:** 329 open on 11-25 (`gh`), every one in a section of `../production-sprint-proposal-2026-10-23.md`, 0 unplanned, 0 unmilestoned. The map is `../production-map.html` (v209 on 11-25). Section order is unchanged: H → D → PUB → C → V → E, with T, Doc, Dist, Readiness and Q alongside.
 
-**The invite hold** (xian 11-04 19:31, relayed by Exec). The advisor's 11-04 beta session never reached a valuable thing (#2266–#2278). That evening xian ruled **no invitations of any kind** until the tenancy P0s are done.
-- **Met:** #1551 (per-user isolation, PPM's served bar 11-04); #2283 (callbacks check the browser's own user) and #2178 (Disconnect revokes at GitHub), both closed served 11-05.
-- **Open:** #2261 (narrow the GitHub scope; waits on xian's #2174 runs) and #2282 (live; step 4, a browser check, left). #2292 (mail sending records, P1) is also before the next invite.
-- **P1, not hold conditions:** #2157 (restore drill) and #2158 (manual purge).
-- No design partners or lawyer are lined up, so #2063 stays unscheduled.
+**The public beta has its own gate.** PDR-009 was accepted 11-12 (xian: "The gate sounds good"): rows G1 to G7, mapped in `../public-beta-gate-map-2026-11-12.md`.
 
-**Next focus: onboarding to first value** (`../onboarding-to-first-value-proposal-2026-11-04.md`, a proposal; its sprint shape waits on xian's sprint-cadence talk). Define first value per user type, make the stopped path work, then build the designed flow, then test it with beta users once invitations resume.
+**What each gate promises** (`docs/internal/product/promises.yaml`): unchanged since v19.1. The map's headline still reads **0 of 5** 1.0 promises with a closed issue (v209).
 
-**What each gate promises** (`docs/internal/product/promises.yaml`, ratified 10-25): unchanged since v19.1. Private beta: E4 and T1 to T9. Public beta: E6 and R1 to R5. 1.0: E1, E2, E3, E5 and E7. The map's headline reads **0 of 5** 1.0 promises with a closed issue (11-05 build).
+**PDR-102** (Piper's document model, 11-02) still binds new document work through constraints C1 to C8, checked at placement.
 
-**Production.**
-- **Size:** 252 open on 11-06 (`gh`), every one in a planned sprint section, 0 unplanned. It was 228 at the 10-30 START. The Friday weekly diff is `dev/active/production-weekly-diff-2026-11-06.md`.
-- **Sprints:** H → D → PUB → C → V → E, then T, Doc, Dist, Readiness and Q (xian, 10-24). The first-sprint candidates and xian's 10-31 answers are in `../first-production-sprint-candidates-2026-10-30.md`. No sprint is running yet; the Sprint field is PM-gated.
-- **The map** is `../production-map.html`, rebuilt from the board each day and published as a private artifact (v86 on 11-05).
-- **PDR-102** (Piper's document model, ratified 11-02) binds new document work with constraints C1–C8; PPM checks new document issues against them at placement.
+**What this section no longer claims** (true on 11-06, superseded since):
+- "252 open in Production" (329).
+- "No sprint is running yet" (sprint 2 runs 11-13 to 11-26).
+- "Open: #2261 and #2282" as the whole hold (PDR-008's six conditions; #2342 added as #2261's D3 leg; #2292 met).
+- "Onboarding's sprint shape waits on xian's cadence talk" (ratified 11-09 as sprint 2).
 
-**What this section no longer claims** (true on 10-26, superseded since):
-- "3 open in the gate" (the milestone closed 10-30).
-- "Alpha is the production instance" (beta is canonical; alpha redirects).
-- "0.9.0 is reserved for the beta" (tagged 10-31).
-- "203 open in Production" (252).
-
-Differentiator stack: pillars 1-2 (Context Methodology, Conscious Floor) operate at the floor, pillar 3 (Artifact Persistence) shipped in M3; pillar 4 (Trust-Graduated Experience) is not built and has an open product question (see the stack section). The first-contact criterion (ratified 2026-08-15), the surfaces taxonomy v1.0 (08-21) and the FTUX experience model (08-21) are the design-side anchors for what a tester sees first.
+Differentiator stack: unchanged from v19.2. Pillars 1 and 2 operate at the floor, pillar 3 shipped in M3, pillar 4 is not built (see the stack section).
 
 ---
 
