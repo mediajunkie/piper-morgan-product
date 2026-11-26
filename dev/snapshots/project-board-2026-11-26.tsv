@@ -2231,3 +2231,4 @@ issue	state	milestone	sprint	title	labels	blocked_by	state_reason
 2441	OPEN	Production		Start script: root's chown -R over /data/uploads may follow app-owned symlinks (measure, then guard)	architecture		
 2444	OPEN	Production		A document summary reads only the first 3,000 characters and doesn't say so	UX		
 2445	OPEN	Production		mcp_allow.py: accept --username, so nobody reads a credential file to name an account			
+2446	OPEN	Production		Close/reopen on a never-connected account asks which repository before saying GitHub isn't connected	UX		
