@@ -95,22 +95,14 @@ def read_invite(path: Path) -> Tuple[str, str]:
     return found[INVITE_KEY], found[EMAIL_KEY]
 
 
-# Issue 2438, as first built (2026-11-25): account creation applied five composition
-# rules (8 characters, an uppercase letter, a lowercase letter, a number, one of
-# ! @ # $ % ^ & * ( )). The rule on main is now length-only, but this script runs from
-# main against beta, and beta enforces the five rules until it serves the length-only
-# build. So the tail STAYS until that promotion, then goes in its own commit (Arch,
-# mail 01M8CECPDT). With it the password is 47 characters: inside both length bounds.
-# ``token_urlsafe`` draws from letters, digits, ``-`` and ``_``, so on its own it never
-# holds a listed special character and could miss a class by chance; the host would
-# refuse the sign-up with a 400. The fixed tail meets every rule and adds no secret:
-# all the strength is in the 43 random characters before it.
-PASSWORD_RULE_TAIL = "aA1!"
-
-
+# Issue 2438: the host's password rule is length only (15 characters to 72 bytes).
+# ``token_urlsafe(32)`` is 43 URL-safe characters, one byte each, so it is inside both
+# bounds on its own. The ``aA1!`` tail this function carried from 2026-11-25 existed only
+# for the composition rules, which are gone; it was dropped once beta served the
+# length-only build (Arch, mails 01M8CE2GFC and 01M8CECPDT).
 def new_password() -> str:
     """A password only this process holds, in a form the host's password rule accepts."""
-    return secrets.token_urlsafe(PASSWORD_BYTES) + PASSWORD_RULE_TAIL
+    return secrets.token_urlsafe(PASSWORD_BYTES)
 
 
 def _created(reply: Reply) -> bool:
