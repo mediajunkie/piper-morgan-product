@@ -76,7 +76,7 @@ Layer: the decision record, the tracker and served health. Not re-audited: any s
 
 **Production runs in two-week sprints** (xian, 11-09; "sprints don't stretch", 11-20).
 - **Sprint 2, 11-13 to 11-26, closes today**: onboarding to first value, Paths A and B served on a fresh test account (`../production-sprint-2-onboarding-proposal-2026-11-06.md`). Score as it stands on 11-25: Paths 0 of 2, hold P0s 0 of 3. The build work is largely on beta; both counts sit behind Step F and xian's go-ahead to mint a fresh test account. #071 reports the score as it stands, and the misses go to the retro.
-- **Sprint 3 is a draft for xian** (`../production-sprint-3-draft-2026-11-25.md`, sent to Exec 11-25 as a decision request): finish lifting the hold and serve Paths A and B, plus a small routing lane. Focus and dates are xian's.
+- **Sprint 3, Fri 11-27 to Thu 12-10, ratified by xian 11-26** (focus at 09:18 PT, dates at 09:22 PT; decisions.log; `../production-sprint-3-draft-2026-11-25.md`): finish lifting the hold and serve Paths A and B on a fresh account, scored like sprint 2, plus a small routing lane and 2244. From 11-26 sprints run a rigid two weeks, Friday to Thursday, until xian says otherwise.
 - **Size:** 329 open on 11-25 (`gh`), every one in a section of `../production-sprint-proposal-2026-10-23.md`, 0 unplanned, 0 unmilestoned. The map is `../production-map.html` (v209 on 11-25). Section order is unchanged: H → D → PUB → C → V → E, with T, Doc, Dist, Readiness and Q alongside.
 
 **The public beta has its own gate.** PDR-009 was accepted 11-12 (xian: "The gate sounds good"): rows G1 to G7, mapped in `../public-beta-gate-map-2026-11-12.md`.
