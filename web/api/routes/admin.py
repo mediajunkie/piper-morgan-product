@@ -159,6 +159,17 @@ def _revocation_source() -> str:
         return "database"
 
 
+def _github_app_refresh_health() -> Dict[str, Any]:
+    """Issue 2449: the refresh pass's own record (counts, two booleans, one time). A
+    failure to read it must never break /health, so it reads as unavailable instead."""
+    try:
+        from services.mcp.consumer.github_app_refresh import refresh_health
+
+        return refresh_health()
+    except Exception:
+        return {"error": "unavailable"}
+
+
 def _uptime_seconds() -> int:
     """Seconds since this process started (the quiet count zeroes on a restart)."""
     try:
@@ -279,6 +290,10 @@ async def health(request: Request):
         "redis": redis_status,
         "redis_checked_s": redis_age,
         "revocation_source": _revocation_source(),
+        # Issue 2449: whether the GitHub App grant refresh job runs and refreshes, from
+        # the pass's own record. Counts, two booleans and one time; nothing identifying.
+        # Informational: it never changes the overall status.
+        "github_app_refresh": _github_app_refresh_health(),
     }
     # Arch, 2026-11-12: without Redis the usage cap answers every page 503, so the host
     # is down for users and `status` says so, but only on a FRESH record.
