@@ -530,6 +530,14 @@ class TestTheConfirmBuilders:
 
     _LINE = "the line"
 
+    @pytest.fixture(autouse=True)
+    def _connected(self, monkeypatch):
+        # Issue 2446: the close/reopen gate asks the credential resolver first. The
+        # account here is connected (an App grant); the App check is what is tested.
+        monkeypatch.setattr(
+            GitHubMCPSpatialAdapter, "resolve_credential", AsyncMock(return_value=_credential())
+        )
+
     @pytest.fixture
     def refused(self, monkeypatch):
         check = AsyncMock(return_value=self._LINE)

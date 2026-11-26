@@ -156,3 +156,48 @@ def _account_is_not_on_a_github_app_grant_2379(monkeypatch):
         return None
 
     monkeypatch.setattr(GitHubMCPSpatialAdapter, "app_write_refusal", _may_go_ahead)
+
+
+# Issue 2446 (Arch 2026-11-26): the close/reopen gate now asks the one GitHub credential
+# resolver (``GitHubMCPSpatialAdapter.resolve_credential``) before any repository
+# resolution, and a degrade is answered there with nothing armed. These files drive the
+# gate (or the rail through it) on an account the test treats as connected; they set the
+# connection up at the router, the probe or the write target, never at the resolver, so
+# with no credential store the gate now answers "not connected" in place of what they
+# test. For them the resolver answers connected. The gate's own connection legs are
+# pinned in test_close_reopen_connection_first_2446.py, which is NOT in this set.
+_GITHUB_CONNECTED_FILES = frozenset(
+    {
+        "test_acceptance_contract_1739.py",
+        "test_action_fabrication_1648.py",
+        "test_close_reopen_degraded_2437.py",
+        "test_close_reopen_resolve_before_confirm_1959.py",
+        "test_confirm_crisp_accept_1650.py",
+        "test_consent_gate_1509.py",
+        "test_destructive_confirm_1190.py",
+        "test_drafted_issue_1571.py",
+        "test_drafted_issue_body_steal_1627.py",
+        "test_drafted_issue_subjectless_1630.py",
+        "test_repo_wiring_1641.py",
+        "test_said_instead_not_performed_2399.py",
+        "test_write_target_designated_2205.py",
+    }
+)
+
+
+@pytest.fixture(autouse=True)
+def _github_is_connected_for_the_close_reopen_gate_2446(request, monkeypatch):
+    """See ``_GITHUB_CONNECTED_FILES``."""
+    if request.node.fspath.basename not in _GITHUB_CONNECTED_FILES:
+        yield
+        return
+
+    from services.mcp.consumer.github_adapter import GitHubCredential, GitHubMCPSpatialAdapter
+
+    async def _connected(self, user_id):
+        return GitHubCredential(
+            owner_id=user_id, mcp_server_ref="github", token="test-token", leg="oauth"
+        )
+
+    monkeypatch.setattr(GitHubMCPSpatialAdapter, "resolve_credential", _connected)
+    yield
