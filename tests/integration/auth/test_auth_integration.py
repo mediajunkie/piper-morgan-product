@@ -388,7 +388,8 @@ async def test_password_change_invalidates_tokens(real_client, db_session, user_
     assert response.status_code == 200, "Old token should work before password change"
 
     # Change password
-    new_password = "NewPass456!"
+    # Issue 2438 (length-only, 2026-11-26): at least 15 characters; no composition rule.
+    new_password = "a new longer passphrase"
     change_data = {
         "current_password": old_password,
         "new_password": new_password,
@@ -443,11 +444,9 @@ async def test_password_change_validation(real_client, db_session, user_registry
     Verify password change validates new password strength requirements.
 
     Success Criteria:
-    - Too short password (< 8 chars) rejected
-    - Password missing uppercase letter rejected
-    - Password missing lowercase letter rejected
-    - Password missing digit rejected
-    - Password missing special character rejected
+    - Too short password (< 15 characters) rejected, with or without every class
+    - Password over 72 bytes rejected
+    - 15 lowercase letters accepted (no composition rule; issue 2438, 2026-11-26)
     - Passwords not matching rejected
     - Invalid current password rejected
 
@@ -490,55 +489,42 @@ async def test_password_change_validation(real_client, db_session, user_registry
     )
     assert response.status_code == 400, "Too short password should be rejected"
 
-    # Test 2: Missing uppercase
-    change_data = {
-        "current_password": current_password,
-        "new_password": "lowercase123!",
-        "new_password_confirm": "lowercase123!",
-    }
-    response = await real_client.post(
-        "/api/v1/auth/change-password", json=change_data, headers=headers
-    )
-    assert response.status_code == 400, "Missing uppercase should be rejected"
+    assert response.json()["message"] == "Your password needs at least 15 characters."
 
-    # Test 3: Missing lowercase
-    change_data = {
-        "current_password": current_password,
-        "new_password": "UPPERCASE123!",
-        "new_password_confirm": "UPPERCASE123!",
-    }
-    response = await real_client.post(
-        "/api/v1/auth/change-password", json=change_data, headers=headers
-    )
-    assert response.status_code == 400, "Missing lowercase should be rejected"
+    # Tests 2 to 5 were the four composition rules (uppercase, lowercase, digit, special
+    # character). Issue 2438 went length-only on 2026-11-26 (xian's ruling), so they are
+    # replaced by the rule's other edges.
 
-    # Test 4: Missing digit
+    # Test 2: 14 characters with every character class is still too short
     change_data = {
         "current_password": current_password,
-        "new_password": "NoDigits!Pass",
-        "new_password_confirm": "NoDigits!Pass",
+        "new_password": "Abcdefghij12!@",
+        "new_password_confirm": "Abcdefghij12!@",
     }
     response = await real_client.post(
         "/api/v1/auth/change-password", json=change_data, headers=headers
     )
-    assert response.status_code == 400, "Missing digit should be rejected"
+    assert response.status_code == 400, "14 characters should be rejected"
+    assert response.json()["message"] == "Your password needs at least 15 characters."
 
-    # Test 5: Missing special character
+    # Test 3: more than 72 bytes is refused (bcrypt would ignore the rest)
+    too_long = "a" * 73
     change_data = {
         "current_password": current_password,
-        "new_password": "NoSpecial123",
-        "new_password_confirm": "NoSpecial123",
+        "new_password": too_long,
+        "new_password_confirm": too_long,
     }
     response = await real_client.post(
         "/api/v1/auth/change-password", json=change_data, headers=headers
     )
-    assert response.status_code == 400, "Missing special character should be rejected"
+    assert response.status_code == 400, "73 bytes should be rejected"
+    assert response.json()["message"].startswith("Your password is too long: the most is 72 bytes.")
 
     # Test 6: Passwords don't match
     change_data = {
         "current_password": current_password,
-        "new_password": "Valid@Pass123",
-        "new_password_confirm": "Different@Pass1",
+        "new_password": "Valid@Pass123-long",
+        "new_password_confirm": "Different@Pass1-long",
     }
     response = await real_client.post(
         "/api/v1/auth/change-password", json=change_data, headers=headers
@@ -551,8 +537,8 @@ async def test_password_change_validation(real_client, db_session, user_registry
     # Test 7: Wrong current password
     change_data = {
         "current_password": "WrongPass123!",
-        "new_password": "Valid@NewPass1",
-        "new_password_confirm": "Valid@NewPass1",
+        "new_password": "Valid@NewPass1-long",
+        "new_password_confirm": "Valid@NewPass1-long",
     }
     response = await real_client.post(
         "/api/v1/auth/change-password", json=change_data, headers=headers
@@ -561,3 +547,14 @@ async def test_password_change_validation(real_client, db_session, user_registry
     # The middleware genericizes 401 copy (session-expired guidance) — assert
     # a friendly message exists rather than pinning replaced wording.
     assert response.json()["message"]
+
+    # Test 8 (last, because it succeeds): 15 lowercase letters, no other class, is accepted.
+    change_data = {
+        "current_password": current_password,
+        "new_password": "abcdefghijklmno",
+        "new_password_confirm": "abcdefghijklmno",
+    }
+    response = await real_client.post(
+        "/api/v1/auth/change-password", json=change_data, headers=headers
+    )
+    assert response.status_code == 200, f"15 lowercase letters should pass: {response.text}"

@@ -127,9 +127,12 @@ def test_the_setup_pages_services_message_names_the_services_docker_starts():
     assert "(docker compose up -d)" not in script
 
 
-def test_the_create_account_database_error_names_the_three_services():
+def test_the_create_account_database_error_names_the_services_docker_starts():
+    """Was "names the three services". CXO (mail 01M8CG2V39, 2026-11-26, issue 2244): this
+    line and the wizard's toast must give one command; the app uses no chromadb container."""
     route = (ROOT / "web" / "api" / "routes" / "setup.py").read_text()
-    assert "docker compose up -d postgres redis chromadb. " in route
+    assert "docker compose up -d postgres redis. Then try again. " in route
+    assert "redis chromadb" not in route
     assert "'docker compose up -d'" not in route
     # CXO 2026-11-24 (issue 2428): the hosted case is said in the same line.
     assert "Cannot connect to the database. If you run Piper on your own computer, " in route

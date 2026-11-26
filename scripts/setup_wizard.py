@@ -611,16 +611,17 @@ async def create_user_account() -> Any:
         # again after a mismatch is checked again too.
         from services.auth.password_validator import (
             PASSWORD_RULE_HELPER_LINE,
-            PASSWORD_RULE_LINE,
             PasswordValidator,
+            password_refusal_line,
         )
 
         print("\n   Create a secure password:")
         print(f"   {PASSWORD_RULE_HELPER_LINE}")
         while True:
             password = getpass("   Password: ")
-            if PasswordValidator.failed_rule(password) is not None:
-                print(f"   ✗ {PASSWORD_RULE_LINE}")
+            rule = PasswordValidator.failed_rule(password)
+            if rule is not None:
+                print(f"   ✗ {password_refusal_line(rule)}")
                 continue
             password_confirm = getpass("   Confirm password: ")
             if password != password_confirm:
