@@ -32,7 +32,7 @@ The 08-31 version had gone stale again: on 11-24 an audit found twelve issues it
 - **Issue 2446:** built by a coding agent, `lead/2446-connection-first` (`f4d23caf40`); with Arch for his read (01M8CV5EEP, four judgement calls); full suite running. Then land, promote with 2441, and Web's two turns on seat-tester-1 before Path B. — **Filed**: 2026-11-26
 
 - **Does the GitHub App grant refresh work on beta?** xian's own grant reads `stale_token` (PA, 11-26). Web reads seat-github-1's Integrations card after 20:00 on 11-26 and on the 11-27 morning (connected 11-26 11:28). Still `Connected as atswimtwobirds…` means refresh works and his is a one-account matter; the reconnect state means a defect that blocks 2342. Asked 01M8CVHK4G. — **Filed**: 2026-11-26
-- **Now unblocked by the OpenAI seat key (live in this session, 11-26):** 2412, 2297's list-name row, 2364 step 1's merge. Read each issue whole before starting; Exec wants planned spend stated first (the project's limit is \$25, enforced). — **Filed**: 2026-11-26
+- **Now unblocked by the OpenAI seat key (live in this session, 11-26):** 2412, 2297's list-name row, 2364 step 1's merge. Read each issue whole before starting; Exec wants planned spend stated first (the project's limit is $25, enforced). — **Filed**: 2026-11-26
 - **Small copy nit (CXO 01M8CSTYR9):** `update_issue`'s never-connected line has no comma before "and"; fix when that string is next touched. — **Filed**: 2026-11-26
 
 ## Waiting on xian (through Exec; each is on a card or Exec's held list)
