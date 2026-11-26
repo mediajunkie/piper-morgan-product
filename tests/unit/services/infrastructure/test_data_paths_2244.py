@@ -305,6 +305,49 @@ class TestDeployFiles:
             and 'chown -h piper:piper "$PIPER_DATA_DIR"' in block
         )
 
+    def test_the_uploads_lines_carry_the_same_symlink_guard(self):
+        """Issue 2441 (xian's yes 2026-11-26, relayed by Exec 01M8CQVY39): the older
+        uploads lines refuse a symlinked path too. Both guards in the root block have
+        one shape, and no chown or mkdir in it runs outside a guard."""
+        script = (REPO / "deploy/docker-entrypoint.sh").read_text()
+        root_block = script[script.index('if [ "$(id -u)" = "0" ]') : script.index("exec setpriv")]
+        guards = [ln.strip() for ln in root_block.splitlines() if ln.strip().startswith("if [ -n")]
+        assert guards == [
+            'if [ -n "${UPLOAD_DIR:-}" ] && [ ! -L "$UPLOAD_DIR" ]; then',
+            'if [ -n "${PIPER_DATA_DIR:-}" ] && [ ! -L "$PIPER_DATA_DIR" ]; then',
+        ]
+        depth = 0
+        for ln in root_block.splitlines()[1:]:
+            word = ln.strip()
+            if word.startswith("if "):
+                depth += 1
+            elif word == "fi":
+                depth -= 1
+            elif word.startswith(("mkdir", "chown")):
+                assert depth == 1, word
+
+    @pytest.mark.parametrize("variable", ["UPLOAD_DIR", "PIPER_DATA_DIR"])
+    def test_each_guard_behaves_as_written(self, tmp_path, variable):
+        """Run each guard's own test expression in bash."""
+        import subprocess
+
+        real, link = tmp_path / "real", tmp_path / "link"
+        real.mkdir()
+        link.symlink_to(real)
+        expr = f'[ -n "${{{variable}:-}}" ] && [ ! -L "${variable}" ]'
+        script = (REPO / "deploy/docker-entrypoint.sh").read_text()
+        assert f"if {expr}; then" in script
+
+        def passes(value):
+            env = {"PATH": "/usr/bin:/bin"}
+            if value is not None:
+                env[variable] = str(value)
+            return subprocess.run(["bash", "-c", expr], env=env).returncode == 0
+
+        assert passes(real) and passes(tmp_path / "not-there-yet")
+        assert not passes(link)
+        assert not passes(None)
+
     def test_the_guard_behaves_as_written(self, tmp_path):
         """Run the guard's own test expression in bash: a real folder and a missing
         path pass it, a symlink does not, an unset variable does not."""
