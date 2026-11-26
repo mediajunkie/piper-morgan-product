@@ -245,17 +245,20 @@ class TestResolveBeforeConfirm:
         assert "Login bug" not in gate.offer.question
         assert "There's no issue" not in gate.offer.question
 
-    async def test_probe_raising_unexpectedly_falls_back(self, service, monkeypatch):
-        """Defense in depth: even if the probe itself raised instead of
-        returning its tri-state tuple (it shouldn't — it catches
-        internally), the gate's own outer handler still falls back rather
-        than propagating or guessing."""
+    async def test_probe_raising_unexpectedly_says_it_could_not_check(self, service, monkeypatch):
+        """Was "falls back" (the generic yes/no was armed). Issue 2448 (Arch, 2026-11-26)
+        reverses that: a read that raises is answered with the could-not-check line and
+        nothing is armed, because a yes/no for an action Piper could not check is the
+        wrong question. The gate still never propagates and never guesses."""
+        from services.intent_service.not_performed import NOT_PERFORMED_KEY, NotPerformed
+        from services.mcp.consumer.github_adapter import GITHUB_ISSUE_COULD_NOT_CHECK_REPLY
+
         _mock_probe(monkeypatch, side_effect=RuntimeError("unexpected"))
         intent = _intent("close issue 108 in mediajunkie/test-piper-morgan")
         gate = await build_close_reopen_confirmation(intent, service, "wf-1")
-        assert gate.passthrough_result is None
-        assert gate.offer is not None
-        assert "#108" in gate.offer.question
+        assert gate.offer is None
+        assert gate.passthrough_result["message"] == GITHUB_ISSUE_COULD_NOT_CHECK_REPLY
+        assert gate.passthrough_result["intent_data"] == {NOT_PERFORMED_KEY: NotPerformed.DEGRADED}
 
     async def test_repo_unresolvable_falls_back_to_generic_confirm(self, service, monkeypatch):
         """No repo named, and the quiet default-repo consult comes back
