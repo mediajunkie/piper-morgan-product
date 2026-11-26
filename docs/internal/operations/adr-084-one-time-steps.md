@@ -360,8 +360,31 @@ What the row must hold, whatever the path:
 - **Seat check (PA):** in PA's session, list the MCP resources and confirm a second Piper server is present. Then read `piper://me/profile` through it, which should name the seat account, not you, and `piper://me/github/issues` through it. PA quotes the account's display name, the issue count and repositories, and MCP `uptime_seconds`. PA reads your own connector once to confirm it still answers as you. **Unverified:** whether a running Claude Code session sees a newly added connector without a restart. If PA doesn't see it, PA asks Exec for a session restart, not anything from you.
 - **If it fails:**
   - **claude.ai refuses a second connector at the same URL:** stop and tell Exec. Don't remove your own connector to make room. This is the one-try test (ADR-084 open item); the fallback is Arch's.
+    - **Result, 2026-11-26 `12:11`: refused.** claude.ai said "A connector with this URL already exists in your organization. Use the existing connector instead of adding it again." Nothing was added.
+    - **Arch's fallback order (`01M8CR7F1S…`, superseding `01M8CQYRW4…` and `01M8CR4GRE…`): (a) once, then (c) on xian's yes, then (b), then (d).**
   - **403 on the consent page:** part 1 didn't stick. Run `fly ssh console -a piper-morgan -C "python /app/scripts/mcp_allow.py list"` and check the seat account is listed.
   - **The consent lands on your own account** (PA's profile read names you): remove only **Piper Morgan (seat)**, sign out of Piper, and repeat part 2.
+
+**Part 2 (a): the same URL with a query string, tried once** (Arch `01M8CR7F1S…`, 2026-11-26; PA wrote this)
+
+The seat's token stays inside claude.ai, so no keychain question comes up.
+
+- **Paste:** in claude.ai, Settings, Connectors, **Add custom connector**: name `Piper Morgan (seat)`, URL `https://mcp.pipermorgan.ai/mcp?client=seat`. Same host and path; nothing changes on the server.
+- **Then:** exactly part 2's Then line. Sign in on Piper's page as seat-github-1, in a private window or the separate profile, signed out of Piper as yourself, and press Allow.
+- **It passes only if all three hold:** the consent page is Piper's own; PA's `piper://me/profile` through the new connector names seat-github-1; your own **Piper Morgan** connector still answers as you. Then PA's seat check as written, and part 3 as written.
+- **On any failure** (claude.ai refuses it, the connect errors, or the profile names you): remove **Piper Morgan (seat)** in claude.ai at once, so no half-working connector stays in your org, and go to (c) on your yes.
+- **Unverified:** whether claude.ai's duplicate check treats a query string as a different URL, and whether the server's `/mcp` route and its OAuth flow accept one. `oauth_provider.py` stores the resource per grant (line 466); PA found no exact-match check on it.
+
+**Part 2 (c): Claude Code as the client, only if (a) fails** (ruled 2026-11-26 by Arch; PA wrote this)
+
+What parts 2 and 3 prove is server-side: the hosted MCP answers as the account that consented, and an allowlist removal cuts off a live connection. Any OAuth MCP client runs the same server code, and xian's own connector already proves the claude.ai path.
+
+- **Precondition, before anything below: xian's yes, on his card.** Claude Code's credential store on Amber is his login keychain, in the entry keyed to `CLAUDE_CONFIG_DIR=~/.claude-pm`, which every seat's Claude Code shares. If the keychain refuses the write, it falls back to `~/.claude-pm/.credentials.json` (CIO `01M8CR2H4D…`, from the Claude Code authentication and troubleshoot-install docs; the docs don't name where an MCP token goes). The question as worded: "May PA's session store one OAuth token for `piper-seat` (seat-github-1's) in your Claude Code credential store, removed at the Ending with logout and remove?" **Without his yes, skip to (b).**
+- **PA adds the server** in its own worktree: `claude mcp add --transport http --scope local piper-seat https://mcp.pipermorgan.ai/mcp`. Then PA asks Exec for a session restart (Pard), so the session loads the server.
+- **The sign-in.** Someone at Amber's keyboard starts the OAuth sign-in, either from `/mcp` in PA's session or with `claude mcp login piper-seat` from the shell. The docs say `claude -p` and SDK runs can't start it. Its page opens in a browser on Amber. **xian** signs in there as seat-github-1, in a private window or the separate profile, signed out of Piper as himself, and presses Allow. His own claude.ai connector stays untouched. **Unverified:** which browser the sign-in opens and whether PA can start it without the `/mcp` menu; the callback goes to localhost on Amber, which the server accepts (`oauth_provider.py`, http-on-localhost redirect URIs).
+- **Seat check (PA):** part 2's seat check unchanged, read through `piper-seat`: the profile names the seat account; the GitHub issues and their repositories (pipermorgan/piper-test and piper-test-2 each have one open issue, so the read also shows whether the 11-12 install covers piper-test only); `uptime_seconds`; one read of xian's own connector. Part 3 runs as written, reading through `piper-seat`.
+- **(b), only if xian says no to (c):** consent through another claude.ai organization or account, if xian has one and HOST agrees. His hand, and a custody question for HOST. **HOST's custody view (`01M8CQYARB…`): refuse it.** It means a real second Claude account for the machine seat, with its own sign-in, recovery email and custody that nobody has agreed to hold. So on a no to (c), expect (d).
+- **(d), only if (b) fails too:** part 2 and part 3 are recorded as not reachable. That loses #2242's live-removal proof.
 
 **Part 3: the removal check for #2242** (added 2026-11-16 by PA on Exec's 18:2x ruling `01M7KN3SAN…`; replaces the old card that removed xian's own account; about 3 minutes, same Terminal as part 1)
 
@@ -385,7 +408,7 @@ This checks that removing an account from the allowlist cuts off a connector tha
 - **Paste 2 (add back, only on PASS):** part 1's `--apply` line again. If paste 2 is missed for any reason, the seat connector stays refused, not open, so a missed paste is never a risk. **You should see:** the second `--- listed:` block includes the seat account again, then `add: done for …`. Tell PA.
 - **Seat check (PA):** one read through **Piper Morgan (seat)** answers as the seat account again. If it doesn't (the client may have dropped the connection after the 401), PA asks Exec whether to re-consent (part 2's Then line, about a minute). This is not a failure of the check.
 
-**Ending** (with HOST's review date): remove **Piper Morgan (seat)** in claude.ai, then `mcp_allow.py remove --user-email <seat-account-email> --apply` the same way as part 1 (the script takes `--user-email` or `--user-id`).
+**Ending** (with HOST's review date): remove **Piper Morgan (seat)** in claude.ai, or on route (c), in PA's session: `claude mcp logout piper-seat`, then `claude mcp remove piper-seat` (remove alone leaves the token valid at the server until it expires; Arch `01M8CR3ND1…`). Then `mcp_allow.py remove --user-email <seat-account-email> --apply` the same way as part 1 (the script takes `--user-email` or `--user-id`).
 
 ## Step H (ADR row 7): the MCP deploy token
 
