@@ -209,7 +209,20 @@ def show(path: Path, data: dict) -> list[str]:
     lines.append(
         f"allow: {len(perms.get('allow', []))} rules; deny: {len(perms.get('deny', []))} rules"
     )
-    lines.append(f"self-deny present: {SELF_DENY in perms.get('deny', [])}")
+    # The self-deny is added with a seat key (add-key, grant-key, prepare), never by add-allow, so a
+    # file that never held a key reads False, and that is correct (Exec 01M8CJW0EX, 2026-11-26: Web's
+    # and CIO's files read False while Lead's read True). Say which case it is, so a False doesn't
+    # read as a fault.
+    if SELF_DENY in perms.get("deny", []):
+        lines.append("self-deny present: True")
+    elif any(name.startswith("PIPER_SEAT_") for name in (data.get("env") or {})):
+        lines.append(
+            "self-deny present: False. MISSING: this file holds a seat key; run prepare for this seat"
+        )
+    else:
+        lines.append(
+            "self-deny present: False (not needed: no seat key in this file; added with the first key)"
+        )
     return lines
 
 
