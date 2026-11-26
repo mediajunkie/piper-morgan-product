@@ -509,7 +509,7 @@ async def check_system():
             if not redis_ok:
                 failed_services.append("Redis")
             if not chromadb_ok:
-                failed_services.append("ChromaDB")
+                failed_services.append("Document index folder")
             message = f"Services not ready: {', '.join(failed_services)}"
 
         return SystemCheckResponse(
@@ -1348,7 +1348,7 @@ async def create_user(
                 detail=(
                     "Cannot connect to the database. If you run Piper on your own computer, "
                     "make sure Docker is running, then start the services with: "
-                    "docker compose up -d postgres redis chromadb. Then try again. "
+                    "docker compose up -d postgres redis. Then try again. "
                     "On a hosted instance, tell the person who runs it."
                 ),
             )
