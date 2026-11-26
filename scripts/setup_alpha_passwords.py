@@ -115,10 +115,11 @@ async def set_user_password(username: str, password: str = None, interactive: bo
 
         # Validate password strength. Issue 2438: the rules are PasswordValidator's, the
         # same ones the web wizard, a reset and a change apply; no second copy here.
-        from services.auth.password_validator import PASSWORD_RULE_LINE, PasswordValidator
+        from services.auth.password_validator import PasswordValidator, password_refusal_line
 
-        if PasswordValidator.failed_rule(password) is not None:
-            print(f"❌ {PASSWORD_RULE_LINE}")
+        rule = PasswordValidator.failed_rule(password)
+        if rule is not None:
+            print(f"❌ {password_refusal_line(rule)}")
             return False
 
         # Hash password
@@ -228,7 +229,7 @@ Examples:
 
 Security:
   - Passwords are hashed with bcrypt (12 rounds)
-  - Minimum 8 characters required
+  - Length rule: see services/auth/password_validator.py
   - Use strong, unique passwords for each user
         """,
     )
