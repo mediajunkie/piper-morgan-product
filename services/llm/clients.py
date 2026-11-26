@@ -810,8 +810,9 @@ class LLMClient:
         if response_format:
             request_params["response_format"] = response_format
 
-        # #2383: same cap hook as the Anthropic leg. No OpenAI price is recorded yet, so a
-        # capped run that lands here is refused before anything is sent.
+        # #2383: same cap hook as the Anthropic leg. A capped run on a model with no
+        # recorded price is refused before anything is sent (gpt-4o and gpt-4o-mini have
+        # sourced rows since 2026-11-26; see services/llm/spend_cap.py).
         _reservation = reserve_call(
             request_params["model"],
             len(prompt) + len(system or ""),

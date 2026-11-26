@@ -25,20 +25,34 @@ from __future__ import annotations
 
 import contextlib
 import math
+import re
 import threading
 from contextvars import ContextVar
 from dataclasses import dataclass
 from typing import Dict, Iterator, Mapping, Optional, Tuple
 
 # USD per million tokens, (input, output), standard (not batch) rates.
-# Source: Anthropic's published model table as cached in the claude-api reference
-# on 2026-11-03. OpenAI and Gemini rows are absent on purpose: nobody has recorded a
-# sourced price for them, so a capped run on those models is refused.
+# Anthropic rows: Anthropic's published model table as cached in the claude-api
+# reference on 2026-11-03.
+# OpenAI rows: OpenAI's pricing page, https://developers.openai.com/api/docs/pricing
+# (platform.openai.com/docs/pricing redirects there), the Standard tab, read
+# 2026-11-26. Its rows: "| gpt-4o | $2.50 | $10.00 | $1.25 |" and
+# "| gpt-4o-mini | $0.15 | $0.60 | $0.075 |" (input, output, cached input). The OpenAI
+# leg reports prompt and completion tokens only, so a cached prompt is counted here at
+# the full input rate: the measured figure can overstate, never understate.
+# Gemini rows are absent on purpose: nobody has recorded a sourced price for them, so a
+# capped run on those models is refused. The same goes for any OpenAI model not listed.
+# Order matters where one id is a prefix of another: the longer id comes first.
 _USD_PER_MTOK: Dict[str, Tuple[float, float]] = {
     "claude-opus-4-8": (5.00, 25.00),
     "claude-sonnet-4-6": (3.00, 15.00),
     "claude-haiku-4-5": (1.00, 5.00),
+    "gpt-4o-mini": (0.15, 0.60),
+    "gpt-4o": (2.50, 10.00),
 }
+# What may follow a model id and still be that model: a release date, in Anthropic's
+# form (20251001) or OpenAI's (2024-08-06).
+_SNAPSHOT_SUFFIX = re.compile(r"\d{8}|\d{4}-\d{2}-\d{2}")
 # Anthropic bills a cache write at 1.25 times the input rate and a cache read at 0.1.
 _CACHE_WRITE_FACTOR = 1.25
 _CACHE_READ_FACTOR = 0.10
@@ -58,7 +72,13 @@ class SpendCapUncounted(Exception):
 def price_for(model: str) -> Tuple[float, float]:
     """(input, output) USD per million tokens, or ``SpendCapReached`` if unrecorded."""
     for name, price in _USD_PER_MTOK.items():
-        if model == name or model.startswith(name + "-"):
+        if model == name:
+            return price
+        # A dated snapshot of the same model (``claude-haiku-4-5-20251001``,
+        # ``gpt-4o-2024-08-06``) shares its price. Any other suffix is a different
+        # model with its own price (``gpt-4o-audio-preview``, ``gpt-4o-realtime-preview``
+        # cost more than ``gpt-4o``), so it is refused, not priced by its prefix.
+        if model.startswith(name + "-") and _SNAPSHOT_SUFFIX.fullmatch(model[len(name) + 1 :]):
             return price
     raise SpendCapReached(
         f"REFUSED: no price recorded for model {model!r}, so its cost can't be bounded. "
