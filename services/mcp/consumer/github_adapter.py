@@ -196,6 +196,23 @@ GITHUB_ISSUE_COULD_NOT_CHECK_REPLY = (
     "moment; if it keeps failing, tell us."
 )
 
+# Issue 2448 (CXO, mails 01M8CVRV9K and 01M8CX1FXS; Arch on the issue and 01M8CXG89D):
+# when the close/reopen gate cannot check something, it says which thing and arms nothing.
+# Three lines, one family (the same last sentence), chosen by WHICH read failed:
+# - the connection itself (the credential resolver raised);
+# - the issue (any GitHub read after the connection is known good), which is the line
+#   above, ``GITHUB_ISSUE_COULD_NOT_CHECK_REPLY``;
+# - Piper's own record of the person's default repository: the one failure that is ours
+#   and not GitHub's, so it names what we could not look up.
+GITHUB_CONNECTION_COULD_NOT_CHECK_REPLY = (
+    "I couldn't check your GitHub connection just now, so I haven't done anything. Try "
+    "again in a moment; if it keeps failing, tell us."
+)
+GITHUB_DEFAULT_REPOSITORY_COULD_NOT_LOOK_UP_REPLY = (
+    "I couldn't look up which repository to use just now, so I haven't done anything. Try "
+    "again in a moment; if it keeps failing, tell us."
+)
+
 CLOSE_VERB = "close"
 REOPEN_VERB = "reopen"
 

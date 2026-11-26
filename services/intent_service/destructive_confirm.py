@@ -1311,10 +1311,14 @@ async def build_close_reopen_confirmation(
             # ambiguity here.
             return _fallback()
 
+        from services.intent_service.not_performed import NOT_PERFORMED_KEY, NotPerformed
         from services.mcp.consumer.connector import DegradationReason, DegradationResponse
         from services.mcp.consumer.github_adapter import (
             CLOSE_VERB,
             GITHUB_CLOSE_NOT_CONNECTED_REPLY,
+            GITHUB_CONNECTION_COULD_NOT_CHECK_REPLY,
+            GITHUB_DEFAULT_REPOSITORY_COULD_NOT_LOOK_UP_REPLY,
+            GITHUB_ISSUE_COULD_NOT_CHECK_REPLY,
             GITHUB_REOPEN_NOT_CONNECTED_REPLY,
             REOPEN_VERB,
             GitHubMCPSpatialAdapter,
@@ -1324,14 +1328,30 @@ async def build_close_reopen_confirmation(
 
         _verb = CLOSE_VERB if action in _CLOSE_FAMILY else REOPEN_VERB
 
+        def _could_not_check(line: str, read_name: str) -> CloseReopenGate:
+            # Issue 2448 (Arch 2026-11-26): a read that RAISED is answered with the line
+            # for the thing that could not be checked, and nothing is armed. The line is
+            # chosen by which read failed (each has its own ``try`` below), never by
+            # matching on the exception. The generic yes/no confirm is never the answer
+            # to "we couldn't check".
+            logger.warning("close_reopen_gate_read_failed", read=read_name, exc_info=True)
+            return CloseReopenGate(
+                passthrough_result={
+                    "message": line,
+                    "requires_clarification": False,
+                    "intent_data": {NOT_PERFORMED_KEY: NotPerformed.DEGRADED},
+                }
+            )
+
         # Issue 2446 (Arch 2026-11-26): the connection is answered before any question
         # about the target. A question is never asked for an action that cannot run, so
         # the one resolver (ADR-070 B4) is asked here, before any repository resolution.
         # A degrade arms nothing: no repository question, no pending action.
-        _credential = await GitHubMCPSpatialAdapter().resolve_credential(_gh_user_id)
+        try:
+            _credential = await GitHubMCPSpatialAdapter().resolve_credential(_gh_user_id)
+        except Exception:  # silent-ok: read 1, the connection; answered with its could-not-check line and logged (issue 2448)
+            return _could_not_check(GITHUB_CONNECTION_COULD_NOT_CHECK_REPLY, "resolve_credential")
         if isinstance(_credential, DegradationResponse):
-            from services.intent_service.not_performed import NOT_PERFORMED_KEY, NotPerformed
-
             if _credential.reason is DegradationReason.CONNECT_REQUIRED:
                 # No binding and no token: never connected.
                 return CloseReopenGate(
@@ -1373,7 +1393,12 @@ async def build_close_reopen_confirmation(
                 if "/" in _named:
                     _repo = _named
                 else:
-                    _res = await resolve_repo_name(_gh_user_id, _named)
+                    try:
+                        _res = await resolve_repo_name(_gh_user_id, _named)
+                    except Exception:  # silent-ok: read 2, the repository's full name on GitHub; answered and logged (issue 2448)
+                        return _could_not_check(
+                            GITHUB_ISSUE_COULD_NOT_CHECK_REPLY, "resolve_repo_name"
+                        )
                     if _res.status == "resolved":
                         _repo = _res.full_name
                     else:
@@ -1387,7 +1412,12 @@ async def build_close_reopen_confirmation(
             # this confirm names it. No write precedes both answers.
             from services.integrations.github.repo_resolver import get_user_write_target
 
-            _repo = await get_user_write_target(_gh_user_id)
+            try:
+                _repo = await get_user_write_target(_gh_user_id)
+            except Exception:  # silent-ok: read 3, Piper's own default-repository record; answered and logged (issue 2448)
+                return _could_not_check(
+                    GITHUB_DEFAULT_REPOSITORY_COULD_NOT_LOOK_UP_REPLY, "get_user_write_target"
+                )
             if not _repo:
                 return CloseReopenGate(
                     offer=_repository_first_offer(intent, issue_number, _gh_user_id)
@@ -1408,10 +1438,13 @@ async def build_close_reopen_confirmation(
         # aimed at a repository the App isn't installed on is answered here, before
         # any confirm is armed. Without this the probe says "unknown" (it never reads
         # such a repository), the generic confirm is armed, and GitHub refuses the yes.
-        _not_installed = await github_app_write_refusal_line(_gh_user_id, _repo)
+        try:
+            _not_installed = await github_app_write_refusal_line(_gh_user_id, _repo)
+        except Exception:  # silent-ok: read 4, the App installation check on GitHub; answered and logged (issue 2448)
+            return _could_not_check(
+                GITHUB_ISSUE_COULD_NOT_CHECK_REPLY, "github_app_write_refusal_line"
+            )
         if _not_installed is not None:
-            from services.intent_service.not_performed import NOT_PERFORMED_KEY, NotPerformed
-
             return CloseReopenGate(
                 passthrough_result={
                     "message": _not_installed,
@@ -1421,9 +1454,12 @@ async def build_close_reopen_confirmation(
                 }
             )
 
-        status, issue_details, _probed = await GitHubMCPSpatialAdapter().probe_issue_connector(
-            _gh_user_id, issue_number=issue_number, explicit_repo=_repo
-        )
+        try:
+            status, issue_details, _probed = await GitHubMCPSpatialAdapter().probe_issue_connector(
+                _gh_user_id, issue_number=issue_number, explicit_repo=_repo
+            )
+        except Exception:  # silent-ok: read 5, the issue; answered and logged (issue 2448)
+            return _could_not_check(GITHUB_ISSUE_COULD_NOT_CHECK_REPLY, "probe_issue_connector")
 
         if status == "degraded":
             # Issue 2437 (Arch, decisions.log 2026-11-25 08:54 and 09:04): the connector
