@@ -112,13 +112,18 @@ def test_the_file_says_what_a_second_copy_must_set_before_its_first_up():
 ROOT = COMPOSE.parent
 
 
-def test_the_setup_pages_services_message_names_the_three_services():
+def test_the_setup_pages_services_message_names_the_services_docker_starts():
+    """Was "names the three services". Issue 2244 (CXO, mail 01M8CEQ3ZA, 2026-11-26): the
+    ChromaDB row now means the server can write its document folder, so the docker
+    advice names postgres and redis only; the folder has its own sentence
+    (tests/unit/services/infrastructure/test_data_paths_2244.py)."""
     script = (ROOT / "web" / "static" / "js" / "setup.js").read_text()
     assert (
         "If you run Piper on your own computer, start them with "
-        "docker compose up -d postgres redis chromadb. "
+        "docker compose up -d postgres redis. "
         "On a hosted instance, tell the person who runs it." in script
     )
+    assert "docker compose up -d postgres redis chromadb" not in script
     assert "(docker compose up -d)" not in script
 
 

@@ -155,7 +155,19 @@
                 this.style.display = 'none';
             } else {
                 const down = services.filter(s => !s.ready && !s.name.includes('optional')).map(s => s.name);
-                showError(`Not reachable from the server: ${down.join(', ')}. If you run Piper on your own computer, start them with docker compose up -d postgres redis chromadb. On a hosted instance, tell the person who runs it.`, 'Services Not Running');
+                // 2244 (CXO, mail 01M8CEQ3ZA): the ChromaDB row means "the server can
+                // write its document folder", not "a server answers", so it gets its
+                // own sentence and the docker advice names only what docker starts.
+                const servers = down.filter(name => name !== 'ChromaDB');
+                const folderDown = down.includes('ChromaDB');
+                const sentences = [];
+                if (servers.length) {
+                    sentences.push(`Not reachable from the server: ${servers.join(', ')}. If you run Piper on your own computer, start them with docker compose up -d postgres redis. On a hosted instance, tell the person who runs it.`);
+                }
+                if (folderDown) {
+                    sentences.push("Piper can't write its document folder. On your own computer, check that the folder is there and your account can write to it. On a hosted instance, tell the person who runs it.");
+                }
+                showError(sentences.join(' '), folderDown ? 'Setup check failed' : 'Services Not Running');
                 this.disabled = false;
                 this.textContent = 'Retry Check';
             }
