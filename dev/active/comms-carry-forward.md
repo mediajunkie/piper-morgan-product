@@ -1,7 +1,7 @@
 # Comms carry-forward
 
-## ⭐ CURRENT STATE — 2026-11-24 21:19 PT (STOP). Read this first. It supersedes everything below.
-- **Log 11-24:** `dev/2026/11/24/2026-11-24-0619-comms-code-log.md` (DAY-CLOSED). Tomorrow creates a new log. Open items: Sat 11-28 "Mark One Eyeball" waits on xian's prose; 12-03 "Ready or Not" title lock (xian) before 11-28 goes to Docs.
+## ⭐ CURRENT STATE — 2026-11-25 STOP (21:19 fire). Read this first. It supersedes everything below.
+- **Log 11-25:** `dev/2026/11/25/2026-11-25-0619-comms-code-log.md` (DAY-CLOSED; restarted onto Claude Code 2.1.332 at 19:00). Tomorrow creates a new log. Open items: Sat 11-28 "Mark One Eyeball" waits on xian's prose; 12-03 "Ready or Not" title lock (xian) before 11-28 goes to Docs.
 - **Ship #070 LIVE and distributed 11-24** (Docs 09:44, https://pipermorgan.ai/shipping-news/weekly-ship-070-no-workarounds). LinkedIn done, row `distributed` (Web confirmed 12:19). Closed.
 - **Pace (xian, 11-02):** keep working, not racing. Drain rule holds. No nudges to xian about posts (Exec 11-12).
 - **Draft-state check:** `git log -1 --format='%h %ad %s' -- <one path>` per draft, plus `git -C <shared checkout> status --short docs/public/comms/drafts/` (read-only). Admin-UI edits land as "content(<slug>): edit via admin UI".
