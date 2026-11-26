@@ -163,7 +163,10 @@ ACCOUNTS: Dict[str, Account] = {
     #   before any handler runs, so without it no GitHub-connected chat reply could be read
     #   on this account (Web 01M8CSW3BJ). Three seat accounts now share that workspace's
     #   $40 monthly limit, which the Console enforces. The key comes off at Step G's
-    #   Ending (``--remove-key anthropic``), or earlier when the account's reads are done.
+    #   Ending, or earlier when the account's reads are done. This helper cannot do that
+    #   today: ``--remove-key`` clears only a key the provider refused, never a working
+    #   one, and this account is not on ``KEY_REMOVABLE``. Until a ruled change here, the
+    #   removal is xian's, signed in as the account, on its Settings page.
     # Still refused: an admin flag, any other provider's key, a personal token, any other
     # integration, a second connector.
     "seat-github-1": Account(
