@@ -32,7 +32,7 @@
 | 6 | #2426: "show me the todos in the Launch project" stops asking which project | Lead, CXO | rides on item 5's lever (read-side twin; same ruling) | 4 / 0 |
 | 7 | 2399: said-instead replies on the write rail stop reporting success | CXO, Web | the already-closed and not-found lines need a working GitHub connection: read in xian's F.4 sitting (Lead's proposal to CXO, 01M89SNRXV) | 1 / 6 (11-26 09:23); on beta `aaf8d9249e`; vague-write line served 11-25 (Web 01M89SJ9ZD) |
 | 8 | 2356: self-knowledge part 4, the served question set (CXO's set, CIO's three, PPM's known-limits question) | CXO, Web | #2355's build step landing (no runtime index yet, so a served run would not test the exclusion; CXO 01M89KHPZ1); then a named build on a self-hosted install | no boxes; exclusion test landed 11-25 `16e47c26c2` (Lead 01M89K6EAP) |
-| 9 | 2244: the document vector store moves onto the `/data` volume | Lead, HOST | ~~xian's yes via Exec~~ given 11-26 09:18 PT ("yes the vector-store may ship"; Exec 01M8CDTEVT). Lead clear to build, under the standing grant, on Arch's validation (plain `chown`, not `-R`) and HOST's read. Served row waits on Step E | 3 / 0 |
+| 9 | 2244: the document vector store moves onto the `/data` volume | Lead, HOST | ~~xian's yes via Exec~~ given 11-26 09:18 PT ("yes the vector-store may ship"; Exec 01M8CDTEVT). Lead clear to build, under the standing grant, on Arch's validation (plain `chown`, not `-R`) and HOST's read. Served row waits on Step E | 1 / 2 (11-26 10:27): landed `e907690603`, staging's check-system says the folder is writable; row 2 (an ingest survives a deploy) needs the operator CLI on the host, so xian's hand plus Step E (Lead 01M8CHJ45K) |
 
 ### Item 9 (2244): answered yes by xian 11-26; the question as it was put
 
