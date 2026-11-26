@@ -268,13 +268,13 @@ class TestDeployFiles:
         script = (REPO / "deploy/docker-entrypoint.sh").read_text()
         code = [ln.strip() for ln in script.splitlines() if not ln.strip().startswith("#")]
         assert 'mkdir -p "$PIPER_DATA_DIR"' in code
-        assert 'chown piper:piper "$PIPER_DATA_DIR"' in code
+        assert 'chown -h piper:piper "$PIPER_DATA_DIR"' in code
         assert not any(re.search(r"chown\s+-\w*R.*PIPER_DATA_DIR", ln) for ln in code)
 
     def test_entrypoint_prepares_it_as_root_before_dropping_privileges(self):
         script = (REPO / "deploy/docker-entrypoint.sh").read_text()
         root_block = script[script.index('if [ "$(id -u)" = "0" ]') : script.index("exec setpriv")]
-        assert 'chown piper:piper "$PIPER_DATA_DIR"' in root_block
+        assert 'chown -h piper:piper "$PIPER_DATA_DIR"' in root_block
 
     def test_entrypoint_runs_exactly_the_commands_we_expect_as_root(self):
         """The root phase is a deploy-path surface (xian's yes, 2026-11-26, covered
@@ -290,7 +290,7 @@ class TestDeployFiles:
             'mkdir -p "$UPLOAD_DIR"',
             'chown -R piper:piper "$UPLOAD_DIR"',
             'mkdir -p "$PIPER_DATA_DIR"',
-            'chown piper:piper "$PIPER_DATA_DIR"',
+            'chown -h piper:piper "$PIPER_DATA_DIR"',
         ]
 
     def test_entrypoint_never_prepares_the_root_through_a_symlink(self):
@@ -301,7 +301,8 @@ class TestDeployFiles:
         block = script[script.index(guard) :]
         block = block[: block.index("\n    fi\n")]
         assert (
-            'mkdir -p "$PIPER_DATA_DIR"' in block and 'chown piper:piper "$PIPER_DATA_DIR"' in block
+            'mkdir -p "$PIPER_DATA_DIR"' in block
+            and 'chown -h piper:piper "$PIPER_DATA_DIR"' in block
         )
 
     def test_the_guard_behaves_as_written(self, tmp_path):

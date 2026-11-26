@@ -33,9 +33,11 @@ if [ "$(id -u)" = "0" ]; then
     # Never through a symlink (HOST, 2026-11-26): root must not hand whatever
     # a link points at to the app user. A linked path is left alone; the boot
     # probe (DocumentIndexProbePhase) reports whether the app can write it.
+    # -h (Arch, 2026-11-26): if a link ever got past the guard, chown would
+    # change the link, never what it points at.
     if [ -n "${PIPER_DATA_DIR:-}" ] && [ ! -L "$PIPER_DATA_DIR" ]; then
         mkdir -p "$PIPER_DATA_DIR"
-        chown piper:piper "$PIPER_DATA_DIR"
+        chown -h piper:piper "$PIPER_DATA_DIR"
     fi
     exec setpriv --reuid=piper --regid=piper --init-groups --inh-caps=-all "$@"
 fi
