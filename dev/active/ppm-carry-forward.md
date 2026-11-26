@@ -1052,3 +1052,4 @@ Brake FIRED (second slip = #1965 admission, found and ledgered 10-09). Memo to E
 - **Rules carried:** unchanged from the superseded block above.
 
 - **Production 330** (11-26 `06:37` START): #2439 (user 'what changed' note, F12) placed in Dist; not a PDR-009 row (plan, not gate); Exec told 01M8C4KBPJ, gate row is xian's if wanted. Map v210. Roadmap v19.3 (Current Position) re-folded at the 11-26 mail wake on Docs' audit #2422. Sprint 3 sits on xian's card (Exec); Thanksgiving, no new asks.
+- 11-26 09:22: xian ratified the sprint 3 focus and 2244 (dates open; Exec 01M8CDTEVT); 2438 is length-only (Exec 01M8CDTHCC). Rows rewritten, and the sprint 3 draft updated.
