@@ -74,7 +74,7 @@ class SystemCheckResponse(BaseModel):
     docker_available: bool = Field(description="Docker installed and running")
     postgres_ready: bool = Field(description="PostgreSQL accessible on port 5433")
     redis_ready: bool = Field(description="Redis accessible on port 6379")
-    chromadb_ready: bool = Field(description="ChromaDB accessible on port 8000")
+    chromadb_ready: bool = Field(description="Document index folder writable by the app (#2244)")
     temporal_ready: bool = Field(description="Temporal accessible on port 7233 (optional)")
     database_migrated: bool = Field(
         default=False, description="Database schema is up to date (migrations applied)"
@@ -304,20 +304,22 @@ async def check_redis() -> bool:
 
 
 async def check_chromadb() -> bool:
-    """Check ChromaDB connectivity.
+    """Check the document index the app actually uses (#2244).
 
-    Reads CHROMADB_HOST / CHROMADB_PORT from env. Defaults to 'chromadb:8000'
-    when running inside Docker (service name), 'localhost:8000' for local dev.
+    The app's only Chroma client is in-process (``DocumentIngester``'s
+    ``PersistentClient``); nothing in the app connects to a Chroma server. Until
+    #2244 this check probed a server port (CHROMA_HOST / CHROMADB_HOST), so it
+    could pass with an unwritable store and fail with a working one. It now asks
+    whether this process can write the store's folder, and logs the path.
     """
-    # Fly names it CHROMA_HOST/CHROMA_PORT (fly.toml [env]) — honor both spellings.
-    if os.getenv("CHROMA_HOST"):
-        return await check_service_port(
-            os.getenv("CHROMA_HOST"), int(os.getenv("CHROMA_PORT", "8000"))
-        )
-    default_host = "chromadb" if _IN_DOCKER else "localhost"
-    host = os.getenv("CHROMADB_HOST", default_host)
-    port = int(os.getenv("CHROMADB_PORT", "8000"))
-    return await check_service_port(host, port)
+    from services.infrastructure.data_paths import check_document_index_writable
+
+    ok, message = await asyncio.to_thread(check_document_index_writable)
+    if ok:
+        logger.info("document_index_writable", detail=message)
+    else:
+        logger.error("document_index_not_writable", detail=message)
+    return ok
 
 
 async def check_temporal() -> bool:
@@ -464,7 +466,7 @@ async def check_system():
     Verifies Docker installation and checks connectivity to all required services:
     - PostgreSQL (port 5433) - required
     - Redis (port 6379) - required
-    - ChromaDB (port 8000) - required
+    - Document index (the in-process Chroma store's folder is writable) - required
     - Temporal (port 7233) - optional
 
     Returns:
