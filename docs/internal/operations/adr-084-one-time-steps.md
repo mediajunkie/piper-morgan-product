@@ -361,11 +361,21 @@ What the row must hold, whatever the path:
 - **If it fails:**
   - **claude.ai refuses a second connector at the same URL:** stop and tell Exec. Don't remove your own connector to make room. This is the one-try test (ADR-084 open item); the fallback is Arch's.
     - **Result, 2026-11-26 `12:11`: refused.** claude.ai said "A connector with this URL already exists in your organization. Use the existing connector instead of adding it again." Nothing was added.
-    - **Arch's fallback (`01M8CQYRW4…`, order `01M8CR4GRE…`): (c), then (b), then (d).** A distinct URL (a) is rejected.
+    - **Arch's fallback order (`01M8CR7F1S…`, superseding `01M8CQYRW4…` and `01M8CR4GRE…`): (a) once, then (c) on xian's yes, then (b), then (d).**
   - **403 on the consent page:** part 1 didn't stick. Run `fly ssh console -a piper-morgan -C "python /app/scripts/mcp_allow.py list"` and check the seat account is listed.
   - **The consent lands on your own account** (PA's profile read names you): remove only **Piper Morgan (seat)**, sign out of Piper, and repeat part 2.
 
-**Part 2 (c): Claude Code as the client, instead of the claude.ai connector** (ruled 2026-11-26 by Arch; PA wrote this)
+**Part 2 (a): the same URL with a query string, tried once** (Arch `01M8CR7F1S…`, 2026-11-26; PA wrote this)
+
+The seat's token stays inside claude.ai, so no keychain question comes up.
+
+- **Paste:** in claude.ai, Settings, Connectors, **Add custom connector**: name `Piper Morgan (seat)`, URL `https://mcp.pipermorgan.ai/mcp?client=seat`. Same host and path; nothing changes on the server.
+- **Then:** exactly part 2's Then line. Sign in on Piper's page as seat-github-1, in a private window or the separate profile, signed out of Piper as yourself, and press Allow.
+- **It passes only if all three hold:** the consent page is Piper's own; PA's `piper://me/profile` through the new connector names seat-github-1; your own **Piper Morgan** connector still answers as you. Then PA's seat check as written, and part 3 as written.
+- **On any failure** (claude.ai refuses it, the connect errors, or the profile names you): remove **Piper Morgan (seat)** in claude.ai at once, so no half-working connector stays in your org, and go to (c) on your yes.
+- **Unverified:** whether claude.ai's duplicate check treats a query string as a different URL, and whether the server's `/mcp` route and its OAuth flow accept one. `oauth_provider.py` stores the resource per grant (line 466); PA found no exact-match check on it.
+
+**Part 2 (c): Claude Code as the client, only if (a) fails** (ruled 2026-11-26 by Arch; PA wrote this)
 
 What parts 2 and 3 prove is server-side: the hosted MCP answers as the account that consented, and an allowlist removal cuts off a live connection. Any OAuth MCP client runs the same server code, and xian's own connector already proves the claude.ai path.
 
