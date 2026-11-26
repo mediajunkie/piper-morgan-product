@@ -2235,3 +2235,4 @@ issue	state	milestone	sprint	title	labels	blocked_by	state_reason
 2447	OPEN	Production		Guidance replies claim first-hand experience ('patterns I've seen'); the attention reply doesn't say an account has no projects			
 2448	OPEN	Production		Close/reopen gate arms a yes/no when it couldn't check (resolver or read raises)	architecture		
 2449	OPEN	Production		Beta /health should show the GitHub App refresh job's last pass (counts only)	architecture		
+2450	OPEN	Production		Close/reopen gate arms a yes/no when there's no signed-in account	architecture		
