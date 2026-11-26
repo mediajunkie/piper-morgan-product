@@ -1,6 +1,6 @@
 # CIO install batch, 2026-11-22: the `~/.piper-shared` denies for every seat
 
-**Status: ready.** HOST read it and Arch approved it (11-22). Exec puts it on xian's card.
+**Status: done, 2026-11-26.** xian ran it at 10:17 (`added 6 deny rule(s); 2 were already there`, Exec 01M8CH9224). Two refusals read: CIO's Read of another seat's `settings.local.json` (10:22) and Web's Read of its own profile's `Last Version` (10:27, Web 01M8CHRWYS), both `File is in a directory that is denied by your permission settings.` No restart was needed: Web's session dated from 06:18. Not covered: a Bash `cat` of the same path, and the other five deny forms. Earlier status: ready (HOST read it, Arch approved it, 11-22).
 
 **Why:** on 11-22 at 09:20, Web's seat read a file inside its own browser profile folder (`~/.piper-shared/seat-browser-credential-profile-web/Last Version`) and was not refused. CIO's seat was refused on the same file. The profile folder holds the seat browser's beta session cookie. The `~/.piper-shared` Read denies lived in each seat's own git-ignored settings, and Web's has none that matches. This patch puts them in the one settings file every PM seat shares.
 
