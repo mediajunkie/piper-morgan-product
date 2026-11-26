@@ -20900,9 +20900,10 @@ Add any additional information here.
                 # such issue" reply directly, nothing armed. Nothing armed
                 # on a resolution failure that definitively proves the
                 # issue doesn't exist (or that it's already in the
-                # requested state); any ambiguity (repo unresolvable,
-                # GitHub not connected, the read erroring) falls back to
-                # EXACTLY today's generic arm inside the builder itself.
+                # requested state). Issue 2446: GitHub not connected (or any
+                # other credential degrade) is answered first, nothing armed.
+                # Other ambiguity (repo unresolvable, an unparseable read) falls
+                # back to EXACTLY today's generic arm inside the builder itself.
                 _cr_gate = await build_close_reopen_confirmation(intent, self, workflow_id)
                 if _cr_gate.passthrough_result is not None:
                     _cr = _cr_gate.passthrough_result
