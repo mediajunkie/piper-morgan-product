@@ -2,7 +2,7 @@
 type: briefing
 title: BRIEFING-CURRENT-STATE.md - Where We Are Right Now
 valid_from: "2025-09-30"
-last_updated: 2026-11-25
+last_updated: 2026-11-26
 last_verified: 2026-10-27
 size_cap_bytes: 12000
 ---
@@ -27,7 +27,7 @@ log, never here. Bump `last_updated` to the newest line's date, or CI fails. Ski
 
 ## Now
 
-- **Beta, current build** *(Lead, 2026-11-25 13:51 PST, `curl https://beta.pipermorgan.ai/health`)*: healthy, git_sha `cf3486389e` (promoted 11-25 13:50): one password rule set at sign-up, reset and change, stated whole on both pages (#2438). Earlier 11-25: #2437 degraded close/reopen says why; #2433 admin-only pages; #2434 toasts; #2399 said-instead replies.
+- **Beta, current build** *(Lead, 2026-11-26 11:48 PST, `curl https://beta.pipermorgan.ai/health`)*: healthy, git_sha `cd26a9b2e4` (promoted 11-26 11:48): passwords are length-only, 15 characters to 72 bytes (#2438, xian's ruling 11-26); the document index and Slack spatial memory are on the volume and survive a deploy (#2244). Earlier, 11-25: #2437, #2433, #2434, #2399.
 - **Beta (live; alpha 301s to beta.pipermorgan.ai since 11-05 12:47, #2282)** *(Lead, 2026-11-15 17:23 PST, `curl https://piper-morgan.fly.dev/health`)*: healthy, version 0.9.0.0, git_sha `460b837a47` (promoted 11-15 17:22, run 43785729116, on Arch's grant; Tests green on that commit; `redis: ok`). New in this build, no migration: on a GitHub App connection the issue and pull-request reads cover only the repositories the app is installed on (#2374; the connector half also needs xian's MCP deploy, still on `4666e38493`), no personal-token form on an App-connected account and a stored token shown with Remove (#2376), the GitHub card names its way to the install step and Settings links to the repository section (#2375). Their served rows are open. From `ddd3d49240` (11-15 09:08, run 43739113185, on Arch's grant; Tests green on `a62240fe78`; `redis: ok`). New in this build, no migration: redis 5.0.8 so an unreachable Redis fails at once (#2370), the alembic-only setup wizard (#2372), the bounded counter write (#2373). From `4f75863c48` (11-15 07:44, run 43731273625, on xian's word; migration `v2327floored`): the floored-action counter with its read gate and the admin-only Account flags page (#2327), the archive pick's created date (#2271), the todo cap line, the Anthropic subscription sentence (#2274), the no-reminders statement (#2294), the wizard's repo line (#2268), the promote gate's deploy-path change (#2363). Their served rows are open. From `81d149ac86` (11-13 16:34): #2366, #2367, #2368. Earlier builds: `docs/internal/architecture/decisions/briefing-current-state-history.log`.
   (promotion 1 of 2 today). It carries Monday's finds: #2093, #2091, #2092 (calendar in chat), #2094, #2095 (todos), #2096 (`/feedback`), #2097 (create confirmed by number), #2099 (mint refreshes),
   #2100 (what chat reads), #2102, the DB pool pre-ping, the #2101 bounds and the Alpha Health Watch. Slot 2 (same day, from a green Tests on `1cb1e79dc1`) adds the #2101 thread surface,
