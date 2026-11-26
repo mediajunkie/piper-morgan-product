@@ -9,13 +9,15 @@ scaffold-by: Comms, 2026-11-26
 
 # What changed: first entry (SCAFFOLD, for xian's words)
 
+**Recommendation (Comms and CXO, agreed 2026-11-26; xian can overrule here):** one entry for 10-31 to 11-25, grouped as below, with the couldn't-check group first. After it, one dated entry per promotion that changes something a user sees, newest on top. One page, linked from Account Settings (that link is the acceptance row), with the same page on the site. Publishes at the public beta (F12 as xian approved it 10-24, Exec 01M8C4A3V2).
+
 **What this is.** Facts for the first entry of a user-findable release note (issue 2439, from F12 in the 10-23 Production map review; gate: public beta). It isn't prose. xian picks the lines and words them; Comms fact-checks the result. Where it lives and how users reach it are Web's and CXO's call.
 
 **Reader.** A beta user who last used Piper a few weeks ago. What would they notice?
 
 **Sourcing.** Every line below comes from the beta build line in `docs/briefing/BRIEFING-CURRENT-STATE.md` at the briefing commit named, read at that commit, plus the issue title. Comms checked 6 of the cited commits against their lines on 11-26 and all 6 matched. Comms then checked all 31 issue-to-line pairs used below: 31 of 31 match. The full list (63 user-visible issues, 22 excluded) is summarized in the 11-26 Comms log.
 
-**Before anything goes out: a served check on every line used.** Each row says what its build line said about a signed-in check: **read served**, *not checked yet*, or *silent*. Only 2415, 2416, 2418 and 2419 have a recorded served read. Every line xian keeps gets a served check first (Comms asks Web for the signed-in reads, or reads it in the seat browser). That's the rule for public copy: claim only what the product does today, checked where users see it.
+**Before anything goes out: a served check on every line used.** Each row says what its build line said about a signed-in check: **read served**, *not checked yet*, or *silent*. Only 2415, 2416, 2418, 2419 and 2438's reset page have a recorded served read. Re-check served status when drafting, since the build lines move (Exec). CXO judges each kept line on a served quote. Every line xian keeps gets a served check first (Comms asks Web for the signed-in reads, or reads it in the seat browser). That's the rule for public copy: claim only what the product does today, checked where users see it.
 
 **Copy holds that apply.** No data-ownership claim (PDR-102). No backup or data-safety claim (#2157 is open). Invitations are on hold (PDR-008), so this goes to users who already have access, through HOST's Readiness lane if it's mailed at all.
 
@@ -32,7 +34,7 @@ Suggested heading idea only: "When Piper can't check, it says so."
 | A failed GitHub read is said once, with one cause, not repeated in different words | 2417 | 11-22 | d65a32983e · line: not read signed in yet |
 | If the GitHub connection has gone stale, chat says what to do next instead of a success-styled message | 2188 | 11-04 | 5fab886b61 · line silent |
 | Closing or reopening an issue when GitHub can't be reached says why and doesn't ask a question it can't act on | 2437 | 11-25 | 1f097d6494 · line silent |
-| When Piper answers with words instead of making a change, it no longer records that as done | 2399 | 11-25 | 68c08bf8c9 · line silent |
+| When Piper answers with words instead of making a change, it no longer records that as done. *(Its own sentence: a different fact from "couldn't check", CXO 01M8C4B4E4.)* | 2399 | 11-25 | 68c08bf8c9 · line silent |
 | Asking how a project is going with GitHub down gets one GitHub line plus the project's todos, not a guess | 2415, 2416 | 11-23 | 73f5462725 · **read served** (e1a803b8ba) |
 | "What integrations do I have?" names only what this beta offers. Slack and Notion aren't offered as available | 2418, 2419, 2245 | 11-22 (2245 from 11-01) | 4ac9cbc159, 2511ab06f7 · **read served** for 2418, 2419 (64237d7642); 2245 line silent |
 
@@ -61,7 +63,7 @@ Suggested heading idea only: "When Piper can't check, it says so."
 
 | What a user notices | Issue | On beta from | Briefing source · what the line says about a served check |
 |---|---|---|---|
-| One password rule at sign-up, reset and change, stated in full on the page | 2438 | 11-25 | 022b7ab879 · line silent |
+| One password rule at sign-up, reset and change, stated in full on the page | 2438 | 11-25 | 022b7ab879 · **reset page read served** (Web 01M8AB532Z, 11-25, beta `cf3486389e`); sign-up and change pages not read |
 | Account Settings shows your email | 2259 | 11-04 | 1dd5e261d9 · line silent |
 | The beta's address is beta.pipermorgan.ai; the old alpha address forwards there | 2282 | 11-05 | a946e416b9 · line silent |
 | Refused requests show a plain page or sentence, not raw server text | 2431, 2432, 2433 | 11-24 to 11-25 | 8fd8546ab6, dfb970c177, 68c08bf8c9 · line silent |
@@ -81,8 +83,8 @@ The build line itself says these weren't checked by a signed-in user yet, or the
 - 2315, 2316 (todo picks by name): line says only "go out in the 07:00 window" on 11-07; no later line confirms the promotion.
 - 2333, 2367, 2368, 2386, 1551, 2283, 2288: the line's wording is too thin to say what a user sees.
 
-## Questions for xian
+## Settled 2026-11-26 (no question for xian)
 
-1. Audience and timing: publish the note only at the public beta (F12's gate), or give current beta users this first entry now?
-2. Shape: one entry for the whole window, grouped as above, or dated entries per week?
-3. Voice: does the honesty group lead? Users would feel it most, and it's the Production sprint's point.
+1. Timing: at the public beta, per xian's 10-24 approval of F12 (Exec 01M8C4A3V2). Under the invite hold there are no new beta users to tell.
+2. Shape and 3. lead: Comms and CXO's recommendation, at the top of this file.
+4. Served checks: they start when the public-beta date is near and xian has picked his lines, not now (Exec).
