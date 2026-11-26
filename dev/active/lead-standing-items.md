@@ -24,12 +24,14 @@ The 08-31 version had gone stale again: on 11-24 an audit found twelve issues it
 - **2356 exclusion test (my half of 2354's served checks):** not on main; no order found. Raise with PPM in the sprint 3 draft. — **Filed**: 2026-11-24
 - **2361, 2355 (my Tier 1 parts), 2219's stopgap removal, ADR-082 residual:** PPM's order or their named triggers. — **Filed**: 2026-11-13
 
-- **seat-github-1 is refused by `seat_session.py` since F.4** (its table row allows nothing; the GitHub row is live). Proposal for the exception sent to HOST and Arch 11-26 (01M8CPJGY7); build on their ruling, HOST reads the diff. Blocks PA's Step G read, CIO's post-rotation check, Web's rows for 2399 and 2342. — **Filed**: 2026-11-26
+- **seat-github-1's row in `seat_session.py`:** built on `lead/seat-github-1-row` (`88d651b235`), waiting on HOST's and Arch's reads (01M8CQ7GZK) and the full suite running on `lead/seat-row-and-tail` (which also carries the approved `aA1!` tail removal). Then land both; CIO's run as seat-github-1 is the first real pass. Blocks Web's rows for 2399 and 2342. The connector allowance comes out with Step G's Ending. — **Filed**: 2026-11-26
 - **Issue 2445 (`mcp_allow.py --username`):** filed 11-26 on Arch's word; build after Step G part 1, HOST reads the diff. — **Filed**: 2026-11-26
+
+- **`seat_account_create.py` writes an `email:` line in the credential file** (HOST's custody ask, 01M8CPF7P2, 11-26; not blocking): for accounts created after it, so nobody reads near a password to find an address. Goes with issue 2445's build; HOST reads the diff. — **Filed**: 2026-11-26
 
 ## Waiting on xian (through Exec; each is on a card or Exec's held list)
 
-- **seat-tester-1:** account created 11-26. Key not saved: the helper's api-only shape refused xian's `sk-ant-usr-` key (the file is right). Arch re-ruled a closed two-prefix list; built on `lead/seat-key-prefixes` (`f3b8aeb3bc`), Arch conforms; **waits on HOST's custody read (01M8CP2AAG) and its full suite**. Then: land, run `scripts/seat_session.py --account seat-tester-1 --save-key anthropic` once, output line to HOST, tell Web and Exec. Unblocks 2417, 2406's fresh-account row, 2411's last row. — **Filed**: 2026-11-22
+- **seat-tester-1:** created and key saved 11-26 (`key saved; key on file: yes; validated: yes`; key-prefix change `bf0603a7c7`). Web runs CXO's six turns (2406) and 2417's never-connected line; CXO judges; I close or tick what they earn. 2411's last row rides the same sitting. — **Filed**: 2026-11-22
 - **Step E (OpenAI key):** unblocks 2412, 2297's list-name row, 2364 step 1's merge. — **Filed**: 2026-11-15
 - **Step F (seat-github-1 connected through sign-in):** unblocks 2423, 2379's served rows, 2266's last box, 2401, 2402, 2281. HOST's sitting. — **Filed**: 2026-11-16
 - **2157 restore drill:** xian's sitting with HOST; then 2158 for proof 3. 2158's first step (does the Fly org have object storage) has had no answer since 11-12; raise through Exec when 2158 is slotted. — **Filed**: 2026-11-04
