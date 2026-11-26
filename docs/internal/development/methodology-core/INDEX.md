@@ -147,6 +147,7 @@ last_updated: "2026-10-05"
 - [56-CONCEPT-AND-MECHANISM-POINT-AT-EACH-OTHER.md](methodology-56-CONCEPT-AND-MECHANISM-POINT-AT-EACH-OTHER.md) - A Concept and Its Mechanism Point at Each Other: every mechanism names the doc that says why it exists, the doc names it back, and `scripts/check-concept-links.py` checks both (Emerging, CIO, 2026-10-14)
 - [57-AN-ALARM-NEEDS-A-READER.md](methodology-57-AN-ALARM-NEEDS-A-READER.md) - An Alarm Needs a Reader: a detector isn't finished until its output has a named reader at a named time through a named step; a flag nobody reads works the same as no flag (Emerging, CIO, 2026-10-31)
 - [58-THE-PERSONS-STATE-IS-NOT-SCRATCH.md](methodology-58-THE-PERSONS-STATE-IS-NOT-SCRATCH.md) - The Person's State Is Not Scratch: what agents run on a person's machine reaches that person's keychain, database and containers unless the harness gives the run its own; isolation is the default, not a rule each seat remembers (Emerging, CIO, 2026-11-16)
+- [59-A-STEP-FOR-A-PERSON-NAMES-WHAT-IS-THERE.md](methodology-59-A-STEP-FOR-A-PERSON-NAMES-WHAT-IS-THERE.md) - A Step for a Person Names What Is There: open each thing a step for a person names (a file's lines, the served page, the governing rule) before it goes on the card; a person who can't find it does the nearest plausible thing (Emerging, CIO, 2026-11-26)
 
 ### Historical / absorbed files (intentionally not indexed as live methodology)
 
