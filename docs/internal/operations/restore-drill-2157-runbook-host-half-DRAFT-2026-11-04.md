@@ -16,6 +16,8 @@ Design partners were told "Your account and your work will carry over" (T9, 10-2
 
 ## HOST's part
 
+- **Added 2026-11-26 (#2244):** once the document index sits on the volume (`PIPER_DATA_DIR`, `/data/piper`), a volume snapshot or restore carries people's document chunks. The drill's proofs and handling name the index with uploads and Postgres: nothing printed from it beyond counts, and a restored copy is destroyed in the same sitting.
+
 - **Before:** ask xian for a window (one sitting, length to be set when Lead's lines exist). Confirm alpha is quiet. Record in the log: who (xian types, HOST logs), when, why (#2157).
 - **During:** read each output as xian pastes it. Stop at the first unexpected line and say so. Do not improvise a line that is not in Lead's list.
 - **Proofs, in this order** (the commands are Lead's):

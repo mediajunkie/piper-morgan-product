@@ -19,6 +19,10 @@
 
 (5 is Lead's figure. The GitHub sentence comes out when #2178 lands. Lead's data half also lists what the purge does not reach: GitHub's own copies, application logs, and the MCP app's state, which is unverified.)
 
+## Added 2026-11-26 (#2244)
+
+Once the document index sits on the volume (`PIPER_DATA_DIR`), `erase_user.py` clears the live index only. A volume snapshot keeps a copy of that person's chunks until it ages out. What the person is told must not say the document index is gone everywhere on the day of the erase; it says snapshots expire on Fly's retention schedule (the days figure is xian's to confirm from the volume's settings; unverified here).
+
 ## Not decided here
 
 Whether in-product deletion replaces this later (that stays Production), and whether identity check needs more than the account address.
