@@ -56,5 +56,8 @@ All closed by 11-26 START except the prog subagent log (no STOP cycle; not chase
 - Before re-asking xian anything, grep decisions.log for it (11-23: Janus nearly re-asked three questions he had settled 11-20, because my review page never marked them answered).
 - At STOP: rewrite this file, list the other seats' closes, and close the log with `<!-- DAY-CLOSED: YYYY-MM-DD -->` as its last line.
 
+## Later with xian (not blocking)
+- **Document model review** (xian 11-26): "perhaps later we can review the document model and how it's been implemented so far (nonblocking at the moment but I want to make sure we are heading where I expect)". It is with Arch (01M8CEG8HC) for a starting doc. Offer it when sprint 3 has room. The scale-trigger answer from Arch goes on his card.
+
 ## Owed rows (owed-scan)
 - key: 1715-review. Filed: 2026-10-31. Issue 1715 closed (CIO 11-06). Walk it on xian's talk list only if he wants it.
