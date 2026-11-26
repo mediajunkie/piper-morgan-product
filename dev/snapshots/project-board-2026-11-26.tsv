@@ -2227,3 +2227,5 @@ issue	state	milestone	sprint	title	labels	blocked_by	state_reason
 2438	OPEN	Production		Password rules differ between account creation and reset, and the reset page states only the length	bug		
 2439	OPEN	Production		What changed: a user-findable release note for beta users (F12, publishes at the public beta)			
 2440	OPEN	Production		Retire the server-shaped Chroma pieces after 2244 (compose service shares the app's store folder)	architecture		
+2443	OPEN	Production		The Documents page accepts .docx uploads that Piper can't read; summarize and analyze answer 'unsupported'			
+2441	OPEN	Production		Start script: root's chown -R over /data/uploads may follow app-owned symlinks (measure, then guard)	architecture		
