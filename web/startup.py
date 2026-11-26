@@ -129,14 +129,14 @@ class DocumentIndexProbePhase:
     async def startup(app) -> None:
         from services.infrastructure.data_paths import check_document_index_writable
 
-        ok, message = check_document_index_writable()
+        ok, probe_line = check_document_index_writable()
         app.state.document_index_writable = ok
         if ok:
-            print(f"✅ Document index: {message}", flush=True)
-            logger.info("document_index_writable", detail=message)
+            print(f"✅ Document index: {probe_line}", flush=True)
+            logger.info("document_index_writable", detail=probe_line)
         else:
-            print(f"🔴 Document index: {message}", flush=True)
-            logger.error("document_index_not_writable", detail=message)
+            print(f"🔴 Document index: {probe_line}", flush=True)
+            logger.error("document_index_not_writable", detail=probe_line)
 
 
 class SchemaValidationPhase:

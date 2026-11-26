@@ -314,11 +314,11 @@ async def check_chromadb() -> bool:
     """
     from services.infrastructure.data_paths import check_document_index_writable
 
-    ok, message = await asyncio.to_thread(check_document_index_writable)
+    ok, probe_line = await asyncio.to_thread(check_document_index_writable)
     if ok:
-        logger.info("document_index_writable", detail=message)
+        logger.info("document_index_writable", detail=probe_line)
     else:
-        logger.error("document_index_not_writable", detail=message)
+        logger.error("document_index_not_writable", detail=probe_line)
     return ok
 
 
