@@ -2,9 +2,9 @@
 
 The 08-31 version had gone stale again: on 11-24 an audit found twelve issues it named already closed, eight more closeable, and three asks never sent. **Rule for this file: at every START, open the source of each row (issue, mail, decisions.log) and check the next action is whose the row says, and that they were asked.** Check each part of a row separately; a part with no blocker can hide in a row that has one. This file cites no issue state: GitHub holds that.
 
-## Mine now (no blocker)
+## Mine when slotted (checked 11-25 21:46: nothing here is unblocked)
 
-- **2352 box 3 (Arch ruled 11-24):** `keys add` keeps its name and calls `local_key_setup.py`'s store path; no separate keychain write. Box 4 (the wizard reading keys from the environment) was not put to Arch. Placed in D, no sprint: ask PPM for a slot with 2399. — **Filed**: 2026-11-24
+- **2352 box 3 (Arch ruled 11-24):** `keys add` keeps its name and calls `local_key_setup.py`'s store path; no separate keychain write. Box 4 (the wizard reading keys from the environment) was not put to Arch. Placed in D, no sprint. PPM's sprint 3 draft (11-25) lists box 4 under Arch's rulings "if the local key commands are slotted"; the slot is xian's through that draft. — **Filed**: 2026-11-24
 
 ## Waiting on a named seat (each was asked; mail id given)
 
@@ -17,7 +17,7 @@ The 08-31 version had gone stale again: on 11-24 an audit found twelve issues it
 - **2391:** rows 1 and 2 ticked (Arch's option A: no second counter). Row 3 ticks now that 2390 is on main; row 4 (amended) waits on the counter-read allow. — **Filed**: 2026-11-24
 - **2282 box 4:** `seat_read.py --redirect-uri setup-calendar` is on main (`320f6c42d4`). Next: CIO writes the allow line, xian adds it on an open card, Web runs it once. `beta.` → xian's removal line; `alpha.` → a host-secret fix first. — **Filed**: 2026-11-24
 - **2384:** job on main (`8ac5c8e267`); Step H READY (CIO). Waits on xian's token (card row 7: environment `mcp` limited to main, token as an environment secret), HOST's names-only read, then **my first dispatch deploys 2382** and PA reads its row 4 that hour. — **Filed**: 2026-11-24
-- **2399 and 2244:** candidates in PPM's sprint 3 draft (11-25). 2399 builds to Arch's 11-24 split (`ask.armed`, new kind `ALREADY_IN_STATE`; send the consumer list of `success` with the diff). 2244: PPM wants the exact deploy-path question for xian (what the `fly.toml` mount changes; whether it needs a deploy outside the standing grant). **I owe PPM that question.** — **Filed**: 2026-11-24
+- **2244:** item 9 of PPM's sprint 3 draft (`docs/internal/planning/production-sprint-3-draft-2026-11-25.md`), which carries the deploy-path question for xian (two lines in the root-run `deploy/docker-entrypoint.sh`; no new mount; Arch: a plain `chown`). Waits on xian's yes via Exec; the served row then waits on Step E. 2399 left this row 11-25 (landed; see its served-box row below). — **Filed**: 2026-11-24
 - **2424:** built (`lead/2424-list-project-arg-r1123`, `ce244d7fca`), held on Arch's trigger (a main-arm router sample or served log line with `list_todos_query` and a `project` arg). Fresh rebase and full suite at landing. — **Filed**: 2026-11-23
 - **2425, 2426:** PPM's sprint 3 slot and Arch's choice of lever. — **Filed**: 2026-11-23
 - **2281:** owner Web, trigger Step F (PPM, 11-24). Nothing of mine. — **Filed**: 2026-11-24
