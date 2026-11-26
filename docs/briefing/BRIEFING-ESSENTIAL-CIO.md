@@ -114,7 +114,7 @@ The discipline: protect time for pattern-discovery + methodology audit. Let work
 > it goes stale (it did, May → Oct 2026).
 
 **Standing lanes (as of 2026-10-26)**:
-- **Methodology corpus**: `docs/internal/development/methodology-core/` (m-00 … m-57, index
+- **Methodology corpus**: `docs/internal/development/methodology-core/` (m-00 … m-59, index
   `INDEX.md`). Entries come from incidents, not sweeps. The most-used in practice: m-43 (name the
   layer), m-44 (clear is not a measurement), m-36 (mechanism over vigilance). Open zero-citation
   question (~60%): standing item 7a, raised to PM 08-31.
@@ -235,7 +235,7 @@ Ephemeral state lives in `dev/active/cio-carry-forward.md`, durable owed work in
 
 Request additional detail for:
 - **Pattern Catalog**: `docs/internal/architecture/patterns/` (see CURRENT-STATE for count)
-- **Methodology Docs**: `docs/internal/development/methodology-core/` (72 .md files, m-00 to m-57, with `INDEX.md`; canonical home. Counted 2026-11-06)
+- **Methodology Docs**: `docs/internal/development/methodology-core/` (74 .md files, m-00 to m-59, with `INDEX.md`; canonical home. Counted 2026-11-26)
 - **Excellence Flywheel** (canonical, v2.0): `docs/internal/development/methodology-core/methodology-00-EXCELLENCE-FLYWHEEL.md`
 - **Session Logs**: `dev/YYYY/MM/DD/` (raw material for patterns)
 - **Omnibus Logs**: `docs/omnibus-logs/` (synthesized daily work)
