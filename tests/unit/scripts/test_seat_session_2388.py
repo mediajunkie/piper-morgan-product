@@ -512,7 +512,10 @@ def test_the_second_account_is_listed_with_its_closed_row(ss):
     }
     assert second.github_login == "atswimtwobirds"
     assert second.max_oauth_connectors == 1
-    assert not second.provider_keys and second.connectors is False
+    # HOST 01M8CT906X, xian via Exec 01M8CTPKT8 (2026-11-26): the test workspace's
+    # Anthropic key and no other provider's.
+    assert second.provider_keys == frozenset({"anthropic"})
+    assert second.connectors is False
 
 
 def test_no_other_account_gained_a_login_or_a_connector(ss):
@@ -784,10 +787,45 @@ def test_an_admin_seat_still_refuses(ss):
         _check_seat_gh(ss, _seat_gh_host(ss, github=_live(), admin=200))
 
 
-def test_a_provider_key_on_the_seat_still_refuses(ss):
+def test_the_seats_own_anthropic_key_passes(ss):
+    """HOST 01M8CT906X (2026-11-26): without a model key chat refuses every turn, so no
+    GitHub-connected chat reply could be read on this account."""
     keys = json.dumps([{"provider": "anthropic"}]).encode()
+    _check_seat_gh(ss, _seat_gh_host(ss, github=_live(), keys=keys))
+
+
+@pytest.mark.parametrize(
+    "rows",
+    [
+        [{"provider": "openai"}],
+        [{"provider": "anthropic"}, {"provider": "openai"}],
+        [{"provider": "gemini"}],
+        [{"provider": None}],
+        ["anthropic"],
+    ],
+    ids=["openai", "anthropic and openai", "gemini", "no provider named", "not a row"],
+)
+def test_any_other_providers_key_on_the_seat_still_refuses(ss, rows):
+    keys = json.dumps(rows).encode()
     with pytest.raises(ss.Refused, match="holds a provider key"):
         _check_seat_gh(ss, _seat_gh_host(ss, github=_live(), keys=keys))
+
+
+def test_the_key_changes_no_other_bound_on_the_seat(ss):
+    """With the key on file: another login, a second connector, a manual token and an
+    admin flag each still refuse."""
+    keys = json.dumps([{"provider": "anthropic"}]).encode()
+    with pytest.raises(ss.Refused, match="not the named login"):
+        _check_seat_gh(
+            ss, _seat_gh_host(ss, github=_live(message="Connected as mediajunkie."), keys=keys)
+        )
+    two = [ONE_CONNECTOR, {**ONE_CONNECTOR, "client_id": "another"}]
+    with pytest.raises(ss.Refused, match="has a connector"):
+        _check_seat_gh(ss, _seat_gh_host(ss, github=_live(), keys=keys, oauth=two))
+    with pytest.raises(ss.Refused, match="has a connector"):
+        _check_seat_gh(ss, _seat_gh_host(ss, github=_live(), keys=keys, manual=[{"label": "x"}]))
+    with pytest.raises(ss.Refused, match="is an admin"):
+        _check_seat_gh(ss, _seat_gh_host(ss, github=_live(), keys=keys, admin=200))
 
 
 def test_the_named_login_refusal_prints_no_server_text(ss, capsys, monkeypatch, tmp_path):
@@ -1325,7 +1363,10 @@ def test_the_third_account_may_hold_an_anthropic_key_and_nothing_else(ss):
     assert third.credential_file == TESTER_CRED and "credential" in third.credential_file
     assert third.provider_keys == frozenset({"anthropic"})
     assert not third.integrations and third.connectors is False
-    assert not ss.ACCOUNTS["seat-github-1"].provider_keys  # the GitHub seat stays bare
+    # Every account's key list is the one provider, never more (the GitHub seat gained
+    # it on 2026-11-26, HOST 01M8CT906X).
+    for name, account in ss.ACCOUNTS.items():
+        assert account.provider_keys <= frozenset({"anthropic"}), name
 
 
 def test_the_key_list_is_one_provider_and_one_file_under_the_fleet_deny(ss):
@@ -1407,7 +1448,7 @@ def test_save_key_refuses_when_a_key_is_already_there_and_sends_nothing(ss, test
     [
         ("xian", "anthropic", "not on the list"),
         (TESTER, "openai", "not on the key list"),
-        ("seat-github-1", "anthropic", "may not hold"),
+        ("seat-github-1", "openai", "not on the key list"),
     ],
 )
 def test_save_key_refuses_off_the_lists_before_any_file_or_call(
@@ -1416,6 +1457,18 @@ def test_save_key_refuses_off_the_lists_before_any_file_or_call(
     host = KeyHost(ss)
     with pytest.raises(ss.Refused, match=reason):
         ss.save_key(account, provider, host)
+    assert host.calls == []
+
+
+def test_save_key_refuses_an_account_whose_row_allows_no_key(ss, tester, monkeypatch):
+    """Every real account's row now allows the one key, so this bound is exercised on a
+    row that allows none (it was read on seat-github-1 until 2026-11-26)."""
+    monkeypatch.setitem(
+        ss.ACCOUNTS, "keyless-for-the-test", ss.Account(credential_file="x-credentials.txt")
+    )
+    host = KeyHost(ss)
+    with pytest.raises(ss.Refused, match="may not hold"):
+        ss.save_key("keyless-for-the-test", "anthropic", host)
     assert host.calls == []
 
 
@@ -1694,7 +1747,9 @@ def test_remove_key_with_no_key_on_file_says_so_and_sends_nothing(ss, tester):
     ],
 )
 def test_remove_key_refuses_off_its_closed_list_before_any_call(ss, tester, account, provider):
-    """``web-seed-1386`` holds a key other served rows depend on; it is not removable."""
+    """``web-seed-1386`` holds a key other served rows depend on; it is not removable.
+    ``seat-github-1`` may hold a key since 2026-11-26 but is NOT on the removable list:
+    HOST's ruling added the key allowance and nothing else."""
     host = DeadKeyHost(ss)
     with pytest.raises(ss.Refused):
         ss.remove_key(account, provider, host)

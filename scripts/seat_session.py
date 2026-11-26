@@ -157,11 +157,19 @@ ACCOUNTS: Dict[str, Account] = {
     # - At most one OAuth connector and no manual token: ADR-084 Step G part 2 adds one
     #   claude.ai connection by design, and Step G's Ending removes it. This allowance
     #   comes out with the Ending.
-    # Still refused: an admin flag, any provider key, a personal token, any other
+    # - An Anthropic key from the `piper-morgan-test` workspace, the same key and the same
+    #   ``--save-key`` path as ``seat-tester-1`` (HOST 01M8CT906X; xian's yes via Exec
+    #   01M8CTPKT8, 2026-11-26). Chat refuses every turn on an account with no model key,
+    #   before any handler runs, so without it no GitHub-connected chat reply could be read
+    #   on this account (Web 01M8CSW3BJ). Three seat accounts now share that workspace's
+    #   $40 monthly limit, which the Console enforces. The key comes off at Step G's
+    #   Ending (``--remove-key anthropic``), or earlier when the account's reads are done.
+    # Still refused: an admin flag, any other provider's key, a personal token, any other
     # integration, a second connector.
     "seat-github-1": Account(
         credential_file="seat-github-1-credentials.txt",
         integrations={"github": GITHUB_LIVE_ROWS | frozenset({GITHUB_DEAD_ROW})},
+        provider_keys=frozenset({"anthropic"}),
         github_login="atswimtwobirds",
         max_oauth_connectors=1,
     ),
