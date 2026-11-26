@@ -247,8 +247,8 @@ class TestAccountCreationAppliesTheSameRule:
 
 class TestEveryPathThatSetsAChosenPasswordAsksTheValidator:
     def test_the_seat_script_makes_a_password_the_rule_accepts(self):
-        """Arch's condition 6 as amended (01M8CECPDT): the tail stays until beta serves
-        this build, so today the password is 47 characters; it must pass either way."""
+        """Arch's condition 6: the script's password (43 characters since the tail was
+        dropped, once beta served the length-only build) passes the rule."""
         import importlib.util
 
         spec = importlib.util.spec_from_file_location(
