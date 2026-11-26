@@ -493,11 +493,310 @@ def test_the_key_exception_names_its_workspace_and_cap(ss):
     assert "piper-morgan-test" in source and "$40" in source
 
 
-def test_the_second_account_is_listed_and_holds_nothing(ss):
+def test_the_second_account_is_listed_with_its_closed_row(ss):
+    """Was "holds nothing" until xian's Step F.4 connect (2026-11-26). HOST's rulings
+    01M8CPKEAQ and 01M8CPMDJ9, Arch's 01M8CPMSV9: GitHub as the one machine login, at most
+    one OAuth connector, and nothing else."""
     assert sorted(ss.ACCOUNTS) == ["seat-github-1", "seat-tester-1", "web-seed-1386"]
     second = ss.ACCOUNTS["seat-github-1"]
     assert second.credential_file == "seat-github-1-credentials.txt"
-    assert not second.integrations and not second.provider_keys and second.connectors is False
+    assert dict(second.integrations) == {
+        "github": frozenset(
+            {
+                ("connected", True, None),
+                ("healthy", True, None),
+                ("failed", True, None),
+                ss.GITHUB_DEAD_ROW,
+            }
+        )
+    }
+    assert second.github_login == "atswimtwobirds"
+    assert second.max_oauth_connectors == 1
+    assert not second.provider_keys and second.connectors is False
+
+
+def test_no_other_account_gained_a_login_or_a_connector(ss):
+    for name, account in ss.ACCOUNTS.items():
+        if name != "seat-github-1":
+            assert account.github_login is None, name
+            assert account.max_oauth_connectors == 0, name
+
+
+# --- seat-github-1's row (HOST 01M8CPKEAQ, 01M8CPMDJ9; Arch 01M8CPMSV9; 2026-11-26) ---
+
+SEAT_GH = "seat-github-1"
+MACHINE = "atswimtwobirds"
+CARD_FULL = f"Connected as {MACHINE}. Not the right account? Disconnect, then connect again."
+CARD_SHORT = f"Connected as {MACHINE}."
+
+
+def _seat_gh_host(ss, github=None, oauth=(), manual=(), keys=b"[]", admin=403):
+    rows = [{"name": n, "status": "not_configured"} for n in ("notion", "slack", "calendar")]
+    rows.append({"name": "github", **(github or {"status": "not_configured"})})
+    return StubHost(
+        ss,
+        **{
+            "/api/v1/auth/me": ss.Reply(200, json.dumps({"username": SEAT_GH}).encode()),
+            "/api/v1/admin/account-flags": ss.Reply(admin, b""),
+            "/api/v1/keys/list": ss.Reply(200, keys),
+            "/api/v1/integrations/health": ss.Reply(
+                200, json.dumps({"integrations": rows}).encode()
+            ),
+            "/api/v1/settings/mcp-connections": ss.Reply(
+                200,
+                json.dumps(
+                    {"oauth_connections": list(oauth), "manual_tokens": list(manual)}
+                ).encode(),
+            ),
+        },
+    )
+
+
+def _check_seat_gh(ss, host):
+    return ss.check_holds_nothing_real(SEAT_GH, {"auth_token": ("made-up", None)}, host)
+
+
+def _live(status="connected", message=CARD_FULL, **over):
+    return {"status": status, "can_test": True, "action": None, "status_message": message, **over}
+
+
+def test_the_helpers_two_card_lines_are_the_apps_own(ss):
+    """The coupling test (HOST's addition, Arch's shape): the helper is stdlib-only and
+    carries copies; a copy change in the app fails HERE, never in a sitting."""
+    from web.api.routes import integrations
+
+    assert ss.GITHUB_CARD_CONNECTED_AS == integrations._GITHUB_CARD_CONNECTED_AS
+    assert ss.GITHUB_CARD_CONNECTED_AS_ONLY == integrations._GITHUB_CARD_CONNECTED_AS_ONLY
+    assert ss._github_card_lines(MACHINE) == frozenset(
+        {
+            integrations._GITHUB_CARD_CONNECTED_AS.format(login=MACHINE),
+            integrations._GITHUB_CARD_CONNECTED_AS_ONLY.format(login=MACHINE),
+        }
+    )
+    assert ss._github_card_lines(MACHINE) == frozenset({CARD_FULL, CARD_SHORT})
+
+
+def test_the_helper_does_not_import_the_app():
+    source = (ROOT / "scripts" / "seat_session.py").read_text()
+    for line in source.splitlines():
+        stripped = line.strip()
+        if stripped.startswith(("import ", "from ")):
+            assert not stripped.startswith(
+                ("from web", "import web", "from services", "import services")
+            ), line
+
+
+@pytest.mark.parametrize(
+    "status, message",
+    [
+        ("connected", CARD_FULL),  # CIO's read of 2026-11-26: github: connected/True/none
+        ("healthy", CARD_FULL),
+        ("failed", CARD_SHORT),
+        ("connected", CARD_SHORT),
+    ],
+)
+def test_github_connected_as_the_machine_account_passes(ss, status, message):
+    _check_seat_gh(ss, _seat_gh_host(ss, github=_live(status, message)))
+
+
+def test_the_dead_github_row_passes_for_the_seat_too(ss):
+    dead = {"status": "degraded", "can_test": False, "action": "reconnect"}
+    _check_seat_gh(ss, _seat_gh_host(ss, github=dead))
+
+
+def test_holding_nothing_still_passes(ss):
+    _check_seat_gh(ss, _seat_gh_host(ss))
+
+
+@pytest.mark.parametrize(
+    "message",
+    [
+        "Connected as mediajunkie. Not the right account? Disconnect, then connect again.",
+        "Connected as mediajunkie.",
+        "Connected.",  # the card's no-login form: it cannot say whose account it is
+        f"Connected as {MACHINE}",  # no full stop: not one of the two forms
+        f"Connected as {MACHINE}. And more.",
+        f"x Connected as {MACHINE}.",
+        f"Connected as {MACHINE}-admin.",
+        f"Connected as {MACHINE.upper()}.",
+        "",
+        None,
+        42,
+    ],
+)
+def test_any_other_login_or_card_line_refuses(ss, message):
+    with pytest.raises(ss.Refused, match="not the named login"):
+        _check_seat_gh(ss, _seat_gh_host(ss, github=_live(message=message)))
+
+
+def test_a_live_row_with_no_status_message_at_all_refuses(ss):
+    row = {"status": "connected", "can_test": True, "action": None}
+    with pytest.raises(ss.Refused, match="not the named login"):
+        _check_seat_gh(ss, _seat_gh_host(ss, github=row))
+
+
+@pytest.mark.parametrize(
+    "row",
+    [
+        # A stored personal token that still works (the stale-grant card with Test).
+        {
+            "status": "degraded",
+            "can_test": True,
+            "action": "reconnect",
+            "status_message": CARD_FULL,
+        },
+        # The own-token card after a passing Test says a different thing, but the row is
+        # healthy/True/none, the same triple as a live grant: only the line tells them apart.
+        {
+            "status": "healthy",
+            "can_test": True,
+            "action": None,
+            "status_message": "Connected with your personal token.",
+        },
+        {"status": "unhealthy", "can_test": True, "action": None, "status_message": CARD_FULL},
+        {"status": "connected", "can_test": False, "action": None, "status_message": CARD_FULL},
+        {
+            "status": "connected",
+            "can_test": True,
+            "action": "test_only",
+            "status_message": CARD_FULL,
+        },
+        {"status": "connected", "action": None, "status_message": CARD_FULL},  # can_test missing
+    ],
+    ids=[
+        "token-still-works",
+        "own-token-healthy",
+        "unhealthy",
+        "no-test",
+        "test-only",
+        "can_test-missing",
+    ],
+)
+def test_every_other_github_state_still_refuses(ss, row):
+    with pytest.raises(ss.Refused):
+        _check_seat_gh(ss, _seat_gh_host(ss, github=row))
+
+
+def test_a_live_github_row_still_refuses_on_every_other_account(ss, shared):
+    """The pin is per account: web-seed-1386 and seat-tester-1 have no login and no live
+    rows on their list, so the machine account's own card refuses there."""
+    host = StubHost(ss, **_health(ss, **_live()))
+    with pytest.raises(ss.Refused, match="has a connection"):
+        ss.run(ACCOUNT, host, now=1_800_000_000)
+
+
+def test_a_login_without_live_rows_on_the_list_does_nothing(ss, monkeypatch):
+    """Belt and braces: the login alone opens nothing; the row must be listed too."""
+    monkeypatch.setitem(
+        ss.ACCOUNTS,
+        SEAT_GH,
+        ss.Account(credential_file="seat-github-1-credentials.txt", github_login=MACHINE),
+    )
+    with pytest.raises(ss.Refused, match="has a connection"):
+        _check_seat_gh(ss, _seat_gh_host(ss, github=_live()))
+
+
+def test_live_rows_without_a_login_refuse(ss, monkeypatch):
+    monkeypatch.setitem(
+        ss.ACCOUNTS,
+        SEAT_GH,
+        ss.Account(
+            credential_file="seat-github-1-credentials.txt",
+            integrations={"github": ss.GITHUB_LIVE_ROWS},
+        ),
+    )
+    with pytest.raises(ss.Refused, match="not the named login"):
+        _check_seat_gh(ss, _seat_gh_host(ss, github=_live()))
+
+
+def test_another_integration_still_refuses_on_the_seat(ss):
+    rows = [
+        {"name": "github", **_live()},
+        {
+            "name": "slack",
+            "status": "connected",
+            "can_test": True,
+            "action": None,
+            "status_message": CARD_FULL,
+        },
+    ]
+    host = _seat_gh_host(ss)
+    host.replies["/api/v1/integrations/health"] = ss.Reply(
+        200, json.dumps({"integrations": rows}).encode()
+    )
+    with pytest.raises(ss.Refused, match="has a connection"):
+        _check_seat_gh(ss, host)
+
+
+# The connector allowance: at most one OAuth connection, no manual token (HOST 01M8CPMDJ9).
+
+ONE_CONNECTOR = {
+    "client_id": "made-up-client",
+    "client_name": "whatever the client sent",
+    "active": True,
+}
+
+
+def test_one_oauth_connector_passes_whatever_its_name(ss):
+    _check_seat_gh(ss, _seat_gh_host(ss, github=_live(), oauth=[ONE_CONNECTOR]))
+
+
+def test_a_second_oauth_connector_refuses(ss):
+    two = [ONE_CONNECTOR, {**ONE_CONNECTOR, "client_id": "another"}]
+    with pytest.raises(ss.Refused, match="has a connector"):
+        _check_seat_gh(ss, _seat_gh_host(ss, github=_live(), oauth=two))
+
+
+def test_an_inactive_connector_still_counts(ss):
+    two = [ONE_CONNECTOR, {**ONE_CONNECTOR, "client_id": "another", "active": False}]
+    with pytest.raises(ss.Refused, match="has a connector"):
+        _check_seat_gh(ss, _seat_gh_host(ss, oauth=two))
+
+
+@pytest.mark.parametrize("oauth", [[], [ONE_CONNECTOR]])
+def test_a_manual_token_always_refuses(ss, oauth):
+    with pytest.raises(ss.Refused, match="has a connector"):
+        _check_seat_gh(ss, _seat_gh_host(ss, oauth=oauth, manual=[{"label": "x"}]))
+
+
+def test_one_connector_still_refuses_on_the_other_accounts(ss, shared):
+    host = StubHost(
+        ss,
+        **{
+            "/api/v1/settings/mcp-connections": ss.Reply(
+                200,
+                json.dumps({"oauth_connections": [ONE_CONNECTOR], "manual_tokens": []}).encode(),
+            )
+        },
+    )
+    with pytest.raises(ss.Refused, match="has a connector"):
+        ss.run(ACCOUNT, host, now=1_800_000_000)
+
+
+# The other bounds are untouched for the seat.
+
+
+def test_an_admin_seat_still_refuses(ss):
+    with pytest.raises(ss.Refused, match="is an admin"):
+        _check_seat_gh(ss, _seat_gh_host(ss, github=_live(), admin=200))
+
+
+def test_a_provider_key_on_the_seat_still_refuses(ss):
+    keys = json.dumps([{"provider": "anthropic"}]).encode()
+    with pytest.raises(ss.Refused, match="holds a provider key"):
+        _check_seat_gh(ss, _seat_gh_host(ss, github=_live(), keys=keys))
+
+
+def test_the_named_login_refusal_prints_no_server_text(ss, capsys, monkeypatch, tmp_path):
+    """The refusal is fixed words: the card's line, whatever it says, never reaches the
+    screen."""
+    try:
+        _check_seat_gh(ss, _seat_gh_host(ss, github=_live(message="Connected as someone-else.")))
+    except ss.Refused as refused:
+        assert str(refused) == "the account's GitHub connection is not the named login"
+        assert "someone-else" not in str(refused)
+    else:
+        raise AssertionError("expected a refusal")
 
 
 # --- seat_read.py --redirect-uri (issue 2282 step 5; HOST's four conditions, 11-16) ---

@@ -74,6 +74,37 @@ IntegrationRow = Tuple[str, bool, Optional[str]]
 # stored personal token that still works, which is live and refuses.
 GITHUB_DEAD_ROW: IntegrationRow = ("degraded", False, "reconnect")
 
+# A LIVE GitHub connection made by signing in (the OAuth leg, which the published App
+# also uses): never tested since the host started, tested and passing, tested and failing.
+# CIO's read-only run of 2026-11-26 showed the first for ``seat-github-1`` after xian's
+# Step F.4 connect: ``github: connected/True/none``. A row alone cannot say WHOSE GitHub
+# account is connected, so these pass only for an account with ``github_login`` set, and
+# only when the card's line names that login (see ``_github_card_lines``).
+GITHUB_LIVE_ROWS: FrozenSet[IntegrationRow] = frozenset(
+    {("connected", True, None), ("healthy", True, None), ("failed", True, None)}
+)
+# The card's two lines that name the connected login, copied from
+# ``web/api/routes/integrations.py`` (``_GITHUB_CARD_CONNECTED_AS`` and
+# ``_GITHUB_CARD_CONNECTED_AS_ONLY``). The server reads that login from GitHub's own
+# ``GET /user`` with the account's grant; it never takes one from a request. This helper
+# stays stdlib-only, so it does not import the app (Arch 01M8CPMSV9): a test imports the
+# two constants and fails when these copies differ, so a copy change is a failed test and
+# a one-line diff here, never a refused sitting. The card's no-login form ("Connected.")
+# is deliberately absent: it cannot show whose account it is, so it refuses.
+GITHUB_CARD_CONNECTED_AS = (
+    "Connected as {login}. Not the right account? Disconnect, then connect again."
+)
+GITHUB_CARD_CONNECTED_AS_ONLY = "Connected as {login}."
+
+
+def _github_card_lines(login: str) -> FrozenSet[str]:
+    return frozenset(
+        {
+            GITHUB_CARD_CONNECTED_AS.format(login=login),
+            GITHUB_CARD_CONNECTED_AS_ONLY.format(login=login),
+        }
+    )
+
 
 @dataclass(frozen=True)
 class Account:
@@ -86,6 +117,16 @@ class Account:
     integrations: Mapping[str, FrozenSet[IntegrationRow]] = field(default_factory=dict)
     provider_keys: FrozenSet[str] = frozenset()  # providers allowed to hold a test key
     connectors: bool = False  # may an MCP connector or manual token exist
+    # The ONE GitHub login a live connection may show (HOST 01M8CPKEAQ, Arch 01M8CPMSV9,
+    # 2026-11-26). None means no live GitHub connection passes. Pinning it makes the
+    # account's bound something this helper checks: reconnected as a broader GitHub
+    # account, the same row would otherwise still pass.
+    github_login: Optional[str] = None
+    # How many OAuth connectors (a claude.ai connection to the hosted MCP) may exist, with
+    # no manual token ever (HOST 01M8CPMDJ9). A count, not a name: the stored client name
+    # comes from the client's own registration and nobody has read what claude.ai sends
+    # (PA 01M8CPPM79). ``connectors`` above is the older any-number allowance.
+    max_oauth_connectors: int = 0
 
 
 # Bound 1. A change to this table is a diff HOST reads.
@@ -106,9 +147,24 @@ ACCOUNTS: Dict[str, Account] = {
         # another workspace, this comes out.
         provider_keys=frozenset({"anthropic"}),
     ),
-    # The second seat account (issue 2389; name agreed by HOST and Lead, 11-16). It holds
-    # nothing until its own exceptions are added as diffs HOST reads.
-    "seat-github-1": Account(credential_file="seat-github-1-credentials.txt"),
+    # The second seat account (issue 2389; name agreed by HOST and Lead, 11-16). Its
+    # exceptions, each a diff HOST read (rulings 01M8CPKEAQ and 01M8CPMDJ9, 2026-11-26;
+    # Arch 01M8CPMSV9), after xian's Step F.4 connect:
+    # - GitHub connected as the machine account ``atswimtwobirds`` and no other login. That
+    #   account's reach is xian's Step F.2 setting: no base permission in the org, Read on
+    #   the two test repositories through the ``seat-test`` team. The dead row also passes,
+    #   so a seat can read a stale grant's state.
+    # - At most one OAuth connector and no manual token: ADR-084 Step G part 2 adds one
+    #   claude.ai connection by design, and Step G's Ending removes it. This allowance
+    #   comes out with the Ending.
+    # Still refused: an admin flag, any provider key, a personal token, any other
+    # integration, a second connector.
+    "seat-github-1": Account(
+        credential_file="seat-github-1-credentials.txt",
+        integrations={"github": GITHUB_LIVE_ROWS | frozenset({GITHUB_DEAD_ROW})},
+        github_login="atswimtwobirds",
+        max_oauth_connectors=1,
+    ),
     # The third seat account (HOST 01M827TK7G and 01M828H4AT, CIO 01M82852KZ, 11-22): an
     # account shaped like a new tester's, for served rows that need nothing on file (2406's
     # row first). It may hold an Anthropic key from the `piper-morgan-test` workspace and
@@ -327,6 +383,13 @@ def check_holds_nothing_real(
             for status, can_test, action in permitted
         ):
             raise Refused(f"the account has a connection ({_row_words(name, shown)})")
+        if name == "github" and shown in GITHUB_LIVE_ROWS:
+            # A live row is on this account's list. It passes only as the pinned login,
+            # read from the card's own line; an exact match on the two forms, never a
+            # substring. No pinned login, another login, or a card with no login: refuse.
+            login = allowed.github_login
+            if not login or row.get("status_message") not in _github_card_lines(login):
+                raise Refused("the account's GitHub connection is not the named login")
 
     connectors = get("/api/v1/settings/mcp-connections")
     if connectors.status != 200:
@@ -335,8 +398,11 @@ def check_holds_nothing_real(
     oauth, manual = body.get("oauth_connections"), body.get("manual_tokens")
     if not isinstance(oauth, list) or not isinstance(manual, list):
         raise Refused("the connector check could not be read")
-    if (oauth or manual) and not allowed.connectors:
-        raise Refused("the account has a connector")
+    if not allowed.connectors:
+        if manual:
+            raise Refused("the account has a connector")
+        if len(oauth) > allowed.max_oauth_connectors:
+            raise Refused("the account has a connector")
 
 
 def token_expiry(value: str) -> Optional[int]:
