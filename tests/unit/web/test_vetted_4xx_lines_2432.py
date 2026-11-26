@@ -446,8 +446,8 @@ COMPUTED = [
     (
         "services.auth.password_validator",
         "PASSWORD_TOO_LONG_LINE",  # issue 2438, length-only (CXO 01M8CEMET5)
-        "Your password is too long: the most is 72 bytes. A letter or digit is one byte, "
-        "an accented letter or an emoji is two to four.",
+        "Your password is too long: the most is 72 bytes. An English letter or digit is one byte, "
+        "any other letter or an emoji is two to four.",
     ),
 ]
 
@@ -558,8 +558,8 @@ class TestTheComputedLines:
 # Issue 2438, length-only since 2026-11-26 (xian via Exec 01M8CEG65R; CXO 01M8CEMET5).
 TOO_SHORT_LINE_2438 = "Your password needs at least 15 characters."
 TOO_LONG_LINE_2438 = (
-    "Your password is too long: the most is 72 bytes. A letter or digit is one byte, "
-    "an accented letter or an emoji is two to four."
+    "Your password is too long: the most is 72 bytes. An English letter or digit is one byte, "
+    "any other letter or an emoji is two to four."
 )
 
 

@@ -98,9 +98,12 @@ class PasswordValidator:
 # ``MIN_LENGTH`` and ``MAX_PASSWORD_BYTES``; the pins in
 # tests/unit/web/test_password_rules_one_place_2438.py fail until a changed rule is
 # read again.
-_BYTES_AS_READ = "a letter or digit is one byte, an accented letter or an emoji is two to four."
+# CXO's correction (mail 01M8CFERKQ, after Arch's byte check 01M8CFC37R): only an
+# unaccented Latin letter or a digit is one byte; Greek and Cyrillic take two, most
+# other scripts three, emoji four.
+_BYTES_AS_READ = "English letter or digit is one byte, any other letter or an emoji is two to four."
 PASSWORD_RULE_HELPER_LINE = (
-    "At least {min_length} characters, and no more than {max_bytes} bytes: " + _BYTES_AS_READ
+    "At least {min_length} characters, and no more than {max_bytes} bytes: an " + _BYTES_AS_READ
 ).format(
     min_length=int(PasswordValidator.MIN_LENGTH),
     max_bytes=int(PasswordValidator.MAX_PASSWORD_BYTES),
@@ -109,7 +112,7 @@ PASSWORD_TOO_SHORT_LINE = "Your password needs at least {min_length} characters.
     min_length=int(PasswordValidator.MIN_LENGTH)
 )
 PASSWORD_TOO_LONG_LINE = (
-    "Your password is too long: the most is {max_bytes} bytes. " + _BYTES_AS_READ.capitalize()
+    "Your password is too long: the most is {max_bytes} bytes. An " + _BYTES_AS_READ
 ).format(max_bytes=int(PasswordValidator.MAX_PASSWORD_BYTES))
 PASSWORD_EMPTY_LINE = "Your password can't be empty."
 PASSWORDS_DONT_MATCH_LINE = "The passwords don't match."

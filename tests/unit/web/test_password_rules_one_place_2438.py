@@ -25,13 +25,13 @@ import pytest
 ROOT = Path(__file__).resolve().parents[3]
 
 HELPER = (
-    "At least 15 characters, and no more than 72 bytes: a letter or digit is one byte, "
-    "an accented letter or an emoji is two to four."
+    "At least 15 characters, and no more than 72 bytes: an English letter or digit is one byte, "
+    "any other letter or an emoji is two to four."
 )
 TOO_SHORT = "Your password needs at least 15 characters."
 TOO_LONG = (
-    "Your password is too long: the most is 72 bytes. A letter or digit is one byte, "
-    "an accented letter or an emoji is two to four."
+    "Your password is too long: the most is 72 bytes. An English letter or digit is one byte, "
+    "any other letter or an emoji is two to four."
 )
 
 # The composition rules' names. None may be left outside tests (Arch's condition 1).

@@ -427,8 +427,8 @@ class TestTheResetPageKeepsItsLengthRule:
         reply = self._post("a" * 73, "a" * 73)
         assert reply.status_code == 400
         assert reply.json()["message"] == (
-            "Your password is too long: the most is 72 bytes. A letter or digit is one "
-            "byte, an accented letter or an emoji is two to four."
+            "Your password is too long: the most is 72 bytes. An English letter or digit is "
+            "one byte, any other letter or an emoji is two to four."
         )
 
     def test_the_reset_request_holds_no_length_rule_of_its_own(self):
