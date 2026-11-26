@@ -1257,6 +1257,73 @@ def test_a_file_with_anything_but_a_standard_api_key_is_refused(ss, tester, cont
     assert host.calls == []
 
 
+# --- Arch 01M8CN4PR6 (2026-11-26): a closed list of two prefixes, api and usr ---
+
+FAKE_USR_KEY = "sk-" + "ant-" + "usr-1made-up-0123456789-abcdefghijklmnop"
+
+
+def test_the_accepted_prefixes_are_a_closed_list_of_two(ss):
+    assert ss.PERSON_KEY_PREFIXES == ("sk-ant-api", "sk-ant-usr")
+    # The shape is generated from the tuple, so the two cannot drift apart.
+    for prefix in ss.PERSON_KEY_PREFIXES:
+        assert ss._KEY_SHAPE.fullmatch(prefix + "-" + "a" * 30)
+    source = (ROOT / "scripts" / "seat_session.py").read_text()
+    assert source.count('"sk-ant-usr"') == 1 and source.count('"sk-ant-api"') == 1
+
+
+@pytest.mark.parametrize("key", [FAKE_KEY, FAKE_USR_KEY], ids=["api", "usr"])
+def test_a_file_with_one_person_key_of_either_form_is_read(ss, tester, key):
+    (tester / KEY_FILE).write_text(f"ANTHROPIC_API_KEY={key}\n")
+    assert ss.read_key_file(tester / KEY_FILE) == key
+
+
+def test_a_usr_key_is_sent_whole_and_saved(ss, tester):
+    (tester / KEY_FILE).write_text(FAKE_USR_KEY + "\n")
+    host = KeyHost(ss)
+    ss.save_key(TESTER, "anthropic", host)
+    stored = [c for c in host.calls if c[1] == "/api/v1/keys/store"]
+    assert len(stored) == 1
+    assert json.loads(stored[0][2])["api_key"] == FAKE_USR_KEY
+
+
+@pytest.mark.parametrize(
+    "content, reason",
+    [
+        ("sk-" + "ant-" + "admin01-made-up-0123456789-abcdefghij", "not a standard API key"),
+        (f"{FAKE_USR_KEY}\n# shown as sk-" + "ant-" + "usr-1Xv…RgAA\n", "not a standard API key"),
+        (f"{FAKE_KEY}\n# shown as sk-" + "ant-" + "api03…\n", "not a standard API key"),
+        (f"{FAKE_USR_KEY}\n{FAKE_USR_KEY}x\n", "exactly one key"),
+        (f"{FAKE_USR_KEY}\n{FAKE_KEY}\n", "exactly one key"),
+        ("sk-" + "ant-" + "usr-short", "not a standard API key"),
+    ],
+    ids=[
+        "admin",
+        "usr plus a masked form",
+        "api plus a masked form",
+        "two usr keys",
+        "one usr and one api",
+        "a short usr string",
+    ],
+)
+def test_everything_else_still_refuses_the_file_before_any_request(ss, tester, content, reason):
+    (tester / KEY_FILE).write_text(content)
+    host = KeyHost(ss)
+    with pytest.raises(ss.Refused, match=reason):
+        ss.save_key(TESTER, "anthropic", host)
+    assert host.calls == []
+
+
+def test_a_usr_key_the_provider_refuses_still_exits_non_zero(ss, tester, capsys):
+    """Arch's condition 2: the validated word stays, so a usr key beta's validator
+    rejects never looks saved."""
+    (tester / KEY_FILE).write_text(FAKE_USR_KEY + "\n")
+    ss.save_key.__defaults__ = (KeyHost(ss, validated=False),)
+    code, text = _run_main(ss, ["--account", TESTER, "--save-key", "anthropic"], capsys)
+    assert code == 5
+    assert text.strip() == f"{TESTER}: key saved; key on file: yes; validated: no"
+    assert FAKE_USR_KEY not in text
+
+
 # --- HOST 01M82C816F and 01M82F420Z (11-22): the remove mode, recovery after "validated: no" ---
 
 
