@@ -71,7 +71,7 @@ Layer: the decision record, the tracker and served health. Not re-audited: any s
 ## Current Position (November 26, 2026)
 
 **The private beta runs on one host, and no one new is invited yet.**
-- **Beta** (`beta.pipermorgan.ai`; alpha 301s to it since 11-05, #2282) served `cf3486389e` at 04:20 11-26 (`/health`, healthy). It carries #2438, one password rule set at sign-up, reset and change. Lead promotes under the standing grant; the tag is still v0.9.0.0.
+- **Beta** (`beta.pipermorgan.ai`; alpha 301s to it since 11-05, #2282) served `cd26a9b2e4` at 11:52 11-26 (`/health`, healthy; promoted 11:48). It carries #2438 length-only (15 characters to 72 bytes, xian 11-26) and #2244 (the document index on the volume). Lead promotes under the standing grant; the tag is still v0.9.0.0.
 - **The invite hold** (PDR-008, `docs/internal/product/pdr/PDR-008-invite-readiness.md`): no invitations of any kind until its six conditions are met, then xian's word. **Met:** #1551, #2283, #2178, #2292. **Open:** #2261 (narrow GitHub's scope) through its D3 leg #2342 (connect through the published App), and #2282 (one canonical host). The open rows wait on Step F, a GitHub connect on a seat test account (`docs/internal/operations/adr-084-one-time-steps.md`), and on one served `/setup` read. PPM sends Exec the lift memo when all six are met.
 
 **Production runs in two-week sprints** (xian, 11-09; "sprints don't stretch", 11-20).
