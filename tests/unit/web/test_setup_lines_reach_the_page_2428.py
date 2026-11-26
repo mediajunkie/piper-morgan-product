@@ -38,11 +38,12 @@ GENERIC = "Something went wrong on my end. I've logged the details for debugging
 KEPT_MASKED = ()
 
 # CXO's words of 2026-11-24 for the two database lines (mail 01M8749H51): each says the
-# own-computer case and the hosted case, and the command carries no quote marks.
+# own-computer case and the hosted case, and the command carries no quote marks. The
+# command lost `chromadb` on 2026-11-26 (CXO, mail 01M8CG2V39, issue 2244).
 DATABASE_LINE = (
     "Cannot connect to the database. If you run Piper on your own computer, make sure "
-    "Docker is running, then start the services with: docker compose up -d postgres redis "
-    "chromadb. Then try again. On a hosted instance, tell the person who runs it."
+    "Docker is running, then start the services with: docker compose up -d postgres redis. "
+    "Then try again. On a hosted instance, tell the person who runs it."
 )
 TABLES_LINE = (
     "Database tables are missing. If you run Piper on your own computer, create them with: "

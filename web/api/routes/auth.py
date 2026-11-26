@@ -773,7 +773,7 @@ class PasswordResetRequest(BaseModel):
     # Issue 2432 (Arch, mail 01M87RHFPQ): no ``min_length`` on the two password fields.
     # The password rules live in one place, ``PasswordValidator``. With a length rule
     # here, pydantic refused a short password first and the person read only the
-    # validation 422's line, never "at least 8 characters".
+    # validation 422's line, never the validator's own.
     new_password: str = Field(description="New password")
     new_password_confirm: str = Field(description="Confirmation")
 

@@ -391,6 +391,15 @@ class TestTheWizardsSayOneThingAboutTheDocumentFolder:
     def test_the_toast_title_fits_a_folder_failure(self):
         js = (REPO / "web/static/js/setup.js").read_text()
         assert "folderDown ? 'Setup check failed' : 'Services Not Running'" in js
-        assert "name !== 'ChromaDB'" in js
-        # The row's name and the filter's name are one spelling.
-        assert "{ name: 'ChromaDB', ready: data.chromadb_ready }" in js
+        # The row's name and the filter's name are one constant (CXO, mail 01M8CGQYPT:
+        # the row and the toast name the same thing).
+        assert "const DOCUMENT_FOLDER_ROW = 'Document index folder';" in js
+        assert "name !== DOCUMENT_FOLDER_ROW" in js
+        assert "down.includes(DOCUMENT_FOLDER_ROW)" in js
+        assert "{ name: DOCUMENT_FOLDER_ROW, ready: data.chromadb_ready }" in js
+        assert "'ChromaDB'" not in js and "Checking ChromaDB" not in js
+
+    def test_the_routes_summary_names_the_row_the_same_way(self):
+        route = (REPO / "web/api/routes/setup.py").read_text()
+        assert 'failed_services.append("Document index folder")' in route
+        assert 'failed_services.append("ChromaDB")' not in route

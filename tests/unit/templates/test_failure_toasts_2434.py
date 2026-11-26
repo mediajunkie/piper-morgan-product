@@ -141,8 +141,14 @@ def test_the_setup_wizard_counts_the_password_as_typed():
     rule = setup[start : setup.index("],", start)]
     assert "Validators.minLength" not in rule
     assert ".trim()" not in rule
-    assert f"(field.value || '').length >= {PasswordValidator.MIN_LENGTH}" in rule
-    assert "'Needs at least 8 characters'" in rule
+    # Issue 2438 (length-only): the number is the field's own minlength, which the page
+    # renders from PasswordValidator.MIN_LENGTH; the script holds no literal.
+    assert "(field.value || '').length >= field.minLength" in rule
+    assert "`Needs at least ${field.minLength} characters`" in rule
+    page = (ROOT / "templates/setup.html").read_text(encoding="utf-8")
+    field = page[page.index('id="password"') :][:200]
+    assert 'minlength="{{ password_min_length }}"' in field
+    assert PasswordValidator.MIN_LENGTH == 15
     assert "username: [Validators.required(), Validators.minLength(3)]" in setup
 
     shared = (ROOT / "web/static/js/form-validation.js").read_text(encoding="utf-8")

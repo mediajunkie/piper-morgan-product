@@ -93,7 +93,7 @@
                 <div class="service-status checking">⏳ Checking Docker...</div>
                 <div class="service-status checking">⏳ Checking PostgreSQL...</div>
                 <div class="service-status checking">⏳ Checking Redis...</div>
-                <div class="service-status checking">⏳ Checking ChromaDB...</div>
+                <div class="service-status checking">⏳ Checking the document index folder...</div>
                 <div class="service-status checking">⏳ Checking Temporal...</div>
             `;
 
@@ -116,12 +116,16 @@
                 return;
             }
 
+            // 2244 (CXO, mail 01M8CGQYPT): the row and the toast name the same thing.
+            // One constant, read by the row list and by the toast's filter below.
+            const DOCUMENT_FOLDER_ROW = 'Document index folder';
+
             // Animate results appearing sequentially
             const services = [
                 { name: 'Docker', ready: data.docker_available },
                 { name: 'PostgreSQL', ready: data.postgres_ready },
                 { name: 'Redis', ready: data.redis_ready },
-                { name: 'ChromaDB', ready: data.chromadb_ready },
+                { name: DOCUMENT_FOLDER_ROW, ready: data.chromadb_ready },
                 { name: 'Temporal (optional)', ready: data.temporal_ready },
             ];
 
@@ -158,8 +162,8 @@
                 // 2244 (CXO, mail 01M8CEQ3ZA): the ChromaDB row means "the server can
                 // write its document folder", not "a server answers", so it gets its
                 // own sentence and the docker advice names only what docker starts.
-                const servers = down.filter(name => name !== 'ChromaDB');
-                const folderDown = down.includes('ChromaDB');
+                const servers = down.filter(name => name !== DOCUMENT_FOLDER_ROW);
+                const folderDown = down.includes(DOCUMENT_FOLDER_ROW);
                 const sentences = [];
                 if (servers.length) {
                     sentences.push(`Not reachable from the server: ${servers.join(', ')}. If you run Piper on your own computer, start them with docker compose up -d postgres redis. On a hosted instance, tell the person who runs it.`);
@@ -504,9 +508,13 @@
             // shared Validators.minLength trims first, which is right for a username
             // and wrong here: seven characters and a space would be refused by the
             // page and accepted by the route.
+            // Issue 2438: the number is the field's own minlength, which the page
+            // renders from PasswordValidator.MIN_LENGTH. No literal here.
             password: [
                 Validators.required(),
-                (field) => ((field.value || '').length >= 8 ? null : 'Needs at least 8 characters')
+                (field) => ((field.value || '').length >= field.minLength
+                    ? null
+                    : `Needs at least ${field.minLength} characters`)
             ],
             // Keyed by the field's NAME (password_confirm). It was keyed by the id
             // ('password-confirm'), which FormValidation never finds, so this rule
