@@ -1311,6 +1311,50 @@ async def build_close_reopen_confirmation(
             # ambiguity here.
             return _fallback()
 
+        from services.mcp.consumer.connector import DegradationReason, DegradationResponse
+        from services.mcp.consumer.github_adapter import (
+            CLOSE_VERB,
+            GITHUB_CLOSE_NOT_CONNECTED_REPLY,
+            GITHUB_REOPEN_NOT_CONNECTED_REPLY,
+            REOPEN_VERB,
+            GitHubMCPSpatialAdapter,
+            close_reopen_degrade_line,
+            github_app_write_refusal_line,
+        )
+
+        _verb = CLOSE_VERB if action in _CLOSE_FAMILY else REOPEN_VERB
+
+        # Issue 2446 (Arch 2026-11-26): the connection is answered before any question
+        # about the target. A question is never asked for an action that cannot run, so
+        # the one resolver (ADR-070 B4) is asked here, before any repository resolution.
+        # A degrade arms nothing: no repository question, no pending action.
+        _credential = await GitHubMCPSpatialAdapter().resolve_credential(_gh_user_id)
+        if isinstance(_credential, DegradationResponse):
+            from services.intent_service.not_performed import NOT_PERFORMED_KEY, NotPerformed
+
+            if _credential.reason is DegradationReason.CONNECT_REQUIRED:
+                # No binding and no token: never connected.
+                return CloseReopenGate(
+                    passthrough_result={
+                        "message": (
+                            GITHUB_CLOSE_NOT_CONNECTED_REPLY
+                            if _verb == CLOSE_VERB
+                            else GITHUB_REOPEN_NOT_CONNECTED_REPLY
+                        ),
+                        "requires_clarification": False,
+                        "intent_data": {NOT_PERFORMED_KEY: NotPerformed.NOT_CONNECTED},
+                    }
+                )
+            # Any other degrade (a stale grant, an unreadable store, ...): the line the
+            # probe's degrade leg below says for the same reason (issue 2437).
+            return CloseReopenGate(
+                passthrough_result={
+                    "message": close_reopen_degrade_line(_credential, _verb),
+                    "requires_clarification": False,
+                    "intent_data": {NOT_PERFORMED_KEY: NotPerformed.DEGRADED},
+                }
+            )
+
         from services.integrations.github.github_integration_router import (
             GitHubIssueNotFound,
         )
@@ -1360,14 +1404,6 @@ async def build_close_reopen_confirmation(
         intent.context = dict(intent.context or {})
         intent.context[CONFIRM_REPOSITORY_CONTEXT_KEY] = _repo
 
-        from services.mcp.consumer.github_adapter import (
-            CLOSE_VERB,
-            REOPEN_VERB,
-            GitHubMCPSpatialAdapter,
-            close_reopen_degrade_line,
-            github_app_write_refusal_line,
-        )
-
         # #2379 (Arch 2026-11-15 15:49): on a GitHub App connection, a close or reopen
         # aimed at a repository the App isn't installed on is answered here, before
         # any confirm is armed. Without this the probe says "unknown" (it never reads
@@ -1396,7 +1432,6 @@ async def build_close_reopen_confirmation(
             # comes from the probe's own degrade (``_probed``), never re-derived here.
             from services.intent_service.not_performed import NOT_PERFORMED_KEY, NotPerformed
 
-            _verb = CLOSE_VERB if action in _CLOSE_FAMILY else REOPEN_VERB
             return CloseReopenGate(
                 passthrough_result={
                     "message": close_reopen_degrade_line(_probed, _verb),
