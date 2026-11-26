@@ -34,11 +34,17 @@ SERVICE_PYTHON = "Python 3.9+"
 SERVICE_PORT = "Port 8001 available"
 SERVICE_POSTGRES = "PostgreSQL (5433)"
 SERVICE_REDIS = "Redis (6379)"
-SERVICE_CHROMADB = "ChromaDB (8000)"
+SERVICE_CHROMADB = "Document index folder"  # 2244: the in-process store, not a server
 SERVICE_TEMPORAL = "Temporal (7233)"
 
 # Core services required for setup (Temporal is optional)
 CORE_SERVICES = [SERVICE_POSTGRES, SERVICE_REDIS, SERVICE_CHROMADB]
+# CXO's words (mail 01M8CEQ3ZA, 2026-11-26), the same sentence the web wizard's toast says.
+DOCUMENT_FOLDER_NOT_WRITABLE_LINE = (
+    "Piper can't write its document folder. On your own computer, check that the folder "
+    "is there and your account can write to it. On a hosted instance, tell the person "
+    "who runs it."
+)
 OPTIONAL_SERVICES = [SERVICE_TEMPORAL]
 
 # API provider names (used in collect_and_validate_api_keys)
@@ -466,8 +472,15 @@ async def check_redis() -> bool:
 
 
 async def check_chromadb() -> bool:
-    """Check ChromaDB connectivity"""
-    return await check_service_port("localhost", 8000, "ChromaDB")
+    """Can this process write the document index's folder? (#2244)
+
+    The same question the web wizard's check asks, from the same function. The app
+    never connects to a Chroma server, so the old probe of localhost:8000 could
+    disagree with the web check about the same row (Arch, mail 01M8CFAVWZ)."""
+    from services.infrastructure.data_paths import check_document_index_writable
+
+    ok, _ = check_document_index_writable()
+    return ok
 
 
 async def check_temporal() -> bool:
@@ -1198,11 +1211,15 @@ async def _wizard_system_checks() -> bool:
             print("  • Free up port 8001 or stop other Piper Morgan instances")
             print("  • Run: lsof -i :8001 to see what's using the port")
 
-        if services_down:
+        # 2244 (CXO, mail 01M8CEQ3ZA): the document index is a folder, not a
+        # container, so it gets its own line and the docker advice does not name it.
+        if SERVICE_CHROMADB in services_down:
+            print(f"  • {DOCUMENT_FOLDER_NOT_WRITABLE_LINE}")
+        if [s for s in services_down if s != SERVICE_CHROMADB]:
             print("  • Docker services not running:")
             print("    1. Launch Docker Desktop application (check menu bar icon)")
             print("    2. Wait for Docker to fully start (icon stops animating)")
-            print("    3. Try: docker compose up -d postgres redis chromadb")
+            print("    3. Try: docker compose up -d postgres redis")
             print("    4. Wait 30 seconds for services to start")
             print("    5. Re-run this wizard")
             print("  • After system restart:")
