@@ -30,7 +30,10 @@ if [ "$(id -u)" = "0" ]; then
     # A plain chown, NOT -R (Arch, 2026-11-24): this runs on every machine
     # start and these stores grow with use. Everything inside is created by
     # piper; if root ever leaves something there, that is a one-off repair.
-    if [ -n "${PIPER_DATA_DIR:-}" ]; then
+    # Never through a symlink (HOST, 2026-11-26): root must not hand whatever
+    # a link points at to the app user. A linked path is left alone; the boot
+    # probe (DocumentIndexProbePhase) reports whether the app can write it.
+    if [ -n "${PIPER_DATA_DIR:-}" ] && [ ! -L "$PIPER_DATA_DIR" ]; then
         mkdir -p "$PIPER_DATA_DIR"
         chown piper:piper "$PIPER_DATA_DIR"
     fi

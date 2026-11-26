@@ -162,7 +162,7 @@ class TestSetupWizardIntegrationFlow:
                 "Port 8001 available": True,
                 "PostgreSQL (5433)": True,
                 "Redis (6379)": True,
-                "ChromaDB (8000)": True,
+                "Document index folder": True,  # 2244: was "ChromaDB (8000)"
                 "Temporal (7233)": True,
             }
 

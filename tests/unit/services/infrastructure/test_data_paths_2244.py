@@ -292,3 +292,104 @@ class TestDeployFiles:
             'mkdir -p "$PIPER_DATA_DIR"',
             'chown piper:piper "$PIPER_DATA_DIR"',
         ]
+
+    def test_entrypoint_never_prepares_the_root_through_a_symlink(self):
+        """HOST, 2026-11-26: the guard that wraps the two commands refuses a link."""
+        script = (REPO / "deploy/docker-entrypoint.sh").read_text()
+        guard = 'if [ -n "${PIPER_DATA_DIR:-}" ] && [ ! -L "$PIPER_DATA_DIR" ]; then'
+        assert guard in script
+        block = script[script.index(guard) :]
+        block = block[: block.index("\n    fi\n")]
+        assert (
+            'mkdir -p "$PIPER_DATA_DIR"' in block and 'chown piper:piper "$PIPER_DATA_DIR"' in block
+        )
+
+    def test_the_guard_behaves_as_written(self, tmp_path):
+        """Run the guard's own test expression in bash: a real folder and a missing
+        path pass it, a symlink does not, an unset variable does not."""
+        import subprocess
+
+        real, link = tmp_path / "real", tmp_path / "link"
+        real.mkdir()
+        link.symlink_to(real)
+        expr = '[ -n "${PIPER_DATA_DIR:-}" ] && [ ! -L "$PIPER_DATA_DIR" ]'
+
+        def passes(value):
+            env = {"PATH": "/usr/bin:/bin"}
+            if value is not None:
+                env["PIPER_DATA_DIR"] = str(value)
+            return subprocess.run(["bash", "-c", expr], env=env).returncode == 0
+
+        assert passes(real) and passes(tmp_path / "not-there-yet")
+        assert not passes(link)
+        assert not passes(None)
+
+
+class TestTheWizardsSayOneThingAboutTheDocumentFolder:
+    """Arch (01M8CFAVWZ): one check, asked in one place. CXO (01M8CEQ3ZA): the folder has
+    its own sentence; the docker advice names only what docker starts."""
+
+    LINE = (
+        "Piper can't write its document folder. On your own computer, check that the folder "
+        "is there and your account can write to it. On a hosted instance, tell the person "
+        "who runs it."
+    )
+
+    @staticmethod
+    def _cli_wizard():
+        import importlib.util
+
+        spec = importlib.util.spec_from_file_location(
+            "setup_wizard_2244", REPO / "scripts/setup_wizard.py"
+        )
+        module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(module)
+        return module
+
+    @pytest.mark.asyncio
+    async def test_cli_wizard_asks_the_same_function_as_the_web_check(self, monkeypatch, tmp_path):
+        wizard = self._cli_wizard()
+        monkeypatch.setenv("PIPER_DATA_DIR", str(tmp_path / "vol"))
+        with patch.object(wizard, "check_service_port") as port:
+            assert await wizard.check_chromadb() is True
+        port.assert_not_called()
+
+    @pytest.mark.asyncio
+    async def test_cli_wizard_says_no_when_the_folder_is_not_writable(self, monkeypatch, tmp_path):
+        if hasattr(os, "geteuid") and os.geteuid() == 0:
+            pytest.skip("running as root: chmod 555 cannot deny writes")
+        wizard = self._cli_wizard()
+        denied = tmp_path / "rootonly"
+        denied.mkdir()
+        denied.chmod(0o555)
+        try:
+            monkeypatch.setenv("PIPER_DATA_DIR", str(denied / "piper"))
+            assert await wizard.check_chromadb() is False
+        finally:
+            denied.chmod(0o755)
+
+    def test_no_wizard_probes_a_chroma_port(self):
+        src = (REPO / "scripts/setup_wizard.py").read_text()
+        assert '"localhost", 8000' not in src
+        assert "ChromaDB (8000)" not in src
+
+    def test_the_sentence_is_the_same_in_both_wizards(self):
+        assert self._cli_wizard().DOCUMENT_FOLDER_NOT_WRITABLE_LINE == self.LINE
+        assert self.LINE in (REPO / "web/static/js/setup.js").read_text()
+
+    def test_no_wizard_tells_a_person_to_start_a_chromadb_container(self):
+        for name in (
+            "web/static/js/setup.js",
+            "scripts/setup_wizard.py",
+            "scripts/validate_install.py",
+        ):
+            src = (REPO / name).read_text()
+            assert "redis chromadb" not in src, name
+            assert "docker compose up -d postgres redis" in src, name
+
+    def test_the_toast_title_fits_a_folder_failure(self):
+        js = (REPO / "web/static/js/setup.js").read_text()
+        assert "folderDown ? 'Setup check failed' : 'Services Not Running'" in js
+        assert "name !== 'ChromaDB'" in js
+        # The row's name and the filter's name are one spelling.
+        assert "{ name: 'ChromaDB', ready: data.chromadb_ready }" in js
