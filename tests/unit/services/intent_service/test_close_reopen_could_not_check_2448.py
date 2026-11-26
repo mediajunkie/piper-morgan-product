@@ -194,6 +194,31 @@ async def test_the_line_does_not_depend_on_the_kind_of_error(service, error):
     _assert_could_not_check(gate, GITHUB_CONNECTION_COULD_NOT_CHECK_REPLY)
 
 
+@pytest.mark.asyncio
+async def test_the_log_names_the_read_and_the_error_class_never_its_text(service):
+    """HOST (mail 01M8CYQVQP): an exception's text can hold an id or part of a token."""
+    from services.intent_service import destructive_confirm as dc_mod
+
+    with (
+        patch(RESOLVE, AsyncMock(side_effect=RuntimeError("secret-looking text ghu_abc123"))),
+        patch.object(dc_mod, "logger") as log,
+    ):
+        await build_close_reopen_confirmation(
+            _intent("close issue 5", "close_issue_query"), service, "wf"
+        )
+    log.warning.assert_called_once_with(
+        "close_reopen_gate_read_failed", read="resolve_credential", error_type="RuntimeError"
+    )
+    assert "ghu_abc123" not in str(log.mock_calls)
+    # No traceback is logged by the helper either: a traceback prints the exception's text.
+    helper = (
+        inspect.getsource(build_close_reopen_confirmation)
+        .split("def _could_not_check")[1]
+        .split("return CloseReopenGate")[0]
+    )
+    assert "exc_info=True" not in helper
+
+
 # ── Nothing awaited can reach the outer catch-all ────────────────────────────
 
 
