@@ -411,11 +411,8 @@ class TestTheResetPageKeepsItsLengthRule:
 
         reply = self._post("Abc12!x", "Abc12!x")
         assert reply.status_code == 400
-        # Issue 2438: every strength rule answers the one line that states the whole rule.
-        line = (
-            "Your password needs at least 8 characters, an uppercase letter, "
-            "a lowercase letter, a number and one of ! @ # $ % ^ & * ( )."
-        )
+        # Issue 2438 (length-only, 2026-11-26): too short answers its own line.
+        line = "Your password needs at least 15 characters."
         assert reply.json() == {"message": line, "detail": line}
         assert UNREADABLE_REQUEST_LINE not in reply.text
 
@@ -424,13 +421,14 @@ class TestTheResetPageKeepsItsLengthRule:
         assert reply.status_code == 400
         assert reply.json()["message"] == "The new passwords don't match."
 
-    def test_a_password_with_no_listed_special_character_is_told_which_count(self):
-        reply = self._post("Abcdefg12-", "Abcdefg12-")
+    def test_a_password_over_the_byte_cap_gets_the_too_long_line(self):
+        """Was "no listed special character is told which count"; issue 2438 went
+        length-only on 2026-11-26, so the second refusal a person can meet is the cap."""
+        reply = self._post("a" * 73, "a" * 73)
         assert reply.status_code == 400
-        # Issue 2438: the one line names the characters that count.
         assert reply.json()["message"] == (
-            "Your password needs at least 8 characters, an uppercase letter, "
-            "a lowercase letter, a number and one of ! @ # $ % ^ & * ( )."
+            "Your password is too long: the most is 72 bytes. A letter or digit is one "
+            "byte, an accented letter or an emoji is two to four."
         )
 
     def test_the_reset_request_holds_no_length_rule_of_its_own(self):
@@ -485,11 +483,8 @@ class TestTheSetupAccountStepKeepsItsPasswordLines:
     def test_a_seven_character_password_gets_the_length_line(self):
         reply = self._post("Abc12!x", "Abc12!x")
         assert reply.status_code == 400
-        # Issue 2438: the account step applies the validator's rules and its one line.
-        assert reply.json()["message"] == (
-            "Your password needs at least 8 characters, an uppercase letter, "
-            "a lowercase letter, a number and one of ! @ # $ % ^ & * ( )."
-        )
+        # Issue 2438 (length-only, 2026-11-26): the account step answers the validator's line.
+        assert reply.json()["message"] == "Your password needs at least 15 characters."
 
     def test_the_request_model_holds_no_password_rule_of_its_own(self):
         from web.api.routes.setup import CreateUserRequest

@@ -398,11 +398,16 @@ async def reset_password_page(request: Request):
     """
     templates = _get_templates(request)
     # Issue 2438: the page states the whole password rule, read from the validator.
-    from services.auth.password_validator import PASSWORD_RULE_HELPER_LINE
+    from services.auth.password_validator import PASSWORD_RULE_HELPER_LINE, PasswordValidator
 
     return templates.TemplateResponse(
         "reset_password.html",
-        {"request": request, "password_rule_helper": PASSWORD_RULE_HELPER_LINE},
+        {
+            "request": request,
+            "password_rule_helper": PASSWORD_RULE_HELPER_LINE,
+            # The fields' minlength is the validator's number, never a literal.
+            "password_min_length": PasswordValidator.MIN_LENGTH,
+        },
     )
 
 
@@ -417,7 +422,7 @@ async def setup_page(request: Request):
     templates = _get_templates(request)
     # #2089/#2088: hosted has no System step and asks for the invite first.
     # #2237: connectors outside the offered set render greyed as "coming".
-    from services.auth.password_validator import PASSWORD_RULE_HELPER_LINE
+    from services.auth.password_validator import PASSWORD_RULE_HELPER_LINE, PasswordValidator
     from services.integrations import integration_status_service
 
     return templates.TemplateResponse(
@@ -426,6 +431,8 @@ async def setup_page(request: Request):
             "request": request,
             # Issue 2438: the wizard states the whole password rule before a person types.
             "password_rule_helper": PASSWORD_RULE_HELPER_LINE,
+            # The fields' minlength is the validator's number, never a literal.
+            "password_min_length": PasswordValidator.MIN_LENGTH,
             "hosted": wizard_is_hosted(),
             "offered_connectors": list(
                 integration_status_service.offered_connectors()

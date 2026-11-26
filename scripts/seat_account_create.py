@@ -95,8 +95,12 @@ def read_invite(path: Path) -> Tuple[str, str]:
     return found[INVITE_KEY], found[EMAIL_KEY]
 
 
-# Issue 2438: account creation applies PasswordValidator's five rules (8 characters, an
-# uppercase letter, a lowercase letter, a number, one of ! @ # $ % ^ & * ( )).
+# Issue 2438, as first built (2026-11-25): account creation applied five composition
+# rules (8 characters, an uppercase letter, a lowercase letter, a number, one of
+# ! @ # $ % ^ & * ( )). The rule on main is now length-only, but this script runs from
+# main against beta, and beta enforces the five rules until it serves the length-only
+# build. So the tail STAYS until that promotion, then goes in its own commit (Arch,
+# mail 01M8CECPDT). With it the password is 47 characters: inside both length bounds.
 # ``token_urlsafe`` draws from letters, digits, ``-`` and ``_``, so on its own it never
 # holds a listed special character and could miss a class by chance; the host would
 # refuse the sign-up with a 400. The fixed tail meets every rule and adds no secret:

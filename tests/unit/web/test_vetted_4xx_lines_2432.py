@@ -10,7 +10,7 @@ small app for "reaches the client as written"; the change-password and reset rou
 through that handler; the admin gate as a dependency of a small route.
 DENOMINATOR: every marked 4xx constant under ``web/`` and ``services/`` (the table below,
 checked against an ``ast`` count of marked 4xx constants), the six computed constants,
-the seven password rule codes and the not-offered family.
+the password rule codes and the not-offered family.
 NOT COVERED: any rendered page. Nothing here was put on a screen.
 """
 
@@ -440,9 +440,14 @@ COMPUTED = [
     ),
     (
         "services.auth.password_validator",
-        "PASSWORD_RULE_LINE",  # issue 2438: the one line for the five strength rules
-        "Your password needs at least 8 characters, an uppercase letter, a lowercase letter, "
-        "a number and one of ! @ # $ % ^ & * ( ).",
+        "PASSWORD_TOO_SHORT_LINE",  # issue 2438, length-only (CXO 01M8CEMET5)
+        "Your password needs at least 15 characters.",
+    ),
+    (
+        "services.auth.password_validator",
+        "PASSWORD_TOO_LONG_LINE",  # issue 2438, length-only (CXO 01M8CEMET5)
+        "Your password is too long: the most is 72 bytes. A letter or digit is one byte, "
+        "an accented letter or an emoji is two to four.",
     ),
 ]
 
@@ -550,21 +555,20 @@ class TestTheComputedLines:
             assert "valid_roles = SHARE_ROLES" in src
 
 
-RULE_LINE_2438 = (
-    "Your password needs at least 8 characters, an uppercase letter, a lowercase letter, "
-    "a number and one of ! @ # $ % ^ & * ( )."
+# Issue 2438, length-only since 2026-11-26 (xian via Exec 01M8CEG65R; CXO 01M8CEMET5).
+TOO_SHORT_LINE_2438 = "Your password needs at least 15 characters."
+TOO_LONG_LINE_2438 = (
+    "Your password is too long: the most is 72 bytes. A letter or digit is one byte, "
+    "an accented letter or an emoji is two to four."
 )
 
 
 class TestThePasswordRules:
     CODES = {
         "empty": "Your password can't be empty.",
-        # Issue 2438 (CXO, mail 01M8A7MG8Q): the five strength codes share one line.
-        "too_short": RULE_LINE_2438,
-        "no_uppercase": RULE_LINE_2438,
-        "no_lowercase": RULE_LINE_2438,
-        "no_digit": RULE_LINE_2438,
-        "no_special": RULE_LINE_2438,
+        # Each refusal states the one rule that failed.
+        "too_short": TOO_SHORT_LINE_2438,
+        "too_long": TOO_LONG_LINE_2438,
         "mismatch": "The passwords don't match.",
     }
     FALLBACK = "That password can't be used. Choose a different one."
@@ -575,7 +579,9 @@ class TestThePasswordRules:
 
         assert password_rule_line(code) == line
 
-    @pytest.mark.parametrize("code", ["unknown", "", None, "Password cannot be empty"])
+    @pytest.mark.parametrize(
+        "code", ["unknown", "", None, "Password cannot be empty", "no_uppercase", "no_special"]
+    )
     def test_an_unknown_code_has_no_line_and_the_fallback_is_named(self, code):
         from services.auth import password_validator
 
@@ -587,11 +593,11 @@ class TestThePasswordRules:
         [
             ("", "empty"),
             ("Ab1!", "too_short"),
-            ("abcdefg1!", "no_uppercase"),
-            ("ABCDEFG1!", "no_lowercase"),
-            ("Abcdefgh!", "no_digit"),
-            ("Abcdefg12", "no_special"),
-            ("Abcdefg1!", None),
+            ("Abcdefg1!", "too_short"),  # passed the five composition rules; 9 characters
+            ("abcdefghijklmn", "too_short"),
+            ("abcdefghijklmno", None),  # 15 characters, one class
+            ("a" * 72, None),
+            ("a" * 73, "too_long"),
         ],
     )
     def test_failed_rule_names_the_first_rule_broken(self, password, code):
@@ -602,24 +608,24 @@ class TestThePasswordRules:
     def test_validate_keeps_its_shape_and_words(self):
         from services.auth.password_validator import PasswordValidator
 
-        assert PasswordValidator.validate("Abcdefg1!") == (True, None)
+        assert PasswordValidator.validate("abcdefghijklmno") == (True, None)
         assert PasswordValidator.validate("Ab1!") == (
             False,
-            "Password must be at least 8 characters",
+            "Password must be at least 15 characters",
         )
-        assert PasswordValidator.validate("Abcdefg12") == (
+        assert PasswordValidator.validate("a" * 73) == (
             False,
-            "Password must contain at least one special character (!@#$%^&*())",
+            "Password must be at most 72 bytes",
         )
         assert PasswordValidator.validate_match("a", "b") == (False, "Passwords do not match")
 
     @pytest.mark.parametrize(
         "password, line",
         [
-            ("Ab1!", RULE_LINE_2438),
-            ("abcdefg1!", RULE_LINE_2438),
-            ("Abcdefgh!", RULE_LINE_2438),
-            ("Abcdefg12", RULE_LINE_2438),
+            ("Ab1!", TOO_SHORT_LINE_2438),
+            ("Abcdefg1!", TOO_SHORT_LINE_2438),
+            ("a" * 73, TOO_LONG_LINE_2438),
+            ("😀" * 19, TOO_LONG_LINE_2438),
         ],
     )
     def test_the_change_route_answers_the_rules_line(self, password, line):

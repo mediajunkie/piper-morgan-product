@@ -733,7 +733,7 @@
               id="password"
               name="password"
               required
-              minlength="8"
+              minlength="{{ password_min_length }}"
               aria-describedby="password-rule"
             />
             <small id="password-rule">{{ password_rule_helper }}</small>
@@ -745,6 +745,7 @@
               id="password-confirm"
               name="password_confirm"
               required
+              minlength="{{ password_min_length }}"
             />
           </div>
           <div

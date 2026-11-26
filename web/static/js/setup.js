@@ -504,9 +504,13 @@
             // shared Validators.minLength trims first, which is right for a username
             // and wrong here: seven characters and a space would be refused by the
             // page and accepted by the route.
+            // Issue 2438: the number is the field's own minlength, which the page
+            // renders from PasswordValidator.MIN_LENGTH. No literal here.
             password: [
                 Validators.required(),
-                (field) => ((field.value || '').length >= 8 ? null : 'Needs at least 8 characters')
+                (field) => ((field.value || '').length >= field.minLength
+                    ? null
+                    : `Needs at least ${field.minLength} characters`)
             ],
             // Keyed by the field's NAME (password_confirm). It was keyed by the id
             // ('password-confirm'), which FormValidation never finds, so this rule
