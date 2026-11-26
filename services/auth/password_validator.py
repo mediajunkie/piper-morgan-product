@@ -1,71 +1,53 @@
 """
 Password Validation Service
 
-Validates password strength requirements for new passwords.
-Used by password change endpoint (#298) and user creation flows.
+One length rule, for every path that sets a person's chosen password.
 
-Security Features:
-- Enforces OWASP password complexity requirements
-- Clear, specific error messages (not generic "invalid password")
-- No information leakage about password requirements
-- Helps prevent weak password selection
+Issue 2438 (xian's ruling 2026-11-26, relayed by Exec 01M8CDTHCC and 01M8CEG65R;
+Arch's conditions 01M8CE2GFC): length only, no composition rules. At least
+``MIN_LENGTH`` characters, counted as typed, and at most ``MAX_PASSWORD_BYTES`` bytes
+of UTF-8. The rules run only when a password is set; sign-in is unchanged.
 
-Issue #298: AUTH-PASSWORD-CHANGE
+Issue #298: AUTH-PASSWORD-CHANGE (the first validator).
 """
 
-import re
 from typing import Optional, Tuple
 
 # Issue 2432: one code per rule. ``PasswordValidator.failed_rule`` returns one of these.
 RULE_EMPTY = "empty"
 RULE_TOO_SHORT = "too_short"
-RULE_NO_UPPERCASE = "no_uppercase"
-RULE_NO_LOWERCASE = "no_lowercase"
-RULE_NO_DIGIT = "no_digit"
-RULE_NO_SPECIAL = "no_special"
+RULE_TOO_LONG = "too_long"
 RULE_MISMATCH = "mismatch"
-# Issue 2438: the five strength rules, the ones ``PASSWORD_RULE_LINE`` states.
-STRENGTH_RULES = (
-    RULE_TOO_SHORT,
-    RULE_NO_UPPERCASE,
-    RULE_NO_LOWERCASE,
-    RULE_NO_DIGIT,
-    RULE_NO_SPECIAL,
-)
 
-# The validator's own messages, word for word as before issue 2432, kept for
-# ``validate``'s callers and logs. Never a reply's words.
+# The validator's own messages, kept for ``validate``'s callers and logs. Never a
+# reply's words.
 _VALIDATOR_MESSAGES = {
     RULE_EMPTY: "Password cannot be empty",
     RULE_TOO_SHORT: "Password must be at least {min_length} characters",
-    RULE_NO_UPPERCASE: "Password must contain at least one uppercase letter",
-    RULE_NO_LOWERCASE: "Password must contain at least one lowercase letter",
-    RULE_NO_DIGIT: "Password must contain at least one digit",
-    RULE_NO_SPECIAL: "Password must contain at least one special character ({special})",
+    RULE_TOO_LONG: "Password must be at most {max_bytes} bytes",
     RULE_MISMATCH: "Passwords do not match",
 }
 
 
 class PasswordValidator:
     """
-    Validates password strength against security requirements.
+    Validates a new password against the length rule.
 
     Requirements:
-    - Minimum 8 characters
-    - At least 1 uppercase letter (A-Z)
-    - At least 1 lowercase letter (a-z)
-    - At least 1 digit (0-9)
-    - At least 1 special character (!@#$%^&*)
+    - At least ``MIN_LENGTH`` characters (code points), counted as typed, no strip.
+    - At most ``MAX_PASSWORD_BYTES`` bytes of UTF-8.
 
-    Design:
-    - Static methods, no state
-    - Returns tuple: (is_valid, error_message)
-    - Error messages specific for each requirement
-    - Can be unit tested independently
+    Why an upper bound (Arch, 01M8CE2GFC): bcrypt 4.3.0 silently ignores everything
+    past byte 72, so a longer passphrase would verify on its first 72 bytes alone,
+    and bcrypt 5 raises instead. Refusing at set time is the fix. Never pre-hash:
+    that would change the hash format under every existing account.
+
+    Design: static methods, no state.
     """
 
-    MIN_LENGTH = 8
-    SPECIAL_CHARS = "!@#$%^&*()"
+    # NIST SP 800-63B rev 4, 3.1.1.2: 15 for a password that is the only factor.
+    MIN_LENGTH = 15
+    MAX_PASSWORD_BYTES = 72
 
     @classmethod
     def failed_rule(cls, password: str) -> Optional[str]:
@@ -78,111 +60,60 @@ class PasswordValidator:
             return RULE_EMPTY
         if len(password) < cls.MIN_LENGTH:
             return RULE_TOO_SHORT
-        if not re.search(r"[A-Z]", password):
-            return RULE_NO_UPPERCASE
-        if not re.search(r"[a-z]", password):
-            return RULE_NO_LOWERCASE
-        if not re.search(r"\d", password):
-            return RULE_NO_DIGIT
-        if not re.search(f"[{re.escape(cls.SPECIAL_CHARS)}]", password):
-            return RULE_NO_SPECIAL
+        if len(password.encode("utf-8")) > cls.MAX_PASSWORD_BYTES:
+            return RULE_TOO_LONG
         return None
 
     @classmethod
     def validate(cls, password: str) -> Tuple[bool, Optional[str]]:
-        """
-        Validate password strength.
-
-        Args:
-            password: Password string to validate
-
-        Returns:
-            Tuple of (is_valid, error_message)
-            - is_valid=True: Password meets all requirements, error_message=None
-            - is_valid=False: Password invalid, error_message describes requirement
-
-        The shape is unchanged by issue 2432. The message is for logs and callers that
-        are not a reply; a route answers with ``password_rule_line(failed_rule(...))``.
-
-        Example:
-            >>> PasswordValidator.validate("weak")
-            (False, "Password must be at least 8 characters")
-
-            >>> PasswordValidator.validate("WeakPass1")
-            (False, "Password must contain at least one special character (!@#$%^&*())")
-
-            >>> PasswordValidator.validate("Strong@Pass1")
-            (True, None)
-        """
+        """(is_valid, message). The message is for logs and callers that are not a
+        reply; a route answers with ``password_rule_line(failed_rule(...))``."""
         rule = cls.failed_rule(password)
         if rule is None:
             return True, None
         return False, _VALIDATOR_MESSAGES[rule].format(
-            min_length=cls.MIN_LENGTH, special=cls.SPECIAL_CHARS
+            min_length=cls.MIN_LENGTH, max_bytes=cls.MAX_PASSWORD_BYTES
         )
 
     @classmethod
     def validate_match(cls, password1: str, password2: str) -> Tuple[bool, Optional[str]]:
-        """
-        Validate that two passwords match.
-
-        Args:
-            password1: First password
-            password2: Second password (confirmation)
-
-        Returns:
-            Tuple of (is_valid, error_message)
-
-        Example:
-            >>> PasswordValidator.validate_match("Pass123!", "Pass123!")
-            (True, None)
-
-            >>> PasswordValidator.validate_match("Pass123!", "Different!")
-            (False, "Passwords do not match")
-        """
+        """(True, None) when the two passwords are equal, else (False, message)."""
         if password1 == password2:
             return True, None
-        else:
-            return False, _VALIDATOR_MESSAGES[RULE_MISMATCH]
+        return False, _VALIDATOR_MESSAGES[RULE_MISMATCH]
 
     @classmethod
     def validate_strength(cls, password: str) -> Tuple[bool, Optional[str]]:
-        """
-        Comprehensive validation including strength and matching.
-
-        Combines both validate() and internal strength checks.
-
-        Args:
-            password: Password to validate
-
-        Returns:
-            Tuple of (is_valid, error_message)
-
-        Note:
-            This is the main method to use for password validation.
-            Other methods (validate, validate_match) are available for specific checks.
-        """
+        """Same as ``validate``; kept for its callers."""
         return cls.validate(password)
 
 
 # --- What a person reads ---
-# Issue 2438 (CXO, mail 01M8A7MG8Q; Arch, mails 01M8A7N4F1 and 01M8A7PQQ6): the whole rule
-# is stated twice and only here. ``PASSWORD_RULE_HELPER_LINE`` sits under a new-password
-# field before the person types; ``PASSWORD_RULE_LINE`` is the one refusal for every
-# strength rule. It states the rule, not which part failed, so it is true for each of the
-# five codes and nobody is refused once per unstated rule. Both are built once from
-# ``MIN_LENGTH`` and ``SPECIAL_CHARS``, so the sentences and the rule cannot drift; the
-# pins in tests/unit/web/test_password_rules_one_place_2438.py fail until a changed rule
-# is read again.
-_SPECIALS_AS_READ = " ".join(PasswordValidator.SPECIAL_CHARS)
+# Issue 2438 (CXO's lines, mail 01M8CEMET5; Arch's conditions 3 and 4, 01M8CE2GFC): the
+# rule is stated here and nowhere else. ``PASSWORD_RULE_HELPER_LINE`` sits under a
+# new-password field before the person types. Each refusal states the one rule that
+# failed, so it is true for its code: a person who typed 80 characters is never told
+# they need at least 15. The cap is in bytes, and the lines say what a byte is, because
+# "72 characters" is false for accented letters and emoji. All three are built once from
+# ``MIN_LENGTH`` and ``MAX_PASSWORD_BYTES``; the pins in
+# tests/unit/web/test_password_rules_one_place_2438.py fail until a changed rule is
+# read again.
+# CXO's correction (mail 01M8CFERKQ, after Arch's byte check 01M8CFC37R): only an
+# unaccented Latin letter or a digit is one byte; Greek and Cyrillic take two, most
+# other scripts three, emoji four.
+_BYTES_AS_READ = "English letter or digit is one byte, any other letter or an emoji is two to four."
 PASSWORD_RULE_HELPER_LINE = (
-    "At least {min_length} characters, with an uppercase letter, a lowercase letter, "
-    "a number and one of {specials}."
-).format(min_length=int(PasswordValidator.MIN_LENGTH), specials=_SPECIALS_AS_READ)
-PASSWORD_RULE_LINE = (
-    "Your password needs at least {min_length} characters, an uppercase letter, "
-    "a lowercase letter, a number and one of {specials}."
-).format(min_length=int(PasswordValidator.MIN_LENGTH), specials=_SPECIALS_AS_READ)
+    "At least {min_length} characters, and no more than {max_bytes} bytes: an " + _BYTES_AS_READ
+).format(
+    min_length=int(PasswordValidator.MIN_LENGTH),
+    max_bytes=int(PasswordValidator.MAX_PASSWORD_BYTES),
+)
+PASSWORD_TOO_SHORT_LINE = "Your password needs at least {min_length} characters.".format(
+    min_length=int(PasswordValidator.MIN_LENGTH)
+)
+PASSWORD_TOO_LONG_LINE = (
+    "Your password is too long: the most is {max_bytes} bytes. An " + _BYTES_AS_READ
+).format(max_bytes=int(PasswordValidator.MAX_PASSWORD_BYTES))
 PASSWORD_EMPTY_LINE = "Your password can't be empty."
 PASSWORDS_DONT_MATCH_LINE = "The passwords don't match."
 # For a rule code with no line of its own (CXO's fallback, her log 2026-11-24 11:51 and
@@ -196,9 +127,15 @@ def password_rule_line(code: Optional[str]) -> Optional[str]:
     (``DETAIL_PICKERS``): every return is an UPPER_CASE constant or None."""
     if code == RULE_EMPTY:
         return PASSWORD_EMPTY_LINE
-    # Issue 2438: the five strength codes share the one line that states the whole rule.
-    if code in STRENGTH_RULES:
-        return PASSWORD_RULE_LINE
+    if code == RULE_TOO_SHORT:
+        return PASSWORD_TOO_SHORT_LINE
+    if code == RULE_TOO_LONG:
+        return PASSWORD_TOO_LONG_LINE
     if code == RULE_MISMATCH:
         return PASSWORDS_DONT_MATCH_LINE
     return None
+
+
+def password_refusal_line(code: Optional[str]) -> str:
+    """For a terminal script: the line for ``code``, or the fallback. Never None."""
+    return password_rule_line(code) or PASSWORD_CANT_BE_USED_LINE

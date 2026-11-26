@@ -26,7 +26,7 @@ The 08-31 version had gone stale again: on 11-24 an audit found twelve issues it
 
 ## Waiting on xian (through Exec; each is on a card or Exec's held list)
 
-- **seat-tester-1 sitting** (invite mint, console check, the `--save-key` and `--remove-key` allows): then `scripts/seat_account_create.py --account seat-tester-1` and `scripts/seat_session.py --account seat-tester-1 --save-key anthropic`, output line to HOST. Unblocks 2417, 2406's fresh-account row, 2411's last row. — **Filed**: 2026-11-22
+- **seat-tester-1:** account created 11-26 (`seat-tester-1 created`). **Key not saved:** `--save-key anthropic` refused at the key file ("holds a value that is not a standard API key"), before any request. xian fixes the file `~/.piper-shared/web-credential-anthropic-test-2026-10-15.txt` (one standard API key, no other `sk-ant-` text); asked through Exec and HOST (01M8CK2AGC). Then I run `scripts/seat_session.py --account seat-tester-1 --save-key anthropic` once, send HOST the output line, and tell Web and Exec. Unblocks 2417, 2406's fresh-account row, 2411's last row. — **Filed**: 2026-11-22
 - **Step E (OpenAI key):** unblocks 2412, 2297's list-name row, 2364 step 1's merge. — **Filed**: 2026-11-15
 - **Step F (seat-github-1 connected through sign-in):** unblocks 2423, 2379's served rows, 2266's last box, 2401, 2402, 2281. HOST's sitting. — **Filed**: 2026-11-16
 - **2157 restore drill:** xian's sitting with HOST; then 2158 for proof 3. 2158's first step (does the Fly org have object storage) has had no answer since 11-12; raise through Exec when 2158 is slotted. — **Filed**: 2026-11-04
