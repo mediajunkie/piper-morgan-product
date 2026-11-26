@@ -2204,7 +2204,7 @@ issue	state	milestone	sprint	title	labels	blocked_by	state_reason
 2414	CLOSED	Production		UX: two status replies on beta open mid-thought ('Also, …', 'To get a real picture, …')	UX		COMPLETED
 2415	CLOSED	Production		On a status ask with no project detail, the floor tells the person to ask for the status they just asked for (and sometimes says 'Nothing has been done yet')	UX		COMPLETED
 2416	CLOSED	Production		UX: 'how is X going?' above a project's todo list: the floor promises or re-offers a status (split from 2301 part 2)	UX		COMPLETED
-2417	OPEN	Production		UX: status reply says the reads 'came back empty due to a data check failure' and 'the grant expired'	UX		
+2417	CLOSED	Production		UX: status reply says the reads 'came back empty due to a data check failure' and 'the grant expired'	UX		COMPLETED
 2418	CLOSED	Production		[UX] "What integrations do I have?" says none of your tools are connected yet, then names GitHub as needing reconnecting	UX		COMPLETED
 2419	CLOSED	Production		[UX] "What integrations do I have connected?" calls Slack and Notion available and offers to set them up; this beta doesn't offer them	UX		COMPLETED
 2420	CLOSED	Production		Integration follow-ups to 2418 and 2419: one list of Settings sub-path places; filter the floor's 'What chat reads' list through offered_connectors()	UX		COMPLETED
