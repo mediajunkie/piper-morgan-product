@@ -1729,6 +1729,47 @@ def test_remove_key_refuses_a_validated_key_and_sends_nothing(ss, tester):
     assert not _deletes(host)
 
 
+class SeatGitHubKeyHost(DeadKeyHost):
+    """Beta for seat-github-1: GitHub live as the machine login, a key already on file."""
+
+    def __init__(self, ss, **over):
+        super().__init__(ss, **over)
+        self.replies["/api/v1/auth/me"] = ss.Reply(
+            200, json.dumps({"username": "seat-github-1"}).encode()
+        )
+        rows = [{"name": n, "status": "not_configured"} for n in ("notion", "slack", "calendar")]
+        rows.append({"name": "github", **_live()})
+        self.replies["/api/v1/integrations/health"] = ss.Reply(
+            200, json.dumps({"integrations": rows}).encode()
+        )
+
+
+@pytest.fixture
+def seat_github(ss, shared):
+    cred = shared / "seat-github-1-credentials.txt"
+    cred.write_text(f"username: seat-github-1\npassword: {PASSWORD}\n")
+    cred.chmod(0o600)
+    return shared
+
+
+def test_remove_key_never_clears_a_working_key_on_seat_github_1(ss, seat_github):
+    """HOST 01M8CVHZBJ, Arch 01M8CVHXAG (2026-11-26): the account is on the list for the
+    refused-key case only. A key the provider accepted is refused and nothing is sent; it
+    leaves the account only by xian's hand."""
+    host = SeatGitHubKeyHost(ss, validated=True)
+    with pytest.raises(ss.Refused, match="validated; a working key is not removed"):
+        ss.remove_key("seat-github-1", "anthropic", host)
+    assert not _deletes(host)
+
+
+@pytest.mark.parametrize("validated", [False, None])
+def test_remove_key_clears_a_refused_key_on_seat_github_1(ss, seat_github, validated):
+    host = SeatGitHubKeyHost(ss, validated=validated)
+    line = ss.remove_key("seat-github-1", "anthropic", host)
+    assert line == "seat-github-1: key removed; key on file: no"
+    assert len(_deletes(host)) == 1
+
+
 def test_remove_key_with_no_key_on_file_says_so_and_sends_nothing(ss, tester):
     host = KeyHost(ss)
     assert (
@@ -1741,20 +1782,24 @@ def test_remove_key_with_no_key_on_file_says_so_and_sends_nothing(ss, tester):
     "account, provider",
     [
         (ACCOUNT, "anthropic"),
-        ("seat-github-1", "anthropic"),
+        ("seat-github-1", "openai"),
         (TESTER, "openai"),
         ("x", "anthropic"),
     ],
 )
 def test_remove_key_refuses_off_its_closed_list_before_any_call(ss, tester, account, provider):
     """``web-seed-1386`` holds a key other served rows depend on; it is not removable.
-    ``seat-github-1`` may hold a key since 2026-11-26 but is NOT on the removable list:
-    HOST's ruling added the key allowance and nothing else."""
+    ``seat-github-1`` is on the list for Anthropic only (the refused-key recovery)."""
     host = DeadKeyHost(ss)
     with pytest.raises(ss.Refused):
         ss.remove_key(account, provider, host)
     assert host.calls == []
-    assert ss.KEY_REMOVABLE == {TESTER: frozenset({"anthropic"})}
+    # seat-github-1 joined on 2026-11-26 (HOST 01M8CVHZBJ, Arch 01M8CVHXAG), for a key
+    # the provider refused only; web-seed-1386 stays off.
+    assert ss.KEY_REMOVABLE == {
+        TESTER: frozenset({"anthropic"}),
+        "seat-github-1": frozenset({"anthropic"}),
+    }
 
 
 @pytest.mark.parametrize("status, word", [(404, "4xx"), (500, "5xx")])
