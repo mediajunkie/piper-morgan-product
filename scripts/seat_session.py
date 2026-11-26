@@ -477,11 +477,21 @@ def disconnect(account: str, connector: str, send: Transport = http_transport) -
 # key by Web's record; xian confirms that on his console before the first chat turn (Arch's
 # condition 1). A closed list: one provider, one file. This mode never saves a session.
 SAVABLE_KEYS: Mapping[str, str] = {"anthropic": "web-credential-anthropic-test-2026-10-15.txt"}
-# A standard API key only (Arch 01M82BT11P): the looser ``sk-ant-`` would also match an
-# admin key, an organisation-level credential that must never be sent to beta as a
-# user's key. Any ``sk-ant-`` value that is not an API key refuses the file.
-_KEY_SHAPE = re.compile(r"sk-ant-api[A-Za-z0-9_\-]{20,}")
-_ANY_ANTHROPIC_SHAPE = re.compile(r"sk-ant-[A-Za-z0-9_\-]{8,}")
+# A person's API key only (Arch 01M82BT11P, re-ruled 01M8CN4PR6 on 2026-11-26): the
+# looser ``sk-ant-`` would also match an admin key, an organisation-level credential that
+# must never be sent to beta as a user's key. The accepted forms are a CLOSED list: the
+# older ``sk-ant-api`` and ``sk-ant-usr``, which the Console issues now for a workspace
+# key made by a user. Admin keys and every other ``sk-ant-`` form are refused by not
+# being on it, and any such value refuses the whole file. A new prefix is a diff Arch
+# reads (and HOST, as custody), never a silent pass.
+PERSON_KEY_PREFIXES = ("sk-ant-api", "sk-ant-usr")
+_KEY_SHAPE = re.compile(
+    "(?:" + "|".join(re.escape(prefix) for prefix in PERSON_KEY_PREFIXES) + r")[A-Za-z0-9_\-]{20,}"
+)
+# Any ``sk-ant-`` text at all, however short: a masked form as the Console shows it
+# (``sk-ant-usr-1Xv…``) has only seven characters after ``sk-ant-`` and slipped under the
+# earlier floor of eight (found while building Arch's 2026-11-26 test for it).
+_ANY_ANTHROPIC_SHAPE = re.compile(r"sk-ant-[A-Za-z0-9_\-]+")
 
 
 def read_key_file(path: Path) -> str:

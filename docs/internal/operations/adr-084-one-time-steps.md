@@ -346,7 +346,7 @@ What the row must hold, whatever the path:
   ```
   fly ssh console -a piper-morgan -C "python /app/scripts/mcp_allow.py add --user-email <seat-account-email> --apply"
   ```
-  `<seat-account-email>` is the GitHub-connected seat account's sign-in address from HOST's custody row. It isn't a secret.
+  `<seat-account-email>` is the GitHub-connected seat account's email address. It isn't a secret. **Take it from beta's /account page while signed in as that account (or HOST's custody row), never from `~/.piper-shared/seat-github-1-credentials.txt`:** that file holds only `username:` and `password:` lines, and on 11-26 its password line went into this command by mistake (refused, nothing written). The address has an `@`; if what you're about to paste has none, stop.
 - **You should see:** a `--- target:` line with the database address masked. The dry run ends `DRY-RUN complete — no writes.` The `--apply` run prints the `--- listed:` block twice, before and after the write; the second one includes the seat account. It ends `add: done for <seat-account-email> (…).`
 - **Seat check:** none from a seat (no seat reads the production database). The check is part 2's consent working: an unlisted account gets a 403 at the consent page.
 - **If it fails:** `refusing: --user-email is not a plain address` means a typo, so re-run. `No such user: … — nothing written.` means the seat account doesn't exist on beta under that address, so check the address or do Step F first. Anything else: paste the error line (not the list) to Exec.
