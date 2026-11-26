@@ -1,6 +1,6 @@
 # Exec carry-forward
 
-**Rewritten 2026-11-25 22:02 PST at STOP.** Model: Opus 5.5. History: `git log -p -- dev/active/exec-carry-forward.md`. Last session log: `dev/2026/11/25/2026-11-25-0601-exec-code-log.md` (closed). Start a new log on 11-26. Restarted onto Claude Code 2.1.332 at 19:02 on 11-25 (Pard, xian's go), model unchanged.
+**Rewritten 2026-11-25 22:02 PST at STOP.** Model: Opus 5.5. History: `git log -p -- dev/active/exec-carry-forward.md`. Last session log: `dev/2026/11/25/2026-11-25-0601-exec-code-log.md` (closed). Today's log: `dev/2026/11/26/2026-11-26-0601-exec-code-log.md`. Restarted onto Claude Code 2.1.332 at 19:02 on 11-25 (Pard, xian's go), model unchanged.
 
 **STATE: LIVE on LaunchAgent** `com.xian.pm-exec-cycle`, firing at :01 on hours 6, 10, 14, 18 and 22. Empty CronList is normal. Liveness is Pard's.
 
@@ -12,7 +12,7 @@
 Via `scripts/ship-kickoff.sh --if-due` (the first live v4 kickoff). Thu 11-26 is Thanksgiving: no newsletter (Docs). #071 publishes Tue 12-01. Standing row 25 (plan the week ahead with xian) applies at this kickoff. #070 is done and distributed.
 
 ## Rollup
-v1163 (Wed 11-25: 2438 served, seat-tester hold lifted; 2438; Duet reach check; beta 92836ae41d;: sprint 3 three answers added; START: h1 Wednesday; #070 done line and 11-24's two for-your-record notes dropped), `719UZ4h1NELjEwWZbDCceT`. Source `dev/active/exec-attention-rollup-current.html`. Python replace plus assert, and bump the stamp from a `date` call. **At START 11-26:** retitle the h1 to Thursday (Thanksgiving; expect him away, so no new asks). On every rebuild, check each card item against the seats' logs and the editorial calendar (cohort-attention-rollup step 2.01, xian's tell-one-agent rule). 11-25: no xian answers or completions in any seat log through 22:01.
+v1164 (Thu 11-26 START: h1 Thursday; stale password "nothing built", old beta card and the passed mail v4 line fixed; relative times anchored to days), `719UZ4h1NELjEwWZbDCceT`. When beta moves, re-read every card item that names a build, not only the beta line (11-26 miss). Source `dev/active/exec-attention-rollup-current.html`. Python replace plus assert, and bump the stamp from a `date` call. **At START 11-27:** retitle the h1 to Friday; the #071 kickoff runs that fire. On every rebuild, check each card item against the seats' logs and the editorial calendar (cohort-attention-rollup step 2.01, xian's tell-one-agent rule). 11-25: no xian answers or completions in any seat log through 22:01.
 
 ## ADR-084 sitting (steps file `docs/internal/operations/adr-084-one-time-steps.md`)
 - **Done:** A, C, D, F0, F.1 (11-20).
@@ -43,8 +43,8 @@ v1163 (Wed 11-25: 2438 served, seat-tester hold lifted; 2438; Duet reach check; 
 - **Promote hold:** the `ops/promote-hold.md` mechanism exists but isn't in use. **Staging D6:** HOST's read-only staging Machines token idea is at 2 of 3 repeats.
 - Main 12 of 12 green at 22:01 on 11-25. Beta `cf3486389e` healthy (my health read, 22:01).
 
-## Closes at 22:01 on 11-25
-Closed: Web, Comms, HOST, Arch, CXO, PPM, Lead, PA. Open: Docs, CIO, prog (their STOPs may still run). Check at START.
+## Closes for 11-25
+All closed by 11-26 START except the prog subagent log (no STOP cycle; not chased).
 
 ## Standing word
 - Promote gate: "Yes, changes that only make the check stricter can go ahead with Arch's approval, although I should still be informed." I tell him the same hour.
