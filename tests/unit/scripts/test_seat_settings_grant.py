@@ -131,6 +131,24 @@ def test_show_and_remove_key(seat, monkeypatch, capsys):
     assert mod.SELF_DENY in data["permissions"]["deny"]  # a deny is never removed
 
 
+def test_show_says_why_the_self_deny_is_absent(seat, monkeypatch, capsys):
+    """Exec 01M8CJW0EX (2026-11-26): add-allow alone leaves the self-deny out, which is correct for
+    a file with no seat key; the summary has to say so, and has to say MISSING if a key is there."""
+    mod = _load()
+    root, path = seat
+    rule = "Bash(scripts/seat_session.py --account seat-github-1)"
+    assert mod.main(["--root", str(root), "add-allow", "--seat", "lead", "--rule", rule]) == 0
+    out = capsys.readouterr().out
+    assert "self-deny present: False (not needed: no seat key in this file" in out
+    data = json.loads(path.read_text())
+    data["env"] = {"PIPER_SEAT_ANTHROPIC_KEY": DUMMY}
+    path.write_text(json.dumps(data))
+    assert mod.main(["--root", str(root), "show", "--seat", "lead"]) == 0
+    out = capsys.readouterr().out
+    assert DUMMY not in out
+    assert "self-deny present: False. MISSING: this file holds a seat key" in out
+
+
 def test_check_env_reads_the_environment_only(monkeypatch, capsys):
     mod = _load()
     monkeypatch.setenv("PIPER_SEAT_ANTHROPIC_KEY", DUMMY)
