@@ -1,5 +1,20 @@
 # Lead carry-forward — Fable 5.2 seat again since 2026-11-20 08:56 (Opus 5.5 from 2026-11-17 21:30 until then); Model A worktree ~/Development/piper-morgan-worktrees/lead
 
+## DAY-END 2026-11-25 21:47 (read this first; the blocks below are earlier states)
+
+- **Beta serves `cf3486389e`** (promoted 13:47, the third promotion of the day; all three went on the first dispatch). Healthy and quiet at 21:46. Main CI 12 of 12 green. No code has landed since, so nothing waits to be promoted.
+- **Closed today (3):** 2433, 2434, 2437. **Landed and still open:** 2399 (one served row left), 2438 (wizard row left), 2356's exclusion test. **Filed today:** 2436, 2437, 2438 (mine); 2435 (CXO).
+- **Nothing is in flight:** no suite running, no local server, side trees `../lead-2418`, `../lead-2432b`, `../lead-2415` clean. The seat was restarted onto Claude Code 2.1.332 at 19:04 (Pard, xian's go); model unchanged.
+- **Waits, each with its blocker (standing items has the rows):**
+  - xian's seat-tester-1 sitting: 2438's wizard row (helper, refusal, toast), then 2417, 2406's fresh-account row, 2411's last row. Exec holds the sitting until then or xian picks length-only.
+  - xian's F.4 GitHub connect: 2399's not-found and already-closed lines, 2345's return half (roll back first on `oauth_state_store_unavailable op=take`), then 2384 with his token.
+  - xian's yes via Exec on PPM's sprint 3 draft: 2244 (item 9's question), 2352 box 3's slot, 2436's placement.
+  - Arch's lever: 2424 (built, held), 2425, 2426. Arch's and CXO's ticks: 2429, 2430, 2431.
+  - 2355's build step: 2356's served question set. PPM's answer: 2264 box 2.
+  - Allow lines on xian's card: 2282 box 4, 2388 row 4, 2390, 2391.
+- **Small thing to carry:** the wizard toast title `Couldn't create account` goes with the next page-words change (CXO, 01M8A9W5TC).
+- **Carry these habits from today:** a coding agent's brief asks for the whole `tests/unit/services` and `tests/integration` run, not only files naming the changed symbols (23 tests were missed on 2437); before naming a served row for Web, check the seed account can reach that state (2399's close rows could not).
+
 ## DAY-END 2026-11-24 21:47 (read this first; the blocks below are today's earlier states)
 
 - **Beta serves `23b1373185`** (promoted 15:12, the sixth promotion of the day; all six went on the first dispatch). Healthy at 21:47. Main CI 12 of 12 green. No code has landed since, so nothing waits to be promoted.
