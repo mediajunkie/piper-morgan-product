@@ -668,9 +668,14 @@ def erase_files(paths: Sequence[str], user_dir: Path) -> Dict[str, int]:
 
 
 def _chroma_collection(path: Optional[Path] = None):
-    """The app's in-app store (DocumentIngester's ./data/chromadb under /app), or
-    None when it isn't there. Never creates a store."""
-    path = path or (_ROOT / "data" / "chromadb")
+    """The app's in-app store, or None when it isn't there. Never creates a store.
+
+    #2244: the store is under PIPER_DATA_DIR when that is set (the volume on Fly);
+    otherwise DocumentIngester's ./data/chromadb, read here from the repo root."""
+    if path is None:
+        from services.infrastructure.data_paths import data_root, document_index_path
+
+        path = document_index_path() if data_root() is not None else _ROOT / "data" / "chromadb"
     if not path.is_dir():
         return None
     import chromadb  # noqa: PLC0415

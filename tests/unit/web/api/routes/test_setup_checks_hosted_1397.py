@@ -33,13 +33,19 @@ class TestDatabaseCheck:
 
 class TestChromaCheck:
     @pytest.mark.asyncio
-    async def test_chroma_host_spelling_honored(self, monkeypatch):
-        """fly.toml's CHROMA_HOST/CHROMA_PORT names must work."""
+    async def test_chroma_host_is_no_longer_probed(self, monkeypatch, tmp_path):
+        """#2244 replaced the 2026-07-12 fix here. That fix taught the check
+        fly.toml's CHROMA_HOST spelling; but the app never connects to a Chroma
+        server, so the check now asks whether the in-process store's folder is
+        writable. Full coverage: test_data_paths_2244.py."""
         monkeypatch.setenv("CHROMA_HOST", "piper-morgan-chroma.internal")
         monkeypatch.setenv("CHROMA_PORT", "8000")
-        with patch.object(setup_mod, "check_service_port", new=AsyncMock(return_value=True)) as csp:
+        monkeypatch.setenv("PIPER_DATA_DIR", str(tmp_path / "vol"))
+        with patch.object(
+            setup_mod, "check_service_port", new=AsyncMock(return_value=False)
+        ) as csp:
             assert await setup_mod.check_chromadb() is True
-        csp.assert_awaited_once_with("piper-morgan-chroma.internal", 8000)
+        csp.assert_not_awaited()
 
 
 class TestLoginTemplateInvitePath:

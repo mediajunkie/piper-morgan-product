@@ -31,6 +31,10 @@ primary_region = "sjc"
   AUTH_ENABLED = "true"
   # #1401: uploads on the mounted volume (see [mounts]) — survives deploys.
   UPLOAD_DIR = "/data/uploads"
+  # #2244: the document index and Slack's spatial memory on the same volume, so a
+  # deploy no longer empties them. deploy/docker-entrypoint.sh creates the folder
+  # and hands it to the app user. A volume destroy or restore now touches these too.
+  PIPER_DATA_DIR = "/data/piper"
   # sibling Fly apps over private networking (6PN)
   GITHUB_MCP_SERVER_URL = "http://piper-morgan-gh-mcp.internal:8082/mcp"
   CHROMA_HOST = "piper-morgan-chroma.internal"
