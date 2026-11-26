@@ -1334,7 +1334,17 @@ async def build_close_reopen_confirmation(
             # chosen by which read failed (each has its own ``try`` below), never by
             # matching on the exception. The generic yes/no confirm is never the answer
             # to "we couldn't check".
-            logger.warning("close_reopen_gate_read_failed", read=read_name, exc_info=True)
+            # The log names the read and the exception's class, never its text: a
+            # message from a database or GitHub client can carry an id or part of a
+            # token (HOST, mail 01M8CYQVQP).
+            import sys as _sys
+
+            _raised = _sys.exc_info()[1]
+            logger.warning(
+                "close_reopen_gate_read_failed",
+                read=read_name,
+                error_type=type(_raised).__name__ if _raised is not None else "unknown",
+            )
             return CloseReopenGate(
                 passthrough_result={
                     "message": line,
