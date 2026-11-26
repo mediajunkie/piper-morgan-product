@@ -1019,7 +1019,7 @@ class TestBackgroundRefreshPass:
 @pytest.fixture
 def no_pass_yet(monkeypatch):
     """The pass's record is module state; each test starts from "no pass since boot"."""
-    monkeypatch.setattr(refresh_mod, "_pass_record", {})
+    monkeypatch.setattr(refresh_mod, "_pass_record", refresh_mod._PassRecord())
 
 
 _ZERO = {"seen": 0, "refreshed": 0, "already_fresh": 0, "rejected": 0, "could_not_complete": 0}

@@ -39,7 +39,7 @@ import asyncio
 import hashlib
 import os
 import time
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from typing import Dict, Optional
 
 import structlog
@@ -260,11 +260,27 @@ async def _bound_github_owners() -> list:
 # aggregate only. Counts, two booleans and one time to the minute. No owner, no login, no
 # token, no per-grant row, no reason text, no duration.
 PASS_COUNT_KEYS = ("seen", "refreshed", "already_fresh", "rejected", "could_not_complete")
-_pass_record: Dict[str, object] = {}
 
 
 def _zero_counts() -> Dict[str, int]:
     return {key: 0 for key in PASS_COUNT_KEYS}
+
+
+@dataclass
+class _PassRecord:
+    """The pass's record of itself since this process started. Counts, two booleans and
+    one time; there is no field here that could hold anything identifying."""
+
+    app_mode: Optional[bool] = None
+    can_refresh: Optional[bool] = None
+    last_pass_at: Optional[str] = None
+    last_pass: Dict[str, int] = field(default_factory=_zero_counts)
+    totals: Dict[str, int] = field(default_factory=_zero_counts)
+    passes: int = 0
+    list_failed: int = 0
+
+
+_pass_record = _PassRecord()
 
 
 def _record_pass(
@@ -272,34 +288,32 @@ def _record_pass(
 ) -> None:
     """Store one finished pass. ``listed`` False means the list of bound grants could not
     be read, so the zero counts are "not measured", not "nothing to do"."""
-    totals = dict(_pass_record.get("totals") or _zero_counts())
-    for key in PASS_COUNT_KEYS:
-        totals[key] = int(totals.get(key, 0)) + int(counts.get(key, 0))
-    _pass_record.update(
-        {
-            "app_mode": bool(in_app_mode),
-            "can_refresh": bool(can_refresh),
-            "last_pass_at": time.strftime("%Y-%m-%dT%H:%MZ", time.gmtime()),
-            "last_pass": {key: int(counts.get(key, 0)) for key in PASS_COUNT_KEYS},
-            "totals": totals,
-            "passes": int(_pass_record.get("passes", 0)) + 1,
-            "list_failed": int(_pass_record.get("list_failed", 0)) + (0 if listed else 1),
-        }
-    )
+    record = _pass_record
+    record.app_mode = bool(in_app_mode)
+    record.can_refresh = bool(can_refresh)
+    record.last_pass_at = time.strftime("%Y-%m-%dT%H:%MZ", time.gmtime())
+    record.last_pass = {key: int(counts.get(key, 0)) for key in PASS_COUNT_KEYS}
+    record.totals = {
+        key: record.totals.get(key, 0) + record.last_pass[key] for key in PASS_COUNT_KEYS
+    }
+    record.passes += 1
+    if not listed:
+        record.list_failed += 1
 
 
 def refresh_health() -> Dict[str, object]:
     """What /health shows under ``services.github_app_refresh``. Before the first pass
     since boot, ``app_mode``, ``can_refresh`` and ``last_pass_at`` are None and every
-    count is zero: "no pass yet" is said, never guessed."""
+    count is zero: "no pass yet" is said, never guessed. Returns copies."""
+    record = _pass_record
     return {
-        "app_mode": _pass_record.get("app_mode"),
-        "can_refresh": _pass_record.get("can_refresh"),
-        "last_pass_at": _pass_record.get("last_pass_at"),
-        "last_pass": dict(_pass_record.get("last_pass") or _zero_counts()),
-        "totals": dict(_pass_record.get("totals") or _zero_counts()),
-        "passes": int(_pass_record.get("passes", 0)),
-        "list_failed": int(_pass_record.get("list_failed", 0)),
+        "app_mode": record.app_mode,
+        "can_refresh": record.can_refresh,
+        "last_pass_at": record.last_pass_at,
+        "last_pass": dict(record.last_pass),
+        "totals": dict(record.totals),
+        "passes": record.passes,
+        "list_failed": record.list_failed,
     }
 
 
