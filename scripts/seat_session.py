@@ -157,11 +157,21 @@ ACCOUNTS: Dict[str, Account] = {
     # - At most one OAuth connector and no manual token: ADR-084 Step G part 2 adds one
     #   claude.ai connection by design, and Step G's Ending removes it. This allowance
     #   comes out with the Ending.
-    # Still refused: an admin flag, any provider key, a personal token, any other
+    # - An Anthropic key from the `piper-morgan-test` workspace, the same key and the same
+    #   ``--save-key`` path as ``seat-tester-1`` (HOST 01M8CT906X; xian's yes via Exec
+    #   01M8CTPKT8, 2026-11-26). Chat refuses every turn on an account with no model key,
+    #   before any handler runs, so without it no GitHub-connected chat reply could be read
+    #   on this account (Web 01M8CSW3BJ). Three seat accounts now share that workspace's
+    #   $40 monthly limit, which the Console enforces. A working key leaves this account
+    #   only by xian's hand, signed in as it, on its Settings page (HOST 01M8CVHZBJ, Arch
+    #   01M8CVHXAG: no seat power to clear a working key). ``--remove-key`` here clears
+    #   only a key the provider refused.
+    # Still refused: an admin flag, any other provider's key, a personal token, any other
     # integration, a second connector.
     "seat-github-1": Account(
         credential_file="seat-github-1-credentials.txt",
         integrations={"github": GITHUB_LIVE_ROWS | frozenset({GITHUB_DEAD_ROW})},
+        provider_keys=frozenset({"anthropic"}),
         github_login="atswimtwobirds",
         max_oauth_connectors=1,
     ),
@@ -642,8 +652,14 @@ def save_key(account: str, provider: str, send: Transport = http_transport) -> s
 
 # Which account may have which provider's key removed by a seat. Closed, like the lists
 # above: ``web-seed-1386`` is absent on purpose, because other served rows depend on its
-# key. A change to this table is a diff HOST reads.
-KEY_REMOVABLE: Mapping[str, FrozenSet[str]] = {"seat-tester-1": frozenset({"anthropic"})}
+# key. A change to this table is a diff HOST reads. ``seat-github-1`` joined on
+# 2026-11-26 (HOST 01M8CVHZBJ, Arch 01M8CVHXAG) for the one case this mode exists for:
+# the save printed ``validated: no``. ``remove_key`` still refuses a key the provider
+# accepted, on every account; a working key leaves an account only by xian's hand.
+KEY_REMOVABLE: Mapping[str, FrozenSet[str]] = {
+    "seat-tester-1": frozenset({"anthropic"}),
+    "seat-github-1": frozenset({"anthropic"}),
+}
 
 
 def remove_key(account: str, provider: str, send: Transport = http_transport) -> str:
