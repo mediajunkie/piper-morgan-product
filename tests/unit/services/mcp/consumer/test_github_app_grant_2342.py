@@ -1016,6 +1016,190 @@ class TestBackgroundRefreshPass:
 # ── a 401 on a token a refresh has already replaced ─────────────────────────────────
 
 
+@pytest.fixture
+def no_pass_yet(monkeypatch):
+    """The pass's record is module state; each test starts from "no pass since boot"."""
+    monkeypatch.setattr(refresh_mod, "_pass_record", {})
+
+
+_ZERO = {"seen": 0, "refreshed": 0, "already_fresh": 0, "rejected": 0, "could_not_complete": 0}
+
+
+@pytest.mark.asyncio
+class TestThePassRecordsItselfForHealth2449:
+    """Issue 2449: /health shows whether the refresh job runs and refreshes, from the
+    pass's own record. HOST's conditions (on the issue): aggregate only."""
+
+    async def test_before_any_pass_it_says_so(self, no_pass_yet):
+        assert refresh_mod.refresh_health() == {
+            "app_mode": None,
+            "can_refresh": None,
+            "last_pass_at": None,
+            "last_pass": _ZERO,
+            "totals": _ZERO,
+            "passes": 0,
+            "list_failed": 0,
+        }
+
+    async def test_a_pass_in_app_mode_updates_the_record(
+        self, world, app_on, monkeypatch, no_pass_yet
+    ):
+        await _seed(world, stored=_grant("old", access_in=3600).encode())
+        _use(monkeypatch, _FakeRefresher(RefreshOutcome(grant=_grant("new"))))
+        counts = await refresh_mod.background_refresh_pass()
+        seen = refresh_mod.refresh_health()
+        assert seen["app_mode"] is True and seen["can_refresh"] is True
+        assert seen["last_pass"] == counts == {**_ZERO, "seen": 1, "refreshed": 1}
+        assert seen["totals"] == {**_ZERO, "seen": 1, "refreshed": 1}
+        assert seen["passes"] == 1 and seen["list_failed"] == 0
+
+    async def test_totals_add_up_and_last_pass_is_only_the_last(
+        self, world, app_on, monkeypatch, no_pass_yet
+    ):
+        await _seed(world, stored=_grant("old", access_in=3600).encode())
+        _use(monkeypatch, _FakeRefresher(RefreshOutcome(grant=_grant("new"))))
+        await refresh_mod.background_refresh_pass()  # refreshes it
+        await refresh_mod.background_refresh_pass()  # now fresh
+        seen = refresh_mod.refresh_health()
+        assert seen["last_pass"] == {**_ZERO, "seen": 1, "already_fresh": 1}
+        assert seen["totals"] == {**_ZERO, "seen": 2, "refreshed": 1, "already_fresh": 1}
+        assert seen["passes"] == 2
+
+    async def test_a_pass_outside_app_mode_records_that_with_zero_counts(
+        self, world, app_off, monkeypatch, no_pass_yet
+    ):
+        await _seed(world, stored=_grant("old", access_in=60).encode())
+        _use(monkeypatch, _FakeRefresher(RefreshOutcome(grant=_grant("new"))))
+        await refresh_mod.background_refresh_pass()
+        seen = refresh_mod.refresh_health()
+        assert seen["app_mode"] is False and seen["can_refresh"] is True
+        assert seen["last_pass"] == _ZERO and seen["totals"] == _ZERO
+        assert seen["passes"] == 1 and seen["last_pass_at"] is not None
+
+    async def test_a_scoped_process_records_that_it_cannot_refresh(
+        self, world, app_on, monkeypatch, no_pass_yet
+    ):
+        monkeypatch.setenv("ENCRYPTION_SCOPED_SUBKEYS", "ctx=unused")
+        await refresh_mod.background_refresh_pass()
+        seen = refresh_mod.refresh_health()
+        assert seen["app_mode"] is True and seen["can_refresh"] is False
+        assert seen["last_pass"] == _ZERO and seen["passes"] == 1
+
+    async def test_a_rejected_refresh_is_counted_not_described(
+        self, world, app_on, monkeypatch, no_pass_yet
+    ):
+        await _seed(world, stored=_grant("old", access_in=60).encode())
+        _use(monkeypatch, _FakeRefresher(RefreshOutcome(rejected=True, error="bad_refresh_token")))
+        await refresh_mod.background_refresh_pass()
+        seen = refresh_mod.refresh_health()
+        assert seen["last_pass"] == {**_ZERO, "seen": 1, "rejected": 1}
+        assert "bad_refresh_token" not in json.dumps(seen)
+
+    async def test_a_list_that_cannot_be_read_is_counted_as_not_measured(
+        self, world, app_on, monkeypatch, no_pass_yet
+    ):
+        async def _boom():
+            raise RuntimeError("database is away")
+
+        monkeypatch.setattr(refresh_mod, "_bound_github_owners", _boom)
+        await refresh_mod.background_refresh_pass()
+        seen = refresh_mod.refresh_health()
+        assert seen["passes"] == 1 and seen["list_failed"] == 1
+        assert seen["last_pass"] == _ZERO
+        assert "database is away" not in json.dumps(seen)
+
+    async def test_the_record_is_aggregate_only(self, world, app_on, monkeypatch, no_pass_yet):
+        """HOST's three conditions, as a test: the exact field names, no owner id, no
+        string but the one time, the time to the minute, no duration."""
+        await _seed(world, stored=_grant("old", access_in=3600).encode())
+        _use(monkeypatch, _FakeRefresher(RefreshOutcome(grant=_grant("new"))))
+        await refresh_mod.background_refresh_pass()
+        seen = refresh_mod.refresh_health()
+        assert set(seen) == {
+            "app_mode",
+            "can_refresh",
+            "last_pass_at",
+            "last_pass",
+            "totals",
+            "passes",
+            "list_failed",
+        }
+        assert set(seen["last_pass"]) == set(seen["totals"]) == set(_ZERO)
+        blob = json.dumps(seen)
+        assert _OWNER not in blob and "refresh-old" not in blob and "ghu_" not in blob
+        for word in ("owner", "login", "token", "user", "email", "reason", "seconds", "duration"):
+            assert word not in blob.lower(), word
+        strings = [v for v in seen.values() if isinstance(v, str)]
+        assert strings == [seen["last_pass_at"]]
+        import re as _re
+
+        assert _re.fullmatch(r"\d{4}-\d{2}-\d{2}T\d{2}:\d{2}Z", seen["last_pass_at"])
+        for value in list(seen["last_pass"].values()) + list(seen["totals"].values()):
+            assert isinstance(value, int) and not isinstance(value, bool)
+
+    async def test_reading_the_record_gives_a_copy(self, no_pass_yet):
+        first = refresh_mod.refresh_health()
+        first["totals"]["seen"] = 99
+        assert refresh_mod.refresh_health()["totals"]["seen"] == 0
+
+
+class TestHealthCarriesTheRefreshRecord2449:
+    """The served shape: ``services.github_app_refresh`` on the real /health route."""
+
+    @staticmethod
+    def _health(monkeypatch):
+        from contextlib import asynccontextmanager
+
+        from fastapi import FastAPI
+        from fastapi.testclient import TestClient
+
+        import web.api.routes.admin as admin_module
+
+        class _Conn:
+            async def execute(self, _statement):
+                return None
+
+        class _Engine:
+            @asynccontextmanager
+            async def connect(self):
+                yield _Conn()
+
+            async def dispose(self):
+                return None
+
+        monkeypatch.setattr(admin_module, "create_async_engine", lambda *a, **k: _Engine())
+        app = FastAPI()
+        app.include_router(admin_module.router)
+        return TestClient(app).get("/health").json()
+
+    def test_health_shows_no_pass_yet(self, monkeypatch, no_pass_yet):
+        body = self._health(monkeypatch)
+        assert body["services"]["github_app_refresh"] == refresh_mod.refresh_health()
+        assert body["services"]["github_app_refresh"]["passes"] == 0
+
+    def test_health_shows_the_pass_record_and_keeps_its_status(self, monkeypatch, no_pass_yet):
+        before = self._health(monkeypatch)["status"]
+        refresh_mod._record_pass(
+            {**_ZERO, "seen": 2, "refreshed": 1, "rejected": 1},
+            in_app_mode=True,
+            can_refresh=True,
+            listed=True,
+        )
+        body = self._health(monkeypatch)
+        shown = body["services"]["github_app_refresh"]
+        assert shown["app_mode"] is True and shown["last_pass"]["rejected"] == 1
+        # Informational: a rejected refresh never changes the host's status.
+        assert body["status"] == before
+
+    def test_a_broken_record_never_breaks_health(self, monkeypatch, no_pass_yet):
+        def _boom():
+            raise RuntimeError("no")
+
+        monkeypatch.setattr(refresh_mod, "refresh_health", _boom)
+        body = self._health(monkeypatch)
+        assert body["services"]["github_app_refresh"] == {"error": "unavailable"}
+
+
 @pytest.mark.asyncio
 class TestRejectedTokenAlreadyReplaced:
     """Arch 2026-11-12 06:52 (#2288's rule): the binding goes stale only if the token

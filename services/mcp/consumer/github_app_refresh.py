@@ -250,6 +250,59 @@ async def _bound_github_owners() -> list:
         return [row[0] for row in result.all()]
 
 
+# --- What the last pass did, for /health (issue 2449) ---
+# The background pass writes its counts to one log line, and no seat reads beta's logs.
+# It is also a silent no-op outside App mode or in a scoped process. On 2026-11-26 nobody
+# could tell from outside whether grants were being refreshed at all. This is the pass's
+# own record of itself, set by the pass and read by /health; nothing is computed twice.
+#
+# HOST's conditions (issue 2449, 2026-11-26), since /health is readable signed out:
+# aggregate only. Counts, two booleans and one time to the minute. No owner, no login, no
+# token, no per-grant row, no reason text, no duration.
+PASS_COUNT_KEYS = ("seen", "refreshed", "already_fresh", "rejected", "could_not_complete")
+_pass_record: Dict[str, object] = {}
+
+
+def _zero_counts() -> Dict[str, int]:
+    return {key: 0 for key in PASS_COUNT_KEYS}
+
+
+def _record_pass(
+    counts: Dict[str, int], *, in_app_mode: bool, can_refresh: bool, listed: bool
+) -> None:
+    """Store one finished pass. ``listed`` False means the list of bound grants could not
+    be read, so the zero counts are "not measured", not "nothing to do"."""
+    totals = dict(_pass_record.get("totals") or _zero_counts())
+    for key in PASS_COUNT_KEYS:
+        totals[key] = int(totals.get(key, 0)) + int(counts.get(key, 0))
+    _pass_record.update(
+        {
+            "app_mode": bool(in_app_mode),
+            "can_refresh": bool(can_refresh),
+            "last_pass_at": time.strftime("%Y-%m-%dT%H:%MZ", time.gmtime()),
+            "last_pass": {key: int(counts.get(key, 0)) for key in PASS_COUNT_KEYS},
+            "totals": totals,
+            "passes": int(_pass_record.get("passes", 0)) + 1,
+            "list_failed": int(_pass_record.get("list_failed", 0)) + (0 if listed else 1),
+        }
+    )
+
+
+def refresh_health() -> Dict[str, object]:
+    """What /health shows under ``services.github_app_refresh``. Before the first pass
+    since boot, ``app_mode``, ``can_refresh`` and ``last_pass_at`` are None and every
+    count is zero: "no pass yet" is said, never guessed."""
+    return {
+        "app_mode": _pass_record.get("app_mode"),
+        "can_refresh": _pass_record.get("can_refresh"),
+        "last_pass_at": _pass_record.get("last_pass_at"),
+        "last_pass": dict(_pass_record.get("last_pass") or _zero_counts()),
+        "totals": dict(_pass_record.get("totals") or _zero_counts()),
+        "passes": int(_pass_record.get("passes", 0)),
+        "list_failed": int(_pass_record.get("list_failed", 0)),
+    }
+
+
 async def background_refresh_pass(
     *, due_within: int = BACKGROUND_DUE_WITHIN_SECONDS
 ) -> Dict[str, int]:
@@ -260,20 +313,18 @@ async def background_refresh_pass(
     is never refreshed, and a classic grant is left for the resolver and the cutover
     script. A rejected refresh marks the binding STALE with ``refresh_rejected``; one
     that can't complete writes nothing, and the next pass retries it. Writes one log
-    line with the counts and returns them. Never raises."""
-    counts = {
-        "seen": 0,
-        "refreshed": 0,
-        "already_fresh": 0,
-        "rejected": 0,
-        "could_not_complete": 0,
-    }
-    if not app_mode() or not process_can_refresh():
+    line with the counts and returns them. Never raises. Every exit records the pass
+    for /health (issue 2449), the two no-op exits included."""
+    counts = _zero_counts()
+    in_app_mode, can_refresh = app_mode(), process_can_refresh()
+    if not in_app_mode or not can_refresh:
+        _record_pass(counts, in_app_mode=in_app_mode, can_refresh=can_refresh, listed=True)
         return counts
     try:
         owners = await _bound_github_owners()
     except Exception:
         logger.warning("github_app_background_refresh_list_failed", exc_info=True)
+        _record_pass(counts, in_app_mode=True, can_refresh=True, listed=False)
         return counts
     for owner_id in owners:
         try:
@@ -298,6 +349,7 @@ async def background_refresh_pass(
         else:
             counts["could_not_complete"] += 1
     evidence("github_app_background_refresh_pass", **counts)
+    _record_pass(counts, in_app_mode=True, can_refresh=True, listed=True)
     return counts
 
 
