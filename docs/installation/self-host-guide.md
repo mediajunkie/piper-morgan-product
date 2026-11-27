@@ -81,6 +81,12 @@ Piper uses its encrypted database store by default. It touches your computer's k
 - `python scripts/local_key_setup.py --list` shows which providers have a key stored, never the key itself.
 - `python scripts/local_key_setup.py --remove <provider>` deletes one.
 
+## What a message costs on your key
+
+Piper checks each message you send against its boundaries before it answers. The check is on unless you turn it off, and it is one call to your AI provider, on your own key. So most messages cost one extra call on top of the answer. A message that is only a greeting, a goodbye or a thanks ("hi", "thanks", "bye") skips the check and costs nothing. If you add anything to it, as in "hi, can you…", the check runs.
+
+To turn the check off, add `ENABLE_ETHICS_ENFORCEMENT=false` to your `.env` and start Piper again. Only the word `false` turns it off. Any other value, including `0`, `no` or `off`, leaves it on, so a typo can't switch the check off without you meaning it to. **(checked against the code on main, 2026-11-26. Not run on an install)**
+
 ## If something goes wrong
 
 See [troubleshooting.md](./troubleshooting.md). Tell the team what you hit. Leave out any key, password or invite code when you do.
