@@ -31,12 +31,14 @@ class TestShippedArmedCorpus:
         rows = gate.load_armed_corpus()
         armed = [r for r in rows if r["condition"] == "armed"]
         control = [r for r in rows if r["condition"] == "control"]
-        assert len(armed) == 9, "nine live-incident armed rows"
-        assert len(control) == 9, "each armed row has a stateless control twin"
+        # 2459 adds pairs 8 and 9 (shown-issue referent); 2425 adds pair 10, the
+        # "my <name> project" sentinel (stored_projects).
+        assert len(armed) == 10, "ten live-incident armed rows"
+        assert len(control) == 10, "each armed row has a stateless control twin"
         by_pair = {}
         for r in rows:
             by_pair.setdefault(r["pair"], {})[r["condition"]] = r
-        assert len(by_pair) == 9
+        assert len(by_pair) == 10
         for pair, members in by_pair.items():
             assert set(members) == {"armed", "control"}, pair
             assert members["armed"]["phrase"] == members["control"]["phrase"], pair
@@ -45,6 +47,10 @@ class TestShippedArmedCorpus:
         rows = gate.load_armed_corpus()
         for r in rows:
             if r["condition"] != "armed":
+                assert "_snapshot" not in r and "_state_block" not in r
+                continue
+            if r.get("_stored_projects"):
+                # 2425: consult state, not a snapshot (see the corpus header)
                 assert "_snapshot" not in r and "_state_block" not in r
                 continue
             assert isinstance(r["_snapshot"], SessionSnapshot), r["pair"]
@@ -85,7 +91,9 @@ class TestShippedArmedCorpus:
             REPO_QUESTION_KIND,
         }
         for r in gate.load_armed_corpus():
-            if r["condition"] == "armed" and "pending_offer_kind" in r["fixture"]:
+            # 2459: only pending-offer fixtures name a store kind; 2425: a
+            # stored_projects row carries no fixture at all.
+            if r["condition"] == "armed" and "pending_offer_kind" in (r.get("fixture") or {}):
                 assert r["fixture"]["pending_offer_kind"] in real_kinds, r["pair"]
 
     def test_armed_expectations_pin_the_1663_ruling(self):
@@ -106,6 +114,7 @@ class TestShippedArmedCorpus:
             # 2459: no offer is armed; the session referent makes "it" a read
             "shown-issue-details": "action:review_issue_query",
             "shown-issue-that-issue": "action:review_issue_query",
+            "my-project-todo": "action:create_todo",
         }
         expected_control = {
             "verb-question": "REVIEW",
@@ -117,6 +126,7 @@ class TestShippedArmedCorpus:
             "repo-question-answer": "REVIEW",
             "shown-issue-details": "REVIEW",
             "shown-issue-that-issue": "REVIEW",
+            "my-project-todo": "REVIEW",
         }
         for r in gate.load_armed_corpus():
             want = (expected_armed if r["condition"] == "armed" else expected_control)[r["pair"]]
@@ -309,4 +319,4 @@ class TestDryRun:
         assert "planned calls:" in out
         assert "No LLM calls made" in out
         # arithmetic stated with its denominators (m-44)
-        assert "9 armed ×2 conditions + 9 control ×1" in out
+        assert "10 armed ×2 conditions + 10 control ×1 + at most 1 project consult" in out
