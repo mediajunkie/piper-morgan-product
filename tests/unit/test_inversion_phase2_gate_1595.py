@@ -31,12 +31,13 @@ class TestShippedArmedCorpus:
         rows = gate.load_armed_corpus()
         armed = [r for r in rows if r["condition"] == "armed"]
         control = [r for r in rows if r["condition"] == "control"]
-        assert len(armed) == 7, "seven live-incident armed rows"
-        assert len(control) == 7, "each armed row has a stateless control twin"
+        # 2425: the eighth pair is the "my <name> project" sentinel (stored_projects).
+        assert len(armed) == 8, "eight live-incident armed rows"
+        assert len(control) == 8, "each armed row has a stateless control twin"
         by_pair = {}
         for r in rows:
             by_pair.setdefault(r["pair"], {})[r["condition"]] = r
-        assert len(by_pair) == 7
+        assert len(by_pair) == 8
         for pair, members in by_pair.items():
             assert set(members) == {"armed", "control"}, pair
             assert members["armed"]["phrase"] == members["control"]["phrase"], pair
@@ -45,6 +46,10 @@ class TestShippedArmedCorpus:
         rows = gate.load_armed_corpus()
         for r in rows:
             if r["condition"] != "armed":
+                assert "_snapshot" not in r and "_state_block" not in r
+                continue
+            if r.get("_stored_projects"):
+                # 2425: consult state, not a snapshot (see the corpus header)
                 assert "_snapshot" not in r and "_state_block" not in r
                 continue
             assert isinstance(r["_snapshot"], SessionSnapshot), r["pair"]
@@ -79,7 +84,7 @@ class TestShippedArmedCorpus:
             REPO_QUESTION_KIND,
         }
         for r in gate.load_armed_corpus():
-            if r["condition"] == "armed":
+            if r["condition"] == "armed" and "fixture" in r:
                 assert r["fixture"]["pending_offer_kind"] in real_kinds, r["pair"]
 
     def test_armed_expectations_pin_the_1663_ruling(self):
@@ -97,6 +102,7 @@ class TestShippedArmedCorpus:
             "reminder-time-answer": "flow:create_reminder",
             "standup-todo-offer": "flow:complete_todo",
             "repo-question-answer": "flow:create_issue",
+            "my-project-todo": "action:create_todo",
         }
         expected_control = {
             "verb-question": "REVIEW",
@@ -106,6 +112,7 @@ class TestShippedArmedCorpus:
             "reminder-time-answer": "REVIEW",
             "standup-todo-offer": "action:complete_todo",
             "repo-question-answer": "REVIEW",
+            "my-project-todo": "REVIEW",
         }
         for r in gate.load_armed_corpus():
             want = (expected_armed if r["condition"] == "armed" else expected_control)[r["pair"]]
@@ -298,4 +305,4 @@ class TestDryRun:
         assert "planned calls:" in out
         assert "No LLM calls made" in out
         # arithmetic stated with its denominators (m-44)
-        assert "7 armed ×2 conditions + 7 control ×1" in out
+        assert "8 armed ×2 conditions + 8 control ×1 + at most 1 project consult" in out

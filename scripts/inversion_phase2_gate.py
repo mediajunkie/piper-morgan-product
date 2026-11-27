@@ -21,6 +21,16 @@ not the production chain, and not handler behavior. Three conditions:
      armed-state delta (the gate question: does context flip the loss
      class?) is condition 2 minus condition 3, per row.
 
+4. **issue 2425 rows (``stored_projects:``), WITH the consult** — an armed row that
+   carries the person's stored project names instead of a snapshot fixture (those
+   names are not a ``SessionSnapshot`` field: the live path appends them to the
+   consult's block only). Its "with" condition runs the live path's own sequence:
+   the main ``route()`` with no session state, then
+   ``project_consult.consult_projects_on_clarify`` with a stub reader returning those
+   names (D5 is not in scope: the row has no list). The FINAL decision is scored. Its
+   "without" condition is the main call alone. Rows without the field are routed and
+   scored exactly as before.
+
 Stateless CONTROL twins (condition: control, no fixture) run once — their
 with/without prompts would be byte-identical (an empty snapshot serializes
 to "" and ``RouterSnapshot.is_empty()`` drops the block), so a second call
@@ -55,9 +65,10 @@ env -u flags, and --provider, #2340):
       PIPER_CREDENTIAL_STORE=db ANTHROPIC_API_KEY=… \
       venv/bin/python scripts/inversion_phase2_gate.py --provider anthropic --max-usd N [--dry] [--out PATH]
 
-Cost: one Haiku-class call per phase0 row (93) + two per armed row (7) +
-one per control row (7) = 114 planned calls, plus at most one repair retry
-each. --dry validates fixtures + serialization + pairing, no LLM calls.
+Cost: one Haiku-class call per phase0 row + two per armed row (8) + one per
+control row (8) + at most one consult call per ``stored_projects`` row (1), plus at
+most one repair retry each; the run prints the planned total. --dry validates
+fixtures + serialization + pairing, no LLM calls.
 """
 
 from __future__ import annotations
@@ -136,8 +147,26 @@ def load_armed_corpus(path: Path = ARMED_CORPUS) -> List[Dict[str, Any]]:
             or exp.startswith(_FLOW_PREFIX)
         ):
             raise ValueError(f"{where}: bad expected {exp!r}")
+        if "expected_args" in r and not (
+            isinstance(r["expected_args"], dict) and r["expected_args"]
+        ):
+            raise ValueError(f"{where}: expected_args must be a non-empty mapping")
         fixture = r.get("fixture")
-        if r["condition"] == "armed":
+        stored = r.get("stored_projects")
+        if stored is not None:
+            # Issue 2425: the consult's state, not a snapshot field (see the header).
+            if r["condition"] != "armed":
+                raise ValueError(f"{where}: control row must carry NO stored_projects")
+            if fixture:
+                raise ValueError(f"{where}: a stored_projects row carries no fixture")
+            if (
+                not isinstance(stored, list)
+                or not stored
+                or not all(isinstance(n, str) and n.strip() for n in stored)
+            ):
+                raise ValueError(f"{where}: stored_projects must be a list of names")
+            r["_stored_projects"] = list(stored)
+        elif r["condition"] == "armed":
             if not isinstance(fixture, dict) or not fixture:
                 raise ValueError(f"{where}: armed row requires a fixture")
             unknown = set(fixture) - valid_fields
@@ -191,6 +220,23 @@ def armed_matches(expected: str, decision: Any, op_categories: Dict[str, str]) -
     return p1.router_matches(expected, decision, op_categories)
 
 
+def row_matches(
+    row: Dict[str, Any], decision: Any, op_categories: Dict[str, str]
+) -> Tuple[bool, str]:
+    """``armed_matches`` on the row's expectation, then, only when that matched and
+    the row asserts ``expected_args`` (issue 2425; the phase0 rows' form, scored by
+    the same ``p1.args_match``), the args. A row without ``expected_args`` scores
+    exactly as ``armed_matches``."""
+    ok, note = armed_matches(row["expected"], decision, op_categories)
+    if ok and row.get("expected_args"):
+        args_ok, args_note = p1.args_match(
+            row["expected_args"], getattr(decision, "args", {}) or {}
+        )
+        if not args_ok:
+            return False, f"ARGS {args_note}"
+    return ok, note
+
+
 async def _route_rows(
     rows: List[Dict[str, Any]],
     llm: Any,
@@ -198,9 +244,15 @@ async def _route_rows(
     *,
     state_key: Optional[str] = None,
     label: str = "",
+    consult: bool = False,
 ) -> List[Any]:
     """Route each row; ``state_key`` names the row key holding a serialized
-    state block (None → context-free). ERROR recorded, never faked."""
+    state block (None → context-free). ERROR recorded, never faked.
+
+    ``consult`` (issue 2425): a row carrying ``_stored_projects`` then goes on, after
+    its main call, through the live path's ``consult_projects_on_clarify`` with a stub
+    reader returning those names; the decision recorded is the FINAL one. Rows without
+    the field are routed exactly as before."""
     from services.intent_service.inversion_router import (
         RoutingDecision,
         route,
@@ -218,11 +270,48 @@ async def _route_rows(
             d = await route(
                 r["phrase"], session_state, llm_service=llm, grammar=grammar, user_id=None
             )
+            if consult and r.get("_stored_projects"):
+                d = await _consult_projects(r, d, llm, grammar, route, RouterSnapshot)
         except Exception as e:  # probe discipline: ERROR recorded, run continues
             d = RoutingDecision(outcome="error", error=f"{type(e).__name__}: {e}")
         decisions.append(d)
         print(f"[{label}{i}/{len(rows)}] {d.route_label:<28} {r['phrase'][:56]!r}")
     return decisions
+
+
+async def _consult_projects(
+    r: Dict[str, Any], main: Any, llm: Any, grammar: Any, route: Any, router_snapshot: Any
+) -> Any:
+    """Issue 2425: the live consult on this row's main decision, with the row's stored
+    project names as the person's projects. The consult needs a principal to fire; the
+    router calls themselves go out with ``user_id=None``, as every call here does."""
+    from types import SimpleNamespace
+
+    from services.intent_service.project_consult import consult_projects_on_clarify
+
+    projects = [
+        SimpleNamespace(id=f"gate-{i}", name=n, created_at=None)
+        for i, n in enumerate(r["_stored_projects"])
+    ]
+
+    async def read(_user_id: str) -> List[Any]:
+        return projects
+
+    async def gate_route(message: str, session_state: Any = None, **kw: Any) -> Any:
+        kw["user_id"] = None
+        return await route(message, session_state, **kw)
+
+    return await consult_projects_on_clarify(
+        r["phrase"],
+        main,
+        "",
+        route=gate_route,
+        router_snapshot=router_snapshot,
+        llm_service=llm,
+        grammar=grammar,
+        user_id="phase2-gate",
+        read_projects=read,
+    )
 
 
 def _fmt_route(d: Any) -> str:
@@ -335,8 +424,8 @@ def build_report(
             vw = vwo = "REVIEW"
         else:
             n_asserted_armed += 1
-            okw, notew = armed_matches(r["expected"], dw, op_categories)
-            okwo, notewo = armed_matches(r["expected"], dwo, op_categories)
+            okw, notew = row_matches(r, dw, op_categories)
+            okwo, notewo = row_matches(r, dwo, op_categories)
             n_with += okw
             n_without += okwo
             vw = "MATCH" if okw else f"MISS({notew})" if notew else "MISS"
@@ -346,9 +435,14 @@ def build_report(
         else:
             okc, notec = armed_matches(ctrl["expected"], dc, op_categories)
             vc = "MATCH" if okc else f"MISS({notec})" if notec else "MISS"
+        with_cell = _fmt_route(dw)
+        if r.get("_stored_projects"):
+            # Issue 2425: show the consult's project arg beside the route.
+            project = (getattr(dw, "args", None) or {}).get("project")
+            with_cell += f" project={project}"
         pair_lines.append(
             f"| {r['pair']} | {r['phrase'][:44]} | {r['expected']} | "
-            f"{_fmt_route(dw)} → {vw} | {_fmt_route(dwo)} → {vwo} | "
+            f"{with_cell} → {vw} | {_fmt_route(dwo)} → {vwo} | "
             f"{ctrl['expected']}: {_fmt_route(dc)} → {vc} |"
         )
     lines += [
@@ -667,11 +761,12 @@ async def run(dry: bool, out: Optional[Path], provider: Optional[str] = None) ->
     n_aliases = sum(len(op.aliases) for op in grammar.operations)
     n_armed = sum(1 for r in armed_rows if r["condition"] == "armed")
     n_control = len(armed_rows) - n_armed
-    planned = len(p0_rows) + 2 * n_armed + n_control
+    n_consult = sum(1 for r in armed_rows if r.get("_stored_projects"))
+    planned = len(p0_rows) + 2 * n_armed + n_control + n_consult
     print(
         f"phase0 corpus: {len(p0_rows)} rows (untouched) · armed extension: "
         f"{len(armed_rows)} rows ({n_armed} armed ×2 conditions + {n_control} "
-        f"control ×1) · planned calls: {planned}"
+        f"control ×1 + at most {n_consult} project consult) · planned calls: {planned}"
     )
     print(
         f"grammar: {len(grammar.operations)} canonical operations (+NONE/CLARIFY), "
@@ -679,7 +774,15 @@ async def run(dry: bool, out: Optional[Path], provider: Optional[str] = None) ->
     )
     if dry:
         for r in armed_rows:
-            if r["condition"] == "armed":
+            if r.get("_stored_projects"):
+                from services.intent_service.project_consult import project_fact_line
+
+                line = project_fact_line(
+                    [type("P", (), {"name": n})() for n in r["_stored_projects"]]
+                )
+                print(f"--- {r['pair']} consult fact line ({len(line)} chars):")
+                print(line)
+            elif r["condition"] == "armed":
                 print(f"--- {r['pair']} state block ({len(r['_state_block'])} chars):")
                 print(r["_state_block"])
         print(
@@ -703,7 +806,7 @@ async def run(dry: bool, out: Optional[Path], provider: Optional[str] = None) ->
 
     p0_decisions = await _route_rows(p0_rows, llm, grammar, label="p0 ")
     with_decisions = await _route_rows(
-        armed_only, llm, grammar, state_key="_state_block", label="armed+snap "
+        armed_only, llm, grammar, state_key="_state_block", label="armed+snap ", consult=True
     )
     without_decisions = await _route_rows(armed_only, llm, grammar, label="armed-bare ")
     control_decisions = await _route_rows(controls, llm, grammar, label="control ")

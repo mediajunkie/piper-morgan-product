@@ -42,6 +42,20 @@
 #     (services/intent_service/session_snapshot.py). The runner constructs
 #     the real dataclass — SessionSnapshot(**fixture) — and serializes via
 #     serialize_for_prompt(); an unknown key fails loudly at load time.
+#   stored_projects: optional, ARMED rows only, in place of fixture (issue 2425):
+#     a list of the person's stored project names, as stored. It is the state
+#     of the project consult, NOT a SessionSnapshot field, and cannot be one:
+#     by design the live path never puts project names in the snapshot (that
+#     would reach every router call); it appends one fact line to the
+#     consult's block only (services/intent_service/project_consult.py). The
+#     gate's WITH condition runs the main route with no session state, then
+#     the live consult_projects_on_clarify with a stub reader returning these
+#     names, and scores the FINAL decision; WITHOUT is the main call alone.
+#     The control twin carries no stored_projects.
+#   expected_args: optional (issue 2425), the phase0 corpus's own form, scored
+#     by the same inversion_phase1_shadow_score.args_match, only when the
+#     operation matched: only the keys the row asserts are compared, after
+#     whitespace/case normalisation. An args miss is a MISS ("ARGS key: …").
 #
 # HONESTY NOTE on pending_offer_question (m-43): live assembly
 # (snapshot_assembly.py) currently yields question=None for most kinds —
@@ -219,3 +233,27 @@ corpus:
     expected: REVIEW
     source: "control twin of the #1567 armed row (same text, no fixture)"
     notes: "stateless prepositional fragment has no right answer; recorded as data"
+
+  # ── pair 8: "my <name> project" todo, projects stored (issue 2425, 11-27) ──
+  # In Web's served Path B read on beta (11-27), this phrase routed to
+  # create_ticket and saved nothing; the main router call alone answers it
+  # CLARIFY or create_todo by sample. The project consult (built for 2425,
+  # main call unchanged) asks once more on CLARIFY with the person's stored
+  # project names; Lead's screen: 6 of 6 create_todo with project=Launch.
+  # This pair is the ratchet that keeps that fix from regressing silently.
+  - phrase: "add a task to my Launch project: book the venue"
+    pair: my-project-todo
+    condition: armed
+    category: EXECUTION
+    expected: action:create_todo
+    source: "issue 2425 served row (Web Path B read, beta 039121b0fb, 2026-11-27); Lead's consult screen 6/6"
+    notes: "with Launch stored, the consult's final decision must be create_todo carrying project=Launch (the stored spelling). The todo text is not asserted: the router names it text or task (2411), and args_match compares one key; the accept rule already requires a non-empty title the handler will read"
+    expected_args: {"project": "Launch"}
+    stored_projects: ["Harbor Pilot", "Launch", "Mobile Redesign"]
+  - phrase: "add a task to my Launch project: book the venue"
+    pair: my-project-todo
+    condition: control
+    category: EXECUTION
+    expected: REVIEW
+    source: "control twin of the issue 2425 armed row (same text, no stored projects)"
+    notes: "stateless, the main call alone does not decide this reliably (CLARIFY 3 or 4 of 6, create_todo the rest, in Lead's screen); recorded as data, no route asserted"

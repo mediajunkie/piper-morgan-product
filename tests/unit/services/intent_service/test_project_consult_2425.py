@@ -643,3 +643,199 @@ def test_interrupted_corpus_run_still_writes_the_report(monkeypatch, tmp_path):
     )
     assert rc == 130
     assert "**INTERRUPTED** after 0 of 2 planned samples" in out.read_text()
+
+
+# ── The stateful corpus row (inversion_corpus_phase2_armed.yaml, pair 8) ─────
+
+
+def _gate():
+    import sys
+    from pathlib import Path
+
+    scripts = Path(__file__).resolve().parents[4] / "scripts"
+    if str(scripts) not in sys.path:
+        sys.path.insert(0, str(scripts))
+    import inversion_phase2_gate as gate
+
+    return gate
+
+
+_PAIR = "my-project-todo"
+
+
+def test_the_sentinel_pair_loads_and_validates():
+    gate = _gate()
+    rows = [r for r in gate.load_armed_corpus() if r["pair"] == _PAIR]
+    armed = next(r for r in rows if r["condition"] == "armed")
+    control = next(r for r in rows if r["condition"] == "control")
+    assert armed["phrase"] == control["phrase"] == _MSG
+    assert armed["_stored_projects"] == ["Harbor Pilot", "Launch", "Mobile Redesign"]
+    assert armed["expected"] == "action:create_todo"
+    assert armed["expected_args"] == {"project": "Launch"}
+    assert "_snapshot" not in armed and "_state_block" not in armed
+    assert control["expected"] == "REVIEW" and "_stored_projects" not in control
+
+
+_TMP = """corpus:
+  - phrase: "add a task to my Launch project: book the venue"
+    pair: p
+    condition: armed
+    category: EXECUTION
+    expected: action:create_todo
+    source: "x"
+    stored_projects: ["Launch"]
+  - phrase: "add a task to my Launch project: book the venue"
+    pair: p
+    condition: control
+    category: EXECUTION
+    expected: REVIEW
+    source: "x"
+"""
+
+
+def test_stored_projects_rows_validate_loudly(tmp_path):
+    gate = _gate()
+    path = tmp_path / "armed.yaml"
+
+    def load(text):
+        path.write_text(text)
+        return gate.load_armed_corpus(path)
+
+    assert load(_TMP)[0]["_stored_projects"] == ["Launch"]
+    with pytest.raises(ValueError, match="list of names"):
+        load(_TMP.replace('["Launch"]', '"Launch"'))
+    with pytest.raises(ValueError, match="list of names"):
+        load(_TMP.replace('["Launch"]', '["Launch", ""]'))
+    with pytest.raises(ValueError, match="NO stored_projects"):
+        load(_TMP + '    stored_projects: ["Launch"]\n')
+    with pytest.raises(ValueError, match="carries no fixture"):
+        load(
+            _TMP.replace(
+                '    stored_projects: ["Launch"]\n',
+                '    stored_projects: ["Launch"]\n    fixture:\n      draft_in_compose: true\n',
+            )
+        )
+    with pytest.raises(ValueError, match="expected_args must be"):
+        load(_TMP.replace("    stored_projects:", "    expected_args: []\n    stored_projects:"))
+    # An unknown fixture key still fails as before (rows with a fixture).
+    with pytest.raises(ValueError, match="not on SessionSnapshot"):
+        load(
+            _TMP.replace(
+                '    stored_projects: ["Launch"]\n',
+                "    fixture:\n      pending_offer_kindx: x\n",
+            )
+        )
+
+
+def _gate_route(monkeypatch, answers):
+    from services.intent_service import inversion_router
+
+    router = _Router(answers)
+    monkeypatch.setattr(inversion_router, "route", router)
+    return router
+
+
+def _sentinel_row():
+    gate = _gate()
+    return gate, next(
+        r for r in gate.load_armed_corpus() if r["pair"] == _PAIR and r["condition"] == "armed"
+    )
+
+
+@pytest.fixture(scope="module")
+def op_categories():
+    gate = _gate()
+    return gate.p1._op_category_map()
+
+
+def test_gate_routes_the_sentinel_through_the_consult_and_scores_a_match(
+    monkeypatch, op_categories
+):
+    gate, row = _sentinel_row()
+    router = _gate_route(
+        monkeypatch, [_CLARIFY, _todo({"project": "launch", "task": "book the venue"})]
+    )
+    [d] = asyncio.run(gate._route_rows([row], None, None, state_key="_state_block", consult=True))
+    assert len(router.blocks) == 2  # main + consult
+    assert router.blocks == [None, 'STORED PROJECTS: "Harbor Pilot", "Launch", "Mobile Redesign"']
+    assert d.operation == "create_todo" and d.args["project"] == "Launch"
+    assert gate.row_matches(row, d, op_categories) == (True, "")
+
+
+@pytest.mark.parametrize(
+    "answers",
+    [
+        [
+            _CLARIFY,
+            _todo({"project": "Launch", "text": "book the venue"}, operation="create_issue"),
+        ],
+        [_CLARIFY, _CLARIFY],
+        [_CLARIFY, _todo({"project": "Skyline", "text": "book the venue"})],
+        [_CLARIFY, RuntimeError("boom")],
+        [_todo({"text": "book the venue"}, operation="create_ticket")],
+        # main answers create_todo with no project: the op matches, the args do not
+        [_todo({"text": "book the venue"})],
+    ],
+    ids=["issue", "clarify", "not_stored", "consult_error", "main_ticket", "no_project"],
+)
+def test_gate_scores_anything_else_as_a_miss(monkeypatch, op_categories, answers):
+    gate, row = _sentinel_row()
+    _gate_route(monkeypatch, answers)
+    [d] = asyncio.run(gate._route_rows([row], None, None, state_key="_state_block", consult=True))
+    ok, note = gate.row_matches(row, d, op_categories)
+    assert not ok
+
+
+def test_without_condition_is_the_main_call_alone(monkeypatch):
+    gate, row = _sentinel_row()
+    router = _gate_route(monkeypatch, [_CLARIFY])
+    [d] = asyncio.run(gate._route_rows([row], None, None, label="armed-bare "))
+    assert d is _CLARIFY and router.blocks == [None]
+
+
+def test_existing_rows_are_routed_and_scored_exactly_as_before(monkeypatch, op_categories):
+    """Every row without stored_projects: one route() call with the same state block
+    whether or not the consult flag is on, the same decision, and row_matches equal
+    to armed_matches (no expected_args on them)."""
+    gate = _gate()
+    rows = [r for r in gate.load_armed_corpus() if not r.get("_stored_projects")]
+    assert len(rows) == 15
+    for consult in (False, True):
+        answers = [_todo({}, operation="delete_todo") for _ in rows]
+        router = _gate_route(monkeypatch, answers)
+        decisions = asyncio.run(
+            gate._route_rows(rows, None, None, state_key="_state_block", consult=consult)
+        )
+        assert router.blocks == [r.get("_state_block") for r in rows]
+        for r, d in zip(rows, decisions):
+            assert "expected_args" not in r
+            assert gate.row_matches(r, d, op_categories) == gate.armed_matches(
+                r["expected"], d, op_categories
+            )
+
+
+def test_existing_pair_lines_in_the_report_are_unchanged(op_categories):
+    """The report's line for each of the seven earlier pairs is the same string
+    whether or not the 2425 pair is in the corpus."""
+    gate = _gate()
+    from services.intent_service.inversion_router import derive_routing_grammar
+
+    grammar = derive_routing_grammar()
+    every = gate.load_armed_corpus()
+    old = [r for r in every if r["pair"] != _PAIR]
+    d = _todo({}, operation="complete_todo")
+    for r in every:
+        if r["condition"] == "control":
+            r["_decision"] = d
+    armed = {r["pair"]: d for r in every if r["condition"] == "armed"}
+    p0_scored = gate.p1.score([], [])
+
+    def pair_lines(rows):
+        text = gate.build_report(p0_scored, rows, armed, armed, grammar, "x", 0.0)
+        return [ln for ln in text.splitlines() if ln.startswith("| ") and " → " in ln]
+
+    old_lines = pair_lines(old)
+    new_lines = pair_lines(every)
+    assert len(old_lines) == 7 and len(new_lines) == 8
+    assert new_lines[:7] == old_lines
+    assert new_lines[7].startswith(f"| {_PAIR} |") and "project=None" in new_lines[7]
