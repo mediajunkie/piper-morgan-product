@@ -66,8 +66,9 @@
   - On 11-26, Lead landed the flip at 20:22 behind two runs. Its verdict was due at about 21:10, past the 21:00 limit, so the pleasantry skip waited until the morning.
   - Before a served push on a day when a promotion is still planned, run `scripts/tests-queue-eta.sh`. It is read-only and prints the runs ahead and an estimated verdict time. Exit 1 means after 20:50 PT, so promote first, then push.
   - The median green Tests run on main was 24 minutes over the last 40 runs, read 11-27.
+  - **Every seat's push counts, not only the dispatcher's (11-27, Lead 01M8F8NHGZ).** The promote gate takes the nearest tested ancestor of what staging serves. So any push to a tested path (`scripts/`, `tests/`, `services/`, `web/`, `templates/`, `cli/`, `.github/workflows/`) moves staging and puts a new Tests run in front of a waiting promotion. On 11-27, promotion 4 waited behind two `scripts/` pushes, one of them this check's own. **While the dispatching seat has announced that a promotion is waiting, every seat holds tested-path pushes until its "beta moved" mail.** Logs, mail and docs are fine, because they don't start a gating run.
 
-**Review:** 2026-11-27, or after a promotion that leaves alpha serving neither the promoted build nor the one before it, whichever comes first. A refusal by a condition is not a trigger. *(Replaced 2026-11-03 on xian's word, decisions.log 2026-11-03 17:30, from CIO's 10-30 review below. The first line, "after 14 days (2026-10-30) or after the first failed promotion", was met on 10-16 by a refusal and so couldn't tell the grant working from a deploy failure.)*
+**Review:** 2026-12-29 (renewed 2026-11-27; see the outcome below the 28-day review), or after a promotion that leaves beta serving neither the promoted build nor the one before it, whichever comes first. A refusal by a condition is not a trigger. *(Replaced 2026-11-03 on xian's word, decisions.log 2026-11-03 17:30, from CIO's 10-30 review below. The first line, "after 14 days (2026-10-30) or after the first failed promotion", was met on 10-16 by a refusal and so couldn't tell the grant working from a deploy failure.)*
 
 ### 14-day review (CIO, 2026-10-30, STOP fire)
 
@@ -128,3 +129,5 @@ Verified how:
 - **Not traced:** where the hold was first called. It isn't in decisions.log, so it was probably in mail.
 
 **One textual point the renewal should settle (xian's words, not mine to change):** condition 5 says "any change to production, beta or secrets" needs his yes, and "The grant covers alpha only". Since 11-05 the app the grant promotes to is served as beta. Practice since then, and xian's 11-26 rulings ("under the standing grant"), read the grant as covering that app. The renewal should say so in his words.
+
+**Outcome (2026-11-27 11:36, xian in conversation, via Exec 01M8F85S17):** "Yes, please let Lead proceed with pushing to beta." The grant continues. It covers the app served as beta (condition 5's "alpha only" reads as that app), and the next review is 2026-12-29, or sooner after a promotion that leaves beta serving neither the promoted build nor the one before it. Record: decisions.log 2026-11-27 11:36. A hold in force now: Exec's "no promotion until I say he's clear" during the GitHub move (same mail), under condition 2.

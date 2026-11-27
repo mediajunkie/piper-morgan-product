@@ -19,7 +19,7 @@ import yaml
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 PLAN = "docs/internal/planning/production-sprint-proposal-2026-10-23.md"
 PROMISES = "docs/internal/product/promises.yaml"
-SPRINT = "docs/internal/planning/production-sprint-2-onboarding-proposal-2026-11-06.md"
+SPRINT = "docs/internal/planning/production-sprint-3-draft-2026-11-25.md"  # sprint 3, 11-27 to 12-10 (was sprint 2 until 11-27)
 REPO = "https://github.com/mediajunkie/piper-morgan-product/issues/"
 ROWS = ["H", "D", "PUB", "C", "V", "E", "T", "Doc", "Dist", "Readiness", "Q"]
 PLAN_LETTERS = {"PUB", "H", "D", "C", "V", "E", "T", "Doc", "Dist", "Q"}
@@ -232,8 +232,8 @@ def since_last(cur, prev, plan, rows_c, rows_p):
         mv += f" ... (+{len(moved) - 40} more)"
     L = [
         f"<p>Compared with {esc(os.path.basename(prev_path[0]))}. Membership for both uses the plan doc's "
-        "table (limit: the plan is today's, so older sprint moves are invisible); issues absent from the plan "
-        "use each snapshot's own Sprint value.</p>",
+        "table (limit: the plan is today's, so older epic moves are invisible); issues absent from the plan "
+        "use each snapshot's own epic value (the board's epic field, named Sprint until renamed).</p>",
         "<ul>",
         f"<li>Added to scope ({len(added)}): {fmt(added[:60])}{' ...' if len(added) > 60 else ''}</li>",
         f"<li>Removed from scope ({len(removed)}): {fmt(removed[:60])}{' ...' if len(removed) > 60 else ''}</li>",
@@ -338,12 +338,14 @@ def main():
 
     # front view
     w(
-        "<h2>Front view</h2><p>Rows in closing order. Red = backward edge (blocked by an issue in a later row) or unsprinted. "
+        "<h2>Front view</h2><p>Epics (the major pieces of the Production milestone; xian 11-27) in closing order. A sprint is the two-week cadence, shown above. Red = backward edge (blocked by an issue in a later epic) or in no epic. "
         "Readiness lists #2157 to #2162 (the plan doc files them under D; shown once, here).</p>"
     )
     order = {r: i for i, r in enumerate(ROWS)}
     back = []
-    w('<div class="scroll"><table><tr><th>Row</th><th>Open</th><th>Closed</th><th>Issues</th></tr>')
+    w(
+        '<div class="scroll"><table><tr><th>Epic</th><th>Open</th><th>Closed</th><th>Issues</th></tr>'
+    )
     for r in ROWS + ["unsprinted"]:
         ns = sorted(n for n, x in rc.items() if x == r)
         if r == "unsprinted" and not ns:
@@ -359,13 +361,13 @@ def main():
             if bad and is_open(n):
                 back.extend((n, b) for b in bad)
                 cells.append(
-                    f'<span class="red">{a(n, cur)} blocked by {", ".join("#%d" % b for b in bad)} (later row)</span>'
+                    f'<span class="red">{a(n, cur)} blocked by {", ".join("#%d" % b for b in bad)} (later epic)</span>'
                 )
             else:
                 cells.append(f'<span class="{"" if is_open(n) else "done"}">{a(n, cur)}</span>')
         cls = "red" if r == "unsprinted" else ""
         w(
-            f'<tr class="{cls}"><td>{esc(r)}</td><td>{o}</td><td>{len(ns) - o}</td><td class="iss">{" ".join(cells) or "-"}</td></tr>'
+            f'<tr class="{cls}"><td>{esc("no epic" if r == "unsprinted" else r)}</td><td>{o}</td><td>{len(ns) - o}</td><td class="iss">{" ".join(cells) or "-"}</td></tr>'
         )
     w("</table></div>")
     w(

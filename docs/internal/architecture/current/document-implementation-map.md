@@ -31,7 +31,7 @@ Documents live in **two independent stores**, and no served path connects them.
 
 What follows:
 - **An upload is never indexed.** Nothing embeds or chunks it. Every served document feature works on the upload store by reading the file's text at request time (§4).
-- **On beta the knowledge index holds only what an operator put there with the CLI or the backfill.** It is also emptied at every deploy until #2244, so it is most likely empty. That is inferred and has not been read on the machine.
+- **On beta the knowledge index holds only what an operator put there with the CLI or the backfill.** Until 11-26 it was also emptied at every deploy, so it is most likely empty. *(Updated 2026-11-27: #2244 is served from `cd26a9b2e4`, where `fly.toml` sets `PIPER_DATA_DIR` and the index lives on the volume, so it now survives a deploy. Its served row is xian's CLI check.)* That is inferred and has not been read on the machine.
 - **#2244 still matters**, because #2226's local-embedding plan requires a durable store first (decisions.log 2026-10-31, the line naming `pm_knowledge_minilm_l6`). But its served check, "an ingest that survives a second deploy", can only be produced through the operator CLI today, not through the product.
 
 ---

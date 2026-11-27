@@ -14,6 +14,31 @@
 - **Why:** both counts sit behind the same three things. Step F (HOST's owner line; xian's F.4 GitHub connect in the seat browser), the fresh test account (xian's go-ahead via Exec), and 2282 box 4 (one served read). The build work on Lead's side is largely done and on beta.
 - **So the honest sprint 3 is mostly a finishing sprint:** the same score, with its blockers taken one at a time, and a small build lane that doesn't wait on them.
 
+## Sprint 3's goals and shape (xian, 11-27, via Exec 01M8F6RY8H and 01M8F85S17)
+
+xian, 11-27: "Top priority for the sprint is opening beta invitations." Also: "in two weeks we can do more than finish the unfinished items." And a score matters less to him than "us learning to define achievable goals". So each goal is written as what the team can commit to. A goal that depends on his OK is written as the team's prep, not as the outcome of his decision. Editorial is a standing commitment, not a goal here. Re-written by PPM at `11:40`.
+
+**Week 1 (Fri 11-27 to Thu 12-03)**
+1. **Invitations: everything the team can do is done, and what's left is ready for xian.** Every row of 2261, 2282 and 2342 that needs no hand from him is served. The rows that need his hand are in one prepared sitting, with full URLs, the exact button and what he should see. The first sitting started 11-27 (Lead's ordered list; Exec walks him through it). PPM sends the invite-lift memo to Exec the day the last row is served. Opening invitations is xian's call, not a sprint goal.
+2. **Paths A and B served on a fresh account.** It is team work only now: xian's go on 2425 came 11-27, and 2455 and 2458 are served.
+   - Path B: Web reruns it on seat-tester-1 once 2425 is promoted, using the "my" sentence; "the" is 2461's known gap.
+   - Path A: Web reruns it on seat-github-1 once 2459 is promoted.
+   - CXO judges the words, and PPM reads each run against the written bar.
+3. **The MUX document-model discussion with xian, prepared and held.** CXO, Arch and PPM hold it with him in week 1, on **Tue 12-01** (Arch 01M8F8Y72D, where Arch's and CXO's proposals overlap; Mon 11-30 is Arch's prep day). In the room: Web's two seat reads, a `.docx` upload and a long PDF summary. The prep is Arch's document map plus the MUX comparison. CXO and Arch propose the slot. The team's commitment is the prep and recommendations, ready for xian; the review's outcome is his.
+
+**Week 2 (Fri 12-04 to Thu 12-10)**
+4. **New build for Lead, from the map's current epic, H (the honesty sweep): Documents tell the truth (#2443 with #2444).** Ratified by xian 11-27.
+   - A `.docx` upload is read, not answered "unsupported" (2443; the decision was settled 11-26, and its five rows are written).
+   - A summary says how much of the file it read (2444).
+   - CXO's words are ready (01M8F7Y24R), and Lead said yes (01M8F7SP1B).
+   - It sits in week 2 because it may depend on goal 3's review. If the review changes the shape, the goal follows the review's outcome.
+   - The goal: built, landed and served on beta by 12-10. Web uploads and summarizes a `.docx`, and a long file's summary carries the line. CXO judges.
+
+**Prep, across both weeks**
+5. **Account deletion (#2158): prep and a recommendation ready**, "so Lead [has] what they need when they turn to something" (xian). **Correction (Arch, 11-27):** the purge engine already exists (`scripts/erase_user.py`, #2064). So 2158 promotes it into a service the app calls, plus the confirm step (re-authenticating), the deletion record written first, the account closed first, an honest pre-flight refusal and the restore replay. Arch's ruling is on the issue, and HOST's custody note is taken into the build conditions (01M8F8V8NC, 01M8F8Y72D). One gap is filed as #2465: chunks shared by two owners get deleted with either owner. CXO's flow is still owed. The build is a later sprint's.
+
+**Next after this sprint:** export (#2159) is the first build in D's readiness lane.
+
 ## Main focus (ratified)
 
 **Lift the invite hold, and serve Paths A and B on a fresh account.** xian, 11-26 09:18 PT via Exec: "I agree with PPM." Same score as sprint 2. The score would keep sprint 2's two counts unchanged, so #071's number and sprint 3's close are read on the same scale.
