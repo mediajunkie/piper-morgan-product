@@ -2236,3 +2236,4 @@ issue	state	milestone	sprint	title	labels	blocked_by	state_reason
 2448	OPEN	Production		Close/reopen gate arms a yes/no when it couldn't check (resolver or read raises)	architecture		
 2449	OPEN	Production		Beta /health should show the GitHub App refresh job's last pass (counts only)	architecture		
 2450	OPEN	Production		Close/reopen gate arms a yes/no when there's no signed-in account	architecture		
+2451	OPEN	Production		Signs-to-watch-for question about a named colleague is declined on OpenAI, answered on Anthropic (p-2 after 2364 v0.3)	UX		
