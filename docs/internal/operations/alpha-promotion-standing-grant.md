@@ -61,6 +61,12 @@
   - **The 11-13 to 11-17 exception, kept for the record:** five decisions.log lines read "PROMOTION GRANTED" (11-13 16:13, 11-14 12:55, 11-17 07:53 and 09:53, plus the 08:27 conforms). Each lifted Arch's own temporary promotion hold, set during PA's reads for #2342 (Lead's 11-12 log: "his promotion hold lifted for one promotion, between PA's reads"), for one commit. That is condition 2 ("no NOTICE memo from PPM, CXO or Arch that names the build ... as held") working as written, not a separate layer. *(Corrected the same day: this line first said a one-per-day pacing, which was Arch's misreading; CIO 01M8F42S56 had it right.)* No such per-promotion grant has been given or needed since 11-17.
   - **Also true in practice (Lead, 11-27):** the window is 07:00 to 21:00 PT, and Lead does not dispatch during a xian sitting. Exec's "xian has not started (a)" line is how Lead knows.
 
+- **Tests runs on main queue, so a late served push can cost the evening promotion (2026-11-27, CIO, after Lead's 11-26 20:22 landing).**
+  - `test.yml` cancels superseded runs on pull requests only. A push to main waits behind every Tests run already queued or running, and the promote gate needs Tests green on the sha staging serves.
+  - On 11-26, Lead landed the flip at 20:22 behind two runs. Its verdict was due at about 21:10, past the 21:00 limit, so the pleasantry skip waited until the morning.
+  - Before a served push on a day when a promotion is still planned, run `scripts/tests-queue-eta.sh`. It is read-only and prints the runs ahead and an estimated verdict time. Exit 1 means after 20:50 PT, so promote first, then push.
+  - The median green Tests run on main was 24 minutes over the last 40 runs, read 11-27.
+
 **Review:** 2026-11-27, or after a promotion that leaves alpha serving neither the promoted build nor the one before it, whichever comes first. A refusal by a condition is not a trigger. *(Replaced 2026-11-03 on xian's word, decisions.log 2026-11-03 17:30, from CIO's 10-30 review below. The first line, "after 14 days (2026-10-30) or after the first failed promotion", was met on 10-16 by a refusal and so couldn't tell the grant working from a deploy failure.)*
 
 ### 14-day review (CIO, 2026-10-30, STOP fire)
