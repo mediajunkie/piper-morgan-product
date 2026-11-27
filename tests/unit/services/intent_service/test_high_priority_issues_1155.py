@@ -158,7 +158,7 @@ class TestFloorFormatsHighPriorityIssues:
         assert "High-priority open issues" not in out
         assert "12 open" in out
         assert "#42" in out and "Fix the thing" in out
-        assert "[priority: high]" in out
+        assert "#42 [high priority]" in out  # #2458: the one phrase, not the raw label
         assert "#7" in out
 
     def test_empty_high_priority_issues_no_section(self):

@@ -167,7 +167,6 @@ _RECENT_ACTIVITY_CAP = 10
 
 # #1155: priority labels in descending urgency; open issues carrying these rank
 # first in the "what should I focus on" context, then most-recently-updated.
-_PRIORITY_LABELS = ("priority: critical", "priority: urgent", "priority: high")
 _HIGH_PRIORITY_ISSUES_CAP = 5
 
 # #1625: per-session mentioned-set for due reminders. PM's ruling (v53 live,
@@ -2084,6 +2083,7 @@ class ContextAssembler:
             from services.integrations.github.github_integration_router import (
                 GitHubIntegrationRouter,
             )
+            from services.integrations.github.priority_labels import priority_rank
 
             github = GitHubIntegrationRouter()
             await github.initialize(user_id=user_id)
@@ -2108,11 +2108,8 @@ class ContextAssembler:
                 return None
 
             def _priority_rank(issue: dict) -> int:
-                labels = [str(label).lower() for label in (issue.get("labels") or [])]
-                for rank, plabel in enumerate(_PRIORITY_LABELS):
-                    if plabel in labels:
-                        return rank
-                return len(_PRIORITY_LABELS)  # unlabeled sorts after labeled
+                # #2458: the one label set (unlabelled sorts after labelled).
+                return priority_rank(issue.get("labels"))
 
             # Stable two-stage sort: recency desc first, then priority asc — so
             # within each priority tier the most-recently-updated leads.

@@ -95,7 +95,8 @@ class TestFormatDomainContext:
         )
         assert "Ship v2" in result
         assert "Onboard beta users" in result
-        assert "High-priority issues: 3" in result
+        # #2458 (CXO's words): the count line says what it counts.
+        assert "Open issues marked high priority: 3" in result
 
     def test_full_context_all_sections(self):
         result = self.floor._format_domain_context(
