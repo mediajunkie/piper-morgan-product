@@ -15,6 +15,13 @@ env -u flags, and --provider, #2340):
       --samples 6 --phrase "show today's tasks" --phrase "what needs my attention?" \\
       --label candidate --out /path/report.md
 
+Issue 2425 (project consult): ``--projects "Launch,Harbor Pilot"`` runs, per sample, the
+main route and, on CLARIFY, the live path's own project consult with those stored names.
+``--corpus`` takes the phrases from the corpus fixture instead of ``--phrase`` (with
+``--offset`` / ``--limit`` for a slice); ``--corpus --dry-run`` makes no call and prints
+the row count and planned calls. A corpus run writes each finished row to
+``<out>.rows.jsonl`` as it goes, and writes the report even when interrupted.
+
 Run it once on the baseline tree and once on the candidate tree (same
 phrases, same N, same provider) and compare the two tables. The report's
 ``served`` line says which model answered (m-43); a run whose served line is
@@ -88,7 +95,12 @@ async def _control(phrases: list[str], samples: int, provider: Optional[str]) ->
 
 
 async def _project_consult(
-    phrases: list[str], samples: int, provider: Optional[str], project_names: list[str]
+    phrases: list,
+    samples: int,
+    provider: Optional[str],
+    project_names: list[str],
+    rows: Optional[list] = None,
+    sidecar: Optional[Path] = None,
 ) -> list[dict]:
     """Issue 2425 screen: per sample, the main route; then, on CLARIFY, the live path's
     own ``consult_projects_on_clarify`` with ``project_names`` as the stored projects.
@@ -103,7 +115,15 @@ async def _project_consult(
     is around the awaited ``consult_projects_on_clarify`` call, which includes the
     stubbed read, the fact-line build and the ceiling's ``wait_for`` around the second
     ``route()``, the same wrapper live uses. ``ceiling_hit`` is True when that wait_for
-    cancelled the second call."""
+    cancelled the second call.
+
+    ``phrases`` holds strings, or corpus items (dicts with ``phrase``, ``row`` and
+    ``expected``). Each finished sample is appended to ``rows`` as it completes (pass
+    your own list to keep the rows of an interrupted run) and, with ``sidecar``, written
+    to it at once as one JSON line, so a paid run part-way through is never lost. The
+    live path also skips this consult when D5 is in scope; the script has no session,
+    so D5 is never in scope here."""
+    import json
     from types import SimpleNamespace
 
     from services.intent_service.inversion_router import (
@@ -126,11 +146,16 @@ async def _project_consult(
     async def read(_user_id):
         return projects
 
-    rows: list[dict] = []
-    for phrase in phrases:
+    if rows is None:
+        rows = []
+    for item in phrases:
+        item = item if isinstance(item, dict) else {"phrase": item}
+        phrase = item["phrase"]
         for n in range(1, samples + 1):
             row: dict = {
                 "phrase": phrase,
+                "row": item.get("row"),
+                "expected": item.get("expected"),
                 "sample": n,
                 "main": "ERROR",
                 "main_s": None,
@@ -191,6 +216,9 @@ async def _project_consult(
             except Exception as e:  # probe discipline: recorded, never aborts
                 row["error"] = f"{type(e).__name__}: {e}"
             rows.append(row)
+            if sidecar is not None:
+                with sidecar.open("a", encoding="utf-8") as fh:
+                    fh.write(json.dumps(row, default=str) + "\n")
             print(
                 f"[{phrase!r} #{n}] main={row['main']} fired={row['fired']} "
                 f"consult={row['consult_route']} accepted={row['accepted']} final={row['final']}"
@@ -210,8 +238,10 @@ def write_project_consult_report(
 ) -> None:
     from statistics import median
 
-    from services.intent_service.list_consult import D5_CONSULT_CEILING_S
-    from services.intent_service.project_consult import project_fact_line
+    from services.intent_service.project_consult import (
+        PROJECT_CONSULT_CEILING_S,
+        project_fact_line,
+    )
 
     by_phrase: dict[str, list[dict]] = defaultdict(list)
     for r in rows:
@@ -223,7 +253,7 @@ def write_project_consult_report(
         f"# Project consult (2425) screen ×{samples} — {label}",
         "",
         f"Run {datetime.now(timezone.utc):%Y-%m-%d %H:%MZ} · {samples} sample(s) per phrase · "
-        f"ceiling {D5_CONSULT_CEILING_S} s · consult fact line: `{fact}`",
+        f"ceiling {PROJECT_CONSULT_CEILING_S} s · consult fact line: `{fact}`",
         "",
         "| phrase | main routes | consults fired | accepted | final routes | consult s min / median / max | timeouts |",
         "|---|---|---|---|---|---|---|",
@@ -254,6 +284,113 @@ def write_project_consult_report(
             f"`{r['consult_route']}` | {_fmt_args(r['consult_args'])} | {r['accepted']} | `{r['final']}` | "
             f"{_fmt_args(r['final_args'])} | {_secs(r['consult_s'])} | {r['ceiling_hit']} | {r['error'] or ''} |"
         )
+    out.parent.mkdir(parents=True, exist_ok=True)
+    out.write_text("\n".join(lines) + "\n")
+    print(f"wrote {out}")
+
+
+CORPUS_FIXTURE = ROOT / "tests" / "fixtures" / "inversion_corpus_phase0.yaml"
+
+
+def load_corpus(path: Path, offset: int = 0, limit: Optional[int] = None) -> list[dict]:
+    """The corpus rows as items: ``row`` is the 1-based row number in the fixture,
+    with ``phrase`` and ``expected`` as the fixture states them. No call is made."""
+    import yaml
+
+    data = yaml.safe_load(path.read_text(encoding="utf-8")) or {}
+    items = [
+        {"row": i, "phrase": str(r["phrase"]), "expected": r.get("expected")}
+        for i, r in enumerate(data.get("corpus") or [], start=1)
+    ]
+    items = items[max(0, offset) :]
+    return items[:limit] if limit is not None else items
+
+
+def corpus_plan(items: list, samples: int) -> dict:
+    """What a corpus run may cost, in calls: every row's main call, and at most one
+    consult per row (all rows, the maximum)."""
+    return {
+        "rows": len(items),
+        "planned_main_calls": len(items) * samples,
+        "max_consult_calls": len(items) * samples,
+    }
+
+
+def _cell(v) -> str:
+    return str(v).replace("|", "\\|").replace("\n", " ")
+
+
+def write_corpus_report(
+    rows: list[dict],
+    out: Path,
+    label: str,
+    project_names: list[str],
+    interrupted: bool = False,
+    planned_rows: Optional[int] = None,
+) -> None:
+    """Issue 2425 full-corpus report: a summary, then EVERY row where the consult fired
+    (accepted, i.e. moved, rows first), then the moved-row check."""
+    from statistics import median
+
+    from services.intent_service.project_consult import (
+        CONSULT_OPERATION,
+        PROJECT_CONSULT_CEILING_S,
+        project_fact_line,
+    )
+
+    fact = project_fact_line(
+        [type("P", (), {"name": n, "id": str(i)})() for i, n in enumerate(project_names)]
+    )
+    fired = [r for r in rows if r["fired"]]
+    moved = [r for r in rows if r["accepted"]]
+    secs = [r["consult_s"] for r in fired if isinstance(r["consult_s"], (int, float))]
+    stats = f"{min(secs):.3f} / {median(secs):.3f} / {max(secs):.3f}" if secs else "-"
+    stored = set(project_names)
+    moved_ok = [
+        r
+        for r in moved
+        if r["final"] == CONSULT_OPERATION and (r.get("final_args") or {}).get("project") in stored
+    ]
+    lines = [
+        f"# Project consult (2425) full-corpus run — {label}",
+        "",
+        f"Run {datetime.now(timezone.utc):%Y-%m-%d %H:%MZ} · ceiling {PROJECT_CONSULT_CEILING_S} s · "
+        f"consult fact line: `{fact}`",
+    ]
+    if interrupted:
+        lines.append(
+            f"**INTERRUPTED** after {len(rows)} of {planned_rows} planned samples; "
+            "the tables cover the samples that finished."
+        )
+    lines += [
+        "",
+        "| rows | main CLARIFY | consults fired | accepted | timeouts | errors | consult s min / median / max |",
+        "|---|---|---|---|---|---|---|",
+        f"| {len(rows)} | {sum(1 for r in rows if r['main'] == 'CLARIFY')} | {len(fired)} | "
+        f"{len(moved)} | {sum(1 for r in rows if r['ceiling_hit'])} | "
+        f"{sum(1 for r in rows if r['error'])} | {stats} |",
+        "",
+        f"Moved rows (accepted): {len(moved)}. `{CONSULT_OPERATION}` with a stored project: "
+        f"{len(moved_ok)}. Anything else: {len(moved) - len(moved_ok)} (0 by construction of "
+        "the accept rule, which takes only create_todo naming one stored project; counted "
+        "anyway).",
+        "",
+        "## Rows where the consult fired (moved rows first)",
+        "",
+        "| row | phrase | expected | main | consult route | consult args | accepted | final | final args | consult s |",
+        "|---|---|---|---|---|---|---|---|---|---|",
+    ]
+    for r in sorted(fired, key=lambda r: (not r["accepted"], r.get("row") or 0)):
+        lines.append(
+            f"| {r.get('row')} | {_cell(r['phrase'])} | {_cell(r.get('expected'))} | `{r['main']}` | "
+            f"`{r['consult_route']}` | {_cell(_fmt_args(r['consult_args']))} | {r['accepted']} | "
+            f"`{r['final']}` | {_cell(_fmt_args(r['final_args']))} | {_secs(r['consult_s'])} |"
+        )
+    errors = [r for r in rows if r["error"]]
+    if errors:
+        lines += ["", "## Errors", "", "| row | phrase | error |", "|---|---|---|"]
+        for r in errors:
+            lines.append(f"| {r.get('row')} | {_cell(r['phrase'])} | {_cell(r['error'])} |")
     out.parent.mkdir(parents=True, exist_ok=True)
     out.write_text("\n".join(lines) + "\n")
     print(f"wrote {out}")
@@ -304,15 +441,15 @@ def write_report(rows: list[dict], out: Path, samples: int, label: str) -> None:
     print(f"wrote {out}")
 
 
-def main() -> int:
+def main(argv: Optional[list] = None) -> int:
     ap = argparse.ArgumentParser(
         description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter
     )
-    ap.add_argument("--phrase", action="append", required=True)
+    ap.add_argument("--phrase", action="append", default=None)
     ap.add_argument("--samples", type=int, default=6)
     ap.add_argument("--provider", default=None, help="anthropic = alpha's Haiku-class router")
     ap.add_argument("--label", default="control", help="baseline / candidate / …")
-    ap.add_argument("--out", type=Path, required=True)
+    ap.add_argument("--out", type=Path, default=None)
     ap.add_argument(
         "--max-usd",
         type=float,
@@ -332,7 +469,45 @@ def main() -> int:
             "main route and, on CLARIFY, the live project consult with these names"
         ),
     )
-    args = ap.parse_args()
+    ap.add_argument(
+        "--corpus",
+        nargs="?",
+        type=Path,
+        const=CORPUS_FIXTURE,
+        default=None,
+        help=(
+            "issue 2425 full-corpus run: take the phrases from the corpus fixture "
+            "(default tests/fixtures/inversion_corpus_phase0.yaml) instead of --phrase; "
+            "needs --projects"
+        ),
+    )
+    ap.add_argument("--offset", type=int, default=0, help="with --corpus: skip this many rows")
+    ap.add_argument("--limit", type=int, default=None, help="with --corpus: at most this many rows")
+    ap.add_argument(
+        "--dry-run",
+        action="store_true",
+        help="with --corpus: make NO call; print the row count and the planned calls",
+    )
+    args = ap.parse_args(argv)
+    items: list = []
+    if args.corpus is not None:
+        if not args.projects:
+            ap.error("--corpus needs --projects")
+        items = load_corpus(args.corpus, args.offset, args.limit)
+        if args.dry_run:
+            plan = corpus_plan(items, args.samples)
+            print(f"rows: {plan['rows']}")
+            print(f"planned main calls: {plan['planned_main_calls']}")
+            print(f"max consult calls (all rows): {plan['max_consult_calls']}")
+            return 0
+    elif args.dry_run:
+        ap.error("--dry-run needs --corpus")
+    elif not args.phrase:
+        ap.error("give --phrase (one or more) or --corpus")
+    else:
+        items = list(args.phrase)
+    if args.out is None:
+        ap.error("--out is required for a run that makes calls")
     sys.path.insert(0, str(ROOT / "scripts"))
     from dev_key_binding import developer_keys_bound, providers_from_flag
 
@@ -340,24 +515,43 @@ def main() -> int:
         [n.strip() for n in args.projects.split(",") if n.strip()] if args.projects else None
     )
     _providers = providers_from_flag(args.provider)
+    rows: list = []
+    interrupted = False
+    sidecar = args.out.with_suffix(".rows.jsonl") if args.corpus is not None else None
     with developer_keys_bound(
         providers=_providers,
         max_usd=args.max_usd,
         approved_by=args.approved_by,
-        # 2425: up to two router calls per sample (the main call and the consult).
-        planned_calls=len(args.phrase) * args.samples * (2 if project_names else 1),
+        # 2425: up to two router calls per sample (the main call and the consult): the
+        # true maximum, for the cap check.
+        planned_calls=len(items) * args.samples * (2 if project_names else 1),
         require=True,
     ):
         if project_names:
-            rows = asyncio.run(
-                _project_consult(args.phrase, args.samples, args.provider, project_names)
-            )
+            if sidecar is not None:
+                sidecar.parent.mkdir(parents=True, exist_ok=True)
+                sidecar.write_text("")
+            try:
+                asyncio.run(
+                    _project_consult(
+                        items, args.samples, args.provider, project_names, rows, sidecar
+                    )
+                )
+            except KeyboardInterrupt:
+                interrupted = True
+                print(f"interrupted after {len(rows)} sample(s); writing the report")
         else:
             rows = asyncio.run(_control(args.phrase, args.samples, args.provider))
-    if project_names:
+    if args.corpus is not None and project_names:
+        write_corpus_report(
+            rows, args.out, args.label, project_names, interrupted, len(items) * args.samples
+        )
+    elif project_names:
         write_project_consult_report(rows, args.out, args.samples, args.label, project_names)
     else:
         write_report(rows, args.out, args.samples, args.label)
+    if interrupted:
+        return 130
     return 1 if any(r["error"] for r in rows) else 0
 
 

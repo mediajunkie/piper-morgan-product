@@ -19,8 +19,16 @@ The Chief Architect's rule (issue 2425, comment "Arch: the lever for 2425"), bin
    bound confirm unchanged. The consult adds no write path.
 4. **The new fact line** is router prompt text on the consult only, so rule 7 applies
    to the consult population.
-5. **Latency:** the consult uses D5's own ceiling, 1.5 s. On a timeout it keeps the
-   CLARIFY.
+5. **Latency:** on a timeout it keeps the CLARIFY. Arch (2425 part 2, binding) set
+   this consult's OWN ceiling at 2.0 s, ``PROJECT_CONSULT_CEILING_S`` (screened consult
+   calls were 1.06 to 1.47 s, and on beta the project read sits inside the same
+   window). D5's ``D5_CONSULT_CEILING_S`` is untouched.
+
+Arch (2425 part 2, binding) also ruled: **at most ONE consult per turn.** If D5 is in
+scope (a numbered list is recorded, so D5 makes its call on a CLARIFY), this consult does
+not run, whatever D5 answered: no project read and no second extra call. Only when D5 is
+NOT in scope does this consult run. Scope after the re-scope: the "my <name> project"
+form; the "the <name> project" form is issue 2461.
 
 How this module holds each item:
 
@@ -40,15 +48,14 @@ How this module holds each item:
   stored name, and the handler's ``_router_todo_text`` (keys ``text`` then ``task``)
   must return a non-empty title. On acceptance the decision is copied with the
   ``project`` arg set to the stored spelling; nothing is written here.
-- (5) one deadline of ``D5_CONSULT_CEILING_S`` covers the project read and the second
-  call together; a timeout or any error keeps the first decision object itself.
+- (5) one deadline of ``PROJECT_CONSULT_CEILING_S`` covers the project read and the
+  second call together; a timeout or any error keeps the first decision object itself.
 
 Composition with D5 (``list_consult.consult_on_clarify``): ``inversion_live`` runs D5
-first, unchanged, and passes its result here. This consult fires only when that result
-is still a CLARIFY, which means D5 either was not in scope or did not accept. So D5's
-behaviour is byte for byte what it was, and each consult class makes at most one extra
-call. A turn makes TWO extra calls only when a numbered list is in scope, D5's call did
-not accept (kept, failed or timed out), and the person has stored projects.
+first, unchanged, then calls this consult only when ``list_consult.in_scope(snapshot)``
+is False. ``in_scope`` is D5's own scope condition, the one ``consult_on_clarify`` now
+calls itself, so the two can never disagree about whether D5 fired. A turn makes at most
+one extra router call.
 """
 
 from __future__ import annotations
@@ -63,10 +70,11 @@ from typing import Any, Awaitable, Callable, List, Optional, Sequence
 import structlog
 
 from services.intent_service import todo_project_attach as _attach
-from services.intent_service.list_consult import D5_CONSULT_CEILING_S
 
 logger = structlog.get_logger(__name__)
 
+# Arch 2425 part 2: this consult's own ceiling (read plus second call), not D5's.
+PROJECT_CONSULT_CEILING_S = 2.0
 # The one operation this consult may accept (Arch rule 3).
 CONSULT_OPERATION = "create_todo"
 # Arch rule 2: at most this many names, sorted, in the fact line.
@@ -201,7 +209,7 @@ async def consult_projects_on_clarify(
         return int((time.monotonic() - started) * 1000)
 
     try:
-        projects = await asyncio.wait_for(reader(user_id), timeout=D5_CONSULT_CEILING_S)
+        projects = await asyncio.wait_for(reader(user_id), timeout=PROJECT_CONSULT_CEILING_S)
     except (
         Exception
     ) as e:  # silent-ok: Arch (2425): a failed read means no consult; the CLARIFY stands, logged
@@ -230,7 +238,7 @@ async def consult_projects_on_clarify(
             session_id=session_id,
         )
         return decision
-    remaining = D5_CONSULT_CEILING_S - (time.monotonic() - started)
+    remaining = PROJECT_CONSULT_CEILING_S - (time.monotonic() - started)
     try:
         if remaining <= 0:
             raise asyncio.TimeoutError()

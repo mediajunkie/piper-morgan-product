@@ -135,7 +135,7 @@ def test_a_failed_project_read_means_no_consult():
 
 
 def test_a_slow_project_read_means_no_consult(monkeypatch):
-    monkeypatch.setattr(pc, "D5_CONSULT_CEILING_S", 0.05)
+    monkeypatch.setattr(pc, "PROJECT_CONSULT_CEILING_S", 0.05)
 
     async def slow(user_id):
         await asyncio.sleep(5)
@@ -246,12 +246,18 @@ def test_a_failed_second_call_keeps_the_clarify():
 
 
 def test_a_slow_second_call_times_out_to_the_clarify(monkeypatch):
-    monkeypatch.setattr(pc, "D5_CONSULT_CEILING_S", 0.05)
+    monkeypatch.setattr(pc, "PROJECT_CONSULT_CEILING_S", 0.05)
     assert _consult(_CLARIFY, _Router(["slow"])) is _CLARIFY
 
 
-def test_rule_5_uses_d5s_own_ceiling():
-    assert pc.D5_CONSULT_CEILING_S == lc.D5_CONSULT_CEILING_S == 1.5
+def test_rule_5_this_consult_has_its_own_ceiling():
+    """Arch 2425 part 2: 2.0 s, this consult's own constant; D5's is untouched."""
+    assert pc.PROJECT_CONSULT_CEILING_S == 2.0
+    assert not hasattr(pc, "D5_CONSULT_CEILING_S")
+
+
+def test_d5s_ceiling_is_untouched():
+    assert lc.D5_CONSULT_CEILING_S == 1.5
 
 
 # ── Rule 2/4: the fact line ───────────────────────────────────────────────────
@@ -400,38 +406,55 @@ def test_live_answered_main_call_makes_no_read(monkeypatch):
     assert reads == [] and len(router.blocks) == 1
 
 
-def test_d5_accepts_first_and_the_project_consult_does_not_fire(monkeypatch):
+def test_d5_in_scope_and_accepts_no_project_read_no_project_call(monkeypatch):
     reads = []
     d5_answer = RoutingDecision(
         outcome="operation", operation="delete_todo", args={"targets": ["1"]}, confidence=0.9
     )
     router, prov = _live(monkeypatch, _LIST_SNAP, [_CLARIFY, d5_answer], reads=reads)
-    assert len(router.blocks) == 2
+    assert len(router.blocks) == 2  # main + D5, nothing more
     assert router.blocks[0] is None  # main drops the list fact (D5)
     assert router.blocks[1] == "LAST LIST SHOWN: 3 numbered todos"
-    assert reads == []  # the project consult saw no CLARIFY
+    assert reads == []
     assert prov.operation == "delete_todo"
 
 
-def test_d5_keeps_then_the_project_consult_fires_without_the_list_fact(monkeypatch):
-    """The only condition for two extra calls: a list in scope, D5 kept, projects."""
+@pytest.mark.parametrize("d5_answer", ["kept", "fails", "times_out"])
+def test_d5_in_scope_and_declines_no_project_read_no_project_call(monkeypatch, d5_answer):
+    """Arch 2425 part 2: one consult per turn. D5 made its call, so whatever it
+    answered there is no project read and no second extra call; main's CLARIFY."""
+    answer = {
+        "kept": _CLARIFY,
+        "fails": RuntimeError("boom"),
+        "times_out": "slow",
+    }[d5_answer]
+    monkeypatch.setattr(lc, "D5_CONSULT_CEILING_S", 0.05)
+    reads = []
+    router, prov = _live(monkeypatch, _LIST_SNAP, [_CLARIFY, answer], reads=reads)
+    assert len(router.blocks) == 2  # main + D5 only
+    assert reads == []
+    assert prov.reason == "router_clarify" and prov.operation is None
+
+
+def test_d5_not_in_scope_the_project_consult_runs(monkeypatch):
+    reads = []
     router, prov = _live(
         monkeypatch,
-        _LIST_SNAP,
-        [_CLARIFY, _CLARIFY, _todo({"project": "Launch", "text": "book the venue"})],
+        SessionSnapshot(),
+        [_CLARIFY, _todo({"project": "Launch", "text": "book the venue"})],
+        reads=reads,
     )
-    assert router.blocks == [
-        None,
-        "LAST LIST SHOWN: 3 numbered todos",
-        'STORED PROJECTS: "Harbor Pilot", "Launch"',
-    ]
+    assert len(router.blocks) == 2  # main + project consult
+    assert router.blocks[1] == 'STORED PROJECTS: "Harbor Pilot", "Launch"'
+    assert reads == [_USER]
     assert prov.operation == "create_todo"
 
 
-def test_both_kept_the_turn_is_mains_clarify(monkeypatch):
-    router, prov = _live(monkeypatch, _LIST_SNAP, [_CLARIFY, _CLARIFY, _CLARIFY], projects=[])
-    assert len(router.blocks) == 2  # zero projects: no third call
-    assert prov.reason == "router_clarify" and prov.operation is None
+def test_d5_scope_helper_is_d5s_own_condition():
+    assert lc.in_scope(_LIST_SNAP)
+    assert not lc.in_scope(SessionSnapshot())
+    assert not lc.in_scope(SessionSnapshot(last_list_kind="todos"))
+    assert not lc.in_scope(SessionSnapshot(last_list_lines=3))
 
 
 # ── No write in the consult ───────────────────────────────────────────────────
@@ -511,3 +534,112 @@ def test_screen_runs_the_live_consult_with_stubbed_router(monkeypatch, tmp_path,
     mod.write_project_consult_report(rows, out, 2, "t", ["Launch", "Harbor Pilot"])
     text = out.read_text()
     assert "consults fired" in text and "timeouts" in text
+
+
+# ── The full-corpus mode (--corpus, --dry-run, --offset/--limit) ─────────────
+
+
+def test_corpus_dry_run_makes_no_call_and_prints_the_plan(monkeypatch, capsys):
+    from services.intent_service import inversion_router
+
+    def no_call(*a, **k):
+        raise AssertionError("a dry run must make no call")
+
+    monkeypatch.setattr(inversion_router, "route", no_call)
+    mod = _load_control_script()
+    monkeypatch.setattr(mod, "asyncio", SimpleNamespace(run=no_call))
+    rc = mod.main(["--corpus", "--projects", "Launch", "--samples", "1", "--dry-run"])
+    out = capsys.readouterr().out.splitlines()
+    total = len(mod.load_corpus(mod.CORPUS_FIXTURE))
+    assert rc == 0 and total == 630
+    assert out == [
+        f"rows: {total}",
+        f"planned main calls: {total}",
+        f"max consult calls (all rows): {total}",
+    ]
+
+
+def test_corpus_slice_and_row_numbers():
+    mod = _load_control_script()
+    every = mod.load_corpus(mod.CORPUS_FIXTURE)
+    part = mod.load_corpus(mod.CORPUS_FIXTURE, offset=10, limit=3)
+    assert [i["row"] for i in part] == [11, 12, 13]
+    assert part == every[10:13]
+    assert all({"row", "phrase", "expected"} <= set(i) for i in part)
+    assert mod.corpus_plan(part, 1) == {
+        "rows": 3,
+        "planned_main_calls": 3,
+        "max_consult_calls": 3,
+    }
+
+
+def test_corpus_run_records_errors_writes_sidecar_and_report(monkeypatch, tmp_path, grammar):
+    """Router and LLM stubbed. One row errors and the run continues; every finished
+    row is in the sidecar; the report lists every fired row, moved rows first."""
+    import json
+
+    from services.intent_service import inversion_router
+    from services.llm import clients
+
+    class _NoLLM:
+        def __init__(self):
+            self._config_service = SimpleNamespace()
+
+    monkeypatch.setattr(clients, "LLMClient", _NoLLM)
+    items = [
+        {"row": 1, "phrase": "show my todos", "expected": "action:list_todos"},
+        {"row": 2, "phrase": "do the thing", "expected": "REVIEW"},
+        {"row": 3, "phrase": "boom", "expected": "REVIEW"},
+        {"row": 4, "phrase": _MSG, "expected": "action:create_todo"},
+    ]
+    router = _Router(
+        [
+            _todo({}, operation="list_todos"),
+            _CLARIFY,
+            _CLARIFY,  # row 2's consult keeps the CLARIFY
+            RuntimeError("provider down"),  # row 3's main call
+            _CLARIFY,
+            _todo({"project": "launch", "text": "book the venue"}),
+        ]
+    )
+    monkeypatch.setattr(inversion_router, "route", router)
+    mod = _load_control_script()
+    rows: list = []
+    sidecar = tmp_path / "r.rows.jsonl"
+    asyncio.run(mod._project_consult(items, 1, None, ["Launch"], rows, sidecar))
+    assert [r["row"] for r in rows] == [1, 2, 3, 4]
+    assert rows[2]["error"].startswith("RuntimeError")
+    assert [json.loads(line)["row"] for line in sidecar.read_text().splitlines()] == [1, 2, 3, 4]
+    assert [r["accepted"] for r in rows] == [False, False, False, True]
+    out = tmp_path / "r.md"
+    mod.write_corpus_report(rows, out, "t", ["Launch"])
+    text = out.read_text()
+    assert "| 4 | 2 | 2 | 1 | 0 | 1 |" in text  # rows, CLARIFY, fired, accepted, timeouts, errors
+    assert "`create_todo` with a stored project: 1. Anything else: 0" in text
+    fired = [ln for ln in text.splitlines() if "| `CLARIFY` |" in ln]
+    assert [ln.split(" | ")[0] for ln in fired] == ["| 4", "| 2"]  # moved first
+
+
+def test_interrupted_corpus_run_still_writes_the_report(monkeypatch, tmp_path):
+    mod = _load_control_script()
+
+    def interrupt(coro):
+        coro.close()
+        raise KeyboardInterrupt
+
+    monkeypatch.setattr(mod, "asyncio", SimpleNamespace(run=interrupt))
+    import contextlib
+    import sys as _sys
+
+    _sys.path.insert(0, str(mod.ROOT / "scripts"))
+    import dev_key_binding
+
+    monkeypatch.setattr(
+        dev_key_binding, "developer_keys_bound", lambda **kw: contextlib.nullcontext()
+    )
+    out = tmp_path / "r.md"
+    rc = mod.main(
+        ["--corpus", "--projects", "Launch", "--samples", "1", "--limit", "2", "--out", str(out)]
+    )
+    assert rc == 130
+    assert "**INTERRUPTED** after 0 of 2 planned samples" in out.read_text()
