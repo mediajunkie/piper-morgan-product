@@ -197,19 +197,21 @@ def test_the_two_openai_rows_are_the_published_standard_rates():
     assert spend_cap.price_for("gpt-4o-mini") == (0.15, 0.60)
 
 
+def test_the_two_openai_ids_do_not_shadow_each_other():
+    """``gpt-4o`` is a prefix of ``gpt-4o-mini``; each is matched exactly."""
+    assert spend_cap.price_for("gpt-4o-mini") == (0.15, 0.60)
+    assert spend_cap.price_for("gpt-4o") == (2.50, 10.00)
+
+
 @pytest.mark.parametrize(
-    "model, price",
-    [
-        ("gpt-4o-2024-08-06", (2.50, 10.00)),
-        ("gpt-4o-mini-2024-07-18", (0.15, 0.60)),
-        ("gpt-4o-mini", (0.15, 0.60)),
-    ],
+    "model", ["gpt-4o-2024-08-06", "gpt-4o-mini-2024-07-18", "gpt-4o-20240806"]
 )
-def test_a_dated_snapshot_gets_its_own_models_price_never_the_shorter_ids(model, price):
-    """``gpt-4o`` is a prefix of ``gpt-4o-mini``. The mini row must win for a mini id, or
-    a mini call would be counted at sixteen times its price (safe) and, worse, the other
-    way round would undercount."""
-    assert spend_cap.price_for(model) == price
+def test_a_dated_openai_id_is_refused_as_unpriced(model):
+    """Arch (mail 01M8D4SJZW): OpenAI's Standard table lists no dated snapshot, so its
+    price is unsourced. Dated ids appear there only under Fine-tuning, at other prices."""
+    with pytest.raises(spend_cap.SpendCapReached) as exc:
+        spend_cap.price_for(model)
+    assert "no price recorded" in str(exc.value)
 
 
 @pytest.mark.parametrize(
