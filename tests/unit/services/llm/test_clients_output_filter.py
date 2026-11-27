@@ -21,15 +21,26 @@ from services.ethics.output_filter import (
     Severity,
 )
 
+# #2364 box 3: these doubles return a made-up object carrying ``is_violation``, the
+# attribute the reply-side tier reads today. The real enforcer returns a
+# ``BoundaryDecision``, which has ``violation_detected`` and no ``is_violation``, so
+# NOTHING in ``TestRegenerateOnViolation`` below can happen on a served reply until the
+# later unit switches the tier (Arch's ruling 2, 2026-11-13). Those tests keep the
+# regenerate and canned-substitute machinery covered. What is served is pinned by
+# ``TestARealDecisionDoesNotRegenerateToday`` at the end of this file and by
+# ``tests/ethics/test_output_filter.py``.
+
 
 @dataclass
-class _MockBoundaryDecision:
+class _TierSignalDecision:
+    """NOT the enforcer's return shape."""
+
     is_violation: bool = False
     violation_type: str = ""
 
 
-class _MockBoundaryEnforcer:
-    """Mock that returns predetermined violation states across calls.
+class _TierSignalEnforcer:
+    """Returns predetermined tier-signal states across calls.
 
     Set `will_flag_sequence` to a list of bools; each call to
     enforce_boundaries pops the next one. Lets tests script first-call-fails
@@ -43,7 +54,28 @@ class _MockBoundaryEnforcer:
     async def enforce_boundaries(self, message, context=None, session_id=None):
         self.calls += 1
         flag = self._sequence.pop(0) if self._sequence else False
-        return _MockBoundaryDecision(is_violation=flag, violation_type="harassment")
+        return _TierSignalDecision(is_violation=flag, violation_type="harassment")
+
+
+class _RealShapeBoundaryEnforcer:
+    """Returns what the real enforcer returns: a ``BoundaryDecision``."""
+
+    def __init__(self, will_flag_sequence: list[bool] | None = None):
+        self._sequence = list(will_flag_sequence or [])
+        self.calls = 0
+
+    async def enforce_boundaries(self, message, context=None, session_id=None):
+        from services.ethics.boundary_enforcer_refactored import BoundaryDecision
+
+        self.calls += 1
+        flag = self._sequence.pop(0) if self._sequence else False
+        return BoundaryDecision(
+            violation_detected=flag,
+            boundary_type="harassment" if flag else "none",
+            explanation="audit-only" if flag else "",
+            audit_data={"decision_id": "bd_test_clients_output_filter"},
+            session_id=session_id,
+        )
 
 
 def _build_client_with_filter(boundary_enforcer=None, raw_responses: list[str] | None = None):
@@ -165,7 +197,7 @@ class TestRegenerateOnViolation:
     async def test_first_violates_retry_passes(self):
         """First LLM response triggers boundary violation; retry produces
         clean content; user sees the retry (not canned)."""
-        enforcer = _MockBoundaryEnforcer(will_flag_sequence=[True, False])
+        enforcer = _TierSignalEnforcer(will_flag_sequence=[True, False])
         client = _build_client_with_filter(
             boundary_enforcer=enforcer,
             raw_responses=[
@@ -183,7 +215,7 @@ class TestRegenerateOnViolation:
     @pytest.mark.asyncio
     async def test_first_violates_retry_also_violates_returns_canned(self):
         """Both attempts violate; user sees the canned response."""
-        enforcer = _MockBoundaryEnforcer(will_flag_sequence=[True, True])
+        enforcer = _TierSignalEnforcer(will_flag_sequence=[True, True])
         client = _build_client_with_filter(
             boundary_enforcer=enforcer,
             raw_responses=[
@@ -201,7 +233,7 @@ class TestRegenerateOnViolation:
     @pytest.mark.asyncio
     async def test_regenerate_disabled_returns_canned_immediately(self):
         """With regenerate_on_violation=False, no retry; canned on first violation."""
-        enforcer = _MockBoundaryEnforcer(will_flag_sequence=[True])
+        enforcer = _TierSignalEnforcer(will_flag_sequence=[True])
         client = _build_client_with_filter(
             boundary_enforcer=enforcer,
             raw_responses=["Bad first response."],
@@ -220,7 +252,7 @@ class TestRegenerateOnViolation:
     @pytest.mark.asyncio
     async def test_no_violation_no_retry(self):
         """Clean first response → no retry needed."""
-        enforcer = _MockBoundaryEnforcer(will_flag_sequence=[False])
+        enforcer = _TierSignalEnforcer(will_flag_sequence=[False])
         client = _build_client_with_filter(
             boundary_enforcer=enforcer,
             raw_responses=["Clean first response."],
@@ -264,3 +296,22 @@ class TestContextPropagation:
         assert seen_kwargs.get("user_id") == "user-1"
         assert seen_kwargs.get("session_id") == "sess-1"
         assert seen_kwargs.get("task_type") == "conversation"
+
+
+class TestARealDecisionDoesNotRegenerateToday:
+    """#2364 box 3: the held state through the client (ruling 2)."""
+
+    @pytest.mark.asyncio
+    async def test_a_reply_the_real_enforcer_calls_a_violation_is_returned_as_written(self):
+        enforcer = _RealShapeBoundaryEnforcer(will_flag_sequence=[True, True])
+        client = _build_client_with_filter(
+            boundary_enforcer=enforcer,
+            raw_responses=["First response.", "A retry that must not be asked for."],
+        )
+
+        result = await client.complete(task_type="conversation", prompt="hi")
+
+        assert result == "First response."
+        assert result != CANNED_VIOLATION_RESPONSE
+        assert enforcer.calls == 1  # asked once, about the one reply
+        assert client._complete_raw.await_count == 1  # no regeneration
