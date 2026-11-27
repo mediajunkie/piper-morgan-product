@@ -1074,3 +1074,12 @@ Brake FIRED (second slip = #1965 admission, found and ledgered 10-09). Memo to E
 - 11-27 `06:54`: Path A read on seat-github-1, NOT served; 2458 and 2459 filed in V. 2455 accepted as built (it lands on a green suite). 2457 placed in C with option (a). Production 334, map v230. Paths A and B: 0 of 2. Reruns wait on the fixes: Path A on 2458 and 2459, Path B on 2425 and 2455.
 - 11-27 `07:28`: beta serves `702cde7faf`: the skip and the flip are served. 2455 waits on a second promotion.
 - 11-27 `08:28`: 2425's lever is ruled (Arch: a CLARIFY-only consult with project names). It needs xian's word via Exec after the screen passes. PPM's product read went to Exec in advance (01M8EXBYFK, yes on a pass). 2455 served and closes on CXO's word.
+- 11-27 `11:35`: **xian's rulings (Exec 01M8F6RY8H):** invitations first; the GitHub move today in one sitting; Ship #071 theme "Signed In"; achievable goals over scores. **2425 GO from xian.**
+  - Sprint 3's goals are re-worded in the sprint file.
+  - Goal 3 (2443 with 2444, from H, the current chunk) and goal 4 (2158 deletion prep) are PROPOSED; Lead said yes to goal 3. Both await xian's yes via Exec.
+  - Naming: option 2 recommended; the field rename comes later, with 5 tools updated.
+  - The map's sprint panel was stale on sprint 2 and is fixed (v238).
+  - Boxes re-worded on 2342, 2261 and 2282. Ticked: 2342's connect box and 2261's Settings box.
+  - 2261's authorize box is half met (the permissions read is in step 8). The 2342 token check: step 8 also reads the test App's permissions.
+  - Revoke: on the published App, and leave seat-github-1 disconnected today.
+  - Zero-install: PPM recommends a served read (PA backs it; HOST yes with conditions; Exec put (b) to xian).
