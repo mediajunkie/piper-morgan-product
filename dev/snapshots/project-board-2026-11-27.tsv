@@ -2248,3 +2248,4 @@ issue	state	milestone	sprint	title	labels	blocked_by	state_reason
 2462	OPEN	Production		Router: 'update project plan with new deadline' is CLARIFY 7 of 7 on main today, update_document 6 of 6 on 11-23, with no router commits between			
 2463	OPEN	Production		[UX] Status reply calls the account "pretty quiet" and the issue "the only open item" after reading only issues	UX		
 2464	OPEN	Production		[UX] GitHub settings page says "Choose which repositories Piper can access" but offers no choice	UX		
+2465	OPEN	Production		erase_user deletes index chunks another owner still reads (shared base id)			
