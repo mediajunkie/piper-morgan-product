@@ -31,7 +31,7 @@ footer{margin-top:36px;color:var(--muted);font-size:.82rem;border-top:1px solid 
 </style>
 <div class="wrap">
 <h1>Ship #071: the week of Nov 20&ndash;26</h1>
-<p class="meta">Exec synthesis for our discussion, before any Ship draft. Sources: all nine workstream reviews (filed 05:06 to 05:10 today; Docs gets the kickoff but files no review), the seven omnibus logs read in full, my own logs, and counts run this morning. Draft 1, Fri 11-27, 05:14. This is sprint 2&rsquo;s last week (11-13 to 11-26) and its final score. #071 publishes Tue 12-01.</p>
+<p class="meta">Exec synthesis for our discussion, before any Ship draft. Sources: all nine workstream reviews (filed 05:06 to 05:10 today), plus Docs&rsquo; review (05:21), the seven omnibus logs read in full, my own logs, and counts run this morning. Draft 1, Fri 11-27, 05:14. This is sprint 2&rsquo;s last week (11-13 to 11-26) and its final score. #071 publishes Tue 12-01.</p>
 
 <div class="bluf">
 <p><b>Bottom line.</b> This was the week the seats stopped describing beta and started using it. Your two Amber sittings (Fri 11-20 and Thanksgiving) turned ADR-084 on: seats now sign in as real accounts, hold their own keys, and read replies the way a person meets them. 45 issues closed, many on a signed-in read, and 22 updates reached beta.</p>
@@ -94,6 +94,7 @@ footer{margin-top:36px;color:var(--muted);font-size:.82rem;border-top:1px solid 
 <li><b>Trust (HOST):</b> custody reads on every landing; the password exposure opened and closed; noticed OpenAI&rsquo;s priced models are flagged deprecated.</li>
 <li><b>Connector (PA):</b> stateless MCP server live; Step G fallback order written.</li>
 <li><b>Web:</b> every served row, plus #070&rsquo;s deploy check.</li>
+<li><b>Docs:</b> omnibus logs for every day, each re-verified; the self-host guide&rsquo;s cost section and the off-word for the ethics check; both posts published and distributed; ADR and pattern pages on the site; Link Checker fixed 11-20. Asks you one thing later: whether to backfill the activity-log rows after 10-30.</li>
 <li><b>Comms:</b> two posts reviewed and fact-checked; the release-note scaffold (2439); &ldquo;Ready or Not&rdquo; scaffold for 12-03.</li>
 </ul>
 
@@ -128,5 +129,5 @@ footer{margin-top:36px;color:var(--muted);font-size:.82rem;border-top:1px solid 
 <li><b>Writer:</b> your prose as usual, with Comms fact-checking.</li>
 </ol>
 
-<footer>Verified how: I read all nine reviews in full this morning. A Sonnet subagent read the seven omnibus logs (11-20 to 11-26) in full and extracted the per-day lists; I checked its promotion count against <code>gh</code>. Counts I ran this morning: <code>gh-week-counts.py 2026-11-20</code> (47 opened, 45 closed); <code>gh run list -w fly-deploy.yml -e workflow_dispatch</code> for the Pacific week (23 success, 1 failure on 11-23); <code>gh issue view</code> on 11 issues (2261, 2282, 2342, 2438, 2244, 2411 open; 2406, 2417, 2446, 2382, 2384 closed); beta <code>/health</code> git_sha <code>039121b0fb</code>. Served claims are the seats&rsquo; reads as recorded; I re-served nothing. Spend is Lead&rsquo;s logged days, not a week total. Layer: GitHub, the logs and beta&rsquo;s health endpoint.</footer>
+<footer>Verified how: I read all nine reviews, and Docs&rsquo; later one, in full this morning. A Sonnet subagent read the seven omnibus logs (11-20 to 11-26) in full and extracted the per-day lists; I checked its promotion count against <code>gh</code>. Counts I ran this morning: <code>gh-week-counts.py 2026-11-20</code> (47 opened, 45 closed); <code>gh run list -w fly-deploy.yml -e workflow_dispatch</code> for the Pacific week (23 success, 1 failure on 11-23); <code>gh issue view</code> on 11 issues (2261, 2282, 2342, 2438, 2244, 2411 open; 2406, 2417, 2446, 2382, 2384 closed); beta <code>/health</code> git_sha <code>039121b0fb</code>. Served claims are the seats&rsquo; reads as recorded; I re-served nothing. Spend is Lead&rsquo;s logged days, not a week total. Layer: GitHub, the logs and beta&rsquo;s health endpoint.</footer>
 </div>
