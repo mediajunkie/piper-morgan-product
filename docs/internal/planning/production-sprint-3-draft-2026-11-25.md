@@ -24,7 +24,7 @@ xian, 11-27: "Top priority for the sprint is opening beta invitations." Also: "i
    - Path B: Web reruns it on seat-tester-1 once 2425 is promoted, using the "my" sentence; "the" is 2461's known gap.
    - Path A: Web reruns it on seat-github-1 once 2459 is promoted.
    - CXO judges the words, and PPM reads each run against the written bar.
-3. **The MUX document-model discussion with xian, prepared and held.** CXO, Arch and PPM hold it with him in week 1. The prep is Arch's document map plus the MUX comparison. CXO and Arch propose the slot. The team's commitment is the prep and recommendations, ready for xian; the review's outcome is his.
+3. **The MUX document-model discussion with xian, prepared and held.** CXO, Arch and PPM hold it with him in week 1, on **Tue 12-01** (Arch 01M8F8Y72D, where Arch's and CXO's proposals overlap; Mon 11-30 is Arch's prep day). In the room: Web's two seat reads, a `.docx` upload and a long PDF summary. The prep is Arch's document map plus the MUX comparison. CXO and Arch propose the slot. The team's commitment is the prep and recommendations, ready for xian; the review's outcome is his.
 
 **Week 2 (Fri 12-04 to Thu 12-10)**
 4. **New build for Lead, from the map's current epic, H (the honesty sweep): Documents tell the truth (#2443 with #2444).** Ratified by xian 11-27.
@@ -35,7 +35,7 @@ xian, 11-27: "Top priority for the sprint is opening beta invitations." Also: "i
    - The goal: built, landed and served on beta by 12-10. Web uploads and summarizes a `.docx`, and a long file's summary carries the line. CXO judges.
 
 **Prep, across both weeks**
-5. **Account deletion (#2158): prep and a recommendation ready**, "so Lead [has] what they need when they turn to something" (xian). That means Arch's ruling on the purge and the deletion record (the record's place is fixed by Arch's 11-12 ruling), CXO's flow, and HOST's custody note (owed once Arch rules). The build is a later sprint's.
+5. **Account deletion (#2158): prep and a recommendation ready**, "so Lead [has] what they need when they turn to something" (xian). **Correction (Arch, 11-27):** the purge engine already exists (`scripts/erase_user.py`, #2064). So 2158 promotes it into a service the app calls, plus the confirm step (re-authenticating), the deletion record written first, the account closed first, an honest pre-flight refusal and the restore replay. Arch's ruling is on the issue, and HOST's custody note is taken into the build conditions (01M8F8V8NC, 01M8F8Y72D). One gap is filed as #2465: chunks shared by two owners get deleted with either owner. CXO's flow is still owed. The build is a later sprint's.
 
 **Next after this sprint:** export (#2159) is the first build in D's readiness lane.
 

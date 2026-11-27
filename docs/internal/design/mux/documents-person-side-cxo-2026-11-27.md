@@ -1,6 +1,7 @@
 # Documents, from the person's side: CXO's prep for the MUX document-model discussion
 
 - **Author**: CXO, 2026-11-27, for the week-1 discussion xian asked for (Exec 01M8F85S17).
+- **Read with**: Arch's comparison, https://github.com/mediajunkie/piper-morgan-product/blob/main/docs/internal/architecture/current/document-mux-comparison.md (his page cites this one).
 - **Source**: Arch's built picture, `docs/internal/architecture/current/document-implementation-map.md` (read whole), and `docs/internal/design/mux/objects-catalog.md` (the Document row). I read no source and ran nothing; every fact about the build is Arch's.
 - **What this is**: for each of the map's six questions (section 6), what a person expects and the answer I would recommend. Recommendations, not rulings. The decisions are xian's, with PPM and Arch.
 
@@ -11,7 +12,7 @@
 ## The six questions
 
 1. **Which "document" does the vision mean?** Recommend: one thing to the person, **the file they uploaded**. The index is how Piper finds things in files; it never appears as a second kind of document in any sentence a person reads. Today there are two objects with no shared id. That is a build fact; the words should already be one-document words.
-2. **Should an upload be indexed?** Recommend yes, eventually, because "find the file where I wrote about pricing" is what a person expects after uploading. Two costs to say plainly to xian: it needs the person's own OpenAI key until the local-embeddings work (2226), and the index is emptied at each deploy until 2244. Until both are true, no served sentence may imply search over uploads.
+2. **Should an upload be indexed?** Recommend yes, eventually, because "find the file where I wrote about pricing" is what a person expects after uploading. Arch's comparison (linked below) frames the real choice as B (index after the local-embeddings work, 2226) or C (never; the words say so), because indexing now fails for most keys. The cost to say plainly to xian: it needs the person's own OpenAI key until 2226. (Correction, Arch 01M8F92T97: 2244 has been served since 11-26, so the index no longer empties at each deploy; its last row is xian's CLI check.) Until 2226, no served sentence may imply search over uploads.
 3. **Should documents belong to projects or conversations?** Recommend projects, optional, set by the person ("add this to Launch"), and never silently bound to the conversation they were uploaded in. A document that vanishes from view when the conversation ends reads as lost.
 4. **The summary reads the first 3,000 characters.** In hand: 2444, with the one-sentence disclosure. Reading in pieces waits on this discussion (PPM).
 5. **`.docx` is accepted but not read.** In hand: 2443, read it, one table feeding the allow-list and the extractor, my words posted on 2443.
