@@ -148,9 +148,28 @@ def test_rank_is_critical_then_urgent_then_high_then_unlabelled():
     assert priority_rank(["bug"]) == priority_rank([]) == len(HIGH_PRIORITY_LABELS)
 
 
+#: Files under services/ and web/ that spell a priority label and are NOT readers of
+#: the one rule. Arch 2026-11-27: named, keyed by file, each with its reason and the
+#: condition that clears it. The test fails if a new file appears, and fails if an
+#: exception stops matching (so a stale entry cannot sit here; the 2420 shape).
+_OWN_LABEL_LITERAL_EXCEPTIONS = {
+    "services/integrations/spatial/github_spatial.py": (
+        "sets an internal attention level; never said to a person; spatial is "
+        "protected. Clears: joins the one rule if it ever renders a priority word."
+    ),
+    "services/domain/work_item_extractor.py": (
+        "WRITES the label priority-high onto an extracted work item; it decides "
+        "nothing about a GitHub issue, and has no caller. Clears: joins the one rule "
+        "if it ever reads a label to decide priority."
+    ),
+}
+_THE_ONE_RULE = "services/integrations/github/priority_labels.py"
+
+
 def test_every_path_that_says_high_priority_reads_the_one_rule():
     """Arch's condition 1. The priority read, the project scoring, the status gather
-    and the floor's lines import the predicate; none keeps a label list of its own."""
+    and the floor's rows call the predicate, and no file under services/ or web/
+    spells a priority label of its own except the rule and the named exceptions."""
     import re
     from pathlib import Path
 
@@ -160,9 +179,23 @@ def test_every_path_that_says_high_priority_reads_the_one_rule():
     assert handlers.count('is_high_priority(issue.get("labels", []))') == 2
     assert 'priority_rank(issue.get("labels"))' in assembler
     assert 'is_high_priority(it.get("labels"))' in floor
-    own_list = re.compile(r'"(p0|p1|priority-high|high-priority|priority: high)"')
-    for name, source in (("handlers", handlers), ("assembler", assembler), ("floor", floor)):
-        assert not own_list.search(source), f"{name} keeps its own priority label list"
+
+    literal = re.compile(
+        r"""["'](p0|p1|priority-high|high-priority|priority: (high|urgent|critical))["']""",
+        re.IGNORECASE,
+    )
+    spelling = set()
+    for root in ("services", "web"):
+        for path in Path(root).rglob("*.py"):
+            if "/tests/" in str(path) or path.name.startswith("test_"):
+                continue
+            if literal.search(path.read_text(errors="ignore")):
+                spelling.add(str(path))
+    assert _THE_ONE_RULE in spelling
+    assert spelling - {_THE_ONE_RULE} == set(_OWN_LABEL_LITERAL_EXCEPTIONS), (
+        "a file spells its own priority label, or a named exception no longer does: "
+        f"{sorted(spelling - {_THE_ONE_RULE})}"
+    )
 
 
 @pytest.mark.asyncio
