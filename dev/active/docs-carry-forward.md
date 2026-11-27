@@ -2,7 +2,10 @@
 
 **Updated**: 2026-11-26 22:12. Older state lives in the session logs (`dev/2026/{10,11}/*/*docs-code-log.md`), not here. `gh`: prefix `GODEBUG=netdns=go` if bare `gh` hangs.
 
-## NOW (11-26 22:12)
+## NOW (11-27 04:40)
+- **11-27 so far:** 11-26 omnibus landed and verified (705 non-merge, 1162 total). Step 1d: 11 of 11 carry the marker. Sat 11-28 "Mark One Eyeball" is `drafted`, publishes only on Comms PUBLISH-READY (insight slot, LinkedIn and Medium; Pre-flight 3). **Owed 11-28 04:12:** the 11-27 omnibus and Step 1d. Monday 11-30 audit also runs the skipped stale-content and methodology scans.
+
+## (earlier) NOW (11-26 22:12)
 - **11-26 done:** 11-25 omnibus landed and verified. Weekly audit 2422 run and closed, 2394 closed. b-wont-do is `verified` (last_verified 11-26) at code level after the 2364 flip (0aec538aab on main); layer caveat is in the row note, `approved` stays blank for xian. Guide "What a message costs on your key" keeps its "(not run on an install)" marker (CXO: no word changes). Thanksgiving, nothing published. Mail 0 unacked, CI 12 of 12 green.
 - **Owed 11-27 04:12 START:** the 11-26 omnibus (Sonnet subagent, 11-21 shape, verify after the hand-back: recount after fetch, git cat-file each hash, 0 semicolons and tildes, they/them, credential shapes, outside names) and Step 1d on the 11-26 logs. Monday 11-30 audit: run the stale-content and methodology cross-reference scans skipped on 2422.
 - **Blockers:** guide marker clears only after an install run (bare "hi" skips the check, another message costs one call); no runner, Lead's seeded-key driver would be the way. Ship #071 Tue 12-01 awaits Comms and xian.
