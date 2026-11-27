@@ -2,7 +2,8 @@
 
 ## EVENING 2026-11-26 18:48 (read this first; it supersedes the START block below for today)
 
-- **Beta serves `d54baca4ee`** (two promotions today, 11:48 and 15:25, both first dispatch). **Main carries 2364 step 1 (`4650edcf15`, prompt v0.3) and is NOT promoted.**
+- **UPDATE 19:05: beta serves `039121b0fb` with 2364 step 1** (third promotion today, 18:58, first dispatch). Tests passed on `0afebb26ad`; main CI 12 of 12. Exec told "beta moved"; Web and PA have the sha. The three lines below about the red Tests and the held promotion are history. Next: PA's score of Web's probe, then Arch's default-flip commit. 2448 and 2441 closed.
+- (18:46 state) Beta served `d54baca4ee`; main carried 2364 step 1 (`4650edcf15`, prompt v0.3), not promoted.
 - **Main's Tests is red** on `4650edcf15`: `test_concurrent_auth_requests` at 541 ms and 524 ms on two attempts (issue 2452). Measured on Amber: step 1 leaves nothing running; a full collection costs 156 ms here. Test-only change landed (`0afebb26ad`, Arch: conforms). **Its Tests run is the check.** If it fails with the collector paused, the cause is something else and the promotion stays held.
 - **When Tests is green on a commit carrying step 1:** run the promotion pre-checks, dispatch, verify beta's `git_sha`, then (1) mail Web and PA the sha (six ordinary rows, 2412's line, 2297's list-name row on seat-github-1), (2) tell Exec "beta moved" (Exec holds xian's Step G (a) until then), (3) Arch's `ENABLE_ETHICS_ENFORCEMENT` default flip in its own commit, read by Arch. Promotions run 07:00 to 21:00 PT only.
 - **2364 today:** v0.2 failed the OpenAI gate; three diagnostic reads; CXO's v0.3; both providers passed Arch's six-line bar. Paid: $3.5520, each run planned with Exec first. Reports: `dev/2026/11/26/2364-openai/`, `dev/2026/11/26/2364-v03/`.
