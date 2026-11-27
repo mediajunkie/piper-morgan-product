@@ -1913,20 +1913,14 @@ class CanonicalHandlers:
             try:
                 open_issues = await github_service.get_open_issues(default_repo, days_back=30)
 
-                # Filter for high-priority issues (P0, P1, priority-high, urgent, critical)
-                priority_labels = {
-                    "p0",
-                    "p1",
-                    "priority-high",
-                    "high-priority",
-                    "urgent",
-                    "critical",
-                }
+                # #2458: the one rule for "high priority" (PPM's label set), shared
+                # with the status gather and the floor's lines.
+                from services.integrations.github.priority_labels import is_high_priority
+
                 high_priority_issues = []
 
                 for issue in open_issues:
-                    issue_labels = {label.lower() for label in issue.get("labels", [])}
-                    if issue_labels & priority_labels:  # Intersection
+                    if is_high_priority(issue.get("labels", [])):
                         high_priority_issues.append(
                             {
                                 "number": issue.get("number"),
@@ -3863,12 +3857,11 @@ What would you like to set up first?"""
         # This would require labels data from issues_preview
         issues_preview = github_data.get("issues_preview", [])
         high_priority_count = 0
+        from services.integrations.github.priority_labels import is_high_priority
+
         for issue in issues_preview:
-            labels = issue.get("labels", [])
-            if any(
-                label.get("name", "").lower() in ["high-priority", "critical", "urgent"]
-                for label in labels
-            ):
+            # #2458: the one rule for "high priority", not a third label list.
+            if is_high_priority(issue.get("labels", [])):
                 high_priority_count += 1
 
         if high_priority_count > 0:
