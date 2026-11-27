@@ -1019,9 +1019,18 @@ def _github_failure(degradation) -> Dict[str, Any]:
     from services.mcp.consumer.connector import DegradationReason
 
     reason = getattr(degradation, "reason", None)
+    words = getattr(degradation, "user_message", "") or "GitHub is not reachable."
+    if reason is DegradationReason.CONNECT_REQUIRED:
+        # Issue 2261 (CXO): with no GitHub App set up, the Test result names the page the
+        # person is on or beside, not "Settings, under Integrations".
+        from services.mcp.consumer.github_adapter import GITHUB_CONNECT_REQUIRED_NO_APP_TEST_LINE
+        from services.mcp.consumer.github_app_grant import app_mode
+
+        if not app_mode():
+            words = GITHUB_CONNECT_REQUIRED_NO_APP_TEST_LINE
     return {
         "success": False,
-        "error": getattr(degradation, "user_message", "") or "GitHub is not reachable.",
+        "error": words,
         "error_type": reason.value
         if isinstance(reason, DegradationReason)
         else "connection_failed",

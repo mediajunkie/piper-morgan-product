@@ -669,6 +669,37 @@ class TestTheConnectRequiredHint:
             "Add a GitHub personal access token in Settings, under Integrations, to continue."
         )
 
+    def test_the_test_results_words(self):
+        from services.mcp.consumer import github_adapter as adapter_mod
+
+        # CXO, 2026-11-27 (issue 2261): the Settings Test result's own line.
+        assert adapter_mod.GITHUB_CONNECT_REQUIRED_NO_APP_TEST_LINE == (
+            "Add a GitHub personal access token on the GitHub settings page to continue."
+        )
+
+    async def test_the_test_result_with_app_mode_off_uses_its_own_line(self, app_off):
+        from services.mcp.consumer import github_adapter as adapter_mod
+        from web.api.routes.integrations import _github_failure
+
+        result = _github_failure(await self._degrade())
+        assert result["success"] is False
+        assert result["error"] == adapter_mod.GITHUB_CONNECT_REQUIRED_NO_APP_TEST_LINE
+        assert result["error_type"] == "connect_required"
+
+    async def test_the_test_result_in_app_mode_keeps_todays_line(self, app_on):
+        from web.api.routes.integrations import _github_failure
+
+        result = _github_failure(await self._degrade())
+        assert result["error"] == "Connect GitHub to continue."
+
+    async def test_the_test_result_for_another_reason_is_untouched(self, app_off):
+        from services.mcp.consumer.connector import DegradationReason
+        from services.mcp.consumer.github_adapter import GitHubMCPSpatialAdapter
+        from web.api.routes.integrations import _github_failure
+
+        degraded = await GitHubMCPSpatialAdapter().degrade(DegradationReason.UNREACHABLE)
+        assert _github_failure(degraded)["error"] == degraded.user_message
+
     async def test_other_reasons_carry_no_hint_in_either_mode(self, app_off):
         from services.mcp.consumer.connector import DegradationReason
         from services.mcp.consumer.github_adapter import GitHubMCPSpatialAdapter

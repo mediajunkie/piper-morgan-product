@@ -84,6 +84,11 @@ _GITHUB_SETTINGS_URL = "/settings/integrations/github"
 GITHUB_CONNECT_REQUIRED_NO_APP_LINE = (
     "Add a GitHub personal access token in Settings, under Integrations, to continue."
 )
+# CXO, 2026-11-27 (issue 2261): the same state on Settings' own GitHub Test result, where
+# "in Settings, under Integrations" would point a person at where they already are.
+GITHUB_CONNECT_REQUIRED_NO_APP_TEST_LINE = (
+    "Add a GitHub personal access token on the GitHub settings page to continue."
+)
 # #2151 (Arch 10-24 16:49): the resolver's degrade when a stored-token read failed. A store
 # that didn't answer is a failed read, never "not connected".
 # CXO 2026-11-04 13:26 (#2266, #2188): the two degrades a person may read alone each

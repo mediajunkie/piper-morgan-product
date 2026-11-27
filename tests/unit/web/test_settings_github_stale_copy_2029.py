@@ -35,7 +35,12 @@ def body():
         user_id=uuid.uuid4(), user_email="u2029@example.com", scopes=["user"]
     )
     client.cookies.set("auth_token", token)
-    r = client.get(PAGE)
+    # Issue 2261: the Connect group these tests read is rendered only where the GitHub
+    # App is set up; the App-mode-off card is pinned in test_classic_connect_retired_2261.
+    with pytest.MonkeyPatch.context() as mp:
+        mp.setenv("GITHUB_APP_CLIENT_ID", "test-app-client-id")
+        mp.setenv("GITHUB_APP_CLIENT_SECRET", "test-app-client-secret")
+        r = client.get(PAGE)
     assert r.status_code == 200, f"{PAGE} -> {r.status_code}"
     return r.text
 
