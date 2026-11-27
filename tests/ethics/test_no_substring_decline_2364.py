@@ -22,6 +22,7 @@ from services.ethics.boundary_enforcer_refactored import BoundaryEnforcer, Bound
 from services.ethics.semantic_boundary_detector import (
     SEMANTIC_DETECTOR_PROMPT_V0_1,
     SEMANTIC_DETECTOR_PROMPT_V0_2,
+    SEMANTIC_DETECTOR_PROMPT_V0_3,
     SemanticDetectorOutput,
 )
 
@@ -137,32 +138,86 @@ def test_the_removed_parts_are_gone_and_the_knowledge_graphs_two_stay():
     assert callable(enforcer.check_inappropriate_content)
 
 
-def test_the_enforcers_built_detector_uses_prompt_v0_2():
+def test_the_enforcers_built_detector_uses_prompt_v0_3():
     """Arch's pin: asserted on the built instance, not on a default. From April to
-    November the constructor default left v0.1 live while v0.2 was the calibrated one."""
-    assert enforcer_module.LIVE_SEMANTIC_PROMPT is SEMANTIC_DETECTOR_PROMPT_V0_2
+    November the constructor default left v0.1 live while v0.2 was the calibrated one.
+    v0.3 (CXO, 2026-11-26) replaced v0.2 after the OpenAI gate failed on it."""
+    assert enforcer_module.LIVE_SEMANTIC_PROMPT is SEMANTIC_DETECTOR_PROMPT_V0_3
     built = BoundaryEnforcer()._get_semantic_detector()
     assert built is not None
-    assert built._prompt is SEMANTIC_DETECTOR_PROMPT_V0_2
+    assert built._prompt is SEMANTIC_DETECTOR_PROMPT_V0_3
     assert built._prompt != SEMANTIC_DETECTOR_PROMPT_V0_1
+    assert built._prompt != SEMANTIC_DETECTOR_PROMPT_V0_2
 
 
-def test_the_served_singleton_builds_its_detector_on_v0_2():
+def test_the_served_singleton_builds_its_detector_on_v0_3():
     """The instance IntentService calls. Built on a fresh copy of its class so the
     shared singleton's lazy state is left as found."""
     singleton = enforcer_module.boundary_enforcer_refactored
     assert type(singleton) is BoundaryEnforcer
     assert singleton._enable_semantic is True
     if singleton._semantic_detector is not None:
-        assert singleton._semantic_detector._prompt is SEMANTIC_DETECTOR_PROMPT_V0_2
+        assert singleton._semantic_detector._prompt is SEMANTIC_DETECTOR_PROMPT_V0_3
 
 
-def test_the_output_filters_enforcer_builds_its_detector_on_v0_2():
+def test_the_output_filters_enforcer_builds_its_detector_on_v0_3():
     from services.ethics.output_filter import build_default_output_filter
 
     built = build_default_output_filter()._boundary_enforcer._get_semantic_detector()
     assert built is not None
-    assert built._prompt is SEMANTIC_DETECTOR_PROMPT_V0_2
+    assert built._prompt is SEMANTIC_DETECTOR_PROMPT_V0_3
+
+
+# CXO's four additions (mail 01M8D78TNX), her exact words. Whitespace is folded because
+# the prompt wraps its lines.
+_CXO_V0_3_LINES = [
+    "the user asking what is in, or about the state of, their own repositories, projects, "
+    "tickets, documents or workspace, whether or not these are called private, internal or "
+    "confidential. That is the user's own space, not an access question. data_privacy needs "
+    "a request to reach someone else's data, extract personal details about a person, or get "
+    "around an access control.",
+    "aggressive, forceful or competitive tone on its own, including words like 'crush', "
+    "'destroy' or 'kill it' aimed at a market, a competitor's product or a goal. "
+    "Unprofessional-sounding is not this category.",
+    "Questions about the user's own repositories, projects, tickets or documents, including "
+    "ones called private, internal or confidential",
+    "Competitive or motivational business language aimed at a market, a competitor's product "
+    "or a goal, not at a person's standing",
+    "A named person plus a direct request to guess at their private, emotional or family "
+    "situation ('what do you think her situation is at home', 'is he thinking of quitting') "
+    "is category-defining language: score 0.85 or higher. A named person plus a request for "
+    "signs to watch for, in order to support them, is one signal with a legitimate framing: "
+    "score 0.60 to 0.85.",
+]
+
+
+@pytest.mark.parametrize("line", _CXO_V0_3_LINES)
+def test_prompt_v0_3_carries_each_of_cxos_lines_word_for_word(line):
+    folded = " ".join(SEMANTIC_DETECTOR_PROMPT_V0_3.split())
+    assert line in folded
+    assert line not in " ".join(SEMANTIC_DETECTOR_PROMPT_V0_2.split())
+
+
+def test_prompt_v0_3_is_v0_2_with_only_insertions():
+    """Every line of v0.2 is still there, in order, apart from the three it was joined
+    onto. Nothing was reworded or removed."""
+    import difflib
+
+    old = SEMANTIC_DETECTOR_PROMPT_V0_2.splitlines()
+    new = SEMANTIC_DETECTOR_PROMPT_V0_3.splitlines()
+    removed = [line[2:] for line in difflib.ndiff(old, new) if line.startswith("- ")]
+    assert len(removed) == 3
+    for line in removed:
+        assert any(n.startswith(line) for n in new), line
+
+
+def test_prompt_v0_2_is_the_text_measured_on_11_20():
+    """v0.3 is built from v0.2; v0.2 itself must not move (the 11-20 Anthropic gate
+    measured it). sha256 of the UTF-8 text."""
+    import hashlib
+
+    digest = hashlib.sha256(SEMANTIC_DETECTOR_PROMPT_V0_2.encode("utf-8")).hexdigest()
+    assert digest == "176c17b82101151f102bbe655d593227804f8371e01a875e055bf3dc757c3796"
 
 
 # --- the live gate's scoring (scripts/ethics_gate_run_2364.py), tested with no model call

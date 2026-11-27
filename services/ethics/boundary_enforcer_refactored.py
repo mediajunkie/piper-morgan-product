@@ -35,7 +35,7 @@ from services.ethics.semantic_boundary_detector import (
     AMBIGUOUS_THRESHOLD,
     BLOCK_THRESHOLD,
     REFUSAL_FALLBACK,
-    SEMANTIC_DETECTOR_PROMPT_V0_2,
+    SEMANTIC_DETECTOR_PROMPT_V0_3,
     SemanticBoundaryDetector,
     SemanticDetectorOutput,
     classify_decision,
@@ -51,9 +51,11 @@ from services.infrastructure.monitoring.ethics_metrics import (
 
 # REMOVED: from fastapi import Request (Line 21 in original)
 
-# The detector prompt the served enforcer uses (#2364). v0.2 is CXO's calibrated
-# body (2026-04-27). Changing this needs a live run of the probe set first.
-LIVE_SEMANTIC_PROMPT = SEMANTIC_DETECTOR_PROMPT_V0_2
+# The detector prompt the served enforcer uses (#2364). v0.3 is CXO's body of
+# 2026-11-26: v0.2 (2026-04-27) plus four additions made after the OpenAI gate failed
+# on v0.2. Changing this needs a live run of the probe set on every provider first
+# (Arch, 2026-11-26: one prompt for all providers, never one per provider).
+LIVE_SEMANTIC_PROMPT = SEMANTIC_DETECTOR_PROMPT_V0_3
 
 
 class BoundaryType:
