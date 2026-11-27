@@ -31,12 +31,12 @@ class TestShippedArmedCorpus:
         rows = gate.load_armed_corpus()
         armed = [r for r in rows if r["condition"] == "armed"]
         control = [r for r in rows if r["condition"] == "control"]
-        assert len(armed) == 7, "seven live-incident armed rows"
-        assert len(control) == 7, "each armed row has a stateless control twin"
+        assert len(armed) == 9, "nine live-incident armed rows"
+        assert len(control) == 9, "each armed row has a stateless control twin"
         by_pair = {}
         for r in rows:
             by_pair.setdefault(r["pair"], {})[r["condition"]] = r
-        assert len(by_pair) == 7
+        assert len(by_pair) == 9
         for pair, members in by_pair.items():
             assert set(members) == {"armed", "control"}, pair
             assert members["armed"]["phrase"] == members["control"]["phrase"], pair
@@ -50,10 +50,16 @@ class TestShippedArmedCorpus:
             assert isinstance(r["_snapshot"], SessionSnapshot), r["pair"]
             block = r["_state_block"]
             assert block and len(block) <= MAX_SERIALIZED_CHARS, r["pair"]
-            # every armed fixture arms a pending offer → the contract's
-            # OPEN QUESTION line (and its RULE) must be in the block
-            assert "OPEN QUESTION" in block, r["pair"]
-            assert "RULE:" in block, r["pair"]
+            if "pending_offer_kind" in r["fixture"]:
+                # an armed offer → the contract's OPEN QUESTION line (and its
+                # RULE) must be in the block
+                assert "OPEN QUESTION" in block, r["pair"]
+                assert "RULE:" in block, r["pair"]
+            else:
+                # 2459: a session-referent row arms no offer; its state is the
+                # RECENT ISSUE line, and no OPEN QUESTION may appear
+                assert "RECENT ISSUE:" in block, r["pair"]
+                assert "OPEN QUESTION" not in block, r["pair"]
 
     def test_armed_kinds_are_real_store_kinds(self):
         """Fixture kinds must be the arm sites' actual constants — a fixture
@@ -79,7 +85,7 @@ class TestShippedArmedCorpus:
             REPO_QUESTION_KIND,
         }
         for r in gate.load_armed_corpus():
-            if r["condition"] == "armed":
+            if r["condition"] == "armed" and "pending_offer_kind" in r["fixture"]:
                 assert r["fixture"]["pending_offer_kind"] in real_kinds, r["pair"]
 
     def test_armed_expectations_pin_the_1663_ruling(self):
@@ -97,6 +103,9 @@ class TestShippedArmedCorpus:
             "reminder-time-answer": "flow:create_reminder",
             "standup-todo-offer": "flow:complete_todo",
             "repo-question-answer": "flow:create_issue",
+            # 2459: no offer is armed; the session referent makes "it" a read
+            "shown-issue-details": "action:review_issue_query",
+            "shown-issue-that-issue": "action:review_issue_query",
         }
         expected_control = {
             "verb-question": "REVIEW",
@@ -106,6 +115,8 @@ class TestShippedArmedCorpus:
             "reminder-time-answer": "REVIEW",
             "standup-todo-offer": "action:complete_todo",
             "repo-question-answer": "REVIEW",
+            "shown-issue-details": "REVIEW",
+            "shown-issue-that-issue": "REVIEW",
         }
         for r in gate.load_armed_corpus():
             want = (expected_armed if r["condition"] == "armed" else expected_control)[r["pair"]]
@@ -298,4 +309,4 @@ class TestDryRun:
         assert "planned calls:" in out
         assert "No LLM calls made" in out
         # arithmetic stated with its denominators (m-44)
-        assert "7 armed ×2 conditions + 7 control ×1" in out
+        assert "9 armed ×2 conditions + 9 control ×1" in out
