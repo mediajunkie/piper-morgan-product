@@ -29,6 +29,21 @@ TWO-SIDED (the #1452 burn-down shape):
 The mapping assertions exist so pattern drift surfaces as "this message no longer reaches
 that pair" instead of silently measuring the wrong path.
 
+THE ETHICS GATE IS ON FOR THIS DRIVE (#2454, Arch 2026-11-26). Until then the suite ran
+with ``ENABLE_ETHICS_ENFORCEMENT`` unset, which meant the gate was off, while beta set it
+on: the ratchet measured a configuration nobody served. With the gate on, the semantic
+detector is called at the entry point for every message except a bare greeting, farewell
+or thanks, and that call resolves a spend key like any other. So there are three sets:
+- ``SPEND_FREE``: zero crossings. The three pleasantry pairs, which skip the gate.
+- ``ETHICS_CHECKED_OTHERWISE_FREE``: exactly one call that can spend, the detector's, and no
+  other (one call may cross more than once: refused on one provider it falls back to
+  the next). These carry content in a slot ("archive project X"), so the detector must read
+  them; keyless, that one call is refused and the turn passes as detector-unavailable
+  (#2134), billing nothing.
+- ``SPENDS``: at least one crossing that is NOT the detector's.
+"May only grow" applies to the first two sets together. Pinning the variable off here
+was refused: a green test about a configuration nobody serves misleads.
+
 CXO's coherence findings (2026-09-20) live one layer up: THIS file measures what IS
 spend-free; whether that set is coherent as a first-contact experience (compound
 greetings, farewell/thanks) is #1818's design surface, fed by these measurements.
@@ -249,11 +264,39 @@ SPEND_FREE = {
     ("CONVERSATION", "thanks"),
     # ("TEMPORAL", "get_current_time") REMOVED 2026-10-01 — see the NOTE
     # above PAIR_MESSAGES. No longer reachable via pre_classify at all.
+}
+# #2454: spend nothing of their own, but carry content, so the ethics detector reads them:
+# exactly one crossing, the detector's. Before #2454 these sat in SPEND_FREE, measured
+# with the gate off.
+ETHICS_CHECKED_OTHERWISE_FREE = {
     ("PORTFOLIO", "manage_portfolio"),
     ("PORTFOLIO", "manage_repos"),
     ("PROVENANCE", "explain_suggestion"),
 }
-SPENDS = set(PAIR_MESSAGES) - SPEND_FREE
+SPENDS = set(PAIR_MESSAGES) - SPEND_FREE - ETHICS_CHECKED_OTHERWISE_FREE
+
+
+class _Crossings(list):
+    """The providers whose spend key was asked for, in order.
+
+    ``detector`` counts the crossings made from inside the ethics detector, and
+    ``detector_calls`` the distinct ``detect`` calls they came from. One call can cross
+    more than once: refused on one provider, the client falls back to the next bound one
+    (this drive binds two dummy keys), so one detector call here is two crossings.
+    """
+
+    def __init__(self):
+        super().__init__()
+        self.detector = 0
+        self._detect_frames: set = set()
+
+    @property
+    def detector_calls(self) -> int:
+        return len(self._detect_frames)
+
+    @property
+    def not_the_detectors(self) -> int:
+        return len(self) - self.detector
 
 
 @pytest.fixture
@@ -261,7 +304,9 @@ def spend_chokepoint(monkeypatch):
     """Instrument request_spend_key: count every crossing, refuse like keyless prod."""
     from services.llm import request_key as rk
 
-    calls: list = []
+    calls = _Crossings()
+    # #2454: the drive runs with the ethics gate on, as beta does.
+    monkeypatch.setenv("ENABLE_ETHICS_ENFORCEMENT", "true")
 
     # 1929: make "a provider is configured" a property of the TEST, not of the
     # machine. With no key anywhere (CI's Linux runner: no env key, no OS
@@ -275,7 +320,20 @@ def spend_chokepoint(monkeypatch):
     monkeypatch.setenv("OPENAI_API_KEY", joined("sk", "-", "test-1818-ratchet-dummy"))
 
     def _recording_refusal(provider: str):
+        import inspect
+
         calls.append(provider)
+        # #2454: whose crossing is it? The detector's call is the only one with
+        # semantic_boundary_detector.py on its stack.
+        detect_frames = [
+            info.frame
+            for info in inspect.stack(0)
+            if info.filename.endswith("semantic_boundary_detector.py") and info.function == "detect"
+        ]
+        if detect_frames:
+            calls.detector += 1
+            # The frame object is alive for the whole call, so it names the call.
+            calls._detect_frames.add(detect_frames[0])
         raise rk.UnboundLLMKeyError(
             f"spend attempted for '{provider}' during the #1818 spend-free drive "
             "(recorded by the ratchet; refused so nothing can ever bill)"
@@ -370,9 +428,22 @@ async def test_canonical_pair_spend_reach(pair, message, spend_chokepoint, real_
             "fix the regression or, if the spend is a deliberate design change, move the "
             "pair to SPENDS *and* re-review the gate's exempt set in the same commit."
         )
+    elif pair in ETHICS_CHECKED_OTHERWISE_FREE:
+        assert (spend_chokepoint.detector_calls, spend_chokepoint.not_the_detectors) == (1, 0), (
+            f"{pair} is in ETHICS_CHECKED_OTHERWISE_FREE, which means exactly one call that "
+            f"can spend, the ethics detector's, and no other. Measured: "
+            f"{spend_chokepoint.detector_calls} detector call(s) making "
+            f"{spend_chokepoint.detector} crossing(s), and "
+            f"{spend_chokepoint.not_the_detectors} from elsewhere (providers: "
+            f"{list(spend_chokepoint)}). Zero from the detector means this content now skips "
+            "the ethics check (#2454: only a bare pleasantry may; Arch and CXO read that "
+            "change). A crossing from elsewhere means the pair started spending: fix it or "
+            "move it to SPENDS and re-review #1818's exempt set in the same commit."
+        )
     else:
-        assert crossings > 0, (
-            f"{pair} is in SPENDS but crossed the chokepoint 0x — it became spend-free. "
-            "That's an improvement: PROMOTE it to SPEND_FREE deliberately (and consider "
-            "whether #1818's gate should now admit it) instead of letting it drift."
+        assert spend_chokepoint.not_the_detectors > 0, (
+            f"{pair} is in SPENDS but made no crossing of its own (the detector's "
+            f"{spend_chokepoint.detector} aside): it stopped spending. That's an "
+            "improvement: PROMOTE it to ETHICS_CHECKED_OTHERWISE_FREE deliberately (and "
+            "consider whether #1818's gate should now admit it) instead of letting it drift."
         )

@@ -3687,7 +3687,14 @@ class IntentService:
             # Check ENABLE_ETHICS_ENFORCEMENT environment variable (default: False for gradual rollout)
             ethics_enabled = os.getenv("ENABLE_ETHICS_ENFORCEMENT", "false").lower() == "true"
 
-            if ethics_enabled:
+            # #2454 (Arch and CXO, 2026-11-26): a message that is ONLY a greeting,
+            # farewell or thanks skips the check. The detector is a model call on the
+            # person's own key, and since #2364 it runs for every message that reaches
+            # this gate, so "hi" cost a call. Nothing else skips: any message with a
+            # word left over, and every request with a slot in it, is still read.
+            from services.intent_service.pre_classifier import PreClassifier
+
+            if ethics_enabled and not PreClassifier.is_pleasantry_only_message(message):
                 self.logger.info("Ethics enforcement enabled - checking boundaries")
                 ethics_decision = await boundary_enforcer_refactored.enforce_boundaries(
                     message=message,

@@ -17,6 +17,7 @@ from typing import Optional
 
 import pytest
 
+from services.ethics.boundary_enforcer_refactored import BoundaryDecision
 from services.ethics.output_filter import (
     CANNED_VIOLATION_RESPONSE,
     REDACTED_TOKEN,
@@ -203,13 +204,27 @@ class TestApplySecretRules:
 # ============================================================================
 
 
-@dataclass
-class _MockBoundaryDecision:
-    is_violation: bool = False
-    violation_type: str = ""
+# #2364 box 3 (Arch's ruling 2, 2026-11-13; PPM's box text 2026-11-26).
+#
+# The reply-side tier reads ``decision.is_violation``. The real enforcer returns a
+# ``BoundaryDecision``, which has ``violation_detected`` and no ``is_violation``. So on
+# a real decision the tier never acts: it calls the enforcer on every user-visible reply
+# and substitutes nothing. That is the HELD state. Switching the tier to
+# ``violation_detected`` is a later unit, behind a screen of served replies showing no
+# false substitution.
+#
+# Until 2026-11-26 the double here returned an object WITH ``is_violation``, so these
+# tests showed a substitution the served code cannot make. Now:
+#   - ``_RealShapeBoundaryEnforcer`` returns a real ``BoundaryDecision``. Tests on it
+#     pin what is served.
+#   - ``_TierSignalEnforcer`` returns the made-up object carrying the attribute the tier
+#     reads today. It exists only to keep the substitution machinery covered, and each
+#     test using it says so. It is not what the enforcer returns.
 
 
-class _MockBoundaryEnforcer:
+class _RealShapeBoundaryEnforcer:
+    """Returns what the real enforcer returns: a ``BoundaryDecision``."""
+
     def __init__(self, will_flag: bool = False, violation_type: str = "harassment"):
         self._will_flag = will_flag
         self._violation_type = violation_type
@@ -217,9 +232,55 @@ class _MockBoundaryEnforcer:
 
     async def enforce_boundaries(self, message, context=None, session_id=None):
         self.calls += 1
-        return _MockBoundaryDecision(
+        return BoundaryDecision(
+            violation_detected=self._will_flag,
+            boundary_type=self._violation_type if self._will_flag else "none",
+            explanation="audit-only" if self._will_flag else "",
+            audit_data={"decision_id": "bd_test_output_filter"},
+            session_id=session_id,
+            redirect_context="redirect toward the work" if self._will_flag else None,
+        )
+
+
+@dataclass
+class _TierSignalDecision:
+    """NOT the enforcer's return shape. Carries the two attributes the tier reads
+    today, to exercise the machinery behind them."""
+
+    is_violation: bool = False
+    violation_type: str = ""
+
+
+class _TierSignalEnforcer:
+    def __init__(self, will_flag: bool = False, violation_type: str = "harassment"):
+        self._will_flag = will_flag
+        self._violation_type = violation_type
+        self.calls = 0
+
+    async def enforce_boundaries(self, message, context=None, session_id=None):
+        self.calls += 1
+        return _TierSignalDecision(
             is_violation=self._will_flag, violation_type=self._violation_type
         )
+
+
+def test_the_tier_reads_attributes_a_real_decision_does_not_have():
+    """The pin the later unit must change on purpose. Today the tier reads
+    ``is_violation`` and ``violation_type``; a real ``BoundaryDecision`` has neither
+    (it has ``violation_detected`` and ``boundary_type``). When the tier is switched,
+    the first assertion here changes to the real names and the last two flip."""
+    import inspect
+    import re
+
+    read = re.findall(r'getattr\(decision, "(\w+)"', inspect.getsource(apply_boundary_rules))
+    assert read == ["is_violation", "violation_type"]
+
+    real = BoundaryDecision(
+        violation_detected=True, boundary_type="harassment", explanation="", audit_data={}
+    )
+    assert {"violation_detected", "boundary_type"} <= set(vars(real))
+    assert not hasattr(real, "is_violation")
+    assert not hasattr(real, "violation_type")
 
 
 class TestApplyBoundaryRules:
@@ -231,14 +292,26 @@ class TestApplyBoundaryRules:
 
     @pytest.mark.asyncio
     async def test_enforcer_passes_clean_content(self):
-        enforcer = _MockBoundaryEnforcer(will_flag=False)
+        enforcer = _RealShapeBoundaryEnforcer(will_flag=False)
         result = await apply_boundary_rules("clean text", enforcer, user_id=None)
         assert result.is_violation is False
         assert enforcer.calls == 1
 
     @pytest.mark.asyncio
-    async def test_enforcer_flags_violation(self):
-        enforcer = _MockBoundaryEnforcer(will_flag=True, violation_type="harassment")
+    async def test_a_violating_decision_of_the_real_shape_does_not_act_today(self):
+        """The held state (ruling 2): the enforcer is asked, says violation, and the
+        tier signals nothing, because it reads an attribute the decision lacks."""
+        enforcer = _RealShapeBoundaryEnforcer(will_flag=True, violation_type="harassment")
+        result = await apply_boundary_rules("something bad", enforcer, user_id=None)
+        assert enforcer.calls == 1
+        assert result.is_violation is False
+        assert result.matched_rules == []
+
+    @pytest.mark.asyncio
+    async def test_the_tier_signals_when_the_attribute_it_reads_is_set(self):
+        """Machinery only, on the made-up signal object: not reachable from a real
+        decision until the later unit."""
+        enforcer = _TierSignalEnforcer(will_flag=True, violation_type="harassment")
         result = await apply_boundary_rules("something bad", enforcer, user_id=None)
         assert result.is_violation is True
         assert "boundary:harassment" in result.matched_rules
@@ -303,7 +376,7 @@ class TestOutputFilter:
     async def test_structured_output_skips_tier_2(self):
         """#2320: the router's JSON never reaches the BoundaryEnforcer (no ~2 s LLM
         call, no canned substitute that would break the parse)."""
-        enforcer = _MockBoundaryEnforcer(will_flag=True, violation_type="harassment")
+        enforcer = _RealShapeBoundaryEnforcer(will_flag=True, violation_type="harassment")
         of = OutputFilter(boundary_enforcer=enforcer)
         content = '{"operation": "complete_todo", "args": {"targets": ["2"]}}'
         result = await of.filter(content=content, task_type="inversion_routing")
@@ -322,8 +395,25 @@ class TestOutputFilter:
         assert result.decision.redactions_count >= 1
 
     @pytest.mark.asyncio
-    async def test_boundary_violation_drops_to_canned(self):
-        enforcer = _MockBoundaryEnforcer(will_flag=True, violation_type="harassment")
+    async def test_a_real_violating_decision_does_not_substitute_today(self):
+        """The held state, end to end through the filter: a reply the real enforcer
+        calls a violation is passed on unchanged. This is what is served; ruling 2
+        keeps it so until a screen of served replies shows no false substitution."""
+        enforcer = _RealShapeBoundaryEnforcer(will_flag=True, violation_type="harassment")
+        of = OutputFilter(boundary_enforcer=enforcer)
+        content = "LLM emitted something the enforcer calls a violation."
+        result = await of.filter(content=content, task_type="conversation")
+        assert enforcer.calls == 1
+        assert result.is_violation is False
+        assert result.filtered_content == content
+        assert result.decision.action_taken != Action.CANNED_SUBSTITUTE
+        assert not any(rule.startswith("boundary:") for rule in result.decision.matched_rules)
+
+    @pytest.mark.asyncio
+    async def test_the_canned_substitute_when_the_tier_signals(self):
+        """Machinery only, on the made-up signal object (see the note above the
+        doubles): what the filter does once the tier signals a violation."""
+        enforcer = _TierSignalEnforcer(will_flag=True, violation_type="harassment")
         of = OutputFilter(boundary_enforcer=enforcer)
         result = await of.filter(
             content="LLM emitted something inappropriate here.",
