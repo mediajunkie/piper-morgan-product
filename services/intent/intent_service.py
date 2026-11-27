@@ -14308,12 +14308,21 @@ class IntentService:
             # and teach the forms that work (incl. the about-form the #1212
             # copy above has always promised).
             if not title:
+                # 2461 (CXO 2026-11-27): the question always carries the sentence the
+                # never-connected reply already ends with, so a person who wanted a
+                # list item has a way out. On a connected account "add a task to the
+                # Launch project: …" reached this question and was offered only an
+                # issue. Keyed on the route, not on the person's words; the route
+                # itself is 2425 and 2461.
+                from services.intent_service.write_confirm_words import ISSUE_TODO_HINT
+
                 return IntentProcessingResult(
                     success=True,
                     message=(
                         "What should the issue be about? Give me a subject — "
                         'e.g. "create an issue in owner/repo about flaky login '
-                        "tests\" or a quoted title — and I'll create it."
+                        "tests\" or a quoted title — and I'll create it. "
+                        f"{ISSUE_TODO_HINT}"
                     ),
                     intent_data={
                         "category": intent.category.value,
