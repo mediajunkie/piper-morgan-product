@@ -312,7 +312,8 @@ def args_match(expected_args: dict, got_args: dict) -> tuple[bool, str]:
     # verbatim otherwise (the handler stores it as the title). #2069 adds
     # add_project's name / description / repo, compared the same way.
     # #2186: list_issues' milestone / label / state, compared the same way.
-    for key in ("text", "name", "description", "repo", "milestone", "label", "state"):
+    # Issue 2425: create_todo's ``project`` (the stored project name), compared the same way.
+    for key in ("text", "name", "description", "repo", "milestone", "label", "state", "project"):
         if key not in expected_args:
             continue
         want = _norm_text(expected_args[key])

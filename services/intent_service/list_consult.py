@@ -77,6 +77,15 @@ def accepts(decision: Any, kind: Optional[str], lines: Optional[int]) -> bool:
     )
 
 
+def in_scope(snapshot: Any) -> bool:
+    """D5's own scope condition: a recorded numbered list (kind and line count). On a
+    CLARIFY, D5 makes its call exactly when this is True. Issue 2425 reads it too, so a
+    turn makes at most one consult (Arch, 2425 part 2)."""
+    return bool(
+        getattr(snapshot, "last_list_kind", None) and getattr(snapshot, "last_list_lines", None)
+    )
+
+
 def without_list_fact(snapshot: Any) -> Any:
     """The main call's snapshot: the D1a fields dropped, so its block is main's bytes."""
     return dataclasses.replace(snapshot, last_list_kind=None, last_list_lines=None)
@@ -97,7 +106,7 @@ async def consult_on_clarify(
     """D5: the first decision, or the second call's answer when it is accepted."""
     kind = getattr(snapshot, "last_list_kind", None)
     lines = getattr(snapshot, "last_list_lines", None)
-    if getattr(decision, "outcome", None) != "clarify" or not kind or not lines:
+    if getattr(decision, "outcome", None) != "clarify" or not in_scope(snapshot):
         return decision
     # The router and its snapshot type come from the caller (inversion_live, the one
     # allowed referrer of the router: TestInversionShadowNoExecutionBoundary).
