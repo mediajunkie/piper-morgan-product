@@ -1123,6 +1123,11 @@ def build() -> str:
         "a confirmed disconnect does, the Settings index and the GitHub repository page. The",
         "screen atlas covers layout.",
         "",
+        "This file describes an install with the Piper GitHub App set up, as the hosted app",
+        "is. On an install with no GitHub App the GitHub Test's fix line and the connect",
+        "lines differ; those are pinned in",
+        "`tests/unit/services/mcp/consumer/test_classic_connect_retired_2261.py`.",
+        "",
     ]
     for scenario in scenarios():
         payload = health_payload(user_id, scenario)
