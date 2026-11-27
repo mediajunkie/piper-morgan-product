@@ -42,6 +42,13 @@ SHOWN_ISSUE_WHICH_ASK = (
     "I just showed #{number} in {repository}. " 'If that\'s the one you mean, say "#{number}".'
 )
 
+#: CXO's words (issue 2460 follow-up, 2026-11-27): a write that carries a field value,
+#: with no marked issue number and exactly ONE bare number outside every field value
+#: ("change the title of 108 to Draft"). The number is taken from the person's message
+#: by code. A statement: it promises nothing about what follows, so it is true on the
+#: update and comment paths alike, and it arms nothing.
+BARE_ISSUE_NUMBER_HINT = 'If you mean issue {number}, write it as "#{number}".'
+
 
 class CreatedIssueRef(NamedTuple):
     """The ledger's created head (issue 2114) with the time its row was written.
