@@ -14,6 +14,22 @@
 - **Why:** both counts sit behind the same three things. Step F (HOST's owner line; xian's F.4 GitHub connect in the seat browser), the fresh test account (xian's go-ahead via Exec), and 2282 box 4 (one served read). The build work on Lead's side is largely done and on beta.
 - **So the honest sprint 3 is mostly a finishing sprint:** the same score, with its blockers taken one at a time, and a small build lane that doesn't wait on them.
 
+## Sprint 3's goals, as the team can commit to them (PPM, 11-27 `11:24`, on xian's rulings via Exec 01M8F6RY8H)
+
+xian, 11-27: "Top priority for the sprint is opening beta invitations." He also said that a score matters less to him than "us learning to define achievable goals". A goal that depends on his OK is written as what the team can commit to, not as the outcome of his decision. So the ratified focus below is re-worded as four goals. The focus itself doesn't change.
+
+1. **Invitations: everything the team can do is done, and what's left is ready for xian.** By 12-10, every row of 2261, 2282 and 2342 that needs no hand from xian is served. The rows that need his hand are in one prepared sitting, with full URLs, the exact button and what he should see. The first sitting is today, 11-27, on Lead's ordered list. PPM sends the invite-lift memo to Exec the day the last row is served. Opening invitations is xian's call and is not a sprint goal.
+2. **Paths A and B served on a fresh account.** This is team work only now: xian gave 2425 its go on 11-27, and 2455 and 2458 are served.
+   - Path B: Web reruns it on seat-tester-1 once 2425 is promoted, using the "my" sentence ("the" is 2461's known gap).
+   - Path A: Web reruns it on seat-github-1 once 2459 is promoted.
+   - CXO judges the words, and PPM reads each run against the written bar.
+3. **PROPOSED, awaiting xian's yes via Exec: one fresh build for Lead, export (#2159).** "Export everything Piper holds for a user, in open formats." It is the first build in the Terms readiness lane, which gates public beta. It is read-only and needs nobody's OK.
+   - The goal: Arch rules the shape, Lead builds it and lands it, and it is served on a fresh account by 12-10.
+   - If Lead sizes it over half the sprint, the goal is the ruled shape plus the first slice served, not the whole issue.
+4. **PROPOSED, awaiting xian's yes via Exec: account deletion (#2158), prep and a recommendation ready.** It is destructive and touches the Terms, so the sprint 3 goal is the design. That means Arch's ruling on purge and the deletion record, CXO's flow, and HOST's custody note, as one recommendation ready for xian. The build is sprint 4's.
+
+Items 1 to 9 below are how goals 1 and 2 are done. Goals 3 and 4 are PPM's answer to xian's question about fresh build work. They join the sprint only on his yes. Until then, sprint 3 is goals 1 and 2.
+
 ## Main focus (ratified)
 
 **Lift the invite hold, and serve Paths A and B on a fresh account.** xian, 11-26 09:18 PT via Exec: "I agree with PPM." Same score as sprint 2. The score would keep sprint 2's two counts unchanged, so #071's number and sprint 3's close are read on the same scale.
