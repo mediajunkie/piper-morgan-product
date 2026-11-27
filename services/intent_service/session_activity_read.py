@@ -66,3 +66,13 @@ def issue_head(activities: List[Any]) -> Optional[Tuple[str, int]]:
     if not repository or not num.isdigit():
         return None
     return repository, int(num)
+
+
+def issue_head_created_at(activities: List[Any]) -> Optional[Any]:
+    """2459: when the ledger head (the row ``issue_head`` parses) was written, so the
+    one-issue read can take the newer of it and the last-shown issue. None when there
+    is no ``issue_created`` row or the row carries no time."""
+    latest = next((a for a in activities if a.action_type == "issue_created"), None)
+    if latest is None:
+        return None
+    return getattr(latest, "created_at", None)

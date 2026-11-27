@@ -60,6 +60,13 @@ from services.intent_service.not_performed import (
 )
 from services.intent_service.orchestrator import IntentOrchestrator
 from services.intent_service.pre_classifier import MultiIntentResult
+from services.intent_service.shown_issue import (
+    REFERENT_READ_FAILED_LINE,
+    CreatedIssueRef,
+    choose_issue_referent,
+    last_shown_issue,
+    record_shown_issues,
+)
 from services.intent_service.soft_invocation import (
     SoftInvocationDetector,
     WorkflowOfferService,
@@ -8044,8 +8051,9 @@ class IntentService:
 
     async def _issue_referent_from_ledger(
         self, user_id: Optional[str], session_id: Optional[str]
-    ) -> Optional[Tuple[str, int]]:
-        """#2114: the most recent issue THIS session created, as ``(repository, number)``.
+    ) -> Optional[CreatedIssueRef]:
+        """#2114: the most recent issue THIS session created, as ``(repository, number)``
+        plus, for 2459's newest-wins rule, the time the ledger row was written.
 
         "Show me that issue" right after "Created issue #22 …" names the issue the
         product just announced; the session's creation ledger (#2095) holds it as
@@ -8057,6 +8065,7 @@ class IntentService:
             return None
         from services.intent_service.session_activity_read import (
             issue_head,
+            issue_head_created_at,
             list_session_activities,
         )
 
@@ -8065,7 +8074,10 @@ class IntentService:
         except Exception as e:  # silent-ok: logged; the handler falls back to asking for a number
             self.logger.warning("review_issue_ledger_read_failed", error=str(e))
             return None
-        return issue_head(activities)
+        head = issue_head(activities)
+        if head is None:
+            return None
+        return CreatedIssueRef(head[0], head[1], issue_head_created_at(activities))
 
     async def _handle_review_issue_query(
         self, intent: Intent, workflow_id: str, session_id: Optional[str] = None
@@ -8084,6 +8096,10 @@ class IntentService:
             IntentProcessingResult with issue details or error
         """
         self.logger.info(f"Processing review issue query: {intent.action}")
+        # 2459 (CXO's words): set once the issue to read came from the session (the
+        # created head or the last-shown issue), not from the words. A failed read of
+        # that referent then says REFERENT_READ_FAILED_LINE.
+        _from_referent = False
 
         try:
             import re
@@ -8120,7 +8136,13 @@ class IntentService:
                     requires_clarification=True,
                 )
             if not match:
-                ledger_ref = await self._issue_referent_from_ledger(_user_id, session_id)
+                # 2459 (Arch's rule 2): the NEWER of the created head (#2114) and the
+                # issue the session's last read showed alone. Neither, a newest read
+                # that showed several, or an order code can't tell: the ask below.
+                ledger_ref = choose_issue_referent(
+                    await self._issue_referent_from_ledger(_user_id, session_id),
+                    last_shown_issue(session_id, _user_id),
+                )
                 if ledger_ref is not None:
                     self.logger.info(
                         "review_issue_referent_resolved",
@@ -8132,6 +8154,7 @@ class IntentService:
                 issue_number = int(match.group(1))
             elif ledger_ref is not None:
                 issue_number = ledger_ref[1]
+                _from_referent = True
             else:
                 return IntentProcessingResult(
                     success=False,
@@ -8216,6 +8239,13 @@ class IntentService:
                     and _looked_in
                 ):
                     _degraded_message = f"I couldn't find issue #{issue_number} in {_looked_in}."
+                elif (
+                    _from_referent
+                    and _deg is not None
+                    and _deg.reason is DegradationReason.UNREACHABLE
+                ):
+                    # 2459 (CXO's words): the referent resolved but the read failed.
+                    _degraded_message = REFERENT_READ_FAILED_LINE
                 # #2188 (Arch 16:15): the read did not run, so success is False; the
                 # marker says which kind, and the text is unchanged.
                 _not_performed = (
@@ -8340,13 +8370,17 @@ class IntentService:
 
         except Exception as e:
             self.logger.error(f"GitHub review issue query error: {e}")
-            return self._make_error_result(
+            _error_result = self._make_error_result(
                 intent=intent,
                 workflow_id=workflow_id,
                 error=e,
                 context="reviewing that issue",
                 error_type="GitHubReviewIssueQueryError",
             )
+            if _from_referent:
+                # 2459 (CXO's words): code resolved "it", and the read of it failed.
+                _error_result.message = REFERENT_READ_FAILED_LINE
+            return _error_result
 
     @staticmethod
     def _extract_search_terms(message: str, action: str) -> str:
@@ -9580,6 +9614,10 @@ class IntentService:
 
         try:
             _user_id = _principal_from_intent(intent)
+            # 2459 (Arch's rule 1): this turn is an issue read, so until it shows
+            # exactly one issue the last-shown slot says "not a single issue" (a
+            # failed or degraded read below leaves it so). Best-effort, never blocks.
+            record_shown_issues(session_id, _user_id, [])
 
             # RECONNECT (#1322): prefer the per-user OAuth connector (binding + grant →
             # search_issues, user-wide assignee:@me). Fall back to the native PAT ONLY when
@@ -9786,6 +9824,17 @@ class IntentService:
                 message += _capped.body
                 _remainder = _capped.remainder
                 _complete = _capped.complete
+                # 2459 (Arch's rule 1): what this read showed, from the read's data:
+                # each item's own repository, else the repository the connector read
+                # was scoped to (the native read lists the default repo, so it gets no
+                # such fallback). A full native window may hold more: never a single.
+                _read_repo = _named_repo if connector_result.issues is not None else None
+                record_shown_issues(
+                    session_id,
+                    _user_id,
+                    [(repo_of_item(i) or _read_repo, i.get("number")) for i in issues],
+                    total=max(total_count, 2) if _issues_window_full else total_count,
+                )
             elif _filters_applied:
                 # #2186: a filtered read that found nothing names its whole
                 # scope; the #2040 default-repo count would not share the filter.
