@@ -2238,3 +2238,4 @@ issue	state	milestone	sprint	title	labels	blocked_by	state_reason
 2450	OPEN	Production		Close/reopen gate arms a yes/no when there's no signed-in account	architecture		
 2451	OPEN	Production		Signs-to-watch-for question about a named colleague is declined on OpenAI, answered on Anthropic (p-2 after 2364 v0.3)	UX		
 2453	OPEN	Production		Two reply wordings from the 2364 served probe: unsupported document type gets a menu without it; offer suffix repeats 'just tell me'	UX		
+2454	OPEN	Production		Spend-free ratchet (1818) measures the ethics gate off; with the gate on, as beta runs, every canned reply crosses the spend chokepoint	architecture		
