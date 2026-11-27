@@ -56,6 +56,9 @@ gh api graphql -f query='{ repository(owner:"'$OWNER'",name:"<REPO>"){ issue(num
 **Reference values as of 2026-07-14** (VERIFY with the commands above — IDs can change if the field is recreated):
 - Project #1 "Building Piper Morgan" node id: `PVT_kwHOADE-8s4A-JwA`
 - Sprint field id: `PVTSSF_lAHOADE-8s4A-JwAzg2hWcg`
+
+> **Field name (11-27):** xian named the field's values *epics* and may rename the field itself from "Sprint" to "Epic". Writes here use the field **ID**, so they're unaffected. Reads by name (`fieldValueByName(name:"Sprint")`) return null after a rename, with no error. Before reading, check the current name by ID: `gh api graphql -f query='query{node(id:"PVTSSF_lAHOADE-8s4A-JwAzg2hWcg"){... on ProjectV2SingleSelectField{name}}}' --jq .data.node.name`, and use what it returns. `scripts/snapshot-project-board.sh` and `scripts/restore-sprint-field-from-snapshot.py` already do this.
+
 - Option "Beta Blockers - Hard Gates Only": `94e9d0d0`  ·  "PUB - Public Beta": `d9067be5`
 
 ### Step 2 — Safety pre-check (READ-ONLY) — don't clobber
