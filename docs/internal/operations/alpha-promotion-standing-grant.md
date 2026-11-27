@@ -58,7 +58,7 @@
   1. **Before a change lands on main:** Arch reads the change's branch from source and records "conforms", or the conditions, in decisions.log. This is the ordinary landing rule, not a promotion step.
   2. **After a promotion:** Arch reads beta's `/health` `git_sha`, checks with `git merge-base --is-ancestor` that the commits Arch read are in it, checks that the served paths (`services/`, `web/`, `templates/`) don't differ from the read commits, and records "Promotion <sha> conforms" in decisions.log. A mismatch goes to Lead and Exec the same hour. It is a validation after the fact, not a gate.
   - **What it doesn't cover:** a migration or a deploy-path change is outside the grant and needs xian's word, as the grant says. Arch's read does not stand in for it.
-  - **The 11-13 to 11-17 exception, kept for the record:** five decisions.log lines read "PROMOTION GRANTED" (11-13 16:13, 11-14 12:55, 11-17 07:53 and 09:53, plus the 08:27 conforms). These were promotions beyond the one-per-day pacing Lead's carry-forward recorded that week ("Arch's one-promotion lift", Lead's 11-13 log), each scoped to one commit. Arch did not find where that pacing was set: not in decisions.log by search, and the grant says "no daily count since 10-20". No such per-promotion grant has been given or needed since 11-17.
+  - **The 11-13 to 11-17 exception, kept for the record:** five decisions.log lines read "PROMOTION GRANTED" (11-13 16:13, 11-14 12:55, 11-17 07:53 and 09:53, plus the 08:27 conforms). Each lifted Arch's own temporary promotion hold, set during PA's reads for #2342 (Lead's 11-12 log: "his promotion hold lifted for one promotion, between PA's reads"), for one commit. That is condition 2 ("no NOTICE memo from PPM, CXO or Arch that names the build ... as held") working as written, not a separate layer. *(Corrected the same day: this line first said a one-per-day pacing, which was Arch's misreading; CIO 01M8F42S56 had it right.)* No such per-promotion grant has been given or needed since 11-17.
   - **Also true in practice (Lead, 11-27):** the window is 07:00 to 21:00 PT, and Lead does not dispatch during a xian sitting. Exec's "xian has not started (a)" line is how Lead knows.
 
 **Review:** 2026-11-27, or after a promotion that leaves alpha serving neither the promoted build nor the one before it, whichever comes first. A refusal by a condition is not a trigger. *(Replaced 2026-11-03 on xian's word, decisions.log 2026-11-03 17:30, from CIO's 10-30 review below. The first line, "after 14 days (2026-10-30) or after the first failed promotion", was met on 10-16 by a refusal and so couldn't tell the grant working from a deploy failure.)*
@@ -114,3 +114,11 @@ Verified how:
 - **Health watch, 11-06 to 11-09:** 20 runs, 20 green.
 - **Layer:** GitHub Actions records plus logs.
 - **Denominator:** every dispatch in the window.
+
+**Correction to finding 3 (CIO, 2026-11-27, after Lead 01M8F3P2J6 and Arch 01M8F3X402):**
+- **The per-promotion grants were not a standing layer.** They were five "PROMOTION GRANTED" lines, 11-13 to 11-17. Each lifted Arch's temporary promotion hold for one promotion, during the reads for 2342. Lead's 11-12 log: "his promotion hold lifted for one promotion, between PA's reads".
+- **That is condition 2 working.** A hold named by Arch stops promotions, so no gap in the grant follows from it.
+- **None has been given or needed since 11-17.** Arch's part now is a read of each change before it lands and a validation after each promotion. Neither is a gate. He wrote it as the procedure note above.
+- **Not traced:** where the hold was first called. It isn't in decisions.log, so it was probably in mail.
+
+**One textual point the renewal should settle (xian's words, not mine to change):** condition 5 says "any change to production, beta or secrets" needs his yes, and "The grant covers alpha only". Since 11-05 the app the grant promotes to is served as beta. Practice since then, and xian's 11-26 rulings ("under the standing grant"), read the grant as covering that app. The renewal should say so in his words.
