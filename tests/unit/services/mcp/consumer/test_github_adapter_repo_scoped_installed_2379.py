@@ -583,7 +583,7 @@ class TestTheConfirmBuilders:
         )
 
         intent = self._intent(
-            "retitle issue 7",
+            "retitle issue 7 to New title",
             "update_issue",
             issue_number=7,
             title="New title",
@@ -591,7 +591,7 @@ class TestTheConfirmBuilders:
         )
         before = dict(intent.context)
         ask = await update_issue_write_ask(
-            WriteAskRequest(intent=intent, message="retitle issue 7", principal=_OWNER)
+            WriteAskRequest(intent=intent, message="retitle issue 7 to New title", principal=_OWNER)
         )
         assert ask.reply == self._LINE and ask.words is None
         assert intent.context == before
@@ -620,13 +620,13 @@ class TestTheConfirmBuilders:
         update = await update_issue_write_ask(
             WriteAskRequest(
                 intent=self._intent(
-                    "retitle issue 7",
+                    "retitle issue 7 to New title",
                     "update_issue",
                     issue_number=7,
                     title="N",
                     repository="octo/a",
                 ),
-                message="retitle issue 7",
+                message="retitle issue 7 to New title",
                 user_id=_OWNER,
             )
         )
@@ -691,14 +691,16 @@ class TestTheConfirmBuilders:
             assert ask.reply == unreachable and ask.words is None and ask.armed is False
         elif builder == "update":
             intent = self._intent(
-                "retitle issue 7",
+                "retitle issue 7 to New title",
                 "update_issue",
                 issue_number=7,
                 title="N",
                 repository="octo/public",
             )
             ask = await update_issue_write_ask(
-                WriteAskRequest(intent=intent, message="retitle issue 7", user_id=_OWNER)
+                WriteAskRequest(
+                    intent=intent, message="retitle issue 7 to New title", user_id=_OWNER
+                )
             )
             assert ask.reply == unreachable and ask.words is None and ask.armed is False
         else:

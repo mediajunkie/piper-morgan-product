@@ -50,7 +50,7 @@ Architecture (#1207 unification, 2026-06-12 — where this module sits):
 """
 
 from dataclasses import dataclass, field
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from typing import Any, Dict, Optional
 from uuid import UUID, uuid4
 
@@ -131,6 +131,27 @@ class RecordedRead:
     target: str
     covered: str
     at: datetime = field(default_factory=datetime.now)
+
+
+@dataclass
+class ShownIssue:
+    """2459 (Arch's rule 1): what the session's last issue READ handed the person.
+
+    Written by the read's own code from the read's DATA (the status gather's open-issue
+    set, the issue listing), never parsed from reply text. ``repository`` ("owner/name")
+    and ``number`` are both set only when that read showed exactly ONE issue whose
+    repository the data carried; otherwise both are None, which says "the last read was
+    not a single issue", so an earlier single is never reused after it. ``shown_at`` is
+    timezone-aware UTC, so it orders against the creation ledger's ``created_at``.
+    """
+
+    repository: Optional[str] = None
+    number: Optional[int] = None
+    shown_at: datetime = field(default_factory=lambda: datetime.now(timezone.utc))
+
+    @property
+    def single(self) -> bool:
+        return self.repository is not None and self.number is not None
 
 
 @dataclass
@@ -222,6 +243,12 @@ class ConversationContext:
     # by the context key (user, session); in-memory, never persisted (a restart forgets
     # it and the read falls back to the plain ask, never a false claim).
     last_create_refused_repo: Optional[str] = None
+    # 2459 (Arch's rule 1): the issue the session's last issue read showed, when it
+    # showed exactly one (else a not-single marker). Kept OUT of the session activity
+    # ledger: showing an issue is not something done. Owner-scoped by the context key
+    # (user, session); in-memory, never persisted (a restart forgets it, and the read
+    # falls back to the ledger head or the plain ask, never a guess).
+    last_shown_issue: Optional["ShownIssue"] = None
 
     # #1762 (epic 6): the unrendered tail of the most recent capped list, so
     # "…and N more" is a claim we can CASH (GatherOutcome §5b). DELIBERATELY

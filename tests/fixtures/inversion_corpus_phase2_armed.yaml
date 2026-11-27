@@ -219,3 +219,46 @@ corpus:
     expected: REVIEW
     source: "control twin of the #1567 armed row (same text, no fixture)"
     notes: "stateless prepositional fragment has no right answer; recorded as data"
+
+  # ── pair 8: one issue shown, "it" asks for its details (#2459, 11-27) ──
+  # A status reply named exactly one GitHub issue and offered to pull up its
+  # details; the person took the offer and the turn went to the floor. With
+  # the session state's RECENT ISSUE line (the shown slot, fed through
+  # choose_issue_referent) the read binds that issue. Not an armed OFFER: the
+  # fixture carries no pending offer, only the session referent.
+  - phrase: "pull up the full details on it"
+    pair: shown-issue-details
+    condition: armed
+    category: QUERY
+    expected: action:review_issue_query
+    source: "issue 2459: Web's served Path A read on beta 039121b0fb (2026-11-27); Lead's router control with the RECENT ISSUE state line, review_issue 6 of 6 (dev/2026/11/27/2459-screen/router-control-main-with-recent-issue.md)"
+    notes: "the session's referent is the one issue the last read showed; the router names the read and the handler takes the issue from the shown slot (2459), never from the words"
+    fixture:
+      recent_issue_number: 1
+      recent_issue_repo: "pipermorgan/piper-test"
+  - phrase: "pull up the full details on it"
+    pair: shown-issue-details
+    condition: control
+    category: QUERY
+    expected: REVIEW
+    source: "control twin of the #2459 armed row (same text, no fixture)"
+    notes: "stateless 'it' has no referent; the router answered CLARIFY 6 of 6 in Lead's control run (2026-11-27); no route asserted, recorded as data"
+
+  # ── pair 9: one issue shown, "show me that issue" (#2459, 11-27) ──
+  - phrase: "show me that issue"
+    pair: shown-issue-that-issue
+    condition: armed
+    category: QUERY
+    expected: action:review_issue_query
+    source: "issue 2459: the phrase issue 2114 served after a create (\"Show me that issue.\"), here after a show; Lead's router control with the RECENT ISSUE state line, review_issue 6 of 6 (dev/2026/11/27/2459-screen/router-control-main-with-recent-issue.md)"
+    notes: "same referent as pair 8; 'that issue' is the shown issue named in the RECENT ISSUE line"
+    fixture:
+      recent_issue_number: 1
+      recent_issue_repo: "pipermorgan/piper-test"
+  - phrase: "show me that issue"
+    pair: shown-issue-that-issue
+    condition: control
+    category: QUERY
+    expected: REVIEW
+    source: "control twin of the #2459 armed row (same text, no fixture)"
+    notes: "stateless 'that issue' has no referent; the router answered CLARIFY 6 of 6 in Lead's control run (2026-11-27); no route asserted, recorded as data"
