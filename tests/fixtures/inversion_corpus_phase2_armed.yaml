@@ -250,7 +250,7 @@ corpus:
     condition: armed
     category: QUERY
     expected: action:review_issue_query
-    source: "issue 2459: Web's served Path A read on beta 039121b0fb (2026-11-27); Lead's router control with the RECENT ISSUE state line, review_issue 6 of 6 (dev/2026/11/27/2459-screen/router-control-main-with-recent-issue.md)"
+    source: "issue 2459: the phrase issue 2114 served after a create (\"Show me that issue.\"), here after a show; Lead's router control with the RECENT ISSUE state line, review_issue 6 of 6 (dev/2026/11/27/2459-screen/router-control-main-with-recent-issue.md)"
     notes: "same referent as pair 8; 'that issue' is the shown issue named in the RECENT ISSUE line"
     fixture:
       recent_issue_number: 1
