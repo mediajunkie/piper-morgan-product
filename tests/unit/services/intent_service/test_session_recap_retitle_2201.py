@@ -50,8 +50,21 @@ async def test_title_change_declares_the_retitle(svc):
             return_value={"number": 31, "title": "Implement full-text search", "state": "open"}
         )
         MockRouter.return_value = router
+        # 2459: issue 31 is this session's created head (the gate reads it).
+        from datetime import datetime, timezone
+
+        from services.intent_service.shown_issue import CreatedIssueRef
+
+        svc._issue_referent_from_ledger = AsyncMock(
+            return_value=CreatedIssueRef(
+                "dinp-machine/piper-test-activity", 31, datetime.now(timezone.utc)
+            )
+        )
         result = await svc._handle_update_issue(
-            _intent(title="Implement full-text search"), workflow_id="wf-2201"
+            _intent(title="Implement full-text search"),
+            workflow_id="wf-2201",
+            session_id="s-2201-retitle",
+            user_id="u-2201",
         )
     assert result.success is True, result.message
     assert result.intent_data["retitled_activity"] == {

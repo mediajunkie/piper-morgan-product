@@ -1139,6 +1139,9 @@ def _2189_reset_session_slice_offer_state():
         _ctx.last_consumed_offer_id = None
         _ctx.pending_offer_lapsed = False
         _ctx.push_session_muted_at = None
+        # 2459: the last-shown issue slot rides the same registry; a test's fixed
+        # session id must not inherit another test's shown issue.
+        _ctx.last_shown_issue = None
 
 
 @pytest.fixture(autouse=True)

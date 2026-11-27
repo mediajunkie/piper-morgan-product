@@ -16,7 +16,7 @@ import re
 import string
 from dataclasses import dataclass
 from datetime import datetime, timedelta, timezone
-from typing import Any, Dict, Iterable, List, Optional, Tuple, TypedDict
+from typing import Any, Dict, Iterable, List, Optional, Sequence, Tuple, TypedDict
 from uuid import UUID
 
 import structlog
@@ -49,6 +49,18 @@ from services.intent_service.conversation_context import (
     get_or_create_context,
     snapshot_session_slice,
 )
+from services.intent_service.issue_write_gate import (
+    CLOSE_ISSUE_NUMBER_ASK,
+    COMMENT_ISSUE_NUMBER_ASK,
+    REOPEN_ISSUE_NUMBER_ASK,
+    UPDATE_ISSUE_NUMBER_ASK,
+    IssueWriteVerdict,
+    gate_issue_write,
+    issue_number_arg,
+    refusal_line,
+    typed_issue_number,
+    update_field_values,
+)
 from services.intent_service.list_remainder import compose_capped_list, page_floor
 from services.intent_service.not_performed import (
     NOT_PERFORMED_KEY,
@@ -60,6 +72,14 @@ from services.intent_service.not_performed import (
 )
 from services.intent_service.orchestrator import IntentOrchestrator
 from services.intent_service.pre_classifier import MultiIntentResult
+from services.intent_service.shown_issue import (
+    LEDGER_UNREADABLE,
+    REFERENT_READ_FAILED_LINE,
+    CreatedIssueRef,
+    choose_issue_referent,
+    last_shown_issue,
+    record_shown_issues,
+)
 from services.intent_service.soft_invocation import (
     SoftInvocationDetector,
     WorkflowOfferService,
@@ -8042,21 +8062,68 @@ class IntentService:
                 error_type="GitHubStalePRsQueryError",
             )
 
+    async def _issue_write_refusal(
+        self,
+        intent: Intent,
+        workflow_id: str,
+        issue_number: Optional[int],
+        plain_ask: str,
+        session_id: Optional[str],
+        repository: Optional[str] = None,
+        *,
+        has_free_text_field: bool,
+        source_created_head: bool = False,
+        field_values: Sequence[str] = (),
+    ) -> Tuple[Optional[IntentProcessingResult], IssueWriteVerdict]:
+        """2459: run the issue-write gate for close, reopen and comment. ``(None,
+        verdict)``: the number may be written (``verdict.number`` is it). Otherwise
+        the handler's existing ask, with that ask's own flags (or the named ask in its
+        place, same flags); nothing armed. ``has_free_text_field``: issue 2460's form
+        (close/reopen False, comment True)."""
+        verdict = await gate_issue_write(
+            intent,
+            issue_number,
+            has_free_text_field=has_free_text_field,
+            source_created_head=source_created_head,
+            field_values=field_values,
+            repository=repository,
+            user_id=_principal_from_intent(intent),
+            session_id=session_id,
+            created_head=self._issue_referent_from_ledger,
+        )
+        if verdict.accepted:
+            return None, verdict
+        return IntentProcessingResult(
+            success=False,
+            message=refusal_line(verdict, plain_ask),
+            intent_data={
+                "category": intent.category.value,
+                "action": intent.action,
+                "confidence": intent.confidence,
+            },
+            workflow_id=workflow_id,
+            requires_clarification=True,
+        ), verdict
+
     async def _issue_referent_from_ledger(
         self, user_id: Optional[str], session_id: Optional[str]
-    ) -> Optional[Tuple[str, int]]:
-        """#2114: the most recent issue THIS session created, as ``(repository, number)``.
+    ) -> Optional[CreatedIssueRef]:
+        """#2114: the most recent issue THIS session created, as ``(repository, number)``
+        plus, for 2459's newest-wins rule, the time the ledger row was written.
 
         "Show me that issue" right after "Created issue #22 …" names the issue the
         product just announced; the session's creation ledger (#2095) holds it as
         ``owner/repo#22``. Owner-scoped by construction (D1a): no principal or no
-        session → None, no read. A ledger read failure degrades to None (the caller
-        then asks for a number, exactly as before), never to a fabricated target.
+        session → None, no read. A ledger read failure returns ``LEDGER_UNREADABLE``
+        (2459): the referent rule then chooses nothing (the caller asks for a number,
+        exactly as before) and the issue-write gate accepts no head; never a
+        fabricated target.
         """
         if not user_id or not session_id:
             return None
         from services.intent_service.session_activity_read import (
             issue_head,
+            issue_head_created_at,
             list_session_activities,
         )
 
@@ -8064,8 +8131,12 @@ class IntentService:
             activities = await list_session_activities(user_id, session_id)
         except Exception as e:  # silent-ok: logged; the handler falls back to asking for a number
             self.logger.warning("review_issue_ledger_read_failed", error=str(e))
+            # 2459: "unknown", not "nothing created": no referent is chosen over it.
+            return LEDGER_UNREADABLE
+        head = issue_head(activities)
+        if head is None:
             return None
-        return issue_head(activities)
+        return CreatedIssueRef(head[0], head[1], issue_head_created_at(activities))
 
     async def _handle_review_issue_query(
         self, intent: Intent, workflow_id: str, session_id: Optional[str] = None
@@ -8084,6 +8155,10 @@ class IntentService:
             IntentProcessingResult with issue details or error
         """
         self.logger.info(f"Processing review issue query: {intent.action}")
+        # 2459 (CXO's words): set once the issue to read came from the session (the
+        # created head or the last-shown issue), not from the words. A failed read of
+        # that referent then says REFERENT_READ_FAILED_LINE.
+        _from_referent = False
 
         try:
             import re
@@ -8120,7 +8195,13 @@ class IntentService:
                     requires_clarification=True,
                 )
             if not match:
-                ledger_ref = await self._issue_referent_from_ledger(_user_id, session_id)
+                # 2459 (Arch's rule 2): the NEWER of the created head (#2114) and the
+                # issue the session's last read showed alone. Neither, a newest read
+                # that showed several, or an order code can't tell: the ask below.
+                ledger_ref = choose_issue_referent(
+                    await self._issue_referent_from_ledger(_user_id, session_id),
+                    last_shown_issue(session_id, _user_id),
+                )
                 if ledger_ref is not None:
                     self.logger.info(
                         "review_issue_referent_resolved",
@@ -8132,6 +8213,7 @@ class IntentService:
                 issue_number = int(match.group(1))
             elif ledger_ref is not None:
                 issue_number = ledger_ref[1]
+                _from_referent = True
             else:
                 return IntentProcessingResult(
                     success=False,
@@ -8216,6 +8298,13 @@ class IntentService:
                     and _looked_in
                 ):
                     _degraded_message = f"I couldn't find issue #{issue_number} in {_looked_in}."
+                elif (
+                    _from_referent
+                    and _deg is not None
+                    and _deg.reason is DegradationReason.UNREACHABLE
+                ):
+                    # 2459 (CXO's words): the referent resolved but the read failed.
+                    _degraded_message = REFERENT_READ_FAILED_LINE
                 # #2188 (Arch 16:15): the read did not run, so success is False; the
                 # marker says which kind, and the text is unchanged.
                 _not_performed = (
@@ -8340,13 +8429,17 @@ class IntentService:
 
         except Exception as e:
             self.logger.error(f"GitHub review issue query error: {e}")
-            return self._make_error_result(
+            _error_result = self._make_error_result(
                 intent=intent,
                 workflow_id=workflow_id,
                 error=e,
                 context="reviewing that issue",
                 error_type="GitHubReviewIssueQueryError",
             )
+            if _from_referent:
+                # 2459 (CXO's words): code resolved "it", and the read of it failed.
+                _error_result.message = REFERENT_READ_FAILED_LINE
+            return _error_result
 
     @staticmethod
     def _extract_search_terms(message: str, action: str) -> str:
@@ -8507,9 +8600,12 @@ class IntentService:
             import re
 
             original_message = intent.context.get("original_message", "")
-            match = re.search(r"#?(\d+)", original_message)
+            # Issue 2460 (Arch): a close/reopen has no free-text field, so a bare
+            # number counts as well as "#N", but only when exactly one distinct number
+            # appears; none, or two or more, take the no-number path below.
+            _typed_number = typed_issue_number(original_message, has_free_text_field=False)
 
-            if not match:
+            if _typed_number is None:
                 # Issue #902: Fuzzy match by description
                 search_terms = self._extract_search_terms(original_message, "close")
                 if search_terms:
@@ -8575,16 +8671,22 @@ class IntentService:
                             requires_clarification=True,
                         )
 
-                # No search terms or no matches
+                # No search terms or no matches. 2459: the named ask when the only
+                # candidate referent is a single shown issue; else the line below.
+                _no_number_gate = await gate_issue_write(
+                    intent,
+                    None,
+                    has_free_text_field=False,
+                    repository=None,
+                    user_id=_principal_from_intent(intent),
+                    session_id=session_id,
+                    created_head=self._issue_referent_from_ledger,
+                )
                 return IntentProcessingResult(
                     success=False,
-                    message=(
-                        # #2120: no search ran, so no "couldn't find" claim; the
-                        # honest scope line (CXO's words replace these if they differ).
-                        "I can close a particular issue if you give me its number, like "
-                        '"close #123". I don\'t search for finished issues or close them in '
-                        "bulk yet."
-                    ),
+                    # #2120: no search ran, so no "couldn't find" claim; the honest
+                    # scope line (CXO's words replace these if they differ).
+                    message=refusal_line(_no_number_gate, CLOSE_ISSUE_NUMBER_ASK),
                     intent_data={
                         "category": intent.category.value,
                         "action": intent.action,
@@ -8594,7 +8696,20 @@ class IntentService:
                     requires_clarification=True,
                 )
 
-            issue_number = int(match.group(1))
+            issue_number = _typed_number
+            # 2459 (Arch's gate): close/reopen act only on a number parsed from the
+            # person's words, so this accepts; it stands in front of the write in
+            # case another source is ever added.
+            _refused, _ = await self._issue_write_refusal(
+                intent,
+                workflow_id,
+                issue_number,
+                CLOSE_ISSUE_NUMBER_ASK,
+                session_id,
+                has_free_text_field=False,
+            )
+            if _refused is not None:
+                return _refused
 
             # #1567: an explicitly-named repository (owner/name or the natural
             # "in the X repository" phrasing) is honored — a close aimed at a
@@ -8891,9 +9006,12 @@ class IntentService:
             import re
 
             original_message = intent.context.get("original_message", "")
-            match = re.search(r"#?(\d+)", original_message)
+            # Issue 2460 (Arch): a close/reopen has no free-text field, so a bare
+            # number counts as well as "#N", but only when exactly one distinct number
+            # appears; none, or two or more, take the no-number path below.
+            _typed_number = typed_issue_number(original_message, has_free_text_field=False)
 
-            if not match:
+            if _typed_number is None:
                 # Issue #902: Fuzzy match by description
                 search_terms = self._extract_search_terms(original_message, "reopen")
                 if search_terms:
@@ -8959,15 +9077,21 @@ class IntentService:
                             requires_clarification=True,
                         )
 
-                # No search terms or no matches
+                # No search terms or no matches. 2459: the named ask when the only
+                # candidate referent is a single shown issue; else the line below.
+                _no_number_gate = await gate_issue_write(
+                    intent,
+                    None,
+                    has_free_text_field=False,
+                    repository=None,
+                    user_id=_principal_from_intent(intent),
+                    session_id=session_id,
+                    created_head=self._issue_referent_from_ledger,
+                )
                 return IntentProcessingResult(
                     success=False,
-                    message=(
-                        # #2120 (the reopen twin of the close line): no search ran.
-                        "I can reopen a particular issue if you give me its number, like "
-                        '"reopen #123". I don\'t search for closed issues or reopen them in '
-                        "bulk yet."
-                    ),
+                    # #2120 (the reopen twin of the close line): no search ran.
+                    message=refusal_line(_no_number_gate, REOPEN_ISSUE_NUMBER_ASK),
                     intent_data={
                         "category": intent.category.value,
                         "action": intent.action,
@@ -8977,7 +9101,20 @@ class IntentService:
                     requires_clarification=True,
                 )
 
-            issue_number = int(match.group(1))
+            issue_number = _typed_number
+            # 2459 (Arch's gate): close/reopen act only on a number parsed from the
+            # person's words, so this accepts; it stands in front of the write in
+            # case another source is ever added.
+            _refused, _ = await self._issue_write_refusal(
+                intent,
+                workflow_id,
+                issue_number,
+                REOPEN_ISSUE_NUMBER_ASK,
+                session_id,
+                has_free_text_field=False,
+            )
+            if _refused is not None:
+                return _refused
 
             # #1641 (the #1567 close-handler shape): an explicitly-named
             # repository (owner/name or the natural "in the X repository"
@@ -9315,18 +9452,33 @@ class IntentService:
                 if _digits:
                     issue_number = int(_digits.group(0))
 
+            # 2459 (Arch's gate): the extractor's number (a model's reading, which may
+            # come from earlier turns) is written only when the person typed it in
+            # this message or it is the session's created head; otherwise the ask
+            # (the named ask when a single shown issue is the only candidate).
+            # Issue 2460: a comment has a free-text body, so only one distinct "#N"
+            # typed counts; with none typed, the created head (when it is the
+            # referent) is the number.
+            _refused, _comment_gate = await self._issue_write_refusal(
+                intent,
+                workflow_id,
+                issue_number,
+                COMMENT_ISSUE_NUMBER_ASK,
+                session_id,
+                repository=intent.context.get("repository") or intent.context.get("repo"),
+                has_free_text_field=True,
+                source_created_head=True,
+                field_values=[
+                    v for v in (extracted.get("comment_text"),) if isinstance(v, str) and v.strip()
+                ],
+            )
+            if _refused is not None:
+                return _refused
+            issue_number = issue_number or _comment_gate.number
             if issue_number is None:
-                return IntentProcessingResult(
-                    success=False,
-                    message="I couldn't find an issue number in your request. Please specify an issue number (e.g., 'comment on issue #123 saying...').",
-                    intent_data={
-                        "category": intent.category.value,
-                        "action": intent.action,
-                        "confidence": intent.confidence,
-                    },
-                    workflow_id=workflow_id,
-                    requires_clarification=True,
-                )
+                # The gate refuses a write with no number, so this cannot be reached;
+                # it keeps the write below from ever being called without one.
+                raise RuntimeError("issue write gate accepted a comment with no issue number")
 
             comment_body = extracted.get("comment_text")
             if comment_body:
@@ -9359,6 +9511,26 @@ class IntentService:
                 or intent.context.get("repo")
                 or self._slotfill_issue_request(_scan_message).get("repository")
             )
+            if _comment_gate.reason == "created_head":
+                # 2459: a number accepted as the created head is that issue, in its
+                # repository; a different repository named in the words is refused
+                # with the ask (never the head's number in another repository).
+                if (
+                    _comment_repo
+                    and str(_comment_repo).casefold() != str(_comment_gate.repository).casefold()
+                ):
+                    return IntentProcessingResult(
+                        success=False,
+                        message=COMMENT_ISSUE_NUMBER_ASK,
+                        intent_data={
+                            "category": intent.category.value,
+                            "action": intent.action,
+                            "confidence": intent.confidence,
+                        },
+                        workflow_id=workflow_id,
+                        requires_clarification=True,
+                    )
+                _comment_repo = _comment_repo or _comment_gate.repository
             if not _comment_repo:
                 from services.intent_service.repo_clarification import (
                     extract_natural_repo_name,
@@ -9580,6 +9752,10 @@ class IntentService:
 
         try:
             _user_id = _principal_from_intent(intent)
+            # 2459 (Arch's rule 1): this turn is an issue read, so until it shows
+            # exactly one issue the last-shown slot says "not a single issue" (a
+            # failed or degraded read below leaves it so). Best-effort, never blocks.
+            record_shown_issues(session_id, _user_id, [])
 
             # RECONNECT (#1322): prefer the per-user OAuth connector (binding + grant →
             # search_issues, user-wide assignee:@me). Fall back to the native PAT ONLY when
@@ -9786,6 +9962,17 @@ class IntentService:
                 message += _capped.body
                 _remainder = _capped.remainder
                 _complete = _capped.complete
+                # 2459 (Arch's rule 1): what this read showed, from the read's data:
+                # each item's own repository, else the repository the connector read
+                # was scoped to (the native read lists the default repo, so it gets no
+                # such fallback). A full native window may hold more: never a single.
+                _read_repo = _named_repo if connector_result.issues is not None else None
+                record_shown_issues(
+                    session_id,
+                    _user_id,
+                    [(repo_of_item(i) or _read_repo, i.get("number")) for i in issues],
+                    total=max(total_count, 2) if _issues_window_full else total_count,
+                )
             elif _filters_applied:
                 # #2186: a filtered read that found nothing names its whole
                 # scope; the #2040 default-repo count would not share the filter.
@@ -14999,7 +15186,8 @@ class IntentService:
             slots = self._slotfill_issue_request(
                 intent.original_message or intent.context.get("original_message") or ""
             )
-            issue_number = intent.context.get("issue_number")
+            # 2459: the one normaliser for the issue key (``issue_number`` / ``issue``).
+            issue_number = issue_number_arg(intent.context)
             repository = (
                 intent.context.get("repository")
                 or intent.context.get("repo")
@@ -15030,21 +15218,30 @@ class IntentService:
             # extraction didn't populate issue_number. Matches the pattern
             # already used by _handle_review_issue_query (line 3181) and the
             # other GitHub mutation handlers.
+            # Issue 2460 (Arch, amended) replaces the #1066 "#?(\d+)" fallback for this
+            # write: with a title or body, only one distinct "#N" / "issue N" outside
+            # that value counts ("issue 2" inside "rename it to Test issue 2" never
+            # picks the target); with neither, one distinct number, marked or bare.
+            # Issue 2460 (as amended, Arch 11-27): EVERY field value this update will
+            # write (its own slots: title, body, each label, each assignee) takes part;
+            # a bare number counts only when it writes none (a state-only change).
+            _field_values = update_field_values(
+                title=title, body=body, labels=labels, assignees=assignees
+            )
+            _free_text = bool(_field_values)
             if not issue_number:
-                import re as _re
-
-                original_message = intent.original_message or intent.context.get(
-                    "original_message", ""
+                issue_number = typed_issue_number(
+                    intent.original_message or intent.context.get("original_message", ""),
+                    has_free_text_field=_free_text,
+                    field_values=_field_values,
                 )
-                _m = _re.search(r"#?(\d+)", original_message)
-                if _m:
-                    issue_number = int(_m.group(1))
 
-            # Validate required parameters
-            if not issue_number:
+            def _update_number_ask(
+                message: str = UPDATE_ISSUE_NUMBER_ASK,
+            ) -> IntentProcessingResult:
                 return IntentProcessingResult(
                     success=False,
-                    message="I couldn't find an issue number in your request. Please specify an issue number (e.g., 'update issue #123').",
+                    message=message,
                     intent_data={
                         "category": intent.category.value,
                         "action": intent.action,
@@ -15053,6 +15250,32 @@ class IntentService:
                     requires_clarification=True,
                     clarification_type="issue_number_required",
                 )
+
+            if not _bound_update:
+                # 2459 (Arch's gate): a number typed in this message, or the session's
+                # created head when it is the referent; anything else gets the ask,
+                # before any question is armed or any write is sent (the named ask
+                # when the only candidate referent is a single shown issue). A
+                # confirmed "yes" carries the values its (gated) question bound.
+                _gate = await gate_issue_write(
+                    intent,
+                    issue_number,
+                    has_free_text_field=_free_text,
+                    field_values=_field_values,
+                    source_created_head=_free_text,
+                    repository=repository,
+                    user_id=_user_id,
+                    session_id=session_id,
+                    created_head=self._issue_referent_from_ledger,
+                )
+                if not _gate.accepted:
+                    return _update_number_ask(refusal_line(_gate, UPDATE_ISSUE_NUMBER_ASK))
+                issue_number = issue_number or _gate.number
+                repository = repository or _gate.repository
+
+            # Validate required parameters
+            if not issue_number:
+                return _update_number_ask()
 
             if not repository:
                 # #1567: natural repo phrasing in the ORIGINAL ask ("in the
