@@ -343,7 +343,9 @@ def main():
     )
     order = {r: i for i, r in enumerate(ROWS)}
     back = []
-    w('<div class="scroll"><table><tr><th>Epic</th><th>Open</th><th>Closed</th><th>Issues</th></tr>')
+    w(
+        '<div class="scroll"><table><tr><th>Epic</th><th>Open</th><th>Closed</th><th>Issues</th></tr>'
+    )
     for r in ROWS + ["unsprinted"]:
         ns = sorted(n for n, x in rc.items() if x == r)
         if r == "unsprinted" and not ns:

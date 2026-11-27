@@ -46,13 +46,18 @@ def field_name():
     global FIELD_NAME
     if FIELD_NAME is None:
         resp = run_gh_graphql(
-            'query { node(id: "%s") { ... on ProjectV2SingleSelectField { name } } }' % SPRINT_FIELD_ID
+            'query { node(id: "%s") { ... on ProjectV2SingleSelectField { name } } }'
+            % SPRINT_FIELD_ID
         )
         node = (resp.get("data") or {}).get("node") or {}
         if not node.get("name"):
-            sys.exit(f"ERROR: field {SPRINT_FIELD_ID} not found; it was deleted or replaced. Nothing changed.")
+            sys.exit(
+                f"ERROR: field {SPRINT_FIELD_ID} not found; it was deleted or replaced. Nothing changed."
+            )
         FIELD_NAME = node["name"]
     return FIELD_NAME
+
+
 FIELD_ID = "PVTSSF_lAHOADE-8s4A-JwAzg2hWcg"
 
 MUTATION = """
@@ -162,8 +167,7 @@ def pull_live_sprint_values():
 
 def pull_option_ids():
     """sprint option name -> option id, current live field state."""
-    query = (
-        """
+    query = """
     query {
       node(id: "%s") {
         ... on ProjectV2 {
@@ -172,9 +176,7 @@ def pull_option_ids():
           }
         }
       }
-    }"""
-        % (PROJECT_ID, field_name())
-    )
+    }""" % (PROJECT_ID, field_name())
     resp = run_gh_graphql(query)
     options = resp["data"]["node"]["field"]["options"]
     return {o["name"]: o["id"] for o in options}
