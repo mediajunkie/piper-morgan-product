@@ -41,6 +41,15 @@ def client():
     return TestClient(app, follow_redirects=False)
 
 
+@pytest.fixture(autouse=True)
+def _github_app_set_up(monkeypatch):
+    """Issue 2261: the Connect step, and so its approval note, is rendered only where
+    the GitHub App is set up. The App-mode-off card is pinned in
+    test_classic_connect_retired_2261."""
+    monkeypatch.setenv("GITHUB_APP_CLIENT_ID", "test-app-client-id")
+    monkeypatch.setenv("GITHUB_APP_CLIENT_SECRET", "test-app-client-secret")
+
+
 def _body(client) -> str:
     token = AuthContainer.get_jwt_service().generate_access_token(
         user_id=uuid.uuid4(), user_email="u2286@example.com", scopes=["user"]

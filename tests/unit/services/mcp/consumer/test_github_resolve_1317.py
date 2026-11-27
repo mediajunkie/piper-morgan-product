@@ -183,8 +183,13 @@ class TestResolveOverRealTransport:
 class TestConnectActionHint:
     """inc.2 slice E1 — an unbound connect() offers the connect URL (action_hint)."""
 
-    async def test_unbound_connect_offers_connect_url(self, sm):
+    async def test_unbound_connect_offers_connect_url(self, sm, monkeypatch):
         from services.mcp.consumer.github_adapter import _CONNECT_URL
+
+        # Issue 2261: the connect URL is offered only where the GitHub App is set
+        # up. The App-mode-off hint is pinned in test_classic_connect_retired_2261.
+        monkeypatch.setenv("GITHUB_APP_CLIENT_ID", "test-app-client-id")
+        monkeypatch.setenv("GITHUB_APP_CLIENT_SECRET", "test-app-client-secret")
 
         res = await GitHubMCPSpatialAdapter().connect(_ALPHA)
         assert isinstance(res, ConnectRequired)
