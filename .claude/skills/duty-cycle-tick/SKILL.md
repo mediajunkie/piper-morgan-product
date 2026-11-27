@@ -2,10 +2,10 @@
 name: duty-cycle-tick
 description: Execute one autonomous duty-cycle fire (START / WATCH / WORK / STOP) for a cycling agent. Invoked by the thin cron prompt on each fire. Use when a "DUTY CYCLE TICK" prompt fires, or to run a cycle fire manually. Holds the durable procedure so the cron prompt stays one-line.
 scope: cross-role
-version: 1.66
+version: 1.67
 created: 2026-06-06
 concept: "Concept: docs/internal/operations/liveness-current-state.md (the wake, heartbeat and alert chain this procedure runs inside); history: docs/internal/operations/duty-cycle-tick-changelog.log"
-changelog: "Full history: docs/internal/operations/duty-cycle-tick-changelog.log (v1.0-present). Most recent: v1.66 (2026-11-23) — Step 5: something xian finished with you gets a one-line done-note to Exec the same turn (xian's standing rule via Exec 01M85PWK3T)."
+changelog: "Full history: docs/internal/operations/duty-cycle-tick-changelog.log (v1.0-present). Most recent: v1.67 (2026-11-27) — Step 5: a blocker names who clears it and where they were asked; with no ask, asking is this wake's task (xian via Exec 01M8F6RY8H, after 11-21)."
 ---
 
 # duty-cycle-tick
@@ -397,6 +397,8 @@ entry itself, never "next fire" as a bucket.
 **The first entry of each day carries a `Drift:` line (v1.51, 2026-10-13, xian's yes to role cards via Exec).** Your role card is printed at session start and after each compaction (it sits at the top of your briefing between `ROLE-CARD` markers). Once a day, at START, compare the previous day's work with the card's priorities in one line: `Drift: yesterday was mostly <what>; card priority 1 is <what>; on course | drifting (<why>)`. The card says what the role is for; this loop says how a fire runs. Drift is measured against the card, not against the loop. No card yet? Write `Drift: no card`. A card past its `max_age_days` gets a warning line from the hook; send it to xian through Exec for review.
 
 **Every wake's entry carries a `Drain:` line (v1.45, 2026-10-08, network baseline §7).** One line: what was done, each deferral **with its named blocker**, and how many clean checks before idling. `Drain: double zero, nothing unblocked` is a valid line, and a no-op wake still logs that one line so silence stays diagnostic. A deferral with no blocker in the Drain line is the antipattern the spine forbids, made visible.
+
+**A blocker names who clears it and where they were asked (v1.67, 2026-11-27; xian's question via Exec 01M8F6RY8H, after 11-21).** Write each deferral as `<item> (blocker: <what>; clears: <role or xian>; asked: <mail id, issue URL or comment>)`. If nobody has been asked yet, the item isn't blocked: asking is the next task, and you do it in this wake. Find the owner in the repo first (`docs/`, the role briefings, mediajunkie `docs/RESTART.md` for anything Pard does). If two seats in a day name the same blocker with no `asked:`, the first one to notice sends the ask. On 11-21, six of eleven seats (Web, HOST, CXO, PPM, Lead, CIO) named Web's session restart as a blocker, and no seat had asked Pard, whose job it is (`seat-restart.sh`, no xian hands). The restart ran at 07:05 on 11-22, about 36 hours after the signed-in checks stopped.
 
 **Something xian finished with you reaches Exec the same turn (v1.66, 2026-11-23, xian's standing rule, relayed by Exec 01M85PWK3T).** A crosspost, a step he ran, a word he gave you, an item on his card that he closed: when you record it, send Exec a one-line done-note (`mail4.py send --to exec --type fyi`) in the same turn, in a fire or not. xian, verbatim: "I need to be able to trust that I can tell the agent I am working with such an update and that I will not have to also manually report it to their primary point of contact let alone to you directly." Exec also reads the logs when building the rollup (cohort-attention-rollup step 2.01); the note is the faster path, not the only one. When you pass something to xian, check the primary record first so it isn't stale. If a wake recorded something xian finished, its `Drain:` line names the done-note's id.
 
