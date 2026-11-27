@@ -1,5 +1,5 @@
 ---
-last_updated: 2026-11-27 09:27 PST (WORK)
+last_updated: 2026-11-27 12:27 PST (WORK)
 currency_claim: rewritten at substantive-change boundaries, verified at every START
 max_age_days: 4
 ---
@@ -36,6 +36,8 @@ context-floor directive that duplicating it here is exactly the accretion to cut
 - 2454: the unit pin is enough; served canned replies PASS.
 - **Waiting:** Lead's 2459+2460 branch (full suite then push); Lead's 2425 rebuild and full corpus run; the 2461 exit sentence (follow-up).
 - **Lessons (11-27):** (1) a routing control must reproduce the served input, session state included (2459); (2) trace every path that feeds a guarded write before placing the gate (2459 rule 2); (3) before ruling a form out, find the issue that added it (2460/1411).
+
+**11-27 (WORK 12:27) additions:** beta `c01d743ed8` (2458, 2461 sentence; validated). On main and not yet served: 2459+2460 `85361e50d7` (validated landing), with promotion 4 held through xian's GitHub-move sitting and waiting on Tests for a38ff37f62. 2425 is GO by xian (ADR-083 D6 recorded) and conforms at 1d7803e88e; it lands after a rebase, a clean suite and the corpus row, then Web's served read. The GitHub-move sitting is under way: step 8 is done (both Apps = D3's set, so the 2342 token-check box is met); the alpha callbacks are cleared to remove last; the revoke is on the published App (authorization only; seat-github-1 left disconnected, option (a)). 2158 is ruled (it promotes erase_user.py, plus a confirm, the record first, account close, the replay; HOST's custody points are conditions); 2465 is filed. The document discussion is Tue 12-01, with prep written in `document-mux-comparison.md`. Waiting: Lead's 2443+2444 branch (week 2; I read the unzip bound), Fly's log retention (xian). Lesson (4): grep for an existing build before ruling one (2158 and erase_user).
 
 **11-26 state (STOP):** main 12/12 green; inbox empty; beta serves `039121b0fb` (2364 step 1: semantic detector alone on prompt v0.3; plus 2441, 2446, 2448, 2449 from 15:25). Model Opus 5.5. Every ruling is in decisions.log (11-26, 09:22 through 20:15).
 - **Next morning (07:00+):** Lead promotes the pleasantry skip #2454 (7c3fcf36b7) and the default flip (0aec538aab, no served change) on Exec's Step G line. Then Lead closes 2364 and 2454 after CI green. Until then a bare "hi" on beta costs a keyed account one detector call.
