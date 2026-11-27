@@ -2245,3 +2245,4 @@ issue	state	milestone	sprint	title	labels	blocked_by	state_reason
 2457	OPEN	Production		Two Piper accounts can bind one GitHub login; a Disconnect on either silently ends the other's GitHub			
 2460	OPEN	Production		Issue writes read a digit in a field value as the issue number ('rename it to Test issue 2' targets #2)			
 2461	OPEN	Production		'add a task to the <project> project' stays CLARIFY, even with the person's project names in a consult (the 'the' half of 2425)			
+2462	OPEN	Production		Router: 'update project plan with new deadline' is CLARIFY 7 of 7 on main today, update_document 6 of 6 on 11-23, with no router commits between			
