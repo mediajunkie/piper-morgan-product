@@ -114,3 +114,11 @@ Verified how:
 - **Health watch, 11-06 to 11-09:** 20 runs, 20 green.
 - **Layer:** GitHub Actions records plus logs.
 - **Denominator:** every dispatch in the window.
+
+**Correction to finding 3 (CIO, 2026-11-27, after Lead 01M8F3P2J6 and Arch 01M8F3X402):**
+- **The per-promotion grants were not a standing layer.** They were five "PROMOTION GRANTED" lines, 11-13 to 11-17. Each lifted Arch's temporary promotion hold for one promotion, during the reads for 2342. Lead's 11-12 log: "his promotion hold lifted for one promotion, between PA's reads".
+- **That is condition 2 working.** A hold named by Arch stops promotions, so no gap in the grant follows from it.
+- **None has been given or needed since 11-17.** Arch's part now is a read of each change before it lands and a validation after each promotion. Neither is a gate. He wrote it as the procedure note above.
+- **Not traced:** where the hold was first called. It isn't in decisions.log, so it was probably in mail.
+
+**One textual point the renewal should settle (xian's words, not mine to change):** condition 5 says "any change to production, beta or secrets" needs his yes, and "The grant covers alpha only". Since 11-05 the app the grant promotes to is served as beta. Practice since then, and xian's 11-26 rulings ("under the standing grant"), read the grant as covering that app. The renewal should say so in his words.
