@@ -25,7 +25,7 @@ warning (live bug 2026-09-22 to 2026-09-23 13:22, since fixed and re-verified cl
 each issue before placing. State the denominator when reporting.
 
 
-**Last rewritten**: 2026-11-25 21:34 PT (21:33 STOP; the current block is at the bottom, "Now").
+**Last rewritten**: 2026-11-26 21:35 PT (21:33 STOP; the current block is at the bottom, "Now").
 
 **Mechanism state**: LaunchAgent cadence (`:33` past 6,9,12,15,18,21), `CronList` "No scheduled jobs" is normal, no cron ritual. `sprint-truth.py` reads `dev/state/sprint-truth-MVP.ppm.json`. No pytest/venv on this seat: handler tests are "unverified, not run".
 
@@ -1039,7 +1039,7 @@ Brake FIRED (second slip = #1965 admission, found and ledgered 10-09). Memo to E
 - 2438 (11-25 13:02): Production H, Production 329. Arch: five rules in one place, unless xian loosens them. CXO: one fixed line. Exec holds the seat-tester-1 sitting until 2438's creation check is served on beta (01M8A7V37S). Lead tells Exec when it's promoted.
 - Beta `cf3486389e` (11-25 13:50; 2438 promoted). Exec told the seat-tester-1 hold can lift.
 
-## Now (rewritten at the 11-25 21:33 STOP; carry into Thu 11-26, sprint 2's last day)
+## Superseded (was Now from the 11-25 21:33 STOP, with 11-26 updates; replaced at the 11-26 21:33 STOP)
 
 - **11-25 in one line:** sprint 3 draft sent to Exec (01M89J4NND, decision request for xian). Closed: #2433, #2434, #2437. 2399, 2356's test and 2438 landed. Production 328 → 329 (net), map v204 → v208. Restart onto Claude Code 2.1.332 at 19:05; model unchanged.
 - **Beta serves `cf3486389e`** since `13:50` 11-25 (2438, the one password rule set). Re-read 21:33: healthy.
@@ -1057,3 +1057,15 @@ Brake FIRED (second slip = #1965 admission, found and ledgered 10-09). Memo to E
 - 11-26 14:00: OWED check. 2449 makes `/health`'s `seen` (count of GitHub App grants) readable signed out. HOST accepts it for the invite-only alpha (01M8CXFF0E). When PDR-009's volume row (G-rows; `public-beta-gate-map-2026-11-12.md`) is next read, PPM asks whether `seen` stays public. Trigger: that row's read.
 - ~~11-26 19:26: OWED~~ DONE 11-26 20:27 (guide section 'What a message costs on your key'). The self-host guide's words on the extra provider call per turn when the ethics check is on (2364 ruling 3 gives PPM this). Product read sent to Arch (01M8DGJZ91): option (a), exact canned pairs answer before the gate, so greetings stay spend-free. Trigger: Arch's ruling on the 2364 flip hold (Lead 01M8DGJ4CV); (a) and (b) need different sentences.
 - 11-26 19:35: Ruled (Arch 01M8DGR3P3, 01M8DGVXJV; CXO 01M8DGPKJ8; HOST 01M8DGQ82R): (a) narrowed, so a pleasantry-only message skips the gate. The words go in `docs/installation/self-host-guide.md`: the off-word is exactly `false`; when the check is on, each turn makes one detector call on the owner's key, except a bare greeting, farewell or thanks. Trigger: the pleasantry skip and the flip both land on main (before that, the sentence would be false).
+
+## Now (rewritten at the 11-26 21:33 STOP; carry into Fri 11-27, sprint 3's first day)
+
+- **11-26 in one line:** Sprint 2 closed. Closed today: 2406, 2417, 2446, 2399, 2441, 2448, 2297, 2412. 2364 was fixed and passed on both providers; its skip and flip are on main but not promoted. 2342's 8-hour box was ticked. The self-host cost section was written. Production 329 to 333 (net), map v210 to v226.
+- **Sprint 2 final score (11-26 21:35, gh):** Paths A and B served on a fresh account: **0 of 2**. Invite-hold P0s closed: **0 of 3** (2261, 2282, 2342 OPEN). The score stands as is, per xian 11-20. Sprint 3 keeps the same scale.
+- **Path B ask sent** to Web (01M8DR0G3B, cc Lead, CXO, PA). Web's 21:18 sign-off had it blocked on PPM/Lead, but the builds are closed and served and only the ask was missing. Web runs it at its first 11-27 wake: /projects, create Launch, two tasks, list, then 2411's 'how is the Launch project going?'. PPM reads whether it is served. 2425, 2424 and 2426 may bend turns 3 to 5, and that would be a finding.
+- **Beta serves `039121b0fb`** (/health git_sha, read at the 21:33 STOP; healthy). The pleasantry skip `7c3fcf36b7`, 2364 box 3 `e42b460310` and the flip `0aec538aab` are on main, unpromoted. Lead promotes from 07:00 11-27 with Exec's Step G (a) line. Main CI is 12 of 12 green.
+- **Plan:** Total 333 = gh 333; 0 unmilestoned. When Lead closes 2364 and 2454 (after CI is green on the landed commits), remove both rows: H 57 to 55, Total line, map.
+- **11-27 START:** a one-line re-check of the sprint 3 State column. Web's morning card read on seat-github-1 (2342's second look) mails PPM.
+- **Open, with blocker:** 2342's other rows (token-check script, alpha connect/refuse, cutover sitting, zero-installation card, HOST revoke); 2438's sign-up, change-password and wizard rows; 2411's project half (Path B read); 2451 (OpenAI p-2), 2453 (wording); the docs marker '(not run on an install)' on the cost section (Docs).
+- **OWED:** the `seen` question at PDR-009's volume row (11-26 14:00 line above). Nothing else.
+- **Rules carried:** unchanged from the superseded blocks above.
