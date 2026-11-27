@@ -75,6 +75,17 @@ Lead proposes the exact expiry in the build read. The rule is that a topic switc
 
 **D5 screen, 11-06 (Lead 18:22, `dev/2026/11/06/controls/adr-083-d5-result-2026-11-06.md`, prereg `cfff1ac8c1`): PASS (ruled 18:24).** The sentinels reach the family op with a position 6/6 each, and the topic switch keeps its label. Clauses 1 and 2: 0 rows. One corpus row of 624 moves: 'finish the second one', CLARIFY 6/6 → `complete_todo ["2"]` 6/6. Read literally, clause 3 trips on it. It is ruled not a violation because this paragraph's re-score named exactly that move as accepted before the preregistration and the run, the row asserts no destination (expected REVIEW, sourced from complete_todo's args family), and every other row holds clause 3. Correction: the text above at 17:52 said the row moved "toward its expected op"; its expectation is REVIEW, not complete_todo. Future preregistrations state how REVIEW rows are read under clause 3. D5 waits on xian's veto window (ADR-078's terms, through Exec) before main.
 
+
+**D6 (issue 2425; ACCEPTED 2026-11-27 on xian's go, via Exec 01M8F6VCJC: "yes Pipe[r] may do that"). A second consult class, the project consult, in D5's shape.** The main router call is unchanged. Only when it returns CLARIFY, no D5 list is in scope (`list_consult.in_scope`, D5's own condition, so a turn makes at most one extra call), and the person has at least one stored project does code make one more `route()` call on the same message. That call's session block is main's block plus one fact line, `STORED PROJECTS: "…", …`: the person's own names, owner-scoped, as stored, sanitised, sorted, at most 20. The line never enters `SessionSnapshot`. Code accepts the second answer only when it names `create_todo` with a `project` arg matching exactly one stored project (case ignored) among those shown, and a non-empty text, and only when issue 2297's two readers read back the stored name and the title. Anything else, and any timeout, error or over-cap block, keeps the first CLARIFY byte for byte. The ceiling is 2.0 s, covering the project read and the call (`PROJECT_CONSULT_CEILING_S`). The write runs the existing 2297 attach path, and the consult adds no write path. Code is `services/intent_service/project_consult.py`.
+
+**D6 screen, 11-27 (Lead; reports in `dev/2026/11/27/2425-screen/`).**
+- The first screen was NO-GO: both sentinels were the bar, and "the <name> project" stayed CLARIFY 6/6. PPM re-scoped to the "my" form, and "the" became issue 2461.
+- On the re-scoped shape, "add a task to my Launch project: book the venue" ends at create_todo 6/6.
+- The full corpus run covered 630 rows: 62 consults fired, 0 accepted, 0 rows moved, 1 timeout kept, 0 errors. Arch recounted the per-row sidecar.
+- Consult time was 1.02 to 2.00 s, median 1.19 s.
+- Known limit: the corpus holds no positive row, so only the sentinel shows the good. The sentinel is a phase-2 armed-state corpus row with a `stored_projects` field.
+- Conforms read by Arch: branch `1d7803e88e` (decisions.log 2026-11-27).
+
 ## Acceptance (the screen, preregistered before any run)
 
 It's a Rule 7 screen, run under two conditions:
