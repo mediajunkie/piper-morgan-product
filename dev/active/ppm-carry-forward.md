@@ -1070,3 +1070,4 @@ Brake FIRED (second slip = #1965 admission, found and ledgered 10-09). Memo to E
 - **OWED:** the `seen` question at PDR-009's volume row (11-26 14:00 line above). Nothing else.
 - **Rules carried:** unchanged from the superseded blocks above.
 - 11-27 `06:24`: Path B was read (Web 01M8EP2677) and is NOT served (PPM 01M8EP8R57): the first add went to create_ticket (2425), and the project page says it has no items (2455, placed in V, Total 332, map v228). Rerun on a new project after both are fixed. 2411's project half is served pending CXO's word; then PPM ticks row 2 and Lead closes. 2342's second look holds (commented). Path A: asked Lead and HOST what it needs.
+- 11-27 `06:25`: CXO passed 2411's project half; PPM ticked row 2, and Lead closes. Lead traces whether anything writes a work item; 2455's sprint 3 place follows that trace.
