@@ -58,7 +58,6 @@ import dataclasses
 import json
 import time
 import unicodedata
-from types import SimpleNamespace
 from typing import Any, Awaitable, Callable, List, Optional, Sequence
 
 import structlog
@@ -146,8 +145,16 @@ def accepted_project(decision: Any, projects: Sequence[Any], message: str) -> Op
     # without the project (2297's word-set guard) or without the title.
     probe_args = dict(args)
     probe_args[_attach.ROUTER_PROJECT_ARG] = stored
-    probe = SimpleNamespace(
+    # A real Intent, the type both readers are written for (the type gate refuses a
+    # stand-in here, and a stand-in could drift from what the handler is handed).
+    from services.domain.models import Intent
+    from services.shared_types import IntentCategory
+
+    probe = Intent(
         original_message=message,
+        category=IntentCategory.EXECUTION,
+        action=CONSULT_OPERATION,
+        confidence=1.0,
         context={"inversion_args": probe_args, "original_message": message},
     )
     if _attach.router_project_name(probe) != " ".join(stored.split()):
