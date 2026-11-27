@@ -2,7 +2,7 @@
 type: briefing
 title: BRIEFING-CURRENT-STATE.md - Where We Are Right Now
 valid_from: "2025-09-30"
-last_updated: 2026-11-26
+last_updated: 2026-11-27
 last_verified: 2026-10-27
 size_cap_bytes: 12000
 ---
@@ -27,7 +27,7 @@ log, never here. Bump `last_updated` to the newest line's date, or CI fails. Ski
 
 ## Now
 
-- **Beta, current build** *(Lead, 2026-11-26 15:25 PST, `curl https://beta.pipermorgan.ai/health`)*: healthy, git_sha `d54baca4ee` (promoted 11-26 15:25): close/reopen say GitHub isn't connected first (#2446, #2448); refresh-job counts on `/health` (#2449). From 11:48: length-only passwords (#2438), document index on the volume (#2244). MCP app `c303931894` (12:55).
+- **Beta, current build** *(Lead, 2026-11-27 07:41 PST, `curl https://beta.pipermorgan.ai/health`)*: healthy, git_sha `702cde7faf` (promoted 11-27 07:22, run 46023897585): a message that is only a greeting, farewell or thanks skips the ethics detector (#2454); the ethics check is on by default (#2364). On main only: the project page's Open todos (#2455).
 - **Beta (live; alpha 301s to beta.pipermorgan.ai since 11-05 12:47, #2282)** *(Lead, 2026-11-15 17:23 PST, `curl https://piper-morgan.fly.dev/health`)*: healthy, version 0.9.0.0, git_sha `460b837a47` (promoted 11-15 17:22, run 43785729116, on Arch's grant; Tests green on that commit; `redis: ok`). New in this build, no migration: on a GitHub App connection the issue and pull-request reads cover only the repositories the app is installed on (#2374; the connector half also needs xian's MCP deploy, still on `4666e38493`), no personal-token form on an App-connected account and a stored token shown with Remove (#2376), the GitHub card names its way to the install step and Settings links to the repository section (#2375). Their served rows are open. From `ddd3d49240` (11-15 09:08, run 43739113185, on Arch's grant; Tests green on `a62240fe78`; `redis: ok`). New in this build, no migration: redis 5.0.8 so an unreachable Redis fails at once (#2370), the alembic-only setup wizard (#2372), the bounded counter write (#2373). From `4f75863c48` (11-15 07:44, run 43731273625, on xian's word; migration `v2327floored`): the floored-action counter with its read gate and the admin-only Account flags page (#2327), the archive pick's created date (#2271), the todo cap line, the Anthropic subscription sentence (#2274), the no-reminders statement (#2294), the wizard's repo line (#2268), the promote gate's deploy-path change (#2363). Their served rows are open. From `81d149ac86` (11-13 16:34): #2366, #2367, #2368. Earlier builds: `docs/internal/architecture/decisions/briefing-current-state-history.log`.
   (promotion 1 of 2 today). It carries Monday's finds: #2093, #2091, #2092 (calendar in chat), #2094, #2095 (todos), #2096 (`/feedback`), #2097 (create confirmed by number), #2099 (mint refreshes),
   #2100 (what chat reads), #2102, the DB pool pre-ping, the #2101 bounds and the Alpha Health Watch. Slot 2 (same day, from a green Tests on `1cb1e79dc1`) adds the #2101 thread surface,
