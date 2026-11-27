@@ -331,3 +331,15 @@ def test_an_empty_list_adds_no_block():
 def test_the_not_configured_line_is_unchanged():
     out = _lines({"github_repo_unconfigured": True, "high_priority_issues": []})
     assert "GitHub repository: not configured for this user" in out
+
+
+def test_the_provenance_of_the_count_says_the_rule_it_is_counted_by():
+    """Arch 2026-11-27: evidence events described ``urgent_items`` as filtered by
+    "priority:high", which is not a label in the set."""
+    import inspect
+
+    from services.intent_service import context_assembler
+
+    source = inspect.getsource(context_assembler)
+    assert '"filter": "state:open, label in HIGH_PRIORITY_LABELS"' in source
+    assert "priority:high" not in source.replace('say "priority:high"', "")

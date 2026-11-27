@@ -398,7 +398,13 @@ class ContextAssembler:
         "organization": {"source": "UserContextService"},
         "user_priorities": {"source": "UserContextService"},
         "priorities": {"source": "UserContextService+GitHub"},
-        "urgent_items": {"source": "GitHubIntegrationRouter", "filter": "priority:high"},
+        # #2458: the count of open issues the one rule marks high priority
+        # (``priority_labels.is_high_priority``: nine labels, exact name). It used to
+        # say "priority:high", which is not a label in the set.
+        "urgent_items": {
+            "source": "GitHubIntegrationRouter",
+            "filter": "state:open, label in HIGH_PRIORITY_LABELS",
+        },
         # Conversation / memory
         "recent_topics": {"source": "ConversationContext"},
         "session_turn_count": {"source": "ConversationContext"},
