@@ -1,0 +1,133 @@
+<title>Ship 071 Week Review</title>
+
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono&family=IBM+Plex+Sans:wght@400;600&family=Source+Serif+4:wght@600&display=swap">
+<style>
+/* Layout: one reading column, bottom line first, a glance table, then short scannable sections; tables scroll in their own box. Same system as the Ship 070 review. */
+:root{
+  --bg:#f6f7f9; --fg:#1d232b; --muted:#5b6673; --rule:#d9dee5; --accent:#2b5d8a; --warn:#9a5a00; --ok:#2f6b3f; --card:#ffffff;
+  --display:"Source Serif 4",Georgia,serif; --body:"IBM Plex Sans",system-ui,sans-serif; --mono:"IBM Plex Mono",ui-monospace,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#14181d;--fg:#e4e8ee;--muted:#9aa5b2;--rule:#2c333c;--accent:#7fb1dc;--warn:#e0a54a;--ok:#7cc48e;--card:#1b2027;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#14181d;--fg:#e4e8ee;--muted:#9aa5b2;--rule:#2c333c;--accent:#7fb1dc;--warn:#e0a54a;--ok:#7cc48e;--card:#1b2027;color-scheme:dark}
+body{background:var(--bg);color:var(--fg);font:15px/1.6 var(--body)}
+.wrap{max-width:720px;margin:0 auto;padding-inline:16px;padding-block:28px 48px}
+h1{font:600 1.9rem/1.2 var(--display);margin:0 0 4px;text-wrap:balance}
+h2{font:600 1.25rem/1.3 var(--display);margin:32px 0 8px;padding-top:12px;border-top:1px solid var(--rule);text-wrap:balance}
+h3{font:600 1rem/1.3 var(--body);margin:18px 0 4px}
+.meta{color:var(--muted);font-size:.85rem;margin:0 0 20px}
+.bluf{background:var(--card);border:1px solid var(--rule);border-left:4px solid var(--accent);padding:14px 16px;border-radius:4px}
+.bluf p{margin:.3em 0}
+ul{padding-left:1.2em;margin:.4em 0}
+li{margin:.3em 0}
+code{font:0.88em var(--mono)}
+.tag{font:600 .72rem var(--mono);letter-spacing:.04em;text-transform:uppercase;padding:1px 6px;border-radius:3px;border:1px solid currentColor;margin-right:4px;white-space:nowrap}
+.ok{color:var(--ok)} .warn{color:var(--warn)}
+.tbl{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:.9rem;font-variant-numeric:tabular-nums}
+th,td{text-align:left;padding:6px 8px;border-bottom:1px solid var(--rule);vertical-align:top}
+th{color:var(--muted);font-weight:600}
+footer{margin-top:36px;color:var(--muted);font-size:.82rem;border-top:1px solid var(--rule);padding-top:10px}
+</style>
+<div class="wrap">
+<h1>Ship #071: the week of Nov 20&ndash;26</h1>
+<p class="meta">Exec synthesis for our discussion, before any Ship draft. Sources: all nine workstream reviews (filed 05:06 to 05:10 today), plus Docs&rsquo; review (05:21), the seven omnibus logs read in full, my own logs, and counts run this morning. Draft 1, Fri 11-27, 05:14. This is sprint 2&rsquo;s last week (11-13 to 11-26) and its final score. #071 publishes Tue 12-01.</p>
+
+<div class="bluf">
+<p><b>Bottom line.</b> This was the week the seats stopped describing beta and started using it. Your two Amber sittings (Fri 11-20 and Thanksgiving) turned ADR-084 on: seats now sign in as real accounts, hold their own keys, and read replies the way a person meets them. 45 issues closed, many on a signed-in read, and 22 updates reached beta.</p>
+<p><b>Sprint 2 missed its score, and the miss is useful information.</b> Paths A and B on a fresh account: 0 of 2 served. Invite-hold P0s: 0 of 3 closed (2261, 2282, 2342 all open). The fresh account only existed from 11-26, and Path B was never asked of a seat until late that night (PPM owns that). Path B runs this morning.</p>
+<p><b>What is left on you is small and one-time:</b> Step G (a) (the seat connector at claude.ai), the alpha callbacks, the zero-install pick, your own GitHub reconnect, and at the Ending, removing seat-github-1&rsquo;s key.</p>
+</div>
+
+<h2>At a glance</h2>
+<div class="tbl"><table>
+<tr><th>Measure</th><th>This week</th><th>Note</th></tr>
+<tr><td>Updates to beta</td><td>22 of 23</td><td>Successful promotion dispatches (<code>gh run list -w fly-deploy.yml -e workflow_dispatch</code>, Pacific week): 23 success and 1 failure; one of the 23 is the first MCP deploy (11-26). The failure was the gate refusing a dispatch on 11-23. Lead counts 22, and the omnibus agrees.</td></tr>
+<tr><td>Signed-in reads on beta</td><td>first week with any</td><td>Web ran every requested row in a seat browser on seat-tester-1 or seat-github-1, and quoted replies whole. No seat could sign in last week.</td></tr>
+<tr><td>Issues filed / closed</td><td>47 / 45</td><td><code>gh-week-counts.py 2026-11-20</code>, repo-wide. PPM: 41 Production closes, all completed; Production 329 to 331 open.</td></tr>
+<tr><td>Main CI</td><td>Red once, 11-26</td><td>A timing test caught the garbage collector, about an hour. Fixed by pausing collection in the timed window, not by raising the bound. 12 of 12 green since.</td></tr>
+<tr><td>Paid model calls</td><td>about $23.47+</td><td>Lead&rsquo;s logged days: $14.19 (11-20), $1.30 (11-22), $4.43 (11-23), $3.55 (11-26). No day total in his 11-24 and 11-25 logs, so no week total. Every run had a PLANNED line first.</td></tr>
+<tr><td>Published</td><td>2 of 2</td><td>&ldquo;Do I Have To?&rdquo; (Sun 11-22, a day late) and Ship #070 &ldquo;No Workarounds&rdquo; (Tue 11-24). Both distributed.</td></tr>
+<tr><td>Beta today</td><td><code>039121b0fb</code></td><td>My <code>/health</code> read this morning. The greeting skip and the ethics check&rsquo;s on-by-default switch are on main only; Lead promotes from 07:00.</td></tr>
+</table></div>
+
+<h2>The goals you approved on 11-23</h2>
+<ul>
+<li><span class="tag ok">met</span> <b>Seats run for real.</b> Steps A, C, D, F0 (11-20) and the fleet deny, F.2, F.4, E, G part 1 and H (11-26). Lead holds a model key; Web&rsquo;s browser runs on its own profile; seat-tester-1 and seat-github-1 sign in from a helper with no password in any seat&rsquo;s hands. CIO: &ldquo;the first week a served fix was read the way a user meets it.&rdquo;</li>
+<li><span class="tag ok">mostly</span> <b>Read what&rsquo;s on beta signed in, and close it.</b> 45 closed. Still landed but open on a served row: 2438 (sign-up and change pages, wizard), 2244 row 2 (an ingest surviving a deploy, your hand on the host), 2411 (Path B, today).</li>
+<li><span class="tag warn">partly</span> <b>Finish the GitHub move.</b> seat-github-1 is connected as its own machine account; 2342&rsquo;s 8-hour box is served (card 20:15, turn 20:16 on 11-26). Open: 2342&rsquo;s other rows, 2261, 2282 (your callback removal), and Step G (a). No invite-lift memo yet.</li>
+<li><span class="tag ok">met</span> <b>Keys and deploys off your hands.</b> Step E (OpenAI <code>seat-screens</code>, $25 enforced) and Step H (MCP deploy token, main only). The first MCP deploy without you ran on 11-26 and fixed 2382 (connector&rsquo;s first read after a restart). Left: Step G (a) once, and the Ending.</li>
+<li><span class="tag warn">partly</span> <b>Editorial.</b> 2 of 2 slotted posts live and distributed; the Saturday insight ran Sunday. &ldquo;Mark One Eyeball&rdquo; (Sat 11-28) still needs your prose.</li>
+</ul>
+
+<h2>What a user can do now that they couldn&rsquo;t on 11-19</h2>
+<p>Each line rests on a signed-in seat read as recorded on its issue (Web&rsquo;s quotes, CXO&rsquo;s judgment, PA&rsquo;s scoring). I re-ran none.</p>
+<ul>
+<li><b>Ask ordinary things without a decline.</b> &ldquo;Home page&rdquo;, &ldquo;private repo&rdquo; and &ldquo;explicit&rdquo; no longer trip the ethics check; it reads meaning now (2364; 0 of 6 declined, passed on Claude and OpenAI). A personal todo is no longer refused as off-topic (2412).</li>
+<li><b>Tasks go to the project you name</b>, and &ldquo;what&rsquo;s in my Launch project?&rdquo; answers from the project (2297, 2301, 2413).</li>
+<li><b>Honest answers about connections.</b> &ldquo;What integrations do I have?&rdquo; names only what beta offers (2418 to 2420). Close and reopen don&rsquo;t ask a yes/no they can&rsquo;t act on, and say &ldquo;connect GitHub first&rdquo; when it isn&rsquo;t (2437, 2446, 2448). A reply that did something else no longer reports success (2399).</li>
+<li><b>Status replies read like answers</b>, not instructions to ask what you just asked (2413 to 2416).</li>
+<li><b>Plain words on refusals and errors</b>: fixed lines, a page instead of raw JSON, toasts that say what failed (2428, 2432 to 2434).</li>
+<li><b>GitHub stays connected past 8 hours</b> (2342&rsquo;s row; 2342 stays open).</li>
+<li><b>The Claude connector works on the first try after a restart</b> (2382, PA).</li>
+<li><b>One password rule</b>, 15 characters to 72 bytes, length only (your call; reset page served, the rest open on 2438).</li>
+<li><b>Self-host:</b> your stored key becomes your account&rsquo;s key (2405); a second copy on one machine no longer takes over the first&rsquo;s data (2386); the guide says what a message costs on your own key.</li>
+</ul>
+
+<h2>What went wrong, and the patterns in it</h2>
+<ul>
+<li><b>A step for a person must name what is there</b> (methodology-59, new). My card said the seat&rsquo;s email was in the credential file; it isn&rsquo;t. A password ended up in a command and was rotated. CIO filed three instances from two seats in one sitting.</li>
+<li><b>A deferral that names another seat needs the ask to exist</b> (PPM). Path B was buildable from about 19:00 on 11-26; no seat asked Web until 21:36. It may have cost sprint 2 one path.</li>
+<li><b>Plan figures from memory</b>: the 2364 OpenAI price was unchecked, and the spend cap refused every call ($0 spent). Lead added sourced price rows. Banked for the 12-29 audit.</li>
+<li><b>Acks are claims.</b> Web acked three tasks &ldquo;done&rdquo; that weren&rsquo;t; HOST tried to ack a whole inbox in one loop (refused). Both corrected.</li>
+<li><b>Clock rule held.</b> CIO, HOST and PPM each had estimated times refused or caught before commit.</li>
+<li><b>Quiet days</b>: 11-21 was a hold day across lanes (no word from you, every item waiting); 11-25 was light.</li>
+</ul>
+
+<h2>By workstream</h2>
+<ul>
+<li><b>Engineering (Lead):</b> 22 promotions, about 34 closes on his work. Three screening runs were NO-GO (the router couldn&rsquo;t learn project phrasings by prompt), so the fixes went into code. One sequencing miss cost the 11-26 evening promotion.</li>
+<li><b>Architecture (Arch):</b> about 100 decisions.log entries. Fixed refusal lines enforced by code checks; the ethics gate bar; seat-account rules; the document-implementation map (upload store and document index never meet). Four self-corrections, each recorded.</li>
+<li><b>Experience (CXO):</b> judged every served read on whole quotes; wrote prompt v0.3 that passed both providers; filed 10 issues. Release note (2439) holds until served quotes exist and you pick lines.</li>
+<li><b>Product (PPM):</b> ran the sprint 2 close and the sprint 3 draft you ratified (11-27 to 12-10, same score). Self-host cost section written.</li>
+<li><b>Methodology (CIO):</b> mail v4 is the only in-repo seat mail (v4 1,743 messages vs v3 128; inbox read 55 s to 1.9 s). Live settings reload measured, which saved a restart. methodology-59, PP-004.</li>
+<li><b>Trust (HOST):</b> custody reads on every landing; the password exposure opened and closed; noticed OpenAI&rsquo;s priced models are flagged deprecated.</li>
+<li><b>Connector (PA):</b> stateless MCP server live; Step G fallback order written.</li>
+<li><b>Web:</b> every served row, plus #070&rsquo;s deploy check.</li>
+<li><b>Docs:</b> omnibus logs for every day, each re-verified; the self-host guide&rsquo;s cost section and the off-word for the ethics check; both posts published and distributed; ADR and pattern pages on the site; Link Checker fixed 11-20. Asks you one thing later: whether to backfill the activity-log rows after 10-30.</li>
+<li><b>Comms:</b> two posts reviewed and fact-checked; the release-note scaffold (2439); &ldquo;Ready or Not&rdquo; scaffold for 12-03.</li>
+</ul>
+
+<h2>Where the sources disagreed</h2>
+<ul>
+<li><b>Promotions on 11-22:</b> four seats say four, the omnibus lists five (Lead&rsquo;s 11:04 is the fifth). <code>gh</code> says five. On 11-24 CIO says five and PA three; <code>gh</code> says six. I use <code>gh</code>: 22 to beta plus 1 MCP.</li>
+<li><b>Lead lists &ldquo;Step G part 1&rdquo; as blocked on you.</b> You did part 1 (the allowlist) on 11-26; what waits is part 2, route (a). I&rsquo;ll correct it in the draft.</li>
+<li><b>CIO says the 11-26 sitting &ldquo;ran F.4, G and H&rdquo;.</b> G ran its first part only.</li>
+<li><b>2364 spend on 11-26:</b> my $3.57 vs Lead&rsquo;s $3.55; Lead&rsquo;s is the source.</li>
+</ul>
+
+<h2>Since Thursday</h2>
+<ul>
+<li>Lead closed 2364 and 2454 at 21:39 on green CI. The skip and the switch promote from 07:00 today, after I confirm you are not mid Step G (a).</li>
+<li>Web runs Path B and 2411&rsquo;s project turn on seat-tester-1 this morning.</li>
+</ul>
+
+<h2>Draft goals for 11-27 to 12-03 (sprint 3&rsquo;s first week)</h2>
+<ol>
+<li><b>Finish the GitHub move:</b> Step G (a) and its seat check, 2342&rsquo;s remaining rows, 2261, and 2282 (your callback removal), so PPM can send the invite-lift memo.</li>
+<li><b>Paths A and B served on a fresh account</b> (Path B today, then Path A).</li>
+<li><b>Serve what is on main:</b> the skip and switch, 2438&rsquo;s remaining pages, 2244 row 2, 2446&rsquo;s two turns.</li>
+<li><b>The document model review:</b> the MUX comparison with you and CXO, if sprint 3 has room.</li>
+<li><b>Editorial:</b> &ldquo;Mark One Eyeball&rdquo; Sat 11-28, Ship #071 Tue 12-01, &ldquo;Ready or Not&rdquo; Thu 12-03 (title lock first).</li>
+</ol>
+
+<h2>For our discussion</h2>
+<ol>
+<li><b>The goals above:</b> yes, or edit.</li>
+<li><b>Theme.</b> Candidates: &ldquo;Signed In&rdquo; (the week&rsquo;s turn), &ldquo;As a User Meets It&rdquo; (CIO&rsquo;s line), or &ldquo;A Missed Score&rdquo; (lead with the sprint 2 miss as information, per your 11-20 word).</li>
+<li><b>Sprint 2&rsquo;s score:</b> report 0 of 2 and 0 of 3 plainly with the reasons, as you ruled on 11-20. Any wording you want on it?</li>
+<li><b>Writer:</b> your prose as usual, with Comms fact-checking.</li>
+</ol>
+
+<footer>Verified how: I read all nine reviews, and Docs&rsquo; later one, in full this morning. A Sonnet subagent read the seven omnibus logs (11-20 to 11-26) in full and extracted the per-day lists; I checked its promotion count against <code>gh</code>. Counts I ran this morning: <code>gh-week-counts.py 2026-11-20</code> (47 opened, 45 closed); <code>gh run list -w fly-deploy.yml -e workflow_dispatch</code> for the Pacific week (23 success, 1 failure on 11-23); <code>gh issue view</code> on 11 issues (2261, 2282, 2342, 2438, 2244, 2411 open; 2406, 2417, 2446, 2382, 2384 closed); beta <code>/health</code> git_sha <code>039121b0fb</code>. Served claims are the seats&rsquo; reads as recorded; I re-served nothing. Spend is Lead&rsquo;s logged days, not a week total. Layer: GitHub, the logs and beta&rsquo;s health endpoint.</footer>
+</div>
