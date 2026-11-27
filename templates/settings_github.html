@@ -424,6 +424,13 @@
 
         <!-- #1317 (ADR-070 C): OAuth connect, recommended over a pasted PAT. #2029: kept (as
              Reconnect) when the binding is stale; replaced by a line only when connected. -->
+        {# Issue 2261 (ADR-081 D3, amended 2026-11-27): the Connect step is offered only when
+           app_mode() is true, read by the page route at request time
+           (github_connect_available). Otherwise CXO's card line stands in its place, above
+           the personal-token form, and there is no button that could only refuse. The
+           line is the Python constant GITHUB_CONNECT_NOT_SET_UP_CARD_LINE, rendered here
+           once. The group keeps its id so the Disconnect restore (#2287) keeps working. #}
+        {% if github_connect_available %}
         <div class="form-group" id="oauth-connect-group">
           <p class="form-hint" id="oauth-connect-hint">
             Recommended — connect securely with GitHub OAuth (nothing to copy or paste).
@@ -442,6 +449,11 @@
             Connect with GitHub
           </button>
         </div>
+        {% else %}
+        <div class="form-group" id="oauth-connect-group">
+          <p class="form-hint" id="github-connect-not-set-up">{{ github_connect_not_set_up_line }}</p>
+        </div>
+        {% endif %}
 
         {# #2376 (Arch 2026-11-15): on an account connected through the GitHub App this
            section is hidden, and a token already on file is shown as stored with Remove
@@ -456,16 +468,13 @@
             type="password"
             id="token"
             name="token"
-            placeholder="ghp_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+            placeholder="Paste your token"
             autocomplete="new-password"
           />
-          <p class="form-hint">
-            Create a token at
-            <a href="https://github.com/settings/tokens/new" target="_blank" rel="noopener">
-              github.com/settings/tokens
-            </a>
-            with <code>repo</code> scope for full repository access.
-          </p>
+          {# Issue 2261 (CXO, 2026-11-27): the hint is GITHUB_PERSONAL_TOKEN_HINT, rendered
+             by the page route in three parts so its address is a link (a fine-grained
+             token with ADR-081 D3's permissions; no classic scope). #}
+          <p class="form-hint" id="pat-token-hint">{{ github_token_hint_before }}<a href="{{ github_token_hint_link_url }}" target="_blank" rel="noopener">{{ github_token_hint_link_text }}</a>{{ github_token_hint_after }}</p>
         </div>
         </div>
 
@@ -546,7 +555,7 @@
       // whether the account is connected through the GitHub App and whether a personal
       // token is on file. Lines: CXO 2026-11-15 (the stored-token line says what Arch's
       // source read shows: when the token serves, it serves every read).
-      const PAT_TOKEN_PLACEHOLDER = 'ghp_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx';
+      const PAT_TOKEN_PLACEHOLDER = 'Paste your token';  // issue 2261: shape-neutral
       const PAT_STORED_PLACEHOLDER = '••••••••••••••••••••••••••••••••';
       const PAT_STORED_LINE =
         'A personal token is also stored for this account. Piper uses it instead of the GitHub app if the app connection stops working, and it can reach more of your GitHub than the app does.';

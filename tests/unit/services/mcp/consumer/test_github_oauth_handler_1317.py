@@ -37,6 +37,13 @@ def _creds(monkeypatch):
     monkeypatch.setenv("GITHUB_OAUTH_CLIENT_SECRET", "sec")
 
 
+@pytest.fixture
+def app_on(monkeypatch):
+    """Issue 2261: a connect (state, exchange, callback) runs only in GitHub App mode."""
+    monkeypatch.setenv("GITHUB_APP_CLIENT_ID", "test-app-client-id")
+    monkeypatch.setenv("GITHUB_APP_CLIENT_SECRET", "test-app-client-secret")
+
+
 # ── mocked aiohttp session (session → post/get → response, all async CMs) ──
 class _FakeResp:
     def __init__(self, status, payload):
@@ -70,24 +77,29 @@ class _FakeSession:
 
 
 class TestAuthorizationUrl:
-    async def test_url_has_required_params(self):
-        url, state = await GitHubOAuthHandler().generate_authorization_url(_ALPHA)
-        assert url.startswith("https://github.com/login/oauth/authorize?")
-        assert "client_id=cid" in url
-        assert "scope=repo" in url
-        assert f"state={state[:8]}" in url or "state=" in url
+    async def test_classic_client_makes_no_url(self):
+        # Issue 2261: was test_url_has_required_params, which pinned scope=repo on the
+        # classic OAuth App's URL. With only the classic client configured (this file's
+        # _creds fixture) there is no URL now: the named refusal.
+        from services.mcp.consumer.github_oauth_handler import GitHubConnectNotConfigured
 
+        with pytest.raises(GitHubConnectNotConfigured):
+            await GitHubOAuthHandler().generate_authorization_url(_ALPHA)
+
+    @pytest.mark.usefixtures("app_on")
     async def test_state_round_trips_user_id(self):
         h = GitHubOAuthHandler()
         _, state = await h.generate_authorization_url(_ALPHA)
         ok, uid = await h.verify_state(state)
         assert ok and uid == _ALPHA
 
+    @pytest.mark.usefixtures("app_on")
     async def test_missing_user_id_raises(self):
         with pytest.raises(ValueError):
             await GitHubOAuthHandler().generate_authorization_url("")
 
 
+@pytest.mark.usefixtures("app_on")
 class TestStateVerification:
     async def test_tampered_state_rejected(self):
         h = GitHubOAuthHandler()
@@ -104,6 +116,7 @@ class TestStateVerification:
         assert (await h.verify_state(state))[0] is False  # consumed
 
 
+@pytest.mark.usefixtures("app_on")
 class TestCodeExchange:
     async def test_exchange_parses_github_token(self, monkeypatch):
         monkeypatch.setattr(

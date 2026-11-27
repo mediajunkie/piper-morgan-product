@@ -15,8 +15,14 @@ App's client ID and secret are both configured) the same authorization-code flow
 against the App instead of the classic OAuth App. No ``scope`` is sent: the App's
 permissions and the user's installation decide the reach. The token reply carries an
 expiring access token and a refresh token, stored together as one grant record, and
-``refresh_grant`` exchanges the refresh token for a new pair. With App mode off, nothing
-here differs from before.
+``refresh_grant`` exchanges the refresh token for a new pair.
+
+Issue 2261 (ADR-081 D3, amended 2026-11-27): the classic connect is retired. With App
+mode off no handler builds an authorize URL or exchanges a code: both raise
+``GitHubConnectNotConfigured``, and an install without the App's values offers GitHub
+through the personal token only (D4). No path sends a ``scope``. ``classic=True`` still
+loads the classic OAuth App's client id and secret, for ONE thing: revoking a classic
+grant still stored (Disconnect, the cutover script).
 """
 
 from __future__ import annotations
@@ -59,10 +65,33 @@ def _default_redirect() -> str:
 
 
 _DEFAULT_REDIRECT = _default_redirect()  # import-time value, kept for readers of the name
-_DEFAULT_SCOPES = ["repo"]  # repos/issues/PRs; confirm minimal set. Requested in-flow.
 # The self-hosted github-mcp-server URL the binding records + resolve() connects to
 # (ADR-070 C). Set GITHUB_MCP_SERVER_URL per-environment (Droplet → the deployed server).
 _DEFAULT_MCP_SERVER_URL = os.getenv("GITHUB_MCP_SERVER_URL", "http://localhost:9100/mcp")
+
+
+# Issue 2261: the two lines a person reads when GitHub connect isn't set up on this install
+# (no GitHub App values). CXO, 2026-11-27 (issue 2261). The refusal says "on this page"
+# because it cannot assume where it is shown (a dialog, a status line, a 4xx/5xx body).
+GITHUB_CONNECT_NOT_SET_UP_LINE = (
+    "GitHub connect isn't set up on this install. Add a personal access token on this "
+    "page, or ask whoever runs this install to set up the Piper GitHub app."
+)
+# CXO, 2026-11-27 (issue 2261). The Settings GitHub card's line in place of the Connect
+# step, above the personal-token form (hence "below").
+GITHUB_CONNECT_NOT_SET_UP_CARD_LINE = (
+    "This install isn't set up to connect through the Piper GitHub app. "
+    "You can add a personal access token below."
+)
+
+
+class GitHubConnectNotConfigured(Exception):
+    """Issue 2261: a GitHub connect (authorize URL or code exchange) was attempted on a
+    handler that is not in App mode: App mode is off, or the handler is ``classic=True``
+    (which may only revoke). Its message is ``GITHUB_CONNECT_NOT_SET_UP_LINE``."""
+
+    def __init__(self) -> None:
+        super().__init__(GITHUB_CONNECT_NOT_SET_UP_LINE)
 
 
 @dataclass
@@ -137,7 +166,8 @@ REFRESH_TIMEOUT_SECONDS = 10
 
 
 class GitHubOAuthHandler:
-    """OAuth 2.0 authorization-code flow for a GitHub OAuth App (#1317 inc.2)."""
+    """OAuth 2.0 authorization-code flow (#1317 inc.2). Issue 2261: the connect runs
+    against the published GitHub App only; a classic OAuth App handler only revokes."""
 
     AUTHORIZATION_URL = "https://github.com/login/oauth/authorize"
     TOKEN_URL = "https://github.com/login/oauth/access_token"
@@ -146,20 +176,26 @@ class GitHubOAuthHandler:
     STATE_EXPIRATION = 900  # 15 min
 
     def __init__(self, *, classic: bool = False):
-        """``classic=True`` forces the classic OAuth App's credentials even in App mode.
+        """``classic=True`` loads the classic OAuth App's credentials, even in App mode.
         Only two callers may pass it (Arch 2026-11-12): the cutover script's revoke and
-        the disconnect of a classic grant."""
+        the disconnect of a classic grant. Issue 2261: such a handler can revoke and do
+        nothing else.
+
+        Issue 2261 (Arch's C3): with App mode off and no ``classic``, no client
+        credentials are loaded at all; ``client_id`` and ``client_secret`` are empty."""
         self.app_mode = app_mode() and not classic
         if self.app_mode:
             self.client_id, self.client_secret = app_client()
-            self.scopes = []  # #2342: no scope; the App's permissions and install decide
-        else:
+        elif classic:
             self.client_id, self.client_secret = self._load_credentials()
-            self.scopes = _DEFAULT_SCOPES
+        else:
+            self.client_id, self.client_secret = "", ""
         self.redirect_uri = os.getenv("GITHUB_OAUTH_REDIRECT_URI") or _default_redirect()  # #2043
 
     def _load_credentials(self) -> Tuple[str, str]:
-        """env first, then KeychainService (provider github_oauth_client_id/_secret)."""
+        """The classic OAuth App's client id and secret, for revoking a classic grant
+        only (issue 2261): env first, then KeychainService (provider
+        github_oauth_client_id/_secret)."""
         client_id = os.getenv("GITHUB_OAUTH_CLIENT_ID", "")
         client_secret = os.getenv("GITHUB_OAUTH_CLIENT_SECRET", "")
         if not client_id or not client_secret:
@@ -180,7 +216,13 @@ class GitHubOAuthHandler:
 
         #2345: the state is stored in Redis before any URL exists; when Redis can't take
         it this raises ``OAuthStateStoreUnavailable`` and no URL is made, so nobody is
-        sent to GitHub with a state that could not be checked on return."""
+        sent to GitHub with a state that could not be checked on return.
+
+        Issue 2261: raises ``GitHubConnectNotConfigured`` unless this handler is in App
+        mode, before any state is stored. No ``scope`` is ever sent: the App's
+        permissions and the person's installation decide the reach."""
+        if not self.app_mode:
+            raise GitHubConnectNotConfigured()
         if not user_id:
             raise ValueError("user_id is required for OAuth state")
 
@@ -199,8 +241,6 @@ class GitHubOAuthHandler:
             "redirect_uri": self.redirect_uri,
             "state": state,
         }
-        if self.scopes:  # #2342: the GitHub App flow sends no scope at all
-            params["scope"] = " ".join(self.scopes)
         auth_url = f"{self.AUTHORIZATION_URL}?{urlencode(params)}"
         logger.info("github_oauth_url_generated", user_id=user_id)
         return auth_url, state
@@ -254,8 +294,14 @@ class GitHubOAuthHandler:
         """Verify state → (#2283) the browser's session user is the state's user → exchange
         code → return {tokens, user_id, login}. Raises on a bad state, and raises
         ``OAuthCallbackSessionMismatch`` before any exchange when the session doesn't match
-        (the state is consumed either way)."""
+        (the state is consumed either way).
+
+        Issue 2261: raises ``GitHubConnectNotConfigured`` unless this handler is in App
+        mode, before the state is read or any code is exchanged."""
         from services.auth.oauth_callback_guard import require_session_matches_state
+
+        if not self.app_mode:
+            raise GitHubConnectNotConfigured()
 
         is_valid, user_id = await self.verify_state(state)
         if not is_valid:
@@ -272,7 +318,10 @@ class GitHubOAuthHandler:
         return {"tokens": tokens, "user_id": user_id, "login": login}
 
     async def _exchange_code_for_tokens(self, code: str) -> GitHubOAuthTokens:
-        """Exchange the authorization code for a GitHub OAuth token (JSON via Accept header)."""
+        """Exchange the authorization code for a GitHub OAuth token (JSON via Accept header).
+        Issue 2261: App mode only."""
+        if not self.app_mode:
+            raise GitHubConnectNotConfigured()
         async with aiohttp.ClientSession() as session:
             async with session.post(
                 self.TOKEN_URL,

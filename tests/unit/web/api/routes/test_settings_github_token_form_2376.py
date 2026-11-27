@@ -365,7 +365,10 @@ class TestThePagesTokenForm:
         # The state xian saw on beta, on any connection that isn't through the app.
         s = _state(True, {"connected": True, "app_connected": False, "pat_on_file": False})
         assert s["title"] == "Add a personal token (optional)" and s["button"] == "Save token"
-        assert DOTS not in s["placeholder"] and s["placeholder"].startswith("ghp_")
+        # Issue 2261 (CXO, 2026-11-27): the placeholder names no token shape; the
+        # classic "ghp_" example is gone with the classic connect.
+        assert DOTS not in s["placeholder"] and s["placeholder"] == "Paste your token"
+        assert not s["placeholder"].startswith("ghp_")
         assert s["buttonDisabled"] is True
 
     def test_not_connected_keeps_the_connect_form(self):
