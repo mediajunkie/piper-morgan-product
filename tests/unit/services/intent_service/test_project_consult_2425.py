@@ -799,7 +799,7 @@ def test_existing_rows_are_routed_and_scored_exactly_as_before(monkeypatch, op_c
     to armed_matches (no expected_args on them)."""
     gate = _gate()
     rows = [r for r in gate.load_armed_corpus() if not r.get("_stored_projects")]
-    assert len(rows) == 15
+    assert len(rows) == 19  # 9 earlier pairs (7 offer, 2 referent-only, 2459) × 2, + the 2425 twin
     for consult in (False, True):
         answers = [_todo({}, operation="delete_todo") for _ in rows]
         router = _gate_route(monkeypatch, answers)
@@ -815,7 +815,7 @@ def test_existing_rows_are_routed_and_scored_exactly_as_before(monkeypatch, op_c
 
 
 def test_existing_pair_lines_in_the_report_are_unchanged(op_categories):
-    """The report's line for each of the seven earlier pairs is the same string
+    """The report's line for each of the nine earlier pairs is the same string
     whether or not the 2425 pair is in the corpus."""
     gate = _gate()
     from services.intent_service.inversion_router import derive_routing_grammar
@@ -836,9 +836,9 @@ def test_existing_pair_lines_in_the_report_are_unchanged(op_categories):
 
     old_lines = pair_lines(old)
     new_lines = pair_lines(every)
-    assert len(old_lines) == 7 and len(new_lines) == 8
-    assert new_lines[:7] == old_lines
-    assert new_lines[7].startswith(f"| {_PAIR} |") and "project=None" in new_lines[7]
+    assert len(old_lines) == 9 and len(new_lines) == 10
+    assert new_lines[:9] == old_lines
+    assert new_lines[9].startswith(f"| {_PAIR} |") and "project=None" in new_lines[9]
 
 
 @pytest.mark.parametrize("consult", [False, True], ids=["as_run_routes_controls", "flag_on"])
@@ -862,3 +862,17 @@ def test_the_control_twin_never_fires_the_consult(monkeypatch, consult):
     [d] = asyncio.run(gate._route_rows([control], None, None, label="control ", consult=consult))
     assert len(router.blocks) == 1
     assert d is _CLARIFY
+
+
+@pytest.mark.parametrize(
+    "extra",
+    [["--projects", "Launch", "--phrase", "x"], ["--corpus", "--projects", "Launch"]],
+    ids=["projects", "corpus"],
+)
+def test_recent_issue_is_rejected_with_the_project_screens(extra, tmp_path):
+    """2459's --recent-issue applies to the plain phrase control only; with a project
+    screen it is an argparse error before any key binding or call."""
+    mod = _load_control_script()
+    with pytest.raises(SystemExit) as exc:
+        mod.main(["--recent-issue", "o/r#1", "--out", str(tmp_path / "r.md"), *extra])
+    assert exc.value.code == 2

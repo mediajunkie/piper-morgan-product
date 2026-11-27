@@ -77,7 +77,10 @@ class TestCommentIssueSlotFilling1124:
                 return_value={"issue_number": "#123", "comment_text": "looks good"},
             ),
         ):
-            await intent_service._handle_comment_issue_query(_intent(), "wf")
+            # 2459: the extracted number must be one the words carry (the gate).
+            await intent_service._handle_comment_issue_query(
+                _intent("please comment on issue #123 that looks good"), "wf"
+            )
         router.add_comment.assert_awaited_once_with(123, "looks good")
 
     @pytest.mark.asyncio

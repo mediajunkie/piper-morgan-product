@@ -183,6 +183,39 @@ _SESSION_REMINDER_MENTIONS: Dict[str, set] = {}
 _SESSION_REMINDER_MENTIONS_MAX_SESSIONS = 2048
 
 
+def _record_status_shown_issue(
+    session_id: Optional[str], user_id: Optional[str], gathered: Dict[str, Any]
+) -> None:
+    """2459 (Arch's rule 1): a STATUS/PRIORITY turn hands the floor the open-issue set
+    gathered here; record what it holds as the session's last-shown issue. One row, of
+    one open issue, whose ``repository`` ("owner/name") the read's data carried → that
+    issue. Anything else (several, none, a failed or skipped read, or a row with no
+    repository) → the not-single marker: the repository is never guessed or resolved a
+    second time. Rows carry ``repository`` once the strict read passes it through
+    (a sibling change); until then a single row records the marker, not an issue.
+    Best-effort: ``record_shown_issues`` logs and swallows its own failure."""
+    if not session_id or not user_id:
+        return
+    from services.intent_service.shown_issue import record_shown_issues
+
+    rows = gathered.get("high_priority_issues")
+    if not isinstance(rows, list):
+        record_shown_issues(session_id, user_id, [])
+        return
+    total = gathered.get("open_issue_count")
+    if gathered.get("open_issue_count_capped") or not isinstance(total, int):
+        total = max(len(rows), 2)
+    record_shown_issues(
+        session_id,
+        user_id,
+        [
+            (row.get("repository"), row.get("number")) if isinstance(row, dict) else (None, None)
+            for row in rows
+        ],
+        total=total,
+    )
+
+
 def _unmentioned_reminders(session_id: Optional[str], reminders: List[str]) -> List[str]:
     """#1625: the due reminders this session has NOT yet been told about."""
     if not session_id:
@@ -548,6 +581,7 @@ class ContextAssembler:
                 ctx = await self._gather_status_priority_context(user_id)
                 context.update(ctx)
                 self._attribute_provenance(list(ctx.keys()), user_id=user_id)
+                _record_status_shown_issue(session_id, user_id, ctx)
             else:
                 # #960: UNKNOWN and other unhandled categories get basic user
                 # context to reduce fabrication risk. Better to give the floor

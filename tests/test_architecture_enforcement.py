@@ -9036,7 +9036,7 @@ class TestBinderFileRatchet:
     CEILINGS = {
         "services/intent_service/canonical_handlers.py": 81,
         "services/intent_service/classifier.py": 51,
-        "services/intent/intent_service.py": 37,
+        "services/intent/intent_service.py": 34,  # 2460: three write parses moved to typed_issue_number
         "services/intent_service/todo_handlers.py": 33,
         "services/intent_service/reminder_clear.py": 18,
         "services/intent_service/repo_clarification.py": 14,
@@ -9045,7 +9045,7 @@ class TestBinderFileRatchet:
         "services/intent_service/temporal_utils.py": 7,
         "services/intent_service/collaboration_gate.py": 6,
         "services/intent_service/unarmed_offer.py": 6,
-        "services/intent_service/destructive_confirm.py": 4,
+        "services/intent_service/destructive_confirm.py": 3,  # 2460: _issue_number_from reads typed_issue_number
         "services/intent_service/scope_guard.py": 4,
         "services/intent_service/unwired_writes.py": 4,
         "services/intent_service/acceptance.py": 3,

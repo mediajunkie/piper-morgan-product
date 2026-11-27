@@ -31,13 +31,14 @@ class TestShippedArmedCorpus:
         rows = gate.load_armed_corpus()
         armed = [r for r in rows if r["condition"] == "armed"]
         control = [r for r in rows if r["condition"] == "control"]
-        # 2425: the eighth pair is the "my <name> project" sentinel (stored_projects).
-        assert len(armed) == 8, "eight live-incident armed rows"
-        assert len(control) == 8, "each armed row has a stateless control twin"
+        # 2459 adds pairs 8 and 9 (shown-issue referent); 2425 adds pair 10, the
+        # "my <name> project" sentinel (stored_projects).
+        assert len(armed) == 10, "ten live-incident armed rows"
+        assert len(control) == 10, "each armed row has a stateless control twin"
         by_pair = {}
         for r in rows:
             by_pair.setdefault(r["pair"], {})[r["condition"]] = r
-        assert len(by_pair) == 8
+        assert len(by_pair) == 10
         for pair, members in by_pair.items():
             assert set(members) == {"armed", "control"}, pair
             assert members["armed"]["phrase"] == members["control"]["phrase"], pair
@@ -55,10 +56,16 @@ class TestShippedArmedCorpus:
             assert isinstance(r["_snapshot"], SessionSnapshot), r["pair"]
             block = r["_state_block"]
             assert block and len(block) <= MAX_SERIALIZED_CHARS, r["pair"]
-            # every armed fixture arms a pending offer → the contract's
-            # OPEN QUESTION line (and its RULE) must be in the block
-            assert "OPEN QUESTION" in block, r["pair"]
-            assert "RULE:" in block, r["pair"]
+            if "pending_offer_kind" in r["fixture"]:
+                # an armed offer → the contract's OPEN QUESTION line (and its
+                # RULE) must be in the block
+                assert "OPEN QUESTION" in block, r["pair"]
+                assert "RULE:" in block, r["pair"]
+            else:
+                # 2459: a session-referent row arms no offer; its state is the
+                # RECENT ISSUE line, and no OPEN QUESTION may appear
+                assert "RECENT ISSUE:" in block, r["pair"]
+                assert "OPEN QUESTION" not in block, r["pair"]
 
     def test_armed_kinds_are_real_store_kinds(self):
         """Fixture kinds must be the arm sites' actual constants — a fixture
@@ -84,7 +91,9 @@ class TestShippedArmedCorpus:
             REPO_QUESTION_KIND,
         }
         for r in gate.load_armed_corpus():
-            if r["condition"] == "armed" and "fixture" in r:
+            # 2459: only pending-offer fixtures name a store kind; 2425: a
+            # stored_projects row carries no fixture at all.
+            if r["condition"] == "armed" and "pending_offer_kind" in (r.get("fixture") or {}):
                 assert r["fixture"]["pending_offer_kind"] in real_kinds, r["pair"]
 
     def test_armed_expectations_pin_the_1663_ruling(self):
@@ -102,6 +111,9 @@ class TestShippedArmedCorpus:
             "reminder-time-answer": "flow:create_reminder",
             "standup-todo-offer": "flow:complete_todo",
             "repo-question-answer": "flow:create_issue",
+            # 2459: no offer is armed; the session referent makes "it" a read
+            "shown-issue-details": "action:review_issue_query",
+            "shown-issue-that-issue": "action:review_issue_query",
             "my-project-todo": "action:create_todo",
         }
         expected_control = {
@@ -112,6 +124,8 @@ class TestShippedArmedCorpus:
             "reminder-time-answer": "REVIEW",
             "standup-todo-offer": "action:complete_todo",
             "repo-question-answer": "REVIEW",
+            "shown-issue-details": "REVIEW",
+            "shown-issue-that-issue": "REVIEW",
             "my-project-todo": "REVIEW",
         }
         for r in gate.load_armed_corpus():
@@ -305,4 +319,4 @@ class TestDryRun:
         assert "planned calls:" in out
         assert "No LLM calls made" in out
         # arithmetic stated with its denominators (m-44)
-        assert "8 armed ×2 conditions + 8 control ×1 + at most 1 project consult" in out
+        assert "10 armed ×2 conditions + 10 control ×1 + at most 1 project consult" in out

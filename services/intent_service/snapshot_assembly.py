@@ -161,14 +161,31 @@ async def assemble_session_snapshot(
         try:
             from services.intent_service.session_activity_read import (
                 issue_head,
+                issue_head_created_at,
                 list_session_activities,
             )
 
-            return issue_head(await list_session_activities(user_id, session_id))
+            activities = await list_session_activities(user_id, session_id)
         except Exception as e:  # silent-ok: contract item 3 — fails open to None + field_errors
             logger.warning("snapshot_ledger_read_failed", error=str(e))
             errors.update({"recent_issue_number", "recent_issue_repo"})
             return None
+        # 2459 rule 1(a): the session's referent is chosen in ONE place
+        # (choose_issue_referent): the newer of the created head and a single shown
+        # issue. The slot read is read-only and best-effort (never creates a context).
+        from services.intent_service.shown_issue import (
+            CreatedIssueRef,
+            choose_issue_referent,
+            last_shown_issue,
+        )
+
+        head = issue_head(activities)
+        created = (
+            CreatedIssueRef(head[0], head[1], issue_head_created_at(activities))
+            if head is not None
+            else None
+        )
+        return choose_issue_referent(created, last_shown_issue(session_id, user_id))
 
     async def _read_mode() -> Optional[str]:
         # #1510 declared mode (read_declared_working_mode raises on storage

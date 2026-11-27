@@ -65,10 +65,11 @@ env -u flags, and --provider, #2340):
       PIPER_CREDENTIAL_STORE=db ANTHROPIC_API_KEY=… \
       venv/bin/python scripts/inversion_phase2_gate.py --provider anthropic --max-usd N [--dry] [--out PATH]
 
-Cost: one Haiku-class call per phase0 row + two per armed row (8) + one per
-control row (8) + at most one consult call per ``stored_projects`` row (1), plus at
-most one repair retry each; the run prints the planned total. --dry validates
-fixtures + serialization + pairing, no LLM calls.
+Cost: one Haiku-class call per phase0 row + two per armed row (10) + one per
+control row (10) + at most one consult call per ``stored_projects`` row (1), plus at
+most one repair retry each. --dry validates fixtures + serialization + pairing, makes
+no LLM calls, and prints the planned count (661 on 2026-11-27: 630 phase0
+rows + 20 + 10 + 1; the earlier "93 ... = 114" was stale).
 """
 
 from __future__ import annotations

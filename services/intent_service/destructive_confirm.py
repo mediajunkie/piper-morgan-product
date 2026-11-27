@@ -276,15 +276,18 @@ class ConfirmationOffer:
 
 
 def _issue_number_from(intent: Intent) -> Optional[int]:
-    """The same parse the handlers use (their first mutating step is gated on
-    it): first ``#N`` / bare number in the original message."""
+    """The close/reopen number, by the same rule their handlers now use (issue
+    2460, ``typed_issue_number`` with no free-text field): ``#N`` or a bare number,
+    only when exactly one distinct number appears in the original message. Its only
+    callers are the close/reopen confirm builders (writes)."""
+    from services.intent_service.issue_write_gate import typed_issue_number
+
     message = ""
     if intent.context:
         message = intent.context.get("original_message", "") or ""
     if not message:
         message = intent.original_message or ""
-    match = re.search(r"#?(\d+)", message)
-    return int(match.group(1)) if match else None
+    return typed_issue_number(message, has_free_text_field=False)
 
 
 def _issue_title_from(intent: Intent) -> Optional[str]:
@@ -1288,6 +1291,25 @@ async def build_close_reopen_confirmation(
         # build_confirmation_offer's own invariant for these two families):
         # nothing destructive can fire without a number; let the handler
         # ask "which issue?".
+        return CloseReopenGate()
+
+    # 2459 (Arch's gate), before anything is armed. The number here is parsed from
+    # the person's words, so it is accepted; a refusal would pass through unarmed to
+    # the handler, whose same gate says its ask. No session is threaded to this
+    # builder, so no created head is read here (only a typed number can pass).
+    from services.intent_service.issue_write_gate import gate_issue_write
+
+    _gate = await gate_issue_write(
+        intent,
+        issue_number,
+        has_free_text_field=False,
+        repository=None,
+        user_id=None,
+        session_id=None,
+        created_head=None,
+        stamp=False,
+    )
+    if not _gate.accepted:
         return CloseReopenGate()
 
     message = intent.context.get("original_message") or intent.original_message or ""

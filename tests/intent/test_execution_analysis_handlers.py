@@ -236,7 +236,7 @@ class TestExecutionHandlers:
         update is sent. (Before #2205 this pinned a validation failure; the
         contract now is 'no write, and say why', not a flag.)"""
         intent = Intent(
-            original_message="update issue 123",
+            original_message="update issue 123 to Updated Title",
             category=IntentCategory.EXECUTION,
             action="update_issue",
             confidence=0.95,
@@ -317,7 +317,7 @@ class TestExecutionHandlers:
         }
 
         intent = Intent(
-            original_message="update issue 123 with new title",
+            original_message="update issue #123 with new title",
             category=IntentCategory.EXECUTION,
             action="update_issue",
             confidence=0.95,

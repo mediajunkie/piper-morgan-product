@@ -1,5 +1,5 @@
 ---
-last_updated: 2026-11-27 06:28 PST (START, verified)
+last_updated: 2026-11-27 09:27 PST (WORK)
 currency_claim: rewritten at substantive-change boundaries, verified at every START
 max_age_days: 4
 ---
@@ -26,7 +26,16 @@ context-floor directive that duplicating it here is exactly the accretion to cut
 
 ## IN FLIGHT — current state only
 
-**11-27 (START):** main 12/12 green; beta still `039121b0fb`. Ship 071 review filed (01M8EHVVPA). **2455 ruled** (decisions.log): the project page gets an owner-scoped `GET /api/v1/projects/{id}/todos` making 2301's one `list_todos` call; a failed read shows a couldn't-check line, never "0"; two render tests; the Work Items section has no writer, and its fate is CXO's and PPM's. Read Lead's branch before it lands. 2456 is a duplicate. PPM: 2411 rows met (Lead closes); 2426 stays open; Path B is not served until 2425 is promoted and 2455 is fixed.
+**11-27 (WORK 09:27):** main 12/12 green; beta `f4dff30500` (2454 skip + flip from 07:22, 2455 page todos from 08:07, both validated). Ship 071 review filed. Rulings today, all in decisions.log:
+- 2455: ruled, branch read, promotion validated; served on Web's reads, CXO's words pass.
+- 2457: store the GitHub numeric id at connect; option (a), refuse a second binding (PPM took it); the refusal revokes only the new token, never the grant (HOST).
+- 2458: no paid screen; one priority predicate; landed 3701a44cbb.
+- 2459: a shown-issue slot; one chooser feeding the router's RECENT ISSUE, the read and B3; a code gate at every issue write (typed number or created head only; my first placement at B3 was wrong); the named ask in statement form.
+- 2460: the typed-number rule for writes, amended to keep 1411. Unit B ruled in mail 01M8F0GNVW.
+- 2425: a D5-shaped consult; the screen was NO-GO on both sentinels; PPM re-scoped to "my" (2461 holds "the"); 2.0 s ceiling, exclusive with D5; the full run is owed, then xian's go via Exec.
+- 2454: the unit pin is enough; served canned replies PASS.
+- **Waiting:** Lead's 2459+2460 branch (full suite then push); Lead's 2425 rebuild and full corpus run; the 2461 exit sentence (follow-up).
+- **Lessons (11-27):** (1) a routing control must reproduce the served input, session state included (2459); (2) trace every path that feeds a guarded write before placing the gate (2459 rule 2); (3) before ruling a form out, find the issue that added it (2460/1411).
 
 **11-26 state (STOP):** main 12/12 green; inbox empty; beta serves `039121b0fb` (2364 step 1: semantic detector alone on prompt v0.3; plus 2441, 2446, 2448, 2449 from 15:25). Model Opus 5.5. Every ruling is in decisions.log (11-26, 09:22 through 20:15).
 - **Next morning (07:00+):** Lead promotes the pleasantry skip #2454 (7c3fcf36b7) and the default flip (0aec538aab, no served change) on Exec's Step G line. Then Lead closes 2364 and 2454 after CI green. Until then a bare "hi" on beta costs a keyed account one detector call.

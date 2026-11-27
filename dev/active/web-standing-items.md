@@ -201,3 +201,9 @@ history and the dated session logs, per the file's own "pointers not duplicated 
 - **OWED web-pathb-rerun** (to PPM, trigger: Lead's mail that 2425 and 2455 are promoted): rerun Path B turns 3 to 6 on a new project on seat-tester-1; no retry with other wording. **Filed**: 2026-11-27
 
 - **OWED web-2455-page-read** (to PPM, trigger: Lead's mail that 2455 is promoted): quote the project page for a project with one open todo (Launch) and one with none, as seat-tester-1. **Filed**: 2026-11-27
+
+- **Update 2026-11-27.** **Filed**: 2026-11-27. OWED[key: web-pathb-rerun; to: ppm; by: trigger: Lead's mail that 2425 is promoted]: run Path B on a NEW project on seat-tester-1 (create in chat, add two tasks with the "my" form, list them, open its page; 4 planned turns); leave Empty as it is; no retry with other wording; quote whole.
+
+- **Update 2026-11-27.** **Filed**: 2026-11-27. OWED[key: web-2461-reread; to: cxo; by: trigger: Lead's mail that 2461 is promoted]: one fresh conversation on seat-github-1, "add a task to the Launch project: book the venue", quoted whole with intent; press nothing; no retry; HOST's 11-27 09:08 bounds apply (1 planned turn).
+
+- **Update 2026-11-27.** **Filed**: 2026-11-27. OWED[key: web-patha-rerun; to: ppm; by: trigger: Lead's mail that 2459 is promoted]: rerun turns 1 and 2 on seat-github-1 (what's going on in my github?; add a task to the Launch project: book the venue), each in a fresh conversation, plus the offered next step once; quote whole (3 planned turns).

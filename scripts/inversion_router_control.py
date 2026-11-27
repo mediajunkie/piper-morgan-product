@@ -43,9 +43,32 @@ ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT))
 
 
-async def _control(phrases: list[str], samples: int, provider: Optional[str]) -> list[dict]:
+def _state_block(recent_issue: Optional[str]) -> Optional[str]:
+    """2459: the session state block the LIVE router is handed, for a control that
+    measures a referent phrase ("it", "that issue"). ``recent_issue`` is
+    ``owner/repo#N``; the block is ``serialize_for_prompt`` of a snapshot holding only
+    that referent, so the RECENT ISSUE line is the served one, not a retyped copy."""
+    if not recent_issue:
+        return None
+    from services.intent_service.session_snapshot import SessionSnapshot, serialize_for_prompt
+
+    repository, sep, number = recent_issue.rpartition("#")
+    if not sep or not repository or not number.isdigit():
+        raise SystemExit(f"--recent-issue wants owner/repo#N, got {recent_issue!r}")
+    return serialize_for_prompt(
+        SessionSnapshot(recent_issue_number=int(number), recent_issue_repo=repository)
+    )
+
+
+async def _control(
+    phrases: list[str], samples: int, provider: Optional[str], state_block: Optional[str] = None
+) -> list[dict]:
+    from services.intent_service.inversion_router import SessionSnapshot as RouterSnapshot
     from services.intent_service.inversion_router import derive_routing_grammar, route
     from services.llm.clients import LLMClient
+
+    # The same construction inversion_live uses: a snapshot carrying the block.
+    snapshot = RouterSnapshot(state_block=state_block) if state_block else None
 
     grammar = derive_routing_grammar()
     llm = LLMClient()
@@ -55,7 +78,7 @@ async def _control(phrases: list[str], samples: int, provider: Optional[str]) ->
     for phrase in phrases:
         for n in range(1, samples + 1):
             try:
-                d = await route(phrase, None, llm_service=llm, grammar=grammar, user_id=None)
+                d = await route(phrase, snapshot, llm_service=llm, grammar=grammar, user_id=None)
                 label = d.route_label
                 conf = d.confidence
                 # #2186 (2026-10-28): the args the router emitted, so a screen
@@ -451,6 +474,11 @@ def main(argv: Optional[list] = None) -> int:
     ap.add_argument("--label", default="control", help="baseline / candidate / …")
     ap.add_argument("--out", type=Path, default=None)
     ap.add_argument(
+        "--recent-issue",
+        default=None,
+        help="owner/repo#N: route with the session state block carrying this RECENT ISSUE (2459)",
+    )
+    ap.add_argument(
         "--max-usd",
         type=float,
         default=None,
@@ -489,6 +517,10 @@ def main(argv: Optional[list] = None) -> int:
         help="with --corpus: make NO call; print the row count and the planned calls",
     )
     args = ap.parse_args(argv)
+    if args.recent_issue and (args.projects or args.corpus is not None):
+        # 2459's option applies to the plain phrase control only: the project consult
+        # screens take no session state (the main call's block is empty, as above).
+        ap.error("--recent-issue applies to the plain --phrase control, not --projects/--corpus")
     items: list = []
     if args.corpus is not None:
         if not args.projects:
@@ -541,7 +573,8 @@ def main(argv: Optional[list] = None) -> int:
                 interrupted = True
                 print(f"interrupted after {len(rows)} sample(s); writing the report")
         else:
-            rows = asyncio.run(_control(args.phrase, args.samples, args.provider))
+            state_block = _state_block(args.recent_issue)
+            rows = asyncio.run(_control(args.phrase, args.samples, args.provider, state_block))
     if args.corpus is not None and project_names:
         write_corpus_report(
             rows, args.out, args.label, project_names, interrupted, len(items) * args.samples
