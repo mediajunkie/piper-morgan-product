@@ -14,8 +14,9 @@ What must hold after Phase C rewire:
     6. message does NOT contain the raw `explanation` (never user-routed)
     7. Floor is called in denial_mode with redirect_context populated
 
-When ENABLE_ETHICS_ENFORCEMENT is false (default), the gate is skipped and
-these tests should not be exercised — covered by the existing pass-through path.
+The gate is on by default since 2026-11-26 (#2364; xian's yes of 11-13).
+ENABLE_ETHICS_ENFORCEMENT=false is the off switch and skips it; the tests at the
+end of this file hold both.
 
 # principal-blind-by-design: BoundaryEnforcer's violation_detected decision
 # is CONTENT-only — confirmed (#1533 audit, batch 5) via
@@ -258,7 +259,7 @@ async def test_non_violation_does_not_trigger_floor_denial_path(non_violating_de
 @pytest.mark.asyncio
 async def test_ethics_disabled_skips_gate_entirely(violating_decision):
     """When ENABLE_ETHICS_ENFORCEMENT=false, the enforcer is not consulted at
-    all — the old default behavior is preserved."""
+    all: the off switch."""
     service = _make_service()
 
     enforcer_mock = AsyncMock(return_value=violating_decision)
@@ -288,3 +289,56 @@ async def test_ethics_disabled_skips_gate_entirely(violating_decision):
             pass
 
     enforcer_mock.assert_not_called()
+
+
+async def _run_one_turn_and_return_the_enforcer_mock(environ, violating_decision):
+    service = _make_service()
+    enforcer_mock = AsyncMock(return_value=violating_decision)
+    with (
+        patch.dict("os.environ", environ, clear=False),
+        patch(
+            "services.intent.intent_service.boundary_enforcer_refactored.enforce_boundaries",
+            new=enforcer_mock,
+        ),
+        patch.object(
+            service, "_check_active_guided_process", new=AsyncMock(return_value=(None, None, None))
+        ),
+        patch.object(service, "_check_pending_resume_offer", new=AsyncMock(return_value=None)),
+    ):
+        import os
+
+        if "ENABLE_ETHICS_ENFORCEMENT" not in environ:
+            os.environ.pop("ENABLE_ETHICS_ENFORCEMENT", None)
+        try:
+            await service._process_intent_internal(
+                message="anything at all", session_id="test_session_2364_default", user_id=None
+            )
+        except Exception:
+            pass
+    return enforcer_mock
+
+
+@pytest.mark.asyncio
+async def test_the_gate_is_on_when_the_variable_is_unset_2364(violating_decision):
+    """The default (#2364, xian 2026-11-13): an install that sets nothing is checked."""
+    enforcer_mock = await _run_one_turn_and_return_the_enforcer_mock({}, violating_decision)
+    enforcer_mock.assert_called_once()
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize("value", ["false", "FALSE", " False "])
+async def test_false_in_any_case_is_the_off_switch_2364(value, violating_decision):
+    enforcer_mock = await _run_one_turn_and_return_the_enforcer_mock(
+        {"ENABLE_ETHICS_ENFORCEMENT": value}, violating_decision
+    )
+    enforcer_mock.assert_not_called()
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize("value", ["true", "1", "", "flase", "off"])
+async def test_any_other_value_leaves_the_gate_on_2364(value, violating_decision):
+    """Only the word false turns the check off; a mistyped value cannot."""
+    enforcer_mock = await _run_one_turn_and_return_the_enforcer_mock(
+        {"ENABLE_ETHICS_ENFORCEMENT": value}, violating_decision
+    )
+    enforcer_mock.assert_called_once()
