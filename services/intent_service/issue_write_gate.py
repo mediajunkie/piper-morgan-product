@@ -449,13 +449,17 @@ def single_bare_number(message: str, field_values: Sequence[str]) -> Optional[in
 
 def refusal_line(verdict: IssueWriteVerdict, plain_ask: str) -> str:
     """What a refused write says: the named ask when the only candidate referent is
-    a single shown issue, else the handler's existing ask, byte for byte."""
+    a single shown issue; CXO's hint when the message holds one bare number outside
+    the field value; both, the statement first, when both apply (Arch and CXO,
+    2026-11-27: never the shown issue alone when the person typed another number);
+    else the handler's existing ask, byte for byte."""
+    parts = []
     if verdict.shown is not None:
         repository, number = verdict.shown
-        return SHOWN_ISSUE_WHICH_ASK.format(number=number, repository=repository)
+        parts.append(SHOWN_ISSUE_WHICH_ASK.format(number=number, repository=repository))
     if verdict.bare is not None:
-        return BARE_ISSUE_NUMBER_HINT.format(number=verdict.bare)
-    return plain_ask
+        parts.append(BARE_ISSUE_NUMBER_HINT.format(number=verdict.bare))
+    return " ".join(parts) if parts else plain_ask
 
 
 async def gate_issue_write(

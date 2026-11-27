@@ -654,13 +654,27 @@ class TestTypedIssueNumber2460:
         assert result.message == MAIN_UPDATE_ASK
         _assert_nothing_done(svc, sid, router, result)
 
-    async def test_a_shown_issue_and_a_bare_number_say_the_shown_statement(self, svc, sid):
+    async def test_a_shown_issue_and_a_bare_number_say_both_sentences(self, svc, sid):
+        """Arch and CXO, 2026-11-27: after #1 is shown, a different bare number gets the
+        shown statement and then the hint, so the typed number is never unexplained."""
         _shown_only(sid)
         intent = _intent(
             "update_issue", "change the title of 108 to Draft", title="Draft", repository=SHOWN_REPO
         )
         result, router = await _run(svc, sid, "update_issue", intent, [])
-        assert result.message == NAMED_1
+        assert result.message == NAMED_1 + ' If you mean issue 108, write it as "#108".'
+        _assert_nothing_done(svc, sid, router, result)
+
+    async def test_archs_case_shown_1_then_set_the_title_of_7(self, svc, sid):
+        _shown_only(sid)
+        intent = _intent(
+            "update_issue",
+            "set the title of 7 to Fix login",
+            title="Fix login",
+            repository=SHOWN_REPO,
+        )
+        result, router = await _run(svc, sid, "update_issue", intent, [])
+        assert result.message == NAMED_1 + ' If you mean issue 7, write it as "#7".'
         _assert_nothing_done(svc, sid, router, result)
 
     async def test_the_classifiers_no_hash_explicit_number_targets_it(self, svc, sid):
