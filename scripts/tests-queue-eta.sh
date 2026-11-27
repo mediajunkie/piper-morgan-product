@@ -12,6 +12,7 @@
 #
 # Usage: scripts/tests-queue-eta.sh [--cutoff HH:MM]
 # Exit: 0 = estimate before the cutoff, 1 = after it, 3 = could not measure.
+# Concept: docs/internal/operations/alpha-promotion-standing-grant.md (the "Tests runs on main queue" procedure note)
 # CIO, 2026-11-27, after Lead's 11-26 20:22 landing (xian's question via Exec 01M8F6RY8H).
 
 set -uo pipefail
