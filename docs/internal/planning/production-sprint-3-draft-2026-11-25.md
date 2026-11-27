@@ -23,9 +23,12 @@ xian, 11-27: "Top priority for the sprint is opening beta invitations." He also 
    - Path B: Web reruns it on seat-tester-1 once 2425 is promoted, using the "my" sentence ("the" is 2461's known gap).
    - Path A: Web reruns it on seat-github-1 once 2459 is promoted.
    - CXO judges the words, and PPM reads each run against the written bar.
-3. **PROPOSED, awaiting xian's yes via Exec: one fresh build for Lead, export (#2159).** "Export everything Piper holds for a user, in open formats." It is the first build in the Terms readiness lane, which gates public beta. It is read-only and needs nobody's OK.
-   - The goal: Arch rules the shape, Lead builds it and lands it, and it is served on a fresh account by 12-10.
-   - If Lead sizes it over half the sprint, the goal is the ruled shape plus the first slice served, not the whole issue.
+3. **PROPOSED, awaiting xian's yes via Exec: one new build for Lead from the map's current chunk, H (the honesty sweep).** The map's front view runs in closing order, and H is first (55 open, 52 closed). **PPM's pick: Documents tell the truth (#2443 with #2444).**
+   - A `.docx` upload is read, not answered "unsupported" (2443). The decision was settled 11-26 by CXO, Arch and PPM, and its five rows are written.
+   - A summary says how much of the file it read (2444). It touches the same analyzer file, with CXO's disclosure line as the minimum.
+   - **The goal:** both built, landed and served on beta. Web uploads and summarizes a `.docx`, and a long file's summary carries the line. CXO judges, by 12-10. It needs no hand and no decision from xian.
+   - Other candidates from H: 2134 (a failed boundary check recorded as a pass; part was fixed 10-22, the rest is unread) and 2224 (completion questions answered from a gather that never reads completed work; it needs Arch's lever first).
+   - Export (2159, from D's readiness lane) is sprint 4's first build, unless xian prefers it now.
 4. **PROPOSED, awaiting xian's yes via Exec: account deletion (#2158), prep and a recommendation ready.** It is destructive and touches the Terms, so the sprint 3 goal is the design. That means Arch's ruling on purge and the deletion record, CXO's flow, and HOST's custody note, as one recommendation ready for xian. The build is sprint 4's.
 
 Items 1 to 9 below are how goals 1 and 2 are done. Goals 3 and 4 are PPM's answer to xian's question about fresh build work. They join the sprint only on his yes. Until then, sprint 3 is goals 1 and 2.
