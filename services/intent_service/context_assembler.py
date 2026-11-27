@@ -167,7 +167,6 @@ _RECENT_ACTIVITY_CAP = 10
 
 # #1155: priority labels in descending urgency; open issues carrying these rank
 # first in the "what should I focus on" context, then most-recently-updated.
-_PRIORITY_LABELS = ("priority: critical", "priority: urgent", "priority: high")
 _HIGH_PRIORITY_ISSUES_CAP = 5
 
 # #1625: per-session mentioned-set for due reminders. PM's ruling (v53 live,
@@ -399,7 +398,13 @@ class ContextAssembler:
         "organization": {"source": "UserContextService"},
         "user_priorities": {"source": "UserContextService"},
         "priorities": {"source": "UserContextService+GitHub"},
-        "urgent_items": {"source": "GitHubIntegrationRouter", "filter": "priority:high"},
+        # #2458: the count of open issues the one rule marks high priority
+        # (``priority_labels.is_high_priority``: nine labels, exact name). It used to
+        # say "priority:high", which is not a label in the set.
+        "urgent_items": {
+            "source": "GitHubIntegrationRouter",
+            "filter": "state:open, label in HIGH_PRIORITY_LABELS",
+        },
         # Conversation / memory
         "recent_topics": {"source": "ConversationContext"},
         "session_turn_count": {"source": "ConversationContext"},
@@ -2084,6 +2089,7 @@ class ContextAssembler:
             from services.integrations.github.github_integration_router import (
                 GitHubIntegrationRouter,
             )
+            from services.integrations.github.priority_labels import priority_rank
 
             github = GitHubIntegrationRouter()
             await github.initialize(user_id=user_id)
@@ -2108,23 +2114,25 @@ class ContextAssembler:
                 return None
 
             def _priority_rank(issue: dict) -> int:
-                labels = [str(label).lower() for label in (issue.get("labels") or [])]
-                for rank, plabel in enumerate(_PRIORITY_LABELS):
-                    if plabel in labels:
-                        return rank
-                return len(_PRIORITY_LABELS)  # unlabeled sorts after labeled
+                # #2458: the one label set (unlabelled sorts after labelled).
+                return priority_rank(issue.get("labels"))
 
             # Stable two-stage sort: recency desc first, then priority asc — so
             # within each priority tier the most-recently-updated leads.
             ranked = sorted(all_open, key=lambda i: i.get("updated_at") or "", reverse=True)
             ranked.sort(key=_priority_rank)
 
+            # #2458: the key's name is older than what it holds. This is the top
+            # open issues of ANY priority (labelled first). Each row carries its labels
+            # and the repository the read was made against, from the read's own rows;
+            # the floor's heading and rows are built from those, not from the key's name.
             return {
                 "high_priority_issues": [
                     {
                         "number": i.get("number"),
                         "title": i.get("title"),
                         "labels": i.get("labels", []),
+                        "repository": i.get("repository_full_name"),
                         "url": i.get("uri") or i.get("html_url"),
                         "updated_at": i.get("updated_at"),
                     }

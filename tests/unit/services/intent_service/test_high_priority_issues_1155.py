@@ -153,15 +153,17 @@ class TestFloorFormatsHighPriorityIssues:
             "open_issue_count": 12,
         }
         out = self._floor()._format_domain_context(ctx)
-        assert "High-priority open issues" in out
+        # #2458: the heading no longer calls the whole list high priority.
+        assert "- Open issues (12 open; top 2 shown" in out
+        assert "High-priority open issues" not in out
         assert "12 open" in out
         assert "#42" in out and "Fix the thing" in out
-        assert "[priority: high]" in out
+        assert "#42 [high priority]" in out  # #2458: the one phrase, not the raw label
         assert "#7" in out
 
     def test_empty_high_priority_issues_no_section(self):
         out = self._floor()._format_domain_context({"high_priority_issues": []})
-        assert "High-priority open issues" not in out
+        assert "Open issues" not in out
 
     def test_unconfigured_repo_renders_honest_message(self):
         # #1226 Phase 3: no repo configured → floor context tells the user to set one,

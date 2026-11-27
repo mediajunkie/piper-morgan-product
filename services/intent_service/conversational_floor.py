@@ -27,6 +27,7 @@ from typing import Any, Callable, Dict, List, NamedTuple, Optional, Tuple
 
 import structlog
 
+from services.integrations.github.priority_labels import HIGH_PRIORITY_PHRASE, is_high_priority
 from services.intent_service.capability_answer import (
     CAPABILITY_TURN_INSTRUCTION,
     compose_capability_reply,
@@ -956,6 +957,31 @@ _RECENT_ACTIVITY_HEADINGS = (
 )
 
 
+def open_issues_heading(issues: list, total: Any) -> str:
+    """#2458: the heading over the open issues the floor is handed.
+
+    It used to read "High-priority open issues", over a list that is the top open
+    issues of ANY priority, and it named no repository. On beta the reply then called
+    an issue "flagged as high priority" that nobody had checked for a label, and never
+    said where it was. The heading now says what the list is (CXO's words,
+    2026-11-27): open issues, in the repository the read was made against, as GitHub
+    names it. The repository is named only when every row names the same one; a row
+    from before this change (a cached entry) names none, so neither does the heading.
+    """
+    repositories = {
+        it.get("repository") for it in issues if isinstance(it, dict) and it.get("repository")
+    }
+    named = sum(1 for it in issues if isinstance(it, dict) and it.get("repository"))
+    where = ""
+    if len(repositories) == 1 and named == len(issues):
+        where = f" in {next(iter(repositories))}"
+    return (
+        f"- Open issues{where} ({total} open; top {len(issues)} shown), "
+        "priority-labelled first, then newest. "
+        'Marked "high priority" only where the issue carries a priority label.'
+    )
+
+
 def _render_recent_activity(domain_context: Dict[str, Any]) -> List[str]:
     activity = domain_context.get("recent_activity")
     if not isinstance(activity, list) or not activity:
@@ -1661,7 +1687,9 @@ class ConversationalFloor:
                         )
                     lines.append(line)
             if p.get("urgent_items"):
-                lines.append(f"- High-priority issues: {p['urgent_items']}")
+                # #2458 (CXO's words): counted by the one rule (the priority read
+                # filters with ``is_high_priority``).
+                lines.append(f"- Open issues marked high priority: {p['urgent_items']}")
 
         # #951: Surface pending todos with deadline proximity so the floor
         # can answer "what's due?" / "what's next?" with specific references.
@@ -1902,21 +1930,18 @@ class ConversationalFloor:
                 # #1778: floor, not total, when the source page was full.
                 if domain_context.get("open_issue_count_capped"):
                     total = f"{total}+"
-                lines.append(f"- High-priority open issues ({total} open; top {len(hp)} shown):")
+                lines.append(open_issues_heading(hp, total))
                 for it in hp:
                     if isinstance(it, dict):
                         num = it.get("number", "?")
                         title = it.get("title", "(untitled)")
-                        labels = it.get("labels") or []
-                        plabel = next(
-                            (
-                                str(label)
-                                for label in labels
-                                if str(label).lower().startswith("priority:")
-                            ),
-                            None,
+                        # #2458 (CXO): the one phrase, only where the issue carries
+                        # a label from the one set; never a label's raw name.
+                        tag = (
+                            f" [{HIGH_PRIORITY_PHRASE}]"
+                            if is_high_priority(it.get("labels"))
+                            else ""
                         )
-                        tag = f" [{plabel}]" if plabel else ""
                         lines.append(f"    • #{num}{tag}: {title}")
 
         # Issue #911 Phase 2: New context keys from ContextAssembler
