@@ -839,3 +839,26 @@ def test_existing_pair_lines_in_the_report_are_unchanged(op_categories):
     assert len(old_lines) == 7 and len(new_lines) == 8
     assert new_lines[:7] == old_lines
     assert new_lines[7].startswith(f"| {_PAIR} |") and "project=None" in new_lines[7]
+
+
+@pytest.mark.parametrize("consult", [False, True], ids=["as_run_routes_controls", "flag_on"])
+def test_the_control_twin_never_fires_the_consult(monkeypatch, consult):
+    """Arch (2425): the twin is the same phrase with no stored projects, and it
+    asserts the consult does not fire, not a route. One route() call; the project
+    reader and consult_projects_on_clarify are never reached, even with the consult
+    flag on (the loader forbids stored_projects on a control row)."""
+    gate = _gate()
+    control = next(
+        r for r in gate.load_armed_corpus() if r["pair"] == _PAIR and r["condition"] == "control"
+    )
+    assert control["expected"] == "REVIEW" and "_stored_projects" not in control
+
+    def boom(*a, **k):
+        raise AssertionError("the control twin must not reach the project consult")
+
+    monkeypatch.setattr(pc, "consult_projects_on_clarify", boom)
+    monkeypatch.setattr(pc, "read_stored_projects", boom)
+    router = _gate_route(monkeypatch, [_CLARIFY])
+    [d] = asyncio.run(gate._route_rows([control], None, None, label="control ", consult=consult))
+    assert len(router.blocks) == 1
+    assert d is _CLARIFY

@@ -256,4 +256,4 @@ corpus:
     category: EXECUTION
     expected: REVIEW
     source: "control twin of the issue 2425 armed row (same text, no stored projects)"
-    notes: "stateless, the main call alone does not decide this reliably (CLARIFY 3 or 4 of 6, create_todo the rest, in Lead's screen); recorded as data, no route asserted"
+    notes: "stateless, the main call alone does not decide this reliably (CLARIFY 3 or 4 of 6, create_todo the rest, in Lead's screen); recorded as data, no route asserted. What the twin asserts is that the consult does not fire: one route() call, no project read (test_project_consult_2425.py::test_the_control_twin_never_fires_the_consult)"
