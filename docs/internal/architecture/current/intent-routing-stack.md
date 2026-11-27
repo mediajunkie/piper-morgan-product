@@ -2078,6 +2078,20 @@ pairs. No pattern changed (THANKS/FAREWELL are a ruled permanent floor, #1974); 
 already-understood claim. Pins: `test_thanks_farewell_short_circuit_1986.py`, the handler tests, the
 #1818 ratchet. Served check at the next promotion (Arch's condition 6): Web's run.
 
+### A pure pleasantry is also the only thing that skips the ethics check (#2454, 2026-11-26)
+
+The ethics gate sits at the entry point of the turn (`intent_service.py`, after the standup paths, before classification). Since #2364 it has one layer, the semantic detector, which is a model call on the acting person's own key and is made for every message the gate reads. Until #2454 that included "hi".
+
+The rule, Arch's and CXO's (decisions.log 2026-11-26): **a message skips the check only when code fully understands it and it carries no content.** In code that is one predicate, `PreClassifier.is_pleasantry_only_message(message)`: it cleans the raw message with `PreClassifier._clean_for_matching` (the same function the pre-classifier's three entry points use) and calls `_is_pleasantry_only`, the predicate the canned path above already rests on. So the skip and the canned reply cannot disagree. The whole message must reduce to nothing once the greeting, farewell, thanks and filler phrases are removed: "thanks, and now help me …" leaves words and is read by the detector.
+
+Nothing else skips. `manage_portfolio`, `manage_repos` and `explain_suggestion` answer from code and spend nothing of their own, but they carry content in a slot ("archive project X"), so the detector reads them.
+
+What holds it:
+- `tests/unit/services/intent_service/test_pleasantry_skips_ethics_gate_2454.py`: each accepted form makes no detector call; a pleasantry followed by a block-band probe's text (h-3, per-1) reaches the detector whole and its decline stands; every pattern in the four lists the predicate strips is a fixed phrase; and the lists' exact contents are pinned by digest. **Changing those lists changes what skips the ethics check**, so that test fails until Arch and CXO have read the change.
+- The spend-free ratchet (`test_spend_free_canonical_ratchet_1818.py`) now drives with the gate ON, as beta runs, in three sets: `SPEND_FREE` (the three pleasantry pairs, zero crossings of the spend chokepoint), `ETHICS_CHECKED_OTHERWISE_FREE` (the three content pairs: exactly one call that can spend, the detector's) and `SPENDS`. Before #2454 it ran with the gate off and so measured a configuration nobody served.
+
+Keyless (#1818's door): a pleasantry answers with no spend attempt. A content pair attempts the detector's call, which is refused at the chokepoint, and passes as detector-unavailable (#2134), billing nothing. The check is not skipped because a person has no key.
+
 ## Phase 3 — deletion gate (#1595 epic-0 unit 5, instrument built 2026-09-27)
 
 The epic's own condition on the endpoint (issue #1595 body, "Conditions on the endpoint
