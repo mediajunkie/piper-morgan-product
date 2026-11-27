@@ -956,6 +956,29 @@ _RECENT_ACTIVITY_HEADINGS = (
 )
 
 
+def open_issues_heading(issues: list, total: Any) -> str:
+    """#2458: the heading over the open issues the floor is handed.
+
+    It used to read "High-priority open issues", over a list that is the top open
+    issues of ANY priority, and it named no repository. On beta the reply then called
+    an issue "flagged as high priority" that nobody had checked for a label, and never
+    said where it was. The heading now says what the list is: open issues, in the
+    repository the read was made against (when every row names the same one), with
+    each row carrying its own priority label or "no priority label".
+    """
+    repositories = {
+        it.get("repository") for it in issues if isinstance(it, dict) and it.get("repository")
+    }
+    named = sum(1 for it in issues if isinstance(it, dict) and it.get("repository"))
+    where = ""
+    if len(repositories) == 1 and named == len(issues):
+        where = f" in {next(iter(repositories))}"
+    return (
+        f"- Open issues{where} ({total} open; top {len(issues)} shown, "
+        "priority-labelled first; each row shows its own priority label or says it has none):"
+    )
+
+
 def _render_recent_activity(domain_context: Dict[str, Any]) -> List[str]:
     activity = domain_context.get("recent_activity")
     if not isinstance(activity, list) or not activity:
@@ -1902,7 +1925,7 @@ class ConversationalFloor:
                 # #1778: floor, not total, when the source page was full.
                 if domain_context.get("open_issue_count_capped"):
                     total = f"{total}+"
-                lines.append(f"- High-priority open issues ({total} open; top {len(hp)} shown):")
+                lines.append(open_issues_heading(hp, total))
                 for it in hp:
                     if isinstance(it, dict):
                         num = it.get("number", "?")
@@ -1916,7 +1939,7 @@ class ConversationalFloor:
                             ),
                             None,
                         )
-                        tag = f" [{plabel}]" if plabel else ""
+                        tag = f" [{plabel}]" if plabel else " [no priority label]"
                         lines.append(f"    • #{num}{tag}: {title}")
 
         # Issue #911 Phase 2: New context keys from ContextAssembler
