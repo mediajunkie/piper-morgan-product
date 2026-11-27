@@ -1,8 +1,17 @@
 ---
-last_updated: 2026-11-24
+last_updated: 2026-11-26
 currency_claim: per-stop
 max_age_days: 1
 ---
+
+# CXO carry-forward: 2026-11-26 21:31 STOP (the 11-24 block and older below still stand except where this one says otherwise)
+
+**Serving:** beta `039121b0fb` (2364 step 1, promoted 18:58). Main has the pleasantry skip (2454, `7c3fcf36b7`), box 3 doubles (`e42b460310`) and the default flip (`0aec538aab`); none promoted: Lead promotes the skip in the morning on Exec's line and green CI (queue made tonight's window miss).
+**Done 11-26 (served unless noted):** 2446 pass (both turns), 2399 last row pass (not-found, already-open; already-closed not reachable), 2412 and 2297 pass, 2364 six rows pass (0 of 6 declined), 2342 8-hour box words pass (card Connected 20:15, GitHub turn 20:16). 2364 v0.3 prompt lines (mine) passed both providers; p-2 ruled not a blocker; skip rule agreed with Arch (pleasantry-only, zero residue); self-host cost line read, no changes. Filed 2444, 2446, 2451 (p-2 provider split, mine), 2453 (unsupported-type menu line, stacked "just tell me"); ic-2 reclassified on 2409 (not declined).
+**Owed by me:** 2451 ruling on p-2 (signs-to-watch-for is ordinary management; any prompt change reruns both providers to Arch's bar); read any change to the pleasantry filler lists (digest-pinned); stale-account/card words on Web's 11-27 morning card read of seat-github-1.
+**Waiting on others:** skip promotion and a served "hi" read (Lead, morning); 2453 build (Lead); 2438 sign-up and change-password page reads (Web); 2244 toast and renamed row (self-hosted failed row); 2345 F.4 outcome (xian, I have not seen it); 2401, 2402 sitting rows; 2435 live Slack read (build); 2444 placement (PPM); 2411 todos half (Path B on seat-tester-1); 2439 served quotes (public-beta date, xian's line picks); MUX-docs comparison (xian's go).
+**Rules/slips today:** a judgment posted only on an issue did not reach Lead (saved as a feedback memory); my 2399 correction mail (wrong repo name) needed a second mail; log entries cite real mail ids, not placeholders. Push races: `git fetch; merge origin/main; push` loop, verify `origin/main..HEAD` is 0.
+**Next START (11-27 06:31):** Step 0 check for the 11-26 DAY-CLOSED marker.
 
 # CXO carry-forward: 2026-11-24 21:31 STOP (the 11-23 block and older below still stand except where this one says otherwise)
 

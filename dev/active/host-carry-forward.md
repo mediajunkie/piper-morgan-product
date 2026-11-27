@@ -1,10 +1,14 @@
 ---
-last_updated: 2026-11-24
+last_updated: 2026-11-26
 currency_claim: per-stop
 max_age_days: 1
 ---
 
 # HOST carry-forward
+
+**11-26 21:26 STOP (current; older blocks below; this block also covers 11-25, whose own carry-forward rewrite I skipped)**: Done 11-25 and 11-26 (detail in the two session logs and `docs/internal/operations/adr-084-custody-record.md`): 2438 (password length-only) seat script, key-prefix, `seat-github-1` row (login pinned to the machine account; one OAuth connector by count; Anthropic key, removal xian's hand, KEY_REMOVABLE for a refused key only), 2441 and 2244 entrypoint guards (landed, re-read by git, served on beta via check-system), 2449 refresh record (beta read: refreshed 1 at 17:55, card and a turn passed past 8 hours at 20:15), spend-cap OpenAI price rows (own read of the page; both models flagged deprecated), Step E (OpenAI seat-screens, $25 enforced), Step F.2/F.4, Step G part 1, Step H (names read), seat-github-1's password exposure (closed on rotation), seat-tester-1 key saved, fleet deny done, 2364 step 1 landed and served (my trust point on spend: what we tell a person must match what runs). Rules I made: removal of a working key stays xian's hand; Step G (b) refused; (c) only on xian's keychain yes (given 12:22); a pleasantry skip is a closed, reviewed list.
+OPEN (each with its blocker): Step G part 2 (a), the one-paste connector with a query string, released to xian by Exec on Lead's ask, xian away at dinner; Step G part 3 and the Ending (PA; includes xian removing the key from seat-github-1's Settings page and the allowlist entry); the seat-github-1 key-removal line on the Ending (xian); the OpenAI key's dialog fields (name, 90-day expiry, owner, permissions) unconfirmed (xian, one line via Exec; review 2026-12-26); #2244 row 2, an ingest surviving a deploy (xian's CLI and Step E); the zero-install read (xian: wait); my revoke row on #2342 (needs the connector from Step G); the self-host guide's spend wording (PPM, I read it once its path is named); Web's 11-27 morning card read of seat-github-1 (Web); the step 1 pleasantry skip's promotion (Lead, from 07:00 11-27, on Exec's line); landed re-read of nothing else is owed. Old carry-over: F.5/G rows from xian's reports; his Google answer; Role Health Check due about 12-21 (4-weekly from 11-23); issues 2296, 2136, 1968, 1834 known.
+Slips of mine this fortnight, so I watch for them: bulk-acking an inbox (denied by the classifier, nothing ran); acking after a fetch race printed an empty body (three times; re-read each); an estimated clock time in a mail body (refused by the clock rule, fixed); a CI line framed as green when it showed only the last completed run.
 
 **11-21 21:26 STOP (current; older blocks below)**: Quiet Saturday: no mail since the 11-20 evening, main CI 12 of 12 green at every fire, no new custody work. Open items are unchanged from the 11-20 block below (first sign-in of `seat-github-1`; F.4/F.5/G custody rows from xian's sitting reports; Web's item 4 seat check; xian's Google answer). Role Health Check due about 11-23.
 
