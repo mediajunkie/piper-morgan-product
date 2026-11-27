@@ -416,14 +416,33 @@ async def update_issue_write_ask(request: WriteAskRequest) -> WriteAsk:
     repo and every field's value are bound; the handler writes exactly those."""
     from services.intent.intent_service import IntentService
     from services.intent_service.destructive_confirm import _issue_number_from
+    from services.intent_service.issue_write_gate import gate_issue_write, issue_number_arg
 
     intent = request.intent
     ctx = _context(intent)
     slots = IntentService._slotfill_issue_request(_original(intent))
-    number = ctx.get("issue_number") or _issue_number_from(intent)
+    # 2459: the one normaliser for the issue key (``issue_number`` / ``issue``).
+    number = issue_number_arg(ctx) or _issue_number_from(intent)
     repository = (
         _text(ctx.get("repository")) or _text(ctx.get("repo")) or _text(slots.get("repository"))
     )
+    if number:
+        # 2459 (Arch's gate), before anything is bound or armed: a refused number
+        # passes through to the handler, whose same gate says its ask (the named
+        # ask when a single shown issue is the only candidate). Nothing is armed.
+        _service = request.intent_service
+        _gate = await gate_issue_write(
+            intent,
+            number,
+            repository=repository,
+            user_id=request.user_id or request.principal,
+            session_id=request.session_id,
+            created_head=getattr(_service, "_issue_referent_from_ledger", None),
+            stamp=False,
+        )
+        if not _gate.accepted:
+            return WriteAsk(passthrough=True)
+        repository = repository or _text(_gate.repository)
     values = {
         "title": ctx.get("title") or slots.get("title"),
         "body": ctx.get("body") or ctx.get("description") or slots.get("body"),

@@ -104,7 +104,18 @@ class TestUpdateIssueGate:
             patch(f"{ROUTER}.update_issue", new=AsyncMock(return_value=updated)) as w,
         ):
             result = await svc._handle_update_issue(
-                _intent(action="update_issue", issue_number=42, title="New title"),
+                # 2459: the gate writes a number the words carry (or the created head).
+                Intent(
+                    original_message="change the title of issue #42 to New title",
+                    category=IntentCategory.EXECUTION,
+                    action="update_issue",
+                    confidence=0.95,
+                    context={
+                        "title": "New title",
+                        "repository": "acme/widgets",
+                        "issue_number": 42,
+                    },
+                ),
                 "wf-1",
             )
         assert result.success and "#42" in result.message

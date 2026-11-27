@@ -36,11 +36,20 @@ REFERENT_READ_FAILED_LINE = "I couldn't pull up that issue just now."
 
 
 class CreatedIssueRef(NamedTuple):
-    """The ledger's created head (issue 2114) with the time its row was written."""
+    """The ledger's created head (issue 2114) with the time its row was written.
+
+    ``unreadable`` marks a ledger read that FAILED (``LEDGER_UNREADABLE``): a newer
+    create may exist that code cannot see, so no referent can be chosen and no write
+    can be gated through on it."""
 
     repository: str
     number: int
     created_at: Optional[datetime] = None
+    unreadable: bool = False
+
+
+#: A failed ledger read: not "nothing created", but "unknown".
+LEDGER_UNREADABLE = CreatedIssueRef(repository="", number=0, created_at=None, unreadable=True)
 
 
 def _valid_repository(value: Any) -> Optional[str]:
@@ -97,13 +106,15 @@ def record_shown_issues(
 
 
 def last_shown_issue(session_id: Optional[str], user_id: Any):
-    """The session's last-shown issue slot (a ``ShownIssue``), or None. Best-effort."""
+    """The session's last-shown issue slot (a ``ShownIssue``), or None. Best-effort,
+    and read-only: it never creates a context (the snapshot assembly's contract)."""
     if not session_id or not user_id:
         return None
     try:
-        from services.intent_service.conversation_context import get_or_create_context
+        from services.intent_service import conversation_context as _cc
 
-        return get_or_create_context(str(session_id), user_id=str(user_id)).last_shown_issue
+        ctx = _cc._conversation_contexts.get(_cc._context_key(str(session_id), str(user_id)))
+        return ctx.last_shown_issue if ctx is not None else None
     except Exception as e:  # silent-ok: logged; treated as "nothing shown"
         logger.warning("shown_issue_recall_failed", error=str(e), session_id=session_id)
         return None
@@ -123,7 +134,11 @@ def choose_issue_referent(
     - Only one of them present: that one (a not-single slot yields None).
     - Both: the newer wins; if the newer is a not-single read, None. If they cannot
       be ordered (a missing timestamp, or the same instant), None: never a guess.
+    - A failed ledger read (``created.unreadable``): None, whatever was shown, since a
+      newer create may be hidden.
     """
+    if created is not None and created.unreadable:
+        return None
     shown_at = _as_utc(getattr(shown, "shown_at", None)) if shown is not None else None
     shown_ref: Optional[Tuple[str, int]] = None
     if shown is not None and getattr(shown, "single", False):
