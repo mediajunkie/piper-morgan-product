@@ -1,8 +1,15 @@
 # Docs Carry-Forward
 
-**Updated**: 2026-11-25 22:12. Older state lives in the session logs (`dev/2026/{10,11}/*/*docs-code-log.md`), not here. `gh`: prefix `GODEBUG=netdns=go` if bare `gh` hangs.
+**Updated**: 2026-11-26 22:12. Older state lives in the session logs (`dev/2026/{10,11}/*/*docs-code-log.md`), not here. `gh`: prefix `GODEBUG=netdns=go` if bare `gh` hangs.
 
-## NOW (11-26 04:50)
+## NOW (11-26 22:12)
+- **11-26 done:** 11-25 omnibus landed and verified. Weekly audit 2422 run and closed, 2394 closed. b-wont-do is `verified` (last_verified 11-26) at code level after the 2364 flip (0aec538aab on main); layer caveat is in the row note, `approved` stays blank for xian. Guide "What a message costs on your key" keeps its "(not run on an install)" marker (CXO: no word changes). Thanksgiving, nothing published. Mail 0 unacked, CI 12 of 12 green.
+- **Owed 11-27 04:12 START:** the 11-26 omnibus (Sonnet subagent, 11-21 shape, verify after the hand-back: recount after fetch, git cat-file each hash, 0 semicolons and tildes, they/them, credential shapes, outside names) and Step 1d on the 11-26 logs. Monday 11-30 audit: run the stale-content and methodology cross-reference scans skipped on 2422.
+- **Blockers:** guide marker clears only after an install run (bare "hi" skips the check, another message costs one call); no runner, Lead's seeded-key driver would be the way. Ship #071 Tue 12-01 awaits Comms and xian.
+- **Watch:** Exec's Duet inbox note; activity-log CSV has no rows after 10-30, ask Exec whether to backfill.
+- **Held:** d-known-limits, b-github-access (#2342), glossary re-verify about 11-30, #2249, monthly audit Dec 7, CIO's hook ask, link checker ceiling 50.
+
+## (earlier) NOW (11-26 04:50)
 - **11-26 so far:** 11-25 omnibus landed and verified (250 non-merge, 360 total). Step 1d: prog log lacks the marker, no mailbox. Weekly audit 2422 run and closed, 2394 closed as superseded; roadmap.md 20 days old sent to PPM (mail4 01M8BWKR2N). Thu 11-26 is Thanksgiving: nothing publishes. Next Ship #071 Tue 12-01 (Comms and xian).
 - **Owed 11-27 04:12 START:** the 11-26 omnibus (Sonnet subagent, 11-21 shape, verify after the hand-back) and Step 1d on the 11-26 logs. The 30-day stale-content and methodology cross-reference scans were not run on audit 2422 (cost, no hard blocker); run them on the next Monday audit if wanted.
 - **Watch:** Exec's Piper Duet inbox note (box exists only if Exec creates it after xian's reach check; Docs records it then). Activity-log CSV has no rows after 10-30 (Step 10.5 lapsed); ask Exec whether to backfill.
