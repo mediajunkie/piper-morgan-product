@@ -1,8 +1,11 @@
 """
 #1004 Fix B — Semantic Boundary Detector
 
-LLM-based classifier that runs as Layer 2 of the two-layer detector when the
-literal-trigger fast-path returns no hit. Produces structured JSON conforming
+LLM-based classifier. Since #2364 (2026-11-13) it is the only layer that decides a
+boundary: the literal-trigger substring fast path that used to run before it is
+removed from `BoundaryEnforcer.enforce_boundaries`. (The two prompt bodies below still
+mention "literal-trigger" in their refusal example; they are kept verbatim because
+they are the calibrated text.) Produces structured JSON conforming
 to `SemanticDetectorOutput` for the BoundaryEnforcer's downstream tier
 classification (block / ambiguous / pass).
 
@@ -123,7 +126,7 @@ REFUSAL_FALLBACK = SemanticDetectorOutput(
     violation_detected=False,
     category="none",
     confidence=0.0,
-    reasoning="Detector unable to classify; falling through to literal-trigger result.",
+    reasoning="Detector unable to classify; the semantic layer did not run.",
     redirect_hint=None,
 )
 
@@ -490,6 +493,84 @@ This conservative fallback is required by the contract (no false
 positives from infrastructure failure). The literal-trigger fast-path
 result governs in this case.
 """
+
+
+# ---------------------------------------------------------------------------
+# Prompt body — CXO v0.3 (mail 01M8D78TNX, 2026-11-26; issue 2364)
+#
+# v0.2 with four additions, each CXO's exact words, written after the OpenAI gate
+# failed on 11-26 and three diagnostic reads showed what gpt-4o attended to:
+# A. data_privacy's NOT list: the user's own space is not an access question
+#    ("What's open in our private repo?" was read as going around an access path).
+# B. inappropriate_content's NOT list: tone alone is not this category.
+# C. Two false-positive guards: the user's own repositories and documents;
+#    competitive business language aimed at a market, not a person.
+# D. Confidence calibration: a named person plus a direct request to guess at
+#    their private situation scores 0.85 or higher; a request for signs to watch
+#    for, in order to support them, stays 0.60 to 0.85.
+#
+# Built from v0.2 by insertion, so v0.2 stays byte-for-byte what was measured on
+# 11-20 and the difference between the two is exactly the text below. An anchor
+# that is missing or repeated stops the import.
+# ---------------------------------------------------------------------------
+
+_V0_3_DATA_PRIVACY_NOT = """ Also NOT
+data_privacy-violation: the user asking what is in, or about the state of,
+their own repositories, projects, tickets, documents or workspace, whether
+or not these are called private, internal or confidential. That is the
+user's own space, not an access question. data_privacy needs a request to
+reach someone else's data, extract personal details about a person, or get
+around an access control."""
+
+_V0_3_INAPPROPRIATE_CONTENT_NOT = """ Also NOT
+inappropriate-content-violation: aggressive, forceful or competitive tone on
+its own, including words like 'crush', 'destroy' or 'kill it' aimed at a
+market, a competitor's product or a goal. Unprofessional-sounding is not
+this category."""
+
+_V0_3_GUARDS = """
+- Questions about the user's own repositories, projects, tickets or
+  documents, including ones called private, internal or confidential
+- Competitive or motivational business language aimed at a market, a
+  competitor's product or a goal, not at a person's standing"""
+
+_V0_3_CALIBRATION = """ A named person plus a direct request to guess at
+  their private, emotional or family situation ('what do you think her
+  situation is at home', 'is he thinking of quitting') is category-defining
+  language: score 0.85 or higher. A named person plus a request for signs
+  to watch for, in order to support them, is one signal with a legitimate
+  framing: score 0.60 to 0.85."""
+
+
+def _insert_after(text: str, anchor: str, addition: str) -> str:
+    """``text`` with ``addition`` placed right after ``anchor``, which must occur once."""
+    if text.count(anchor) != 1:
+        raise RuntimeError(f"prompt v0.3: anchor occurs {text.count(anchor)} times: {anchor!r}")
+    return text.replace(anchor, anchor + addition)
+
+
+def _build_prompt_v0_3(base: str) -> str:
+    out = _insert_after(
+        base, "compliance/GDPR work, authorized access to one's own data.", _V0_3_DATA_PRIVACY_NOT
+    )
+    out = _insert_after(
+        out,
+        "having a serious conversation about a related real-world concern.",
+        _V0_3_INAPPROPRIATE_CONTENT_NOT,
+    )
+    out = _insert_after(
+        out,
+        "- Workplace-politics navigation when grounded in legitimate work goals",
+        _V0_3_GUARDS,
+    )
+    return _insert_after(
+        out,
+        "category-defining language present; legitimate-PM framings considered\n  and rejected.",
+        _V0_3_CALIBRATION,
+    )
+
+
+SEMANTIC_DETECTOR_PROMPT_V0_3 = _build_prompt_v0_3(SEMANTIC_DETECTOR_PROMPT_V0_2)
 
 
 # ---------------------------------------------------------------------------

@@ -452,6 +452,12 @@ default browser of the machine it runs on (it did, on 2026-11-11, until this was
 Limit of the outbound sink: `aiohttp.ClientSession()` ignores the proxy environment, so the sink
 neither refuses nor records those calls. It covers httpx and the Anthropic SDK only.
 
+**The boundary check's live gate: `scripts/ethics_gate_run_2364.py` (#2364, Lead, 2026-11-13).**
+It sends CXO's 20 probes and the issue's six ordinary rows through `BoundaryEnforcer` as the app
+builds it and prints which were declined. It needs `--provider` and `--max-usd`, takes the key
+through `scripts/dev_key_binding.py`, and prints PLANNED and COST lines. The pass rule for a run is
+Arch's, on the issue, set before the run.
+
 **The self-host guide's keyed steps: `scripts/guide_keyed_steps_run.py` (#2404, Lead, 2026-11-18).**
 The same scratch-database shape, for guide steps 6 to 9 and "Check it works". It prints the guide's
 expected line, the line seen and the layer for each step. `--stub` seeds a made-up key and spends
