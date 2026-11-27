@@ -27,7 +27,8 @@ from services.intent_service.issue_write_gate import (
     UPDATE_ISSUE_NUMBER_ASK,
     gate_issue_write,
     issue_number_arg,
-    typed_issue_numbers,
+    typed_issue_candidates,
+    typed_issue_number,
 )
 from services.intent_service.shown_issue import (
     LEDGER_UNREADABLE,
@@ -221,9 +222,10 @@ class TestNormaliser:
     def test_both_keys_map_to_one_int(self, mapping, expected):
         assert issue_number_arg(mapping) == expected
 
-    def test_typed_uses_the_handlers_pattern_anywhere_in_the_words(self):
-        assert typed_issue_numbers("set title to v2 on issue #108") == {2, 108}
-        assert typed_issue_numbers("rename it to Test issue two") == set()
+    def test_typed_reads_the_2460_forms(self):
+        assert typed_issue_candidates("set title to v2 on issue #108", True) == {108}
+        assert typed_issue_candidates("set title to v2 on issue #108", False) == {2, 108}
+        assert typed_issue_candidates("rename it to Test issue two", True) == set()
 
     async def test_a_non_integer_key_gets_the_plain_ask_even_with_a_shown_issue(self, svc, sid):
         _shown_only(sid)
@@ -340,6 +342,7 @@ class TestNamedAsk:
         verdict = await gate_issue_write(
             intent,
             None,
+            has_free_text_field=True,
             repository=None,
             user_id=USER,
             session_id=sid,
@@ -359,6 +362,7 @@ class TestNamedAsk:
         verdict = await gate_issue_write(
             _intent("update_issue", "rename it"),
             number,
+            has_free_text_field=True,
             repository=None,
             user_id=USER,
             session_id=sid,
@@ -370,6 +374,7 @@ class TestNamedAsk:
         verdict = await gate_issue_write(
             _intent("update_issue", "rename it"),
             None,
+            has_free_text_field=True,
             repository=None,
             user_id=USER,
             session_id=sid,
@@ -461,6 +466,7 @@ class TestGateUnit:
         verdict = await gate_issue_write(
             intent,
             22,
+            has_free_text_field=True,
             repository=None,
             user_id=USER,
             session_id="s",
@@ -475,6 +481,7 @@ class TestGateUnit:
         verdict = await gate_issue_write(
             intent,
             None,
+            has_free_text_field=True,
             repository=None,
             user_id=USER,
             session_id="s",
@@ -484,25 +491,217 @@ class TestGateUnit:
 
 
 # ---------------------------------------------------------------------------
-# Pinned current behaviour the Architect asked to see (not changed here)
+# Issue 2460 (Arch): what counts as a TYPED issue number for a write
 # ---------------------------------------------------------------------------
 
 
-class TestPinnedTypedEdgeCases:
-    async def test_a_digit_in_a_field_value_counts_as_typed_today(self, svc, sid):
-        """ "rename it to Test issue 2": with no context number, the handler's #1066
-        fallback takes 2 as the issue, and the gate accepts it as typed (unchanged)."""
-        _shown_only(sid)
+class TestTypedIssueNumber2460:
+    """Arch's rule 1 as amended: on a free-text write, a MARKED number (``#N`` or
+    ``issue N``) outside the field value being written; ``#N`` only when the value
+    is not in the message; bare digits never. Close/reopen: one distinct number."""
+
+    @pytest.mark.parametrize(
+        "message, free_text, values, expected",
+        [
+            # The amended "So:" list.
+            ("change the title of issue 108 to Draft 3", True, ["Draft 3"], 108),
+            ("rename it to Test issue 2", True, ["Test issue 2"], None),
+            ("change the title of issue #2 to Draft 3", True, ["Draft 3"], 2),
+            ("comment on #4: see #9", True, ["see #9"], 4),
+            # Two distinct marked numbers, both outside the value: the ask.
+            ("change the title of #2 and #3 to Draft", True, ["Draft"], None),
+            ("change the title of issue 2 and issue 3 to Draft", True, ["Draft"], None),
+            # One number repeated is ONE distinct number.
+            ("set #2 to Draft, yes #2", True, ["Draft"], 2),
+            # The value is not in the message: only "#N" counts.
+            ("change the title of issue 108 to Draft", True, ["Something else"], None),
+            ("change the title of #108 to Draft", True, ["Something else"], 108),
+            ("rename issue 108 please", True, [], None),
+            # Bare digits never count on a free-text write.
+            ("change the title of 108 to Draft", True, ["Draft"], None),
+            # The forms of "issue N" accepted, and the ones not.
+            ("change the title of Issue #108 to Draft", True, ["Draft"], 108),
+            ("change the title of issue  108 to Draft", True, ["Draft"], 108),
+            ("change the title of ISSUE 108 to Draft", True, ["Draft"], 108),
+            ("change the title of issues 3 to Draft", True, ["Draft"], None),
+            ("change the title of issue-108 to Draft", True, ["Draft"], None),
+            ("change the title of issue108 to Draft", True, ["Draft"], None),
+            ("change the title of reissue 5 to Draft", True, ["Draft"], None),
+            # A number overlapping ANY occurrence of the value is excluded.
+            ("Draft 3: set issue 7 to Draft 3", True, ["Draft 3"], 7),
+            # The first "issue 7" is outside the value, the second inside: 7 counts.
+            ("set issue 7 to Draft issue 7", True, ["Draft issue 7"], 7),
+            # A partial overlap with the value excludes the number.
+            ("set issue 7 to Draft", True, ["7 to Draft"], None),
+            ("set it to Draft #7 now", True, ["Draft #7"], None),
+            ("change #0 to X", True, ["X"], None),
+            ("change # to X", True, ["X"], None),
+            # Arch's three normalisations when locating the value (and nothing else).
+            ("change the title of issue 8 to DRAFT Three", True, ["Draft three"], 8),
+            ("change the title of issue 8 to Draft   three", True, ["Draft three"], 8),
+            ("change the title of issue 8 to Draft three", True, ['"Draft three"'], 8),
+            ("change the title of issue 8 to Draft three", True, ["\u2018Draft three\u2019"], 8),
+            ('change the title of issue 8 to "Draft three"', True, ['"Draft three"'], 8),
+            # A changed word or punctuation is not found: only "#N" counts.
+            ("change the title of issue 8 to Draft three", True, ["Draft 3"], None),
+            ("change the title of issue 8 to Draft three", True, ["Draft, three"], None),
+            ("change the title of #8 to Draft three", True, ["Draft 3"], 8),
+            # Spans map back to the ORIGINAL message across collapsed whitespace.
+            ("change the title of issue  8 to Test  issue 2", True, ["Test issue 2"], 8),
+            ("rename it to Test  issue  2", True, ["Test issue 2"], None),
+            # Every field value takes part: labels, milestone (Arch's adjustment).
+            ("add label v2 to issue 5", True, ["v2"], 5),
+            ("add label 2024 to it", True, ["2024"], None),
+            ("set the milestone of issue 9 to Sprint 3", True, ["Sprint 3"], 9),
+            ("add label issue 4 to issue 5", True, ["issue 4"], 5),
+            # Close/reopen (no free-text field) are unaffected by rule 1.
+            ("close issue 5", False, [], 5),
+            ("close issue 5", False, ["issue 5"], 5),
+            ("close issue 5, it duplicates 7", False, [], None),
+            ("close #5", False, [], 5),
+            ("reopen 5", False, [], 5),
+            ("close #5 and #5", False, [], 5),
+            ("close #0", False, [], None),
+            ("close #", False, [], None),
+        ],
+    )
+    def test_the_rule(self, message, free_text, values, expected):
+        assert typed_issue_number(message, free_text, values) == expected
+
+    async def test_field_digit_with_no_head_gets_the_ask(self, svc, sid):
         intent = _intent(
             "update_issue", "rename it to Test issue 2", title="Test issue 2", repository=SHOWN_REPO
+        )
+        result, router = await _run(svc, sid, "update_issue", intent, [])
+        assert result.message == MAIN_UPDATE_ASK
+        _assert_nothing_done(svc, sid, router, result)
+
+    async def test_field_digit_with_a_created_head_binds_the_head(self, svc, sid):
+        intent = _intent("update_issue", "rename it to Test issue 2", title="Test issue 2")
+        _, router = await _run(svc, sid, "update_issue", intent, [_row(22, _now())])
+        kw = router.update_issue.await_args.kwargs
+        assert (kw["issue_number"], kw["owner"], kw["repo_name"]) == (22, "acme", "widgets")
+
+    async def test_issue_n_outside_the_title_targets_it_1411_kept(self, svc, sid):
+        intent = _intent(
+            "update_issue",
+            "change the title of issue 108 to Draft 3",
+            title="Draft 3",
+            repository=SHOWN_REPO,
+        )
+        _, router = await _run(svc, sid, "update_issue", intent, [])
+        assert router.update_issue.await_args.kwargs["issue_number"] == 108
+
+    async def test_marked_number_beside_a_field_digit_targets_the_marked_one(self, svc, sid):
+        intent = _intent(
+            "update_issue",
+            "change the title of issue #2 to Draft 3",
+            title="Draft 3",
+            repository=SHOWN_REPO,
         )
         _, router = await _run(svc, sid, "update_issue", intent, [])
         assert router.update_issue.await_args.kwargs["issue_number"] == 2
 
-    async def test_a_context_number_beside_a_different_typed_number(self, svc, sid):
-        """B3's created head (22) in context, the words carrying a field digit (3):
-        the context number wins in the handler as today; the gate accepts it as the
-        created head."""
+    async def test_two_marked_numbers_outside_the_title_get_the_ask(self, svc, sid):
+        intent = _intent(
+            "update_issue",
+            "change the title of #2 and #3 to Draft",
+            title="Draft",
+            repository=SHOWN_REPO,
+        )
+        result, router = await _run(svc, sid, "update_issue", intent, [])
+        assert result.message == MAIN_UPDATE_ASK
+        _assert_nothing_done(svc, sid, router, result)
+
+    async def test_a_bare_number_gets_the_existing_ask(self, svc, sid):
+        """CXO's bare-number line is not shipped: on an imperative update no confirm
+        stands in front of the write (1509's imperative pin), so "I'll ask you to
+        confirm" would not be true. The existing ask stands, byte for byte."""
+        intent = _intent(
+            "update_issue", "change the title of 108 to Draft", title="Draft", repository=SHOWN_REPO
+        )
+        result, router = await _run(svc, sid, "update_issue", intent, [])
+        assert result.message == MAIN_UPDATE_ASK
+        _assert_nothing_done(svc, sid, router, result)
+
+    async def test_a_shown_issue_and_a_bare_number_say_the_shown_statement(self, svc, sid):
+        _shown_only(sid)
+        intent = _intent(
+            "update_issue", "change the title of 108 to Draft", title="Draft", repository=SHOWN_REPO
+        )
+        result, router = await _run(svc, sid, "update_issue", intent, [])
+        assert result.message == NAMED_1
+        _assert_nothing_done(svc, sid, router, result)
+
+    async def test_the_classifiers_no_hash_explicit_number_targets_it(self, svc, sid):
+        """B3's 1411 explicit path puts 108 in context from "issue 108"; it is a
+        marked number outside the new title, so it is typed."""
+        message = "change the title of issue 108 to test new regressions"
+        intent = _intent(
+            "update_issue",
+            message,
+            issue_number=108,
+            b3_resolved=True,
+            b3_explicit=True,
+            repository=SHOWN_REPO,
+        )
+        _, router = await _run(svc, sid, "update_issue", intent, [])
+        assert router.update_issue.await_args.kwargs["issue_number"] == 108
+
+    async def test_a_state_only_update_takes_one_bare_number(self, svc, sid):
+        """No title or body is written, so rule 2 (one distinct number) applies."""
+        intent = _intent(
+            "update_issue", "close issue 31", state="closed", issue_number=31, repository=HEAD_REPO
+        )
+        _, router = await _run(svc, sid, "update_issue", intent, [])
+        assert router.update_issue.await_args.kwargs["issue_number"] == 31
+
+    async def test_a_changed_word_in_the_title_gets_the_ask(self, svc, sid):
+        """The title the handler will write ("Draft 3") is not in the words ("Draft
+        three"), so only "#N" counts and "issue 8" does not."""
+        intent = _intent(
+            "update_issue",
+            "change the title of issue 8 to Draft three",
+            title="Draft 3",
+            repository=SHOWN_REPO,
+        )
+        result, router = await _run(svc, sid, "update_issue", intent, [])
+        assert result.message == MAIN_UPDATE_ASK
+        _assert_nothing_done(svc, sid, router, result)
+
+    async def test_a_label_value_is_excluded_and_issue_n_outside_it_targets(self, svc, sid):
+        intent = _intent(
+            "update_issue", "add label v2 to issue 5", labels=["v2"], repository=SHOWN_REPO
+        )
+        _, router = await _run(svc, sid, "update_issue", intent, [])
+        assert router.update_issue.await_args.kwargs["issue_number"] == 5
+
+    async def test_a_digit_label_with_no_head_gets_the_ask(self, svc, sid):
+        intent = _intent(
+            "update_issue", "add label 2024 to it", labels=["2024"], repository=SHOWN_REPO
+        )
+        result, router = await _run(svc, sid, "update_issue", intent, [])
+        assert result.message == MAIN_UPDATE_ASK
+        _assert_nothing_done(svc, sid, router, result)
+
+    async def test_a_digit_label_with_a_created_head_binds_the_head(self, svc, sid):
+        intent = _intent("update_issue", "add label 2024 to it", labels=["2024"])
+        _, router = await _run(svc, sid, "update_issue", intent, [_row(22, _now())])
+        kw = router.update_issue.await_args.kwargs
+        assert (kw["issue_number"], kw["labels"]) == (22, ["2024"])
+
+    async def test_move_it_to_milestone_3_with_no_field_value_targets_3_and_writes_nothing(
+        self, svc, sid
+    ):
+        """Pinned under Arch's adjustment: the update handler has no milestone slot, so
+        this turn writes no field value; rule 2 then counts the one bare number (3). No
+        field to change, so the handler's own "tell me what to change" line, no write."""
+        intent = _intent("update_issue", "move it to milestone 3", repository=SHOWN_REPO)
+        result, router = await _run(svc, sid, "update_issue", intent, [])
+        assert result.message.startswith("Tell me what to change on #3")
+        router.update_issue.assert_not_awaited()
+
+    async def test_a_context_number_beside_a_field_digit(self, svc, sid):
         intent = _intent(
             "update_issue",
             "move it to milestone 3",
@@ -523,6 +722,71 @@ class TestPinnedTypedEdgeCases:
         )
         _, router = await _run(svc, sid, "update_issue", intent, [])
         assert router.update_issue.await_args.kwargs["issue_number"] == 5
+
+    @pytest.mark.parametrize("verb", ["close", "reopen"])
+    async def test_close_and_reopen_take_a_single_bare_number(self, svc, sid, verb):
+        action = f"{verb}_issue"
+        intent = _intent(action, f"yes, {verb} issue 5 in {SHOWN_REPO}")
+        _, router = await _run(svc, sid, action, intent, [])
+        kw = router.update_issue.await_args.kwargs
+        args = router.update_issue.await_args.args
+        assert kw.get("issue_number", args[0] if args else None) == 5
+
+    @pytest.mark.parametrize("verb", ["close", "reopen"])
+    async def test_two_numbers_on_close_or_reopen_get_the_ask(self, svc, sid, verb):
+        """No title-search match (mocked), so the plain ask; nothing armed or written.
+        Before 2460 the first number (5) was taken."""
+        action = f"{verb}_issue"
+        intent = _intent(action, f"{verb} issue 5, it duplicates 7")
+        router = _router()
+        router.get_open_issues = AsyncMock(return_value=[])
+        router.get_closed_issues = AsyncMock(return_value=[])
+        with patch(LEDGER, new=AsyncMock(return_value=[])), patch(ROUTER, return_value=router):
+            handler = (
+                svc._handle_close_issue_query if verb == "close" else svc._handle_reopen_issue_query
+            )
+            result = await handler(intent, "wf", session_id=sid)
+        assert result.message == PLAIN[action]
+        _assert_nothing_done(svc, sid, router, result)
+
+    async def test_a_marked_number_inside_the_comment_body_is_not_the_target(self, svc, sid):
+        intent = _intent("comment_issue", f"comment on #4 in {SHOWN_REPO}: see #9")
+        extracted = {"issue_number": "#4", "comment_text": "see #9"}
+        _, router = await _run(svc, sid, "comment_issue", intent, [], extracted)
+        assert router.add_comment.await_args.args[0] == 4
+
+    async def test_the_extractor_picking_the_body_number_gets_the_ask(self, svc, sid):
+        intent = _intent("comment_issue", "comment on #4: see #9")
+        extracted = {"issue_number": "#9", "comment_text": "see #9"}
+        result, router = await _run(svc, sid, "comment_issue", intent, [], extracted)
+        assert result.message == MAIN_COMMENT_ASK
+        _assert_nothing_done(svc, sid, router, result)
+
+    async def test_issue_n_on_a_comment_counts(self, svc, sid):
+        intent = _intent("comment_issue", f"comment on issue 4 in {SHOWN_REPO}: looks good")
+        extracted = {"issue_number": "4", "comment_text": "looks good"}
+        _, router = await _run(svc, sid, "comment_issue", intent, [], extracted)
+        assert router.add_comment.await_args.args[0] == 4
+
+    async def test_a_bare_comment_number_gets_the_ask(self, svc, sid):
+        intent = _intent("comment_issue", "comment on 4: looks good")
+        extracted = {"issue_number": "4", "comment_text": "looks good"}
+        result, router = await _run(svc, sid, "comment_issue", intent, [], extracted)
+        assert result.message == MAIN_COMMENT_ASK
+        _assert_nothing_done(svc, sid, router, result)
+
+    def test_the_close_confirm_builders_read_the_same_rule(self):
+        from services.intent_service.destructive_confirm import _issue_number_from
+
+        assert _issue_number_from(_intent("close_issue", "close issue 5")) == 5
+        assert _issue_number_from(_intent("close_issue", "close issue 5, it duplicates 7")) is None
+
+    def test_the_read_keeps_its_own_parse(self):
+        """Rule 3: review_issue_query still reads the first number, as on main."""
+        import inspect
+
+        src = inspect.getsource(IntentService._handle_review_issue_query)
+        assert 're.search(r"#?(\\d+)", original_message)' in src
 
 
 # ---------------------------------------------------------------------------

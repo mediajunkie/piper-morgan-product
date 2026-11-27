@@ -16,7 +16,7 @@ import re
 import string
 from dataclasses import dataclass
 from datetime import datetime, timedelta, timezone
-from typing import Any, Dict, Iterable, List, Optional, Tuple, TypedDict
+from typing import Any, Dict, Iterable, List, Optional, Sequence, Tuple, TypedDict
 from uuid import UUID
 
 import structlog
@@ -58,6 +58,8 @@ from services.intent_service.issue_write_gate import (
     gate_issue_write,
     issue_number_arg,
     refusal_line,
+    typed_issue_number,
+    update_field_values,
 )
 from services.intent_service.list_remainder import compose_capped_list, page_floor
 from services.intent_service.not_performed import (
@@ -8068,14 +8070,22 @@ class IntentService:
         plain_ask: str,
         session_id: Optional[str],
         repository: Optional[str] = None,
+        *,
+        has_free_text_field: bool,
+        source_created_head: bool = False,
+        field_values: Sequence[str] = (),
     ) -> Tuple[Optional[IntentProcessingResult], IssueWriteVerdict]:
         """2459: run the issue-write gate for close, reopen and comment. ``(None,
-        verdict)``: the number may be written. Otherwise the handler's existing ask,
-        with that ask's own flags (or the named ask in its place, same flags); nothing
-        armed."""
+        verdict)``: the number may be written (``verdict.number`` is it). Otherwise
+        the handler's existing ask, with that ask's own flags (or the named ask in its
+        place, same flags); nothing armed. ``has_free_text_field``: issue 2460's form
+        (close/reopen False, comment True)."""
         verdict = await gate_issue_write(
             intent,
             issue_number,
+            has_free_text_field=has_free_text_field,
+            source_created_head=source_created_head,
+            field_values=field_values,
             repository=repository,
             user_id=_principal_from_intent(intent),
             session_id=session_id,
@@ -8590,9 +8600,12 @@ class IntentService:
             import re
 
             original_message = intent.context.get("original_message", "")
-            match = re.search(r"#?(\d+)", original_message)
+            # Issue 2460 (Arch): a close/reopen has no free-text field, so a bare
+            # number counts as well as "#N", but only when exactly one distinct number
+            # appears; none, or two or more, take the no-number path below.
+            _typed_number = typed_issue_number(original_message, has_free_text_field=False)
 
-            if not match:
+            if _typed_number is None:
                 # Issue #902: Fuzzy match by description
                 search_terms = self._extract_search_terms(original_message, "close")
                 if search_terms:
@@ -8663,6 +8676,7 @@ class IntentService:
                 _no_number_gate = await gate_issue_write(
                     intent,
                     None,
+                    has_free_text_field=False,
                     repository=None,
                     user_id=_principal_from_intent(intent),
                     session_id=session_id,
@@ -8682,12 +8696,17 @@ class IntentService:
                     requires_clarification=True,
                 )
 
-            issue_number = int(match.group(1))
+            issue_number = _typed_number
             # 2459 (Arch's gate): close/reopen act only on a number parsed from the
             # person's words, so this accepts; it stands in front of the write in
             # case another source is ever added.
             _refused, _ = await self._issue_write_refusal(
-                intent, workflow_id, issue_number, CLOSE_ISSUE_NUMBER_ASK, session_id
+                intent,
+                workflow_id,
+                issue_number,
+                CLOSE_ISSUE_NUMBER_ASK,
+                session_id,
+                has_free_text_field=False,
             )
             if _refused is not None:
                 return _refused
@@ -8987,9 +9006,12 @@ class IntentService:
             import re
 
             original_message = intent.context.get("original_message", "")
-            match = re.search(r"#?(\d+)", original_message)
+            # Issue 2460 (Arch): a close/reopen has no free-text field, so a bare
+            # number counts as well as "#N", but only when exactly one distinct number
+            # appears; none, or two or more, take the no-number path below.
+            _typed_number = typed_issue_number(original_message, has_free_text_field=False)
 
-            if not match:
+            if _typed_number is None:
                 # Issue #902: Fuzzy match by description
                 search_terms = self._extract_search_terms(original_message, "reopen")
                 if search_terms:
@@ -9060,6 +9082,7 @@ class IntentService:
                 _no_number_gate = await gate_issue_write(
                     intent,
                     None,
+                    has_free_text_field=False,
                     repository=None,
                     user_id=_principal_from_intent(intent),
                     session_id=session_id,
@@ -9078,12 +9101,17 @@ class IntentService:
                     requires_clarification=True,
                 )
 
-            issue_number = int(match.group(1))
+            issue_number = _typed_number
             # 2459 (Arch's gate): close/reopen act only on a number parsed from the
             # person's words, so this accepts; it stands in front of the write in
             # case another source is ever added.
             _refused, _ = await self._issue_write_refusal(
-                intent, workflow_id, issue_number, REOPEN_ISSUE_NUMBER_ASK, session_id
+                intent,
+                workflow_id,
+                issue_number,
+                REOPEN_ISSUE_NUMBER_ASK,
+                session_id,
+                has_free_text_field=False,
             )
             if _refused is not None:
                 return _refused
@@ -9428,6 +9456,9 @@ class IntentService:
             # come from earlier turns) is written only when the person typed it in
             # this message or it is the session's created head; otherwise the ask
             # (the named ask when a single shown issue is the only candidate).
+            # Issue 2460: a comment has a free-text body, so only one distinct "#N"
+            # typed counts; with none typed, the created head (when it is the
+            # referent) is the number.
             _refused, _comment_gate = await self._issue_write_refusal(
                 intent,
                 workflow_id,
@@ -9435,9 +9466,15 @@ class IntentService:
                 COMMENT_ISSUE_NUMBER_ASK,
                 session_id,
                 repository=intent.context.get("repository") or intent.context.get("repo"),
+                has_free_text_field=True,
+                source_created_head=True,
+                field_values=[
+                    v for v in (extracted.get("comment_text"),) if isinstance(v, str) and v.strip()
+                ],
             )
             if _refused is not None:
                 return _refused
+            issue_number = issue_number or _comment_gate.number
             if issue_number is None:
                 # The gate refuses a write with no number, so this cannot be reached;
                 # it keeps the write below from ever being called without one.
@@ -15172,15 +15209,23 @@ class IntentService:
             # extraction didn't populate issue_number. Matches the pattern
             # already used by _handle_review_issue_query (line 3181) and the
             # other GitHub mutation handlers.
+            # Issue 2460 (Arch, amended) replaces the #1066 "#?(\d+)" fallback for this
+            # write: with a title or body, only one distinct "#N" / "issue N" outside
+            # that value counts ("issue 2" inside "rename it to Test issue 2" never
+            # picks the target); with neither, one distinct number, marked or bare.
+            # Issue 2460 (as amended, Arch 11-27): EVERY field value this update will
+            # write (its own slots: title, body, each label, each assignee) takes part;
+            # a bare number counts only when it writes none (a state-only change).
+            _field_values = update_field_values(
+                title=title, body=body, labels=labels, assignees=assignees
+            )
+            _free_text = bool(_field_values)
             if not issue_number:
-                import re as _re
-
-                original_message = intent.original_message or intent.context.get(
-                    "original_message", ""
+                issue_number = typed_issue_number(
+                    intent.original_message or intent.context.get("original_message", ""),
+                    has_free_text_field=_free_text,
+                    field_values=_field_values,
                 )
-                _m = _re.search(r"#?(\d+)", original_message)
-                if _m:
-                    issue_number = int(_m.group(1))
 
             def _update_number_ask(
                 message: str = UPDATE_ISSUE_NUMBER_ASK,
@@ -15206,6 +15251,9 @@ class IntentService:
                 _gate = await gate_issue_write(
                     intent,
                     issue_number,
+                    has_free_text_field=_free_text,
+                    field_values=_field_values,
+                    source_created_head=_free_text,
                     repository=repository,
                     user_id=_user_id,
                     session_id=session_id,
@@ -15213,6 +15261,7 @@ class IntentService:
                 )
                 if not _gate.accepted:
                     return _update_number_ask(refusal_line(_gate, UPDATE_ISSUE_NUMBER_ASK))
+                issue_number = issue_number or _gate.number
                 repository = repository or _gate.repository
 
             # Validate required parameters

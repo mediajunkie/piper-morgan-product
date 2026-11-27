@@ -415,34 +415,16 @@ async def update_issue_write_ask(request: WriteAskRequest) -> WriteAsk:
     number parse the handlers share. No field said: nothing named. The number, the
     repo and every field's value are bound; the handler writes exactly those."""
     from services.intent.intent_service import IntentService
-    from services.intent_service.destructive_confirm import _issue_number_from
-    from services.intent_service.issue_write_gate import gate_issue_write, issue_number_arg
+    from services.intent_service.issue_write_gate import (
+        gate_issue_write,
+        issue_number_arg,
+        typed_issue_number,
+        update_field_values,
+    )
 
     intent = request.intent
     ctx = _context(intent)
     slots = IntentService._slotfill_issue_request(_original(intent))
-    # 2459: the one normaliser for the issue key (``issue_number`` / ``issue``).
-    number = issue_number_arg(ctx) or _issue_number_from(intent)
-    repository = (
-        _text(ctx.get("repository")) or _text(ctx.get("repo")) or _text(slots.get("repository"))
-    )
-    if number:
-        # 2459 (Arch's gate), before anything is bound or armed: a refused number
-        # passes through to the handler, whose same gate says its ask (the named
-        # ask when a single shown issue is the only candidate). Nothing is armed.
-        _service = request.intent_service
-        _gate = await gate_issue_write(
-            intent,
-            number,
-            repository=repository,
-            user_id=request.user_id or request.principal,
-            session_id=request.session_id,
-            created_head=getattr(_service, "_issue_referent_from_ledger", None),
-            stamp=False,
-        )
-        if not _gate.accepted:
-            return WriteAsk(passthrough=True)
-        repository = repository or _text(_gate.repository)
     values = {
         "title": ctx.get("title") or slots.get("title"),
         "body": ctx.get("body") or ctx.get("description") or slots.get("body"),
@@ -450,6 +432,46 @@ async def update_issue_write_ask(request: WriteAskRequest) -> WriteAsk:
         "labels": ctx.get("labels"),
         "assignees": ctx.get("assignees"),
     }
+    # Issue 2460 (as amended): every field value this update would write (title,
+    # body, labels, assignees) decides which marked numbers count (the handler's
+    # own rule, the same slots).
+    field_values = update_field_values(
+        title=values["title"],
+        body=values["body"],
+        labels=values["labels"],
+        assignees=values["assignees"],
+    )
+    free_text = bool(field_values)
+    # 2459: the one normaliser for the issue key (``issue_number`` / ``issue``).
+    number = issue_number_arg(ctx) or typed_issue_number(
+        _original(intent), has_free_text_field=free_text, field_values=field_values
+    )
+    repository = (
+        _text(ctx.get("repository")) or _text(ctx.get("repo")) or _text(slots.get("repository"))
+    )
+    # 2459 (Arch's gate), before anything is bound or armed. A refused number passes
+    # through to the handler, whose same gate says its ask (the named ask when a
+    # single shown issue is the only candidate). With no number typed, the created
+    # head is the number when it is the referent; with nothing at all, the statement
+    # below, as before. Nothing is armed on a refusal.
+    _service = request.intent_service
+    _gate = await gate_issue_write(
+        intent,
+        number,
+        has_free_text_field=free_text,
+        field_values=field_values,
+        source_created_head=free_text,
+        repository=repository,
+        user_id=request.user_id or request.principal,
+        session_id=request.session_id,
+        created_head=getattr(_service, "_issue_referent_from_ledger", None),
+        stamp=False,
+    )
+    if _gate.accepted:
+        number = number or _gate.number
+        repository = repository or _text(_gate.repository)
+    elif number or _gate.shown is not None or _gate.reason == "several_typed":
+        return WriteAsk(passthrough=True)
     fields = [said for key, said in _UPDATE_ISSUE_FIELDS if values[key]]
     if not number or not repository or not fields:
         return WriteAsk()

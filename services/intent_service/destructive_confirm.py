@@ -276,15 +276,18 @@ class ConfirmationOffer:
 
 
 def _issue_number_from(intent: Intent) -> Optional[int]:
-    """The same parse the handlers use (their first mutating step is gated on
-    it): first ``#N`` / bare number in the original message."""
+    """The close/reopen number, by the same rule their handlers now use (issue
+    2460, ``typed_issue_number`` with no free-text field): ``#N`` or a bare number,
+    only when exactly one distinct number appears in the original message. Its only
+    callers are the close/reopen confirm builders (writes)."""
+    from services.intent_service.issue_write_gate import typed_issue_number
+
     message = ""
     if intent.context:
         message = intent.context.get("original_message", "") or ""
     if not message:
         message = intent.original_message or ""
-    match = re.search(r"#?(\d+)", message)
-    return int(match.group(1)) if match else None
+    return typed_issue_number(message, has_free_text_field=False)
 
 
 def _issue_title_from(intent: Intent) -> Optional[str]:
@@ -1299,6 +1302,7 @@ async def build_close_reopen_confirmation(
     _gate = await gate_issue_write(
         intent,
         issue_number,
+        has_free_text_field=False,
         repository=None,
         user_id=None,
         session_id=None,
