@@ -1073,3 +1073,4 @@ Brake FIRED (second slip = #1965 admission, found and ledgered 10-09). Memo to E
 - 11-27 `06:25`: CXO passed 2411's project half; PPM ticked row 2, and Lead closes. Lead traces whether anything writes a work item; 2455's sprint 3 place follows that trace.
 - 11-27 `06:54`: Path A read on seat-github-1, NOT served; 2458 and 2459 filed in V. 2455 accepted as built (it lands on a green suite). 2457 placed in C with option (a). Production 334, map v230. Paths A and B: 0 of 2. Reruns wait on the fixes: Path A on 2458 and 2459, Path B on 2425 and 2455.
 - 11-27 `07:28`: beta serves `702cde7faf`: the skip and the flip are served. 2455 waits on a second promotion.
+- 11-27 `08:28`: 2425's lever is ruled (Arch: a CLARIFY-only consult with project names). It needs xian's word via Exec after the screen passes. PPM's product read went to Exec in advance (01M8EXBYFK, yes on a pass). 2455 served and closes on CXO's word.
