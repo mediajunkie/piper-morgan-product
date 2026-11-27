@@ -613,24 +613,68 @@ class TestTypedIssueNumber2460:
         assert result.message == MAIN_UPDATE_ASK
         _assert_nothing_done(svc, sid, router, result)
 
-    async def test_a_bare_number_gets_the_existing_ask(self, svc, sid):
-        """CXO's bare-number line is not shipped: on an imperative update no confirm
-        stands in front of the write (1509's imperative pin), so "I'll ask you to
-        confirm" would not be true. The existing ask stands, byte for byte."""
+    async def test_one_bare_number_outside_the_value_gets_cxos_hint(self, svc, sid):
+        """Issue 2460 follow-up (CXO 2026-11-27): a write that carries a field value,
+        no marked number, exactly one bare number outside the value. The reply names
+        that number, taken from the message by code, and promises nothing about a
+        confirm (an imperative update has none: 1509's pin). Nothing is armed."""
         intent = _intent(
             "update_issue", "change the title of 108 to Draft", title="Draft", repository=SHOWN_REPO
         )
         result, router = await _run(svc, sid, "update_issue", intent, [])
+        assert result.message == 'If you mean issue 108, write it as "#108".'
+        assert result.requires_clarification is True
+        assert result.success is False
+        _assert_nothing_done(svc, sid, router, result)
+
+    async def test_the_hint_is_followed_by_the_hash_form_which_proceeds(self, svc, sid):
+        intent = _intent(
+            "update_issue",
+            "change the title of #108 to Draft",
+            title="Draft",
+            repository=SHOWN_REPO,
+        )
+        _, router = await _run(svc, sid, "update_issue", intent, [])
+        assert router.update_issue.await_args.kwargs["issue_number"] == 108
+
+    @pytest.mark.parametrize(
+        "message, title",
+        [
+            ("rename it to Test issue 2", "Test issue 2"),  # the digit is inside the value
+            ("change the title of 108 and 109 to Draft", "Draft"),  # two bare numbers
+            ("change the title to Draft", "Draft"),  # no number at all
+            # the value the handler will write is not in the words, so nothing can
+            # be shown to sit outside it
+            ("change the title of 8 to Draft three", "Draft 3"),
+        ],
+    )
+    async def test_every_other_refusal_keeps_the_existing_ask(self, svc, sid, message, title):
+        intent = _intent("update_issue", message, title=title, repository=SHOWN_REPO)
+        result, router = await _run(svc, sid, "update_issue", intent, [])
         assert result.message == MAIN_UPDATE_ASK
         _assert_nothing_done(svc, sid, router, result)
 
-    async def test_a_shown_issue_and_a_bare_number_say_the_shown_statement(self, svc, sid):
+    async def test_a_shown_issue_and_a_bare_number_say_both_sentences(self, svc, sid):
+        """Arch and CXO, 2026-11-27: after #1 is shown, a different bare number gets the
+        shown statement and then the hint, so the typed number is never unexplained."""
         _shown_only(sid)
         intent = _intent(
             "update_issue", "change the title of 108 to Draft", title="Draft", repository=SHOWN_REPO
         )
         result, router = await _run(svc, sid, "update_issue", intent, [])
-        assert result.message == NAMED_1
+        assert result.message == NAMED_1 + ' If you mean issue 108, write it as "#108".'
+        _assert_nothing_done(svc, sid, router, result)
+
+    async def test_archs_case_shown_1_then_set_the_title_of_7(self, svc, sid):
+        _shown_only(sid)
+        intent = _intent(
+            "update_issue",
+            "set the title of 7 to Fix login",
+            title="Fix login",
+            repository=SHOWN_REPO,
+        )
+        result, router = await _run(svc, sid, "update_issue", intent, [])
+        assert result.message == NAMED_1 + ' If you mean issue 7, write it as "#7".'
         _assert_nothing_done(svc, sid, router, result)
 
     async def test_the_classifiers_no_hash_explicit_number_targets_it(self, svc, sid):
@@ -792,9 +836,18 @@ class TestTypedIssueNumber2460:
         _, router = await _run(svc, sid, "comment_issue", intent, [], extracted)
         assert router.add_comment.await_args.args[0] == 4
 
-    async def test_a_bare_comment_number_gets_the_ask(self, svc, sid):
+    async def test_a_bare_comment_number_gets_cxos_hint_and_writes_nothing(self, svc, sid):
+        """Issue 2460 follow-up: the bare number is outside the comment's body, so the
+        reply names it and says how to write it. No comment is added."""
         intent = _intent("comment_issue", "comment on 4: looks good")
         extracted = {"issue_number": "4", "comment_text": "looks good"}
+        result, router = await _run(svc, sid, "comment_issue", intent, [], extracted)
+        assert result.message == 'If you mean issue 4, write it as "#4".'
+        _assert_nothing_done(svc, sid, router, result)
+
+    async def test_a_bare_number_inside_the_comment_body_keeps_the_ask(self, svc, sid):
+        intent = _intent("comment_issue", "comment: retry 3 times")
+        extracted = {"issue_number": "3", "comment_text": "retry 3 times"}
         result, router = await _run(svc, sid, "comment_issue", intent, [], extracted)
         assert result.message == MAIN_COMMENT_ASK
         _assert_nothing_done(svc, sid, router, result)

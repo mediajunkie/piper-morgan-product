@@ -51,6 +51,7 @@ from typing import Any, Awaitable, Callable, List, Mapping, Optional, Sequence, 
 import structlog
 
 from services.intent_service.shown_issue import (
+    BARE_ISSUE_NUMBER_HINT,
     LEDGER_UNREADABLE,
     SHOWN_ISSUE_WHICH_ASK,
     CreatedIssueRef,
@@ -342,6 +343,11 @@ class IssueWriteVerdict:
     repository: Optional[str] = None
     reason: str = ""
     shown: Optional[Tuple[str, int]] = None
+    #: Refusals only (issue 2460 follow-up): the ONE bare number the person typed
+    #: outside every field value, on a write that carries a field value and typed no
+    #: marked number. The caller then says ``BARE_ISSUE_NUMBER_HINT``, unless a shown
+    #: issue is the referent (that statement comes first).
+    bare: Optional[int] = None
 
 
 def _same_repo(a: Optional[str], b: Optional[str]) -> bool:
@@ -411,18 +417,49 @@ def _refuse(
     number: Optional[int],
     repository: Optional[str],
     shown: Optional[Tuple[str, int]] = None,
+    bare: Optional[int] = None,
 ) -> IssueWriteVerdict:
-    logger.info("issue_write_gate_refused", action=action, reason=reason, named=bool(shown))
-    return IssueWriteVerdict(False, number, repository, reason, shown)
+    logger.info(
+        "issue_write_gate_refused",
+        action=action,
+        reason=reason,
+        named=bool(shown),
+        bare_hint=bare is not None,
+    )
+    return IssueWriteVerdict(False, number, repository, reason, shown, bare)
+
+
+def single_bare_number(message: str, field_values: Sequence[str]) -> Optional[int]:
+    """Issue 2460 follow-up: the one bare number in a field-value write's message that
+    sits outside every field value, when the message has NO counted (marked) number
+    and exactly one such bare number; else None. Read by the same scan the rule uses,
+    so "bare" and "counted" cannot disagree with ``typed_issue_candidates``."""
+    values = [v for v in field_values if isinstance(v, str) and v.strip()]
+    _, all_found = _value_spans(message or "", values)
+    if not values or not all_found:
+        # A value the message does not hold cannot be located, so no number can be
+        # shown to sit outside it: the plain ask stands.
+        return None
+    counted, bare = _free_text_readings(message or "", field_values)
+    if counted or len(bare) != 1:
+        return None
+    (number,) = bare
+    return number if number > 0 else None
 
 
 def refusal_line(verdict: IssueWriteVerdict, plain_ask: str) -> str:
     """What a refused write says: the named ask when the only candidate referent is
-    a single shown issue, else the handler's existing ask, byte for byte."""
+    a single shown issue; CXO's hint when the message holds one bare number outside
+    the field value; both, the statement first, when both apply (Arch and CXO,
+    2026-11-27: never the shown issue alone when the person typed another number);
+    else the handler's existing ask, byte for byte."""
+    parts = []
     if verdict.shown is not None:
         repository, number = verdict.shown
-        return SHOWN_ISSUE_WHICH_ASK.format(number=number, repository=repository)
-    return plain_ask
+        parts.append(SHOWN_ISSUE_WHICH_ASK.format(number=number, repository=repository))
+    if verdict.bare is not None:
+        parts.append(BARE_ISSUE_NUMBER_HINT.format(number=verdict.bare))
+    return " ".join(parts) if parts else plain_ask
 
 
 async def gate_issue_write(
@@ -470,6 +507,10 @@ async def gate_issue_write(
     if len(typed_set) >= 2:
         return _refuse(action, "several_typed", number, repository)
     typed = typed_issue_number(message, has_free_text_field, field_values)
+    # Issue 2460 follow-up: only for a write that carries a field value and typed no
+    # marked number. Not used for several typed numbers, a repository mismatch or a
+    # non-integer key, which keep the plain ask.
+    bare_hint = single_bare_number(message, field_values) if has_free_text_field else None
 
     if number is None:
         if _non_integer_issue_key(intent):
@@ -489,16 +530,26 @@ async def gate_issue_write(
                         _stamp(intent, verdict)
                     return verdict
             return _refuse(
-                action, "no_number", None, repository, _shown_referent(head, user_id, session_id)
+                action,
+                "no_number",
+                None,
+                repository,
+                _shown_referent(head, user_id, session_id),
+                bare_hint,
             )
         # The ledger is read only when a single shown issue could be the referent
         # (the named ask); otherwise the plain ask needs no read.
         shown = last_shown_issue(session_id, user_id)
         if shown is None or not getattr(shown, "single", False):
-            return _refuse(action, "no_number", None, repository)
+            return _refuse(action, "no_number", None, repository, None, bare_hint)
         head = await _read_head(created_head, user_id, session_id)
         return _refuse(
-            action, "no_number", None, repository, _shown_referent(head, user_id, session_id)
+            action,
+            "no_number",
+            None,
+            repository,
+            _shown_referent(head, user_id, session_id),
+            bare_hint,
         )
 
     args_number = issue_number_arg(ctx.get("inversion_args"))
@@ -531,6 +582,7 @@ async def gate_issue_write(
             number,
             repository,
             _shown_referent(head, user_id, session_id),
+            bare_hint,
         )
     return _refuse(
         action,
@@ -538,4 +590,5 @@ async def gate_issue_write(
         number,
         repository,
         _shown_referent(head, user_id, session_id),
+        bare_hint,
     )
