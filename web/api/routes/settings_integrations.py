@@ -1530,15 +1530,25 @@ async def connect_github(
     current_user: JWTClaims = Depends(get_current_user),
     request: Request = None,  # type: ignore[assignment]  # FastAPI injects it; None on a direct call (#2281 b)
 ):
-    """Start the GitHub OAuth flow from Settings. Returns the authorization URL + state."""
+    """Start the GitHub OAuth flow from Settings. Returns the authorization URL + state.
+
+    Issue 2261 (ADR-081 D3, amended 2026-11-27): the connect runs only in GitHub App mode.
+    With App mode off it refuses with CXO's line before any state is stored; the same
+    predicate decides whether the Settings page offers the Connect step at all."""
     try:
-        from services.mcp.consumer.github_oauth_handler import GitHubOAuthHandler
+        from services.mcp.consumer.github_oauth_handler import (
+            GITHUB_CONNECT_NOT_SET_UP_LINE,
+            GitHubOAuthHandler,
+        )
 
         handler = GitHubOAuthHandler()
-        if not handler.client_id or not handler.client_secret:
-            raise HTTPException(
+        if not handler.app_mode:
+            # 503, as for setup's "client not configured" refusals (#2345): this install
+            # can't offer the service; marked so the handler keeps CXO's words.
+            logger.info("github_settings_connect_not_set_up", user_id=current_user.sub)
+            raise UserFacingHTTPException(
                 status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
-                detail="GitHub OAuth not configured (missing OAuth App client_id/secret).",
+                detail=GITHUB_CONNECT_NOT_SET_UP_LINE,
             )
         switch = host_switch_url(request, handler.redirect_uri, "/settings/integrations/github")
         if switch:
@@ -1578,7 +1588,16 @@ async def handle_github_callback(
     browser_session: Optional[JWTClaims] = Depends(get_current_user_or_none),  # #2283
 ):
     """Handle the GitHub OAuth callback: verify state → exchange code → store the grant +
-    mark the binding BOUND (#1317 inc.2). Redirects back to /settings/integrations."""
+    mark the binding BOUND (#1317 inc.2). Redirects back to /settings/integrations.
+
+    Issue 2261: with App mode off (a tab left open from before a configuration change)
+    nothing is read or exchanged; the person is sent to Settings, GitHub, which in that
+    state shows CXO's card line and the personal-token form."""
+    from services.mcp.consumer.github_app_grant import app_mode
+
+    if not app_mode():
+        logger.warning("github_settings_oauth_callback_not_set_up")
+        return RedirectResponse(url="/settings/integrations/github", status_code=302)
     if error:
         logger.warning("github_settings_oauth_denied", error=error)
         return RedirectResponse(url=f"/settings/integrations?github_error={error}", status_code=302)

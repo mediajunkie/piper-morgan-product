@@ -59,7 +59,7 @@ Ask Piper a short question in the chat. **(checked 2026-11-20 by a seat with a r
 
 ## What your install offers
 
-A self-hosted install offers the same connectors as the private beta, GitHub and Google Calendar. Notion and Slack are not offered in this beta, self-hosted installs included. Calendar on your own install needs your own Google OAuth client ID and secret, entered on the setup page or in Settings. **(not yet run by Docs)**
+A self-hosted install offers the same connectors as the private beta, GitHub and Google Calendar. Notion and Slack are not offered in this beta, self-hosted installs included. Calendar on your own install needs your own Google OAuth client ID and secret, entered on the setup page or in Settings. GitHub on your own install works one of two ways. You can paste a fine-grained personal access token in Settings, which needs no setup beyond creating the token. Or you can register your own GitHub App with the permissions listed in ADR-081 D3 and no wider, install it on selected repositories only, and set `GITHUB_APP_CLIENT_ID`, `GITHUB_APP_CLIENT_SECRET` and `GITHUB_APP_SLUG`. Keep the App's client secret in your own environment or store, never in a repository. With no App values set, the personal token is the only way in: the older classic OAuth App connect is retired. **(not yet run by Docs)**
 
 ## Update later
 

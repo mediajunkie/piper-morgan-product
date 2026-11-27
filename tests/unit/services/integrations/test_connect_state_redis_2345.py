@@ -108,8 +108,10 @@ def _creds(monkeypatch):
     monkeypatch.setenv("GITHUB_OAUTH_CLIENT_SECRET", "csecret")
     monkeypatch.setenv("GOOGLE_CLIENT_ID", "gid")
     monkeypatch.setenv("GOOGLE_CLIENT_SECRET", "gsecret")
-    for name in (grant_mod.ENV_APP_CLIENT_ID, grant_mod.ENV_APP_CLIENT_SECRET):
-        monkeypatch.delenv(name, raising=False)
+    # Issue 2261: a GitHub connect runs only in App mode, so the App's (fake) values are
+    # set; the classic ones stay beside them and are not read by a connect.
+    monkeypatch.setenv(grant_mod.ENV_APP_CLIENT_ID, "test-app-client-id")
+    monkeypatch.setenv(grant_mod.ENV_APP_CLIENT_SECRET, "test-app-client-secret")
 
 
 def _nonce(state: str) -> str:

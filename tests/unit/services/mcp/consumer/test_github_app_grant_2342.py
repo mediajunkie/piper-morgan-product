@@ -295,13 +295,17 @@ class TestHandlerInAppMode:
         assert "scope=" not in url
         assert "client_id=app-client-id" in url
 
-    async def test_classic_mode_still_asks_for_repo(self, app_off, monkeypatch, state_redis):
+    async def test_app_mode_off_makes_no_authorize_url(self, app_off, monkeypatch, state_redis):
+        # Issue 2261: was test_classic_mode_still_asks_for_repo (pinned scope=repo on the
+        # classic URL). The classic connect is retired: no URL, the named refusal.
+        from services.mcp.consumer.github_oauth_handler import GitHubConnectNotConfigured
+
         monkeypatch.setenv("GITHUB_OAUTH_CLIENT_ID", "classic-id")
         monkeypatch.setenv("GITHUB_OAUTH_CLIENT_SECRET", "classic-secret")
         handler = GitHubOAuthHandler()
-        url, _ = await handler.generate_authorization_url(_OWNER)
         assert handler.app_mode is False
-        assert "scope=repo" in url and "client_id=classic-id" in url
+        with pytest.raises(GitHubConnectNotConfigured):
+            await handler.generate_authorization_url(_OWNER)
 
     def test_classic_flag_forces_the_classic_client_in_app_mode(self, app_on, monkeypatch):
         monkeypatch.setenv("GITHUB_OAUTH_CLIENT_ID", "classic-id")

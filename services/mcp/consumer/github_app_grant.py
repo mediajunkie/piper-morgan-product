@@ -3,8 +3,9 @@
 **App mode** is keyed on configuration, never on the deploy (Arch 2026-11-12 06:51): it is
 on only when BOTH ``GITHUB_APP_CLIENT_ID`` and ``GITHUB_APP_CLIENT_SECRET`` are present.
 One alone is never a half-on mode; ``app_mode_config_warning`` names the missing one for
-the startup log. With App mode off, connect, the resolver and the classic OAuth App behave
-exactly as before this module existed.
+the startup log. Issue 2261 (ADR-081 D3, amended 2026-11-27): with App mode off, GitHub
+connect is not set up; only the personal token (D4) connects, and a classic grant still
+stored keeps serving reads until it is disconnected.
 
 **The grant record** is one value in the encrypted ``github_mcp_oauth`` row: the user
 access token, its expiry, the refresh token, its expiry, and the marker
@@ -75,8 +76,23 @@ def app_mode_config_warning() -> Optional[str]:
     present = ENV_APP_CLIENT_ID if client_id else ENV_APP_CLIENT_SECRET
     return (
         f"GitHub App mode is OFF: {present} is set but {missing} is not. "
-        "Both are needed; the classic OAuth App keeps serving."
+        "Both are needed; until then GitHub connect is not set up and only a personal "
+        "access token serves (issue 2261)."
     )
+
+
+#: Issue 2261: the startup log's line in each mode (``connect_mode_log_line``).
+CONNECT_MODE_APP_LOG_LINE = "GitHub connect mode: GitHub App"
+CONNECT_MODE_NOT_CONFIGURED_LOG_LINE = (
+    "GitHub connect mode: not configured (no GitHub App values); "
+    "only a personal access token serves"
+)
+
+
+def connect_mode_log_line() -> str:
+    """The startup log's GitHub connect line, read from ``app_mode()`` (issue 2261: there
+    is no classic OAuth App connect any more)."""
+    return CONNECT_MODE_APP_LOG_LINE if app_mode() else CONNECT_MODE_NOT_CONFIGURED_LOG_LINE
 
 
 def app_install_url() -> Optional[str]:

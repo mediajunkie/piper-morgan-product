@@ -24,6 +24,20 @@ _GITHUB_USER_URL = "https://api.github.com/user"
 PERSONAL_TOKEN_PREFIXES = ("ghp_", "github_pat_")
 
 
+#: Issue 2261: the Settings, GitHub token form's hint asks for a fine-grained token on
+#: chosen repositories with ADR-081 D3's permissions (Metadata left out on purpose).
+#: Rendered into templates/settings_github.html once by the page route, with
+#: ``GITHUB_FINE_GRAINED_TOKEN_PAGE_TEXT`` made a link to ``..._URL``; never retyped.
+# CXO, 2026-11-27 (issue 2261).
+GITHUB_FINE_GRAINED_TOKEN_PAGE_TEXT = "github.com/settings/personal-access-tokens/new"
+GITHUB_FINE_GRAINED_TOKEN_PAGE_URL = "https://" + GITHUB_FINE_GRAINED_TOKEN_PAGE_TEXT
+GITHUB_PERSONAL_TOKEN_HINT = (
+    f"Create a fine-grained token at {GITHUB_FINE_GRAINED_TOKEN_PAGE_TEXT}. Choose the "
+    "repositories you want Piper to reach, and give it these repository permissions: "
+    "Contents: read; Issues: read and write; Pull requests: read and write."
+)
+
+
 def looks_like_personal_token(value: Optional[str]) -> bool:
     return isinstance(value, str) and value.strip().startswith(PERSONAL_TOKEN_PREFIXES)
 

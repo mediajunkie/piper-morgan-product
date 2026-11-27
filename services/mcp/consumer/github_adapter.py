@@ -76,6 +76,19 @@ _RESOLVE_TOOL = "resolve_resource"
 # The Settings route that starts the GitHub OAuth connect flow (#1317 inc.2 slice E) —
 # surfaced as the connect action_hint on a CONNECT_REQUIRED honest-degrade.
 _CONNECT_URL = "/api/v1/settings/integrations/github/connect"
+# Issue 2261 (Arch 2026-11-27): with GitHub App mode off the connect route only refuses,
+# so the hint sends a person to Settings, GitHub, where the card line and the
+# personal-token form are. Same ``app_mode()`` predicate as the route and the card.
+_GITHUB_SETTINGS_URL = "/settings/integrations/github"
+# CXO, 2026-11-27 (issue 2261): the connect-required line with App mode off.
+GITHUB_CONNECT_REQUIRED_NO_APP_LINE = (
+    "Add a GitHub personal access token in Settings, under Integrations, to continue."
+)
+# CXO, 2026-11-27 (issue 2261): the same state on Settings' own GitHub Test result, where
+# "in Settings, under Integrations" would point a person at where they already are.
+GITHUB_CONNECT_REQUIRED_NO_APP_TEST_LINE = (
+    "Add a GitHub personal access token on the GitHub settings page to continue."
+)
 # #2151 (Arch 10-24 16:49): the resolver's degrade when a stored-token read failed. A store
 # that didn't answer is a failed read, never "not connected".
 # CXO 2026-11-04 13:26 (#2266, #2188): the two degrades a person may read alone each
@@ -967,8 +980,13 @@ class GitHubMCPSpatialAdapter(BaseSpatialAdapter):
             return False
 
     async def degrade(self, reason: DegradationReason) -> DegradationResponse:
+        connect_offered = app_mode()  # issue 2261: no connect to send anyone to without it
         messages = {
-            DegradationReason.CONNECT_REQUIRED: "Connect GitHub to continue.",
+            DegradationReason.CONNECT_REQUIRED: (
+                "Connect GitHub to continue."
+                if connect_offered
+                else GITHUB_CONNECT_REQUIRED_NO_APP_LINE
+            ),
             DegradationReason.RESOURCE_NOT_FOUND: "That GitHub resource wasn't found.",
             DegradationReason.UNREACHABLE: "GitHub's MCP server is unreachable right now.",
             # #1398/A4: generic-honest — the deployment is misconfigured, but we never
@@ -985,7 +1003,11 @@ class GitHubMCPSpatialAdapter(BaseSpatialAdapter):
         return DegradationResponse(
             reason=reason,
             user_message=messages.get(reason, "The GitHub connector is degraded."),
-            action_hint=(_CONNECT_URL if reason is DegradationReason.CONNECT_REQUIRED else None),
+            action_hint=(
+                (_CONNECT_URL if connect_offered else _GITHUB_SETTINGS_URL)
+                if reason is DegradationReason.CONNECT_REQUIRED
+                else None
+            ),
         )
 
     # ── #1322 cutover: the user's open issues / PRs over the OAuth connector ──

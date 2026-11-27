@@ -10,6 +10,7 @@ deployment's env handle or another account's credential.
 from __future__ import annotations
 
 import contextlib
+import time
 from pathlib import Path
 from types import SimpleNamespace
 from unittest.mock import AsyncMock, MagicMock, patch
@@ -19,6 +20,7 @@ import pytest
 from services.integrations.github.read_failed import GitHubReadFailed
 from services.integrations.principal_test_results import PrincipalTestResultStore
 from services.mcp.consumer.github_adapter import GitHubCredential, GitHubReposResult
+from services.mcp.consumer.github_oauth_handler import GitHubOAuthTokens
 from web.api.routes import integrations as integrations_routes
 from web.api.routes import settings_integrations as si
 
@@ -90,12 +92,24 @@ class TestTheSuccessLine:
     async def test_the_callback_passes_only_a_login_it_read(
         self, monkeypatch, handler_result, expected_param
     ):
+        # Issue 2261: the callback runs only in GitHub App mode (fake App values), where the
+        # token reply must carry the expiring pair the grant record stores.
+        monkeypatch.setenv("GITHUB_APP_CLIENT_ID", "test-app-client-id")
+        monkeypatch.setenv("GITHUB_APP_CLIENT_SECRET", "test-app-client-secret")
+        now = int(time.time())
+        tokens = GitHubOAuthTokens(
+            access_token="t",
+            refresh_token="r",
+            expires_at=now + 8 * 3600,
+            refresh_expires_at=now + 180 * 86400,
+        )
         result = {
             "user_id": "user-1",
-            "tokens": SimpleNamespace(access_token="t"),
+            "tokens": tokens,
             **handler_result,
         }
         handler = MagicMock()
+        handler.return_value.app_mode = True
         handler.return_value.handle_oauth_callback = AsyncMock(return_value=result)
 
         @contextlib.asynccontextmanager

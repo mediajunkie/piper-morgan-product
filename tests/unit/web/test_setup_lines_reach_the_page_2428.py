@@ -374,7 +374,7 @@ class TestArchsGuardOverEveryMarkedRaise:
             "web/api/routes/preferences.py": 2,
             "web/api/routes/projects.py": 12,
             "web/api/routes/repositories.py": 4,
-            "web/api/routes/settings_integrations.py": 25,
+            "web/api/routes/settings_integrations.py": 26,  # issue 2261: connect not set up
             # 23: issue 2438 swapped the length check for the validator's picker and its
             # fallback (the account step now has three marked raises: match, rule, fallback).
             "web/api/routes/setup.py": 23,
