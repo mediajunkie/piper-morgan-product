@@ -680,11 +680,38 @@ async def notion_settings_page(request: Request):
 
 @router.get("/settings/integrations/github", response_class=HTMLResponse)
 async def github_settings_page(request: Request):
-    """GitHub token settings page (Issue #541)"""
+    """GitHub token settings page (Issue #541).
+
+    Issue 2261: the Connect step is offered only in GitHub App mode, read here at request
+    time from the same predicate the connect route refuses on; otherwise the page shows
+    CXO's card line in its place, above the personal-token form."""
+    from services.integrations.github.token_validator import (
+        GITHUB_FINE_GRAINED_TOKEN_PAGE_TEXT,
+        GITHUB_FINE_GRAINED_TOKEN_PAGE_URL,
+        GITHUB_PERSONAL_TOKEN_HINT,
+    )
+    from services.mcp.consumer.github_app_grant import app_mode
+    from services.mcp.consumer.github_oauth_handler import GITHUB_CONNECT_NOT_SET_UP_CARD_LINE
+
+    # Issue 2261: the hint's one sentence, split around the page address so the page
+    # makes that address a link without retyping any of the words.
+    hint_before, _, hint_after = GITHUB_PERSONAL_TOKEN_HINT.partition(
+        GITHUB_FINE_GRAINED_TOKEN_PAGE_TEXT
+    )
     templates = _get_templates(request)
     user_context = _extract_user_context(request)
     return templates.TemplateResponse(
-        "settings_github.html", {"request": request, "user": user_context}
+        "settings_github.html",
+        {
+            "request": request,
+            "user": user_context,
+            "github_connect_available": app_mode(),
+            "github_connect_not_set_up_line": GITHUB_CONNECT_NOT_SET_UP_CARD_LINE,
+            "github_token_hint_before": hint_before,
+            "github_token_hint_link_text": GITHUB_FINE_GRAINED_TOKEN_PAGE_TEXT,
+            "github_token_hint_link_url": GITHUB_FINE_GRAINED_TOKEN_PAGE_URL,
+            "github_token_hint_after": hint_after,
+        },
     )
 
 
