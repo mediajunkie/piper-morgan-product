@@ -45,7 +45,7 @@ footer{margin-top:36px;color:var(--muted);font-size:.82rem;border-top:1px solid 
 <tr><td>Updates to beta</td><td>22 of 23</td><td>Successful promotion dispatches (<code>gh run list -w fly-deploy.yml -e workflow_dispatch</code>, Pacific week): 23 success and 1 failure; one of the 23 is the first MCP deploy (11-26). The failure was the gate refusing a dispatch on 11-23. Lead counts 22, and the omnibus agrees.</td></tr>
 <tr><td>Signed-in reads on beta</td><td>first week with any</td><td>Web ran every requested row in a seat browser on seat-tester-1 or seat-github-1, and quoted replies whole. No seat could sign in last week.</td></tr>
 <tr><td>Issues filed / closed</td><td>47 / 45</td><td><code>gh-week-counts.py 2026-11-20</code>, repo-wide. PPM: 41 Production closes, all completed; Production 329 to 331 open.</td></tr>
-<tr><td>Main CI</td><td>Red once, 11-26</td><td>A timing test caught the garbage collector, about an hour. Fixed by pausing collection in the timed window, not by raising the bound. 12 of 12 green since.</td></tr>
+<tr><td>Main CI</td><td>Red on four days</td><td>11-20 Link Checker (12 stale <code>blob/production</code> links, repointed by Docs) and the staging deploy; 11-22 and 11-25 the staging deploy; 11-26 the staging deploy and a timing test that caught the garbage collector (fixed by pausing collection, not raising the bound). 12 of 12 green since. (Comms&rsquo; fact-check corrected my &ldquo;red once&rdquo;.)</td></tr>
 <tr><td>Paid model calls</td><td>about $23.47+</td><td>Lead&rsquo;s logged days: $14.19 (11-20), $1.30 (11-22), $4.43 (11-23), $3.55 (11-26). No day total in his 11-24 and 11-25 logs, so no week total. Every run had a PLANNED line first.</td></tr>
 <tr><td>Published</td><td>2 of 2</td><td>&ldquo;Do I Have To?&rdquo; (Sun 11-22, a day late) and Ship #070 &ldquo;No Workarounds&rdquo; (Tue 11-24). Both distributed.</td></tr>
 <tr><td>Beta today</td><td><code>039121b0fb</code></td><td>My <code>/health</code> read this morning. The greeting skip and the ethics check&rsquo;s on-by-default switch are on main only; Lead promotes from 07:00.</td></tr>
@@ -57,7 +57,7 @@ footer{margin-top:36px;color:var(--muted);font-size:.82rem;border-top:1px solid 
 <li><span class="tag ok">mostly</span> <b>Read what&rsquo;s on beta signed in, and close it.</b> 45 closed. Still landed but open on a served row: 2438 (sign-up and change pages, wizard), 2244 row 2 (an ingest surviving a deploy, your hand on the host), 2411 (Path B, today).</li>
 <li><span class="tag warn">partly</span> <b>Finish the GitHub move.</b> seat-github-1 is connected as its own machine account; 2342&rsquo;s 8-hour box is served (card 20:15, turn 20:16 on 11-26). Open: 2342&rsquo;s other rows, 2261, 2282 (your callback removal), and Step G (a). No invite-lift memo yet.</li>
 <li><span class="tag ok">met</span> <b>Keys and deploys off your hands.</b> Step E (OpenAI <code>seat-screens</code>, $25 enforced) and Step H (MCP deploy token, main only). The first MCP deploy without you ran on 11-26 and fixed 2382 (connector&rsquo;s first read after a restart). Left: Step G (a) once, and the Ending.</li>
-<li><span class="tag warn">partly</span> <b>Editorial.</b> 2 of 2 slotted posts live and distributed; the Saturday insight ran Sunday. &ldquo;Mark One Eyeball&rdquo; (Sat 11-28) still needs your prose.</li>
+<li><span class="tag warn">partly</span> <b>Editorial.</b> 2 of 2 slotted posts live and distributed; the Saturday insight ran Sunday.</li>
 </ul>
 
 <h2>What a user can do now that they couldn&rsquo;t on 11-19</h2>
@@ -114,17 +114,17 @@ footer{margin-top:36px;color:var(--muted);font-size:.82rem;border-top:1px solid 
 
 <h2>Draft goals for 11-27 to 12-03 (sprint 3&rsquo;s first week)</h2>
 <ol>
-<li><b>Finish the GitHub move:</b> Step G (a) and its seat check, 2342&rsquo;s remaining rows, 2261, and 2282 (your callback removal), so PPM can send the invite-lift memo.</li>
+<li><b>Open beta invitations (top priority, your word 11-27).</b> Finish the GitHub move (you: &ldquo;we can finish the github move today&rdquo;): Step G (a) and its seat check, 2342&rsquo;s remaining rows, 2261, 2282; then PPM&rsquo;s invite-lift memo for your decision.</li>
 <li><b>Paths A and B served on a fresh account</b> (Path B today, then Path A).</li>
 <li><b>Serve what is on main:</b> the skip and switch, 2438&rsquo;s remaining pages, 2244 row 2, 2446&rsquo;s two turns.</li>
-<li><b>The document model review:</b> the MUX comparison with you and CXO, if sprint 3 has room.</li>
-<li><b>Editorial:</b> &ldquo;Mark One Eyeball&rdquo; Sat 11-28, Ship #071 Tue 12-01, &ldquo;Ready or Not&rdquo; Thu 12-03 (title lock first).</li>
+<li><b>Document model review prepared:</b> Arch and CXO have the comparison of the map with the MUX docs vision, and recommendations, ready for your session. (Written as what the team can commit to, per your word.)</li>
+<li><i>Editorial is a standing commitment, not a goal:</i> &ldquo;Mark One Eyeball&rdquo; Sat 11-28, Ship #071 Tue 12-01, &ldquo;Ready or Not&rdquo; Thu 12-03.</li>
 </ol>
 
 <h2>For our discussion</h2>
 <ol>
 <li><b>The goals above:</b> yes, or edit.</li>
-<li><b>Theme.</b> Candidates: &ldquo;Signed In&rdquo; (the week&rsquo;s turn), &ldquo;As a User Meets It&rdquo; (CIO&rsquo;s line), or &ldquo;A Missed Score&rdquo; (lead with the sprint 2 miss as information, per your 11-20 word).</li>
+<li><b>Theme: &ldquo;Signed In&rdquo;</b> (your pick, 11-27): own which goals were not completed, why, and what we learned, including your reduced availability over the past ten days.</li>
 <li><b>Sprint 2&rsquo;s score:</b> report 0 of 2 and 0 of 3 plainly with the reasons, as you ruled on 11-20. Any wording you want on it?</li>
 <li><b>Writer:</b> your prose as usual, with Comms fact-checking.</li>
 </ol>
