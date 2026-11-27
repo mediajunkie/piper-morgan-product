@@ -54,6 +54,13 @@
 - **A second hold file stops promotions only (2026-11-20, CIO; Arch's written approval as a stricter-only change, mail 01M7Y8836V).** The promote job's first gate also refuses while `ops/promote-hold.md` exists on `origin/main`. The health watch does not read that file, so #2146's automatic database recovery stays on. Use it for a wording or review hold; use `ops/alpha-hold.md` when a deliberate stop must not be undone. The pre-check reads both. How to call and clear one: `ops/README.md`. The grant's text doesn't change.
 - **A late green leaves staging on an older red sha; the remedy is a re-run, not a code push (2026-11-02, Lead).** The staging deploy's health gate reads the newest completed Tests verdict on main at deploy time. On 11-02 a one-line backlog push (`dfa3363d5b`) deployed while the previous sha's Tests were still red, so staging kept serving `fc31f4a` and the promote gate refused on the served sha. `gh run rerun <the push's Fly deploy run id>` after that push's own Tests went green re-ran the staging job against the green verdict and staging served `dfa3363d5b` four minutes later (run 41556514319 attempt 2). No `fly`, no `workflow_dispatch`, nothing on the deploy path changes.
 
+- **Arch's part in a promotion, as practised (written 2026-11-27, Arch, at CIO's request; the grant's text doesn't change).** Alpha has redirected to beta since 11-05 (#2282), so "alpha" in the grant means beta. There are two Arch steps, and neither is a condition the dispatching seat waits on:
+  1. **Before a change lands on main:** Arch reads the change's branch from source and records "conforms", or the conditions, in decisions.log. This is the ordinary landing rule, not a promotion step.
+  2. **After a promotion:** Arch reads beta's `/health` `git_sha`, checks with `git merge-base --is-ancestor` that the commits Arch read are in it, checks that the served paths (`services/`, `web/`, `templates/`) don't differ from the read commits, and records "Promotion <sha> conforms" in decisions.log. A mismatch goes to Lead and Exec the same hour. It is a validation after the fact, not a gate.
+  - **What it doesn't cover:** a migration or a deploy-path change is outside the grant and needs xian's word, as the grant says. Arch's read does not stand in for it.
+  - **The 11-13 to 11-17 exception, kept for the record:** five decisions.log lines read "PROMOTION GRANTED" (11-13 16:13, 11-14 12:55, 11-17 07:53 and 09:53, plus the 08:27 conforms). These were promotions beyond the one-per-day pacing Lead's carry-forward recorded that week ("Arch's one-promotion lift", Lead's 11-13 log), each scoped to one commit. Arch did not find where that pacing was set: not in decisions.log by search, and the grant says "no daily count since 10-20". No such per-promotion grant has been given or needed since 11-17.
+  - **Also true in practice (Lead, 11-27):** the window is 07:00 to 21:00 PT, and Lead does not dispatch during a xian sitting. Exec's "xian has not started (a)" line is how Lead knows.
+
 **Review:** 2026-11-27, or after a promotion that leaves alpha serving neither the promoted build nor the one before it, whichever comes first. A refusal by a condition is not a trigger. *(Replaced 2026-11-03 on xian's word, decisions.log 2026-11-03 17:30, from CIO's 10-30 review below. The first line, "after 14 days (2026-10-30) or after the first failed promotion", was met on 10-16 by a refusal and so couldn't tell the grant working from a deploy failure.)*
 
 ### 14-day review (CIO, 2026-10-30, STOP fire)
@@ -107,3 +114,11 @@ Verified how:
 - **Health watch, 11-06 to 11-09:** 20 runs, 20 green.
 - **Layer:** GitHub Actions records plus logs.
 - **Denominator:** every dispatch in the window.
+
+**Correction to finding 3 (CIO, 2026-11-27, after Lead 01M8F3P2J6 and Arch 01M8F3X402):**
+- **The per-promotion grants were not a standing layer.** They were five "PROMOTION GRANTED" lines, 11-13 to 11-17. Each lifted Arch's temporary promotion hold for one promotion, during the reads for 2342. Lead's 11-12 log: "his promotion hold lifted for one promotion, between PA's reads".
+- **That is condition 2 working.** A hold named by Arch stops promotions, so no gap in the grant follows from it.
+- **None has been given or needed since 11-17.** Arch's part now is a read of each change before it lands and a validation after each promotion. Neither is a gate. He wrote it as the procedure note above.
+- **Not traced:** where the hold was first called. It isn't in decisions.log, so it was probably in mail.
+
+**One textual point the renewal should settle (xian's words, not mine to change):** condition 5 says "any change to production, beta or secrets" needs his yes, and "The grant covers alpha only". Since 11-05 the app the grant promotes to is served as beta. Practice since then, and xian's 11-26 rulings ("under the standing grant"), read the grant as covering that app. The renewal should say so in his words.
