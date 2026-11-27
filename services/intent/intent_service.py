@@ -9438,6 +9438,10 @@ class IntentService:
             )
             if _refused is not None:
                 return _refused
+            if issue_number is None:
+                # The gate refuses a write with no number, so this cannot be reached;
+                # it keeps the write below from ever being called without one.
+                raise RuntimeError("issue write gate accepted a comment with no issue number")
 
             comment_body = extracted.get("comment_text")
             if comment_body:
