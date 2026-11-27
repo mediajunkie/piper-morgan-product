@@ -31,7 +31,8 @@ sys.path.insert(0, str(PROJECT_ROOT))
 
 
 async def verify() -> int:
-    flag = os.getenv("ENABLE_ETHICS_ENFORCEMENT", "false").lower() == "true"
+    # Same reading as services/intent/intent_service.py: on unless the value is "false".
+    flag = os.getenv("ENABLE_ETHICS_ENFORCEMENT", "true").strip().lower() != "false"
     print(f"[verify-phase-f-flag] ENABLE_ETHICS_ENFORCEMENT={flag}")
     if not flag:
         print(
