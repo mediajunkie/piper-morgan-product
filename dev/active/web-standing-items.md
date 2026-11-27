@@ -209,3 +209,5 @@ history and the dated session logs, per the file's own "pointers not duplicated 
 - **Update 2026-11-27.** **Filed**: 2026-11-27. OWED[key: web-patha-rerun; to: ppm; by: trigger: Lead's mail that 2459 is promoted]: rerun turns 1 and 2 on seat-github-1 (what's going on in my github?; add a task to the Launch project: book the venue), each in a fresh conversation, plus the offered next step once; quote whole (3 planned turns).
 
 - **Update 2026-11-27.** **Filed**: 2026-11-27. OWED[key: web-zero-install-read; to: exec; by: trigger: Exec's or PA's word that the zero-install team change is done]: seat-github-1 Integrations card and Settings page whole, plus one turn (what's going on in my github?); CXO judges (1 planned turn).
+
+- **Update 2026-11-27.** **Filed**: 2026-11-27. OWED[key: web-revoke-card-read; to: exec; by: trigger: word that xian revoked the grant and /health shows rejected 1]: seat-github-1 Integrations card whole, quote the needs-reconnecting words; no turn; do not reconnect.
