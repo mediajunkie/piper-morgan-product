@@ -1,5 +1,6 @@
-# Production milestone: proposed sprints (PPM, 2026-10-23)
+# Production milestone: its epics (PPM, 2026-10-23; called "sprints" until 11-27)
 
+**Naming (xian, 11-27, via Exec 01M8F85S17):** the lettered sections below (PUB, H, D, C, V, E, T, Doc, Dist, Q) are **epics**, the major pieces of the Production milestone. "Sprint" means only the two-week cadence (sprint 3: `production-sprint-3-draft-2026-11-25.md`). Older text below says "sprint" for an epic; read it as epic. The board's field is still named Sprint until xian renames it; the snapshot and restore tools now read it by ID, so a rename doesn't break them. The filename keeps "sprint" so links in mail still resolve. Updated 11:47.
 **Status: ORDER RATIFIED** (xian, 2026-10-23 17:54, via Exec: "I approve all 4 questions for me"; decisions.log). No dates; PPM proposes none.
 - **Order:** PUB, then H, D, C, then V, E, T, Doc, Dist.
 - **Q** is a standing share of every sprint. Its size is open until the CI ruling.
@@ -35,7 +36,7 @@
 
 Production's own close is 1.0 / GA (`release-model.md` §2). Named front-loaded subsets gate earlier audiences. PUB, the MCP path, already gates public beta. This proposal keeps that and orders the rest by **what the next audience would hit first**:
 
-| # | Sprint (proposed) | Why this place in the order | Open (11-16 18:35, from the section headers) |
+| # | Epic (proposed 10-23 as a "sprint") | Why this place in the order | Open (11-16 18:35, from the section headers) |
 |---|---|---|---|
 | 1 | **PUB: Public-beta gate, PDR-009 rows G1 to G7** (regrouped 11-13) | xian's ratified gate (ESSENCE v1.0, 08-30), redrawn as PDR-009's rows G1 to G7 (accepted 11-12). It runs through the private beta. 10-28: the confabulation diagnosis (#2042) and its kin (#2183, #2185, #2186) moved in on xian's word. | 33 |
 | 2 | **H: Honesty sweep** (no false "none", "0", "not connected", "I can't see it") | xian approved the systematic sweep at 16:57: Arch scopes it, and Lead builds it after #2132. Design partners will hit these first, and each one is a Class 3 shape. Arch scoped it at 17:04 as **#2151** (placed Production by PPM), not #1423, because this week's served instances had no broad `except` for #1423's scanner to find. The list below is input to #2151's inventory, not a substitute for it. || 47 |

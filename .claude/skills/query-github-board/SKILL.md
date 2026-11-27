@@ -64,6 +64,9 @@ An item being ON the board says nothing about it being OPEN.
 For any claim that drives a decision ("the gate items are all closed", "this issue is on
 the sprint"), verify the SPECIFIC items via GraphQL — it's authoritative and un-paginated
 for a single node:
+
+> **Field name (11-27):** xian named the field's values *epics* and may rename the field itself from "Sprint" to "Epic". Writes here use the field **ID**, so they're unaffected. Reads by name (`fieldValueByName(name:"Sprint")`) return null after a rename, with no error. Before reading, check the current name by ID: `gh api graphql -f query='query{node(id:"PVTSSF_lAHOADE-8s4A-JwAzg2hWcg"){... on ProjectV2SingleSelectField{name}}}' --jq .data.node.name`, and use what it returns. `scripts/snapshot-project-board.sh` and `scripts/restore-sprint-field-from-snapshot.py` already do this.
+
 ```bash
 gh api graphql -f query='
 query { repository(owner:"OWNER", name:"REPO") {
