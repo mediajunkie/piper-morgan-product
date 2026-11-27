@@ -34,6 +34,30 @@ import sys
 from collections import defaultdict
 
 PROJECT_ID = "PVT_kwHOADE-8s4A-JwA"
+# The board's epic field (named "Sprint" until xian renames it, 11-27). Its ID survives a rename;
+# its name does not. Every query below uses the name resolved from this ID at run time, so a
+# rename can't make the dry run report every issue as drifted.
+SPRINT_FIELD_ID = "PVTSSF_lAHOADE-8s4A-JwAzg2hWcg"
+FIELD_NAME = None
+
+
+def field_name():
+    """The epic field's current name, read from its ID (cached for the run)."""
+    global FIELD_NAME
+    if FIELD_NAME is None:
+        resp = run_gh_graphql(
+            'query { node(id: "%s") { ... on ProjectV2SingleSelectField { name } } }'
+            % SPRINT_FIELD_ID
+        )
+        node = (resp.get("data") or {}).get("node") or {}
+        if not node.get("name"):
+            sys.exit(
+                f"ERROR: field {SPRINT_FIELD_ID} not found; it was deleted or replaced. Nothing changed."
+            )
+        FIELD_NAME = node["name"]
+    return FIELD_NAME
+
+
 FIELD_ID = "PVTSSF_lAHOADE-8s4A-JwAzg2hWcg"
 
 MUTATION = """
@@ -100,12 +124,12 @@ def pull_live_sprint_values():
                     nodes {
                       id
                       content { ... on Issue { number } }
-                      fieldValueByName(name: "Sprint") { ... on ProjectV2ItemFieldSingleSelectValue { name } }
+                      fieldValueByName(name: "%s") { ... on ProjectV2ItemFieldSingleSelectValue { name } }
                     }
                   }
                 }
               }
-            }"""
+            }""" % field_name()
             resp = run_gh_graphql(query, projectId=PROJECT_ID)
         else:
             query = """
@@ -117,12 +141,12 @@ def pull_live_sprint_values():
                     nodes {
                       id
                       content { ... on Issue { number } }
-                      fieldValueByName(name: "Sprint") { ... on ProjectV2ItemFieldSingleSelectValue { name } }
+                      fieldValueByName(name: "%s") { ... on ProjectV2ItemFieldSingleSelectValue { name } }
                     }
                   }
                 }
               }
-            }"""
+            }""" % field_name()
             resp = run_gh_graphql(query, projectId=PROJECT_ID, cursor=cursor)
 
         items = resp["data"]["node"]["items"]
@@ -143,19 +167,16 @@ def pull_live_sprint_values():
 
 def pull_option_ids():
     """sprint option name -> option id, current live field state."""
-    query = (
-        """
+    query = """
     query {
       node(id: "%s") {
         ... on ProjectV2 {
-          field(name: "Sprint") {
+          field(name: "%s") {
             ... on ProjectV2SingleSelectField { options { id name } }
           }
         }
       }
-    }"""
-        % PROJECT_ID
-    )
+    }""" % (PROJECT_ID, field_name())
     resp = run_gh_graphql(query)
     options = resp["data"]["node"]["field"]["options"]
     return {o["name"]: o["id"] for o in options}
