@@ -1,5 +1,5 @@
 ---
-last_updated: 2026-11-25 21:27 PST (STOP)
+last_updated: 2026-11-26 21:27 PST (STOP)
 currency_claim: rewritten at substantive-change boundaries, verified at every START
 max_age_days: 4
 ---
@@ -25,6 +25,12 @@ context-floor directive that duplicating it here is exactly the accretion to cut
 | GitHub criteria line | `gh issue list --repo mediajunkie/piper-morgan-product --label architecture --state open` — the third work-queue source (PM v1.33). Open each issue, don't write a row from the list. Report drained as "mail (N) + standing-items (N) + label:architecture (M)." |
 
 ## IN FLIGHT — current state only
+
+**11-26 state (STOP):** main 12/12 green; inbox empty; beta serves `039121b0fb` (2364 step 1: semantic detector alone on prompt v0.3; plus 2441, 2446, 2448, 2449 from 15:25). Model Opus 5.5. Every ruling is in decisions.log (11-26, 09:22 through 20:15).
+- **Next morning (07:00+):** Lead promotes the pleasantry skip #2454 (7c3fcf36b7) and the default flip (0aec538aab, no served change) on Exec's Step G line. Then Lead closes 2364 and 2454 after CI green. Until then a bare "hi" on beta costs a keyed account one detector call.
+- **Rules made today (decisions.log):** 2438 length-only, 15 to 72 UTF-8 bytes; spend-cap OpenAI rows exact-match only; a default-model change reruns the ethics gate on that provider; the 2364 OpenAI and v0.3 bars; the ethics-gate skip rule (only `_is_pleasantry_only`; filler lists digest-pinned; the #1818 ratchet in two sets with the gate on); wall-clock tests pause gc for the timed window; a seat never removes a working key (seat-github-1's key comes off at the Ending by xian's hand); the document index leaves the volume on any of three triggers (second process, memory, restore cadence).
+- **Waiting on others:** Step G (a), xian's one paste, `?client=seat` (then (c) on his yes, then (d)); PA reads, then part 3. #2453 (CXO words); #2452 ten-run box (Lead); #2451 p-2 provider split (CXO); #2450 no-principal fallback; #2445 --username; 2443 .docx read (placement); #2440 Chroma server leftovers; 2244 row 2 (xian's CLI ingest); xian's own stale GitHub grant (reconnect; read the stored reason first if possible). The document implementation map is delivered (docs/internal/architecture/current/document-implementation-map.md); the MUX comparison waits on xian.
+- **Lessons (11-26):** (1) Before ruling on a question several seats are working, check the mail repo for crossing memos (Step G: I ruled before reading PA's memo, then revised). (2) Before defending a guard that refuses what a person says is right, test its assumptions (the sk-ant-usr key). (3) When reading a new log call, check what exc_info or a message can carry (HOST caught 2448's). (4) Never cite a time in a mail without reading it; cite the mail id.
 
 **11-25 state (STOP):** main 12/12 green; inbox empty; beta serves `cf3486389e` (2438). Model Opus 5.5 on Claude Code 2.1.332 (Pard's restart, logged 18:59, at xian's go). Every ruling is in decisions.log (11-25, 07:19 through 13:34).
 - **Landed and served today, conforming:** #2399 said-instead (B, one setter), #2433 admin-only pages, #2434 email length, #2437 degraded close/reopen (fourth probe status, lines by reason), 2438 one password rule set at sign-up, reset and change (served by Web 14:02; CXO passed the reset half).
