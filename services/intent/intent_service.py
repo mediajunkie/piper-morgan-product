@@ -3684,8 +3684,15 @@ class IntentService:
                 )
 
             # Issue #197 Phase 2B: Ethics enforcement at universal entry point
-            # Check ENABLE_ETHICS_ENFORCEMENT environment variable (default: False for gradual rollout)
-            ethics_enabled = os.getenv("ENABLE_ETHICS_ENFORCEMENT", "false").lower() == "true"
+            # On by default for every install; ENABLE_ETHICS_ENFORCEMENT=false is the off
+            # switch (xian, 2026-11-13, "Yes, ethics in beta for self-hosted!", recorded by
+            # Arch in decisions.log 17:56; it supersedes the 2026-04-22 default-off). The
+            # default changed only after #2364 step 1 was served: until then the gate
+            # declined ordinary requests by substring. Anything but "false" leaves it on,
+            # so a mistyped value cannot turn the check off.
+            ethics_enabled = (
+                os.getenv("ENABLE_ETHICS_ENFORCEMENT", "true").strip().lower() != "false"
+            )
 
             # #2454 (Arch and CXO, 2026-11-26): a message that is ONLY a greeting,
             # farewell or thanks skips the check. The detector is a model call on the
