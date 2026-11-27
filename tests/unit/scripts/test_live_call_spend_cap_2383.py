@@ -180,11 +180,88 @@ def test_a_model_with_no_price_row_is_refused_and_not_sent(bound_env, stand_in):
             with pytest.raises(spend_cap.SpendCapReached) as exc:
                 asyncio.run(
                     LLMClient.__new__(LLMClient)._anthropic_complete(
-                        "hello", {**HAIKU, "model": LLMModel.GPT4}
+                        "hello", {**HAIKU, "model": LLMModel.GEMINI_FLASH}
                     )
                 )
     assert "no price recorded" in str(exc.value)
     assert client.sent == 0
+
+
+# --- OpenAI rows (2026-11-26): sourced from OpenAI's pricing page, not guessed ---
+
+
+def test_the_two_openai_rows_are_the_published_standard_rates():
+    """https://developers.openai.com/api/docs/pricing, Standard tab, read 2026-11-26:
+    gpt-4o $2.50 in and $10.00 out, gpt-4o-mini $0.15 in and $0.60 out, per million."""
+    assert spend_cap.price_for("gpt-4o") == (2.50, 10.00)
+    assert spend_cap.price_for("gpt-4o-mini") == (0.15, 0.60)
+
+
+def test_the_two_openai_ids_do_not_shadow_each_other():
+    """``gpt-4o`` is a prefix of ``gpt-4o-mini``; each is matched exactly."""
+    assert spend_cap.price_for("gpt-4o-mini") == (0.15, 0.60)
+    assert spend_cap.price_for("gpt-4o") == (2.50, 10.00)
+
+
+@pytest.mark.parametrize(
+    "model", ["gpt-4o-2024-08-06", "gpt-4o-mini-2024-07-18", "gpt-4o-20240806"]
+)
+def test_a_dated_openai_id_is_refused_as_unpriced(model):
+    """Arch (mail 01M8D4SJZW): OpenAI's Standard table lists no dated snapshot, so its
+    price is unsourced. Dated ids appear there only under Fine-tuning, at other prices."""
+    with pytest.raises(spend_cap.SpendCapReached) as exc:
+        spend_cap.price_for(model)
+    assert "no price recorded" in str(exc.value)
+
+
+@pytest.mark.parametrize(
+    "model",
+    [
+        "gpt-4.1",
+        "gpt-5",
+        "o3",
+        "gpt-4",
+        "gpt-4-turbo",
+        "gpt-4omni",
+        "gemini-2.0-flash",
+        # Same prefix, different model, different price: never priced as gpt-4o.
+        "gpt-4o-audio-preview",
+        "gpt-4o-realtime-preview",
+        "gpt-4o-search-preview",
+        "gpt-4o-mini-audio-preview",
+        "gpt-4o-2024-08-06-extra",
+        "claude-haiku-4-5-experimental",
+    ],
+)
+def test_every_other_openai_or_gemini_model_is_still_refused(model):
+    with pytest.raises(spend_cap.SpendCapReached) as exc:
+        spend_cap.price_for(model)
+    assert "no price recorded" in str(exc.value)
+
+
+@pytest.mark.parametrize(
+    "model, price",
+    [
+        ("claude-haiku-4-5", (1.00, 5.00)),
+        ("claude-haiku-4-5-20251001", (1.00, 5.00)),
+        ("claude-sonnet-4-6", (3.00, 15.00)),
+        ("claude-opus-4-8", (5.00, 25.00)),
+    ],
+)
+def test_the_anthropic_ids_in_use_keep_their_prices(model, price):
+    """Every Anthropic id the app or a script names today (bare, or with a date)."""
+    assert spend_cap.price_for(model) == price
+
+
+def test_an_openai_call_is_counted_from_its_prompt_and_completion_tokens():
+    cost = spend_cap.usage_usd("gpt-4o", {"input_tokens": 1_000_000, "output_tokens": 100_000})
+    assert cost == pytest.approx(2.50 + 1.00)
+
+
+def test_the_price_table_names_its_sources():
+    source = (ROOT / "services" / "llm" / "spend_cap.py").read_text()
+    assert "https://developers.openai.com/api/docs/pricing" in source
+    assert "2026-11-26" in source
 
 
 def test_calls_in_flight_are_counted_so_two_cannot_pass_the_cap_together():

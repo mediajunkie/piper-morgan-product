@@ -25,20 +25,40 @@ from __future__ import annotations
 
 import contextlib
 import math
+import re
 import threading
 from contextvars import ContextVar
 from dataclasses import dataclass
 from typing import Dict, Iterator, Mapping, Optional, Tuple
 
 # USD per million tokens, (input, output), standard (not batch) rates.
-# Source: Anthropic's published model table as cached in the claude-api reference
-# on 2026-11-03. OpenAI and Gemini rows are absent on purpose: nobody has recorded a
-# sourced price for them, so a capped run on those models is refused.
+# Anthropic rows: Anthropic's published model table as cached in the claude-api
+# reference on 2026-11-03.
+# OpenAI rows: OpenAI's pricing page, https://developers.openai.com/api/docs/pricing
+# (platform.openai.com/docs/pricing redirects there), the Standard tab, read
+# 2026-11-26. Its rows: "| gpt-4o | $2.50 | $10.00 | $1.25 |" and
+# "| gpt-4o-mini | $0.15 | $0.60 | $0.075 |" (input, output, cached input). The OpenAI
+# leg reports prompt and completion tokens only, so a cached prompt is counted here at
+# the full input rate: the measured figure can overstate, never understate.
+# Gemini rows are absent on purpose: nobody has recorded a sourced price for them, so a
+# capped run on those models is refused. The same goes for any OpenAI model not listed.
 _USD_PER_MTOK: Dict[str, Tuple[float, float]] = {
     "claude-opus-4-8": (5.00, 25.00),
     "claude-sonnet-4-6": (3.00, 15.00),
     "claude-haiku-4-5": (1.00, 5.00),
+    "gpt-4o-mini": (0.15, 0.60),
+    "gpt-4o": (2.50, 10.00),
 }
+# A dated snapshot shares its model's price only where that is sourced. Anthropic's
+# table prices a model and its dated snapshot alike (``claude-haiku-4-5-20251001``).
+# OpenAI's Standard table lists the bare ``gpt-4o`` and ``gpt-4o-mini`` only; dated
+# ``gpt-4o-…`` ids appear on that page under Fine-tuning at other prices. So the OpenAI
+# rows are exact match only, and a dated OpenAI id is refused as unpriced (Arch,
+# mail 01M8D4SJZW, 2026-11-26).
+_SNAPSHOT_SUFFIX = re.compile(r"\d{8}")
+_DATED_SNAPSHOT_SHARES_PRICE = frozenset(
+    {"claude-opus-4-8", "claude-sonnet-4-6", "claude-haiku-4-5"}
+)
 # Anthropic bills a cache write at 1.25 times the input rate and a cache read at 0.1.
 _CACHE_WRITE_FACTOR = 1.25
 _CACHE_READ_FACTOR = 0.10
@@ -58,7 +78,15 @@ class SpendCapUncounted(Exception):
 def price_for(model: str) -> Tuple[float, float]:
     """(input, output) USD per million tokens, or ``SpendCapReached`` if unrecorded."""
     for name, price in _USD_PER_MTOK.items():
-        if model == name or model.startswith(name + "-"):
+        if model == name:
+            return price
+        # Never priced by a prefix: ``gpt-4o-audio-preview`` is not ``gpt-4o``. The one
+        # sourced exception is an Anthropic model's dated snapshot.
+        if (
+            name in _DATED_SNAPSHOT_SHARES_PRICE
+            and model.startswith(name + "-")
+            and _SNAPSHOT_SUFFIX.fullmatch(model[len(name) + 1 :])
+        ):
             return price
     raise SpendCapReached(
         f"REFUSED: no price recorded for model {model!r}, so its cost can't be bounded. "

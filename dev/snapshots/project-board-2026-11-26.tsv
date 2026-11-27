@@ -2186,7 +2186,7 @@ issue	state	milestone	sprint	title	labels	blocked_by	state_reason
 2395	OPEN	Production		Unit tests that read a live credential store or database: six fixed in test_slack_config.py, six more in the Slack folder, the rest unmeasured			
 2396	OPEN	Production		No per-test time limit in the full suite: a hung test would hold the run for an hour and never name itself			
 2397	CLOSED	Production		Rewrite the 61 baselined credential-shaped fixture lines to build their values from parts (empties the 2392 baseline)			COMPLETED
-2399	OPEN	Production		Said-instead replies on the write rail still report success: apply 2188's rule to the write-ask reply, the close/reopen passthrough and the refused-write handler			
+2399	CLOSED	Production		Said-instead replies on the write rail still report success: apply 2188's rule to the write-ask reply, the close/reopen passthrough and the refused-write handler			COMPLETED
 2400	CLOSED	Production		Seat browser for signed-in pages and chat turns (ADR-084 D3 browser half, Step D): .mcp.json attach, cookie placement, LaunchAgent			COMPLETED
 2401	OPEN	Production		Integrations cards: a failed Test on a sign-in GitHub card shows no reason; a check-failed card offers Disconnect (CXO 11-17)	bug		
 2402	OPEN	Production		Integrations cards draw a Test's stored error text into innerHTML unescaped (three cards served; GitHub joins with 2401)	architecture		
