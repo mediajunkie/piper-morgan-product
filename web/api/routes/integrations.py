@@ -312,6 +312,15 @@ def _get_error_guidance(integration: str, error_type: str) -> tuple[str, Optiona
 
     message = error_info.get("message", f"Error: {error_type}")
     fix = error_info.get("fix")
+    if integration == "github" and error_type == "connect_required":
+        # Issue 2261 (Arch 2026-11-27): every surface that offers connect reads
+        # app_mode() per request. With no GitHub App set up there is no "Connect with
+        # GitHub" to send a person to; the table row itself stays as it is.
+        from services.mcp.consumer.github_adapter import GITHUB_CONNECT_REQUIRED_NO_APP_FIX_LINE
+        from services.mcp.consumer.github_app_grant import app_mode
+
+        if not app_mode():
+            fix = GITHUB_CONNECT_REQUIRED_NO_APP_FIX_LINE
 
     return message, fix
 

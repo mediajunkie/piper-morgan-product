@@ -1093,6 +1093,17 @@ def _style(css: str) -> str:
     return ", ".join(names) or "plain"
 
 
+# Issue 2261: the file draws the hosted configuration, where the Piper GitHub App is set
+# up. Without these values the GitHub Test's fix line is the one for an install with no
+# App (pinned in test_classic_connect_retired_2261), and the file would change with the
+# environment it was generated in. patch.dict restores the environment afterwards.
+_HOSTED_GITHUB_APP = {
+    "GITHUB_APP_CLIENT_ID": "test-app-client-id",
+    "GITHUB_APP_CLIENT_SECRET": "test-app-client-secret",
+}
+
+
+@patch.dict(os.environ, _HOSTED_GITHUB_APP)
 def build() -> str:
     if shutil.which("node") is None:
         raise Stopped("node is not on PATH; the page's script can't be run")
