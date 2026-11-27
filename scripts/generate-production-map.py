@@ -19,7 +19,7 @@ import yaml
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 PLAN = "docs/internal/planning/production-sprint-proposal-2026-10-23.md"
 PROMISES = "docs/internal/product/promises.yaml"
-SPRINT = "docs/internal/planning/production-sprint-2-onboarding-proposal-2026-11-06.md"
+SPRINT = "docs/internal/planning/production-sprint-3-draft-2026-11-25.md"  # sprint 3, 11-27 to 12-10 (was sprint 2 until 11-27)
 REPO = "https://github.com/mediajunkie/piper-morgan-product/issues/"
 ROWS = ["H", "D", "PUB", "C", "V", "E", "T", "Doc", "Dist", "Readiness", "Q"]
 PLAN_LETTERS = {"PUB", "H", "D", "C", "V", "E", "T", "Doc", "Dist", "Q"}
