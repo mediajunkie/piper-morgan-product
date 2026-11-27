@@ -191,9 +191,8 @@ def main() -> int:
         planned_calls=len(args.phrase) * args.samples,
         require=True,
     ):
-        rows = asyncio.run(
-            _control(args.phrase, args.samples, args.provider, _state_block(args.recent_issue))
-        )
+        state_block = _state_block(args.recent_issue)
+        rows = asyncio.run(_control(args.phrase, args.samples, args.provider, state_block))
     write_report(rows, args.out, args.samples, args.label)
     return 1 if any(r["error"] for r in rows) else 0
 
