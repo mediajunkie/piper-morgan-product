@@ -562,7 +562,9 @@ class TestTheCardWithAppModeOff:
     def test_the_personal_token_form_is_shown(self, client, app_off):
         markup, text = _page(client)
         assert 'id="pat-form-section"' in markup and 'id="token"' in markup
-        assert "Or connect with a personal access token:" in text  # CXO's pin
+        # CXO, 2026-11-27, after the browser render: no "Or" with nothing before it.
+        assert "Connect with a personal access token:" in text
+        assert "Or connect with a personal access token:" not in text
 
     def test_the_card_line_stands_in_place_of_connect_above_the_form(self, client, app_off):
         markup, text = _page(client)
@@ -700,6 +702,44 @@ class TestTheConnectRequiredHint:
         degraded = await GitHubMCPSpatialAdapter().degrade(DegradationReason.UNREACHABLE)
         assert _github_failure(degraded)["error"] == degraded.user_message
 
+    def test_the_test_toasts_fix_line_with_app_mode_off(self, app_off):
+        """Found by the App-off browser render (Lead, 2026-11-27): the Integrations
+        page's Test toast prints the guidance row's message and fix, never ``error``.
+        Its fix said "Connect with GitHub", which that install does not offer."""
+        from services.mcp.consumer import github_adapter as adapter_mod
+        from web.api.routes.integrations import _get_error_guidance
+
+        message, fix = _get_error_guidance("github", "connect_required")
+        assert message == "GitHub isn't connected for your account."
+        assert fix == adapter_mod.GITHUB_CONNECT_REQUIRED_NO_APP_FIX_LINE
+        # CXO, 2026-11-27 (issue 2261); this pin makes a change of words a diff.
+        assert fix == "In Settings → Integrations → GitHub, add a personal access token."
+        assert "Connect with GitHub" not in f"{message} {fix}"
+
+    def test_the_test_toasts_fix_line_in_app_mode_is_unchanged(self, app_on):
+        from web.api.routes.integrations import INTEGRATION_REGISTRY, _get_error_guidance
+
+        message, fix = _get_error_guidance("github", "connect_required")
+        assert fix == "In Settings → Integrations → GitHub, Connect with GitHub"
+        # The table row is never rewritten: the branch is at read time.
+        row = INTEGRATION_REGISTRY["github"]["errors"]["connect_required"]
+        assert row["fix"] == fix
+
+    def test_the_table_row_survives_an_app_off_read(self, app_off):
+        from web.api.routes.integrations import INTEGRATION_REGISTRY, _get_error_guidance
+
+        _get_error_guidance("github", "connect_required")
+        row = INTEGRATION_REGISTRY["github"]["errors"]["connect_required"]
+        assert row["fix"] == "In Settings → Integrations → GitHub, Connect with GitHub"
+
+    def test_other_github_rows_and_other_integrations_are_untouched(self, app_off):
+        from web.api.routes.integrations import _get_error_guidance
+
+        assert _get_error_guidance("github", "stale_token")[1] == (
+            "In Settings → Integrations → GitHub, Reconnect with GitHub"
+        )
+        assert _get_error_guidance("github", "unreachable")[1] == "Try again in a few minutes"
+
     async def test_other_reasons_carry_no_hint_in_either_mode(self, app_off):
         from services.mcp.consumer.connector import DegradationReason
         from services.mcp.consumer.github_adapter import GitHubMCPSpatialAdapter
@@ -768,6 +808,11 @@ class TestThePersonalTokenHint:
         assert 'placeholder="Paste your token"' in tag and "ghp_" not in tag
         assert "const PAT_TOKEN_PLACEHOLDER = 'Paste your token';" in reply.text
 
-    def test_the_form_heading_stays_with_app_mode_off(self, client, app_off):
+    def test_the_form_heading_drops_or_with_app_mode_off(self, client, app_off):
         _, text = _page(client)
-        assert "Or connect with a personal access token:" in text  # CXO's pin
+        assert "Connect with a personal access token:" in text
+        assert "Or connect with a personal access token:" not in text
+
+    def test_the_form_heading_keeps_or_in_app_mode(self, client, app_on):
+        _, text = _page(client)
+        assert "Or connect with a personal access token:" in text

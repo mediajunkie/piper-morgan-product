@@ -460,7 +460,9 @@
            only (the section after it). applyTokenFormState() decides. #}
         <div id="pat-form-section">
         <hr style="border: none; border-top: 1px solid var(--border, #e1e4e8); margin: 1rem 0;" />
-        <p class="form-hint" id="pat-form-hint" style="margin-bottom: 0.5rem;">Or connect with a personal access token:</p>
+        {# Issue 2261 (CXO, 2026-11-27): with no Connect step above it there is nothing for
+           "Or" to follow, so the label drops it. Same github_connect_available value. #}
+        <p class="form-hint" id="pat-form-hint" style="margin-bottom: 0.5rem;">{% if github_connect_available %}Or connect with a personal access token:{% else %}Connect with a personal access token:{% endif %}</p>
 
         <div class="form-group">
           <label for="token">Personal Access Token</label>
