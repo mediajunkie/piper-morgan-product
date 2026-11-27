@@ -1162,6 +1162,23 @@ async def consult_inversion_live(
         user_id=user_id,
         session_id=session_id,
     )
+    # Issue 2425 (built on a branch, NOT landed: waits on xian's word): when the
+    # decision is STILL a CLARIFY after D5 (D5 not in scope, or kept), one more call
+    # whose block is main's plus the person's stored project names; accepted only as
+    # create_todo into one of them, otherwise the CLARIFY stands.
+    from services.intent_service.project_consult import consult_projects_on_clarify
+
+    decision = await consult_projects_on_clarify(
+        message,
+        decision,
+        block,
+        route=route,
+        router_snapshot=RouterSnapshot,
+        llm_service=_llm,
+        grammar=grammar,
+        user_id=user_id,
+        session_id=session_id,
+    )
 
     legacy_label, divergence = _legacy_preclassifier_comparison(message, decision, grammar)
 
