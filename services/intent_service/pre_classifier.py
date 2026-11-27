@@ -134,6 +134,27 @@ class PreClassifier:
     ]
 
     @staticmethod
+    def _clean_for_matching(message: str) -> str:
+        """The form every pattern list here is matched against: trimmed, lowercased,
+        trailing punctuation and the three greeting emoji removed."""
+        return message.strip().lower().rstrip(string.punctuation + "!?.,;:😊🙂👋")
+
+    @staticmethod
+    def is_pleasantry_only_message(message: str) -> bool:
+        """#2454: True iff the WHOLE raw message is only a greeting, farewell or
+        thanks plus fixed filler, by the same cleaning and the same predicate the
+        canned pleasantry path uses, so the two cannot disagree.
+
+        This is the one rule for what may skip the ethics check (Arch and CXO,
+        2026-11-26): a message code fully understands and that carries no content.
+        "thanks, and now help me …" leaves words and is not one. Widening any list
+        ``_is_pleasantry_only`` strips widens what skips that check, and
+        ``test_pleasantry_skips_ethics_gate_2454.py`` fails until Arch and CXO have
+        read the change.
+        """
+        return PreClassifier._is_pleasantry_only(PreClassifier._clean_for_matching(message))
+
+    @staticmethod
     def _is_pleasantry_only(clean_for_matching: str) -> bool:
         """#1416: True iff the message is ONLY a greeting/farewell/thanks
         pleasantry (plus filler) — the precondition for the canned
@@ -1582,7 +1603,7 @@ class PreClassifier:
         intent, list_name = PreClassifier._pre_classify_claim(message)
         if intent is None or list_name is None:
             return intent, list_name
-        clean_for_matching = message.strip().lower().rstrip(string.punctuation + "!?.,;:😊🙂👋")
+        clean_for_matching = PreClassifier._clean_for_matching(message)
         if list_name == "INTEGRATION_CONNECT_PATTERNS":
             match = PreClassifier._integration_connect_match(clean_for_matching)
         else:
@@ -1628,7 +1649,7 @@ class PreClassifier:
         PM-ratified 2026-08-29 narrowing schedule) — nothing routes on it.
         """
         clean_msg = message.strip().lower()
-        clean_for_matching = clean_msg.rstrip(string.punctuation + "!?.,;:😊🙂👋")
+        clean_for_matching = PreClassifier._clean_for_matching(message)
 
         # DEBUG: Log the processing
         import structlog
@@ -2508,7 +2529,7 @@ class PreClassifier:
 
         logger = structlog.get_logger()
         clean_msg = message.strip().lower()
-        clean_for_matching = clean_msg.rstrip(string.punctuation + "!?.,;:😊🙂👋")
+        clean_for_matching = PreClassifier._clean_for_matching(message)
 
         intents: List[Intent] = []
 
