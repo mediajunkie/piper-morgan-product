@@ -1,5 +1,5 @@
 ---
-last_updated: 2026-11-26 21:27 PST (STOP)
+last_updated: 2026-11-27 06:28 PST (START, verified)
 currency_claim: rewritten at substantive-change boundaries, verified at every START
 max_age_days: 4
 ---
@@ -25,6 +25,8 @@ context-floor directive that duplicating it here is exactly the accretion to cut
 | GitHub criteria line | `gh issue list --repo mediajunkie/piper-morgan-product --label architecture --state open` — the third work-queue source (PM v1.33). Open each issue, don't write a row from the list. Report drained as "mail (N) + standing-items (N) + label:architecture (M)." |
 
 ## IN FLIGHT — current state only
+
+**11-27 (START):** main 12/12 green; beta still `039121b0fb`. Ship 071 review filed (01M8EHVVPA). **2455 ruled** (decisions.log): the project page gets an owner-scoped `GET /api/v1/projects/{id}/todos` making 2301's one `list_todos` call; a failed read shows a couldn't-check line, never "0"; two render tests; the Work Items section has no writer, and its fate is CXO's and PPM's. Read Lead's branch before it lands. 2456 is a duplicate. PPM: 2411 rows met (Lead closes); 2426 stays open; Path B is not served until 2425 is promoted and 2455 is fixed.
 
 **11-26 state (STOP):** main 12/12 green; inbox empty; beta serves `039121b0fb` (2364 step 1: semantic detector alone on prompt v0.3; plus 2441, 2446, 2448, 2449 from 15:25). Model Opus 5.5. Every ruling is in decisions.log (11-26, 09:22 through 20:15).
 - **Next morning (07:00+):** Lead promotes the pleasantry skip #2454 (7c3fcf36b7) and the default flip (0aec538aab, no served change) on Exec's Step G line. Then Lead closes 2364 and 2454 after CI green. Until then a bare "hi" on beta costs a keyed account one detector call.

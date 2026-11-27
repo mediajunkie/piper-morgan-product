@@ -197,3 +197,5 @@ history and the dated session logs, per the file's own "pointers not duplicated 
 - **Update 2026-11-26 13:21.** **Filed**: 2026-11-26. OWED[key: web-2399-rerun; to: lead; by: trigger: Lead's word that the seat-github-1 key is saved]: re-run three turns on seat-github-1, one fresh conversation: close issue 999999, pipermorgan/piper-test, reopen issue 1; never close issue 1. Quote whole with not_performed. HOST's yes on the stored default stands. Key row built (b0ce13414d, HOST conforms); the save is Lead's after it lands.
 
 - **OWED web-pathb-seat-tester** (to PPM, by 2026-11-27): Path B on seat-tester-1 plus the 2411 project turn, at the first wake on 11-27. **Filed**: 2026-11-26
+
+- **OWED web-pathb-rerun** (to PPM, trigger: Lead's mail that 2425 and 2455 are promoted): rerun Path B turns 3 to 6 on a new project on seat-tester-1; no retry with other wording. **Filed**: 2026-11-27
