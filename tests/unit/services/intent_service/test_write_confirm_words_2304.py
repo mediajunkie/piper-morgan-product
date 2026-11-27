@@ -15,6 +15,7 @@ would change, from that op's own args, and never shows an op name.
 
 import inspect
 from types import SimpleNamespace
+from unittest.mock import AsyncMock
 
 import pytest
 
@@ -148,13 +149,6 @@ async def _ask(action, message="", *, session_id=None, service=None, **context):
             "Change the title of issue #108 in acme/roadmap? (yes/no)",
             "change the title of issue #108 in acme/roadmap",
         ),
-        (
-            "update_issue",
-            "relabel it",
-            {"issue_number": 7, "repo": "acme/web", "labels": ["bug"], "state": "closed"},
-            "Change the state and the labels of issue #7 in acme/web? (yes/no)",
-            "change the state and the labels of issue #7 in acme/web",
-        ),
     ],
 )
 async def test_each_op_asks_its_own_question_with_the_thing_named(
@@ -164,6 +158,33 @@ async def test_each_op_asks_its_own_question_with_the_thing_named(
     assert ask.reply is None
     assert ask.words.question == question
     assert ask.words.summary == summary
+
+
+async def test_update_issue_names_a_context_number_that_is_the_created_head():
+    """Was the "relabel it" row above. 2459: a context number the words don't carry
+    (B3's created-head shape) is written only when it is the session's created head,
+    so the row now supplies that head; the question is unchanged."""
+    from datetime import datetime, timezone
+
+    from services.intent_service.shown_issue import CreatedIssueRef
+
+    service = _service_stub()
+    service._issue_referent_from_ledger = AsyncMock(
+        return_value=CreatedIssueRef("acme/web", 7, datetime.now(timezone.utc))
+    )
+    ask = await _ask(
+        "update_issue",
+        "relabel it",
+        session_id="s-2304-relabel",
+        service=service,
+        issue_number=7,
+        repo="acme/web",
+        labels=["bug"],
+        state="closed",
+    )
+    assert ask.reply is None
+    assert ask.words.question == "Change the state and the labels of issue #7 in acme/web? (yes/no)"
+    assert ask.words.summary == "change the state and the labels of issue #7 in acme/web"
 
 
 # ── the rows the args can't fill: CXO's statement, nothing armed ──

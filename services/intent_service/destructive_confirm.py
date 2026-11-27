@@ -1290,6 +1290,24 @@ async def build_close_reopen_confirmation(
         # ask "which issue?".
         return CloseReopenGate()
 
+    # 2459 (Arch's gate), before anything is armed. The number here is parsed from
+    # the person's words, so it is accepted; a refusal would pass through unarmed to
+    # the handler, whose same gate says its ask. No session is threaded to this
+    # builder, so no created head is read here (only a typed number can pass).
+    from services.intent_service.issue_write_gate import gate_issue_write
+
+    _gate = await gate_issue_write(
+        intent,
+        issue_number,
+        repository=None,
+        user_id=None,
+        session_id=None,
+        created_head=None,
+        stamp=False,
+    )
+    if not _gate.accepted:
+        return CloseReopenGate()
+
     message = intent.context.get("original_message") or intent.original_message or ""
 
     def _fallback() -> CloseReopenGate:

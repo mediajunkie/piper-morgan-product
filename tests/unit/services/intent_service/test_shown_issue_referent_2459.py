@@ -422,9 +422,7 @@ class TestFailedSlotWrite:
         def _boom(*a, **k):
             raise RuntimeError("context store down")
 
-        monkeypatch.setattr(
-            "services.intent_service.conversation_context.get_or_create_context", _boom
-        )
+        monkeypatch.setattr("services.intent_service.conversation_context._context_key", _boom)
         assert shown_mod.last_shown_issue(sid, USER) is None
 
 

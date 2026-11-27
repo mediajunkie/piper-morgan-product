@@ -1194,6 +1194,11 @@ peek — the production pop seam is untouched), `ProcessRegistry.first_active_ty
 (`any_active`'s loop returning WHICH type; the lazy-timeout housekeeping in
 the adapters is an accepted convergent side effect, documented on the method),
 the #1394 ledger head via `services/intent_service/session_activity_read.py`
+(2459: the RECENT ISSUE fields now take the session referent from
+`shown_issue.choose_issue_referent`, the newer of that ledger head and a single
+issue a read showed; the line's text is unchanged. Every issue write that takes
+a number passes `issue_write_gate.gate_issue_write` first, so a shown issue in
+that line never becomes a write target unless the person types its number)
 (the query extracted to ONE shared home — `classifier._resolve_issue_referent`
 now calls the same `list_session_activities`/`issue_head` instead of its two
 inline copies), `collaboration_gate.read_declared_working_mode` (the DECLARED
