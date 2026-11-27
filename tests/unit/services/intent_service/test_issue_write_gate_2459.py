@@ -693,9 +693,33 @@ class TestTypedIssueNumber2460:
     async def test_move_it_to_milestone_3_with_no_field_value_targets_3_and_writes_nothing(
         self, svc, sid
     ):
-        """Pinned under Arch's adjustment: the update handler has no milestone slot, so
-        this turn writes no field value; rule 2 then counts the one bare number (3). No
-        field to change, so the handler's own "tell me what to change" line, no write."""
+        """The Architect's pin (2460): this targets issue 3 and then asks what to change,
+        and nothing is written, ONLY because milestone is not a field value because
+        update_issue has no milestone slot; adding one must add it to the span
+        exclusion. With no field value, rule 2 counts the one bare number (3).
+
+        The guard below fails the day a milestone slot is added: the router's
+        ``update_issue`` grows a ``milestone`` parameter (the only way a chat update
+        can write one), or ``_handle_update_issue`` starts reading or passing one."""
+        import inspect
+
+        from services.integrations.github.github_integration_router import (
+            GitHubIntegrationRouter,
+        )
+
+        add_it = (
+            "update_issue now has a milestone slot: pass the milestone to "
+            "update_field_values(milestone=...) in _handle_update_issue and "
+            "update_issue_write_ask so it joins the 2460 span exclusion, then rewrite "
+            "this pin ('move it to milestone 3' must no longer target issue 3)."
+        )
+        assert (
+            "milestone" not in inspect.signature(GitHubIntegrationRouter.update_issue).parameters
+        ), add_it
+        assert (
+            "milestone" not in inspect.getsource(IntentService._handle_update_issue).lower()
+        ), add_it
+
         intent = _intent("update_issue", "move it to milestone 3", repository=SHOWN_REPO)
         result, router = await _run(svc, sid, "update_issue", intent, [])
         assert result.message.startswith("Tell me what to change on #3")
