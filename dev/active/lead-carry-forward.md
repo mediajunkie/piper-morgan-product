@@ -1,5 +1,16 @@
 # Lead carry-forward — Fable 5.2 seat again since 2026-11-20 08:56 (Opus 5.5 from 2026-11-17 21:30 until then); Model A worktree ~/Development/piper-morgan-worktrees/lead
 
+## EVENING 2026-11-26 18:48 (read this first; it supersedes the START block below for today)
+
+- **UPDATE 19:05: beta serves `039121b0fb` with 2364 step 1** (third promotion today, 18:58, first dispatch). Tests passed on `0afebb26ad`; main CI 12 of 12. Exec told "beta moved"; Web and PA have the sha. The three lines below about the red Tests and the held promotion are history. Next: PA's score of Web's probe, then Arch's default-flip commit. 2448 and 2441 closed.
+- (18:46 state) Beta served `d54baca4ee`; main carried 2364 step 1 (`4650edcf15`, prompt v0.3), not promoted.
+- **Main's Tests is red** on `4650edcf15`: `test_concurrent_auth_requests` at 541 ms and 524 ms on two attempts (issue 2452). Measured on Amber: step 1 leaves nothing running; a full collection costs 156 ms here. Test-only change landed (`0afebb26ad`, Arch: conforms). **Its Tests run is the check.** If it fails with the collector paused, the cause is something else and the promotion stays held.
+- **When Tests is green on a commit carrying step 1:** run the promotion pre-checks, dispatch, verify beta's `git_sha`, then (1) mail Web and PA the sha (six ordinary rows, 2412's line, 2297's list-name row on seat-github-1), (2) tell Exec "beta moved" (Exec holds xian's Step G (a) until then), (3) Arch's `ENABLE_ETHICS_ENFORCEMENT` default flip in its own commit, read by Arch. Promotions run 07:00 to 21:00 PT only.
+- **2364 today:** v0.2 failed the OpenAI gate; three diagnostic reads; CXO's v0.3; both providers passed Arch's six-line bar. Paid: $3.5520, each run planned with Exec first. Reports: `dev/2026/11/26/2364-openai/`, `dev/2026/11/26/2364-v03/`.
+- **Refresh works on beta** (17:55: refreshed 1, rejected 0). Web reads the card and one GitHub turn after 20:00 and on the 11-27 morning (2342's 8-hour box).
+- **Asked, awaiting one word each:** Arch on closing 2448 on unit evidence; HOST on whether a healthy start closes 2441 (01M8DEDXDB).
+- **Side trees:** `../lead-gate-2364` (branch `lead/2452-timing-test`, clean), `../lead-2432b`, `../lead-2418`, `../lead-2415`. `../lead-served` removed. Seat keys for Anthropic and OpenAI are in this session's environment.
+
 ## START 2026-11-26 06:47 (re-verified; the DAY-END 11-25 block below still holds)
 
 - Checked this morning: beta `cf3486389e` healthy and quiet; main CI 12 of 12 green; no code on main since the 11-25 STOP; inbox 0; decisions.log has nothing after 11-25 13:34; PPM's sprint 3 draft is still a draft for xian; all 26 issues named in the waits are open and unchanged.
