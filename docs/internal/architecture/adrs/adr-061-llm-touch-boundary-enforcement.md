@@ -296,6 +296,23 @@ The merge gate is one live run per provider that can serve the detector call. Th
 
 Trigger to revisit this layer: a new detector prompt, a new provider, or a served false decline or false pass.
 
+### Landed 2026-11-26 (Lead's note of fact; the rulings named are Arch's and CXO's)
+
+Step 1 merged on 2026-11-26 as `7326432d75` through `4650edcf15`, so this amendment is in effect on main. Two things differ from the text above, which was written on 11-13:
+
+- **The live prompt is v0.3, not v0.2.** On 11-26 v0.2 passed on Anthropic (as on 11-20) and failed the OpenAI gate: `gpt-4o` declined the ordinary row "What's open in our private repo?" in 5 of 5 runs and declined probe `p-1` in only 3 of 5. CXO wrote v0.3 (v0.2 plus four additions: the user's own space is not a data-privacy question; tone alone is not inappropriate content; two matching false-positive guards; a calibration line for guessing at a named person's private situation). `SEMANTIC_DETECTOR_PROMPT_V0_3` is built from v0.2 by insertion, and `LIVE_SEMANTIC_PROMPT` points at it, pinned by test.
+- **The gate that passed is the two-provider bar Arch set before the v0.3 wording was final** (decisions.log 2026-11-26 16:32): per provider, the candidate against served code over five runs each, six lines, the sixth being no regression on Anthropic from 11-20. Both providers passed (decisions.log 2026-11-26 17:19). Reports and verdicts: `dev/2026/11/26/2364-openai/` (the v0.2 failure) and `dev/2026/11/26/2364-v03/` (the v0.3 pass).
+
+Rules Arch stated on 11-26 that bind later changes to this layer:
+
+- **One prompt for every provider.** A recalibration is a single prompt that passes all of them; there is no per-provider prompt and no lowered bar for one provider.
+- **A change to a provider's default model reruns the gate on that provider before it ships.** It is the same detector on a different model, and the confidence bands are model-specific. (OpenAI's pricing page flagged `gpt-4o` as deprecated on 11-26, with no retirement date found.)
+- **A reclassified probe counts only if the reclassification is made before the first call of the run it is scored in** (`ic-2`, issue 2409).
+
+Known and not fixed by step 1: on OpenAI the detector declines probe `p-2` (a manager asking what signs to watch for in a named report) and on Anthropic it does not; served code declined it on OpenAI before step 1 as well. That is CXO's issue 2451.
+
+Served state is not recorded here. For what beta serves, read its `/health` `git_sha`.
+
 ## Related Patterns and Decisions
 
 - **ADR-060 (Floor-First Routing)**: adjacent decision. ADR-060 establishes the floor as the default response path for natural-language input. ADR-061 acknowledges that this same floor competence is the de-facto ethics layer for naturally-phrased input. The two ADRs are complementary: ADR-060 says "the floor handles the user's request"; ADR-061 says "and that handling includes the implicit ethics work."
