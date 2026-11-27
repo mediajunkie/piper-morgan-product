@@ -2228,12 +2228,12 @@ issue	state	milestone	sprint	title	labels	blocked_by	state_reason
 2439	OPEN	Production		What changed: a user-findable release note for beta users (F12, publishes at the public beta)			
 2440	OPEN	Production		Retire the server-shaped Chroma pieces after 2244 (compose service shares the app's store folder)	architecture		
 2443	OPEN	Production		The Documents page accepts .docx uploads that Piper can't read; summarize and analyze answer 'unsupported'			
-2441	OPEN	Production		Start script: root's chown -R over /data/uploads may follow app-owned symlinks (measure, then guard)	architecture		
+2441	CLOSED	Production		Start script: root's chown -R over /data/uploads may follow app-owned symlinks (measure, then guard)	architecture		COMPLETED
 2444	OPEN	Production		A document summary reads only the first 3,000 characters and doesn't say so	UX		
 2445	OPEN	Production		mcp_allow.py: accept --username, so nobody reads a credential file to name an account			
 2446	CLOSED	Production		Close/reopen on a never-connected account asks which repository before saying GitHub isn't connected	UX		COMPLETED
 2447	OPEN	Production		Guidance replies claim first-hand experience ('patterns I've seen'); the attention reply doesn't say an account has no projects			
-2448	OPEN	Production		Close/reopen gate arms a yes/no when it couldn't check (resolver or read raises)	architecture		
+2448	CLOSED	Production		Close/reopen gate arms a yes/no when it couldn't check (resolver or read raises)	architecture		COMPLETED
 2449	OPEN	Production		Beta /health should show the GitHub App refresh job's last pass (counts only)	architecture		
 2450	OPEN	Production		Close/reopen gate arms a yes/no when there's no signed-in account	architecture		
 2451	OPEN	Production		Signs-to-watch-for question about a named colleague is declined on OpenAI, answered on Anthropic (p-2 after 2364 v0.3)	UX		
