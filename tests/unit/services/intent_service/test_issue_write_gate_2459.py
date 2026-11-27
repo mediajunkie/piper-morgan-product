@@ -31,6 +31,7 @@ from services.intent_service.issue_write_gate import (
 )
 from services.intent_service.shown_issue import (
     LEDGER_UNREADABLE,
+    SHOWN_ISSUE_WHICH_ASK,
     record_shown_issues,
 )
 from services.shared_types import IntentCategory
@@ -60,9 +61,7 @@ MAIN_REOPEN_ASK = (
     'I can reopen a particular issue if you give me its number, like "reopen #123". '
     "I don't search for closed issues or reopen them in bulk yet."
 )
-# CXO's named ask is HELD on this branch (the #1730 unarmed-ask ratchet refuses an
-# unarmed question; see issue_write_gate.refusal_line). Where it would be said, the
-# plain ask is said, and the gate's verdict carries the slot's issue for it.
+NAMED_1 = 'I just showed #1 in pipermorgan/piper-test. If that\'s the one you mean, say "#1".'
 
 
 def test_the_constants_are_mains_words():
@@ -70,6 +69,7 @@ def test_the_constants_are_mains_words():
     assert COMMENT_ISSUE_NUMBER_ASK == MAIN_COMMENT_ASK
     assert CLOSE_ISSUE_NUMBER_ASK == MAIN_CLOSE_ASK
     assert REOPEN_ISSUE_NUMBER_ASK == MAIN_REOPEN_ASK
+    assert SHOWN_ISSUE_WHICH_ASK.format(number=1, repository=SHOWN_REPO) == NAMED_1
 
 
 # ---------------------------------------------------------------------------
@@ -254,18 +254,18 @@ class TestEachWrite:
         assert result.message == PLAIN[action]
         _assert_nothing_done(svc, sid, router, result)
 
-    async def test_shown_issue_only_gets_the_ask_and_nothing_armed(self, svc, sid, action):
+    async def test_shown_issue_only_gets_the_named_ask_and_nothing_armed(self, svc, sid, action):
         rows = _shown_only(sid)
         intent, extracted = _it_turn(action, number=1)
         result, router = await _run(svc, sid, action, intent, rows, extracted)
-        assert result.message == PLAIN[action]  # the named ask is held
+        assert result.message == NAMED_1
         _assert_nothing_done(svc, sid, router, result)
 
-    async def test_created_then_shown_gets_the_ask(self, svc, sid, action):
+    async def test_created_then_shown_gets_the_named_ask(self, svc, sid, action):
         rows = _created_then_shown(sid)
         intent, extracted = _it_turn(action, number=22)
         result, router = await _run(svc, sid, action, intent, rows, extracted)
-        assert result.message == PLAIN[action]  # the named ask is held
+        assert result.message == NAMED_1
         _assert_nothing_done(svc, sid, router, result)
 
     async def test_typed_number_binds_it(self, svc, sid, action):
@@ -334,9 +334,9 @@ class TestNamedAsk:
             inversion_args={"issue_number": 1, "repo": SHOWN_REPO},
         )
         result, router = await _run(svc, sid, "update_issue", intent, [])
-        assert result.message == MAIN_UPDATE_ASK  # the named ask is held
+        assert result.message == SHOWN_ISSUE_WHICH_ASK.format(number=9, repository="other/place")
         _assert_nothing_done(svc, sid, router, result)
-        # What the named ask would say comes from the slot, never the args.
+        # The named ask's issue comes from the slot, never the args.
         verdict = await gate_issue_write(
             intent,
             None,
@@ -391,7 +391,7 @@ class TestNamedAsk:
     async def test_a_typed_hash_one_after_the_named_ask_proceeds_as_today(self, svc, sid):
         _shown_only(sid)
         named, _ = await _run(svc, sid, "update_issue", _it_turn("update_issue")[0], [])
-        assert named.message == MAIN_UPDATE_ASK  # the named ask is held
+        assert named.message == NAMED_1
         # The handler's normal typed form, and a bare "#1" (no field: today's line).
         typed = _intent(
             "update_issue", "change the title of #1 to X", title="X", repository=SHOWN_REPO
@@ -647,7 +647,7 @@ class TestTwoTurnYes:
             )
         assert ask.passthrough is True and ask.words is None
         result, router = await _run(svc, sid, "update_issue", shown_shape, [])
-        assert result.message == MAIN_UPDATE_ASK  # the named ask is held
+        assert result.message == NAMED_1
         _assert_nothing_done(svc, sid, router, result)
 
 

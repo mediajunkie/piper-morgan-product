@@ -34,6 +34,14 @@ logger = structlog.get_logger(__name__)
 #: read of that issue failed. No cause, no repository claim.
 REFERENT_READ_FAILED_LINE = "I couldn't pull up that issue just now."
 
+#: CXO's words (2459 part 2, final): a STATEMENT, nothing armed. A write refused
+#: because the only candidate referent is a single SHOWN issue. ``{number}`` and ``{repository}`` come from the shown slot's
+#: DATA, never from reply text or router args. It binds nothing; a typed "#N" next
+#: turn is an ordinary typed number.
+SHOWN_ISSUE_WHICH_ASK = (
+    "I just showed #{number} in {repository}. " 'If that\'s the one you mean, say "#{number}".'
+)
+
 
 class CreatedIssueRef(NamedTuple):
     """The ledger's created head (issue 2114) with the time its row was written.

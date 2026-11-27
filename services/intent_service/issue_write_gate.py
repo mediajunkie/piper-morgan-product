@@ -39,6 +39,7 @@ import structlog
 
 from services.intent_service.shown_issue import (
     LEDGER_UNREADABLE,
+    SHOWN_ISSUE_WHICH_ASK,
     CreatedIssueRef,
     choose_issue_referent,
     last_shown_issue,
@@ -121,8 +122,8 @@ def typed_issue_numbers(message: str) -> Set[int]:
 class IssueWriteVerdict:
     """``shown`` (refusals only): the single SHOWN issue that is the session's
     referent, ``(repository, number)`` from the slot's data, when the refusal is
-    because that shown issue is the only candidate referent (held for CXO's named
-    ask; see ``refusal_line``)."""
+    because that shown issue is the only candidate referent. The caller then says
+    ``SHOWN_ISSUE_WHICH_ASK`` (``refusal_line``) instead of its plain ask."""
 
     accepted: bool
     number: Optional[int] = None
@@ -204,13 +205,11 @@ def _refuse(
 
 
 def refusal_line(verdict: IssueWriteVerdict, plain_ask: str) -> str:
-    """What a refused write says: the handler's existing ask, byte for byte.
-
-    HELD (2459 part 2, CXO's named ask): when ``verdict.shown`` is set, CXO's line
-    ("Which issue do you mean? I just showed #N in owner/name. ...") goes here. It
-    is a question that arms nothing, which the #1730 Gap-2 ratchet
-    (``TestUnarmedAskSiteRatchet``) refuses; arming it, rewording it, or a ratchet
-    row is CXO's and Arch's call, so the plain ask stands until then."""
+    """What a refused write says: the named ask when the only candidate referent is
+    a single shown issue, else the handler's existing ask, byte for byte."""
+    if verdict.shown is not None:
+        repository, number = verdict.shown
+        return SHOWN_ISSUE_WHICH_ASK.format(number=number, repository=repository)
     return plain_ask
 
 
