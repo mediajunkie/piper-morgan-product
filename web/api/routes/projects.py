@@ -436,6 +436,93 @@ async def get_project_work_items(
         )
 
 
+@router.get("/{project_id}/todos")
+async def get_project_todos(
+    project_id: str,
+    current_user: JWTClaims = Depends(get_current_user),
+    project_repo=Depends(get_project_repository),
+) -> dict:
+    """The project's open todos, for the project page (#2455; Arch 2026-11-27).
+
+    The page said "No work items for this project" right after chat confirmed a todo
+    added to it: the page counted ``work_items``, a store nothing a person can reach
+    writes with a project on it, while the attach (#2297) writes a todo.
+
+    Ownership as ``get_project_work_items`` checks it (the person's own project, 404
+    otherwise), then the ONE call chat's "Open todos in <project>" makes (#2301):
+    ``list_todos(user_id, include_completed=False, project_id=...)``. No second table
+    or query. Rows are structured, never chat's rendered text, in chat's order with
+    chat's grouping (a repeat is one row with ``repeat``) and chat's priority note
+    (``urgent`` or ``high``, else None), so the page and chat cannot disagree.
+
+    A failed read is a 500, never an empty list: the page then says CXO's
+    couldn't-check line. ``cap_line`` is chat's own line when the list was capped.
+    """
+    from uuid import UUID
+
+    from services.consciousness.todo_consciousness import group_todo_lines
+    from services.intent_service.project_status_todos import CAP_LINE
+    from services.todo.todo_management_service import TodoManagementService
+
+    try:
+        project_obj = await project_repo.get_by_id(project_id, owner_id=current_user.sub)
+
+        if not project_obj:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail=f"Project not found: {project_id}",
+            )
+
+        todos = await TodoManagementService().list_todos(
+            user_id=UUID(str(current_user.sub)),
+            include_completed=False,
+            project_id=str(project_obj.id),
+        )
+        lines = group_todo_lines(todos)
+
+        logger.info(
+            "project_todos_retrieved",
+            user_id=current_user.sub,
+            project_id=project_id,
+            count=len(lines),
+        )
+
+        return {
+            "todos": [
+                {
+                    "text": group[0].text,
+                    "repeat": len(group),
+                    "priority": (
+                        group[0].priority if group[0].priority in ("urgent", "high") else None
+                    ),
+                }
+                for group in lines
+            ],
+            "count": len(lines),
+            "cap_line": (
+                CAP_LINE.format(count=len(todos), project=project_obj.name)
+                if bool(getattr(todos, "capped", False))
+                else None
+            ),
+            "project_id": project_id,
+        }
+
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(
+            "project_todos_error",
+            user_id=current_user.sub,
+            project_id=project_id,
+            error=type(e).__name__,
+            exc_info=True,
+        )
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Failed to retrieve project todos",
+        )
+
+
 @router.put("/{project_id}")
 async def update_project(
     project_id: str,
