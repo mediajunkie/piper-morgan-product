@@ -2119,12 +2119,17 @@ class ContextAssembler:
             ranked = sorted(all_open, key=lambda i: i.get("updated_at") or "", reverse=True)
             ranked.sort(key=_priority_rank)
 
+            # #2458: the key's name is older than what it holds. This is the top
+            # open issues of ANY priority (labelled first). Each row carries its labels
+            # and the repository the read was made against, from the read's own rows;
+            # the floor's heading and rows are built from those, not from the key's name.
             return {
                 "high_priority_issues": [
                     {
                         "number": i.get("number"),
                         "title": i.get("title"),
                         "labels": i.get("labels", []),
+                        "repository": i.get("repository_full_name"),
                         "url": i.get("uri") or i.get("html_url"),
                         "updated_at": i.get("updated_at"),
                     }

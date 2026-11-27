@@ -821,6 +821,9 @@ class GitHubIntegrationRouter:
                     "description": it.get("body", ""),
                     "state": it.get("state"),
                     "repository": repo,
+                    # #2458: the repository this read was made against, as GitHub
+                    # names it, so a reply can say where its issues are.
+                    "repository_full_name": f"{owner}/{repo}",
                     "uri": it.get("html_url"),
                     "created_at": it.get("created_at"),
                     "updated_at": it.get("updated_at"),
