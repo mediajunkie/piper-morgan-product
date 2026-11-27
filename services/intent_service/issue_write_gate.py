@@ -1,30 +1,43 @@
-"""2459 (Arch's ruling, part 2): the one gate in front of every GitHub issue write
-that takes an issue number (update, close, reopen, comment).
+"""2459 (Arch's ruling, part 2) and 2460 (what counts as typed): the one gate in
+front of every GitHub issue write that takes an issue number (update, close,
+reopen, comment).
 
 The rule:
 
-1. A number the person typed in THIS message is accepted as today. "Typed" is read
-   from the person's own message text with the handlers' existing pattern
-   (``#?(\\d+)``, the parse ``_issue_number_from`` and the handlers use): a number
-   counts as typed when that pattern would find it anywhere in the message (read as
-   digit runs, the same matches), so nothing accepted today is refused. No new
-   pattern.
+1. A number the person typed in THIS message is accepted (``typed_issue_number``,
+   issue 2460 as amended by Arch, a permission rule over the person's own message):
+   - a write carrying a field value (an update writing a title, body, label,
+     assignee or milestone; a comment's body) counts a number MARKED as ``#N`` or
+     ``issue N`` whose span lies outside every field value being written (the
+     handler's own slots, located with case ignored, whitespace runs collapsed and
+     one pair of surrounding quotes stripped); if a value is not in the message,
+     only ``#N`` counts; bare digits never count ("rename it to Test issue 2" holds "issue 2"
+     inside the new title, so it does not count; "change the title of issue 108 to
+     Draft 3" counts 108, issue 1411's phrasing);
+   - a write with no field value (close, reopen, a state-only update) also
+     counts a bare number, but only when exactly ONE distinct number appears.
+   Exactly one distinct counted number is the target; two or more are refused (the
+   ask). Reads keep their own parse.
 2. Otherwise the number is accepted only if it is the session's created head
    (``issue_head``: owner- and session-scoped, as ``_issue_referent_from_ledger``
    reads it) AND the created head is the session's referent under
    ``choose_issue_referent`` (no newer read showed a different issue or several),
-   with the same repository when one is carried.
-3. Anything else is refused: the caller says its existing ask for a number, and
-   nothing is armed, recorded or sent. That covers a number taken from the RECENT
-   ISSUE line for a shown issue, a router arg, and a model's guess.
+   with the same repository when one is carried. A free-text write that typed no
+   number at all takes the created head the same way (``source_created_head``).
+3. Anything else is refused: the caller says its existing ask for a number (or the
+   named ask when a single shown issue is the only candidate), and nothing is
+   armed, recorded or sent. That covers a number taken from the RECENT ISSUE line
+   for a shown issue, a router arg, the classifier's no-``#`` explicit number, and a
+   model's guess.
 
 The gate never trusts the router: it compares the candidate with the message text
 and the ledger in code. A failed ledger read is "no created head" (refusal unless
 typed), never a pass.
 
 An accepted verdict is stamped on the intent (``GATE_CONTEXT_KEY``), so the same
-intent re-dispatched by a confirmed "yes" or a repository answer is not gated a
-second time against a ledger read that might fail on that turn.
+intent re-dispatched by a repository answer is not gated a second time against a
+ledger read that might fail on that turn. A confirmed "yes" carries the values its
+question bound and is not gated again.
 
 ``issue_number_arg`` is the one normaliser for the issue key (``issue_number`` or
 ``issue``; the router emits both): the gate and the handlers read through it.
@@ -33,7 +46,7 @@ second time against a ledger read that might fail on that turn.
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Any, Awaitable, Callable, Mapping, Optional, Set, Tuple
+from typing import Any, Awaitable, Callable, List, Mapping, Optional, Sequence, Set, Tuple
 
 import structlog
 
@@ -109,13 +122,212 @@ def message_of(intent: Any) -> str:
     return ctx.get("original_message") or getattr(intent, "original_message", None) or ""
 
 
-def typed_issue_numbers(message: str) -> Set[int]:
-    """Every number the handlers' pattern finds in the person's message."""
-    # Every maximal run of digits: exactly what the handlers' ``#?(\d+)`` matches
-    # (the ``#`` is optional, so it never changes which digits match). Read here by
-    # character class, not a second copy of the pattern (the binder ratchet).
-    runs = "".join(ch if ch.isdigit() else " " for ch in (message or "")).split()
-    return {int(r) for r in runs if int(r) > 0}
+def _digit_runs(text: str) -> List[Tuple[int, int]]:
+    """``(start, end)`` of every maximal run of ASCII digits in ``text``."""
+    runs: List[Tuple[int, int]] = []
+    i, n = 0, len(text)
+    while i < n:
+        if "0" <= text[i] <= "9":
+            j = i
+            while j < n and "0" <= text[j] <= "9":
+                j += 1
+            runs.append((i, j))
+            i = j
+        else:
+            i += 1
+    return runs
+
+
+def _is_word_char(ch: str) -> bool:
+    return ch.isalnum() or ch == "_"
+
+
+def _issue_word_start(text: str, digit_start: int) -> Optional[int]:
+    """Where a marked ``issue N`` form begins, when the digit run at ``digit_start``
+    is written that way: the word ``issue`` (any case, not part of a longer word),
+    one or more spaces, an optional ``#``, then the digits. Accepted: "issue 108",
+    "Issue #108", "issue  108", "ISSUE 108". Not accepted: "issues 3", "issue-108",
+    "issue108", "reissue 5", "issue\n108" (spaces only)."""
+    k = digit_start
+    if k > 0 and text[k - 1] == "#":
+        k -= 1
+    spaces_end = k
+    while k > 0 and text[k - 1] == " ":
+        k -= 1
+    if k == spaces_end:
+        return None
+    word_start = k - len("issue")
+    if word_start < 0 or text[word_start:k].casefold() != "issue":
+        return None
+    if word_start > 0 and _is_word_char(text[word_start - 1]):
+        return None
+    return word_start
+
+
+_QUOTE_PAIRS = (('"', '"'), ("'", "'"), ("\u201c", "\u201d"), ("\u2018", "\u2019"))
+
+
+def _normalised_with_map(text: str) -> Tuple[str, List[int]]:
+    """``text`` case-folded with every whitespace run collapsed to one space, and for
+    each character of that copy the index of the ORIGINAL character it came from (a
+    collapsed run maps to its first whitespace character; a character that folds to
+    several maps each of them to itself)."""
+    out: List[str] = []
+    index: List[int] = []
+    in_space = False
+    for i, ch in enumerate(text):
+        if ch.isspace():
+            if not in_space:
+                out.append(" ")
+                index.append(i)
+            in_space = True
+            continue
+        in_space = False
+        for folded in ch.casefold():
+            out.append(folded)
+            index.append(i)
+    return "".join(out), index
+
+
+def normalise_field_value(value: str) -> str:
+    """A field value as it is located in the message (issue 2460, Arch's three
+    normalisations, nothing else): ONE pair of surrounding quotes (straight or curly,
+    single or double) stripped, then case ignored and whitespace runs collapsed."""
+    text = (value or "").strip()
+    for left, right in _QUOTE_PAIRS:
+        if len(text) >= 2 and text.startswith(left) and text.endswith(right):
+            text = text[1:-1].strip()
+            break
+    folded, _ = _normalised_with_map(text)
+    return folded.strip()
+
+
+def _value_spans(text: str, values: Sequence[str]) -> Tuple[List[Tuple[int, int]], bool]:
+    """Every occurrence of each non-empty field value in ``text``, as spans of the
+    ORIGINAL message, and whether EVERY such value was found. Located on the
+    normalised copy (``_normalised_with_map``) and mapped back through its index:
+    a match at normalised ``[a, b)`` is original ``[index[a], index[b - 1] + 1)``."""
+    folded, index = _normalised_with_map(text)
+    spans: List[Tuple[int, int]] = []
+    all_found = True
+    for value in values:
+        needle = normalise_field_value(value)
+        if not needle:
+            continue
+        start = folded.find(needle)
+        if start < 0:
+            all_found = False
+            continue
+        while start >= 0:
+            end = start + len(needle)
+            spans.append((index[start], index[end - 1] + 1))
+            start = folded.find(needle, start + 1)
+    return spans, all_found
+
+
+def update_field_values(
+    title: Any = None,
+    body: Any = None,
+    labels: Any = None,
+    assignees: Any = None,
+    milestone: Any = None,
+) -> List[str]:
+    """Every field value an update writes, as text (issue 2460, Arch's adjustment):
+    the title, the body, each label, each assignee and the milestone. A state change
+    is not a field value. Labels and assignees may be strings or ``{"name"}`` /
+    ``{"login"}`` dicts."""
+    out: List[str] = []
+
+    def _add(v: Any) -> None:
+        if isinstance(v, dict):
+            v = v.get("name") or v.get("login") or v.get("title")
+        if isinstance(v, (int, float)) and not isinstance(v, bool):
+            v = str(v)
+        if isinstance(v, str) and v.strip():
+            out.append(v)
+
+    for v in (title, body, milestone):
+        _add(v)
+    for many in (labels, assignees):
+        if isinstance(many, (list, tuple, set)):
+            for v in many:
+                _add(v)
+        else:
+            _add(many)
+    return out
+
+
+def _overlaps(span: Tuple[int, int], spans: Sequence[Tuple[int, int]]) -> bool:
+    return any(span[0] < end and start < span[1] for start, end in spans)
+
+
+def _free_text_readings(message: str, field_values: Sequence[str]) -> Tuple[Set[int], Set[int]]:
+    """For a write with a free-text field (issue 2460 rule 1, as amended): the
+    COUNTED numbers (marked ``#N`` or ``issue N`` whose span overlaps no occurrence
+    of a field value; only ``#N`` when a field value is absent from the message or
+    there is none), and the BARE numbers outside every field value (never counted)."""
+    text = message or ""
+    values = [v for v in field_values if isinstance(v, str) and v.strip()]
+    spans, all_found = _value_spans(text, values)
+    issue_form_ok = bool(values) and all_found
+    counted: Set[int] = set()
+    bare: Set[int] = set()
+    for start, end in _digit_runs(text):
+        number = int(text[start:end])
+        hash_marked = start > 0 and text[start - 1] == "#"
+        word_start = _issue_word_start(text, start) if issue_form_ok else None
+        if hash_marked:
+            span_start = start - 1
+        elif word_start is not None:
+            span_start = word_start
+        else:
+            if not _overlaps((start, end), spans):
+                bare.add(number)
+            continue
+        if word_start is not None:
+            span_start = min(span_start, word_start)
+        if not _overlaps((span_start, end), spans):
+            counted.add(number)
+    return counted, bare
+
+
+def typed_issue_candidates(
+    message: str, has_free_text_field: bool, field_values: Sequence[str] = ()
+) -> Set[int]:
+    """Every DISTINCT number that counts as typed for a write (issue 2460).
+
+    ``has_free_text_field`` means "this write carries at least one field value"
+    (Arch's adjustment: an update's title, body, each label, each assignee, the
+    milestone; a comment's body). The name is kept from the first ruling.
+
+    - No field value (close, reopen, a state-only update): every run of digits,
+      marked or bare.
+    - At least one field value: a number MARKED as ``#N`` or ``issue N`` (case
+      ignored; see ``_issue_word_start``) whose span in the message lies outside
+      every occurrence of every field value (``field_values``, located after
+      ``normalise_field_value``: case ignored, whitespace runs collapsed, one pair of
+      surrounding quotes stripped from the value; nothing else; a number overlapping
+      any occurrence, even partly, is excluded). When a field value is not found in
+      the message, or none is given, only ``#N`` counts. Bare digits never count.
+
+    Read by character class: no compiled pattern (the binder/extraction ratchets)."""
+    text = message or ""
+    if not has_free_text_field:
+        return {int(text[a:b]) for a, b in _digit_runs(text)}
+    counted, _ = _free_text_readings(text, field_values)
+    return counted
+
+
+def typed_issue_number(
+    message: str, has_free_text_field: bool, field_values: Sequence[str] = ()
+) -> Optional[int]:
+    """The one issue number this write's message typed (issue 2460), or None when it
+    typed none, typed two or more distinct ones, or typed ``#0``."""
+    found = typed_issue_candidates(message, has_free_text_field, field_values)
+    if len(found) != 1:
+        return None
+    (number,) = found
+    return number if number > 0 else None
 
 
 @dataclass(frozen=True)
@@ -217,29 +429,68 @@ async def gate_issue_write(
     intent: Any,
     candidate: Any,
     *,
+    has_free_text_field: bool,
     repository: Optional[str],
     user_id: Optional[str],
     session_id: Optional[str],
     created_head: Optional[CreatedHeadReader],
     stamp: bool = True,
+    source_created_head: bool = False,
+    field_values: Sequence[str] = (),
 ) -> IssueWriteVerdict:
     """Decide whether ``candidate`` (the number the write would act on, or None when
-    the write found none) may be written. ``repository`` is the repository the write
-    would use when the turn carries one (context or slot-fill), else None.
-    ``created_head`` reads the owner-scoped ledger head
-    (``IntentService._issue_referent_from_ledger``).
+    the write found none) may be written. ``has_free_text_field`` picks the 2460
+    form (True: an update writing a title or body, a comment; False: close, reopen,
+    an update writing neither). ``field_values``: the free-text value(s) this write
+    will write (the handler's own slots), so a number inside one never counts. ``repository`` is the
+    repository the write would use when the turn carries one (context or slot-fill),
+    else None. ``created_head`` reads the owner-scoped ledger head
+    (``IntentService._issue_referent_from_ledger``). ``source_created_head``: with
+    no candidate and no typed number, accept the created head when it is the
+    referent (the verdict's ``number`` then names it).
 
     ``stamp=False`` (the ask-time callers) leaves the intent untouched: an ask binds
     only what its question shows (the #2304/#2379 pins).
 
     A refusal carries ``shown`` when the session's referent is a single shown issue
-    (see ``refusal_line``), except for a repository mismatch or a non-integer issue
-    key, which keep the plain ask."""
+    (see ``refusal_line``), except for a repository mismatch, a non-integer issue
+    key, or two or more typed numbers, which keep the plain ask."""
     action = getattr(intent, "action", None)
     number = _as_issue_number(candidate)
+    ctx = getattr(intent, "context", None) or {}
+
+    stamped = ctx.get(GATE_CONTEXT_KEY)
+    if number is not None and isinstance(stamped, dict) and stamped.get("number") == number:
+        return IssueWriteVerdict(
+            True, number, stamped.get("repository") or repository, "gated_earlier"
+        )
+
+    message = message_of(intent)
+    typed_set = typed_issue_candidates(message, has_free_text_field, field_values)
+    if len(typed_set) >= 2:
+        return _refuse(action, "several_typed", number, repository)
+    typed = typed_issue_number(message, has_free_text_field, field_values)
+
     if number is None:
         if _non_integer_issue_key(intent):
             return _refuse(action, "non_integer", None, repository)
+        if source_created_head and not typed_set:
+            head = await _read_head(created_head, user_id, session_id)
+            usable = head if head is not None and not head.unreadable else None
+            if usable is not None:
+                chosen = choose_issue_referent(usable, last_shown_issue(session_id, user_id))
+                if chosen == (usable.repository, usable.number):
+                    if repository and not _same_repo(repository, usable.repository):
+                        return _refuse(action, "repository_differs", None, repository)
+                    verdict = IssueWriteVerdict(
+                        True, usable.number, usable.repository, "created_head"
+                    )
+                    if stamp:
+                        _stamp(intent, verdict)
+                    return verdict
+            return _refuse(
+                action, "no_number", None, repository, _shown_referent(head, user_id, session_id)
+            )
         # The ledger is read only when a single shown issue could be the referent
         # (the named ask); otherwise the plain ask needs no read.
         shown = last_shown_issue(session_id, user_id)
@@ -250,7 +501,6 @@ async def gate_issue_write(
             action, "no_number", None, repository, _shown_referent(head, user_id, session_id)
         )
 
-    ctx = getattr(intent, "context", None) or {}
     args_number = issue_number_arg(ctx.get("inversion_args"))
     if args_number is not None and args_number != number:
         # The router's number is not what this write acts on; logged, never used.
@@ -258,13 +508,7 @@ async def gate_issue_write(
             "issue_write_gate_args_differ", action=action, args_number=args_number, number=number
         )
 
-    stamped = ctx.get(GATE_CONTEXT_KEY)
-    if isinstance(stamped, dict) and stamped.get("number") == number:
-        return IssueWriteVerdict(
-            True, number, stamped.get("repository") or repository, "gated_earlier"
-        )
-
-    if number in typed_issue_numbers(message_of(intent)):
+    if typed is not None and number == typed:
         verdict = IssueWriteVerdict(True, number, repository, "typed")
         if stamp:
             _stamp(intent, verdict)
