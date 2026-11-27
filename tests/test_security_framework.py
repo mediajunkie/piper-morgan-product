@@ -549,15 +549,27 @@ class TestPerformanceValidation:
             except Exception:
                 return False
 
-        # Test concurrent token validation
-        start_time = time.time()
+        # The timed window holds ten token decodes and nothing else. The cyclic
+        # collector is paused for it (#2452): in the full suite this process holds over
+        # a million tracked objects, one full collection takes about 150 ms on Amber,
+        # and on CI one landed inside this window on two runs in a row (541 ms and
+        # 524 ms for work that takes under 1 ms), failing a bound it has nothing to do
+        # with. A collection is the interpreter's pause, not the token check's speed.
+        import gc
 
-        # Create 10 concurrent validation tasks
-        tasks = [validate_token() for _ in range(10)]
-        results = await asyncio.gather(*tasks)
+        collector_was_on = gc.isenabled()
+        gc.disable()
+        try:
+            start_time = time.perf_counter()
 
-        end_time = time.time()
-        elapsed = (end_time - start_time) * 1000  # Convert to milliseconds
+            # Create 10 concurrent validation tasks
+            tasks = [validate_token() for _ in range(10)]
+            results = await asyncio.gather(*tasks)
+
+            elapsed = (time.perf_counter() - start_time) * 1000  # milliseconds
+        finally:
+            if collector_was_on:
+                gc.enable()
 
         # Concurrent validation should be efficient (< 200ms for 10 operations)
         assert elapsed < 200, f"Concurrent validation too slow: {elapsed:.2f}ms for 10 operations"
