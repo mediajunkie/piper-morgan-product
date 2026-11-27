@@ -47,6 +47,13 @@ def state_redis():
         yield fake
 
 
+@pytest.fixture
+def app_on(monkeypatch):
+    """Issue 2261: a GitHub connect runs only in GitHub App mode (fake App values)."""
+    monkeypatch.setenv("GITHUB_APP_CLIENT_ID", "test-app-client-id")
+    monkeypatch.setenv("GITHUB_APP_CLIENT_SECRET", "test-app-client-secret")
+
+
 class TestTheGuard:
     def test_same_user_passes(self):
         require_session_matches_state(A, A)
@@ -100,7 +107,8 @@ class TestGitHubHandler:
 
         h = GitHubOAuthHandler.__new__(GitHubOAuthHandler)
         h.client_id, h.client_secret = "Iv1.c", "s"
-        h.redirect_uri, h.scopes = "https://alpha.example/cb", ["repo"]
+        h.redirect_uri = "https://alpha.example/cb"
+        h.app_mode = True  # issue 2261: a connect runs only in App mode
         return h
 
     @pytest.mark.asyncio
@@ -226,7 +234,9 @@ class TestTheRoutesAnswerHTML:
             (True, "/settings/integrations?github_error=wrong_account"),
         ],
     )
-    async def test_github_callback_refusal_redirects_and_stores_nothing(self, signed_in, expected):
+    async def test_github_callback_refusal_redirects_and_stores_nothing(
+        self, signed_in, expected, app_on
+    ):
         from web.api.routes import settings_integrations as si
 
         handler = AsyncMock(side_effect=OAuthCallbackSessionMismatch(signed_in))
@@ -296,7 +306,9 @@ class TestTheHostSwitch:
         assert host_switch_url(self._req("localhost"), "http://localhost:8001/cb", "/x") is None
 
     @pytest.mark.asyncio
-    async def test_the_github_connect_route_switches_before_minting_a_state(self, monkeypatch):
+    async def test_the_github_connect_route_switches_before_minting_a_state(
+        self, monkeypatch, app_on
+    ):
         from web.api.routes import settings_integrations as si
 
         monkeypatch.setenv("GITHUB_OAUTH_CLIENT_ID", "Iv1.c")

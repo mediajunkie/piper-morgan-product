@@ -546,13 +546,17 @@ except Exception as e:
 # #2342 (Arch 2026-11-12 06:51): GitHub App mode is on only when BOTH the App's client ID
 # and its secret are configured. One alone is never a half-on mode: say which is missing.
 try:
-    from services.mcp.consumer.github_app_grant import app_mode, app_mode_config_warning
+    from services.mcp.consumer.github_app_grant import (
+        app_mode,
+        app_mode_config_warning,
+        connect_mode_log_line,
+    )
 
     _github_app_warning = app_mode_config_warning()
     if _github_app_warning:
         logger.warning(f"⚠️ {_github_app_warning}")
     else:
-        logger.info(f"GitHub connect mode: {'GitHub App' if app_mode() else 'classic OAuth App'}")
+        logger.info(connect_mode_log_line())  # issue 2261: no classic connect any more
         if app_mode():
             from services.mcp.consumer.github_app_grant import ENV_APP_SLUG, app_install_url
 

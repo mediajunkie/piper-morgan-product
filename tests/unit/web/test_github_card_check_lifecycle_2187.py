@@ -12,6 +12,7 @@ stores a new grant.
 
 from __future__ import annotations
 
+import time
 from contextlib import asynccontextmanager
 from types import SimpleNamespace
 from unittest.mock import AsyncMock, patch
@@ -115,8 +116,21 @@ async def test_clean_disconnect_forgets_the_record_and_incomplete_does_not():
 
 
 @pytest.mark.asyncio
-async def test_a_new_grant_forgets_the_previous_grants_check():
+async def test_a_new_grant_forgets_the_previous_grants_check(monkeypatch):
+    from services.mcp.consumer.github_oauth_handler import GitHubOAuthTokens
     from web.api.routes import settings_integrations as settings_routes
+
+    # Issue 2261: the callback runs only in GitHub App mode (fake App values), where the
+    # token reply must carry the expiring pair the grant record stores.
+    monkeypatch.setenv("GITHUB_APP_CLIENT_ID", "test-app-client-id")
+    monkeypatch.setenv("GITHUB_APP_CLIENT_SECRET", "test-app-client-secret")
+    now = int(time.time())
+    tokens = GitHubOAuthTokens(
+        access_token="ghu_x",
+        refresh_token="ghr_x",
+        expires_at=now + 8 * 3600,
+        refresh_expires_at=now + 180 * 86400,
+    )
 
     store = PrincipalTestResultStore()
     store.record_test_result("user-1", "github", ok=False, error="401 Bad credentials")
@@ -126,11 +140,11 @@ async def test_a_new_grant_forgets_the_previous_grants_check():
         yield SimpleNamespace(commit=AsyncMock())
 
     handler = SimpleNamespace(
-        app_mode=False,  # #2342: the callback asks the handler which app minted the grant
+        app_mode=True,  # #2342: the callback asks the handler which app minted the grant
         handle_oauth_callback=AsyncMock(
             return_value={
                 "user_id": "user-1",
-                "tokens": SimpleNamespace(access_token="ghu_x"),
+                "tokens": tokens,
                 "login": "someone",
             }
         ),
