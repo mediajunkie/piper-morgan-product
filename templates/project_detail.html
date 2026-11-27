@@ -241,7 +241,7 @@
       >Config</button>
     </nav>
 
-    <!-- Overview tab: existing work-items section -->
+    <!-- Overview tab: the project's open todos (#2455) -->
     <section
       class="tab-panel"
       id="tab-panel-overview"
@@ -249,6 +249,20 @@
       role="tabpanel"
       aria-labelledby="tab-button-overview"
     >
+      <!-- #2455: the project's open todos, the same read chat's "Open todos in
+           <project>" makes (#2301), through GET /api/v1/projects/{id}/todos. -->
+      <div class="work-items-section" id="project-todos-section">
+        <div class="section-header">
+          <h2>Open todos</h2>
+        </div>
+        <div id="project-todos-container" role="status">
+          <p style="color: var(--color-text-secondary);">Loading todos...</p>
+        </div>
+      </div>
+      {# #2455 (CXO 11-27, Arch 11-27): the Work Items section is hidden on this page.
+         Nothing a person can reach writes a work item with a project on it, so its
+         count was 0 for everyone and its line promised something nobody could do.
+         Kept here, not served, until PPM rules on the store itself.
       <div class="work-items-section">
         <div class="section-header">
           <h2>Work Items</h2>
@@ -258,6 +272,7 @@
           <p style="color: var(--color-text-secondary);">Loading work items...</p>
         </div>
       </div>
+      #}
     </section>
 
     <!-- Config tab: linked repos + integrations via shared partial (#869 Phase 2) -->
@@ -284,11 +299,11 @@
   // Get project ID from URL
   const projectId = "{{ project_id }}";
 
-  // Load project and work items on page load
+  // Load the project and its open todos on page load
   document.addEventListener('DOMContentLoaded', async () => {
     await Promise.all([
       loadProject(),
-      loadWorkItems()
+      loadProjectTodos()
     ]);
     // #869 Phase 2: mount config panel for this project (loads repos +
     // integrations into the Config tab; tab visibility is independent).
@@ -321,6 +336,65 @@
     }
   }
 
+  // #2455: CXO's two lines (11-27). "No open todos" only after a read that
+  // succeeded and found none; a failed read never reads as "0" or "none".
+  const PROJECT_TODOS_NONE_LINE = 'No open todos in this project.';
+  const PROJECT_TODOS_COULD_NOT_CHECK_LINE =
+    "I couldn't check this project's todos just now. Reload the page to try again.";
+
+  // #2455: the project's open todos (the read #2301's chat block makes)
+  async function loadProjectTodos() {
+    try {
+      const response = await fetch(`/api/v1/projects/${projectId}/todos`, {
+        credentials: 'include'
+      });
+
+      if (response.status === 404) {
+        // Project not found: loadProject shows the 404; this section says nothing.
+        document.getElementById('project-todos-container').innerHTML = '';
+        return;
+      }
+
+      if (!response.ok) {
+        throw new Error('Failed to load project todos');
+      }
+
+      renderProjectTodos(await response.json());
+    } catch (error) {
+      console.error('Error loading project todos:', error);
+      renderProjectTodosCouldNotCheck();
+    }
+  }
+
+  function renderProjectTodosCouldNotCheck() {
+    document.getElementById('project-todos-container').innerHTML =
+      `<p class="project-todos-could-not-check">${escapeHtml(PROJECT_TODOS_COULD_NOT_CHECK_LINE)}</p>`;
+  }
+
+  // Rows arrive in chat's order with chat's grouping (repeats as ×N) and chat's
+  // priority note (urgent, high), so the page and "Open todos in <project>" agree.
+  function renderProjectTodos(data) {
+    if (!data || !Array.isArray(data.todos)) {
+      renderProjectTodosCouldNotCheck();
+      return;
+    }
+    const container = document.getElementById('project-todos-container');
+    if (data.todos.length === 0) {
+      container.innerHTML = `<p class="project-todos-none">${escapeHtml(PROJECT_TODOS_NONE_LINE)}</p>`;
+      return;
+    }
+    const rows = data.todos.map(todo => {
+      const repeat = todo.repeat > 1 ? ` (×${Number(todo.repeat)})` : '';
+      const priority = todo.priority ? ` (${escapeHtml(todo.priority)})` : '';
+      return `<li class="project-todo">${escapeHtml(todo.text)}${repeat}${priority}</li>`;
+    }).join('');
+    const capLine = data.cap_line
+      ? `<p class="project-todos-cap">${escapeHtml(data.cap_line)}</p>`
+      : '';
+    container.innerHTML = `<ol class="project-todos-list">${rows}</ol>${capLine}`;
+  }
+
+  {# #2455: not served while the Work Items section is hidden (see above).
   // Load work items for this project
   async function loadWorkItems() {
     try {
@@ -345,6 +419,7 @@
     }
   }
 
+  #}
   // Render project details
   function renderProject(project) {
     // Update breadcrumb
@@ -396,6 +471,7 @@
     `;
   }
 
+  {# #2455: not served while the Work Items section is hidden (see above).
   // Render work items list
   function renderWorkItems(workItems, count) {
     document.getElementById('work-item-count').textContent = count;
@@ -457,6 +533,7 @@
     }).join('');
   }
 
+  #}
   // Show 404 not found
   function showNotFound() {
     document.getElementById('breadcrumb-project-name').textContent = 'Not Found';
