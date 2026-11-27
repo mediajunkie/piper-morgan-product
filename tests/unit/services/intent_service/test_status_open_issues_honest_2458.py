@@ -12,9 +12,15 @@ Not covered here: what the floor's model then writes (judged on Web's rerun).
 """
 
 from unittest.mock import AsyncMock, MagicMock, patch
+from uuid import uuid4
 
 import pytest
 
+from services.integrations.github.priority_labels import (
+    HIGH_PRIORITY_LABELS,
+    is_high_priority,
+    priority_rank,
+)
 from services.intent_service.context_assembler import ContextAssembler
 from services.intent_service.conversational_floor import (
     ConversationalFloor,
@@ -88,6 +94,110 @@ async def test_a_row_from_a_read_that_names_no_repository_carries_none():
     assert result["high_priority_issues"][0]["repository"] is None
 
 
+# --- the one rule ---------------------------------------------------------------
+
+
+def test_the_label_set_is_ppms_union_of_nine():
+    assert set(HIGH_PRIORITY_LABELS) == {
+        "p0",
+        "p1",
+        "priority-high",
+        "high-priority",
+        "priority: high",
+        "urgent",
+        "priority: urgent",
+        "critical",
+        "priority: critical",
+    }
+    assert len(HIGH_PRIORITY_LABELS) == 9
+
+
+@pytest.mark.parametrize("label", HIGH_PRIORITY_LABELS)
+def test_each_label_in_the_set_counts_whatever_its_case_or_shape(label):
+    assert is_high_priority([label])
+    assert is_high_priority([label.upper()])
+    assert is_high_priority([{"name": label}])  # the dict shape some reads return
+
+
+@pytest.mark.parametrize(
+    "labels",
+    [
+        [],
+        None,
+        ["bug", "docs"],
+        ["priority: low"],
+        ["p10"],  # no substrings
+        ["not-urgent"],
+        ["high"],
+        ["priority"],
+        [{"name": "enhancement"}],
+        [None, 3],
+    ],
+)
+def test_no_label_or_a_near_miss_is_not_high_priority(labels):
+    assert not is_high_priority(labels)
+
+
+def test_rank_is_critical_then_urgent_then_high_then_unlabelled():
+    assert (
+        priority_rank(["p0"])
+        < priority_rank(["urgent"])
+        < priority_rank(["high-priority"])
+        < priority_rank(["bug"])
+    )
+    assert priority_rank(["bug"]) == priority_rank([]) == len(HIGH_PRIORITY_LABELS)
+
+
+def test_every_path_that_says_high_priority_reads_the_one_rule():
+    """Arch's condition 1. The priority read, the project scoring, the status gather
+    and the floor's lines import the predicate; none keeps a label list of its own."""
+    import re
+    from pathlib import Path
+
+    handlers = Path("services/intent_service/canonical_handlers.py").read_text()
+    assembler = Path("services/intent_service/context_assembler.py").read_text()
+    floor = Path("services/intent_service/conversational_floor.py").read_text()
+    assert handlers.count('is_high_priority(issue.get("labels", []))') == 2
+    assert 'priority_rank(issue.get("labels"))' in assembler
+    assert 'is_high_priority(it.get("labels"))' in floor
+    own_list = re.compile(r'"(p0|p1|priority-high|high-priority|priority: high)"')
+    for name, source in (("handlers", handlers), ("assembler", assembler), ("floor", floor)):
+        assert not own_list.search(source), f"{name} keeps its own priority label list"
+
+
+@pytest.mark.asyncio
+async def test_the_priority_read_filters_by_the_one_rule():
+    """The count line's number (``urgent_items``) comes from this list's length."""
+    from services.intent_service.canonical_handlers import CanonicalHandlers
+
+    issues = [
+        {"number": 1, "title": "a", "labels": ["priority: urgent"]},  # was not in the six
+        {"number": 2, "title": "b", "labels": ["P1"]},
+        {"number": 3, "title": "c", "labels": ["bug"]},
+        {"number": 4, "title": "d", "labels": []},
+    ]
+    handlers = CanonicalHandlers.__new__(CanonicalHandlers)
+    service = MagicMock()
+    service.get_connection_status = MagicMock(return_value={"connected": True})
+    service.get_open_issues = AsyncMock(return_value=issues)
+    status = MagicMock()
+    status.is_configured = AsyncMock(return_value=True)
+    with (
+        patch(
+            "services.integrations.integration_status_service.IntegrationStatusService",
+            return_value=status,
+        ),
+        patch("services.domain.github_domain_service.GitHubDomainService", return_value=service),
+        patch(
+            "services.integrations.github.repo_resolver.get_user_default_repo",
+            new=AsyncMock(return_value="o/r"),
+        ),
+    ):
+        got = await handlers._get_priority_metadata(user_id=str(uuid4()))
+    assert [i["number"] for i in got["high_priority_issues"]] == [1, 2]
+    assert got["total_open_issues"] == 4
+
+
 # --- what the floor is told ----------------------------------------------------
 
 
@@ -99,31 +209,58 @@ def _issue(number, title, labels, repository="pipermorgan/piper-test"):
     return {"number": number, "title": title, "labels": labels, "repository": repository}
 
 
-def test_the_beta_case_one_unlabelled_issue_is_not_called_high_priority():
-    """The served turn: one open issue, no priority label."""
+def test_the_beta_case_one_unlabelled_issue_carries_no_priority_word():
+    """The served turn: one open issue, no priority label. The only "high priority"
+    in the block is the heading's own sentence saying when the mark applies."""
     out = _lines(_context([_issue(1, "Test issue for Piper", [])]))
-    block = out[out.index("- Open issues") :].split("\n- ")[0]
-    assert "High-priority" not in out
-    assert "high priority" not in block.lower()
-    assert "• #1 [no priority label]: Test issue for Piper" in block
+    assert "High-priority open issues" not in out
+    row = next(line for line in out.split("\n") if "#1" in line)
+    assert row.strip() == "• #1: Test issue for Piper"
+    assert "priority" not in row.lower()
 
 
-def test_the_heading_names_the_repository():
+def test_the_heading_is_cxos_words_and_names_the_repository_as_github_does():
     out = _lines(_context([_issue(1, "Test issue for Piper", [])]))
-    assert "- Open issues in pipermorgan/piper-test (1 open; top 1 shown" in out
+    assert (
+        "- Open issues in pipermorgan/piper-test (1 open; top 1 shown), "
+        "priority-labelled first, then newest. "
+        'Marked "high priority" only where the issue carries a priority label.'
+    ) in out
 
 
-def test_a_labelled_issue_shows_its_own_label_and_an_unlabelled_one_says_none():
+def test_a_labelled_issue_is_marked_with_the_one_phrase_never_its_raw_label():
     out = _lines(
         _context(
             [
                 _issue(3, "Fix login", ["bug", "priority: critical"]),
+                _issue(5, "Ship it", ["P1"]),
                 _issue(2, "Tidy docs", ["docs"]),
             ]
         )
     )
-    assert "• #3 [priority: critical]: Fix login" in out
-    assert "• #2 [no priority label]: Tidy docs" in out
+    assert "• #3 [high priority]: Fix login" in out
+    assert "• #5 [high priority]: Ship it" in out
+    assert "• #2: Tidy docs" in out
+    assert "priority: critical" not in out
+    assert "[P1]" not in out
+
+
+def test_the_count_line_is_cxos_words():
+    out = _lines({"priorities": {"urgent_items": 2}})
+    assert "- Open issues marked high priority: 2" in out
+    assert "- High-priority issues:" not in out
+
+
+def test_an_old_cached_entry_with_no_repository_names_none():
+    """Arch's condition 2: the cache key lives five minutes, and an entry written
+    before this change has rows with no ``repository``. It renders under the new
+    heading without a repository, never as if one were known."""
+    old_shape = [
+        {"number": 1, "title": "Test issue for Piper", "labels": [], "url": "u", "updated_at": "d"}
+    ]
+    out = _lines(_context(old_shape))
+    assert "- Open issues (1 open; top 1 shown), priority-labelled first" in out
+    assert "Open issues in " not in out
 
 
 def test_the_count_and_the_capped_plus_are_unchanged():
@@ -151,7 +288,6 @@ def test_the_count_and_the_capped_plus_are_unchanged():
 def test_no_repository_is_named_unless_every_row_names_the_same_one(issues):
     heading = open_issues_heading(issues, len(issues))
     assert heading.startswith(f"- Open issues ({len(issues)} open;")
-    assert " in " not in heading.split("(")[0]
 
 
 def test_an_empty_list_adds_no_block():
