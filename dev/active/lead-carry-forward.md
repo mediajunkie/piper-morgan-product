@@ -1,5 +1,16 @@
 # Lead carry-forward — Fable 5.2 seat again since 2026-11-20 08:56 (Opus 5.5 from 2026-11-17 21:30 until then); Model A worktree ~/Development/piper-morgan-worktrees/lead
 
+## DAY-END 2026-11-26 21:47 (read this first; the blocks below are today's earlier states)
+- **First thing at START, from 07:00 PT: promote to beta.** Main carries the pleasantry skip `7c3fcf36b7`, box 3 `e42b460310` (tests only) and the default flip `0aec538aab`; beta serves `039121b0fb` (step 1, no skip). Pre-checks: main CI 12 of 12; Tests green on the sha staging serves (the gate's own rule); no alembic diff from `039121b0fb`; beta healthy and `quiet: true`; Health Watch green; no deploy running. Ask Exec for the "xian has not started (a)" line (tonight's was released). Dispatch, verify beta `git_sha`, mail "beta moved", add the served sha as a comment on issue 2454.
+- **Unsettled:** how to verify on beta that "hi" makes no detector call. Ask Arch before claiming it served.
+- **Closed 11-26 (9):** 2384, 2399, 2446, 2448, 2441, 2412, 2297, 2364, 2454. Filed by me: 2442 (duplicate, closed), 2452, 2454.
+- **Open and waiting on others:** 2446's two served turns (Web, CXO); 2449 box 2 (a day of refresh passes); Web's 11-27 morning card read (2342 second look) and Path B run on seat-tester-1 (PPM's ask 01M8DR0G3B, quotes come cc me); 2450 when ruled and placed; 2244 row 2 (xian's hand).
+- **Mine, deferred to a fresh session (deep work):** 2452 box 2 and the sweep of wall-clock tests under Arch's rule (pause the collector or measure something else; no raised bounds). 2445 (`mcp_allow.py --username`) and the `email:` line in `seat_account_create.py` wait on Step G part 1 and HOST's read.
+- **Small:** comma nit in `update_issue`'s never-connected line.
+- **Habits from today's mistakes:** read an issue's body and last comments in the same command that changes it; never chain an announcement to an edit that can refuse; a red CI run is measured before it is called noise or re-run; check the price row before a PLANNED line; every time in a comment comes from the clock; do not assert how CI queues or cancels without reading the run list (the run on `e42b460310` was cancelled, cause unverified).
+- **Spend 11-26:** $3.5520 over three planned runs, each with Exec's line and an ACTUAL after. Promotions: 3, each first dispatch.
+- Side trees, all clean: `../lead-gate-2364` (`0aec538aab`), `../lead-2432b` (`e42b460310`), `../lead-2418`, `../lead-2415`.
+
 ## EVENING 2026-11-26 18:48 (read this first; it supersedes the START block below for today)
 
 - **UPDATE 19:05: beta serves `039121b0fb` with 2364 step 1** (third promotion today, 18:58, first dispatch). Tests passed on `0afebb26ad`; main CI 12 of 12. Exec told "beta moved"; Web and PA have the sha. The three lines below about the red Tests and the held promotion are history. Next: PA's score of Web's probe, then Arch's default-flip commit. 2448 and 2441 closed.
