@@ -214,3 +214,6 @@ history and the dated session logs, per the file's own "pointers not duplicated 
 
 ### OWED[key: web-2425-launch-read; to: Lead, CXO; by: trigger: Lead's mail that 2425 is on beta]
 **Filed**: 2026-11-27. On seat-tester-1 (holds Launch), fresh conversation, send "add a task to my Launch project: book the venue"; 1 planned turn; quote whole with intent; press nothing else.
+
+### OWED[key: web-2261-settings-read; to: PPM, CXO, Lead; by: trigger: Lead's mail that 2261 is on beta]
+**Filed**: 2026-11-27. Seat-github-1, quote the GitHub settings page whole: fine-grained token hint (Contents read, Issues read and write, Pull requests read and write, link to GitHub's fine-grained page), placeholder "Paste your token", no "repo scope" text, card as before. No chat turn; press nothing.
