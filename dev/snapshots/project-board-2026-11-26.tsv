@@ -2152,7 +2152,7 @@ issue	state	milestone	sprint	title	labels	blocked_by	state_reason
 2361	OPEN	Production		Pause admission: a switch that stops new accounts being created until it's turned back on (PDR-009 G7)			
 2362	CLOSED	Production		The root URL-redaction filter does not see records from other loggers (a logger's filter is not inherited); attach it to the handlers			COMPLETED
 2363	OPEN	Production		Promote gate searches only the first parent for a tested ancestor, so a merge commit from a seat's branch is refused though Tests is green			
-2364	OPEN	Production		Ethics check declines ordinary requests on a substring ('home page', 'private repo', 'explicit'); reply-side boundary check reads a field that doesn't exist	bug		
+2364	CLOSED	Production		Ethics check declines ordinary requests on a substring ('home page', 'private repo', 'explicit'); reply-side boundary check reads a field that doesn't exist	bug		COMPLETED
 2365	OPEN	Production		Knowledge graph redacts or rejects a node's own text on a substring match ('explicit', 'unwanted'), a write decided by substring	bug		
 2366	OPEN	Production		LLM keys page offers to save a Google (Gemini) key, but Piper can't serve any reply on Gemini	bug		
 2367	OPEN	Production		Key save route still accepts a Google (Gemini) key from a direct API call and reports success	bug		
@@ -2238,4 +2238,4 @@ issue	state	milestone	sprint	title	labels	blocked_by	state_reason
 2450	OPEN	Production		Close/reopen gate arms a yes/no when there's no signed-in account	architecture		
 2451	OPEN	Production		Signs-to-watch-for question about a named colleague is declined on OpenAI, answered on Anthropic (p-2 after 2364 v0.3)	UX		
 2453	OPEN	Production		Two reply wordings from the 2364 served probe: unsupported document type gets a menu without it; offer suffix repeats 'just tell me'	UX		
-2454	OPEN	Production		Spend-free ratchet (1818) measures the ethics gate off; with the gate on, as beta runs, every canned reply crosses the spend chokepoint	architecture		
+2454	CLOSED	Production		Spend-free ratchet (1818) measures the ethics gate off; with the gate on, as beta runs, every canned reply crosses the spend chokepoint	architecture		COMPLETED
