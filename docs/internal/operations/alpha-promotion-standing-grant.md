@@ -78,3 +78,39 @@
 **Recommendation to xian, via Exec:** keep the grant as it stands. Replace the review line with: *"Review: 2026-11-27, or after a promotion that leaves alpha serving neither the promoted build nor the one before it, whichever comes first. A refusal by a condition is not a trigger."* Whether to renew is xian's call. Until then the grant runs as is, under Exec's promotion freeze until the letters go.
 
 **Outcome (2026-11-03 17:30, xian in session, via Exec):** the grant is kept, and the review line above is replaced as recommended (decisions.log 2026-11-03 17:30).
+
+### 28-day review (CIO, 2026-11-27, START fire; standing row 9k)
+
+**Record, 10-30 to 11-27 10:07 PT:** 103 dispatches of `fly-deploy.yml` by `workflow_dispatch`.
+- **93 promoted.** In 94 runs the workflow succeeded; `promote-alpha` succeeded in 93 of them and was skipped in 1.
+- **7 refused at a named condition, as designed:**
+  - 6 times, Tests not green on the served code: 11-03, 11-05, 11-08, 11-13, 11-16, 11-23.
+  - Once, alpha not quiet: 11-04.
+- **2 broke at the deploy step.** Neither left alpha serving a third build, so neither met the early-review trigger:
+  - **11-06 23:26** (run 42311939348): Fly's release-command machine failed to start, and the deployment aborted. Lead logged "alpha untouched".
+  - **11-08 08:40 PT** (run 42501163035): a Fly machines-API stream error came after the machine had updated, so the verify step was skipped. Lead verified by hand that beta's `/health` read the promoted `7f9aa353fa`, healthy, 5 times, and did not re-dispatch.
+
+**Findings:**
+1. **The conditions did their job.** Every refusal stopped at a named condition. Most were the Tests condition.
+2. **Deploy-step failures fell from 8 in 14 days to 2 in 28 days.** Both left a known build serving.
+3. **This page no longer describes how promotions are given.**
+   - Since 11-05, alpha 301s to beta (#2282), but the page still says alpha.
+   - Since 11-13, each promotion has also carried a per-promotion grant from Arch in decisions.log. The first was 11-13 16:13 ("Granted for 81d149ac86, this commit only"). Lead's 11-13 log reads "the next promotion needs his word again".
+   - xian's 11-26 rulings speak of "the standing grant with Arch validating and HOST reading".
+   - None of that is written here. I have not found where the Arch layer was set or by whom. Unverified: I searched decisions.log for 11-06 to 11-13 and Lead's 11-13 log.
+4. **No case of "a promotion I would have refused" was found.** I searched decisions.log only, not every card, so this is not an exhaustive check.
+
+**Recommendation to xian, via Exec:**
+- Keep the grant.
+- Arch states the per-promotion layer, as he applies it, as a procedure note on this page, so the page says what a dispatch actually needs. The grant's text doesn't change.
+- The page's own text renames alpha to beta where it means the hosted app. The app and workflow names stay `piper-morgan` and `promote-alpha`, because those are their real names.
+- Next review: 2026-12-29, beside the methodology audit, or earlier if a promotion leaves beta serving neither the promoted build nor the one before it. A refusal by a condition is not a trigger.
+
+Whether to renew is xian's call. Until he answers, the grant runs as is.
+
+Verified how:
+- **Dispatches:** `gh run list --workflow fly-deploy.yml --event workflow_dispatch --created ">=2026-10-30"` (103 runs). `gh run view` on each failure gave the failing step. `promote-alpha`'s conclusion was read on each of the 94 successful runs.
+- **What the two deploy failures left serving:** Lead's 11-06 and 11-08 logs, as recorded on their days, not re-measured.
+- **Health watch, 11-06 to 11-09:** 20 runs, 20 green.
+- **Layer:** GitHub Actions records plus logs.
+- **Denominator:** every dispatch in the window.
