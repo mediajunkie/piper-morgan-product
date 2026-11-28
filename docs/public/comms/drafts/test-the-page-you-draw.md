@@ -8,11 +8,10 @@ caption: ''
 
 *November 8–15, 2026*
 
-Whenever you delegate work, especially to agents (but really any time),  the moment of truth is when you finally inspect the results of the work yourself, using what test pilots amusing dubbed the "mark 1 eyeball" instrument. You have to look at it directly yourself.
- 
-## The principle (one line, yours to word)
+Whenever you delegate work, especially to agents (but really any time),  the moment of truth is when you finally inspect the results of the work yourself, using what some 20th century military aviators amusingly dubbed the "[mark 1 eyeball](https://en.wiktionary.org/wiki/mark_1_eyeball)" instrument (sometime written "Mark I" and always pronounced "mark one." The point is, you have to look at it directly yourself.
 
-A test that checks the code is not a test of what the person sees. Tests pass in the world the test builds, so build it from what the user gets.
+The agent team tests Piper Morgan code assiduously, but testing the code is not the same as being a person and using the software. When I get overloaded, the number of items I need to inspect, test, and give feedback on directly mounts fast (at least until I can get more testers in, chicken-or-egg problem!) creating large backlogs for me to wade through, a reverse centaur to my own apparatus.
+
 
 ## Two episodes, a week apart (facts verified)
 
