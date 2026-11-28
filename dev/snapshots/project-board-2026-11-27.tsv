@@ -2256,3 +2256,5 @@ issue	state	milestone	sprint	title	labels	blocked_by	state_reason
 2470	OPEN	Production		Chat offers to add repositories ('I can link them up') but add_github_repo is unwired; the decline is generic	UX		
 2471	OPEN	Production		Deploy workflow: no job has a time limit, so a hung deploy can roll out hours later (MCP deploy hung 30 minutes on 11-27)			
 2472	OPEN	Production		deploy_mcp dispatch hangs in the flyctl deploy step (two runs, 11-27); no timeout bounds it			
+2473	OPEN	Production		Google: Piper uses two Cloud projects (beta's Calendar on 'Piper Morgan (Alpha)', other work on 'Piper Morgan'); consolidate on one without reopening Google verification			
+2474	OPEN	Production		Self-hosted copy: the first account skips the invite code and is the admin, behind an explicit setting the hosted service refuses (Arch's owner-first ruling)			

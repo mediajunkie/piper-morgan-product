@@ -1,6 +1,6 @@
 # Exec carry-forward
 
-**Rewritten 2026-11-26 22:02 PST at STOP.** Model: Opus 5.5. History: `git log -p -- dev/active/exec-carry-forward.md`. Last session log: `dev/2026/11/26/2026-11-26-0601-exec-code-log.md` (closed). Session compacted once on 11-26; resume via the log.
+**Rewritten 2026-11-27 22:02 PST at STOP.** Model: Opus 5.5. History: `git log -p -- dev/active/exec-carry-forward.md`. Last session log: `dev/2026/11/27/2026-11-27-0511-exec-code-log.md` (closed). Session compacted once on 11-27; resume via the log.
 
 **STATE: LIVE on LaunchAgent** `com.xian.pm-exec-cycle`, firing at :01 on hours 6, 10, 14, 18 and 22. Empty CronList is normal.
 
@@ -8,28 +8,24 @@
 
 **Clock rule live:** no estimated minutes in commits, mail or logs. Headings: `scripts/log-entry.sh "title" >/dev/null`. Times in backticks.
 
-## Fri 11-27 START, in order
-1. Retitle the rollup h1 to Friday (rollup v1184, `719UZ4h1NELjEwWZbDCceT`, source `dev/active/exec-attention-rollup-current.html`).
-2. `scripts/ship-kickoff.sh --if-due` (#071 kickoff, first live v4 kickoff; #071 publishes Tue 12-01). Standing row 25: plan the week ahead with xian.
-3. **Lead promotes from 07:00** (2454 greeting skip, box 3, the 2364 on-by-default flip `0aec538aab`; beta serves `039121b0fb`). Lead asks me for "xian has not started (a)". Check the conversation for xian's word; if he hasn't said he started Step G (a), say so. Hold (a) until Lead says "beta moved", then tell xian.
-4. Sprint 2 closed 11-26; sprint 3 starts 11-27. #071 reports the score as it stands. Lead's 11-26 closes: 2384, 2399, 2446, 2448, 2441, 2412, 2297, 2364, 2454 (Lead 01M8DR7BQJ). Also #2406 closed.
+## Sat 11-28 START, in order
+1. Retitle the rollup h1 to Saturday (rollup v1200, `719UZ4h1NELjEwWZbDCceT`, source `dev/active/exec-attention-rollup-current.html`). xian's format rule (11-27): only current and actionable items at the top; finished items come off (they're logged) or go below everything that needs him.
+2. Sprint 3 day 2 (11-27 to 12-10; theme "Signed In"; top priority is opening invitations). Weekends are prime time, so don't treat Saturday as quiet.
+3. Chase the 11-27 closes still open at 22:01: CIO, Docs. Chase only if they're still open.
+4. Expect replies to 01M8GBR9581CCEYR44VE9JGY6Y: Lead (why beta uses the Alpha Google project, and what self-hosting needs today), PPM (placing the one-project move in sprint 3 or 4, and the self-hosted tester against the invite goal), Arch (owner-first details), HOST (the first-cohort note text, and who it goes to). Bring them to xian. PA owes "what do you think of your name" (01M8GBRBW0JCFT3ZV21WR6YEKQ).
 
-## xian's open items (desktop)
-- **Step G (a):** claude.ai, Settings, Connectors, Add custom connector, `Piper Morgan (seat)`, URL `https://mcp.pipermorgan.ai/mcp?client=seat`, consent as seat-github-1 in his separate Chrome profile. Tell Lead before he starts. If refused: remove it, then (c) via PA's Claude Code (his scoped keychain yes: one piper-seat OAuth token; at the Ending `claude mcp logout piper-seat` then `claude mcp remove piper-seat`).
-- **Alpha callbacks:** GitHub App keeps only `https://beta.pipermorgan.ai/api/v1/settings/integrations/github/callback`; ask before touching any old OAuth App. Google keeps the two beta calendar callbacks (settings, setup). Closes one row of #2282.
-- **Zero-install pick** for PA, after Step G: (a) take piper-test off seat-test briefly, or (b) not served.
-- **His own GitHub reconnect** on beta (stale grant is his alone; 2342's 8-hour box served by seat-github-1, Web 20:16). CXO wants the card's exact words first.
-- **At the Ending:** he removes seat-github-1's key (his hand; he OK'd it getting a key).
+## xian's sitting (paused, resume where he is)
+- Step 3 done 11-27 night: GitHub and Calendar connected on beta, both redirects named beta, neither tested yet (Test All Connections is optional). HOST's final cohort note: xian reviews, possibly Sat morning.
+- Then, one thing at a time: Step G (a) connector `Piper Morgan (seat)` at `https://mcp.pipermorgan.ai/mcp?client=seat`, Allow as seat-github-1 in a private window; PA's seat check. The zero-install read: take piper-test off the seat-test team, Web and PA read, put it back at Read exactly; piper-test-2 untouched. Step G part 3 (three pastes on PA's word; the address comes from beta's /account as seat-github-1). Revoke seat-github-1's own authorization ("Never uninstall the App from the pipermorgan org."; no reconnect, option (a)). Ending: remove `Piper Morgan (seat)` and the allowlist entry. Last: remove the alpha callbacks at GitHub and Google, each app keeping one callback, wildcard unticked, read back to me.
+- Hold Lead's promotions while he's in an active step. Promotions run 07:00 to 21:00.
+- Afterwards: Slack card Disconnect (harmless leftover); the manual-credentials card on the Calendar page goes to CXO (he'd deprecate it).
 
-## Done 11-26 at the Amber sitting (off the card)
-Fleet deny; seat-tester-1 sitting; counter, setup-calendar, seat-github-1 allows (31 rules); F.2; F.4; seat-github-1 password rotated (methodology-59 filed by CIO after my credential-file mistake); Step G part 1; Step H; Step E (OpenAI `seat-screens`, $25). Rulings logged in decisions.log: sprint 3 focus and 2244, dates rigid, 2438 15/72 length-only, #2441 yes, piper-seat token, seat-github-1 key.
+## xian, not urgent
+- 2471 deploy time limits: yes or no. Three Fly reads (`fly` account on Amber, MCP builder 2472, log retention). Fly-deny paste (on the rollup card); then PA runs three refusals. Tue 12-01 document discussion hour. `rm -rf ~/cutover-tmp`. Optional: rename the board field "Sprint" to "Epic" (rename only).
+- The outside tester he wants on a self-hosted beta: the name is held by Janus only (designinproduct bf7c7e411f). Asked whether he's xian's advisor (the rule-8 exception). Janus also holds the Duet's third question (scheduled check-ins).
 
-## Later with xian (not blocking)
-- **Document model review:** map done (`docs/internal/architecture/current/document-implementation-map.md`, page https://claude.ai/artifact/LweVF8KEDX1VZwQq7DqEAE). Next: the MUX comparison with xian and CXO when sprint 3 has room. Arch's separate-service triggers go on his card.
-- 2244 row 2 (ingest survives a deploy, operator CLI). gpt-4o deprecation as the OpenAI default (future product question). HOST: /health's `seen` is a public head count. #2387. Restore drill 2157 (his day).
-
-## Closes for 11-26
-Closed: PPM, Web, Comms, Arch, HOST, CXO, Lead, PA. Open at 22:01: Docs, CIO (their STOPs may still run). Check at START 11-27; chase only if still open.
+## Served 11-27 (for the Ship and day arc; off the rollup)
+Paths 2 of 2 (A 13:44, B 14:44). 2261 served (invite hold 1 of 3). Cutover: 0 classic grants, PASS. Seven promotions; beta `8ddd08d8e0` since 20:02. 2470 settled: row 2 split, Arch condition 7 (xian likes it), the prompt pass is Lead's first unit next session. Fly deny on main (`e6c625572a`). MCP stays on `c303931894` (two deploys hung, 2472).
 
 ## Standing word
 - Promote gate: "Yes, changes that only make the check stricter can go ahead with Arch's approval, although I should still be informed." I tell him the same hour.
