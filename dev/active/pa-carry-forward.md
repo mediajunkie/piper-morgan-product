@@ -44,6 +44,8 @@ LaunchAgent `com.xian.pm-pa-cycle` (:47 at 6, 9, 12, 15, 18, 21), boot-persisten
 
 ## MCP program (card priority 1)
 
+- **MCP deploy HOLD (11-27, written 16:42):** main from `305499bbfb` would serve the wrong connector connect-required line (issue 2468: `app_mode()` is always off in the MCP app). No MCP deploy from main until 2468 is fixed; MCP stays `c303931894`. On every promotion read, check `services/mcp/server/resources.py`'s imports from `consumer/`, not just the directory.
+
 - **Deploys:** only `scripts/deploy-mcp.sh`. PA's own run is classifier-denied since 11-04; give xian the one-line sync-plus-deploy (memory `reference_deploy_mcp_clean_tree_races_cohort_pushes`). A sanctioned `gh workflow run` deploy would remove the human hand (proposed in Agent 360 v0.6).
 - **Auth:** issuer `https://alpha.pipermorgan.ai/mcp/oauth` (constant; `MCP_OAUTH_ISSUER_URL` overrides). `/authorize` always renders consent; allowlist (#2242) gives unlisted accounts a 403. Access token 1 h; refresh 30 days, rotating.
 - **Live reads:** this session's connector, `mcp__claude_ai_Piper_Morgan_Alpha_MCP__what_piper_knows_about_me`.
