@@ -2,7 +2,11 @@
 
 **Updated**: 2026-11-27 22:12. Older state lives in the session logs (`dev/2026/{10,11}/*/*docs-code-log.md`), not here. `gh`: prefix `GODEBUG=netdns=go` if bare `gh` hangs.
 
-## NOW (11-27 22:12)
+## NOW (11-28 START)
+- **11-28 START done:** 11-27 omnibus landed and verified (812 non-merge, 1402 total). Step 1d: 11 of 11 role logs carry the marker, 3 prog logs do not (no mailbox). CI 12 of 12 green, mail 0 unacked.
+- **Owed 11-29 04:12:** the 11-28 omnibus (Sonnet subagent, 11-21 shape, verify after hand-back) and Step 1d. Monday 11-30 audit: stale-content and methodology scans, glossary re-verify. Everything else below is unchanged: 2474 guide edits, publishes on Comms PUBLISH-READY, held list.
+
+## (earlier) NOW (11-27 22:12)
 - **11-27 done:** 11-26 omnibus landed and verified (705 non-merge, 1162 total). Ship 071 workstream review filed to Exec. Guide: line 62 says how GitHub connects on your own install (2261 on main), and a new "Start here" section is on main for the tester packet (mailed PPM, CXO, HOST for reads, 01M8GCJNPQ). Both keep "(not yet run)". Mail 0 unacked, CI 12 of 12 green.
 - **Owed 11-28 04:12 START:** the 11-27 omnibus (Sonnet subagent, 11-21 shape, verify after hand-back) and Step 1d on the 11-27 logs. Monday 11-30 audit: run the stale-content and methodology scans skipped on 2422.
 - **With 2474, change two places together:** step 8 rewrite (Arch 01M8GBYFT7: set the line, start, create account, it is the admin, turn the line off, keep the Docker mint path, Settings → Invites) and the Start here sentence "The invite code you make in step 8..." becomes "Your first account is the owner and admin of your copy." HOST reads the diff.
