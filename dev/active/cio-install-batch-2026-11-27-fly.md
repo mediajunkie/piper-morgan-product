@@ -1,13 +1,13 @@
 # CIO install batch, 2026-11-27: deny `fly` on every PM seat
 
-**Status: proposed.** Arch's yes on `91463b38ef` (01M8G0QQYT); his re-read of the two later changes (the `FLY_` form, the retired allow), HOST's read is open. Pard: no (below). Then Exec puts it on xian's card.
+**Status: proposed.** Arch's yes on `91463b38ef` (01M8G0QQYT); his re-read of the two later changes (the `FLY_` form, the retired allow), HOST: conforms, needs none of the 10-13 fly rules (01M8G15921). Pard: no (below). Then Exec puts it on xian's card.
 
 **Why:** ADR-084 line 22 says no seat runs `fly`, read-only included. Nothing on a seat enforced it. On 11-27, PA's seat ran `fly releases -a piper-morgan-mcp` and `fly status -a piper-morgan-mcp`, while `fly secrets list` was refused by the classifier (HOST 01M8FZGA3P, PA 01M8G00GPS, Exec 01M8G038V2; custody record row "A seat ran `fly releases`"). A rule makes the outcome the same every time.
 
 **Patch 1 of 1.** From `~/Development/piper-morgan-worktrees/cio`, in Terminal, once the branch is on main:
 
 1. Apply: `python3 scripts/seat_settings_grant.py fleet-deny`
-2. Test (any one seat, CIO offers): type `fly version`, then `/opt/homebrew/bin/flyctl version`. Both must be **refused before they run**. Don't run this test before step 1: before the deny, it would run `fly`.
+2. Test, by **PA's seat** (HOST 01M8G15921: not the seat that wrote the branch, and PA's is the one that ran `fly` today): type `fly version`, then `/opt/homebrew/bin/flyctl version`. CIO's seat repeats it as a second reading. Both must be **refused before they run**. Don't run this test before step 1: before the deny, it would run `fly`.
 
 **You should see** at step 1: `added 16 deny rule(s); 8 were already there. removed 1 retired allow rule(s). No other allow, env or rule was changed.` Relay that line and the two refusals. CIO marks it done only then. No restart is expected: on 11-26 the shared file's new denies took effect in running sessions (Web's session dated from 06:18).
 
@@ -31,7 +31,7 @@
 
 **Open before the card (asked):**
 - **Pard: answered no, 11-27 18:45.** Pard's session runs with `CLAUDE_CONFIG_DIR=/Users/xian/.claude` (read from the running process), and its four flyctl reads are allowed in `mediajunkie/.claude/settings.local.json`. The deny doesn't reach them.
-- **HOST** reads it (as on 11-22). **Arch** approves it, as for the earlier runs of this command that rewrote the shared file.
+- **HOST: read, conforms** (01M8G15921). **Arch: yes** on `91463b38ef` (01M8G0QQYT); re-read of the two later changes asked (01M8G14RH3).
 
 **Bound:** stricter only. It adds denies and removes one allow, and loosens nothing. xian's 11-17 bound ("changes that only make the check stricter") is about the promote gate, not this, but this is the same kind.
 
