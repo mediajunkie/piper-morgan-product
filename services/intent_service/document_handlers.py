@@ -122,6 +122,7 @@ async def handle_analyze_document(file_id: str, user_id: str) -> Dict:
                     # (analyze_text always sets recommendations=[] today).
                     "recommendations": analysis_result.recommendations or [],
                     "analyzed_at": analysis_result.generated_at.isoformat(),
+                    **_reading_notes(analysis_result),
                 }
             raise FileNotFoundError(
                 f"Document {file_id} not found or access denied for user {user_id}"
@@ -157,7 +158,34 @@ async def handle_analyze_document(file_id: str, user_id: str) -> Dict:
             "key_findings": analysis_result.key_findings or [],
             "recommendations": analysis_result.recommendations or [],
             "analyzed_at": analysis_result.generated_at.isoformat(),
+            **_reading_notes(analysis_result),
         }
+
+
+def _reading_notes(analysis_result) -> Dict:
+    """What a reply must know about how the file was read, from the analyzer's own
+    record: ``refusal`` (issue 2443: the file was not read and ``summary`` is the one
+    sentence saying why, to be shown plain, never as a summary) and ``coverage``
+    (issue 2444: the sentence saying the summary read only the start, or None)."""
+    metadata = getattr(analysis_result, "metadata", None) or {}
+    return {
+        "refusal": bool(metadata.get("refusal")),
+        "coverage": metadata.get("summary_coverage"),
+    }
+
+
+def findings_not_already_in(summary: str, findings: List[str]) -> List[str]:
+    """Issue 2444: the summary text already carries its "Key Findings" list
+    (``DocumentSummary.to_markdown``), so a reply that added the list again said
+    everything twice. Returns the findings only when the summary does not hold them."""
+    if findings and all(finding in (summary or "") for finding in findings):
+        return []
+    return list(findings or [])
+
+
+def with_coverage(summary: str, coverage: Optional[str]) -> str:
+    """Issue 2444: the coverage sentence goes above the summary, in the reply itself."""
+    return f"{coverage}\n\n{summary}" if coverage else summary
 
 
 # #2132: the resolver confidence a held-file binding needs. FileResolver
@@ -325,6 +353,18 @@ async def handle_summarize_document(file_id: str, format: str, user_id: str) -> 
     # 1. Call analyze (same as handle_analyze_document)
     analysis = await handle_analyze_document(file_id, user_id)
 
+    # Issue 2443: a file that was not read gets its one sentence back as it is. No
+    # bullet split (the old line was cut at its full stop into two bullets), no
+    # "Key Findings" tail, and the caller is told so it adds no summary heading.
+    if analysis.get("refusal"):
+        return {
+            "file_id": file_id,
+            "filename": analysis["filename"],
+            "summary": analysis["summary"],
+            "format": format,
+            "refusal": True,
+        }
+
     # 2. Format based on requested style
     summary_text = analysis["summary"]
 
@@ -344,8 +384,12 @@ async def handle_summarize_document(file_id: str, format: str, user_id: str) -> 
         # genuinely no findings, the response says so.
         findings = analysis["key_findings"]
         if findings:
-            detailed = f"{summary_text}\n\nKey Findings:\n"
-            detailed += "\n".join([f"- {finding}" for finding in findings])
+            detailed = summary_text
+            # Issue 2444: once. The summary's own markdown usually holds the list.
+            extra = findings_not_already_in(summary_text, findings)
+            if extra:
+                detailed += "\n\nKey Findings:\n"
+                detailed += "\n".join([f"- {finding}" for finding in extra])
         else:
             detailed = f"{summary_text}\n\nNo key findings were extracted from this document."
         # Recommendations are non-empty only on the analyzer's honest-failure
@@ -363,8 +407,10 @@ async def handle_summarize_document(file_id: str, format: str, user_id: str) -> 
     return {
         "file_id": file_id,
         "filename": analysis["filename"],
-        "summary": summary_text,
+        # Issue 2444: the coverage sentence is part of the summary every caller shows.
+        "summary": with_coverage(summary_text, analysis.get("coverage")),
         "format": format,
+        "refusal": False,
     }
 
 

@@ -157,6 +157,10 @@ EXAMPLES OF CORRECT vs INCORRECT:
 ✓ CORRECT: "key_findings": ["Finding 1", "Finding 2", "Finding 3"]
 ✗ INCORRECT: "key_findings": "• Finding 1 • Finding 2 • Finding 3"
 
+The content below may be only the first part of a longer document. Do not state or
+imply the document's total length, size, page count or number of sections, and do not
+describe what you were given as the whole document.
+
 Document content:
 {content}
 

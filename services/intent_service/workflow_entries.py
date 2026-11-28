@@ -1532,6 +1532,15 @@ async def run_summarize_document_workflow(
                 reason="file_content_missing",
             )
 
+        if summarized.get("refusal"):
+            # Issue 2443: the file was not read. One plain sentence, no summary heading.
+            return _result(
+                summarized["summary"],
+                success=False,
+                reason="document_not_readable",
+                extra={"file_id": summarized["file_id"], "filename": summarized["filename"]},
+            )
+
         return _result(
             f"Here's my summary of {summarized['filename']}:\n\n" f"{summarized['summary']}",
             extra={
