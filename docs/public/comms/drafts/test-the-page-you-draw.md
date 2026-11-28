@@ -10,7 +10,7 @@ caption: '"See, there is a button!"'
 
 Whenever you delegate work, especially to agents (but really any time), the moment of truth is when you finally inspect the results of the work yourself, using what military slang jokingly calls the "[mark 1 eyeball](https://en.wiktionary.org/wiki/mark_1_eyeball)" instrument (sometimes written "Mark I" and always pronounced "mark one"). The point is, you have to look at it directly yourself.
 
-The agent team tests Piper Morgan code assiduously, but testing the code is not the same as being a person and using the software. When I get overloaded, the number of items I need to inspect, test, and give feedback on directly mounts fast (at least until I can get more testers in, chicken-or-egg problem!), creating large backlogs for me to wade through, a [reverse centaur](https://doctorow.medium.com/https-pluralistic-net-2025-09-11-vulgar-thatcherism-there-is-an-alternative-f1428b42a8fd) to my own apparatus (author Cory Doctorow's coinage, warning us about becoming the servants of our machines).
+The agent team tests Piper Morgan code assiduously, but testing the code is not the same as being a person and using the software. When I get overloaded, the number of items I need to inspect, test, and give feedback on directly mounts fast (at least until I can get more testers in, chicken-or-egg problem!), creating large backlogs for me to wade through, a [reverse centaur](https://pluralistic.net/2025/09/11/vulgar-thatcherism/) to my own apparatus (author Cory Doctorow's coinage, warning us about becoming the servants of our machines).
 
 # Read the fine print
 
@@ -32,9 +32,7 @@ My design agent (CXO) specified how to move the entry from a link to a card (wit
 
 # Will agents eventually understand "gestalt"?
 
-The team also added a "drawn-card" test in which the page is rendered and examined in its final HTML form vs parsed as pure source text. The new tests catch words and structure, and the screenshot-based checks catch layout. 
-
-Neither sees the page the way I do, and yet this is still a good thing for them to do. It will likely reduce the number of things that need attention, but this approach, at this rate, will never substitute for my mark one eyeball.
+The team also added a "drawn-card" test in which the page is rendered and examined in its final HTML form vs parsed as pure source text. The new tests catch words and structure, but not layout. Nothing automated looks at the page the way I do, and yet this is still a good thing for them to do. It will likely reduce the number of things that need attention, but this approach, at this rate, will never substitute for my mark one eyeball.
 
 ---
 
