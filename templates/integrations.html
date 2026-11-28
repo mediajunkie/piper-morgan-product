@@ -477,6 +477,9 @@
   // clear holds its line on the card in ``couldNotCheckLine``, by the same rule: the next
   // action on that card, or a page load, clears it.
   const disconnectWordsByCard = {};
+  // Issue 2475 item 3: a card's own hint for its Disconnect dialog and button title
+  // (GitHub's wrong-account line), from the card payload, never typed here.
+  const disconnectHintByCard = {};
   const DISCONNECT_ALL = window.__DISCONNECT_ALL__ || {};
 
   function closingLine(notes) {
@@ -666,6 +669,8 @@
 
     integrations.forEach(card => {
       if (card && card.disconnect) disconnectWordsByCard[card.name] = card.disconnect;
+      if (card && card.disconnect_hint) disconnectHintByCard[card.name] = card.disconnect_hint;
+      else if (card) delete disconnectHintByCard[card.name];
     });
     container.innerHTML = integrations.map(card => {
       // #2402 (Arch 2026-11-17): the cards are one HTML string. Every string the route
@@ -724,7 +729,7 @@
           <button
             class="action-btn disconnect-btn"
             id="disconnect-btn-${integration.name}"
-            onclick="disconnectIntegration('${integration.name}')"
+            onclick="disconnectIntegration('${integration.name}')"${integration.disconnect_hint ? ` title="${integration.disconnect_hint}"` : ''}
           >
             Disconnect
           </button>
@@ -749,7 +754,7 @@
           <button
             class="action-btn disconnect-btn"
             id="disconnect-btn-${integration.name}"
-            onclick="disconnectAPIKeyIntegration('${integration.name}')"
+            onclick="disconnectAPIKeyIntegration('${integration.name}')"${integration.disconnect_hint ? ` title="${integration.disconnect_hint}"` : ''}
           >
             Disconnect
           </button>
@@ -1013,6 +1018,9 @@
 
         const dot = card.querySelector('.status-dot');
         const statusEl = document.getElementById(`status-${result.integration}`);
+        // Issue 2475: a card drawn without a status line (a service not in this beta)
+        // has nothing to update. Skip that one result and go on to the next.
+        if (!dot || !statusEl) continue;
 
         const stale = Boolean(result.success && result.stale_reason);
         dot.className = `status-dot ${result.success ? (stale ? 'degraded' : 'healthy') : 'failed'}`;
@@ -1120,9 +1128,13 @@
     const displayName = cardDisplayName(integrationName);
     const words = disconnectWordsByCard[integrationName] || null;
 
+    // Issue 2475 item 3 (HOST): the hint is visible text in the dialog, under the line
+    // that says what Disconnect does. The dialog draws its message as text, pre-wrap.
+    const whatItDoes = words ? words.dialog : `I'll disconnect ${displayName}. You can connect it again anytime.`;
+    const hint = disconnectHintByCard[integrationName];
     const ok = await Dialog.confirm({
       title: `Disconnect ${displayName}?`,
-      message: words ? words.dialog : `I'll disconnect ${displayName}. You can connect it again anytime.`,
+      message: hint ? `${whatItDoes}\n\n${hint}` : whatItDoes,
       confirmText: 'Disconnect'
     });
     if (!ok) return;

@@ -106,7 +106,9 @@ async def test_nothing_of_the_exception_is_stored_returned_or_drawn(name):
 async def test_test_all_says_the_written_line_when_a_single_test_raises():
     with patch.object(integ, "check_integration_connection", AsyncMock(side_effect=BOOM)):
         replies = await integ.check_all_connections(current_user=USER)
-    assert len(replies) == len(integ.INTEGRATION_REGISTRY)
+    from services.integrations.integration_status_service import offered_connectors
+
+    assert len(replies) == len(offered_connectors()) > 0  # issue 2475: offered services only
     for reply in replies:
         assert reply.message == integ.CHECK_FAILED_MESSAGE and reply.error is None
         assert SECRET not in reply.model_dump_json()

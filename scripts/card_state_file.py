@@ -78,6 +78,15 @@ TEMPLATE = ROOT / "templates" / "integrations.html"
 HEALTH = "/api/v1/integrations/health"
 INSTALL_STATE = "/api/v1/settings/integrations/github/install-state"
 CARDS = ("github", "notion", "slack", "calendar")
+
+
+def beta_offered() -> Tuple[str, ...]:
+    """Issue 2475: the set this beta offers, read from the code, in ``CARDS`` order."""
+    from services.integrations.integration_status_service import BETA_OFFERED_CONNECTORS
+
+    return tuple(card for card in CARDS if card in BETA_OFFERED_CONNECTORS)
+
+
 SAMPLE_ERROR = "Sample error text from a failed Test"
 # Issue 2402: an error that quotes markup must be drawn as text, never as an element.
 MARKUP_ERROR = 'Sample error quoting <b>markup</b> & "quotes"'
@@ -401,6 +410,29 @@ def test_all_clicks() -> List[Scenario]:
             generic=_all("not_configured"),
             github="nothing",
         ),
+        # Issue 2475: the two pages a person on this beta has. The scenarios above offer all
+        # four services, which no host does today, and so never met a card with no status line.
+        Scenario(
+            "test-all-beta-pass",
+            "This beta's two services connected and passing, with a Slack connection "
+            "left over whose last Test failed",
+            generic={
+                "github": "connected",
+                "calendar": "connected",
+                "slack": "failed",
+                "notion": "not_configured",
+            },
+            github="app",
+            tests={"calendar": "ok", "slack": "refused"},
+            offered=beta_offered(),
+        ),
+        Scenario(
+            "test-all-beta-nothing",
+            "This beta's two services, nothing connected",
+            generic=_all("not_configured"),
+            github="nothing",
+            offered=beta_offered(),
+        ),
     ]
 
 
@@ -629,6 +661,14 @@ def run_routes(user_id: str, scenario: Scenario, test: Optional[str] = None) -> 
     probe = _repos_result(scenario.repos)
     with ExitStack() as stack:
         stack.enter_context(patch(f"{_ROUTES}._get_integration_config_status", new=config_status))
+        # Issue 2475: the routes and the page read one host configuration. Before this the
+        # page was drawn with the scenario's offered set and the routes with the code's.
+        stack.enter_context(
+            patch(
+                "services.integrations.integration_status_service.offered_connectors",
+                new=lambda: {card: card for card in scenario.offered},
+            )
+        )
         stack.enter_context(patch(f"{_ROUTES}._get_test_result_store", new=lambda: store))
         stack.enter_context(patch(f"{_ADAPTER}.resolve_credential", new=resolve))
         stack.enter_context(patch(f"{_ADAPTER}.account_login", new=account_login))
@@ -738,7 +778,16 @@ const appended = [];
 // on the first failed Test, and a passing Test removes it if it is).
 document.createElement = () => Object.assign(element(), { remove() {} });
 const pageGet = document.getElementById;
-document.getElementById = (id) => (id.startsWith('fix-') ? null : pageGet(id));
+// Issue 2475: once the list is drawn, a card has a status line and a dot only if the
+// page drew them. A card for a service not in this beta is drawn without either, and a
+// stand-in that always answered is how Test All's failure on beta went unseen here.
+const drawnList = () => (elements['integrations-list'] || { innerHTML: '' }).innerHTML;
+const noStatus = (name) => drawnList() !== '' && !drawnList().includes(`id="status-${name}"`);
+document.getElementById = (id) => {
+  if (id.startsWith('fix-')) return null;
+  if (id.startsWith('status-') && INPUT.cards.includes(id.slice(7)) && noStatus(id.slice(7))) return null;
+  return pageGet(id);
+};
 const styled = (el) => {
   const set = new Set();
   el.classList = { add: (c) => set.add(c), remove: (c) => set.delete(c),
@@ -754,7 +803,8 @@ for (const name of INPUT.cards) {
     appendChild: (child) => { if (name === INPUT.name) appended.push(child); },
   });
   elements['card-' + name] = Object.assign(element(), {
-    querySelector: (sel) => (sel === '.status-dot' ? dot : sel === '.integration-details' ? details : null),
+    querySelector: (sel) => (sel === '.status-dot' ? (noStatus(name) ? null : dot)
+      : sel === '.integration-details' ? details : null),
   });
   elements['status-' + name] = styled(element());
 }
@@ -789,17 +839,21 @@ _CLICK_RUN = r"""
 
 _TEST_ALL_RUN = r"""
 (async () => {
+  // The page is drawn before anyone can press the button (issue 2475).
+  await loadIntegrationsHealth();
+  await new Promise((resolve) => setTimeout(resolve, 0));
   await testAllConnections();
   // Test All redraws without waiting for it; let the redraw's fetches settle.
   for (let i = 0; i < 10; i++) await new Promise((resolve) => setTimeout(resolve, 0));
   const lines = {};
   for (const name of INPUT.cards) {
     const status = elements['status-' + name];
-    lines[name] = { line: status.textContent,
+    lines[name] = noStatus(name) ? null : { line: status.textContent,
       style: [...status.classes].filter((c) => c === 'error' || c === 'warning') };
   }
+  const text = (id) => (elements[id] ? elements[id].textContent : null);
   process.stdout.write(JSON.stringify({
-    toasts, lines,
+    toasts, lines, title: text('overall-title'), subtitle: text('overall-subtitle'),
     list: (elements['integrations-list'] || {}).innerHTML || '',
     link: elements[LINK] ? { text: elements[LINK].textContent, cls: elements[LINK].className } : null,
     fetched,
@@ -1037,6 +1091,7 @@ class _Card(HTMLParser):
                 "class": given.get("class") or "",
                 "goes": given.get("href") or _call(given.get("onclick") or ""),
                 "disabled": "yes" if "disabled" in given else "",
+                "title": given.get("title") or "",  # issue 2475: the button's hover text
             }
 
     def handle_endtag(self, tag):
@@ -1156,6 +1211,10 @@ def build() -> str:
                         f"| {kind} | {control['label'] or '(no label)'} | "
                         f"{_style(control['class'])} | `{control['goes'] or 'nothing'}` |"
                     )
+                hovers = [c for c in card["controls"] if c.get("title")]
+                if hovers:
+                    out.append("")
+                    out += [f"- Hover text on {c['label']}: {_shown(c['title'])}" for c in hovers]
             else:
                 out.append("No button or link.")
             out.append("")
@@ -1558,24 +1617,32 @@ def _test_all_rows(user_id: str) -> List[str]:
             f"- Toast ({t['kind']}): **{t['title']}**. {_shown(t['message'])}"
             for t in pressed["toasts"]
         ]
-        out.append("")
+        out += [
+            f"- Header after the page redraws it: **{_shown(pressed['title'])}**. "
+            f"{_shown(pressed['subtitle'])}",
+            "",
+        ]
         for card in CARDS:
             at = pressed["lines"][card]
-            style = f" [{', '.join(at['style'])} style]" if at["style"] else ""
             drawn = read_card(pressed, card)
             lines = drawn["lines"] if drawn else []
-            on_card = any(at["line"] and at["line"] in line for line in lines)
-            out += [
-                f"### {card}",
-                "",
-                f"- At the click, the card's line: {_shown(at['line'])}{style}",
-                "- The card after the page redraws it:",
-            ]
+            out += [f"### {card}", ""]
+            if at is None:
+                # Issue 2475: not offered here, so the card has no status line and no Test.
+                out += [
+                    "- At the click: this card has no status line, and Test All leaves it alone."
+                ]
+            else:
+                style = f" [{', '.join(at['style'])} style]" if at["style"] else ""
+                out += [f"- At the click, the card's line: {_shown(at['line'])}{style}"]
+            out += ["- The card after the page redraws it:"]
             out += [f"  - {_shown(line)}" for line in lines] or ["  - (no card is drawn)"]
-            out += [
-                f"- The click's line is on the redrawn card: {'yes' if on_card else '**no**'}",
-                "",
-            ]
+            if at is not None:
+                on_card = any(at["line"] and at["line"] in line for line in lines)
+                out += [
+                    f"- The click's line is on the redrawn card: {'yes' if on_card else '**no**'}"
+                ]
+            out.append("")
     return out
 
 

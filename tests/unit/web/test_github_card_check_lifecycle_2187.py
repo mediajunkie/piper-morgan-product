@@ -65,10 +65,7 @@ async def test_no_record_card_says_not_checked_yet():
     ):
         card = await integrations_routes._github_card(METADATA, "user-1")
     assert card.status == "connected"
-    assert (
-        card.status_message
-        == "Connected as octocat. Not the right account? Disconnect, then connect again."
-    )
+    assert card.status_message == "Connected as octocat."
     assert (
         card.status_detail == integrations_routes.UNCHECKED_DETAIL == "Not checked yet. Press Test."
     )

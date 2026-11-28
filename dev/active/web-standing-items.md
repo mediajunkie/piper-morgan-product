@@ -224,3 +224,7 @@ history and the dated session logs, per the file's own "pointers not duplicated 
 ### OWED[key: web-2475-served-reread; to: Lead, CXO, HOST; by: trigger: Lead's mail that the 2475 fix is on beta]
 **Filed**: 2026-11-27
 Press Test All on seat-tester-1 and seat-github-1 after the fix is served; quote both toasts whole.
+
+### OWED[key: web-docs-served-reread; to: Lead, CXO; by: trigger: Lead's mail that 2443 and 2444 are on beta]
+**Filed**: 2026-11-28
+Re-run the three document reads on seat-tester-1 (docx, long PDF on both reply paths, Remove dialog, delete then ask); quote whole; test files need regenerating (invented text, upload via the Documents page, files under the worktree).
