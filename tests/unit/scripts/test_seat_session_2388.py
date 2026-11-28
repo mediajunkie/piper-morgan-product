@@ -570,13 +570,17 @@ def test_the_helpers_two_card_lines_are_the_apps_own(ss):
 
     assert ss.GITHUB_CARD_CONNECTED_AS == integrations._GITHUB_CARD_CONNECTED_AS
     assert ss.GITHUB_CARD_CONNECTED_AS_ONLY == integrations._GITHUB_CARD_CONNECTED_AS_ONLY
+    # Issue 2475 item 3: the app's two constants are now one sentence. The helper also
+    # keeps the sentence a host from before that change still draws, by its exact words.
     assert ss._github_card_lines(MACHINE) == frozenset(
         {
             integrations._GITHUB_CARD_CONNECTED_AS.format(login=MACHINE),
             integrations._GITHUB_CARD_CONNECTED_AS_ONLY.format(login=MACHINE),
+            ss.GITHUB_CARD_CONNECTED_AS_BEFORE_2475.format(login=MACHINE),
         }
     )
     assert ss._github_card_lines(MACHINE) == frozenset({CARD_FULL, CARD_SHORT})
+    assert ss.GITHUB_CARD_CONNECTED_AS_BEFORE_2475.format(login=MACHINE) == CARD_FULL
 
 
 def test_the_helper_does_not_import_the_app():

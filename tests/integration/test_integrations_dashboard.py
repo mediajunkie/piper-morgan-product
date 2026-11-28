@@ -138,7 +138,8 @@ class TestIntegrationsAPIWithMocks:
 
     @pytest.mark.asyncio
     async def test_test_all_endpoint_returns_results_for_all(self):
-        """Test all should return results for all integrations"""
+        """Test all returns one result per service this host offers (issue 2475)"""
+        from services.integrations.integration_status_service import offered_connectors
         from web.api.routes.integrations import check_all_connections
 
         with patch("web.api.routes.integrations._test_integration", new_callable=AsyncMock) as mock:
@@ -146,9 +147,9 @@ class TestIntegrationsAPIWithMocks:
 
             results = await check_all_connections(current_user=_fake_claims())
 
-            assert len(results) == 4
             integration_names = {r.integration for r in results}
-            assert integration_names == {"notion", "slack", "github", "calendar"}
+            assert integration_names == set(offered_connectors()) == {"github", "calendar"}
+            assert len(results) == 2
 
 
 class TestIntegrationHealthMonitorIntegration:
