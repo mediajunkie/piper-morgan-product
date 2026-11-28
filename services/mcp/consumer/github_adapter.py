@@ -400,6 +400,33 @@ GITHUB_CONNECTOR_CUTOVER_STALE_REPLY = (
     "and choose which repositories I can see. Your saved settings are unchanged."
 )
 
+# Issue 2468 (Arch 2026-11-27): the connector's own connect-required line. The MCP app
+# never holds the GitHub App's client secret, so app_mode() is always False in its
+# process, whatever the install offers; this line must never be chosen by it. The words
+# are what the connector said before issue 2261 (CXO may reword them for the connector).
+GITHUB_CONNECTOR_CONNECT_REQUIRED_REPLY = "Connect GitHub to continue."
+
+#: Issue 2468: every DegradationReason either has a branch in ``github_connector_reply``
+#: or is named here as falling through to ``user_message`` on purpose. A test fails on a
+#: reason in neither, so a mode-dependent ``user_message`` cannot reach the connector
+#: unseen. These four messages in ``degrade()`` do not depend on the process's mode.
+CONNECTOR_REPLY_FALLS_THROUGH = frozenset(
+    {
+        DegradationReason.NOT_CONFIGURED,
+        DegradationReason.RESOURCE_NOT_FOUND,
+        DegradationReason.MISCONFIGURED,
+        DegradationReason.REPO_UNRESOLVED,
+    }
+)
+#: The reasons ``github_connector_reply`` answers with a connector line of its own.
+CONNECTOR_REPLY_BRANCHES = frozenset(
+    {
+        DegradationReason.CONNECT_REQUIRED,
+        DegradationReason.UNREACHABLE,
+        DegradationReason.STALE_TOKEN,
+    }
+)
+
 
 def github_connector_reply(degradation) -> str:
     """The line a person in the Claude connector reads for a GitHub degrade (#2342).
@@ -416,6 +443,10 @@ def github_connector_reply(degradation) -> str:
         return GITHUB_CONNECTOR_APP_NOT_ON_REPOSITORY_REPLY
     if detail == DETAIL_APP_TOO_MANY_REPOSITORIES:
         return GITHUB_APP_TOO_MANY_REPOSITORIES_REPLY
+    if reason is DegradationReason.CONNECT_REQUIRED:
+        # Issue 2468: never ``user_message`` here; that one follows app_mode() (issue
+        # 2261), which describes the beta app's process, not the MCP app's.
+        return GITHUB_CONNECTOR_CONNECT_REQUIRED_REPLY
     if reason is DegradationReason.UNREACHABLE:
         return GITHUB_CONNECTOR_UNREACHABLE_REPLY
     if reason is DegradationReason.STALE_TOKEN:
