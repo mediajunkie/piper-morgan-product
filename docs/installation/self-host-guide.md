@@ -10,7 +10,7 @@ If this is your first time, do this much and stop:
 
 1. Follow the steps below through "Check it works". You should end with a reply from Piper in the chat, on your own key.
 2. Connect GitHub with a fine-grained personal access token (see "What your install offers"). Scope it to selected repositories and make it read-only to start. Never paste it into a message to us. Then ask Piper to read one of your repositories.
-3. Leave Calendar for later. It needs your own Google client, which Google starts in testing mode: only people you name as test users can sign in, and the sign-in expires after a few days. It is optional and works the same whenever you add it.
+3. Leave Calendar for later. It needs your own Google client, which Google starts in testing mode: only people you name as test users can sign in, and the connection stops working after seven days and has to be made again. That seven-day figure is from the team's own notes on Google's rules, which we have not rechecked on Google's current pages. Calendar is optional and can be added any time.
 
 Type your provider key only at the prompt in step 5, never into a message to us. When you tell us what happened, leave out any key, token, password or invite code. The invite code you make in step 8 is yours and means nothing to us. If a step does not match what you see, say which step and what you saw. **(not yet run: no one has followed this page from start to finish on a computer that never ran Piper)**
 
