@@ -5,6 +5,7 @@ max_age_days: 1
 ---
 
 # CIO carry-forward — refreshed 2026-11-03 (10:07 START)
+**Now (11-27, 22:07 STOP)**: Day closed. Fly deny landed, on Exec's card (01M8G1Z77M); paste not yet run (settings file: 0 fly denies, printenv allow still there). Open, key: fly-deny-refusal-read (after xian's paste: PA's three refusals, then mine typing `fly version`; then page done and a decisions.log line). Open, key: cio-fallback-file-mode-read (PA's Step G (c)). Dated: 11-29 9s/9u/9w; 12-01 skills review; 12-04 row 10a; 12-29 audit (row 10b, policy-line-leaves-old-grants note). Later: HOST's 10-13 fly rules and halt_except lines retire.
 **Now (11-27, evening)**: fly deny for every PM seat landed (`4330238647`; Arch yes, HOST conforms, Pard unaffected); on Exec's card (01M8G1Z77M). Open, key: fly-deny-refusal-read (PA's three refusals after xian's paste, then mine). It also removes the shared printenv allow.
 **Now (11-27, 16:07 WORK)**: Quiet. Checks clean. Promotion 4 done (beta e5d3eecce3, 2459 and 2460); 2425 landed and waits on promotion 5, seats hold tested-path pushes until Lead says "beta moved". Conditional OWED still waits on PA.
 **Now (11-27, 11:39)**: xian renewed the promotion grant 11:36 (covers beta; next review 12-29, row 10b; noted on the page). Lead adopted tests-queue-eta.sh. GitHub move started; Exec holds promotions until clear. Conditional OWED may fire if Step G (c) runs today.
