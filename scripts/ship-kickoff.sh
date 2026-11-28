@@ -183,6 +183,10 @@ Sent automatically by \`scripts/ship-kickoff.sh\` on the first Exec fire after t
 
 **Show what a user can do this week that they couldn't do last week.** If the honest answer is "nothing a user can see yet, and here is what it unblocks", write that.
 
+## Your lane against the goals (xian, 2026-11-27)
+
+Before the activity, a short **"Against the goals"** section: for each sprint goal your lane owns or contributes to (the current sprint file under \`docs/internal/planning/\`), say where it stands at the window's end (done, how far, or not started) and what moved it this week. One line per goal. If your lane owns none, say which goal your week served. xian asked for this so the review shows each seat's progress toward the goals, not only what it did.
+
 ## Progress claims
 
 Every progress claim carries \`Verified how:\` with the method you ran **this time**, the layer it measured, and the denominator. If a claim rests on an earlier check, say so. Run \`date\` before writing any time.
