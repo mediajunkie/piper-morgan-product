@@ -287,6 +287,8 @@ If the second command lists a session log, it was staged in the wrong place: `mv
 
 ### Step 10.5: Activity-Log Reconciliation (Shape B per Janus 3-layer architecture)
 
+**Delegated drafting does not waive it (added 2026-11-28: the step dropped out for 28 days, 10-31 to 11-27, once a subagent drafted the omnibus). The parent runs this step in the same push as the verified omnibus. If the rows are skipped, say so in the log with a named blocker.**
+
 **MANDATORY when omnibus is committed**: append PM-side rows for the omnibus's covered date(s) to `docs/internal/operations/agent-activity-log.csv`. Per the Janus-preferred Shape B integration (PM-endorsed 2026-05-09, Docs pick-disposition 2026-05-12): one row per role session log captured in the omnibus, plus reconstructed rows for any mail-only / web-side role activity captured in the omnibus's cross-reference gate.
 
 **CSV schema**: `date,role,slug,environment,model,log_filename,notes`
