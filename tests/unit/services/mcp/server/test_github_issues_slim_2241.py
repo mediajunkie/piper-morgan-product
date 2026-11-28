@@ -271,5 +271,7 @@ async def test_degradation_payload_is_unchanged(monkeypatch) -> None:
         "available": False,
         "connector": "github",
         "reason": "connect_required",
-        "message": "Connect GitHub first.",
+        # Issue 2468: for connect-required the connector answers with its own line and
+        # never the degradation's user_message, which follows the beta app's App mode.
+        "message": "Connect GitHub to continue.",
     }
