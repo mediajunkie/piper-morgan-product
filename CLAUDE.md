@@ -10,7 +10,7 @@ If PM assigns a role, read its briefing in `docs/briefing/` and use its log slug
 | Role | Briefing | Slug |
 |---|---|---|
 | Lead Developer | BRIEFING-ESSENTIAL-LEAD-DEV.md | lead-code |
-| Piper Alpha | BRIEFING-piper-alpha.md | pa-code |
+| Piper Zero (PZ, formerly Piper Alpha) | BRIEFING-piper-alpha.md | pa-code |
 | Chief Architect | BRIEFING-ESSENTIAL-ARCHITECT.md | arch-code |
 | Chief of Staff | BRIEFING-ESSENTIAL-CHIEF-STAFF.md | exec-code |
 | CXO | BRIEFING-ESSENTIAL-CXO.md | cxo-code |

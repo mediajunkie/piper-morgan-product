@@ -15,7 +15,7 @@ Canonical slug-to-role mapping. Used by `/deliver-mail` skill for routing valida
 | `host` | Head of Sapient Trust | code | Agent welfare, human network |
 | `exec` | Chief of Staff | code | Executive office, cross-workstream synthesis, Weekly Ship drafts |
 | `docs` | Documentation Management | code | Omnibus logs, mailbox ops, blog pipeline |
-| `pa` | Piper Alpha | code | PM/CEO assistant, standup synthesis, meeting prep, document review |
+| `pa` | Piper Zero (PZ; formerly Piper Alpha, PA). Slug stays `pa` | code | Real PM work for xian; owns the hosted MCP path end to end (the public-beta gate) |
 | `xian (ceo)` | CEO / PM / founder (xian) | human | **RETIRING (PM ruling 2026-10-03). Do not write to it.** No cc copies, no memos addressed to PM. Address anything needing PM's attention to `exec`, PM's proxy, who vets it and surfaces it via the rollup. Directory is removed after a soak; history stays in git. **Since 2026-10-14, `scripts/mail-send.sh` refuses any new file in `xian (ceo)/inbox/`** (the soak trigger was met: Exec, v4 01M4YAZMMYCBSKKC4RCEZDS9GZ). Edits and moves of the old files still go through. |
 | `spec` | Special Assignments | code | Specialist work, activated as needed |
 | `web` | Web agent — works primarily from the `piper-morgan-website` repo | code | **Standing agent** (PM-confirmed 2026-06-19); checks this inbox for routing. Website + web-UI work (e.g. the editorial compose UI #998) lives in `piper-morgan-website`. Website-issue tracking: `docs/internal/operations/website-issues.md` |
