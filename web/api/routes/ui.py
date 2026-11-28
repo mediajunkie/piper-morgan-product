@@ -569,7 +569,18 @@ async def files_ui(request: Request):
     """Serve the files page (Coming Soon)"""
     templates = _get_templates(request)
     user_context = _extract_user_context(request)
-    return templates.TemplateResponse("files.html", {"request": request, "user": user_context})
+    # Issue 2443: the page's hint and its file picker read the one readable-types table.
+    from services.analysis.document_analyzer import readable_extensions, readable_types_hint
+
+    return templates.TemplateResponse(
+        "files.html",
+        {
+            "request": request,
+            "user": user_context,
+            "readable_types_hint": readable_types_hint(),
+            "readable_accept": ",".join(sorted(readable_extensions())),
+        },
+    )
 
 
 @router.get("/documents", response_class=HTMLResponse)

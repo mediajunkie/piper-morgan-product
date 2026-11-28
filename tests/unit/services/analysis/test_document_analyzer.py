@@ -279,14 +279,16 @@ class Test1659TypeDispatch:
         assert "PDF" not in result.summary
 
     @pytest.mark.asyncio
-    async def test_empty_txt_yields_empty_summary(self, tmp_path):
+    async def test_empty_txt_says_it_found_no_text(self, tmp_path):
+        """Issue 2443 (CXO): a readable file with no text in it is said plainly,
+        never an empty summary under a summary heading."""
         p = tmp_path / "empty.txt"
         p.write_text("", encoding="utf-8")
 
         result = await self.analyzer.analyze(str(p), file_type="text/plain", user_id=None)
 
-        assert result.summary == ""
-        assert result.metadata["key_points"] == []
+        assert result.summary == "I opened the file but found no text in it."
+        assert result.metadata["refusal"] is True
         self.mock_llm.complete.assert_not_awaited()
 
     @pytest.mark.asyncio
@@ -316,15 +318,16 @@ class Test1659TypeDispatch:
             user_id=None,
         )
 
-        assert result.summary == "I can't analyze .zip files yet"
-        assert "PDF" not in result.summary
+        # Issue 2443 (CXO's words): the person's type, then the readable ones.
+        assert result.summary.startswith("Piper can't read .zip files. It can read ")
         assert "corrupt" not in result.summary.lower()
+        assert result.metadata["refusal"] is True
         assert result.metadata["detected_kind"] == "unsupported"
         self.mock_llm.complete.assert_not_awaited()
 
     @pytest.mark.asyncio
-    async def test_docx_gets_honest_message_not_pdf_claim(self, tmp_path):
-        """.docx is upload-allowed but has no extractor today — honest limit."""
+    async def test_bad_docx_gets_its_own_line_not_a_pdf_claim(self, tmp_path):
+        """Issue 2443: a .docx is read now; bytes that are not one get CXO's line."""
         p = tmp_path / "20260830_120000_mno345_report.docx"
         p.write_bytes(b"PK\x03\x04 docx zip container bytes")
 
@@ -335,7 +338,9 @@ class Test1659TypeDispatch:
             user_id=None,
         )
 
-        assert result.summary == "I can't analyze .docx files yet"
+        assert result.summary == (
+            "That file is too large or isn't a valid .docx, so I couldn't read it."
+        )
         assert "Unable to analyze PDF" not in result.summary
 
 
@@ -381,8 +386,7 @@ class Test1659ExtractDocumentText:
             extract_document_text(
                 b"PK\x03\x04 binary", file_type="application/zip", filename="a.zip"
             )
-        assert "I can't analyze .zip files yet" in str(exc_info.value)
-        assert "PDF" not in str(exc_info.value)
+        assert str(exc_info.value).startswith("Piper can't read .zip files.")
 
 
 class Test1659Classifier:

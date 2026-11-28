@@ -514,9 +514,9 @@
           <div class="form-group">
             <label>Select File</label>
             <input type="file" id="fileInput" placeholder="Choose file"
-                   accept=".txt,.pdf,.docx,.md,.json">
-            <small style="display: block; margin-top: 8px; color: var(--color-text-secondary);">
-              Max size: 10MB. Allowed: Text, PDF, Word (.docx), Markdown, JSON
+                   accept="{{ readable_accept }}">
+            <small id="readable-types-hint" style="display: block; margin-top: 8px; color: var(--color-text-secondary);">
+              Max size: 10MB. {{ readable_types_hint }}
             </small>
           </div>
         `,
@@ -744,9 +744,18 @@
     }
 
     // Delete file
+    // Issue 2443 (CXO): the dialog names what is being removed. The name is resolved
+    // from the loaded list by id (#1581: a filename never enters an onclick string) and
+    // drawn as text by the dialog.
     function deleteFile(fileId, kind) {
+      const listed = (window._allFiles || []).find(f => String(f.file_id) === String(fileId)) || {};
+      const fallback = kind === 'artifact' ? 'this artifact' : 'this file';
+      // An artifact is named by its title, as Rename shows it (no .md or .txt).
+      const name = kind === 'artifact'
+        ? (listed.filename || '').replace(/\.(md|txt)$/i, '')
+        : (listed.filename || '');
       Dialog.confirm({
-        title: kind === 'artifact' ? 'Remove this artifact?' : 'Remove this file?',
+        title: `Remove ${name || fallback}?`,
         message: "I'll remove this from your documents. This can't be undone.",
         onConfirm: async () => {
           try {
