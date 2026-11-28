@@ -541,8 +541,8 @@ def test_fly_denies_leave_other_commands_alone(command):
 
 
 def test_fly_denies_are_in_the_fleet_set_and_keep_an_existing_fly_allow(tmp_path):
-    """The shared file already carries one fly allow (the live-set read); the run is additive and
-    leaves it, and a deny beats an allow, so after the run it no longer lets a seat through."""
+    """The shared file already carries one fly allow (the live-set read). The deny would make it
+    dead, so the same run removes it (Arch 01M8G0QQYT), and the undo copy still has it."""
     mod = _load()
     assert set(mod.FLY_DENIES) <= set(mod.FLEET_DENIES)
     assert all(not rule.startswith("Bash(*") for rule in mod.FLY_DENIES)
@@ -551,7 +551,25 @@ def test_fly_denies_are_in_the_fleet_set_and_keep_an_existing_fly_allow(tmp_path
     shared.write_text(
         json.dumps({"permissions": {"allow": [allow], "deny": list(mod.FLEET_DENIES[:8])}})
     )
-    added = mod.fleet_deny(shared)
-    assert added == list(mod.FLY_DENIES)
+    assert allow in mod.RETIRED_ALLOWS
+    added, retired, backup = mod.fleet_deny_change(shared)
+    assert added == list(mod.FLY_DENIES) and retired == [allow]
     after = json.loads(shared.read_text())["permissions"]
-    assert after["allow"] == [allow] and after["deny"] == list(mod.FLEET_DENIES)
+    assert after["allow"] == [] and after["deny"] == list(mod.FLEET_DENIES)
+    assert json.loads(backup.read_text())["permissions"]["allow"] == [allow]  # the undo has it
+
+
+def test_fleet_deny_removes_only_retired_allows_and_says_so(tmp_path, capsys):
+    mod = _load()
+    retired = mod.RETIRED_ALLOWS[0]
+    shared = tmp_path / "settings.json"
+    shared.write_text(
+        json.dumps({"permissions": {"allow": ["Bash(x)", retired], "deny": list(mod.FLEET_DENIES)}})
+    )
+    assert mod.main(["fleet-deny", "--shared-settings", str(shared)]) == 0
+    out = capsys.readouterr().out
+    assert "added 0 deny rule(s)" in out and "removed 1 retired allow rule(s)" in out
+    assert "to undo: mv" in out
+    assert json.loads(shared.read_text())["permissions"]["allow"] == ["Bash(x)"]
+    assert mod.main(["fleet-deny", "--shared-settings", str(shared)]) == 0
+    assert "removed 0 retired allow rule(s)" in capsys.readouterr().out
