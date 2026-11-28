@@ -12,6 +12,8 @@ Whenever you delegate work, especially to agents (but really any time),  the mom
 
 The agent team tests Piper Morgan code assiduously, but testing the code is not the same as being a person and using the software. When I get overloaded, the number of items I need to inspect, test, and give feedback on directly mounts fast (at least until I can get more testers in, chicken-or-egg problem!) creating large backlogs for me to wade through, a reverse centaur to my own apparatus.
 
+# Read the fine print
+
 
 ## Two episodes, a week apart (facts verified)
 
