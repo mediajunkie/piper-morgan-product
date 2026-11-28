@@ -21,6 +21,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from services.analysis.document_analyzer import (
     GENERIC_MIME_TYPES,
+    READABLE_KINDS,
     cant_read_line,
     readable_extensions,
     readable_mime_types,
@@ -63,7 +64,7 @@ MAX_FILE_SIZE = 10 * 1024 * 1024  # 10MB
 # Issue 2443 (Arch's condition 1): what the upload accepts is what the reader can read,
 # from the one table in ``services/analysis/document_analyzer.py``. Nothing is listed
 # here. A browser that does not know a file's type sends a generic one (or none), and
-# then the extension decides; a named type must be one of the table's.
+# then the extension decides; a named type must belong to the extension's own kind.
 ALLOWED_MIME_TYPES = readable_mime_types()
 ALLOWED_EXTENSIONS = readable_extensions()
 
@@ -73,18 +74,25 @@ ALLOWED_EXTENSIONS = readable_extensions()
 FILE_TOO_LARGE_LINE = f"That file is too large. The limit is {MAX_FILE_SIZE // (1024 * 1024)} MB."
 # Issue 2443 (CXO 2026-11-27, replacing the 2432 line): the refusal names the readable
 # types from the table. This is CXO's line for a file with no extension to say back; the
-# upload uses it for every refused type until Arch admits a picker (see the raise).
+# upload uses it for every refused type: Arch ruled (01M8HEVAPY) that a marked refusal
+# never carries what the request sent, so the extension is not said back here.
 FILE_KIND_NOT_USABLE_LINE = cant_read_line("")
 
 
 def _upload_type_allowed(content_type: Optional[str], suffix: str) -> bool:
-    """True when both the named type and the extension are ones Piper reads. The
-    extension must be in the table. The type must be in the table, be any ``text/*``
-    (the reader treats those as text), or be generic, which names nothing."""
+    """True when the file is one Piper reads, and the upload and the reader will agree
+    on what kind it is (Arch 01M8HEVAPY). The extension picks the kind. A generic type
+    names nothing, so it passes. A named type must belong to that same kind: the kind's
+    own MIME types, or any ``text/*`` when the kind is text. So a ``.docx`` sent as
+    ``application/pdf`` or ``text/plain`` is refused; the reader decides by MIME type
+    first and would have read it as the wrong kind."""
     mime = (content_type or "").split(";")[0].strip().lower()
-    if suffix not in ALLOWED_EXTENSIONS:
-        return False
-    return mime in ALLOWED_MIME_TYPES or mime in GENERIC_MIME_TYPES or mime.startswith("text/")
+    for kind, (extensions, mimes) in READABLE_KINDS.items():
+        if suffix in extensions:
+            if mime in GENERIC_MIME_TYPES or mime in mimes:
+                return True
+            return kind == "text" and mime.startswith("text/")
+    return False
 
 
 CHOOSE_A_FILE_LINE = "Choose a file first."
@@ -161,9 +169,7 @@ async def upload_file(
                 extension=file_path.suffix,
             )
             logger.info("file_upload_refused_type", content_type=file.content_type, suffix=suffix)
-            # The line with no extension in it: a marked detail is a constant (Arch's
-            # guard, issue 2428). Saying the person's extension back here needs a picker
-            # on Arch's closed list; ``cant_read_line`` is ready for it.
+            # A constant: a marked detail never carries request input (Arch 01M8HEVAPY).
             raise UserFacingHTTPException(
                 status_code=status.HTTP_415_UNSUPPORTED_MEDIA_TYPE, detail=FILE_KIND_NOT_USABLE_LINE
             )
