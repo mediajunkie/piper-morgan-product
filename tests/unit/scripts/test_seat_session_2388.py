@@ -559,7 +559,7 @@ def _check_seat_gh(ss, host):
     return ss.check_holds_nothing_real(SEAT_GH, {"auth_token": ("made-up", None)}, host)
 
 
-def _live(status="connected", message=CARD_FULL, **over):
+def _live(status="connected", message=CARD_SHORT, **over):
     return {"status": status, "can_test": True, "action": None, "status_message": message, **over}
 
 
@@ -570,13 +570,18 @@ def test_the_helpers_two_card_lines_are_the_apps_own(ss):
 
     assert ss.GITHUB_CARD_CONNECTED_AS == integrations._GITHUB_CARD_CONNECTED_AS
     assert ss.GITHUB_CARD_CONNECTED_AS_ONLY == integrations._GITHUB_CARD_CONNECTED_AS_ONLY
+    # Issue 2475 item 3: the app's two constants are one sentence. The longer sentence
+    # from before that change came out on HOST's word (01M8HEVZ2N) once Web quoted the
+    # short card on beta; it is refused now, like any other text.
     assert ss._github_card_lines(MACHINE) == frozenset(
         {
             integrations._GITHUB_CARD_CONNECTED_AS.format(login=MACHINE),
             integrations._GITHUB_CARD_CONNECTED_AS_ONLY.format(login=MACHINE),
         }
     )
-    assert ss._github_card_lines(MACHINE) == frozenset({CARD_FULL, CARD_SHORT})
+    assert ss._github_card_lines(MACHINE) == frozenset({CARD_SHORT})
+    assert CARD_FULL not in ss._github_card_lines(MACHINE)
+    assert not hasattr(ss, "GITHUB_CARD_CONNECTED_AS_BEFORE_2475")
 
 
 def test_the_helper_does_not_import_the_app():
@@ -592,10 +597,9 @@ def test_the_helper_does_not_import_the_app():
 @pytest.mark.parametrize(
     "status, message",
     [
-        ("connected", CARD_FULL),  # CIO's read of 2026-11-26: github: connected/True/none
-        ("healthy", CARD_FULL),
+        ("connected", CARD_SHORT),  # CIO's read of 2026-11-26: github: connected/True/none
+        ("healthy", CARD_SHORT),
         ("failed", CARD_SHORT),
-        ("connected", CARD_SHORT),
     ],
 )
 def test_github_connected_as_the_machine_account_passes(ss, status, message):
@@ -617,6 +621,7 @@ def test_holding_nothing_still_passes(ss):
         "Connected as mediajunkie. Not the right account? Disconnect, then connect again.",
         "Connected as mediajunkie.",
         "Connected.",  # the card's no-login form: it cannot say whose account it is
+        CARD_FULL,  # the sentence from before issue 2475: no host draws it now
         f"Connected as {MACHINE}",  # no full stop: not one of the two forms
         f"Connected as {MACHINE}. And more.",
         f"x Connected as {MACHINE}.",
@@ -625,8 +630,8 @@ def test_holding_nothing_still_passes(ss):
         "",
         None,
         42,
-        [CARD_FULL],  # unhashable: must refuse, not raise TypeError
-        {"line": CARD_FULL},
+        [CARD_SHORT],  # unhashable: must refuse, not raise TypeError
+        {"line": CARD_SHORT},
         True,
     ],
 )
@@ -649,7 +654,7 @@ def test_a_live_row_with_no_status_message_at_all_refuses(ss):
             "status": "degraded",
             "can_test": True,
             "action": "reconnect",
-            "status_message": CARD_FULL,
+            "status_message": CARD_SHORT,
         },
         # The own-token card after a passing Test says a different thing, but the row is
         # healthy/True/none, the same triple as a live grant: only the line tells them apart.
@@ -659,15 +664,15 @@ def test_a_live_row_with_no_status_message_at_all_refuses(ss):
             "action": None,
             "status_message": "Connected with your personal token.",
         },
-        {"status": "unhealthy", "can_test": True, "action": None, "status_message": CARD_FULL},
-        {"status": "connected", "can_test": False, "action": None, "status_message": CARD_FULL},
+        {"status": "unhealthy", "can_test": True, "action": None, "status_message": CARD_SHORT},
+        {"status": "connected", "can_test": False, "action": None, "status_message": CARD_SHORT},
         {
             "status": "connected",
             "can_test": True,
             "action": "test_only",
-            "status_message": CARD_FULL,
+            "status_message": CARD_SHORT,
         },
-        {"status": "connected", "action": None, "status_message": CARD_FULL},  # can_test missing
+        {"status": "connected", "action": None, "status_message": CARD_SHORT},  # can_test missing
     ],
     ids=[
         "token-still-works",
@@ -723,7 +728,7 @@ def test_another_integration_still_refuses_on_the_seat(ss):
             "status": "connected",
             "can_test": True,
             "action": None,
-            "status_message": CARD_FULL,
+            "status_message": CARD_SHORT,
         },
     ]
     host = _seat_gh_host(ss)

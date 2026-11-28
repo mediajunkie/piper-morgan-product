@@ -1,6 +1,8 @@
+import io
+import zipfile
 from datetime import datetime
 from pathlib import Path
-from typing import Any, Dict, List, Optional, Tuple
+from typing import Any, Dict, FrozenSet, List, Optional, Tuple
 
 import pypdf
 
@@ -28,22 +30,113 @@ from services.shared_types import TaskType
 # honesty contract) — never a claimed analysis, never a wrong-format claim.
 # ---------------------------------------------------------------------------
 
-_PDF_MIME_TYPES = {"application/pdf"}
-_PLAIN_TEXT_MIME_TYPES = {
-    "text/plain",
-    "text/markdown",
-    "text/csv",
-    "application/json",
+# Issue 2443 (Arch's condition 1, 2026-11-26): ONE table of what Piper can read. Each
+# kind lists its extensions and its MIME types. ``classify_document_type`` reads it, and
+# so do the upload route's allow-lists (``web/api/routes/files.py``), the Documents
+# page's hint and every refusal line. A type is offered at upload if and only if the
+# reader below can read it; ``tests/unit/services/analysis/test_readable_types_2443.py``
+# fails if the two ever differ, in either direction.
+READABLE_KINDS: Dict[str, Tuple[FrozenSet[str], FrozenSet[str]]] = {
+    "pdf": (frozenset({".pdf"}), frozenset({"application/pdf"})),
+    "text": (
+        frozenset({".txt", ".md", ".csv", ".json", ".log"}),
+        frozenset({"text/plain", "text/markdown", "text/csv", "application/json"}),
+    ),
+    "docx": (
+        frozenset({".docx"}),
+        frozenset({"application/vnd.openxmlformats-officedocument.wordprocessingml.document"}),
+    ),
 }
-_PDF_EXTENSIONS = {".pdf"}
-_PLAIN_TEXT_EXTENSIONS = {".txt", ".text", ".md", ".markdown", ".csv", ".json", ".log"}
+
+#: A browser that does not know a file's type sends one of these. They name no kind, so
+#: the extension decides (issue 2443: a ``.log`` or ``.csv`` often arrives this way).
+GENERIC_MIME_TYPES: FrozenSet[str] = frozenset({"", "application/octet-stream"})
+
+#: Issue 2443 (Arch's condition 3; HOST 01M8HETS9W, Arch 01M8HEVAPY): a .docx is a zip,
+#: and the upload cap counts compressed bytes. python-docx decompresses every part a
+#: relationship reaches (HOST measured about 800 MB held for a 0.4 MB upload when only
+#: ``word/document.xml`` was bounded), so the bound is on the WHOLE package: the sum of
+#: every entry's declared size, read from the zip's directory before anything is parsed.
+MAX_DOCX_PACKAGE_BYTES = 50 * 1024 * 1024
+#: The most text kept from one .docx. Summarize reads 3,000 characters and a question
+#: 4,000, so this is generous.
+MAX_DOCX_TEXT_CHARS = 300_000
+
+#: Issue 2444: how much of a document's text the summary call is given. The slice and
+#: the sentence that tells the person about it are both built from this one number.
+SUMMARY_READ_CHARS = 3000
+
+# CXO's words (issue 2443 comment, 2026-11-27), verbatim. ``{types}`` is always
+# ``readable_types_phrase()``; no type is typed into a line by hand.
+DOCX_UNREADABLE_LINE = "That file is too large or isn't a valid .docx, so I couldn't read it."
+NO_TEXT_LINE = "I opened the file but found no text in it."
+READABLE_TYPES_HINT = "Piper can read {types} files."
+CANT_READ_TYPE_LINE = "Piper can't read {ext} files. It can read {types} files."
+CANT_READ_KIND_LINE = "Piper can't read that kind of file. It can read {types} files."
+SUMMARY_COVERAGE_LINE = (
+    "This summary covers the first {cut:,} characters of a document of {n:,} characters."
+)
+#: A PDF pypdf cannot open (CXO 01M8HEQDYD, 2026-11-28). It claims no cause (damaged,
+#: password, scanned), because the code does not know which.
+PDF_UNREADABLE_LINE = (
+    "Piper couldn't open that PDF. Paste its text here and Piper will work with it."
+)
+
+
+def readable_extensions() -> FrozenSet[str]:
+    """Every extension in the table."""
+    return frozenset(ext for extensions, _ in READABLE_KINDS.values() for ext in extensions)
+
+
+def readable_mime_types() -> FrozenSet[str]:
+    """Every MIME type in the table."""
+    return frozenset(mime for _, mimes in READABLE_KINDS.values() for mime in mimes)
+
+
+def readable_types_phrase() -> str:
+    """The table's extensions as CXO wrote them: sorted, commas between, "and" before
+    the last (".csv, .docx, .json, .log, .md, .pdf and .txt")."""
+    extensions = sorted(readable_extensions())
+    if len(extensions) == 1:
+        return extensions[0]
+    return ", ".join(extensions[:-1]) + " and " + extensions[-1]
+
+
+def readable_types_hint() -> str:
+    return READABLE_TYPES_HINT.format(types=readable_types_phrase())
+
+
+def _echoable_extension(display_type: str) -> str:
+    """The person's own extension, if it is safe and short enough to say back: a dot,
+    then letters, digits, ``+``, ``-`` or ``_``. Anything else (a MIME type, a long or
+    odd suffix) is not echoed, and the no-extension line is used."""
+    ext = (display_type or "").strip().lower()
+    body = ext[1:]
+    if ext.startswith(".") and 0 < len(body) <= 10 and all(c.isalnum() or c in "+-_" for c in body):
+        return ext
+    return ""
+
+
+def cant_read_line(display_type: str = "") -> str:
+    """CXO's refusal for a type that is not in the table (issue 2443)."""
+    ext = _echoable_extension(display_type)
+    types = readable_types_phrase()
+    if ext:
+        return CANT_READ_TYPE_LINE.format(ext=ext, types=types)
+    return CANT_READ_KIND_LINE.format(types=types)
+
+
+def summary_coverage_line(text_chars: int) -> Optional[str]:
+    """Issue 2444: the sentence that says the summary read only the start of the text.
+    None when the whole text was read."""
+    if text_chars <= SUMMARY_READ_CHARS:
+        return None
+    return SUMMARY_COVERAGE_LINE.format(cut=SUMMARY_READ_CHARS, n=text_chars)
 
 
 def _unsupported_message(display_type: str) -> str:
-    """The honest unsupported-type summary (#1648: name the REAL type)."""
-    if display_type:
-        return f"I can't analyze {display_type} files yet"
-    return "I can't analyze this file type yet"
+    """The refusal for a type Piper can't read (issue 2443; #1648: name the real type)."""
+    return cant_read_line(display_type)
 
 
 class UnsupportedDocumentTypeError(Exception):
@@ -59,6 +152,16 @@ class UnsupportedDocumentTypeError(Exception):
         super().__init__(_unsupported_message(display_type))
 
 
+class DocxUnreadableError(UnsupportedDocumentTypeError):
+    """A .docx past the unzip bound, or one that is not a valid .docx (issue 2443).
+    A kind of unreadable document, so callers that already handle the parent need no
+    new branch; its message is CXO's line, not the type line."""
+
+    def __init__(self) -> None:
+        self.display_type = ".docx"
+        Exception.__init__(self, DOCX_UNREADABLE_LINE)
+
+
 def classify_document_type(
     file_type: Optional[str] = None,
     filename: Optional[str] = None,
@@ -72,25 +175,90 @@ def classify_document_type(
         data: raw bytes for the magic-byte sniff, if already in hand
 
     Returns:
-        (kind, display) — kind is "pdf" | "text" | "unknown"; display is what
-        an honest unsupported-type message should call the file (extension if
-        known, else the MIME type, else "").
+        (kind, display) — kind is a key of ``READABLE_KINDS`` ("pdf" | "text" |
+        "docx") or "unknown"; display is what an honest unsupported-type message
+        should call the file (extension if known, else the MIME type, else "").
     """
     mime = (file_type or "").split(";")[0].strip().lower()
     suffix = Path(filename).suffix.lower() if filename else ""
     display = suffix or mime
 
-    if mime in _PDF_MIME_TYPES:
-        return "pdf", display
-    if mime in _PLAIN_TEXT_MIME_TYPES or mime.startswith("text/"):
+    # Issue 2443: the one table decides. MIME type first, then extension.
+    for kind, (_, mimes) in READABLE_KINDS.items():
+        if mime in mimes:
+            return kind, display
+    if mime.startswith("text/"):
         return "text", display
-    if suffix in _PDF_EXTENSIONS:
-        return "pdf", display
-    if suffix in _PLAIN_TEXT_EXTENSIONS:
-        return "text", display
+    for kind, (extensions, _) in READABLE_KINDS.items():
+        if suffix in extensions:
+            return kind, display
     if data is not None and data[:4] == b"%PDF":
         return "pdf", display
     return "unknown", display
+
+
+def extract_docx_text(data: bytes) -> str:
+    """The text of a .docx: paragraphs and table cells in document order (issue 2443,
+    Arch's conditions 2 and 3).
+
+    Raises ``DocxUnreadableError`` when the package's entries together declare more
+    than ``MAX_DOCX_PACKAGE_BYTES`` (summed from the zip's directory, before anything
+    is decompressed; the zip reader stops at each entry's declared size, so a directory
+    that lies cannot expand past the sum), and when the bytes are not a .docx
+    python-docx can open (a corrupt zip, an encrypted file, a zip that is not a Word
+    document).
+    """
+    try:
+        with zipfile.ZipFile(io.BytesIO(data)) as archive:
+            archive.getinfo("word/document.xml")  # KeyError: not a Word document
+            declared = sum(entry.file_size for entry in archive.infolist())
+    except (zipfile.BadZipFile, KeyError, OSError, ValueError):
+        raise DocxUnreadableError() from None
+    if declared > MAX_DOCX_PACKAGE_BYTES:
+        raise DocxUnreadableError()
+
+    import docx  # python-docx, already pinned
+    from docx.table import Table
+    from docx.text.paragraph import Paragraph
+
+    try:
+        document = docx.Document(io.BytesIO(data))
+        parts: List[str] = []
+        kept = 0
+
+        def keep(text: str) -> bool:
+            """Add one piece of text; False once the cap is reached."""
+            nonlocal kept
+            if text:
+                parts.append(text)
+                kept += len(text) + 1
+            return kept < MAX_DOCX_TEXT_CHARS
+
+        def walk(container: Any) -> bool:
+            for block in container.iter_inner_content():
+                if isinstance(block, Paragraph):
+                    if not keep(block.text):
+                        return False
+                elif isinstance(block, Table):
+                    # A merged cell is returned once per column it spans. The cell
+                    # elements themselves are kept (not their ids, which are reused
+                    # once a proxy is collected).
+                    seen: List[Any] = []
+                    for row in block.rows:
+                        for cell in row.cells:
+                            if any(cell._tc is kept_tc for kept_tc in seen):
+                                continue
+                            seen.append(cell._tc)
+                            if not walk(cell):
+                                return False
+            return True
+
+        walk(document)
+    except DocxUnreadableError:
+        raise
+    except Exception:  # silent-ok: any parse failure is the one refusal line, never a 500
+        raise DocxUnreadableError() from None
+    return "\n".join(parts)[:MAX_DOCX_TEXT_CHARS]
 
 
 def extract_document_text(
@@ -104,7 +272,8 @@ def extract_document_text(
     The shared extraction for document_handlers' question/compare/reference
     sites, which previously ran pypdf on every file type inline. Plain-text
     bytes decode directly; PDFs go through pypdf (optionally truncated to
-    max_pages); anything else raises UnsupportedDocumentTypeError whose
+    max_pages); a .docx goes through ``extract_docx_text`` (issue 2443; it raises
+    ``DocxUnreadableError``); anything else raises UnsupportedDocumentTypeError whose
     message names the real type.
     """
     import io as _io
@@ -112,6 +281,8 @@ def extract_document_text(
     kind, display = classify_document_type(file_type=file_type, filename=filename, data=data)
     if kind == "text":
         return data.decode("utf-8", errors="replace")
+    if kind == "docx":
+        return extract_docx_text(data)
     if kind == "pdf":
         reader = pypdf.PdfReader(_io.BytesIO(data))
         pages = reader.pages[:max_pages] if max_pages is not None else reader.pages
@@ -149,8 +320,6 @@ class DocumentAnalyzer(BaseAnalyzer):
         """
         try:
             # #1306: bytes via the decrypt seam, never a raw open()
-            import io as _io
-
             from services.file_context.storage import read_file_from_storage
 
             data = read_file_from_storage(file_path)
@@ -161,81 +330,43 @@ class DocumentAnalyzer(BaseAnalyzer):
             if kind == "text":
                 return await self._analyze_plain_text_bytes(data, file_path, user_id=user_id)
 
+            if kind == "docx":
+                # Issue 2443: read the .docx, then the same summary path as plain text.
+                try:
+                    text = extract_docx_text(data)
+                except DocxUnreadableError:
+                    return self._refusal(file_path, DOCX_UNREADABLE_LINE, file_type, "docx")
+                return await self._analyze_text_as_document(text, file_path, user_id=user_id)
+
             if kind == "unknown":
-                # #1648 honesty contract: no claimed analysis without real
-                # content, and the failure names itself accurately — the
-                # actual type, never the old wrong-format 'corrupted PDF'.
-                message = _unsupported_message(display)
-                return AnalysisResult(
-                    file_id=file_path,
-                    analysis_type=AnalysisType.DOCUMENT,
-                    summary=message,
-                    key_findings=[
-                        f"File type {display or 'unknown'} is not supported for "
-                        "analysis (supported: PDF and plain-text formats such as "
-                        ".txt, .md, .csv, .json)"
-                    ],
-                    recommendations=[
-                        "Convert the file to PDF or a plain-text format and re-upload"
-                    ],
-                    generated_at=datetime.now(),
-                    metadata={
-                        "error": message,
-                        "file_type": file_type,
-                        "detected_kind": "unsupported",
-                    },
+                # #1648 honesty contract: no claimed analysis without real content.
+                # Issue 2443: the line names the person's type and the readable ones
+                # from the table; nothing else is said, and no list is typed by hand.
+                return self._refusal(
+                    file_path, _unsupported_message(display), file_type, "unsupported"
                 )
 
-            # kind == "pdf": the pre-#1659 pypdf path, unchanged.
-            reader = pypdf.PdfReader(_io.BytesIO(data))
+            # kind == "pdf"
+            reader = pypdf.PdfReader(io.BytesIO(data))
             page_count = len(reader.pages)
             text = ""
             for page in reader.pages:
                 text += page.extract_text() or ""
-            metadata = {"page_count": page_count, "text": text}
-            # Empty PDF: summary should be empty string if no text and at least one page
-            if not text and page_count > 0:
-                summary = ""
-                metadata["summary"] = summary
-                metadata["key_points"] = []
-            elif text:
-                # Use LLM for summary and key points with JSON mode
-                import structlog
-
-                logger = structlog.get_logger()
-                if self.llm_client is not None:
-                    try:
-                        # Use JSON mode for structured output
-                        json_prompt = get_json_summary_prompt()
-                        json_response = await self.llm_client.complete(
-                            task_type=TaskType.SUMMARIZE.value,
-                            prompt=json_prompt.format(content=text[:3000]),
-                            response_format={"type": "json_object"},
-                            user_id=user_id,
-                        )
-
-                        # Parse JSON into domain model
-                        document_summary = self.summary_parser.parse_json(json_response)
-
-                        # Generate clean markdown from domain model
-                        summary = document_summary.to_markdown()
-                        key_points = document_summary.key_findings
-
-                    except Exception as e:
-                        logger.error(f"LLM analysis failed: {e}")
-                        summary = (
-                            f"Summary generation failed. Document contains {len(text)} characters."
-                        )
-                        key_points = []
-                else:
-                    summary = f"PDF with {page_count} pages and {len(text)} characters of text."
-                    key_points = []
-                metadata["summary"] = summary
-                metadata["key_points"] = key_points
-            else:
-                summary = f"PDF with {page_count} pages and {len(text)} characters of text."
-                metadata["summary"] = summary
-                metadata["key_points"] = []
+            if not text.strip():
+                # Issue 2443 (CXO): a scanned PDF has pages and no text. Say so; never
+                # an empty summary under a summary heading.
+                refused = self._refusal(file_path, NO_TEXT_LINE, file_type, "no_text")
+                refused.metadata["page_count"] = page_count
+                return refused
+            metadata: Dict[str, Any] = {"page_count": page_count, "text": text}
+            summary, key_points, read_by_model = await self._summarize_text(
+                text,
+                user_id=user_id,
+                no_llm_summary=f"PDF with {page_count} pages and {len(text)} characters of text.",
+            )
+            metadata["summary"] = summary
+            metadata["key_points"] = key_points
+            self._note_coverage(metadata, text, read_by_model)
             # NOTE: key_points kept in metadata for backward compatibility.
             # Low-priority domain model alignment — not blocking any feature.
             return AnalysisResult(
@@ -248,18 +379,39 @@ class DocumentAnalyzer(BaseAnalyzer):
                 metadata=metadata,
             )
         except pypdf.errors.PdfReadError:
-            return AnalysisResult(
-                file_id=file_path,
-                analysis_type=AnalysisType.DOCUMENT,
-                summary="Unable to analyze PDF document",
-                key_findings=["PDF file could not be read - file may be corrupted"],
-                metadata={"error": "Unable to read PDF file - file may be corrupted"},
-                recommendations=[
-                    "Verify the PDF file is not corrupted",
-                    "Try re-saving or re-exporting the PDF",
-                ],
-                generated_at=datetime.now(),
-            )
+            # One sentence, alone, like every other file that was not read.
+            return self._refusal(file_path, PDF_UNREADABLE_LINE, file_type, "pdf_unreadable")
+
+    @staticmethod
+    def _refusal(
+        file_path: str, line: str, file_type: Optional[str], detected_kind: str
+    ) -> AnalysisResult:
+        """A file Piper did not read: one plain sentence, marked ``refusal`` so no
+        caller dresses it as a summary (issue 2443: on beta the old line came back as
+        two bullets under "Here's my summary of ...")."""
+        return AnalysisResult(
+            file_id=file_path,
+            analysis_type=AnalysisType.DOCUMENT,
+            summary=line,
+            key_findings=[],
+            recommendations=[],
+            generated_at=datetime.now(),
+            metadata={
+                "error": line,
+                "refusal": True,
+                "file_type": file_type,
+                "detected_kind": detected_kind,
+            },
+        )
+
+    @staticmethod
+    def _note_coverage(metadata: Dict[str, Any], text: str, read_by_model: bool) -> None:
+        """Issue 2444: when the model summarized only the start of the text, the
+        sentence that says so rides in the result. Nothing is added when the whole
+        text was read, or when no model summary was made."""
+        line = summary_coverage_line(len(text)) if read_by_model else None
+        if line:
+            metadata["summary_coverage"] = line
 
     async def analyze_text(
         self, text: str, source_id: str = "inline-text", *, user_id: Optional[str]
@@ -275,9 +427,10 @@ class DocumentAnalyzer(BaseAnalyzer):
         same summary shape.
         """
         metadata: Dict[str, Any] = {"text": text}
-        summary, key_points = await self._summarize_text(text, user_id=user_id)
+        summary, key_points, read_by_model = await self._summarize_text(text, user_id=user_id)
         metadata["summary"] = summary
         metadata["key_points"] = key_points
+        self._note_coverage(metadata, text, read_by_model)
         return AnalysisResult(
             file_id=source_id,
             analysis_type=AnalysisType.TEXT,
@@ -296,10 +449,20 @@ class DocumentAnalyzer(BaseAnalyzer):
         extracted text. Result shape mirrors the PDF branch (DOCUMENT type,
         file_id = storage path, text + summary + key_points in metadata)."""
         text = data.decode("utf-8", errors="replace")
+        return await self._analyze_text_as_document(text, file_path, user_id=user_id)
+
+    async def _analyze_text_as_document(
+        self, text: str, file_path: str, *, user_id: Optional[str]
+    ) -> AnalysisResult:
+        """Text taken from a stored file (plain text, or a .docx's text, issue 2443),
+        summarized. A file with no text in it is said plainly (CXO), never summarized."""
+        if not text.strip():
+            return self._refusal(file_path, NO_TEXT_LINE, None, "no_text")
         metadata: Dict[str, Any] = {"text": text}
-        summary, key_points = await self._summarize_text(text, user_id=user_id)
+        summary, key_points, read_by_model = await self._summarize_text(text, user_id=user_id)
         metadata["summary"] = summary
         metadata["key_points"] = key_points
+        self._note_coverage(metadata, text, read_by_model)
         return AnalysisResult(
             file_id=file_path,
             analysis_type=AnalysisType.DOCUMENT,
@@ -310,14 +473,24 @@ class DocumentAnalyzer(BaseAnalyzer):
             metadata=metadata,
         )
 
-    async def _summarize_text(self, text: str, *, user_id: Optional[str]) -> Tuple[str, List[str]]:
-        """Shared LLM-summarize step for the text paths (#1657 analyze_text +
-        #1659 plain-text uploads): JSON-mode summary via SummaryParser, with
-        the same honest fallbacks analyze_text always had. The PDF branch in
-        analyze() keeps its own (byte-identical) copy of this logic — its
-        no-LLM fallback message differs ('PDF with N pages...')."""
+    async def _summarize_text(
+        self,
+        text: str,
+        *,
+        user_id: Optional[str],
+        no_llm_summary: Optional[str] = None,
+    ) -> Tuple[str, List[str], bool]:
+        """The one LLM-summarize step for every text source (#1657 artifacts, #1659
+        plain text, PDFs, and a .docx's text since issue 2443): JSON-mode summary via
+        SummaryParser, with the same honest fallbacks.
+
+        Returns ``(summary, key_findings, read_by_model)``. ``read_by_model`` is True
+        only when the model's summary is what came back, so the caller knows whether
+        the issue 2444 sentence applies. The model is given the first
+        ``SUMMARY_READ_CHARS`` characters and no more.
+        """
         if not text:
-            return "", []
+            return "", [], False
         if self.llm_client is not None:
             import structlog
 
@@ -326,16 +499,17 @@ class DocumentAnalyzer(BaseAnalyzer):
                 json_prompt = get_json_summary_prompt()
                 json_response = await self.llm_client.complete(
                     task_type=TaskType.SUMMARIZE.value,
-                    prompt=json_prompt.format(content=text[:3000]),
+                    prompt=json_prompt.format(content=text[:SUMMARY_READ_CHARS]),
                     response_format={"type": "json_object"},
                     user_id=user_id,
                 )
                 document_summary = self.summary_parser.parse_json(json_response)
-                return document_summary.to_markdown(), document_summary.key_findings
+                return document_summary.to_markdown(), document_summary.key_findings, True
             except Exception as e:
                 logger.error(f"LLM analysis failed: {e}")
                 return (
                     f"Summary generation failed. Document contains {len(text)} characters.",
                     [],
+                    False,
                 )
-        return f"Document with {len(text)} characters of text.", []
+        return no_llm_summary or f"Document with {len(text)} characters of text.", [], False

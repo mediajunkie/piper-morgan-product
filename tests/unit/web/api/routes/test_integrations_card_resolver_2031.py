@@ -70,10 +70,7 @@ async def test_oauth_serving_is_connected():
     assert (
         status.status == "connected"
     )  # #2075: a bound grant with no recorded check claims no health
-    assert (
-        status.status_message
-        == "Connected as octocat. Not the right account? Disconnect, then connect again."
-    )
+    assert status.status_message == "Connected as octocat."
     assert (
         status.status_icon is None and status.status_detail == "Not checked yet. Press Test."
     )  # #2187: no record -> unchecked line

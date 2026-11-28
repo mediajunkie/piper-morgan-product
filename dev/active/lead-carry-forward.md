@@ -1,6 +1,12 @@
 # Lead carry-forward — Fable 5.2 seat again since 2026-11-20 08:56 (Opus 5.5 from 2026-11-17 21:30 until then); Model A worktree ~/Development/piper-morgan-worktrees/lead
 
-## DAY-END 2026-11-27 21:47 (read this first; the blocks below are earlier states)
+## MORNING 2026-11-28 09:06 (read this first; it supersedes the DAY-END block below)
+- **Beta serves `fc476fe6d6`** (second promotion today, 09:06, run 46168372666): 2443 and 2444 with the whole-package .docx bound. Web has six served rows (01M8HHYWTN); CXO judges, PPM ticks. **2475 is served and passed** (Web 01M8HET7CJ, CXO 01M8HFCGG0: clear before invitations); its ticks and close are PPM's.
+- **What happened with 2443:** my first landing bounded only `word/document.xml`; HOST showed a linked part is decompressed too. Fixed in `c2e40f36e5` (sum of all entries, 50 MB). The first tests could not tell the two bounds apart (a raise the reader's catch-all swallowed); they now assert the library is never called. Habit: a test that proves a refusal must fail when the guard is removed; run it once against the unguarded code.
+- **Next builds, each from a fresh context (deep work; this session's context is long):** the floor prompt pass (design and price the two-provider rerun first, PLANNED to Exec), then 2195 with 2469, then issue 2474. All specified in standing items. Order is PPM's and Exec's; nobody has reordered them.
+- Invite rows still wait on xian's sitting (2342's two rows, 2282). Exec says he has not been in a session since 06:04.
+
+## DAY-END 2026-11-27 21:47 (superseded by the block above)
 - **Beta serves `8ddd08d8e0`** (seventh promotion of 11-27, 20:01, each on the first dispatch). Healthy; main CI 12 of 12. Nothing waits to be promoted. **The MCP app is still on `c303931894`:** PA's two deploys hung (issue 2472, needs xian's read of Fly), so 2468's connector fix (`32ba51b768`) is on main and not served.
 - **Sprint 3 paths: 2 of 2 served** (Path A 13:44, Path B 14:44). **Invite hold: 1 of 3 closed** (2261). The other two wait on xian's sitting, which has not moved since the 13:28 cutover: 2342's two rows (zero-install card, the revoke) and 2282 (Calendar consent). After his revoke of seat-github-1's grant: read beta `/health` for the refresh job's `rejected 1` and report.
 - **Closed 11-27 (7):** 2411, 2455, 2459, 2458, 2425, 2261, 2460. **Filed by me:** 2456 (duplicate, closed), 2460, 2462, 2469, 2471. Others filed 2466, 2467, 2468, 2470, 2472.

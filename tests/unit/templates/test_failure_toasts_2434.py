@@ -112,17 +112,22 @@ def test_no_new_toast_takes_the_bare_title_error():
 def test_the_upload_picker_offers_exactly_the_kinds_the_route_accepts():
     from web.api.routes.files import ALLOWED_EXTENSIONS
 
+    # Issue 2443: the picker is filled by the page route from the one readable-types
+    # table, so the template holds the variable and the route holds the join.
     text = (ROOT / "templates/files.html").read_text(encoding="utf-8")
     accepts = re.findall(r'accept="([^"]*)"', text)
-    assert len(accepts) == 1
-    assert set(accepts[0].split(",")) == set(ALLOWED_EXTENSIONS)
-    assert ".doc" not in accepts[0].split(",")  # the old Word format the route refuses
+    assert accepts == ["{{ readable_accept }}"]
+    route = (ROOT / "web/api/routes/ui.py").read_text(encoding="utf-8")
+    assert '"readable_accept": ",".join(sorted(readable_extensions()))' in route
+    assert ".doc" not in ALLOWED_EXTENSIONS  # the old Word format the route refuses
 
 
-def test_the_upload_helper_names_the_word_kind_that_is_accepted():
+def test_the_upload_helper_names_the_kinds_from_the_table():
+    """Issue 2443 (CXO): "Piper can read {types} files.", built from the table; no
+    kind is typed into the page."""
     text = (ROOT / "templates/files.html").read_text(encoding="utf-8")
-    assert "Max size: 10MB. Allowed: Text, PDF, Word (.docx), Markdown, JSON" in text
-    assert "Allowed: Text, PDF, Word, Markdown" not in text
+    assert "Max size: 10MB. {{ readable_types_hint }}" in text
+    assert "Allowed: Text, PDF" not in text and "Word" not in text
 
 
 def test_the_upload_helpers_size_is_the_routes_limit():

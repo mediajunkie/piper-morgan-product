@@ -19,6 +19,13 @@ from fastapi.responses import Response
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from services.analysis.document_analyzer import (
+    GENERIC_MIME_TYPES,
+    READABLE_KINDS,
+    cant_read_line,
+    readable_extensions,
+    readable_mime_types,
+)
 from services.api.errors import UserFacingHTTPException
 from services.auth.auth_middleware import get_current_user
 from services.auth.jwt_service import JWTClaims
@@ -54,22 +61,40 @@ def _audit_admin_bypass(action: str, *, user_id, file_id, owner_id) -> None:
 
 # Configuration
 MAX_FILE_SIZE = 10 * 1024 * 1024  # 10MB
-ALLOWED_MIME_TYPES = {
-    "text/plain",
-    "application/pdf",
-    "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-    "text/markdown",
-    "application/json",
-}
-ALLOWED_EXTENSIONS = {".txt", ".pdf", ".docx", ".md", ".json"}
+# Issue 2443 (Arch's condition 1): what the upload accepts is what the reader can read,
+# from the one table in ``services/analysis/document_analyzer.py``. Nothing is listed
+# here. A browser that does not know a file's type sends a generic one (or none), and
+# then the extension decides; a named type must belong to the extension's own kind.
+ALLOWED_MIME_TYPES = readable_mime_types()
+ALLOWED_EXTENSIONS = readable_extensions()
 
-# Issue 2432 (CXO, comment 7144095698): what a person reads, marked. The two limits are
-# computed once here from the constants above (sorted, so the order never varies), and no
-# line names the size, type or name of the file the person sent.
+# Issue 2432 (CXO, comment 7144095698): what a person reads, marked. The size limit is
+# computed once here from the constant above, and that line names nothing about the file
+# the person sent.
 FILE_TOO_LARGE_LINE = f"That file is too large. The limit is {MAX_FILE_SIZE // (1024 * 1024)} MB."
-FILE_KIND_NOT_USABLE_LINE = (
-    "I can't use that kind of file. Allowed: " + ", ".join(sorted(ALLOWED_EXTENSIONS)) + "."
-)
+# Issue 2443 (CXO 2026-11-27, replacing the 2432 line): the refusal names the readable
+# types from the table. This is CXO's line for a file with no extension to say back; the
+# upload uses it for every refused type: Arch ruled (01M8HEVAPY) that a marked refusal
+# never carries what the request sent, so the extension is not said back here.
+FILE_KIND_NOT_USABLE_LINE = cant_read_line("")
+
+
+def _upload_type_allowed(content_type: Optional[str], suffix: str) -> bool:
+    """True when the file is one Piper reads, and the upload and the reader will agree
+    on what kind it is (Arch 01M8HEVAPY). The extension picks the kind. A generic type
+    names nothing, so it passes. A named type must belong to that same kind: the kind's
+    own MIME types, or any ``text/*`` when the kind is text. So a ``.docx`` sent as
+    ``application/pdf`` or ``text/plain`` is refused; the reader decides by MIME type
+    first and would have read it as the wrong kind."""
+    mime = (content_type or "").split(";")[0].strip().lower()
+    for kind, (extensions, mimes) in READABLE_KINDS.items():
+        if suffix in extensions:
+            if mime in GENERIC_MIME_TYPES or mime in mimes:
+                return True
+            return kind == "text" and mime.startswith("text/")
+    return False
+
+
 CHOOSE_A_FILE_LINE = "Choose a file first."
 CHOOSE_AT_LEAST_ONE_FILE_LINE = "Choose at least one file."
 TOO_MANY_TO_DOWNLOAD_LINE = "You can download up to 50 files at a time."
@@ -131,29 +156,20 @@ async def upload_file(
                 status_code=status.HTTP_413_REQUEST_ENTITY_TOO_LARGE, detail=FILE_TOO_LARGE_LINE
             )
 
-        # 4. Validate file type (MIME type)
-        if file.content_type not in ALLOWED_MIME_TYPES:
+        # 4 and 5. Validate the file's type against the one readable-types table
+        # (issue 2443). The refusal says the person's own extension back.
+        file_path = Path(file.filename)
+        suffix = file_path.suffix.lower()
+        if not _upload_type_allowed(file.content_type, suffix):
             logger.warning(
                 "file_type_not_allowed",
                 user_id=current_user.sub,
                 filename=file.filename,
                 content_type=file.content_type,
-            )
-            logger.info("file_upload_refused_type", content_type=file.content_type)
-            raise UserFacingHTTPException(
-                status_code=status.HTTP_415_UNSUPPORTED_MEDIA_TYPE, detail=FILE_KIND_NOT_USABLE_LINE
-            )
-
-        # 5. Validate file extension
-        file_path = Path(file.filename)
-        if file_path.suffix.lower() not in ALLOWED_EXTENSIONS:
-            logger.warning(
-                "file_extension_not_allowed",
-                user_id=current_user.sub,
-                filename=file.filename,
                 extension=file_path.suffix,
             )
-            logger.info("file_upload_refused_extension", suffix=file_path.suffix)
+            logger.info("file_upload_refused_type", content_type=file.content_type, suffix=suffix)
+            # A constant: a marked detail never carries request input (Arch 01M8HEVAPY).
             raise UserFacingHTTPException(
                 status_code=status.HTTP_415_UNSUPPORTED_MEDIA_TYPE, detail=FILE_KIND_NOT_USABLE_LINE
             )

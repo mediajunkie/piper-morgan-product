@@ -52,10 +52,7 @@ async def test_oauth_card_carries_last_check_after_a_recorded_check():
         card = await integrations_routes._github_card(METADATA, "user-1")
     assert card is not None
     assert card.status == "healthy"
-    assert (
-        card.status_message
-        == "Connected as octocat. Not the right account? Disconnect, then connect again."
-    )
+    assert card.status_message == "Connected as octocat."
     assert card.last_check is not None
     assert card.last_check.startswith("20")  # ISO 8601, UTC
     assert datetime.fromisoformat(card.last_check).timestamp() >= started - 1

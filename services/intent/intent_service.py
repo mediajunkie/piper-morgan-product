@@ -7351,10 +7351,29 @@ class IntentService:
                 error_type="DocumentNotFound",
             )
 
+        if analysis.get("refusal"):
+            # Issue 2443: the file was not read. Its one sentence, and nothing that
+            # says "I read" it.
+            return IntentProcessingResult(
+                success=False,
+                message=analysis["summary"],
+                intent_data={**intent_data, "file_id": held["file_id"]},
+                workflow_id=workflow_id,
+                error="Document not readable",
+                error_type="DocumentNotReadable",
+            )
+
+        from services.intent_service.document_handlers import findings_not_already_in
+
         parts = [f"I read '{analysis['filename']}' from your files."]
+        if analysis.get("coverage"):
+            parts.append(analysis["coverage"])  # issue 2444: said before the summary
         if analysis.get("summary"):
             parts.append(f"**Summary:**\n{analysis['summary']}")
-        findings = analysis.get("key_findings") or []
+        # Issue 2444: the summary's own markdown already lists its key findings.
+        findings = findings_not_already_in(
+            analysis.get("summary") or "", analysis.get("key_findings") or []
+        )
         if findings:
             parts.append("**Key findings:**\n" + "\n".join(f"- {k}" for k in findings))
         recommendations = analysis.get("recommendations") or []

@@ -91,9 +91,7 @@ GITHUB_LIVE_ROWS: FrozenSet[IntegrationRow] = frozenset(
 # two constants and fails when these copies differ, so a copy change is a failed test and
 # a one-line diff here, never a refused sitting. The card's no-login form ("Connected.")
 # is deliberately absent: it cannot show whose account it is, so it refuses.
-GITHUB_CARD_CONNECTED_AS = (
-    "Connected as {login}. Not the right account? Disconnect, then connect again."
-)
+GITHUB_CARD_CONNECTED_AS = "Connected as {login}."
 GITHUB_CARD_CONNECTED_AS_ONLY = "Connected as {login}."
 
 
