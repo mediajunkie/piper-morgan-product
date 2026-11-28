@@ -2057,7 +2057,7 @@ issue	state	milestone	sprint	title	labels	blocked_by	state_reason
 2258	CLOSED	Production		[UX] "What changed since yesterday?" can answer with an internal label: "Actions (2): consequential: 2"	UX		COMPLETED
 2259	CLOSED	Production		Account Settings doesn't show the account's email, though the allowlist script and support flows ask people for it			COMPLETED
 2260	OPEN	Production		DUE REMINDERS block gives every reminder with the same text the last row's age (ages keyed by text, not per row): 'all 1 day overdue' for reminders 10 days old	bug		
-2261	OPEN	Production		GitHub connect requests the classic `repo` scope (full read/write on every repo the login reaches); narrow it per ADR-081 D3, or to the narrowest classic scope on the OAuth-App fallback	P0-critical,component: integration,github		
+2261	CLOSED	Production		GitHub connect requests the classic `repo` scope (full read/write on every repo the login reaches); narrow it per ADR-081 D3, or to the narrowest classic scope on the OAuth-App fallback	P0-critical,component: integration,github		COMPLETED
 2262	CLOSED	Production		#1680 gap: Notion writes (chat update_document append_blocks, standup create_page) are not consequential sites	component: integration		COMPLETED
 2264	OPEN	Ongoing		A Postgres data directory (data/postgres, 2,119 files, 88 MB) is tracked in this public repo and copied into every Docker image	bug		
 2265	CLOSED	Production		[UX] 'What did we accomplish yesterday?' reads the last 24 hours but says 'since yesterday'	UX		COMPLETED
