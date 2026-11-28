@@ -73,8 +73,11 @@ CANT_READ_KIND_LINE = "Piper can't read that kind of file. It can read {types} f
 SUMMARY_COVERAGE_LINE = (
     "This summary covers the first {cut:,} characters of a document of {n:,} characters."
 )
-#: A PDF pypdf cannot open. Not one of CXO's 2443 lines; the words predate that issue.
-PDF_UNREADABLE_LINE = "Unable to analyze PDF document"
+#: A PDF pypdf cannot open (CXO 01M8HEQDYD, 2026-11-28). It claims no cause (damaged,
+#: password, scanned), because the code does not know which.
+PDF_UNREADABLE_LINE = (
+    "Piper couldn't open that PDF. Paste its text here and Piper will work with it."
+)
 
 
 def readable_extensions() -> FrozenSet[str]:
@@ -370,21 +373,8 @@ class DocumentAnalyzer(BaseAnalyzer):
                 metadata=metadata,
             )
         except pypdf.errors.PdfReadError:
-            return AnalysisResult(
-                file_id=file_path,
-                analysis_type=AnalysisType.DOCUMENT,
-                summary=PDF_UNREADABLE_LINE,
-                key_findings=["PDF file could not be read - file may be corrupted"],
-                metadata={
-                    "error": "Unable to read PDF file - file may be corrupted",
-                    "refusal": True,
-                },
-                recommendations=[
-                    "Verify the PDF file is not corrupted",
-                    "Try re-saving or re-exporting the PDF",
-                ],
-                generated_at=datetime.now(),
-            )
+            # One sentence, alone, like every other file that was not read.
+            return self._refusal(file_path, PDF_UNREADABLE_LINE, file_type, "pdf_unreadable")
 
     @staticmethod
     def _refusal(
