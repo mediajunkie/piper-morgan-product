@@ -4,6 +4,16 @@
 **Time**: about 30 minutes.
 **Status**: DRAFT 2026-11-12. Steps 1 to 9 follow the tested list in `docs/internal/operations/canonical-ops-recipes.md` section 13. Items marked **(not yet run)** have not been checked from a clean clone. On 2026-11-16 Docs ran steps 1, 2, 3 (the three named services), 4 and 8 from a fresh clone with its own database and ports, and typed no key. On 2026-11-18 Lead's driver (`scripts/guide_keyed_steps_run.py`, issue 2404) ran steps 6, 7, 8 and 9 against a scratch database on a running local Postgres, with a stand-in model and a key seeded by the driver through the call step 5 makes. It checked HTTP replies and page text, with no browser clicks. Step 5 is not run by a seat, because it needs a person at a terminal. The chat check first failed on that path: Piper answered that it needed a key of your own (issue 2405). The fix is on main on 2026-11-18 (the first account on a local install gets the saved key as its own), and the driver's next stub run no longer hits that refusal. On 2026-11-20 at 11:26 PT the same driver ran steps 6, 7, 8 and 9 and the chat check with a real provider key (tree `b30f7387c7`, issue 2404). A seat ran them against a scratch database on a running local Postgres, with the key seeded by the driver through the call step 5 makes. The chat check got a real reply with no error in one turn. Not covered: a browser, step 5 typed by a person, and a machine that has never run Piper. Docs will remove each remaining marker as it is verified.
 
+## Start here
+
+If this is your first time, do this much and stop:
+
+1. Follow the steps below through "Check it works". You should end with a reply from Piper in the chat, on your own key.
+2. Connect GitHub with a fine-grained personal access token (see "What your install offers"), and ask Piper to read one of your repositories.
+3. Leave Calendar for later. It needs your own Google client, which Google starts in testing mode: only people you name as test users can sign in, and the sign-in expires after a few days. It is optional and works the same whenever you add it.
+
+When you tell us what happened, leave out any key, password or invite code. If a step does not match what you see, say which step and what you saw. **(not yet run: no one has followed this page from start to finish on a computer that never ran Piper)**
+
 ## What you need
 
 - A Mac or Linux computer. Windows has not been tested, see [windows-setup-guide.md](./windows-setup-guide.md) for the older notes.
