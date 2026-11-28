@@ -89,6 +89,11 @@ GITHUB_CONNECT_REQUIRED_NO_APP_LINE = (
 GITHUB_CONNECT_REQUIRED_NO_APP_TEST_LINE = (
     "Add a GitHub personal access token on the GitHub settings page to continue."
 )
+# CXO, 2026-11-27 (issue 2261): the Test toast's fix line in the same state. The toast
+# prints the guidance row's message and fix, so this keeps the row's own shape.
+GITHUB_CONNECT_REQUIRED_NO_APP_FIX_LINE = (
+    "In Settings → Integrations → GitHub, add a personal access token."
+)
 # #2151 (Arch 10-24 16:49): the resolver's degrade when a stored-token read failed. A store
 # that didn't answer is a failed read, never "not connected".
 # CXO 2026-11-04 13:26 (#2266, #2188): the two degrades a person may read alone each
