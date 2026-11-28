@@ -85,6 +85,14 @@ UNWIRED_WRITE_DECLINES: Dict[str, str] = {
         "I can't update status from chat yet — that capability is on the way. "
         "For now you can make the change directly in GitHub."
     ),
+    # Issue 2470 (CXO, 2026-11-27): the model offered "I can link them up" and taking the
+    # offer got the generic "I didn't recognize that". Which repositories Piper reaches
+    # is set at GitHub, on the Piper GitHub app's installation; chat has no handler.
+    "add_github_repo": (
+        "I can't add a repository from chat. Add it at GitHub (the Piper GitHub app's "
+        "installed repositories), then press Refresh List in Settings → Integrations → "
+        "GitHub."
+    ),
 }
 
 # #1333 (Arch-ruled 2026-06-30): the former `UNWIRED_WRITE_ACTIONS` frozenset (which the

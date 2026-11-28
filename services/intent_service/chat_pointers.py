@@ -248,6 +248,13 @@ CHAT_POINTERS = {
     "capability:create_branch": CHAT_INVISIBLE(issue=1440),
     "capability:create_pull_request": CHAT_INVISIBLE(issue=1440),
     "capability:update_status": CHAT_INVISIBLE(issue=1440),
+    # Issue 2470 (Arch 2026-11-27): by design, not a gap. Under ADR-081 D3 a person
+    # chooses repositories by installing the Piper GitHub App at GitHub; chat adds none.
+    # If a "link a repository" chat path is ever built, this row becomes a POINTER and
+    # the chat_invisible ceiling drops back by one.
+    "capability:add_github_repo": CHAT_INVISIBLE(
+        ref="ADR-081", note="repositories are chosen at GitHub, D3"
+    ),
     "capability:create_calendar_event": CHAT_INVISIBLE(
         issue=1440, note="calendar connector port rides the R2 epic"
     ),
