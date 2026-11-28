@@ -1,7 +1,7 @@
 """#2279 (CXO's words 2026-11-04, Arch's durable guard under #2266): after someone connects
 GitHub, Piper says which GitHub account it was. The Integrations card reads the login
-through the account's own grant and says "Connected as {login}. Not the right account?
-Disconnect, then connect again."; when that read fails it says "Connected." with no login
+through the account's own grant and says "Connected as {login}." (issue 2475 moved the
+"Not the right account?" hint to the Disconnect dialog); when that read fails it says "Connected." with no login
 and no guess. The success line after the callback reads "GitHub is connected as {login}."
 and names no one when the handler read no login. The login never comes from the
 deployment's env handle or another account's credential.
@@ -28,7 +28,7 @@ ROOT = Path(__file__).resolve().parents[3]
 _ADAPTER = "services.mcp.consumer.github_adapter.GitHubMCPSpatialAdapter"
 METADATA = integrations_routes.INTEGRATION_REGISTRY["github"]
 OAUTH = GitHubCredential(owner_id="user-1", mcp_server_ref="github", token="g", leg="oauth")
-CARD = "Connected as octocat. Not the right account? Disconnect, then connect again."
+CARD = "Connected as octocat."
 
 
 async def _card(login_mock, user_id="user-1"):
@@ -68,9 +68,7 @@ class TestTheCard:
         assert card.status_message == "Connected."
 
     def test_the_words_are_cxos(self):
-        assert integrations_routes._GITHUB_CARD_CONNECTED_AS == (
-            "Connected as {login}. Not the right account? Disconnect, then connect again."
-        )
+        assert integrations_routes._GITHUB_CARD_CONNECTED_AS == "Connected as {login}."
         assert integrations_routes._GITHUB_CARD_CONNECTED_NO_LOGIN == "Connected."
         assert not hasattr(integrations_routes, "_GITHUB_CARD_CONNECTED")
 

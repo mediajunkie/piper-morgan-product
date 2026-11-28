@@ -59,9 +59,14 @@ async def test_a_failed_test_with_no_login_still_gets_the_line():
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize("result", (True, None))
-async def test_passed_and_never_tested_keep_the_question_and_have_no_error_line(result):
+async def test_passed_and_never_tested_name_the_account_and_have_no_error_line(result):
+    # Issue 2475 item 3: the question left the card for the Disconnect dialog and the
+    # button's title; the card carries it as ``disconnect_hint``.
     card = await _github_card(result)
-    assert QUESTION in card.status_message
+    assert card.status_message == "Connected as octo-example."
+    assert QUESTION not in card.status_message
+    assert card.disconnect_hint == routes.GITHUB_WRONG_ACCOUNT_HINT
+    assert card.disconnect_hint.startswith(QUESTION)
     assert card.error_line is None and card.error is None
 
 
@@ -133,10 +138,7 @@ def test_the_failed_github_card_draws_two_lines_and_keeps_its_controls(drawn):
 @needs_node
 def test_the_passed_github_card_and_the_other_failed_cards_are_unchanged(drawn):
     passed = cards.read_card(drawn["github-app-healthy"], "github")
-    assert passed["lines"][-1] == (
-        "Connected as octo-example. Not the right account? Disconnect, then connect again. "
-        "Checked just now."
-    )
+    assert passed["lines"][-1] == ("Connected as octo-example. " "Checked just now.")
     for name in ("notion", "slack", "calendar"):
         card = cards.read_card(drawn["failed"], name)
         assert card["lines"][-1] == f"{cards.SAMPLE_ERROR}. Checked just now. [error style]"

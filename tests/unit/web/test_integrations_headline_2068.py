@@ -43,11 +43,11 @@ CASES = {
         "Needs attention",
         "degraded",
     ),
-    "all_healthy": (_cards(github="healthy", slack="healthy"), "All Systems Healthy", "healthy"),
-    "two_failing": (_cards(github="failed", slack="failed"), "Multiple Issues", "unhealthy"),
-    "one_failing": (_cards(github="failed", slack="healthy"), "Needs attention", "degraded"),
+    "all_healthy": (_cards(github="healthy", calendar="healthy"), "All Systems Healthy", "healthy"),
+    "two_failing": (_cards(github="failed", calendar="failed"), "Multiple Issues", "unhealthy"),
+    "one_failing": (_cards(github="failed", calendar="healthy"), "Needs attention", "degraded"),
     "two_amber_not_multiple": (
-        _cards(github="degraded", slack="degraded"),
+        _cards(github="degraded", calendar="degraded"),
         "Needs attention",
         "degraded",
     ),
@@ -65,7 +65,7 @@ def test_rule(case):
 def test_count_line_uses_connected_only():
     _, _, summary, working, connected = summarize_integrations(_cards(github="degraded"))
     assert summary == "0 of 1 checked integrations working"
-    _, _, summary, _, _ = summarize_integrations(_cards(github="healthy", slack="degraded"))
+    _, _, summary, _, _ = summarize_integrations(_cards(github="healthy", calendar="degraded"))
     assert summary == "1 of 2 checked integrations working"
 
 

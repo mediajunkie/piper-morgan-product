@@ -33,10 +33,7 @@ async def test_github_health_healthy_when_oauth_leg_serves():
     assert (
         status.status == "connected"
     )  # #2075: a bound grant with no recorded check claims no health
-    assert (
-        status.status_message
-        == "Connected as octocat. Not the right account? Disconnect, then connect again."
-    )
+    assert status.status_message == "Connected as octocat."
 
 
 @pytest.mark.asyncio
