@@ -319,6 +319,16 @@ If the second command lists a session log, it was staged in the wrong place: `mv
 
 **Why this is Shape B not Shape A**: the row-append is a separate step (not folded into the omnibus write) so retrospective backfills (e.g., a multi-day catch-up) use the same code path as single-day updates. Janus's stated preference; Docs's pick-disposition (memo to Janus 2026-05-12). The architectural separation also means activity-log updates can run ad-hoc (without an omnibus) when useful.
 
+### Step 10.6: Check the rows landed (added 2026-11-28)
+
+Before the report, prove Step 10.5 ran: the newest `date` in the CSV must equal the omnibus date.
+
+```bash
+tail -1 docs/internal/operations/agent-activity-log.csv | cut -d, -f1
+```
+
+If it prints an older date, the rows were skipped. Run Step 10.5 now, or name the blocker in the log. The 10-31 to 11-27 gap went unseen for 28 days because nothing read this value.
+
 ### Step 11: Report to PM
 
 ```
