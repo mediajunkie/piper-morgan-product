@@ -12,6 +12,7 @@
 1. Retitle the rollup h1 to Saturday (rollup v1200, `719UZ4h1NELjEwWZbDCceT`, source `dev/active/exec-attention-rollup-current.html`). xian's format rule (11-27): only current and actionable items at the top; finished items come off (they're logged) or go below everything that needs him.
 2. Sprint 3 day 2 (11-27 to 12-10; theme "Signed In"; top priority is opening invitations). Weekends are prime time, so don't treat Saturday as quiet.
 3. Chase the 11-27 closes still open at 22:01: CIO, Docs. Chase only if they're still open.
+3b. Eight v3 memos from 11-20 to 11-25 (Janus, Pard) still sit in `mailboxes/exec/inbox/`. For each, check the log shows it was handled, then file it to read/ one at a time with mv plus mail-send.sh. Never bulk-move: a file in read/ is a claim it was handled.
 4. Expect replies to 01M8GBR9581CCEYR44VE9JGY6Y: Lead (why beta uses the Alpha Google project, and what self-hosting needs today), PPM (placing the one-project move in sprint 3 or 4, and the self-hosted tester against the invite goal), Arch (owner-first details), HOST (the first-cohort note text, and who it goes to). Bring them to xian. PA owes "what do you think of your name" (01M8GBRBW0JCFT3ZV21WR6YEKQ).
 
 ## xian's sitting (paused, resume where he is)
