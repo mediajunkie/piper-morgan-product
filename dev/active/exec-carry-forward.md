@@ -11,6 +11,9 @@
 ## Routing today (xian, 11-28, via Janus)
 "If the Piper team needs me for other things today they can relay > exec > janus > me." Piper asks for xian go to Janus (designinproduct docs/mail/), not to him. Sent today's list 11-28 (ae767ed0c4): cohort note words, Test All press (2475 rows 1 and 2), Step G when he opens a session. His Saturday: blog post with Comms, then Rebel, Tally, his novel.
 
+## Cohort note (approved 11-28, waits on the hold lift)
+xian: "HOST's line is approved." xian sends it from his mailbox; HOST gives the text and the recipients. It goes after PPM's lift memo and his go (PDR-008 s3; 2342 and 2282 are open). At the lift, if Step G has not served the Disconnect read, bring him HOST's and CXO's recommendation: send without the "as the code is written" sentence (01M8HM385K, 01M8HMA2BX). PPM amends PDR-008 3.3 ("HOST sends them").
+
 ## Sat 11-28 START, in order
 1. Retitle the rollup h1 to Saturday (rollup v1200, `719UZ4h1NELjEwWZbDCceT`, source `dev/active/exec-attention-rollup-current.html`). xian's format rule (11-27): only current and actionable items at the top; finished items come off (they're logged) or go below everything that needs him.
 2. Sprint 3 day 2 (11-27 to 12-10; theme "Signed In"; top priority is opening invitations). Weekends are prime time, so don't treat Saturday as quiet.
