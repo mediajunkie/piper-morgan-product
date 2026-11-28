@@ -1,7 +1,7 @@
 ---
-image: ''
-alt: ''
-caption: ''
+image: 'test-the-page-you-draw-finding-the-hidden-elevator-button.jpg'
+alt: 'A woman searches the blank wall beside closed elevator doors while a translucent attendant points to a small call button just around the corner.'
+caption: '"See, there is a button!"'
 ---
 
 # Mark One Eyeball
