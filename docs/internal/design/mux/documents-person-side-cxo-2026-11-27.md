@@ -26,3 +26,34 @@
 ## What I would bring served
 
 Nothing new is served for this. If useful in the room, two quotes from a seat: a `.docx` upload and summary before 2443 lands, and a long PDF's summary before 2444 lands, so the discussion has the person's actual screen, not the code. Web would run them; I judge the words.
+
+## The person's steps, and what each one says today (added 2026-11-28)
+
+The path a person walks with a file, in order. Each row: what they do, what they expect Piper to do, what it does today (Arch's map), and the one sentence that must be true. A row marked **words open** has no sentence I would sign yet.
+
+| # | They do | They expect | Today | The sentence must say |
+|---|---|---|---|---|
+| 1 | Upload a file | Piper has it and tells them so | Stored; accepted types are one list, `.docx` accepted but not read (2443) | The file's name and that it is saved. Never "indexed", never "searchable" |
+| 2 | Ask for a summary, by name | A summary of the whole file | First 3,000 characters (2444) | What part it read, in the summary's own first sentence (2444's disclosure) |
+| 3 | Ask about the file without naming it ("what did my pricing doc say") | Piper finds it | No search over uploads | That it can't look across files yet, and that naming one works. **Words open** until xian rules Q2 |
+| 4 | Say "search my documents" | Their files searched | Searches Notion only | Which place it searched, always; when Notion isn't connected, that it did not search uploaded files (Q6) |
+| 5 | Add the file to a project ("add this to Launch") | The project shows it | No file-to-project link | A true refusal until Q3 is ruled; after a yes, one confirm line naming file and project. **Words open** |
+| 6 | Come back tomorrow | The file is still there | Stored per account; the index emptied at deploy until 2244 (served 11-26) | Nothing, unless asked; then "saved on your account" and no more (PDR-102: no ownership or backup claim) |
+| 7 | Delete the file | It is gone, and Piper no longer uses it | Not read for this page | Unchecked: a delete line is claimed only after a seat read. **Words open** |
+
+Rows 3, 5 and 7 are the three where a person's belief outruns the build today. Rows 1, 2, 4 and 6 are covered by in-hand work (2443, 2444, Q6 wording) and need only the served reads below.
+
+## Seat reads requested (Web), for the 12-01 room
+
+1. A `.docx` upload on a seat account, then "summarize it": the whole reply quoted.
+2. A long PDF (over 3,000 characters, ideally several pages), then "summarize it": the whole reply quoted, and whether it says what part it read.
+3. Row 7: delete the uploaded file, then ask for it by name: both replies quoted.
+
+I judge the words on the quotes; Web runs them. Nothing here is built or ruled by this page.
+
+## Served on 11-28 (Web 01M8H9J72V, seat-tester-1, beta; judged in 01M8H9Z1PP)
+
+- Row 1/2, .docx: the upload dialog allows Word (.docx); "summarize it" returned the refusal split into two bullets under a summary heading. Fails.
+- Row 2, long PDF (8 sections, 7,486 characters): the summary covered sections 1 to 3, said "I read 'harbor-report.pdf' from your files" and "across three sections", and never said it read only the start. It also repeated itself. Fails the 2444 bar.
+- Which-file question with two files: asked which, listed both. Passes.
+- Row 7, delete then ask by name: "I didn't find 'harbor-report.pdf' in your uploads. Paste the text here and I'll work with it." Passes. The Remove dialog doesn't name the file; "can't be undone" awaits Lead's confirmation.
