@@ -2057,7 +2057,7 @@ issue	state	milestone	sprint	title	labels	blocked_by	state_reason
 2258	CLOSED	Production		[UX] "What changed since yesterday?" can answer with an internal label: "Actions (2): consequential: 2"	UX		COMPLETED
 2259	CLOSED	Production		Account Settings doesn't show the account's email, though the allowlist script and support flows ask people for it			COMPLETED
 2260	OPEN	Production		DUE REMINDERS block gives every reminder with the same text the last row's age (ages keyed by text, not per row): 'all 1 day overdue' for reminders 10 days old	bug		
-2261	OPEN	Production		GitHub connect requests the classic `repo` scope (full read/write on every repo the login reaches); narrow it per ADR-081 D3, or to the narrowest classic scope on the OAuth-App fallback	P0-critical,component: integration,github		
+2261	CLOSED	Production		GitHub connect requests the classic `repo` scope (full read/write on every repo the login reaches); narrow it per ADR-081 D3, or to the narrowest classic scope on the OAuth-App fallback	P0-critical,component: integration,github		COMPLETED
 2262	CLOSED	Production		#1680 gap: Notion writes (chat update_document append_blocks, standup create_page) are not consequential sites	component: integration		COMPLETED
 2264	OPEN	Ongoing		A Postgres data directory (data/postgres, 2,119 files, 88 MB) is tracked in this public repo and copied into every Docker image	bug		
 2265	CLOSED	Production		[UX] 'What did we accomplish yesterday?' reads the last 24 hours but says 'since yesterday'	UX		COMPLETED
@@ -2243,7 +2243,7 @@ issue	state	milestone	sprint	title	labels	blocked_by	state_reason
 2458	CLOSED	Production		Connected status read names no repository: context says github_repo_unconfigured on an account with a stored default repo; 'high priority' claim untraced (Path A)			COMPLETED
 2459	CLOSED	Production		Read-side said-instead: the offered 'pull up the full details' next step shows nothing and asks to confirm (clarification_needed); no fetch made (Path A turn 2)			COMPLETED
 2457	OPEN	Production		Two Piper accounts can bind one GitHub login; a Disconnect on either silently ends the other's GitHub			
-2460	OPEN	Production		Issue writes read a digit in a field value as the issue number ('rename it to Test issue 2' targets #2)			
+2460	CLOSED	Production		Issue writes read a digit in a field value as the issue number ('rename it to Test issue 2' targets #2)			COMPLETED
 2461	OPEN	Production		'add a task to the <project> project' stays CLARIFY, even with the person's project names in a consult (the 'the' half of 2425)			
 2462	OPEN	Production		Router: 'update project plan with new deadline' is CLARIFY 7 of 7 on main today, update_document 6 of 6 on 11-23, with no router commits between			
 2463	OPEN	Production		[UX] Status reply calls the account "pretty quiet" and the issue "the only open item" after reading only issues	UX		

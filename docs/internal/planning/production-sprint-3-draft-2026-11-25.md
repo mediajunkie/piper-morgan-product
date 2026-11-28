@@ -11,6 +11,7 @@
 ## What sprint 2 leaves
 
 - **Score as it stands on 11-25:** Paths A and B served on a fresh test account: 0 of 2 (no fresh account has been minted). Invite-hold P0s closed: 0 of 3 (#2261, #2282, #2342 open).
+- **Score as it stands on 11-27 (PPM, 17:19, read from `gh`):** Paths A and B served: **2 of 2** (A at 13:44 on `e5d3eecce3`, B at 14:44 on `424ea62f12`, with 2467 named). Invite-hold P0s closed: **1 of 3** (2261 closed, served on `305499bbfb`; 2282 and 2342 open, waiting on xian's sitting).
 - **Why:** both counts sit behind the same three things. Step F (HOST's owner line; xian's F.4 GitHub connect in the seat browser), the fresh test account (xian's go-ahead via Exec), and 2282 box 4 (one served read). The build work on Lead's side is largely done and on beta.
 - **So the honest sprint 3 is mostly a finishing sprint:** the same score, with its blockers taken one at a time, and a small build lane that doesn't wait on them.
 
