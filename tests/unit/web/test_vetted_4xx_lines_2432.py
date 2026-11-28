@@ -416,7 +416,9 @@ COMPUTED = [
     (
         "web.api.routes.files",
         "FILE_KIND_NOT_USABLE_LINE",
-        "I can't use that kind of file. Allowed: .docx, .json, .md, .pdf, .txt.",
+        # Issue 2443 (CXO 2026-11-27): built from the one readable-types table.
+        "Piper can't read that kind of file. "
+        "It can read .csv, .docx, .json, .log, .md, .pdf and .txt files.",
     ),
     (
         "services.integrations.integration_status_service",

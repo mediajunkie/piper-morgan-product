@@ -124,10 +124,12 @@ class TestUploadBranchReturnsRealFindings:
                 file_id=_FILE_ID, user_id=_OWNER
             )
 
-        assert any("not supported" in f for f in result["key_findings"])
-        assert any("re-upload" in r for r in result["recommendations"])
-        # Neither field is the other, and neither was dropped.
-        assert result["key_findings"] != result["recommendations"]
+        # Issue 2443 (CXO, PPM 11-28) replaced this path's finding and recommendation,
+        # which typed a list of readable types by hand, with one sentence built from
+        # the readable-types table. The result is marked so no reply dresses it up.
+        assert result["summary"].startswith("Piper can't read .zip files. It can read ")
+        assert result["refusal"] is True
+        assert result["key_findings"] == [] and result["recommendations"] == []
 
     @pytest.mark.asyncio
     async def test_artifact_branch_has_the_same_response_shape(self):
