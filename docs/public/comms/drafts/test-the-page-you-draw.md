@@ -30,13 +30,16 @@ From a plumbing point of view, the link existed and there was indeed a way to ma
 
 My design agent (CXO) specified how to move the entry from a link to a card (with options "Manage repositories" and "Add another repository"), and Lead implemented the fix that evening. 
 
-# 
+# Can agents understand "gestalt"?
+
 The team also added a "drawn-card" test in which the page is rendered and examined in its final HTML form vs parsed as pure source text, to more closely notice what my experience will be.
 
-This is good and will likely reduce the number of things that need attention, but it will never substitute for my mark one eyeball.
+This is good and will likely reduce the number of things that need attention, but as far as I can tell thus far, it will never substitute for my mark one eyeball.
 
 ---
 
-*Next on Building Piper Morgan: [TEASE: Thu 12-03 "Ready or Not" (tentative, arc 2: the release decision, late October). Needs your final title before this goes to Docs.]*
+*Next on Building Piper Morgan, we resume the building narrative in late October of this year with "Ready or Not" in which I try to anticipate if we are on track to meet the MVP milestone, close the alpha testing period, and launch the beta*.
 
-*[Reader question, yours to write. A start: "When your tests last passed, what were they actually looking at?"]*
+[Comms: title is final]
+
+*Do you ever put off reviewing work that needs your final approval, for fear of what you might find? Do you have to wait until you are in the right frame of mind to really be attentive and notice things vs. wearily sign off on them? How do you manage the balance of delegating while upholding you own standards.*
