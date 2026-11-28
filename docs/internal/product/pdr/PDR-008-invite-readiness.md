@@ -2,7 +2,7 @@
 
 **Status**: ✅ **Accepted 2026-11-07.** xian approved P1, P2 and P3 as drafted, by 08:03 (Exec relay 08:04, recorded in decisions.log). Draft v1 was PPM's, 06:35. Sections 1 to 3 restate earlier rulings. Section 4's three proposals are now rules, and HOST owns P2's same-hour hold.
 **Author**: PPM
-**Stakeholders**: xian (decides), Exec (relays), Arch (tenancy reads), CXO (what a tester sees), HOST (sends invitations), Lead (builds)
+**Stakeholders**: xian (decides), Exec (relays), Arch (tenancy reads), CXO (what a tester sees), HOST (invitation text, recipient list and custody record; xian sends), Lead (builds)
 **Source rulings**: xian 11-04 19:31 (no invitations of any kind until the tenancy P0s land); xian 11-05 10:47 (#2283 P0, #2282 yes, both before the first invite); the 11-06 goals (goal 1: lift the hold, then the cohort note and the next invitations on his word). All are in `docs/internal/architecture/decisions/decisions.log`.
 
 ---
@@ -38,7 +38,7 @@ The status comes from `gh issue view` on each issue, read at 06:34.
 
 1. When every row in section 2 is met, PPM sends Exec one lift-readiness memo. Each row in it carries `Verified how:`, the layer that was checked, and the host it ran on.
 2. xian says go. Silence isn't a go.
-3. The cohort note goes first, then the next invitations, each on xian's word. HOST sends them.
+3. The cohort note goes first, then the next invitations, each on xian's word. xian sends them from his own mailbox. HOST supplies the final text and the recipient list from the private roster, and records the send afterwards (when, and a count by role, with no names). *(Amended 2026-11-28 09:51 by PPM on Exec's note, 01M8HM9Z6N: the earlier "HOST sends them" didn't match practice. Sends to outside people are xian's hand, per HOST 01M8HM385K.)*
 
 ## 4. Rules added by this PDR (xian yes, 2026-11-07)
 

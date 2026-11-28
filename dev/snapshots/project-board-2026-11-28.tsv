@@ -2258,4 +2258,4 @@ issue	state	milestone	sprint	title	labels	blocked_by	state_reason
 2472	OPEN	Production		deploy_mcp dispatch hangs in the flyctl deploy step (two runs, 11-27); no timeout bounds it			
 2473	OPEN	Production		Google: Piper uses two Cloud projects (beta's Calendar on 'Piper Morgan (Alpha)', other work on 'Piper Morgan'); consolidate on one without reopening Google verification			
 2474	OPEN	Production		Self-hosted copy: the first account skips the invite code and is the admin, behind an explicit setting the hosted service refuses (Arch's owner-first ruling)			
-2475	OPEN	Production		Integrations page: Test All fails while each card's Test passes; header counts the out-of-beta Slack; GitHub card wordy			
+2475	CLOSED	Production		Integrations page: Test All fails while each card's Test passes; header counts the out-of-beta Slack; GitHub card wordy			COMPLETED
