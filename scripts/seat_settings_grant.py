@@ -26,8 +26,9 @@ worktree (tested 2026-11-15 with a dummy ``.env`` against the fleet's ``Read(**/
 form did NOT stop a Read of a file outside the worktree, so it does not protect one seat's file
 from another seat. ``fleet-deny`` adds home-path denies to the settings file all PM seats
 share, to close that: the two worktree paths (form tested at Step A, 2026-11-20, three Reads refused)
-and, since 2026-11-22, the ``~/.piper-shared`` credential, token and secret names (form untested in
-the shared file until a seat's Read of a file inside a browser profile folder is refused). Running it
+since 2026-11-22, the ``~/.piper-shared`` credential, token and secret names (refusals read 11-26), and
+since 2026-11-27, Bash denies for every ``fly`` and ``flyctl`` command (ADR-084: no seat runs ``fly``;
+form untested until a seat's ``fly version`` is refused). Running it
 again adds only the rules not yet there, keeps the first ``.before-fleet-deny`` copy, and writes a
 copy of its own (``.before-fleet-deny.<YYYYMMDD-HHMMSS>``), so the undo it prints reverts that run only.
 
@@ -35,7 +36,8 @@ A seat checks that the key reached its session with no file read at all:
 
     scripts/seat_settings_grant.py check-env --name PIPER_SEAT_ANTHROPIC_KEY
 
-Nothing here removes or loosens a deny. ``add-allow`` adds one exact ``Bash(...)`` rule and refuses a
+Nothing here removes or loosens a deny. ``fleet-deny`` removes only the exact allows in
+``RETIRED_ALLOWS``, each one already dead under a fleet deny. ``add-allow`` adds one exact ``Bash(...)`` rule and refuses a
 wildcard or any other tool. ``check-env`` reads ``PIPER_SEAT_`` names only.
 
 Owner:   CIO
@@ -71,6 +73,32 @@ SHARED_SETTINGS = Path.home() / ".claude-pm" / "settings.json"
 # refused, while CIO's seat was refused on the same file. A deny that lives only in a seat's own
 # git-ignored settings is missing from any seat nobody set it in. Here they cover every PM seat.
 # They match a file or a folder by name, and the `/**` forms cover what is inside a matched folder.
+
+# No seat runs `fly` (ADR-084 line 22; production reads and secret changes are xian's). Until
+# 2026-11-27 nothing on a seat enforced it: PA's seat ran `fly releases` and `fly status` against the
+# MCP app while `fly secrets list` was refused (HOST 01M8FZGA3P, Exec 01M8G038V2). These deny every
+# `fly` and `flyctl` command a seat types, by the bare name, the Homebrew path (`command -v` on Amber,
+# 11-27: /opt/homebrew/bin/fly and flyctl; there is no ~/.fly/bin), the `env` and `command`
+# prefixes, and a leading `FLY_…=` assignment (the shape a token would arrive in, HOST 01M8G0GFRB). A deny matches what a seat types, not what a script runs inside it
+# (Pard, 10-13): Pard's cycle-check arm and the GitHub Actions jobs are not affected. Not covered:
+# an assignment to any other variable (`X=1 fly ...`), or a path other than Homebrew's; those are the
+# classifier's. There
+# is no `*/fly *` form: a leading `*` matches inside any command, so a grep or a log heredoc that
+# mentions `bin/fly ` would be refused.
+FLY_DENIES = tuple(
+    f"Bash({form})"
+    for name in ("fly", "flyctl")
+    for form in (
+        name,
+        f"{name} *",
+        f"/opt/homebrew/bin/{name}",
+        f"/opt/homebrew/bin/{name} *",
+        f"env {name} *",
+        f"env * {name} *",
+        f"command {name} *",
+        f"FLY_* {name} *",
+    )
+)
 FLEET_DENIES = (
     "Read(~/Development/piper-morgan-worktrees/*/.claude/settings.local.json)",
     "Read(~/Development/piper-morgan-worktrees/*/.env)",
@@ -80,6 +108,15 @@ FLEET_DENIES = (
     "Read(~/.piper-shared/*token*/**)",
     "Read(~/.piper-shared/*secret*)",
     "Read(~/.piper-shared/*secret*/**)",
+    *FLY_DENIES,
+)
+# Allows in the shared file that a fleet deny has made dead, removed by ``fleet-deny`` so the file
+# does not carry a grant nobody can use (Arch 01M8G0QQYT, 2026-11-27). Exact strings only: removing
+# one can only take access away. The live-set read below let every PM seat print a production
+# secret's value; ADR-084 makes that xian's, and Arch's rulings read the deletion gate's mirror
+# (`CURRENT_LIVE_CATEGORIES`) instead.
+RETIRED_ALLOWS = (
+    "Bash(fly ssh console -a piper-morgan -C 'printenv PIPER_INVERSION_LIVE_CATEGORIES')",
 )
 NAME_RE = re.compile(r"^PIPER_SEAT_[A-Z0-9_]+$")
 SEAT_RE = re.compile(r"^[a-z][a-z0-9-]*$")
@@ -134,13 +171,21 @@ def fleet_deny(path: Path) -> list[str]:
 
 def fleet_deny_run(path: Path) -> tuple[list[str], Path | None]:
     """``fleet_deny``, also returning the copy that undoes this run alone (None when nothing was added)."""
+    added, _retired, backup = fleet_deny_change(path)
+    return added, backup
+
+
+def fleet_deny_change(path: Path) -> tuple[list[str], list[str], Path | None]:
+    """Add the fleet denies and drop the retired allows. Returns (added, retired, undo copy)."""
     if not path.exists():
         raise SystemExit(f"{path} does not exist; nothing was changed")
     data = load(path)
-    deny = data.setdefault("permissions", {}).setdefault("deny", [])
+    perms = data.setdefault("permissions", {})
+    deny = perms.setdefault("deny", [])
     added = [rule for rule in FLEET_DENIES if rule not in deny]
+    retired = [rule for rule in perms.get("allow", []) if rule in RETIRED_ALLOWS]
     backup = None
-    if added:
+    if added or retired:
         # Arch, 2026-11-15: this rewrites the one file every seat's session depends on, so keep the
         # file as it was beside it. The undo is then one `mv`. An earlier copy is never overwritten:
         # the first one is the true "before". Arch, 2026-11-22: a later run keeps its own copy too,
@@ -155,8 +200,10 @@ def fleet_deny_run(path: Path) -> tuple[list[str], Path | None]:
                 backup = path.with_name(f"{path.name}.before-fleet-deny.{stamp}-{n}")
         shutil.copy2(path, backup)
         deny.extend(added)
+        if retired:
+            perms["allow"] = [rule for rule in perms["allow"] if rule not in RETIRED_ALLOWS]
         save(path, data, mode=stat.S_IMODE(path.stat().st_mode))  # the shared file keeps its mode
-    return added, backup
+    return added, retired, backup
 
 
 def add_key(data: dict, name: str, value: str) -> dict:
@@ -245,7 +292,7 @@ def grant_key(seat: str, name: str, root: Path, shared: Path) -> int:
     print("1 of 4. The shared settings file (every PM seat reads it).")
     added, backup = fleet_deny_run(shared)
     print(
-        f"   added {len(added)} Read deny rule(s); {len(FLEET_DENIES) - len(added)} were already there."
+        f"   added {len(added)} deny rule(s); {len(FLEET_DENIES) - len(added)} were already there."
     )
     if added:
         print(f"   the file as it was is kept at: {backup}")
@@ -330,17 +377,20 @@ def main(argv: list[str] | None = None) -> int:
         return grant_key(args.seat, args.name, args.root, args.shared_settings)
 
     if args.cmd == "fleet-deny":
-        added, backup = fleet_deny_run(args.shared_settings)
+        added, retired, backup = fleet_deny_change(args.shared_settings)
         print(f"shared settings: {args.shared_settings}")
-        if added:
+        if backup:
             print(f"the file as it was before this run is kept at: {backup}")
             print(f"to undo: mv '{backup}' '{args.shared_settings}'")
         print(
-            f"added {len(added)} deny rule(s); {len(FLEET_DENIES) - len(added)} were already there. No allow, env or other rule was changed."
+            f"added {len(added)} deny rule(s); {len(FLEET_DENIES) - len(added)} were already there."
+            f" removed {len(retired)} retired allow rule(s). No other allow, env or rule was changed."
         )
         print(
             "Next: one seat tries to Read ANOTHER seat's settings file by its full path, and Web tries to Read"
             " a file inside ~/.piper-shared/seat-browser-credential-profile-web. Both should be refused."
+            " For the fly denies: a seat types `fly version`, then `/opt/homebrew/bin/flyctl version`;"
+            " both should be refused before they run."
         )
         return 0
 
