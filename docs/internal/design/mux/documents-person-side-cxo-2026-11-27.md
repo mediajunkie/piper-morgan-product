@@ -50,3 +50,10 @@ Rows 3, 5 and 7 are the three where a person's belief outruns the build today. R
 3. Row 7: delete the uploaded file, then ask for it by name: both replies quoted.
 
 I judge the words on the quotes; Web runs them. Nothing here is built or ruled by this page.
+
+## Served on 11-28 (Web 01M8H9J72V, seat-tester-1, beta; judged in 01M8H9Z1PP)
+
+- Row 1/2, .docx: the upload dialog allows Word (.docx); "summarize it" returned the refusal split into two bullets under a summary heading. Fails.
+- Row 2, long PDF (8 sections, 7,486 characters): the summary covered sections 1 to 3, said "I read 'harbor-report.pdf' from your files" and "across three sections", and never said it read only the start. It also repeated itself. Fails the 2444 bar.
+- Which-file question with two files: asked which, listed both. Passes.
+- Row 7, delete then ask by name: "I didn't find 'harbor-report.pdf' in your uploads. Paste the text here and I'll work with it." Passes. The Remove dialog doesn't name the file; "can't be undone" awaits Lead's confirmation.
