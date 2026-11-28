@@ -152,7 +152,7 @@ def test_health_json_per_state(client):
     oauth = _github_json(client, "oauth")
     assert (oauth["status"], oauth["status_message"]) == (
         "connected",  # #2075: a bound grant with no recorded check claims no health
-        "Connected as octocat. Not the right account? Disconnect, then connect again.",
+        "Connected as octocat.",
     )
     pat = _github_json(client, "pat_stale")
     assert (pat["status_icon"], pat["status_message"], pat["status_detail"]) == (
@@ -183,7 +183,7 @@ def test_health_json_per_state(client):
 @needs_node
 def test_rendered_connected_card(client, body):
     html = _render(body, _github_json(client, "oauth"))
-    assert "Connected as octocat. Not the right account? Disconnect, then connect again." in html
+    assert "Connected as octocat." in html
     assert 'id="test-btn-github"' in html and "disabled" not in html
     assert 'id="reconnect-btn-github"' not in html
     # #2375: this card's third button is the way to the repository page, not "Settings".
@@ -207,7 +207,7 @@ def test_rendered_connected_card_with_a_recorded_check_keeps_the_leg_sentence(cl
     github["status"] = "healthy"
     github["last_check"] = datetime.now(timezone.utc).isoformat()
     html = _render(body, github)
-    assert "Connected as octocat. Not the right account? Disconnect, then connect again." in html
+    assert "Connected as octocat." in html
     assert "Checked just now." in html
     assert "Healthy." not in html
     assert 'id="reconnect-btn-github"' not in html and "⚠️" not in html

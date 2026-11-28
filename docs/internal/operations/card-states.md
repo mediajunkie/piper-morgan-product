@@ -350,6 +350,8 @@ State key: `github-app-failed-markup`
 | button | Disconnect | disconnect-btn | `disconnectAPIKeyIntegration()` |
 | link | Manage repositories | configure-btn | `/settings/integrations/github#repositories` |
 
+- Hover text on Disconnect: Not the right account? Disconnect, then connect again.
+
 ## GitHub: connected through the GitHub app, installed on no repository
 
 State key: `github-app-none`
@@ -358,7 +360,7 @@ State key: `github-app-none`
 
 - 🐙
 - GitHub
-- Connected as octo-example. Not the right account? Disconnect, then connect again.
+- Connected as octo-example.
 - Not checked yet. Press Test.
 
 | Control | Label | Style | Goes to |
@@ -366,6 +368,8 @@ State key: `github-app-none`
 | button | Test | test-btn | `testConnection()` |
 | button | Disconnect | disconnect-btn | `disconnectAPIKeyIntegration()` |
 | link | Install the GitHub app | connect-btn | `/settings/integrations/github#repositories` |
+
+- Hover text on Disconnect: Not the right account? Disconnect, then connect again.
 
 ## GitHub: connected through the GitHub app, installed on a repository
 
@@ -375,7 +379,7 @@ State key: `github-app-some`
 
 - 🐙
 - GitHub
-- Connected as octo-example. Not the right account? Disconnect, then connect again.
+- Connected as octo-example.
 - Not checked yet. Press Test.
 
 | Control | Label | Style | Goes to |
@@ -383,6 +387,8 @@ State key: `github-app-some`
 | button | Test | test-btn | `testConnection()` |
 | button | Disconnect | disconnect-btn | `disconnectAPIKeyIntegration()` |
 | link | Manage repositories | configure-btn | `/settings/integrations/github#repositories` |
+
+- Hover text on Disconnect: Not the right account? Disconnect, then connect again.
 
 ## GitHub: connected through the GitHub app, install check did not answer
 
@@ -392,7 +398,7 @@ State key: `github-app-unknown`
 
 - 🐙
 - GitHub
-- Connected as octo-example. Not the right account? Disconnect, then connect again.
+- Connected as octo-example.
 - Not checked yet. Press Test.
 
 | Control | Label | Style | Goes to |
@@ -400,6 +406,8 @@ State key: `github-app-unknown`
 | button | Test | test-btn | `testConnection()` |
 | button | Disconnect | disconnect-btn | `disconnectAPIKeyIntegration()` |
 | link | Repositories | configure-btn | `/settings/integrations/github#repositories` |
+
+- Hover text on Disconnect: Not the right account? Disconnect, then connect again.
 
 ## GitHub: connected through the GitHub app, the account's login could not be read
 
@@ -418,6 +426,8 @@ State key: `github-app-login-unreadable`
 | button | Disconnect | disconnect-btn | `disconnectAPIKeyIntegration()` |
 | link | Manage repositories | configure-btn | `/settings/integrations/github#repositories` |
 
+- Hover text on Disconnect: Not the right account? Disconnect, then connect again.
+
 ## GitHub: connected through the GitHub app, Test passed just now
 
 State key: `github-app-healthy`
@@ -426,13 +436,15 @@ State key: `github-app-healthy`
 
 - 🐙
 - GitHub
-- Connected as octo-example. Not the right account? Disconnect, then connect again. Checked just now.
+- Connected as octo-example. Checked just now.
 
 | Control | Label | Style | Goes to |
 |---|---|---|---|
 | button | Test | test-btn | `testConnection()` |
 | button | Disconnect | disconnect-btn | `disconnectAPIKeyIntegration()` |
 | link | Manage repositories | configure-btn | `/settings/integrations/github#repositories` |
+
+- Hover text on Disconnect: Not the right account? Disconnect, then connect again.
 
 ## GitHub: connected through the GitHub app, Test failed just now (the error text is a sample)
 
@@ -451,6 +463,8 @@ State key: `github-app-failed`
 | button | Disconnect | disconnect-btn | `disconnectAPIKeyIntegration()` |
 | link | Manage repositories | configure-btn | `/settings/integrations/github#repositories` |
 
+- Hover text on Disconnect: Not the right account? Disconnect, then connect again.
+
 ## GitHub: connected by sign-in without the app (an older connection)
 
 State key: `github-oauth-classic`
@@ -459,7 +473,7 @@ State key: `github-oauth-classic`
 
 - 🐙
 - GitHub
-- Connected as octo-example. Not the right account? Disconnect, then connect again.
+- Connected as octo-example.
 - Not checked yet. Press Test.
 
 | Control | Label | Style | Goes to |
@@ -467,6 +481,8 @@ State key: `github-oauth-classic`
 | button | Test | test-btn | `testConnection()` |
 | button | Disconnect | disconnect-btn | `disconnectAPIKeyIntegration()` |
 | link | Repositories | configure-btn | `/settings/integrations/github#repositories` |
+
+- Hover text on Disconnect: Not the right account? Disconnect, then connect again.
 
 ## GitHub: a saved token is serving; the sign-in needs re-authorizing
 
@@ -547,7 +563,7 @@ No button or link.
 
 State key: `not-offered-connected`
 
-Headline: **Connected, not yet tested** (0 of 4 checked)
+Headline: **Nothing connected yet**
 
 ### github
 
@@ -608,7 +624,7 @@ State key: `test-app-installed`
 - The card after the page redraws it:
   - 🐙
   - GitHub
-  - Connected as octo-example. Not the right account? Disconnect, then connect again. Checked just now.
+  - Connected as octo-example. Checked just now.
 - The click's line is on the redrawn card: **no**
 
 ## Test: Through the GitHub app, installed on no repository
@@ -620,7 +636,7 @@ State key: `test-app-not-installed`
 - The card after the page redraws it:
   - 🐙
   - GitHub
-  - Connected as octo-example. Not the right account? Disconnect, then connect again. Checked just now.
+  - Connected as octo-example. Checked just now.
 - The click's line is on the redrawn card: **no**
 
 ## Test: With a saved token
@@ -962,6 +978,7 @@ puts each result's line on its card, then redraws the page from the health route
 State key: `test-all-pass`
 
 - Toast (success): **All Tests Passed**. 4 of 4 connections successful
+- Header after the page redraws it: **All Systems Healthy**. 4 of 4 connected integrations working
 
 ### github
 
@@ -1004,6 +1021,7 @@ State key: `test-all-pass`
 State key: `test-all-mixed`
 
 - Toast (warning): **Some Tests Failed**. 1 of 3 connections successful, 1 not connected
+- Header after the page redraws it: **Needs attention**. 1 of 2 checked integrations working, 1 not yet tested
 
 ### github
 
@@ -1047,6 +1065,7 @@ State key: `test-all-mixed`
 State key: `test-all-nothing`
 
 - Toast (info): **Nothing to test yet**. Connect an integration first.
+- Header after the page redraws it: **Nothing connected yet**. 
 
 ### github
 
@@ -1074,6 +1093,92 @@ State key: `test-all-nothing`
   - Slack
   - Not connected
 - The click's line is on the redrawn card: **no**
+
+### calendar
+
+- At the click, the card's line: Google Calendar isn't connected for your account. [error style]
+- The card after the page redraws it:
+  - 📅
+  - Google Calendar
+  - Not connected
+- The click's line is on the redrawn card: **no**
+
+## Test All: This beta's two services connected and passing, with a Slack connection left over whose last Test failed
+
+State key: `test-all-beta-pass`
+
+- Toast (success): **All Tests Passed**. 2 of 2 connections successful
+- Header after the page redraws it: **All Systems Healthy**. 2 of 2 connected integrations working
+
+### github
+
+- At the click, the card's line: GitHub is working, using your GitHub connection.
+- The card after the page redraws it:
+  - 🐙
+  - GitHub
+  - Connected as octo-example. Checked just now.
+- The click's line is on the redrawn card: **no**
+
+### notion
+
+- At the click: this card has no status line, and Test All leaves it alone.
+- The card after the page redraws it:
+  - 📝
+  - Notion
+  - Not in this beta
+  - Notion isn't available in this beta yet.
+
+### slack
+
+- At the click: this card has no status line, and Test All leaves it alone.
+- The card after the page redraws it:
+  - 💬
+  - Slack
+  - Not in this beta
+  - You connected Slack earlier. Piper still holds that connection. Disconnect to remove it.
+
+### calendar
+
+- At the click, the card's line: Google Calendar connection successful
+- The card after the page redraws it:
+  - 📅
+  - Google Calendar
+  - Healthy. Checked just now.
+- The click's line is on the redrawn card: **no**
+
+## Test All: This beta's two services, nothing connected
+
+State key: `test-all-beta-nothing`
+
+- Toast (info): **Nothing to test yet**. Connect an integration first.
+- Header after the page redraws it: **Nothing connected yet**. 
+
+### github
+
+- At the click, the card's line: GitHub isn't connected for your account. [error style]
+- The card after the page redraws it:
+  - 🐙
+  - GitHub
+  - Not connected
+- The click's line is on the redrawn card: **no**
+
+### notion
+
+- At the click: this card has no status line, and Test All leaves it alone.
+- The card after the page redraws it:
+  - 📝
+  - Notion
+  - Not in this beta
+  - Notion isn't available in this beta yet.
+
+### slack
+
+- At the click: this card has no status line, and Test All leaves it alone.
+- The card after the page redraws it:
+  - 💬
+  - Slack
+  - Not in this beta
+  - Slack isn't available in this beta yet.
 
 ### calendar
 
@@ -1162,6 +1267,8 @@ State key: `dialogs-github-app`
 - Title: **Disconnect GitHub?**
 - Message:
   > I'll disconnect GitHub. The Piper GitHub app stays installed on your account until you remove it in GitHub's settings. You can connect it again anytime.
+  >
+  > Not the right account? Disconnect, then connect again.
 - Buttons: Disconnect (confirm), Cancel
 
 ### Disconnect on calendar (`disconnectIntegration('calendar')`)
@@ -1211,6 +1318,8 @@ State key: `dialogs-github-app-and-token`
 - Title: **Disconnect GitHub?**
 - Message:
   > I'll disconnect GitHub. If you connected it with the Piper GitHub app or a personal token, that stays on at GitHub until you remove it in GitHub's settings. You can connect it again anytime.
+  >
+  > Not the right account? Disconnect, then connect again.
 - Buttons: Disconnect (confirm), Cancel
 
 ### Disconnect on calendar (`disconnectIntegration('calendar')`)
@@ -1260,6 +1369,8 @@ State key: `dialogs-github-classic-and-token`
 - Title: **Disconnect GitHub?**
 - Message:
   > I'll disconnect GitHub. If you connected it with the Piper GitHub app or a personal token, that stays on at GitHub until you remove it in GitHub's settings. You can connect it again anytime.
+  >
+  > Not the right account? Disconnect, then connect again.
 - Buttons: Disconnect (confirm), Cancel
 
 ### Disconnect on calendar (`disconnectIntegration('calendar')`)
@@ -1309,6 +1420,8 @@ State key: `dialogs-github-app-token-read-failed`
 - Title: **Disconnect GitHub?**
 - Message:
   > I'll disconnect GitHub. If you connected it with the Piper GitHub app or a personal token, that stays on at GitHub until you remove it in GitHub's settings. You can connect it again anytime.
+  >
+  > Not the right account? Disconnect, then connect again.
 - Buttons: Disconnect (confirm), Cancel
 
 ### Disconnect on calendar (`disconnectIntegration('calendar')`)
@@ -1358,6 +1471,8 @@ State key: `dialogs-github-classic`
 - Title: **Disconnect GitHub?**
 - Message:
   > I'll disconnect GitHub and revoke Piper's access there. You can connect it again anytime.
+  >
+  > Not the right account? Disconnect, then connect again.
 - Buttons: Disconnect (confirm), Cancel
 
 ### Disconnect on calendar (`disconnectIntegration('calendar')`)
@@ -1449,6 +1564,8 @@ State key: `dialogs-github-classic-no-notion`
 - Title: **Disconnect GitHub?**
 - Message:
   > I'll disconnect GitHub and revoke Piper's access there. You can connect it again anytime.
+  >
+  > Not the right account? Disconnect, then connect again.
 - Buttons: Disconnect (confirm), Cancel
 
 ### Disconnect on calendar (`disconnectIntegration('calendar')`)
