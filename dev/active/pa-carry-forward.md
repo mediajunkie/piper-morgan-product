@@ -1,4 +1,4 @@
-# PA Carry-Forward — ephemeral session state
+# PZ (Piper Zero, formerly PA) Carry-Forward — ephemeral session state
 
 **Purpose**: the read-at-fire-time carry-forward for the `duty-cycle-tick` skill. Transient "where am I now" state only. Durable owed and queued items live in `pa-standing-items.md`. PM-attention items live in the section below.
 
