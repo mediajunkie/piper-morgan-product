@@ -2254,3 +2254,4 @@ issue	state	milestone	sprint	title	labels	blocked_by	state_reason
 2469	OPEN	Production		'set the title of 7 to Fix login' reaches an unwired action (update_issue_title), not update_issue: "I didn't recognize that"			
 2468	OPEN	Production		MCP connector: connect-required line follows the MCP app's own App mode (always off) after 2261			
 2470	OPEN	Production		Chat offers to add repositories ('I can link them up') but add_github_repo is unwired; the decline is generic	UX		
+2471	OPEN	Production		Deploy workflow: no job has a time limit, so a hung deploy can roll out hours later (MCP deploy hung 30 minutes on 11-27)			
