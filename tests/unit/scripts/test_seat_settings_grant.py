@@ -488,3 +488,67 @@ def test_a_rerun_prints_an_undo_that_reverts_only_that_run(tmp_path, capsys):
     assert named != first and named.name.startswith("settings.json.before-fleet-deny.")
     assert json.loads(named.read_text())["permissions"]["deny"] == step_a
     assert first.read_text() == "the copy from Step A\n"
+
+
+# ADR-084 line 22: no seat runs `fly`. Exec 01M8G038V2 (2026-11-27), after PA's seat ran `fly releases`
+# and `fly status` with no rule refusing them. fnmatch stands in for Claude Code's matcher here (the
+# real matcher is read by a seat's refused `fly version`); it pins which strings the rules name.
+def _denied(mod, command):
+    import fnmatch
+
+    return any(fnmatch.fnmatchcase(command, rule[len("Bash(") : -1]) for rule in mod.FLY_DENIES)
+
+
+@pytest.mark.parametrize(
+    "command",
+    [
+        "fly releases -a piper-morgan-mcp",
+        "fly status -a piper-morgan-mcp",
+        "fly secrets list -a piper-morgan",
+        "flyctl deploy",
+        "fly",
+        "/opt/homebrew/bin/fly status",
+        "/opt/homebrew/bin/flyctl ssh console -a piper-morgan",
+        "env fly status",
+        "env FLY_API_TOKEN=x fly status",
+        "env -u ANTHROPIC_API_KEY flyctl logs",
+        "command fly status",
+        "fly ssh console -a piper-morgan -C 'printenv PIPER_INVERSION_LIVE_CATEGORIES'",
+    ],
+)
+def test_fly_denies_name_every_fly_command_a_seat_types(command):
+    assert _denied(_load(), command)
+
+
+@pytest.mark.parametrize(
+    "command",
+    [
+        "ls deploy/fly",
+        "cat deploy/fly/github-mcp.fly.toml",
+        "grep -n 'bin/fly ' scripts/seat_settings_grant.py",
+        "git commit -m 'deny fly on every seat'",
+        "gh workflow run fly-deploy.yml -R mediajunkie/piper-morgan-product --ref main -f promote_to_alpha=true",
+        "scripts/deploy-mcp.sh --dry-run",
+        "python3 scripts/gen-fly-permissions.py --check",
+        "flyway migrate",
+    ],
+)
+def test_fly_denies_leave_other_commands_alone(command):
+    assert not _denied(_load(), command)
+
+
+def test_fly_denies_are_in_the_fleet_set_and_keep_an_existing_fly_allow(tmp_path):
+    """The shared file already carries one fly allow (the live-set read); the run is additive and
+    leaves it, and a deny beats an allow, so after the run it no longer lets a seat through."""
+    mod = _load()
+    assert set(mod.FLY_DENIES) <= set(mod.FLEET_DENIES)
+    assert all(not rule.startswith("Bash(*") for rule in mod.FLY_DENIES)
+    allow = "Bash(fly ssh console -a piper-morgan -C 'printenv PIPER_INVERSION_LIVE_CATEGORIES')"
+    shared = tmp_path / "settings.json"
+    shared.write_text(
+        json.dumps({"permissions": {"allow": [allow], "deny": list(mod.FLEET_DENIES[:8])}})
+    )
+    added = mod.fleet_deny(shared)
+    assert added == list(mod.FLY_DENIES)
+    after = json.loads(shared.read_text())["permissions"]
+    assert after["allow"] == [allow] and after["deny"] == list(mod.FLEET_DENIES)

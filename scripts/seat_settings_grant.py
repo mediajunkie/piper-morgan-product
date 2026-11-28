@@ -26,8 +26,9 @@ worktree (tested 2026-11-15 with a dummy ``.env`` against the fleet's ``Read(**/
 form did NOT stop a Read of a file outside the worktree, so it does not protect one seat's file
 from another seat. ``fleet-deny`` adds home-path denies to the settings file all PM seats
 share, to close that: the two worktree paths (form tested at Step A, 2026-11-20, three Reads refused)
-and, since 2026-11-22, the ``~/.piper-shared`` credential, token and secret names (form untested in
-the shared file until a seat's Read of a file inside a browser profile folder is refused). Running it
+since 2026-11-22, the ``~/.piper-shared`` credential, token and secret names (refusals read 11-26), and
+since 2026-11-27, Bash denies for every ``fly`` and ``flyctl`` command (ADR-084: no seat runs ``fly``;
+form untested until a seat's ``fly version`` is refused). Running it
 again adds only the rules not yet there, keeps the first ``.before-fleet-deny`` copy, and writes a
 copy of its own (``.before-fleet-deny.<YYYYMMDD-HHMMSS>``), so the undo it prints reverts that run only.
 
@@ -71,6 +72,30 @@ SHARED_SETTINGS = Path.home() / ".claude-pm" / "settings.json"
 # refused, while CIO's seat was refused on the same file. A deny that lives only in a seat's own
 # git-ignored settings is missing from any seat nobody set it in. Here they cover every PM seat.
 # They match a file or a folder by name, and the `/**` forms cover what is inside a matched folder.
+
+# No seat runs `fly` (ADR-084 line 22; production reads and secret changes are xian's). Until
+# 2026-11-27 nothing on a seat enforced it: PA's seat ran `fly releases` and `fly status` against the
+# MCP app while `fly secrets list` was refused (HOST 01M8FZGA3P, Exec 01M8G038V2). These deny every
+# `fly` and `flyctl` command a seat types, by the bare name, the Homebrew path (`command -v` on Amber,
+# 11-27: /opt/homebrew/bin/fly and flyctl; there is no ~/.fly/bin), and the `env` and `command`
+# prefixes. A deny matches what a seat types, not what a script runs inside it
+# (Pard, 10-13): Pard's cycle-check arm and the GitHub Actions jobs are not affected. Not covered:
+# a `VAR=value fly ...` prefix, or a path other than Homebrew's; those are the classifier's. There
+# is no `*/fly *` form: a leading `*` matches inside any command, so a grep or a log heredoc that
+# mentions `bin/fly ` would be refused.
+FLY_DENIES = tuple(
+    f"Bash({form})"
+    for name in ("fly", "flyctl")
+    for form in (
+        name,
+        f"{name} *",
+        f"/opt/homebrew/bin/{name}",
+        f"/opt/homebrew/bin/{name} *",
+        f"env {name} *",
+        f"env * {name} *",
+        f"command {name} *",
+    )
+)
 FLEET_DENIES = (
     "Read(~/Development/piper-morgan-worktrees/*/.claude/settings.local.json)",
     "Read(~/Development/piper-morgan-worktrees/*/.env)",
@@ -80,6 +105,7 @@ FLEET_DENIES = (
     "Read(~/.piper-shared/*token*/**)",
     "Read(~/.piper-shared/*secret*)",
     "Read(~/.piper-shared/*secret*/**)",
+    *FLY_DENIES,
 )
 NAME_RE = re.compile(r"^PIPER_SEAT_[A-Z0-9_]+$")
 SEAT_RE = re.compile(r"^[a-z][a-z0-9-]*$")
@@ -245,7 +271,7 @@ def grant_key(seat: str, name: str, root: Path, shared: Path) -> int:
     print("1 of 4. The shared settings file (every PM seat reads it).")
     added, backup = fleet_deny_run(shared)
     print(
-        f"   added {len(added)} Read deny rule(s); {len(FLEET_DENIES) - len(added)} were already there."
+        f"   added {len(added)} deny rule(s); {len(FLEET_DENIES) - len(added)} were already there."
     )
     if added:
         print(f"   the file as it was is kept at: {backup}")
@@ -341,6 +367,8 @@ def main(argv: list[str] | None = None) -> int:
         print(
             "Next: one seat tries to Read ANOTHER seat's settings file by its full path, and Web tries to Read"
             " a file inside ~/.piper-shared/seat-browser-credential-profile-web. Both should be refused."
+            " For the fly denies: a seat types `fly version`, then `/opt/homebrew/bin/flyctl version`;"
+            " both should be refused before they run."
         )
         return 0
 
