@@ -1,10 +1,9 @@
 # Lead carry-forward — Fable 5.2 seat again since 2026-11-20 08:56 (Opus 5.5 from 2026-11-17 21:30 until then); Model A worktree ~/Development/piper-morgan-worktrees/lead
 
-## MORNING 2026-11-28 07:56 (read this first; it supersedes the DAY-END block below)
-- **2475 is on main `ace7bf1acc`** (Arch conforms, HOST conforms on seat_session.py, CXO accepts). Tests green; every promotion pre-check passed at 07:55. **Waiting on Exec's release line (01M8HDX051) to promote.** After the promotion: verify beta's git_sha, mail Web, PA, HOST, CXO, Arch the sha (Web's rows: Test All on seat-tester-1 and seat-github-1, the GitHub card and Disconnect dialog on seat-github-1), update the briefing's beta line, comment on 2475.
-- **2443 + 2444 are built, suite-passed and rendered, NOT on main:** branch `lead/2443-2444-documents` in `../lead-2460b`, commit `93bcba23e8`. Land only after the 2475 promotion finishes (rebase, push, verify), then send the review mail drafted at scratchpad `r2443/landing.md` (three asks to Arch, one to CXO), comment on both issues, and promote when Tests is green.
-- Then, in PPM's and Exec's order: the floor prompt pass (price the rerun first), 2195 with 2469, issue 2474. All specified in standing items.
-- Small follow-up: remove the long card sentence from `scripts/seat_session.py` after Web's served read (standing items row, HOST reads the diff).
+## MORNING 2026-11-28 08:10 (read this first; it supersedes the DAY-END block below)
+- **Beta serves `80bae5d9df` with 2475** (promoted 08:06, run 46163063366, Exec's release 01M8HE2WRF). Served rows are Web's (01M8HEHGQ0): Test All on seat-tester-1 and seat-github-1, the GitHub card and Disconnect dialog. After Web quotes the short card: remove the long sentence from `scripts/seat_session.py` (HOST reads the diff).
+- **2443 + 2444 are on main `d321f928f2`, not on beta.** Review mail 01M8HEPGF5: Arch has three asks (a fifth picker so the upload refusal can say the extension; the wider upload type check; .text and .markdown dropped), CXO one (words for a PDF that will not open). **Next: when Tests is green on `d321f928f2`, run the pre-checks, ask Exec, promote, send Web the sha and the document rows.**
+- Then, in PPM's and Exec's order: the floor prompt pass (price the rerun first, PLANNED to Exec), 2195 with 2469, issue 2474. All specified in standing items.
 
 ## DAY-END 2026-11-27 21:47 (superseded by the block above)
 - **Beta serves `8ddd08d8e0`** (seventh promotion of 11-27, 20:01, each on the first dispatch). Healthy; main CI 12 of 12. Nothing waits to be promoted. **The MCP app is still on `c303931894`:** PA's two deploys hung (issue 2472, needs xian's read of Fly), so 2468's connector fix (`32ba51b768`) is on main and not served.
