@@ -29,6 +29,7 @@ render, no raw HTML, no re-parse — the #1729 family concern) and capped with
 an honest ellipsis.
 """
 
+import re
 from unittest.mock import patch
 
 import pytest
@@ -72,12 +73,36 @@ class TestGenericCopyIsUncertainNotAbsent:
 
     def test_per_action_declines_stay_definite_and_untouched(self):
         """Exclusion pin: for mapped actions we genuinely KNOW unwiring, so their
-        definite copy ("can't … yet") is honest and stays."""
+        definite copy is honest and stays.
+
+        Made precise for issue 2470 (CXO and Arch, 2026-11-27): "yet" tells a person
+        the thing is coming, so a line may say it only together with "on the way",
+        and a line that promises nothing must name a place or an alternative. A new
+        line with a promise nobody made still fails."""
         assert UNWIRED_WRITE_DECLINES  # the curated map still exists
+        # The six lines that say the capability is coming; a seventh joins by name.
+        promises = {
+            "create_milestone",
+            "create_release",
+            "create_label",
+            "create_branch",
+            "create_pull_request",
+            "update_status",
+        }
+        assert promises <= set(UNWIRED_WRITE_DECLINES)
         for action, copy in UNWIRED_WRITE_DECLINES.items():
             low = copy.lower()
             assert "can't" in low, f"{action}: curated copy must stay definite"
-            assert "yet" in low, f"{action}: curated copy must stay definite"
+            for hedge in ("may have misread", "didn't recognize", "might", "not sure"):
+                assert hedge not in low, f"{action}: curated copy must not hedge"
+            has_yet = re.search(r"\byet\b", low) is not None
+            has_plan = "on the way" in low
+            assert has_yet == has_plan, f"{action}: 'yet' only together with 'on the way'"
+            assert has_plan == (action in promises), f"{action}: a promise is named in this test"
+            if not has_plan:
+                assert (
+                    "github" in low or "settings" in low
+                ), f"{action}: a line that promises nothing names a place or an alternative"
         # A message passed alongside a curated action changes nothing (#1730 is
         # generic-only; no echo on the definite declines).
         assert (
