@@ -1,6 +1,6 @@
 # CIO install batch, 2026-11-27: deny `fly` on every PM seat
 
-**Status: proposed.** Arch's yes on `91463b38ef` (01M8G0QQYT); his re-read of the two later changes (the `FLY_` form, the retired allow), HOST's read and Pard's answer are open. Then Exec puts it on xian's card.
+**Status: proposed.** Arch's yes on `91463b38ef` (01M8G0QQYT); his re-read of the two later changes (the `FLY_` form, the retired allow), HOST's read is open. Pard: no (below). Then Exec puts it on xian's card.
 
 **Why:** ADR-084 line 22 says no seat runs `fly`, read-only included. Nothing on a seat enforced it. On 11-27, PA's seat ran `fly releases -a piper-morgan-mcp` and `fly status -a piper-morgan-mcp`, while `fly secrets list` was refused by the classifier (HOST 01M8FZGA3P, PA 01M8G00GPS, Exec 01M8G038V2; custody record row "A seat ran `fly releases`"). A rule makes the outcome the same every time.
 
@@ -30,7 +30,7 @@
 4. **Lead's promotion allow** (`gh workflow run fly-deploy.yml …`) is not matched (tested).
 
 **Open before the card (asked):**
-- **Pard:** does Pard's own session read `~/.claude-pm/settings.json`? The manifest gives Pard's family `flyctl status`, `machines list`, `releases` and `secrets list`. If Pard shares the file, those would stop. Asked by external mail, 11-27.
+- **Pard: answered no, 11-27 18:45.** Pard's session runs with `CLAUDE_CONFIG_DIR=/Users/xian/.claude` (read from the running process), and its four flyctl reads are allowed in `mediajunkie/.claude/settings.local.json`. The deny doesn't reach them.
 - **HOST** reads it (as on 11-22). **Arch** approves it, as for the earlier runs of this command that rewrote the shared file.
 
 **Bound:** stricter only. It adds denies and removes one allow, and loosens nothing. xian's 11-17 bound ("changes that only make the check stricter") is about the promote gate, not this, but this is the same kind.
