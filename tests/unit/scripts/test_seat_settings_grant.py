@@ -513,6 +513,8 @@ def _denied(mod, command):
         "env FLY_API_TOKEN=x fly status",
         "env -u ANTHROPIC_API_KEY flyctl logs",
         "command fly status",
+        "FLY_API_TOKEN=x fly status -a piper-morgan",
+        "FLY_ACCESS_TOKEN=x FLY_NO_UPDATE_CHECK=1 flyctl secrets list",
         "fly ssh console -a piper-morgan -C 'printenv PIPER_INVERSION_LIVE_CATEGORIES'",
     ],
 )
@@ -531,6 +533,7 @@ def test_fly_denies_name_every_fly_command_a_seat_types(command):
         "scripts/deploy-mcp.sh --dry-run",
         "python3 scripts/gen-fly-permissions.py --check",
         "flyway migrate",
+        "FLY_NO_UPDATE_CHECK=1 python3 scripts/gen-fly-permissions.py --check",
     ],
 )
 def test_fly_denies_leave_other_commands_alone(command):

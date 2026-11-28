@@ -77,10 +77,11 @@ SHARED_SETTINGS = Path.home() / ".claude-pm" / "settings.json"
 # 2026-11-27 nothing on a seat enforced it: PA's seat ran `fly releases` and `fly status` against the
 # MCP app while `fly secrets list` was refused (HOST 01M8FZGA3P, Exec 01M8G038V2). These deny every
 # `fly` and `flyctl` command a seat types, by the bare name, the Homebrew path (`command -v` on Amber,
-# 11-27: /opt/homebrew/bin/fly and flyctl; there is no ~/.fly/bin), and the `env` and `command`
-# prefixes. A deny matches what a seat types, not what a script runs inside it
+# 11-27: /opt/homebrew/bin/fly and flyctl; there is no ~/.fly/bin), the `env` and `command`
+# prefixes, and a leading `FLY_…=` assignment (the shape a token would arrive in, HOST 01M8G0GFRB). A deny matches what a seat types, not what a script runs inside it
 # (Pard, 10-13): Pard's cycle-check arm and the GitHub Actions jobs are not affected. Not covered:
-# a `VAR=value fly ...` prefix, or a path other than Homebrew's; those are the classifier's. There
+# an assignment to any other variable (`X=1 fly ...`), or a path other than Homebrew's; those are the
+# classifier's. There
 # is no `*/fly *` form: a leading `*` matches inside any command, so a grep or a log heredoc that
 # mentions `bin/fly ` would be refused.
 FLY_DENIES = tuple(
@@ -94,6 +95,7 @@ FLY_DENIES = tuple(
         f"env {name} *",
         f"env * {name} *",
         f"command {name} *",
+        f"FLY_* {name} *",
     )
 )
 FLEET_DENIES = (

@@ -9,17 +9,19 @@
 1. Apply: `python3 scripts/seat_settings_grant.py fleet-deny`
 2. Test (any one seat, CIO offers): type `fly version`, then `/opt/homebrew/bin/flyctl version`. Both must be **refused before they run**. Don't run this test before step 1: before the deny, it would run `fly`.
 
-**You should see** at step 1: `added 14 deny rule(s); 8 were already there. No allow, env or other rule was changed.` Relay that line and the two refusals. CIO marks it done only then. No restart is expected: on 11-26 the shared file's new denies took effect in running sessions (Web's session dated from 06:18).
+**You should see** at step 1: `added 16 deny rule(s); 8 were already there. No allow, env or other rule was changed.` Relay that line and the two refusals. CIO marks it done only then. No restart is expected: on 11-26 the shared file's new denies took effect in running sessions (Web's session dated from 06:18).
 
-**What it adds** (14 Bash denies, in `scripts/seat_settings_grant.py` `FLY_DENIES`, tested in `tests/unit/scripts/test_seat_settings_grant.py`), for each of `fly` and `flyctl`:
+**What it adds** (16 Bash denies, in `scripts/seat_settings_grant.py` `FLY_DENIES`, tested in `tests/unit/scripts/test_seat_settings_grant.py`), for each of `fly` and `flyctl`:
 - the bare name, alone and with arguments;
 - the Homebrew path `/opt/homebrew/bin/…`, alone and with arguments (`command -v` on Amber, 11-27: that is where both are; there is no `~/.fly/bin`);
-- `env <name> …`, `env … <name> …` and `command <name> …`.
+- `env <name> …`, `env … <name> …`, `command <name> …`, and `FLY_…=… <name> …` (a token arriving as an assignment, HOST 01M8G0GFRB).
 
 **What it does not cover:**
-- A `VAR=value fly …` prefix, and a path other than Homebrew's. No rule form here is known to match them, so they stay with the classifier.
+- An assignment to a variable not named `FLY_…` (`X=1 fly …`), and a path other than Homebrew's. No rule form here is known to match them, so they stay with the classifier.
 - A `fly` run inside a script (Pard, 10-13: a deny matches what a seat types). This leaves the GitHub Actions jobs and Pard's cycle-check arm (`gen-fly-permissions.py --check`) alone. A seat that wrote a script to run `fly` would get past this. That is the classifier's to judge, as with every deny.
 - There is no `*/fly *` form: a leading `*` matches inside any command, so a grep or a log heredoc mentioning `bin/fly ` would be refused.
+
+**Scripts that call `fly` (HOST's point 3; `git grep` of `scripts/`, 11-27):** `deploy-mcp.sh` (its standing use ended with the `deploy_mcp` dispatch, issue 2384), `gen-fly-permissions.py` (Pard's drift arm; runs flyctl inside Python), and `fly ssh` lines in the docstrings of `derive_subkey.py` and `erase_user.py` and an `echo` in `check-release-parity.sh`, which are instructions for xian, not calls. A deny matches what a seat types, so none of these is blocked, and no seat runs one today.
 
 **What it switches off.** A deny beats an allow in every scope, so these existing grants stop working on every PM seat:
 1. **The shared file's one allow:** `Bash(fly ssh console -a piper-morgan -C 'printenv PIPER_INVERSION_LIVE_CATEGORIES')`, in `~/.claude-pm/settings.json` since at least 10-18 (in the 10-18 backup). It let any PM seat read a production secret's value, which ADR-084 line 22 now makes xian's. The run leaves the line in the file (it is additive), and the deny makes it inert. xian may delete the line by hand; that's optional.
