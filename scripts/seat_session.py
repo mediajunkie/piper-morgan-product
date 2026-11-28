@@ -91,10 +91,14 @@ GITHUB_LIVE_ROWS: FrozenSet[IntegrationRow] = frozenset(
 # two constants and fails when these copies differ, so a copy change is a failed test and
 # a one-line diff here, never a refused sitting. The card's no-login form ("Connected.")
 # is deliberately absent: it cannot show whose account it is, so it refuses.
-GITHUB_CARD_CONNECTED_AS = (
+GITHUB_CARD_CONNECTED_AS = "Connected as {login}."
+GITHUB_CARD_CONNECTED_AS_ONLY = "Connected as {login}."
+# Issue 2475 item 3 shortened the card's passing line to the one above. A host that has
+# not been promoted past that change still draws the longer sentence, and this helper was
+# already accepting it, so it stays accepted, by its exact words, until HOST retires it.
+GITHUB_CARD_CONNECTED_AS_BEFORE_2475 = (
     "Connected as {login}. Not the right account? Disconnect, then connect again."
 )
-GITHUB_CARD_CONNECTED_AS_ONLY = "Connected as {login}."
 
 
 def _github_card_lines(login: str) -> FrozenSet[str]:
@@ -102,6 +106,7 @@ def _github_card_lines(login: str) -> FrozenSet[str]:
         {
             GITHUB_CARD_CONNECTED_AS.format(login=login),
             GITHUB_CARD_CONNECTED_AS_ONLY.format(login=login),
+            GITHUB_CARD_CONNECTED_AS_BEFORE_2475.format(login=login),
         }
     )
 

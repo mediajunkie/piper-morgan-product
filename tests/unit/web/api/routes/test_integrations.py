@@ -78,7 +78,13 @@ class TestIntegrationHealthEndpoint:
         """#2068: overall status is judged over connected integrations only"""
         response = await get_integrations_health(current_user=mock_user)
 
-        connected = [i for i in response.integrations if i.status != "not_configured"]
+        from services.integrations.integration_status_service import offered_connectors
+
+        connected = [
+            i
+            for i in response.integrations
+            if i.status != "not_configured" and i.name in offered_connectors()  # issue 2475
+        ]
         if not connected:
             assert response.overall_status == "none"
             assert response.headline == "Nothing connected yet"
@@ -299,9 +305,11 @@ class TestAllConnectionsEndpoint:
 
             results = await check_all_connections(current_user=mock_user)
 
-            assert len(results) == 4
+            # Issue 2475: one result per service this host offers, and no other.
+            from services.integrations.integration_status_service import offered_connectors
+
             integration_names = {r.integration for r in results}
-            assert integration_names == {"notion", "slack", "github", "calendar"}
+            assert integration_names == set(offered_connectors()) == {"github", "calendar"}
 
     @pytest.mark.asyncio
     async def test_test_all_continues_after_individual_failure(self):
@@ -314,7 +322,7 @@ class TestAllConnectionsEndpoint:
         async def mock_test_with_failure(name, user_id=None):
             nonlocal call_count
             call_count += 1
-            if name == "notion":
+            if name == "github":
                 return {"success": False, "error": "Failed"}
             return {"success": True}
 
@@ -323,8 +331,8 @@ class TestAllConnectionsEndpoint:
         ):
             results = await check_all_connections(current_user=mock_user)
 
-            # Should have tested all 4 integrations
-            assert len(results) == 4
+            # Issue 2475: every offered service is tested, after the first one fails.
+            assert len(results) == 2
             # At least one should have failed
             failed = [r for r in results if not r.success]
             assert len(failed) >= 1

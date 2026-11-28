@@ -63,6 +63,9 @@ class IntegrationStatus(BaseModel):
     # never on the card's words.
     disconnect_leg: Optional[str] = None
     disconnect: Optional[Dict[str, Any]] = None
+    # Issue 2475 item 3: a sentence the Disconnect confirm dialog shows under its own
+    # line, and the Disconnect button repeats in its title. GitHub's sign-in card only.
+    disconnect_hint: Optional[str] = None
 
 
 class IntegrationHealthResponse(BaseModel):
@@ -331,6 +334,7 @@ def summarize_integrations(integrations: List["IntegrationStatus"]) -> tuple:
     unconnected integration is never an issue.
 
     Returns ``(overall_status, headline, summary, working_count, connected_count)``.
+    Issue 2475: only integrations in ``offered_connectors()`` are counted at all.
     - none connected: "Nothing connected yet"
     - two or more failing (``failed``): "Multiple Issues"
     - one failing, or any connected one in a warning state (degraded / unknown):
@@ -339,7 +343,13 @@ def summarize_integrations(integrations: List["IntegrationStatus"]) -> tuple:
     - every connected one healthy: "All Systems Healthy"
     - otherwise (connected, none tested yet, nothing wrong): "Connected, not yet tested"
     """
-    connected = [i for i in integrations if i.status != "not_configured"]
+    # Issue 2475: the headline counts what this host offers and nothing else. A leftover
+    # connection to a service outside the offered set (a Slack row from before the beta
+    # set was drawn) keeps its own card and its Disconnect; it is never "an issue" here.
+    from services.integrations.integration_status_service import offered_connectors
+
+    offered = offered_connectors()
+    connected = [i for i in integrations if i.status != "not_configured" and i.name in offered]
     working = sum(1 for i in connected if i.status == "healthy")
     failing = sum(1 for i in connected if i.status in ("failed", "unhealthy"))
     warning = sum(1 for i in connected if i.status in ("degraded", "unknown"))
@@ -513,12 +523,19 @@ async def check_integration_connection(
 @router.post("/test-all", response_model=List[ConnectionTestResponse])
 async def check_all_connections(current_user: JWTClaims = Depends(get_current_user)):
     """
-    Test all configured integrations.
+    Test every integration this host offers.
 
     Issue #530: ALPHA-SETUP-VERIFY
+    Issue 2475: only ``offered_connectors()``. A service outside the offered set has no
+    Test on its card, so Test All never tests it and never returns a row for it.
     """
+    from services.integrations.integration_status_service import offered_connectors
+
+    offered = offered_connectors()
     results = []
     for integration_name in INTEGRATION_REGISTRY.keys():
+        if integration_name not in offered:
+            continue
         try:
             result = await check_integration_connection(integration_name, current_user=current_user)
             results.append(result)
@@ -543,13 +560,16 @@ async def check_all_connections(current_user: JWTClaims = Depends(get_current_us
 # #2279 (CXO 2026-11-04): the card names the GitHub account that was connected, read
 # through the account's own grant (GET /user); when that read fails it says only
 # "Connected.", never a guess, never the deployment's handle.
-_GITHUB_CARD_CONNECTED_AS = (
-    "Connected as {login}. Not the right account? Disconnect, then connect again."
-)
+# Issue 2475 item 3 (CXO 01M8GD9B2K, HOST 01M8GDBE55, CXO 01M8GDZHWM): the card says one
+# fact, "Connected as {login}.", and the page adds the check time. The wrong-account hint
+# left the card: it is visible text in the Disconnect confirm dialog and the Disconnect
+# button's title. The login stays on the card whenever it is known (HOST's condition).
+_GITHUB_CARD_CONNECTED_AS = "Connected as {login}."
+GITHUB_WRONG_ACCOUNT_HINT = "Not the right account? Disconnect, then connect again."
 _GITHUB_CARD_CONNECTED_NO_LOGIN = "Connected."
 # #2401 (CXO 2026-11-17): after a failed Test the card names the account and gives the
-# failure its own line; "Not the right account?" would point at a cause nobody found.
-_GITHUB_CARD_CONNECTED_AS_ONLY = "Connected as {login}."
+# failure its own line. Since issue 2475 this is the same sentence as the passing card's.
+_GITHUB_CARD_CONNECTED_AS_ONLY = _GITHUB_CARD_CONNECTED_AS
 _GITHUB_CARD_PAT_TITLE = "Connected via your personal token"
 # CXO 2026-11-18 (the card-state file's Test pairs): one fact, one name. The stale grant
 # is "GitHub no longer accepts your connection." at the click, on the card and in chat.
@@ -742,6 +762,7 @@ async def _github_card_and_leg(
             last_check=oauth_result.checked_at_iso if oauth_result is not None else None,
             error=oauth_error,
             error_line=oauth_error,
+            disconnect_hint=GITHUB_WRONG_ACCOUNT_HINT,
         ), leg
     if getattr(credential, "stale_oauth_reason", None) == DegradationReason.STALE_TOKEN:
         probe = await adapter.search_user_repositories(user_id, limit=1)
