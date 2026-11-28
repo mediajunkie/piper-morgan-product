@@ -9,13 +9,13 @@
 **Clock rule live:** no estimated minutes in commits, mail or logs. Headings: `scripts/log-entry.sh "title" >/dev/null`. Times in backticks.
 
 ## Sat 11-28 START, in order
-1. Retitle the rollup h1 to Saturday (rollup v1199, `719UZ4h1NELjEwWZbDCceT`, source `dev/active/exec-attention-rollup-current.html`). xian's format rule (11-27): only current and actionable items at the top; finished items come off (they're logged) or go below everything that needs him.
+1. Retitle the rollup h1 to Saturday (rollup v1200, `719UZ4h1NELjEwWZbDCceT`, source `dev/active/exec-attention-rollup-current.html`). xian's format rule (11-27): only current and actionable items at the top; finished items come off (they're logged) or go below everything that needs him.
 2. Sprint 3 day 2 (11-27 to 12-10; theme "Signed In"; top priority is opening invitations). Weekends are prime time, so don't treat Saturday as quiet.
 3. Chase the 11-27 closes still open at 22:01: CIO, Docs. Chase only if they're still open.
 4. Expect replies to 01M8GBR9581CCEYR44VE9JGY6Y: Lead (why beta uses the Alpha Google project, and what self-hosting needs today), PPM (placing the one-project move in sprint 3 or 4, and the self-hosted tester against the invite goal), Arch (owner-first details), HOST (the first-cohort note text, and who it goes to). Bring them to xian. PA owes "what do you think of your name" (01M8GBRBW0JCFT3ZV21WR6YEKQ).
 
 ## xian's sitting (paused, resume where he is)
-- 3.1 done (GitHub card "Needs reconnecting"). 3.2 done (redirect named beta; "Connected as mediajunkie", not tested yet). 3.3 Calendar: the chooser's redirect_uri names beta (client 43539582958). Whether he approved, and where he landed, is unknown at 22:01. Ask him.
+- Step 3 done 11-27 night: GitHub and Calendar connected on beta, both redirects named beta, neither tested yet (Test All Connections is optional). HOST's final cohort note: xian reviews, possibly Sat morning.
 - Then, one thing at a time: Step G (a) connector `Piper Morgan (seat)` at `https://mcp.pipermorgan.ai/mcp?client=seat`, Allow as seat-github-1 in a private window; PA's seat check. The zero-install read: take piper-test off the seat-test team, Web and PA read, put it back at Read exactly; piper-test-2 untouched. Step G part 3 (three pastes on PA's word; the address comes from beta's /account as seat-github-1). Revoke seat-github-1's own authorization ("Never uninstall the App from the pipermorgan org."; no reconnect, option (a)). Ending: remove `Piper Morgan (seat)` and the allowlist entry. Last: remove the alpha callbacks at GitHub and Google, each app keeping one callback, wildcard unticked, read back to me.
 - Hold Lead's promotions while he's in an active step. Promotions run 07:00 to 21:00.
 - Afterwards: Slack card Disconnect (harmless leftover); the manual-credentials card on the Calendar page goes to CXO (he'd deprecate it).
