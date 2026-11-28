@@ -6,7 +6,7 @@ caption: ''
 
 # Mark One Eyeball
 
-*November 8–15, 2026*
+*November 15, 2026*
 
 Whenever you delegate work, especially to agents (but really any time),  the moment of truth is when you finally inspect the results of the work yourself, using what some 20th century military aviators amusingly dubbed the "[mark 1 eyeball](https://en.wiktionary.org/wiki/mark_1_eyeball)" instrument (sometime written "Mark I" and always pronounced "mark one." The point is, you have to look at it directly yourself.
 
@@ -14,34 +14,26 @@ The agent team tests Piper Morgan code assiduously, but testing the code is not 
 
 # Read the fine print
 
+To be fair about this anecdote, very few products offer a first-class preference-settings or configuration-updating experience. You tend to get utilitarian portals with raw-plumbing workflows. I'd like to do better but I have for the most part let my agent team design and build the settings pages and functionality, passively steering by complaining about clutter or inconsistency from time to time.
 
-## Two episodes, a week apart (facts verified)
+My lead developer agent (Lead) had worked on an issue that would enable people to give Piper Morgan access to specific GitHub repositories, adding a `GitHub repositories` text link just below the settings page's "card" for managing a GitHub connection (connecting, testing, and disconnecting to and from a specific GitHub account).
 
-**1. Nov 8: the fixtures agreed with the bug.**
-- A new module (forgetting or changing a learned preference) read the value "done", while the path that clears a preference stores "complete". [Nov 8 l48]
-- The tests had been seeded from the module's own words, so every test passed while real rows read as unknown. Arch put it on hold at 09:27. Lead called it Lead's own miss. [Nov 8 l48, l101]
-- The lesson the team wrote down: "Read the producer's constants before seeding a fixture." [Nov 8 l101]
-- It was fixed, served that afternoon, and closed the same day. [Nov 8 l48]
+In mid-November I made time to do some manual testing so we could close otherwise presumably completed issues and when asked to configure GitHub repositories for a test account I confidently reported that the Settings page provide me no way to add a repository once a first one was installed.
 
-**2. Nov 15: you found it on your own screen.**
-- At 18:57 you read three screens and reported that the Settings link "GitHub repositories" was a small text link you did not see, the GitHub card read "Settings", and there was no way to add a repository once one was installed. [Nov 15 l58]
-- Your words, relayed at 19:11: "a floating link on that page violates the design and probably at least six other principles of this project or common sense". [Nov 15 l58]
-- Lead found the cause at 19:17: the link had been put in the branch that draws Slack and Calendar, not the branch that draws GitHub. Lead's tests "ran a label function against a stub and read source text, and none drew a card." [Nov 15 l58]
-- CXO moved the entry from a link to a card ("Manage repositories", "Add another repository"), and the fix landed that evening. [Nov 15 l58]
-- The rule the team took from it: "A test that reads source text is not a drawn page." Drawn-card tests now run the page's own script and read the HTML it writes. [Nov 15 l105]
+That's when I was shown that there was indeed a tiny text link sitting outside of the information design and visual hierarchy on the page. I told the team "a floating link on that page violates the design and probably at least six other principles of this project or common sense."
 
-## Your angle, maybe
+# Even admins deserve design
 
-- Both test suites were green. Both were testing the team's idea of the product, not the product.
-- The cheapest test of a screen is a person looking at it, and that person was you. The fix was to make the tests look the way you look.
-- Product-manager reach: "the tests pass" and "the user can do it" are two claims. Ask which one you're hearing.
+The diagnosis was quotidian: the link had somehow been added to a branch of the page that includes the Slack and Calendar calendar cards, which apparently left it orphaned. 
 
-## Careful with these (accuracy)
+From a plumbing point of view, the link existed and there was indeed a way to manage repositories, but the failure to design the experience with intent rendered it invisible and hence useless and frustrating, at least for me or anyone on a hurry who is trusting the design the guide their eye. 
 
-- **Overlap:** "Check the Machine First" (11-01) is about agents checking the actual facts before debating. This one is about what the test itself draws. Keep the angle on the test.
-- The logs record only your read of the Nov 15 screens. Don't say an outside tester hit it.
-- Agents are "agents" or by role (Lead, Arch, CXO), never "people" or "someone".
-- No issue numbers in prose.
+My design agent (CXO) specified how to move the entry from a link to a card (with options "Manage repositories" and "Add another repository"), and Lead implemented the fix that evening. 
+
+# 
+The team also added a "drawn-card" test in which the page is rendered and examined in its final HTML form vs parsed as pure source text, to more closely notice what my experience will be.
+
+This is good and will likely reduce the number of things that need attention, but it will never substitute for my mark one eyeball.
 
 ---
 
