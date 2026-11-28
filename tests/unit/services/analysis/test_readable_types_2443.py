@@ -268,7 +268,12 @@ async def test_a_pdf_with_pages_and_no_text_says_so(tmp_path):
 async def test_a_pdf_that_cannot_be_opened_is_marked_too():
     analyzer, _ = _analyzer()
     result = await analyzer.analyze("tests/fixtures/corrupted_document.pdf", user_id=None)
-    assert result.summary == da.PDF_UNREADABLE_LINE and result.metadata["refusal"] is True
+    assert result.summary == (
+        "Piper couldn't open that PDF. Paste its text here and Piper will work with it."
+    )
+    assert result.metadata["refusal"] is True
+    assert result.key_findings == [] and result.recommendations == []
+    assert "Unable to analyze" not in result.summary
 
 
 # --- 2444: the coverage sentence -------------------------------------------------------
