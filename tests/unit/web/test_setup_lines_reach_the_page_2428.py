@@ -368,7 +368,7 @@ class TestArchsGuardOverEveryMarkedRaise:
             "web/api/routes/conversations.py": 7,
             "web/api/routes/documents.py": 5,
             "web/api/routes/feedback.py": 1,
-            "web/api/routes/files.py": 9,
+            "web/api/routes/files.py": 8,  # issue 2443: the type and extension refusals are one
             "web/api/routes/knowledge_graph.py": 6,
             "web/api/routes/lists.py": 6,
             "web/api/routes/preferences.py": 2,
