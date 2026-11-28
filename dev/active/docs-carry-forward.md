@@ -1,8 +1,14 @@
 # Docs Carry-Forward
 
-**Updated**: 2026-11-26 22:12. Older state lives in the session logs (`dev/2026/{10,11}/*/*docs-code-log.md`), not here. `gh`: prefix `GODEBUG=netdns=go` if bare `gh` hangs.
+**Updated**: 2026-11-27 22:12. Older state lives in the session logs (`dev/2026/{10,11}/*/*docs-code-log.md`), not here. `gh`: prefix `GODEBUG=netdns=go` if bare `gh` hangs.
 
-## NOW (11-27 04:40)
+## NOW (11-27 22:12)
+- **11-27 done:** 11-26 omnibus landed and verified (705 non-merge, 1162 total). Ship 071 workstream review filed to Exec. Guide: line 62 says how GitHub connects on your own install (2261 on main), and a new "Start here" section is on main for the tester packet (mailed PPM, CXO, HOST for reads, 01M8GCJNPQ). Both keep "(not yet run)". Mail 0 unacked, CI 12 of 12 green.
+- **Owed 11-28 04:12 START:** the 11-27 omnibus (Sonnet subagent, 11-21 shape, verify after hand-back) and Step 1d on the 11-27 logs. Monday 11-30 audit: run the stale-content and methodology scans skipped on 2422.
+- **Blockers:** guide step 8 (first account) waits on 2474 owner-first; when it lands before the packet goes out, rewrite step 8 to what is true on main (PPM 01M8GC5GWR). Guide marker clears only after a clean-machine run by a person (xian's call whose hands). Ship 071 "Signed In" Tue 12-01 and Sat 11-28 "Mark One Eyeball" publish only on Comms PUBLISH-READY. Lead's hold on tested-path pushes ends at "beta moved" (I push logs, docs, mail only).
+- **Held:** d-known-limits, b-github-access (#2342), glossary re-verify about 11-30, #2249, monthly audit Dec 7, CIO's hook ask, link checker ceiling 50, activity-log CSV backfill question for Exec.
+
+## (earlier) NOW (11-27 04:40)
 - **11-27 so far:** 11-26 omnibus landed and verified (705 non-merge, 1162 total). Step 1d: 11 of 11 carry the marker. Sat 11-28 "Mark One Eyeball" is `drafted`, publishes only on Comms PUBLISH-READY (insight slot, LinkedIn and Medium; Pre-flight 3). **Owed 11-28 04:12:** the 11-27 omnibus and Step 1d. Monday 11-30 audit also runs the skipped stale-content and methodology scans.
 
 - **11-27 15:10 DONE (supersedes the 13:50 add):** guide line 62 now says how GitHub connects on your own install (token or own App), marker kept, on main; mailed PPM and Lead (01M8FKXY9J). Remaining: nothing owed; clear the marker only after an install run.
