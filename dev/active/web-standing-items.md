@@ -220,3 +220,7 @@ history and the dated session logs, per the file's own "pointers not duplicated 
 
 ### OWED[key: web-2470-decline-read; to: Lead, CXO; by: trigger: Lead's mail that promotion 7 is on beta]
 **Filed**: 2026-11-27. Seat-github-1: one turn "add pipermorgan/piper-test-2" (in the offer's conversation or a fresh one after a status turn); quote whole with intent keys; press nothing. Expect "I can't add a repository from chat. Add it at GitHub (the Piper GitHub app's installed repositories), then press Refresh List in Settings → Integrations → GitHub."
+
+### OWED[web-2475-testall-reread; to: lead; by: when the fix is served]
+**Filed**: 2026-11-27
+Press Test All on seat-tester-1 and seat-github-1 after the fix is served; quote both toasts whole.
