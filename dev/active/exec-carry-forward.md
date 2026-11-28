@@ -8,6 +8,9 @@
 
 **Clock rule live:** no estimated minutes in commits, mail or logs. Headings: `scripts/log-entry.sh "title" >/dev/null`. Times in backticks.
 
+## Routing today (xian, 11-28, via Janus)
+"If the Piper team needs me for other things today they can relay > exec > janus > me." Piper asks for xian go to Janus (designinproduct docs/mail/), not to him. Sent today's list 11-28 (ae767ed0c4): cohort note words, Test All press (2475 rows 1 and 2), Step G when he opens a session. His Saturday: blog post with Comms, then Rebel, Tally, his novel.
+
 ## Sat 11-28 START, in order
 1. Retitle the rollup h1 to Saturday (rollup v1200, `719UZ4h1NELjEwWZbDCceT`, source `dev/active/exec-attention-rollup-current.html`). xian's format rule (11-27): only current and actionable items at the top; finished items come off (they're logged) or go below everything that needs him.
 2. Sprint 3 day 2 (11-27 to 12-10; theme "Signed In"; top priority is opening invitations). Weekends are prime time, so don't treat Saturday as quiet.

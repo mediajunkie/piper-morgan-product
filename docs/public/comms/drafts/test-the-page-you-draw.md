@@ -30,11 +30,11 @@ From a plumbing point of view, the link existed and there was indeed a way to ma
 
 My design agent (CXO) specified how to move the entry from a link to a card (with options "Manage repositories" and "Add another repository"), and Lead implemented the fix that evening. 
 
-# Can agents understand "gestalt"?
+# Will agents eventually understand "gestalt"?
 
-The team also added a "drawn-card" test in which the page is rendered and examined in its final HTML form vs parsed as pure source text, to more closely notice what my experience will be.
+The team also added a "drawn-card" test in which the page is rendered and examined in its final HTML form vs parsed as pure source text. The new tests catch words and structure, and the screenshot-based checks catch layout. 
 
-This is good and will likely reduce the number of things that need attention, but as far as I can tell thus far, it will never substitute for my mark one eyeball.
+Neither sees the page the way I do, and yet this is still a good thing for them to do. It will likely reduce the number of things that need attention, but this approach, at this rate, will never substitute for my mark one eyeball.
 
 ---
 
