@@ -8,6 +8,7 @@ caption: ''
 
 *November 8–15, 2026*
 
+Whenever you delegate work, especially to agents (but really any time),  the moment of truth is when you finally  
 ## The principle (one line, yours to word)
 
 A test that checks the code is not a test of what the person sees. Tests pass in the world the test builds, so build it from what the user gets.
