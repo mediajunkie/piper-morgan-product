@@ -73,11 +73,11 @@ class TestDocumentAnalyzer:
         """Test that corrupted PDF returns error gracefully"""
         pdf_path = os.path.join(FIXTURE_DIR, "corrupted_document.pdf")
         result = await self.analyzer.analyze(pdf_path, user_id=None)
-        assert result.metadata.get("error") is not None
-        assert (
-            "corrupt" in result.metadata.get("error", "").lower()
-            or "error" in result.metadata.get("error", "").lower()
-        )
+        # CXO 2026-11-28 (issue 2443): the line claims no cause, since the code does
+        # not know whether the file is damaged, locked or something else.
+        assert result.metadata.get("error") == result.summary
+        assert result.summary.startswith("Piper couldn't open that PDF.")
+        assert result.metadata["refusal"] is True
 
     @pytest.mark.smoke
     def test_inherits_from_base_analyzer(self):
@@ -163,8 +163,8 @@ async def test_document_corrupted_pdf_handling():
 
     analyzer = DocumentAnalyzer()
     result = await analyzer.analyze(FIXTURE_DIR + "corrupted_document.pdf", user_id=None)
-    assert "error" in result.metadata
-    assert "corrupt" in result.metadata["error"] or "invalid" in result.metadata["error"]
+    assert result.metadata["error"].startswith("Piper couldn't open that PDF.")
+    assert result.metadata["detected_kind"] == "pdf_unreadable"
 
 
 # 6. Inheritance from BaseAnalyzer

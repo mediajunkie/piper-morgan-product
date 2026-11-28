@@ -81,17 +81,26 @@ def test_the_reader_reads_nothing_by_extension_that_the_upload_refuses():
         assert da.classify_document_type(filename=f"a{ext}")[0] == "unknown"
 
 
+DOCX_MIME = "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+
+
 @pytest.mark.parametrize(
     "content_type,name,allowed",
     [
         ("text/plain", "a.txt", True),
         ("text/csv", "a.csv", True),
-        ("application/vnd.ms-excel", "a.csv", False),  # a named type outside the table
-        ("", "a.log", True),  # a browser that does not know the type
+        ("application/vnd.ms-excel", "a.csv", False),  # a named type outside the kind
+        ("", "a.log", True),  # Arch: a browser that does not know the type
         ("application/octet-stream", "a.md", True),
         ("text/x-log", "a.log", True),
+        ("text/x-markdown", "a.md", True),  # Arch: any text/* for a text-kind extension
         ("application/pdf", "a.pdf", True),
-        (da.READABLE_KINDS["docx"][1].__iter__().__next__(), "a.docx", True),
+        (DOCX_MIME, "a.docx", True),
+        ("application/pdf", "a.docx", False),  # Arch: the reader would send it to pypdf
+        ("text/plain", "a.docx", False),  # Arch: the reader would decode it as text
+        ("text/plain", "a.pdf", False),
+        (DOCX_MIME, "a.txt", False),
+        ("application/json", "a.txt", True),  # both are the text kind
         ("application/pdf", "a.exe", False),  # the extension must be in the table
         ("application/zip", "a.zip", False),
         ("text/plain", "a", False),
@@ -100,6 +109,28 @@ def test_the_reader_reads_nothing_by_extension_that_the_upload_refuses():
 def test_the_upload_gate(content_type, name, allowed):
     suffix = Path(name).suffix.lower()
     assert files_routes._upload_type_allowed(content_type, suffix) is allowed
+
+
+@pytest.mark.parametrize(
+    "content_type,name",
+    [
+        ("text/plain", "a.txt"),
+        ("", "a.log"),
+        ("application/octet-stream", "a.docx"),
+        ("text/x-markdown", "a.md"),
+        (DOCX_MIME, "a.docx"),
+        ("application/pdf", "a.pdf"),
+        ("application/json", "a.csv"),
+    ],
+)
+def test_every_file_the_upload_stores_is_the_same_kind_to_the_reader(content_type, name):
+    """Arch's condition: the reader decides by MIME type first, the upload by
+    extension; for anything the upload lets in, the two must agree."""
+    suffix = Path(name).suffix.lower()
+    assert files_routes._upload_type_allowed(content_type, suffix)
+    by_extension = da.classify_document_type(filename=name)[0]
+    as_stored = da.classify_document_type(file_type=content_type, filename=name)[0]
+    assert as_stored == by_extension != "unknown"
 
 
 # --- 2443: CXO's lines, built from the table -------------------------------------------
@@ -151,10 +182,11 @@ def test_a_docx_gives_paragraph_and_table_text_in_document_order():
 
 def test_a_docx_past_the_bound_is_refused_before_anything_is_parsed(monkeypatch):
     data = _docx_bytes(_garden)
-    monkeypatch.setattr(da, "MAX_DOCX_XML_BYTES", 10)
-    with patch("docx.Document", side_effect=AssertionError("parsed past the bound")):
+    monkeypatch.setattr(da, "MAX_DOCX_PACKAGE_BYTES", 10)
+    with patch("docx.Document") as opened:
         with pytest.raises(da.DocxUnreadableError) as refused:
             da.extract_docx_text(data)
+    opened.assert_not_called()  # the reader catches every error, so a raise proves nothing
     assert (
         str(refused.value)
         == "That file is too large or isn't a valid .docx, so I couldn't read it."
@@ -168,9 +200,90 @@ def test_the_bound_reads_the_declared_size_from_the_zips_directory():
         archive.writestr("word/document.xml", b"\0" * (60 * 1024 * 1024))
     data = big.getvalue()
     assert len(data) < 1024 * 1024  # it would pass the 10 MB upload cap
-    with patch("docx.Document", side_effect=AssertionError("parsed past the bound")):
+    with patch("docx.Document") as opened:
         with pytest.raises(da.DocxUnreadableError):
             da.extract_docx_text(data)
+    opened.assert_not_called()
+
+
+def _with_extra_part(data: bytes, name: str, payload: bytes, relate: bool) -> bytes:
+    """A valid .docx with one more part added. ``relate`` links it from the document's
+    relationships as an image, which is what makes python-docx load it."""
+    out = io.BytesIO()
+    with (
+        zipfile.ZipFile(io.BytesIO(data)) as src,
+        zipfile.ZipFile(out, "w", zipfile.ZIP_DEFLATED) as dst,
+    ):
+        for entry in src.infolist():
+            body = src.read(entry.filename)
+            if relate and entry.filename == "word/_rels/document.xml.rels":
+                link = (
+                    b'<Relationship Id="rIdBig" Type="http://schemas.openxmlformats.org/'
+                    b'officeDocument/2006/relationships/image" Target="media/big.png"/>'
+                )
+                body = body.replace(b"</Relationships>", link + b"</Relationships>")
+            if (
+                relate
+                and entry.filename == "[Content_Types].xml"
+                and b'Extension="png"' not in body
+            ):
+                body = body.replace(
+                    b"</Types>", b'<Default Extension="png" ContentType="image/png"/></Types>'
+                )
+            dst.writestr(entry, body)
+        dst.writestr(name, payload)
+    return out.getvalue()
+
+
+@pytest.mark.parametrize("relate", [True, False])
+def test_the_bound_is_on_the_whole_package_not_one_part(relate):
+    """HOST's finding (01M8HETS9W), confirmed by Arch from python-docx's source: every
+    part a relationship reaches is decompressed. A small document.xml beside a linked
+    part that declares 60 MB is refused from the directory, and never opened."""
+    data = _with_extra_part(
+        _docx_bytes(_garden), "word/media/big.png", b"\0" * (60 * 1024 * 1024), relate
+    )
+    assert len(data) < 1024 * 1024  # it would pass the 10 MB upload cap
+    with zipfile.ZipFile(io.BytesIO(data)) as archive:
+        assert archive.getinfo("word/document.xml").file_size < 100_000
+    with patch("docx.Document") as opened:
+        with pytest.raises(da.DocxUnreadableError) as refused:
+            da.extract_docx_text(data)
+    opened.assert_not_called()  # the reader catches every error, so a raise proves nothing
+    assert str(refused.value) == da.DOCX_UNREADABLE_LINE
+
+
+def test_a_linked_part_under_the_bound_is_still_read():
+    data = _with_extra_part(_docx_bytes(_garden), "word/media/big.png", b"\0" * 1024, True)
+    assert "Garden club notes for spring." in da.extract_docx_text(data)
+
+
+def test_an_entity_bomb_in_the_document_part_expands_nothing():
+    """python-docx builds its parser with ``resolve_entities=False`` (Arch read
+    ``docx/oxml/parser.py``). If a version bump changes that, this fails here, not on
+    the server: the text stays small, or the file is refused; it never grows."""
+    bomb = (
+        b'<?xml version="1.0"?><!DOCTYPE w [<!ENTITY a "' + b"A" * 1000 + b'">'
+        b'<!ENTITY b "&a;&a;&a;&a;&a;&a;&a;&a;&a;&a;">'
+        b'<!ENTITY c "&b;&b;&b;&b;&b;&b;&b;&b;&b;&b;">'
+        b'<!ENTITY d "&c;&c;&c;&c;&c;&c;&c;&c;&c;&c;">]>'
+        b'<w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main">'
+        b"<w:body><w:p><w:r><w:t>&d;&d;&d;&d;&d;&d;&d;&d;&d;&d;</w:t></w:r></w:p></w:body>"
+        b"</w:document>"
+    )
+    out = io.BytesIO()
+    with (
+        zipfile.ZipFile(io.BytesIO(_docx_bytes(_garden))) as src,
+        zipfile.ZipFile(out, "w", zipfile.ZIP_DEFLATED) as dst,
+    ):
+        for entry in src.infolist():
+            body = bomb if entry.filename == "word/document.xml" else src.read(entry.filename)
+            dst.writestr(entry, body)
+    try:
+        text = da.extract_docx_text(out.getvalue())
+    except da.DocxUnreadableError:
+        return
+    assert len(text) < 10_000  # fully expanded it would be 10,000,000 characters
 
 
 @pytest.mark.parametrize("label", ["not_a_zip", "zip_without_the_part", "part_is_not_word"])
@@ -268,7 +381,12 @@ async def test_a_pdf_with_pages_and_no_text_says_so(tmp_path):
 async def test_a_pdf_that_cannot_be_opened_is_marked_too():
     analyzer, _ = _analyzer()
     result = await analyzer.analyze("tests/fixtures/corrupted_document.pdf", user_id=None)
-    assert result.summary == da.PDF_UNREADABLE_LINE and result.metadata["refusal"] is True
+    assert result.summary == (
+        "Piper couldn't open that PDF. Paste its text here and Piper will work with it."
+    )
+    assert result.metadata["refusal"] is True
+    assert result.key_findings == [] and result.recommendations == []
+    assert "Unable to analyze" not in result.summary
 
 
 # --- 2444: the coverage sentence -------------------------------------------------------
