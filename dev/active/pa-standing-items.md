@@ -1,4 +1,4 @@
-# PA Standing Items Tracker
+# PZ (Piper Zero, formerly PA) Standing Items Tracker
 
 **Purpose**: Track PA-domain items that are pending PM input, blocked on external action, or queued for PA execution but not yet started. Persistent surface so items don't get lost to transcript / PM memory / PA context window.
 
