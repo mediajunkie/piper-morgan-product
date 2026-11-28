@@ -8,12 +8,6 @@ caption: ''
 
 *November 8–15, 2026*
 
-<!--
-SCAFFOLD, not a draft ("AI prompts human"). Comms supplies the shape, the verified facts and the quotes. You write the prose. Everything below the title and dateline is notes for you. Delete it as your prose replaces it.
-Slot: Sat 2026-11-28 (insight, tentative per your 11-18 yes to the sketch). Title LOCKED 11-22: "Mark One Eyeball" (you renamed the calendar row and teased it in Sun 11-22's footer).
-Sources: the mining pass Nov 6-16 (11-17). Comms re-opened every quote below at source on 11-18. Files are docs/omnibus-logs/2026-11-DD-omnibus-log.md, cited "Nov DD lNN".
--->
-
 ## The principle (one line, yours to word)
 
 A test that checks the code is not a test of what the person sees. Tests pass in the world the test builds, so build it from what the user gets.
