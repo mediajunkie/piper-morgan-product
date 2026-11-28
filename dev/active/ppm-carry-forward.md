@@ -25,7 +25,7 @@ warning (live bug 2026-09-22 to 2026-09-23 13:22, since fixed and re-verified cl
 each issue before placing. State the denominator when reporting.
 
 
-**Last rewritten**: 2026-11-27 21:34 PT (21:33 STOP; the current block is at the bottom, "Now").
+**Last rewritten**: 2026-11-28 06:34 PT (06:33 START; the current block is at the bottom, "Now").
 
 **Mechanism state**: LaunchAgent cadence (`:33` past 6,9,12,15,18,21), `CronList` "No scheduled jobs" is normal, no cron ritual. `sprint-truth.py` reads `dev/state/sprint-truth-MVP.ppm.json`. No pytest/venv on this seat: handler tests are "unverified, not run".
 
@@ -1084,7 +1084,7 @@ Brake FIRED (second slip = #1965 admission, found and ledgered 10-09). Memo to E
   - Revoke: on the published App, and leave seat-github-1 disconnected today.
   - Zero-install: PPM recommends a served read (PA backs it; HOST yes with conditions; Exec put (b) to xian).
 
-## Now (rewritten at the 11-27 21:33 STOP; carry into Sat 11-28)
+## Superseded Now block (11-27 21:33 STOP; replaced 11-28 06:34 START)
 
 - **11-27 in one line:** Paths A and B are both served (A 13:44 on `e5d3eecce3`, B 14:44 on `424ea62f12` with 2467 named). The GitHub cutover ran (0 classic grants). 2261 is served and closed, the first invite-hold P0. Seven promotions; beta serves `8ddd08d8e0`. Closed today: 2411, 2455, 2458, 2459, 2425, 2261, 2460. Placed: 2457, 2462, 2463, 2464, 2465, 2466, 2467, 2468, 2469, 2470, 2471, 2472. Production is 341 (equal to gh 341), with 0 unmilestoned. Map v250.
 - **Score (11-27 STOP, gh):** Paths 2 of 2. Invite-hold P0s closed 1 of 3 (2342 and 2282 open). Recorded in the sprint 3 draft's score line.
@@ -1101,3 +1101,24 @@ Brake FIRED (second slip = #1965 admission, found and ledgered 10-09). Memo to E
   - hidden markup isn't a served read;
   - ack notes take the mail ID from the send line, never a typed prefix;
   - no tested-path push during a promotion hold, so re-read the inbox before any push.
+
+## Now (rewritten at the 11-28 06:34 START; post-close 11-27 work folded in)
+
+- **State at START (gh):** Production 344 open, equal to the plan Total, 0 unmilestoned. Map v253. Main CI 12 of 12 green. Paths 2 of 2. Invite-hold P0s closed 1 of 3 (2342 and 2282 open).
+- **Invite hold, what's left:**
+  - 2342: two rows, the zero-install card and connector turns, and the revoke (leave seat-github-1 disconnected after it). Blocker: xian's sitting via Exec.
+  - 2282: row 1 ticked on xian's 11-27 Step 3. Row 2 needs GitHub's consent line ("Authorizing will redirect to https://beta.pipermorgan.ai") quoted; blocker: a look or screenshot at xian's next GitHub connect. Row 4 needs a week of no use read from logs (Lead); no date estimate.
+  - Send the invite-lift memo to Exec the day the last row is served.
+- **Filed or placed after the 11-27 close:**
+  - 2473 (one Google project, C): Lead, Arch and PPM recommend the verified Alpha project as it stands. Blocker: xian's yes via Exec. No privacy or terms links on the consent screen; adding them is a re-review, xian's timing call.
+  - 2474 (owner-first on self-host, Dist): Arch's six points are the ruling; acceptance rows for Lead, CXO, HOST 4 to 6, Docs step 8 and one browser run. CXO's corrected lines are in. Blocker: Lead's fresh session.
+  - 2475 (Test All fails for every beta account, "2 of 3" counts Slack, GitHub card wording; H): Lead's root cause, Arch's yes on the one offered predicate in three places, CXO's card and dialog lines, HOST's conditions accepted; Web confirmed the failure on seat-tester-1. PPM recommends it lands before invitations. Blocker: xian's call via Exec, then Lead's build, Web's two Test All presses, CXO, then my read.
+- **Self-hosted outside tester (sprint 3 goal 1 companion):** Docs' "Start here" is on main, with CXO's three edits pending at Docs; HOST's custody read conforms. The tester starts with chat, projects and GitHub by token; Calendar later. The clean-machine run is xian's choice of hands.
+- **Waiting, with blockers (unchanged from 11-27 STOP):**
+  - Prompt pass, led by 2470 row 19 and 2463: the first unit of Lead's next session, priced first. Read 2470's open split row with it.
+  - 2469 and 2195's DOCUMENT_QUERY_PATTERNS step (update_issue flip under Arch's seven conditions, then the deletion): Lead's fresh session; may need a fly secret, xian's hand. xian likes condition 7's confirm (not a go on the flip).
+  - 2468: blocked by 2472 (MCP deploy hang; the cause is xian's Fly read).
+  - 2471: xian's yes via Exec.
+  - 2466: Lead's build when picked.
+- **Week 1 ahead:** the MUX document discussion Tue 12-01 (PPM's read 01M8F9844X; Arch's comparison and CXO's person-side page and step list are on main).
+- **Rules carried:** unchanged; plus mail IDs come from the send output, never typed.
