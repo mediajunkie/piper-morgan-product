@@ -52,9 +52,12 @@ READABLE_KINDS: Dict[str, Tuple[FrozenSet[str], FrozenSet[str]]] = {
 #: the extension decides (issue 2443: a ``.log`` or ``.csv`` often arrives this way).
 GENERIC_MIME_TYPES: FrozenSet[str] = frozenset({"", "application/octet-stream"})
 
-#: Issue 2443 (Arch's condition 3): a .docx is a zip, and the upload cap counts compressed
-#: bytes. The declared size of its main part is read before anything is parsed.
-MAX_DOCX_XML_BYTES = 50 * 1024 * 1024
+#: Issue 2443 (Arch's condition 3; HOST 01M8HETS9W, Arch 01M8HEVAPY): a .docx is a zip,
+#: and the upload cap counts compressed bytes. python-docx decompresses every part a
+#: relationship reaches (HOST measured about 800 MB held for a 0.4 MB upload when only
+#: ``word/document.xml`` was bounded), so the bound is on the WHOLE package: the sum of
+#: every entry's declared size, read from the zip's directory before anything is parsed.
+MAX_DOCX_PACKAGE_BYTES = 50 * 1024 * 1024
 #: The most text kept from one .docx. Summarize reads 3,000 characters and a question
 #: 4,000, so this is generous.
 MAX_DOCX_TEXT_CHARS = 300_000
@@ -198,17 +201,20 @@ def extract_docx_text(data: bytes) -> str:
     """The text of a .docx: paragraphs and table cells in document order (issue 2443,
     Arch's conditions 2 and 3).
 
-    Raises ``DocxUnreadableError`` when the main part declares more than
-    ``MAX_DOCX_XML_BYTES`` (read from the zip's directory, before anything is
-    decompressed), and when the bytes are not a .docx python-docx can open (a corrupt
-    zip, an encrypted file, a zip that is not a Word document).
+    Raises ``DocxUnreadableError`` when the package's entries together declare more
+    than ``MAX_DOCX_PACKAGE_BYTES`` (summed from the zip's directory, before anything
+    is decompressed; the zip reader stops at each entry's declared size, so a directory
+    that lies cannot expand past the sum), and when the bytes are not a .docx
+    python-docx can open (a corrupt zip, an encrypted file, a zip that is not a Word
+    document).
     """
     try:
         with zipfile.ZipFile(io.BytesIO(data)) as archive:
-            declared = archive.getinfo("word/document.xml").file_size
+            archive.getinfo("word/document.xml")  # KeyError: not a Word document
+            declared = sum(entry.file_size for entry in archive.infolist())
     except (zipfile.BadZipFile, KeyError, OSError, ValueError):
         raise DocxUnreadableError() from None
-    if declared > MAX_DOCX_XML_BYTES:
+    if declared > MAX_DOCX_PACKAGE_BYTES:
         raise DocxUnreadableError()
 
     import docx  # python-docx, already pinned
