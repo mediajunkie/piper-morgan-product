@@ -44,6 +44,8 @@ LaunchAgent `com.xian.pm-pa-cycle` (:47 at 6, 9, 12, 15, 18, 21), boot-persisten
 
 ## MCP program (card priority 1)
 
+- **No `fly` from a seat, read-only included** (ADR-084; PA's briefing; Exec `01M8FZDRED…`, 11-27). Release state comes from the deploy run, MCP `/health`, or xian through Exec.
+
 - **MCP deploy HOLD (11-27, written 16:42):** main from `305499bbfb` would serve the wrong connector connect-required line (issue 2468: `app_mode()` is always off in the MCP app). No MCP deploy from main until 2468 is fixed; MCP stays `c303931894`. On every promotion read, check `services/mcp/server/resources.py`'s imports from `consumer/`, not just the directory.
 
 - **Deploys:** only `scripts/deploy-mcp.sh`. PA's own run is classifier-denied since 11-04; give xian the one-line sync-plus-deploy (memory `reference_deploy_mcp_clean_tree_races_cohort_pushes`). A sanctioned `gh workflow run` deploy would remove the human hand (proposed in Agent 360 v0.6).
