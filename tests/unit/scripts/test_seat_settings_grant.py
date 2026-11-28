@@ -488,3 +488,88 @@ def test_a_rerun_prints_an_undo_that_reverts_only_that_run(tmp_path, capsys):
     assert named != first and named.name.startswith("settings.json.before-fleet-deny.")
     assert json.loads(named.read_text())["permissions"]["deny"] == step_a
     assert first.read_text() == "the copy from Step A\n"
+
+
+# ADR-084 line 22: no seat runs `fly`. Exec 01M8G038V2 (2026-11-27), after PA's seat ran `fly releases`
+# and `fly status` with no rule refusing them. fnmatch stands in for Claude Code's matcher here (the
+# real matcher is read by a seat's refused `fly version`); it pins which strings the rules name.
+def _denied(mod, command):
+    import fnmatch
+
+    return any(fnmatch.fnmatchcase(command, rule[len("Bash(") : -1]) for rule in mod.FLY_DENIES)
+
+
+@pytest.mark.parametrize(
+    "command",
+    [
+        "fly releases -a piper-morgan-mcp",
+        "fly status -a piper-morgan-mcp",
+        "fly secrets list -a piper-morgan",
+        "flyctl deploy",
+        "fly",
+        "/opt/homebrew/bin/fly status",
+        "/opt/homebrew/bin/flyctl ssh console -a piper-morgan",
+        "env fly status",
+        "env FLY_API_TOKEN=x fly status",
+        "env -u ANTHROPIC_API_KEY flyctl logs",
+        "command fly status",
+        "FLY_API_TOKEN=x fly status -a piper-morgan",
+        "FLY_ACCESS_TOKEN=x FLY_NO_UPDATE_CHECK=1 flyctl secrets list",
+        "fly ssh console -a piper-morgan -C 'printenv PIPER_INVERSION_LIVE_CATEGORIES'",
+    ],
+)
+def test_fly_denies_name_every_fly_command_a_seat_types(command):
+    assert _denied(_load(), command)
+
+
+@pytest.mark.parametrize(
+    "command",
+    [
+        "ls deploy/fly",
+        "cat deploy/fly/github-mcp.fly.toml",
+        "grep -n 'bin/fly ' scripts/seat_settings_grant.py",
+        "git commit -m 'deny fly on every seat'",
+        "gh workflow run fly-deploy.yml -R mediajunkie/piper-morgan-product --ref main -f promote_to_alpha=true",
+        "scripts/deploy-mcp.sh --dry-run",
+        "python3 scripts/gen-fly-permissions.py --check",
+        "flyway migrate",
+        "FLY_NO_UPDATE_CHECK=1 python3 scripts/gen-fly-permissions.py --check",
+    ],
+)
+def test_fly_denies_leave_other_commands_alone(command):
+    assert not _denied(_load(), command)
+
+
+def test_fly_denies_are_in_the_fleet_set_and_keep_an_existing_fly_allow(tmp_path):
+    """The shared file already carries one fly allow (the live-set read). The deny would make it
+    dead, so the same run removes it (Arch 01M8G0QQYT), and the undo copy still has it."""
+    mod = _load()
+    assert set(mod.FLY_DENIES) <= set(mod.FLEET_DENIES)
+    assert all(not rule.startswith("Bash(*") for rule in mod.FLY_DENIES)
+    allow = "Bash(fly ssh console -a piper-morgan -C 'printenv PIPER_INVERSION_LIVE_CATEGORIES')"
+    shared = tmp_path / "settings.json"
+    shared.write_text(
+        json.dumps({"permissions": {"allow": [allow], "deny": list(mod.FLEET_DENIES[:8])}})
+    )
+    assert allow in mod.RETIRED_ALLOWS
+    added, retired, backup = mod.fleet_deny_change(shared)
+    assert added == list(mod.FLY_DENIES) and retired == [allow]
+    after = json.loads(shared.read_text())["permissions"]
+    assert after["allow"] == [] and after["deny"] == list(mod.FLEET_DENIES)
+    assert json.loads(backup.read_text())["permissions"]["allow"] == [allow]  # the undo has it
+
+
+def test_fleet_deny_removes_only_retired_allows_and_says_so(tmp_path, capsys):
+    mod = _load()
+    retired = mod.RETIRED_ALLOWS[0]
+    shared = tmp_path / "settings.json"
+    shared.write_text(
+        json.dumps({"permissions": {"allow": ["Bash(x)", retired], "deny": list(mod.FLEET_DENIES)}})
+    )
+    assert mod.main(["fleet-deny", "--shared-settings", str(shared)]) == 0
+    out = capsys.readouterr().out
+    assert "added 0 deny rule(s)" in out and "removed 1 retired allow rule(s)" in out
+    assert "to undo: mv" in out
+    assert json.loads(shared.read_text())["permissions"]["allow"] == ["Bash(x)"]
+    assert mod.main(["fleet-deny", "--shared-settings", str(shared)]) == 0
+    assert "removed 0 retired allow rule(s)" in capsys.readouterr().out
