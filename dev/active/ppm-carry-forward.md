@@ -25,7 +25,7 @@ warning (live bug 2026-09-22 to 2026-09-23 13:22, since fixed and re-verified cl
 each issue before placing. State the denominator when reporting.
 
 
-**Last rewritten**: 2026-11-26 21:35 PT (21:33 STOP; the current block is at the bottom, "Now").
+**Last rewritten**: 2026-11-27 21:34 PT (21:33 STOP; the current block is at the bottom, "Now").
 
 **Mechanism state**: LaunchAgent cadence (`:33` past 6,9,12,15,18,21), `CronList` "No scheduled jobs" is normal, no cron ritual. `sprint-truth.py` reads `dev/state/sprint-truth-MVP.ppm.json`. No pytest/venv on this seat: handler tests are "unverified, not run".
 
@@ -1058,7 +1058,7 @@ Brake FIRED (second slip = #1965 admission, found and ledgered 10-09). Memo to E
 - ~~11-26 19:26: OWED~~ DONE 11-26 20:27 (guide section 'What a message costs on your key'). The self-host guide's words on the extra provider call per turn when the ethics check is on (2364 ruling 3 gives PPM this). Product read sent to Arch (01M8DGJZ91): option (a), exact canned pairs answer before the gate, so greetings stay spend-free. Trigger: Arch's ruling on the 2364 flip hold (Lead 01M8DGJ4CV); (a) and (b) need different sentences.
 - 11-26 19:35: Ruled (Arch 01M8DGR3P3, 01M8DGVXJV; CXO 01M8DGPKJ8; HOST 01M8DGQ82R): (a) narrowed, so a pleasantry-only message skips the gate. The words go in `docs/installation/self-host-guide.md`: the off-word is exactly `false`; when the check is on, each turn makes one detector call on the owner's key, except a bare greeting, farewell or thanks. Trigger: the pleasantry skip and the flip both land on main (before that, the sentence would be false).
 
-## Now (rewritten at the 11-26 21:33 STOP; carry into Fri 11-27, sprint 3's first day)
+## Superseded (was Now from the 11-26 21:33 STOP, with 11-27 updates; replaced at the 11-27 21:33 STOP)
 
 - **11-26 in one line:** Sprint 2 closed. Closed today: 2406, 2417, 2446, 2399, 2441, 2448, 2297, 2412. 2364 was fixed and passed on both providers; its skip and flip are on main but not promoted. 2342's 8-hour box was ticked. The self-host cost section was written. Production 329 to 333 (net), map v210 to v226.
 - **Sprint 2 final score (11-26 21:35, gh):** Paths A and B served on a fresh account: **0 of 2**. Invite-hold P0s closed: **0 of 3** (2261, 2282, 2342 OPEN). The score stands as is, per xian 11-20. Sprint 3 keeps the same scale.
@@ -1083,3 +1083,21 @@ Brake FIRED (second slip = #1965 admission, found and ledgered 10-09). Memo to E
   - 2261's authorize box is half met (the permissions read is in step 8). The 2342 token check: step 8 also reads the test App's permissions.
   - Revoke: on the published App, and leave seat-github-1 disconnected today.
   - Zero-install: PPM recommends a served read (PA backs it; HOST yes with conditions; Exec put (b) to xian).
+
+## Now (rewritten at the 11-27 21:33 STOP; carry into Sat 11-28)
+
+- **11-27 in one line:** Paths A and B are both served (A 13:44 on `e5d3eecce3`, B 14:44 on `424ea62f12` with 2467 named). The GitHub cutover ran (0 classic grants). 2261 is served and closed, the first invite-hold P0. Seven promotions; beta serves `8ddd08d8e0`. Closed today: 2411, 2455, 2458, 2459, 2425, 2261, 2460. Placed: 2457, 2462, 2463, 2464, 2465, 2466, 2467, 2468, 2469, 2470, 2471, 2472. Production is 341 (equal to gh 341), with 0 unmilestoned. Map v250.
+- **Score (11-27 STOP, gh):** Paths 2 of 2. Invite-hold P0s closed 1 of 3 (2342 and 2282 open). Recorded in the sprint 3 draft's score line.
+- **Invite hold, what's left:** 2342 has 2 open rows, the zero-install card and connector turns, and the revoke (sitting step 9; leave seat-github-1 disconnected after it). 2282 needs the Calendar consent. Both are xian's sitting via Exec. Send the invite-lift memo to Exec the day the last row is served.
+- **Waiting, with blockers:**
+  - **Prompt pass:** 2470's offer sentence and 2463's "pretty quiet" lead it. CXO's two instructions and the bullet change are accepted by Arch, plus a can't-do rerun case. Blocker: the first unit of Lead's next session, priced first.
+  - **2469 and 2195's DOCUMENT_QUERY_PATTERNS step:** the `update_issue` flip, with the handler reading router args under Arch's seven conditions (condition 7: a confirm shows router-filled values). The deletion comes after. Blocker: Lead's fresh session. It may need a fly secret, which is xian's hand.
+  - **2470:** row 19 (the offer) and the split open row (meets the decline or an honest offer) are read with the prompt pass. The decline is on beta, unserved, and not counted.
+  - **2468** (the MCP connector's connect-required line): on main, not served. Blocker: 2472 (the MCP deploy hangs; the cause is xian's read of Fly).
+  - **2471** (deploy time limits 20, 15 and 20 minutes; Arch accepted). Blocker: xian's yes via Exec.
+  - **2466** (a stale classic grant on a non-App install points to Reconnect). Placed in C, no blocker named; Lead's build when picked.
+- **Week 1 still ahead:** the MUX document discussion Tue 12-01 (PPM's read sent 01M8F9844X; Arch's comparison page is on main).
+- **Rules carried:** unchanged. New today:
+  - hidden markup isn't a served read;
+  - ack notes take the mail ID from the send line, never a typed prefix;
+  - no tested-path push during a promotion hold, so re-read the inbox before any push.
